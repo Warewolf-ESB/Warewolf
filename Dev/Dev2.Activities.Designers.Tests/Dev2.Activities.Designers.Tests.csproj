@@ -130,6 +130,7 @@
     <Compile Include="Core\DotNet\DotNetNamespaceRegionTest.cs" />
     <Compile Include="Core\DropboxSourceManagerTests.cs" />
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
+    <Compile Include="Core\ScriptChooserTests.cs" />
     <Compile Include="Core\WebDeleteInputRegionTest.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
     <Compile Include="Core\WebOutputsRegion.cs" />
@@ -221,6 +222,8 @@
     <Compile Include="Random\RandomDesignerViewModelTests.cs" />
     <Compile Include="Random\TestRandomDesignerViewModel.cs" />
     <Compile Include="Replace\ReplaceDesignerViewModelTests.cs" />
+    <Compile Include="Script_Javascript\JavaScriptDesignerViewModelTests.cs" />
+    <Compile Include="Script_Javascript\TestScriptDesignerViewModel.cs" />
     <Compile Include="Script\ScriptDesignerViewModelTests.cs" />
     <Compile Include="Script\TestScriptDesignerViewModel.cs" />
     <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />

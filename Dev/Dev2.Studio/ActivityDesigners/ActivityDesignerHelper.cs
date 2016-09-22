@@ -93,6 +93,7 @@ using System.Collections.Generic;
 using Dev2.Activities.Designers2.ComDLL;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
+using Dev2.Activities.Scripting;
 
 // ReSharper disable RedundantNameQualifier
 
@@ -141,6 +142,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfRandomActivity), typeof(RandomDesigner) },
                 { typeof(DsfReplaceActivity), typeof(ReplaceDesigner) },
                 { typeof(DsfScriptingActivity), typeof(ScriptDesigner) },
+                { typeof(DsfJavascriptActivity), typeof(Dev2.Activities.Designers2.Script_Javascript.ScriptDesigner) },
                 { typeof(DsfForEachActivity), typeof(ForeachDesigner) },
                 { typeof(DsfCaseConvertActivity), typeof(CaseConvertDesigner) },
                 { typeof(DsfDataMergeActivity), typeof(DataMergeDesigner) },
