@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Wrappers;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
 
@@ -36,6 +37,15 @@ namespace Warewolf.Studio.Views
             PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
             var server = CustomContainer.Get<IServer>();
             var vm = new EmailAttachmentVm(attachments, new EmailAttachmentModel(server.QueryProxy), RequestClose);
+            DataContext = vm;
+            ShowDialog();
+        }
+
+        public void ShowView(IList<string> attachments, string filter)
+        {
+            PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
+            var server = CustomContainer.Get<IServer>();
+            var vm = new EmailAttachmentVm(attachments, new EmailAttachmentModel(server.QueryProxy, filter, new FileWrapper()), RequestClose);
             DataContext = vm;
             ShowDialog();
         }

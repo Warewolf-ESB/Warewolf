@@ -68,6 +68,7 @@ namespace Dev2.Activities.Designers2.Script_Javascript
         public void ChooseScriptSources()
         {            
             var fileChooserMessage = _scriptChooser.ChooseScriptSources(IncludeFile);
+            fileChooserMessage.Filter = "js";
             _eventPublisher.Publish(fileChooserMessage);
         }
 
