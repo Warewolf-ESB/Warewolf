@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Infragistics.Windows.DockManager;
 using Warewolf.Studio.ViewModels.ToolBox;
 
 namespace Warewolf.Studio.Views
@@ -46,6 +47,12 @@ namespace Warewolf.Studio.Views
                     tb.Focus();
                 }
             }
+        }
+
+        private void ToolGrid_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            var toolboxPane = Application.Current.MainWindow.FindName("Toolbox") as ContentPane;
+            toolboxPane?.Activate();
         }
     }
 }
