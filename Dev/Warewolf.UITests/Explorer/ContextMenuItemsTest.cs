@@ -11,7 +11,6 @@ namespace Warewolf.UITests
         const string DuplicatedWorkFlow = "DuplicatedWorkFlow";
 
         [TestMethod]
-        [Ignore]
         public void ContextMenuItemsUITest()
         {            
             Uimap.CreateAndSave_Dice_Workflow();
