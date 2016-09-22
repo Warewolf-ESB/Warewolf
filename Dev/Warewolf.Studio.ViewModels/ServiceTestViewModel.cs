@@ -1,6 +1,8 @@
 ﻿
 using System;
+using System.Activities;
 using System.Activities.Presentation.Model;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -102,22 +104,26 @@ namespace Warewolf.Studio.ViewModels
         {
             if (modelItem != null)
             {
-                if (modelItem.ItemType == typeof(DsfForEachActivity))
+                if (modelItem.ItemType == typeof (Flowchart) || modelItem.ItemType == typeof(ActivityBuilder))
+                {
+                    return;
+                }
+                if (modelItem.ItemType == typeof(DsfForEachActivity) || modelItem.ItemType == typeof(FlowDecision))
                 {
                     dynamic test = modelItem;
-                    ModelItem innerActivity = RecursiveForEachCheck(test);
-                    if (innerActivity != null)
-                    {
-                        //Commenting this out to allow for the Foreach tool to expand to large view.
-                        //Do not take out until we have finalized that this is not to be used
-                        //selectedItem = innerActivity;
-                    }
+                    //ModelItem innerActivity = RecursiveForEachCheck(test);
+                    //if (innerActivity != null)
+                    //{
+                    //    //Commenting this out to allow for the Foreach tool to expand to large view.
+                    //    //Do not take out until we have finalized that this is not to be used
+                    //    //selectedItem = innerActivity;
+                    //}
                 }
                 else if (modelItem.ItemType == typeof(DsfSequenceActivity))
                 {
 
                 }
-                else if (modelItem.ItemType == typeof(DsfSwitch))
+                else if (modelItem.ItemType == typeof(DsfSwitch) || modelItem.ItemType == typeof(FlowSwitch<string>))
                 {
                     var cases = modelItem.GetProperty("Switches") as Dictionary<string, IDev2Activity>;
                     var defaultCase = modelItem.GetProperty("Default") as IDev2Activity;
@@ -177,7 +183,13 @@ namespace Warewolf.Studio.ViewModels
         }
         private void NewTestStep()
         {
-            SelectedServiceTest.AddTestStep(Guid.NewGuid().ToString(), "Test Activity Name", new List<IServiceTestOutput> {new ServiceTestOutput("Var","Val")});
+            var serviceTestOutput = new ServiceTestOutput("Var", "Val")
+            {
+                HasOptionsForValue = true,
+                OptionsForValue = new List<string> {"True", "False"}
+            };
+
+            SelectedServiceTest.AddTestStep(Guid.NewGuid().ToString(), "Test Activity Name", new List<IServiceTestOutput> {serviceTestOutput});
         }
 
         private void SetServerName(IContextualResourceModel resourceModel)

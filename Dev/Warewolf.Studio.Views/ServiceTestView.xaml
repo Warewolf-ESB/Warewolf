@@ -512,9 +512,11 @@
                                                                                FontWeight="Bold" 
                                                                                HorizontalAlignment="Stretch"/>
                                                                     <Button DockPanel.Dock="Right" 
+                                                                            x:Name="DeleteTestStepButton"
                                                                             Style="{StaticResource ButtonBlackTransparentStyle}" 
                                                                             Margin="0,-3,0,0" 
-                                                                            Command="{Binding ElementName=StepTestDataTree, Path=DataContext.DeleteTestStepCommand }"
+                                                                            Command="{Binding ElementName=StepTestDataTree, Path=DataContext.DeleteTestStepCommand }" 
+                                                                            CommandParameter="{Binding ElementName=DeleteTestStepButton, Path=DataContext}"
                                                                             ToolTip="{x:Static languages:Core.ServiceTestStepDeleteStepTooltip}"
                                                                             AutomationProperties.AutomationId="UI_TestStepDelete_AutoID">
                                                                         <fa:FontAwesome Icon="Trash"/>
@@ -555,7 +557,7 @@
                                                                                              ToolTip="{x:Static languages:Core.ServiceTestStepAssertRadioButtonTooltip}" 
                                                                                              Content="Assert" 
                                                                                              Margin="0,-3,0,0"
-                                                                                             IsChecked="{Binding Path=AssertSelected, UpdateSourceTrigger=PropertyChanged}"
+                                                                                             IsChecked="{Binding Path=AssertSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                                              AutomationProperties.AutomationId="UI_AssertRadioButton_AutoID">
                                                                                     <i:Interaction.Behaviors>
                                                                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
@@ -565,7 +567,7 @@
                                                                                              ToolTip="{x:Static languages:Core.ServiceTestStepMockRadioButtonTooltip}" 
                                                                                              Content="Mock" 
                                                                                              Margin="0,-3,0,0"
-                                                                                             IsChecked="{Binding Path=MockSelected, UpdateSourceTrigger=PropertyChanged}"
+                                                                                             IsChecked="{Binding Path=MockSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                                              AutomationProperties.AutomationId="UI_MockRadioButton_AutoID">
                                                                                     <i:Interaction.Behaviors>
                                                                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepMockRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
@@ -577,10 +579,10 @@
                                                                     <DataGridTemplateColumn.CellTemplate>
                                                                         <DataTemplate>
                                                                             <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                                                                                      Margin="1"
+                                                                                      Margin="0,0,1,1" 
                                                                                       ItemsSource="{Binding Path=AssertOps}"
                                                                                       SelectedValue="{Binding Path=AssertOp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                                                                      IsEnabled="{Binding Path=AssertSelected, UpdateSourceTrigger=PropertyChanged}"
+                                                                                      IsEnabled="{Binding Path=AssertSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                                       ToolTip="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}"
                                                                                       AutomationProperties.AutomationId="UI_AssertOps_AutoID">
                                                                                 <i:Interaction.Behaviors>
@@ -594,14 +596,29 @@
                                                                 <DataGridTemplateColumn Width="*" Header="Value">
                                                                     <DataGridTemplateColumn.CellTemplate>
                                                                         <DataTemplate>
-                                                                            <TextBox Margin="0,0,0,1" 
-                                                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                                                     ToolTip="{x:Static languages:Core.ServiceTestStepAssertValueTooltip}"
-                                                                                     AutomationProperties.AutomationId="UI_AssertValue_AutoID">
-                                                                                <i:Interaction.Behaviors>
-                                                                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                                </i:Interaction.Behaviors>
-                                                                            </TextBox>
+                                                                            <StackPanel>
+                                                                                <TextBox Margin="0,0,0,1" 
+                                                                                         Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                                         ToolTip="{x:Static languages:Core.ServiceTestStepAssertValueTooltip}"
+                                                                                         Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                                                                         AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                                                    <i:Interaction.Behaviors>
+                                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                    </i:Interaction.Behaviors>
+                                                                                </TextBox>
+
+                                                                                <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                                                                          Margin="0,0,0,1" 
+                                                                                          ItemsSource="{Binding Path=OptionsForValue}"
+                                                                                          SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                                                                          Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                                                          ToolTip="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}"
+                                                                                          AutomationProperties.AutomationId="UI_OptionsForValue_AutoID">
+                                                                                    <i:Interaction.Behaviors>
+                                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                    </i:Interaction.Behaviors>
+                                                                                </ComboBox>
+                                                                            </StackPanel>
                                                                         </DataTemplate>
                                                                     </DataGridTemplateColumn.CellTemplate>
                                                                 </DataGridTemplateColumn>

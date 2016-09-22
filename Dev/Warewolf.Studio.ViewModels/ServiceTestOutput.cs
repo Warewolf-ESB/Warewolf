@@ -11,6 +11,10 @@ namespace Warewolf.Studio.ViewModels
         private string _value;
         private string _assertOp;
         private List<string> _assertOps;
+        private bool _hasOptionsForValue;
+        private List<string> _optionsForValue;
+        private bool _assertSelected;
+        private bool _mockSelected;
 
         public ServiceTestOutput(string variable, string value)
         {
@@ -19,6 +23,8 @@ namespace Warewolf.Studio.ViewModels
             Variable = variable;
             Value = value;
             AssertOps = new List<string> { "=" };
+            AssertSelected = true;
+            MockSelected = false;
         }
 
         public string Variable
@@ -55,8 +61,26 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => AssertOp);
             }
         }
-        public bool HasOptionsForValue { get; set; }
-        public List<string> OptionsForValue { get; set; }
+
+        public bool HasOptionsForValue
+        {
+            get { return _hasOptionsForValue; }
+            set
+            {
+                _hasOptionsForValue = value; 
+                OnPropertyChanged(() => HasOptionsForValue);
+            }
+        }
+
+        public List<string> OptionsForValue
+        {
+            get { return _optionsForValue; }
+            set
+            {
+                _optionsForValue = value; 
+                OnPropertyChanged(() => OptionsForValue);
+            }
+        }
 
         public List<string> AssertOps
         {
@@ -65,6 +89,26 @@ namespace Warewolf.Studio.ViewModels
             {
                 _assertOps = value; 
                 OnPropertyChanged(() => AssertOps);
+            }
+        }
+
+        public bool AssertSelected
+        {
+            get { return _assertSelected; }
+            set
+            {
+                _assertSelected = value;
+                OnPropertyChanged(() => AssertSelected);
+            }
+        }
+
+        public bool MockSelected
+        {
+            get { return _mockSelected; }
+            set
+            {
+                _mockSelected = value;
+                OnPropertyChanged(() => MockSelected);
             }
         }
     }
