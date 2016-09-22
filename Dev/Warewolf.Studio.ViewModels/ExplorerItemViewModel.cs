@@ -661,7 +661,6 @@ namespace Warewolf.Studio.ViewModels
                                 }
 
                                 _resourceName = newName;
-                                Server.UpdateRepository.FireItemSaved(true);
                             }
                         }
                     }
