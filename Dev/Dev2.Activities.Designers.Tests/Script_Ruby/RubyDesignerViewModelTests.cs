@@ -20,10 +20,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable InconsistentNaming
 
-namespace Dev2.Activities.Designers.Tests.Script_Javascript
+namespace Dev2.Activities.Designers.Tests.Script_Ruby
 {
     [TestClass]
-    public class JavaScriptDesignerViewModelTests
+    public class RubyDesignerViewModelTests
     {
 
         private static string GetJsTmpFile()
@@ -83,22 +83,9 @@ namespace Dev2.Activities.Designers.Tests.Script_Javascript
         public void ScriptDesignerViewModel_Constructor_PropertiesInitialized()
         {
             var modelItem = CreateModelItem();
-            var viewModel = new TestJavaScriptDesignerViewModel(modelItem);
+            var viewModel = new TestRubyDesignerViewModel(modelItem);
             Assert.IsTrue(viewModel.EscapeScript);
             Assert.IsTrue(viewModel.HasLargeView);
-        }
-
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ScriptDesignerViewModel_SelectedScriptType")]
-        public void ScriptDesignerViewModel_SelectedScriptType_JavaScript_PropertiesInitialized()
-        {
-            var modelItem = CreateModelItem();
-            var viewModel = new TestJavaScriptDesignerViewModel(modelItem);
-            Assert.IsTrue(viewModel.EscapeScript);
-            Assert.IsTrue(string.IsNullOrEmpty(viewModel.IncludeFile));            
-            Assert.AreEqual("JavaScript Syntax", viewModel.ScriptTypeDefaultText);
         }
 
         [TestMethod]
@@ -107,7 +94,7 @@ namespace Dev2.Activities.Designers.Tests.Script_Javascript
         public void ScriptDesignerViewModel_ChooseDirectoryShould_ReturnFile()
         {
             var modelItem = CreateModelItem();
-            var viewModel = new TestJavaScriptDesignerViewModel(modelItem);
+            var viewModel = new TestRubyDesignerViewModel(modelItem);
             Assert.IsTrue(string.IsNullOrEmpty(viewModel.IncludeFile));
             viewModel.IncludeFile = GetJsTmpFile();
             viewModel.Validate();
@@ -117,9 +104,20 @@ namespace Dev2.Activities.Designers.Tests.Script_Javascript
             Assert.IsFalse(string.IsNullOrEmpty(viewModel.IncludeFile));
         }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ScriptDesignerViewModel_SelectedScriptType")]
+        public void ScriptDesignerViewModel_SelectedScriptType_Ruby_PropertiesInitialized()
+        {
+            var modelItem = CreateModelItem();
+            var viewModel = new TestRubyDesignerViewModel(modelItem);
+            Assert.IsTrue(viewModel.EscapeScript);
+            Assert.AreEqual("Ruby Syntax", viewModel.ScriptTypeDefaultText);
+        }
+
         static ModelItem CreateModelItem()
         {
-            return ModelItemUtils.CreateModelItem(new DsfJavascriptActivity());
+            return ModelItemUtils.CreateModelItem(new DsfRubyActivity());
         }
     }
 }
