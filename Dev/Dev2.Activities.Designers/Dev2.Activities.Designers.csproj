@@ -254,6 +254,7 @@
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
+    <Compile Include="Designers2\Core\IScriptChooser.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageComPluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
@@ -262,6 +263,7 @@
     <Compile Include="Designers2\Core\NamespaceRegion\ComNamespaceRegion.cs" />
     <Compile Include="Designers2\Core\NamespaceRegion\DotNetNamespaceRegion.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
+    <Compile Include="Designers2\Core\ScriptChooser.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\ComSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\DotNetSourceRegion.cs" />
@@ -745,6 +747,16 @@
     <Compile Include="Designers2\Replace\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\JavaScriptDesignerViewModel.cs" />
+    <Compile Include="Designers2\Script_Javascript\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Script\ScriptDesigner.xaml.cs">
       <DependentUpon>ScriptDesigner.xaml</DependentUpon>
@@ -1762,6 +1774,18 @@
     <Page Include="Designers2\Replace\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Script_Javascript\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Javascript\ScriptDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Javascript\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Script\ScriptDesigner.xaml">
       <SubType>Designer</SubType>
