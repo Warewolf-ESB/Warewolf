@@ -32,6 +32,7 @@ namespace Warewolf.UITests
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             Uimap.Open_Assign_Tool_Large_View();
+            Uimap.Enter_Recordset_values();
         }
 
         #region Additional test attributes
@@ -48,9 +49,9 @@ namespace Warewolf.UITests
         public void MyTestCleanup()
         {
             Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseWorkflowTabs();
+            //Uimap.TryCloseHangingSaveDialog();
+            //Uimap.TryClearToolboxFilter();
+            //Uimap.TryCloseWorkflowTabs();
         }
 
         public TestContext TestContext
