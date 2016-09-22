@@ -222,6 +222,8 @@
     <Compile Include="Random\RandomDesignerViewModelTests.cs" />
     <Compile Include="Random\TestRandomDesignerViewModel.cs" />
     <Compile Include="Replace\ReplaceDesignerViewModelTests.cs" />
+    <Compile Include="Script_Python\PythonDesignerViewModelTests.cs" />
+    <Compile Include="Script_Python\TestScriptDesignerViewModel.cs" />
     <Compile Include="Script_Ruby\RubyDesignerViewModelTests.cs" />
     <Compile Include="Script_Ruby\TestScriptDesignerViewModel.cs" />
     <Compile Include="Script_Javascript\JavaScriptDesignerViewModelTests.cs" />

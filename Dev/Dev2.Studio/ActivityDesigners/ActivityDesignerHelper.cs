@@ -144,6 +144,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfScriptingActivity), typeof(ScriptDesigner) },
                 { typeof(DsfJavascriptActivity), typeof(Dev2.Activities.Designers2.Script_Javascript.ScriptDesigner) },
                 { typeof(DsfRubyActivity), typeof(Dev2.Activities.Designers2.Script_Ruby.ScriptDesigner) },
+                { typeof(DsfPythonActivity), typeof(Dev2.Activities.Designers2.Script_Python.ScriptDesigner) },
                 { typeof(DsfForEachActivity), typeof(ForeachDesigner) },
                 { typeof(DsfCaseConvertActivity), typeof(CaseConvertDesigner) },
                 { typeof(DsfDataMergeActivity), typeof(DataMergeDesigner) },
