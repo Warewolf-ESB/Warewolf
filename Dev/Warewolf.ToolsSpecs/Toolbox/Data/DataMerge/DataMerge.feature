@@ -1,4 +1,5 @@
-﻿Feature: DataMerge
+﻿@Data
+Feature: DataMerge
 	In order to merge data
 	As Warewolf user
 	I want a tool that joins two or more pieces of data together
