@@ -9,7 +9,6 @@ namespace Warewolf.UITests
         [TestMethod]
         public void ConfigureSettingPermission()
         {
-            Uimap.RightClick_Localhost();
             Uimap.Select_NewWorkFlowService_From_ContextMenu();
             Uimap.Drag_Toolbox_Random_Onto_DesignSurface();
             Uimap.Enter_Dice_Roll_Values();
