@@ -119,7 +119,25 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else if (modelItem.ItemType == typeof(DsfSwitch))
                 {
-
+                    var cases = modelItem.GetProperty("Switches") as Dictionary<string, IDev2Activity>;
+                    var defaultCase = modelItem.GetProperty("Default") as IDev2Activity;
+                    var uniqueId = modelItem.GetProperty("UniqueID").ToString();
+                    if (SelectedServiceTest != null)
+                    {
+                        var switchOptions = cases?.Select(pair => pair.Key).ToList();
+                        if (defaultCase != null)
+                        {
+                            switchOptions.Insert(0,"Default");
+                        }
+                        var serviceTestOutputs = new List<IServiceTestOutput>();
+                        var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                        {
+                            HasOptionsForValue = true,
+                            OptionsForValue = switchOptions
+                        };
+                        serviceTestOutputs.Add(serviceTestOutput);
+                        SelectedServiceTest.AddTestStep(uniqueId, typeof(DsfSwitch).Name, serviceTestOutputs);
+                    }
                 }
                 else if (modelItem.ItemType == typeof(DsfDecision))
                 {
@@ -128,9 +146,11 @@ namespace Warewolf.Studio.ViewModels
                     if (SelectedServiceTest != null)
                     {
                         var serviceTestOutputs = new List<IServiceTestOutput>();
-                        var serviceTestOutput = new ServiceTestOutput("Condition Result","");
-                        serviceTestOutput.HasOptionsForValue = true;
-                        serviceTestOutput.OptionsForValue = new List<string> {dds.TrueArmText,dds.FalseArmText};
+                        var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                        {
+                            HasOptionsForValue = true,
+                            OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
+                        };
                         serviceTestOutputs.Add(serviceTestOutput);
                         SelectedServiceTest.AddTestStep(uniqueId,typeof(DsfDecision).Name,serviceTestOutputs);
                     }

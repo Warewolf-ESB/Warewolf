@@ -27,6 +27,8 @@ using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+
 // ReSharper disable ObjectCreationAsStatement
 
 // ReSharper disable InconsistentNaming
@@ -1414,6 +1416,129 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("False Path", serviceTestOutput.OptionsForValue[1]);
             Assert.AreEqual("Condition Result",serviceTestOutput.Variable);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ItemSelected_GivenSelectedItemSwitch_NoDefault_ShouldHaveAddServiceTestStepShouldHaveCaseOptions()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            var dsfSwitch = new DsfSwitch();
+            var uniqueId = Guid.NewGuid();
+            dsfSwitch.UniqueID = uniqueId.ToString();
+            dsfSwitch.Switches = new Dictionary<string, IDev2Activity> { {"Case1",new Mock<IDev2Activity>().Object}, { "Case2", new Mock<IDev2Activity>().Object }, { "Case3", new Mock<IDev2Activity>().Object } };
+            var modelItem = ModelItemUtils.CreateModelItem(dsfSwitch);
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            //---------------Assert Precondition----------------          
+            //---------------Execute Test ----------------------
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);            
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Mock,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(dsfSwitch.GetType().Name,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+            var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
+            Assert.AreEqual(3, serviceTestOutput.OptionsForValue.Count);
+            Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
+            Assert.AreEqual("Case1", serviceTestOutput.OptionsForValue[0]);
+            Assert.AreEqual("Case2", serviceTestOutput.OptionsForValue[1]);
+            Assert.AreEqual("Case3", serviceTestOutput.OptionsForValue[2]);
+            Assert.AreEqual("Condition Result",serviceTestOutput.Variable);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ItemSelected_GivenSelectedItemSwitch_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            var dsfSwitch = new DsfSwitch();
+            var uniqueId = Guid.NewGuid();
+            dsfSwitch.UniqueID = uniqueId.ToString();
+            dsfSwitch.Switches = new Dictionary<string, IDev2Activity> { {"Case1",new Mock<IDev2Activity>().Object}, { "Case2", new Mock<IDev2Activity>().Object }, { "Case3", new Mock<IDev2Activity>().Object } };
+            dsfSwitch.Default = new List<IDev2Activity>();
+            var modelItem = ModelItemUtils.CreateModelItem(dsfSwitch);
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            //---------------Assert Precondition----------------          
+            //---------------Execute Test ----------------------
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);            
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Mock,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(dsfSwitch.GetType().Name,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+            var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
+            Assert.AreEqual(4, serviceTestOutput.OptionsForValue.Count);
+            Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
+            Assert.AreEqual("Default", serviceTestOutput.OptionsForValue[0]);
+            Assert.AreEqual("Case1", serviceTestOutput.OptionsForValue[1]);
+            Assert.AreEqual("Case2", serviceTestOutput.OptionsForValue[2]);
+            Assert.AreEqual("Case3", serviceTestOutput.OptionsForValue[3]);
+            Assert.AreEqual("Condition Result",serviceTestOutput.Variable);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ItemSelected_GivenSelectedItemMultiAssign_ShouldHaveAddServiceTestStepShouldHaveOutputs()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            var assignActivity = new DsfMultiAssignActivity();
+            var uniqueId = Guid.NewGuid();
+            assignActivity.UniqueID = uniqueId.ToString();
+            assignActivity.FieldsCollection = new List<ActivityDTO> {new ActivityDTO("[[Var1]]","bob",1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[Var3]]", "dora", 3) };
+            var modelItem = ModelItemUtils.CreateModelItem(assignActivity);
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            //---------------Assert Precondition----------------          
+            //---------------Execute Test ----------------------
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(assignActivity.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+            var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
+            Assert.AreEqual(2, serviceTestOutput.OptionsForValue.Count);
+            Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
+            Assert.AreEqual("True Path", serviceTestOutput.OptionsForValue[0]);
+            Assert.AreEqual("False Path", serviceTestOutput.OptionsForValue[1]);
+            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
+        }
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
