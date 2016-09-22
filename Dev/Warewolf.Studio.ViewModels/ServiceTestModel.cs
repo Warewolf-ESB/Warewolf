@@ -689,8 +689,8 @@ namespace Warewolf.Studio.ViewModels
         private Guid _uniqueId;
         private IServiceTestStep _parent;
         private ObservableCollection<IServiceTestStep> _children;
-        private bool _assertSelected;
-        private bool _mockSelected;
+        //private bool _assertSelected;
+        //private bool _mockSelected;
 
         public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
@@ -699,8 +699,8 @@ namespace Warewolf.Studio.ViewModels
             StepOutputs = serviceTestOutputs;
             Type = stepType;
 
-            AssertSelected = stepType == StepType.Assert;
-            MockSelected = stepType == StepType.Mock;
+            //AssertSelected = stepType == StepType.Assert;
+            //MockSelected = stepType == StepType.Mock;
             StepDescription = "New Test Description";
             Children = new ObservableCollection<IServiceTestStep>();
         }
@@ -777,32 +777,32 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsExpanderVisible => Children.Count > 0;
 
-        public bool AssertSelected
-        {
-            get { return _assertSelected; }
-            set
-            {
-                _assertSelected = value;
-                if (_assertSelected)
-                {
-                    Type = StepType.Assert;
-                }
-                OnPropertyChanged(() => AssertSelected);
-            }
-        }
+        //public bool AssertSelected
+        //{
+        //    get { return _assertSelected; }
+        //    set
+        //    {
+        //        _assertSelected = value;
+        //        if (_assertSelected)
+        //        {
+        //            Type = StepType.Assert;
+        //        }
+        //        OnPropertyChanged(() => AssertSelected);
+        //    }
+        //}
 
-        public bool MockSelected
-        {
-            get { return _mockSelected; }
-            set
-            {
-                _mockSelected = value;
-                if (_mockSelected)
-                {
-                    Type = StepType.Mock;
-                }
-                OnPropertyChanged(() => MockSelected);
-            }
-        }
+        //public bool MockSelected
+        //{
+        //    get { return _mockSelected; }
+        //    set
+        //    {
+        //        _mockSelected = value;
+        //        if (_mockSelected)
+        //        {
+        //            Type = StepType.Mock;
+        //        }
+        //        OnPropertyChanged(() => MockSelected);
+        //    }
+        //}
     }
 }
