@@ -273,6 +273,7 @@
     <Compile Include="Activities\RabbitMQ\Publish\DsfPublishRabbitMQActivity.cs" />
     <Compile Include="Activities\RecordsetOld\DsfCountRecordsetActivity.cs" />
     <Compile Include="Activities\Scripting\DsfJavascriptActivity.cs" />
+    <Compile Include="Activities\Scripting\DsfPythonActivity.cs" />
     <Compile Include="Activities\Scripting\DsfRubyActivity.cs" />
     <Compile Include="Activities\SelectAndApply\DsfSelectAndApplyActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointCopyFileActivity.cs" />
