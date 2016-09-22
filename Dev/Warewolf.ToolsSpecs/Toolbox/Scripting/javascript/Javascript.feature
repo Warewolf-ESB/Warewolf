@@ -4,7 +4,7 @@
 	I want a tool that allows me to execute javascripts
 
 Background: Setup for workflows for tests
-		Given this feature 
+		Given this Javascript feature 
 		Then activity is DsfCountRecordsetNullHandlerActivity
 
 Scenario: Execute Javascript Variable is 1

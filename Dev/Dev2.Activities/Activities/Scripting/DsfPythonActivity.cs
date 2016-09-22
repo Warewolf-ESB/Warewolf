@@ -25,13 +25,13 @@ namespace Dev2.Activities.Scripting
     /// <summary>
     /// Activity used for executing JavaScript through a tool
     /// </summary>
-    [ToolDescriptorInfo("Scripting-Ruby", "Ruby", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "ruby_Tag")]
-    public class DsfRubyActivity : DsfActivityAbstract<string>
+    [ToolDescriptorInfo("Scripting-Python", "Python", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "python_Tag")]
+    public class DsfPythonActivity : DsfActivityAbstract<string>
     {
-        public DsfRubyActivity()
-            : base("Ruby")
+        public DsfPythonActivity()
+            : base("Python")
         {
-            ScriptType = enScriptType.Ruby;
+            ScriptType = enScriptType.Python;
             _sources = new StringScriptSources();
             Script = string.Empty;
             Result = string.Empty;
@@ -135,7 +135,7 @@ namespace Dev2.Activities.Scripting
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    DisplayAndWriteError("DsfScriptingRubyActivity", allErrors);
+                    DisplayAndWriteError("DsfScriptingPythonActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
