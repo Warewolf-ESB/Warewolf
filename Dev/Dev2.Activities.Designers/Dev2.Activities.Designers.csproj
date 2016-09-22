@@ -748,6 +748,16 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Designers2\Script_Python\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Python\PythonDesignerViewModel.cs" />
+    <Compile Include="Designers2\Script_Python\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Python\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Script_Ruby\RubyDesignerViewModel.cs" />
     <Compile Include="Designers2\Script_Ruby\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
@@ -1784,6 +1794,18 @@
     <Page Include="Designers2\Replace\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Script_Python\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Python\ScriptDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Python\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Script_Ruby\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
