@@ -1513,7 +1513,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var assignActivity = new DsfMultiAssignActivity();
             var uniqueId = Guid.NewGuid();
             assignActivity.UniqueID = uniqueId.ToString();
-            assignActivity.FieldsCollection = new List<ActivityDTO> {new ActivityDTO("[[Var1]]","bob",1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[Var3]]", "dora", 3) };
+            assignActivity.FieldsCollection = new List<ActivityDTO> {new ActivityDTO("[[Var1]]","bob",1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
             var modelItem = ModelItemUtils.CreateModelItem(assignActivity);
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
@@ -1530,13 +1530,16 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
             Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             Assert.AreEqual(assignActivity.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
-            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
-            var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
-            Assert.AreEqual(2, serviceTestOutput.OptionsForValue.Count);
-            Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
-            Assert.AreEqual("True Path", serviceTestOutput.OptionsForValue[0]);
-            Assert.AreEqual("False Path", serviceTestOutput.OptionsForValue[1]);
-            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
+            Assert.AreEqual(3, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+            var serviceTestOutput1 = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
+            var serviceTestOutput2 = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[1] as ServiceTestOutput;
+            var serviceTestOutput3 = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[2] as ServiceTestOutput;
+            Assert.IsFalse(serviceTestOutput1.HasOptionsForValue);
+            Assert.IsFalse(serviceTestOutput2.HasOptionsForValue);
+            Assert.IsFalse(serviceTestOutput3.HasOptionsForValue);
+            Assert.AreEqual("[[Var1]]",serviceTestOutput1.Variable);
+            Assert.AreEqual("[[Var2]]",serviceTestOutput2.Variable);
+            Assert.AreEqual("[[name]]",serviceTestOutput3.Variable);
         }
 
 
