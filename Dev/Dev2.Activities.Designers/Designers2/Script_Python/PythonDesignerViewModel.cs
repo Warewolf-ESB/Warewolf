@@ -68,6 +68,7 @@ namespace Dev2.Activities.Designers2.Script_Python
         public void ChooseScriptSources()
         {            
             var fileChooserMessage = _scriptChooser.ChooseScriptSources(IncludeFile);
+            fileChooserMessage.Filter = "py";
             _eventPublisher.Publish(fileChooserMessage);
         }
 
