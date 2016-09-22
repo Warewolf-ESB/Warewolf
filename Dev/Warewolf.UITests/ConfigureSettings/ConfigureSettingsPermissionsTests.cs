@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class ConfigureSettingsPermissionsTests
     {
         [TestMethod]
+        [Ignore]
         public void ConfigureSettingPermission()
         {
             Uimap.RightClick_Localhost();
