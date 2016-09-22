@@ -534,10 +534,30 @@ namespace Warewolf.UITests
             WaitForControlNotVisible(control, searchTimeout);
         }
 
-        public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
+        public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false)
         {
+            WpfText errorLabel = this.SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
-            Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+            if (duplicate || invalid || nameHasWhiteSpace)
+            {
+                if (duplicate)
+                {
+                    Assert.AreEqual(string.Format("An item with name '{0}' already exists in this folder.", ServiceName), errorLabel.DisplayText, "Error is not the same as expected");
+                    Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                }
+                if (invalid)
+                {
+                    Assert.AreEqual("'Name' contains invalid characters", errorLabel.DisplayText, "Error is not the same as expected");
+                    Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                }
+                if (nameHasWhiteSpace)
+                {
+                    Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
+                    Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                }
+            }
+            else
+                Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
         public void Enter_Text_Into_Explorer_Filter(string FilterText)
@@ -1106,9 +1126,9 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'False'
             Assert.IsFalse(runAndDebugButton.Enabled, "RunDebug button is enabled");
         }
-        public void Select_Test(int instance)
+        public void Select_Test(int instance = 1)
         {
-            var test = GetCurrentTest(instance);
+            var test = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
             Mouse.Click(test);
         }
         /// <summary>
@@ -1565,27 +1585,6 @@ namespace Warewolf.UITests
 
         private Select_Delete_FromContextMenuParams mSelect_Delete_FromContextMenuParams;
 
-        public void TryRemoveAllTests()
-        {
-            WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
-            
-            var testsExists = true;
-            while (testsExists)
-            {
-                if(testsListBox.GetContent().Length > 1)
-                {
-                    Select_Test(1);
-                    var testEnabledSelector = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
-                    if(testEnabledSelector.Checked)                    
-                        Mouse.Click(testEnabledSelector);
-                    Click_Delete_Test_Button();
-                    Click_Yes_On_The_Confirm_Delete();
-                }
-                else
-                    testsExists = false;
-                testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
-            }
-        }
     }
     /// <summary>
     /// Parameters to be passed into 'Click_RunAll_Button'

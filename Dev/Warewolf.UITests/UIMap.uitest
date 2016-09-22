@@ -20929,7 +20929,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Sanele testing</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Test Name</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21088,7 +21088,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Sanele testing</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Test Name</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21247,7 +21247,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Sanele testing</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Test Name</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />

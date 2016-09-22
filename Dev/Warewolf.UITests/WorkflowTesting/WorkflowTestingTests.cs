@@ -51,6 +51,10 @@ namespace Warewolf.UITests
             Uimap.Click_EnableDisable_This_Test_CheckBox(true);
             Uimap.Click_Delete_Test_Button();
             Uimap.Click_Yes_On_The_Confirm_Delete();
+            Uimap.Select_Test();
+            Uimap.Click_EnableDisable_This_Test_CheckBox(true);
+            Uimap.Click_Delete_Test_Button();
+            Uimap.Click_Yes_On_The_Confirm_Delete();
         }
 
         [TestMethod]
@@ -58,7 +62,7 @@ namespace Warewolf.UITests
         {
             Uimap.Search_And_Select_HelloWolrd();
             Uimap.Select_Tests_From_Context_Menu();
-            Uimap.Click_Create_New_Tests();
+            Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(TestName);
             Uimap.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
@@ -158,6 +162,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Invalid.Exists);
             Uimap.Click_Delete_Test_Button();
             Uimap.Click_MessageBox_Yes();
+            Uimap.TryRemoveFromExplorer(Testing123);
         }
         #region Additional test attributes
 
@@ -173,10 +178,6 @@ namespace Warewolf.UITests
         public void MyTestCleanup()
         {
             Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryRemoveFromExplorer(Testing123);
-            Uimap.TryRemoveAllTests();
-            Uimap.TryCloseAllTabs();
-
         }
 
         public TestContext TestContext

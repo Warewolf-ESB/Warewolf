@@ -34304,7 +34304,7 @@ namespace Warewolf.UITests
                 {
                     this.mTestNameDisplay = new WpfText(this);
                     #region Search Criteria
-                    this.mTestNameDisplay.SearchProperties[WpfText.PropertyNames.HelpText] = "Sanele testing";
+                    this.mTestNameDisplay.SearchProperties[WpfText.PropertyNames.HelpText] = "Test Name";
                     this.mTestNameDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34520,7 +34520,7 @@ namespace Warewolf.UITests
                 {
                     this.mTestNameDisplay = new WpfText(this);
                     #region Search Criteria
-                    this.mTestNameDisplay.SearchProperties[WpfText.PropertyNames.HelpText] = "Sanele testing";
+                    this.mTestNameDisplay.SearchProperties[WpfText.PropertyNames.HelpText] = "Test Name";
                     this.mTestNameDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34738,7 +34738,7 @@ namespace Warewolf.UITests
                 {
                     this.mTestNameDisplay = new WpfText(this);
                     #region Search Criteria
-                    this.mTestNameDisplay.SearchProperties[WpfText.PropertyNames.HelpText] = "Sanele testing";
+                    this.mTestNameDisplay.SearchProperties[WpfText.PropertyNames.HelpText] = "Test Name";
                     this.mTestNameDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
