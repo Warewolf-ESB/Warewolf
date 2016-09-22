@@ -7,6 +7,11 @@ namespace Warewolf.UITests.DebugInputWindow
     [CodedUITest]
     public class SaveDialogWindowTets
     {
+        const string TestingWF = "TestingWF";
+        const string InvalidName = "Inv@lid N&m#";
+        const string NameHasWhiteSpace = "Test ";
+        const string ValidWFName = "ValidWFName";
+
         [TestMethod]
         public void SaveDialogWindowUITets()
         {
@@ -17,6 +22,17 @@ namespace Warewolf.UITests.DebugInputWindow
             Uimap.Assign_Value_To_Variable();
             Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             Uimap.Remove_WorkflowName_From_Save_Dialog();
+            Uimap.Enter_Service_Name_Into_Save_Dialog(TestingWF);
+            Uimap.Click_SaveDialog_Save_Button();
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Enter_Text_Into_Explorer_Filter(TestingWF);
+            Uimap.RightClick_Explorer_Localhost_First_Item();
+            Uimap.Click_Duplicate_From_ExplorerContextMenu();
+            Uimap.Enter_Service_Name_Into_Save_Dialog(TestingWF, true);
+            Uimap.Enter_Service_Name_Into_Save_Dialog(InvalidName, invalid:true);
+            Uimap.Enter_Service_Name_Into_Save_Dialog(NameHasWhiteSpace, nameHasWhiteSpace:true);
+            Uimap.Enter_Service_Name_Into_Save_Dialog(ValidWFName);
+            Uimap.Click_Duplicate_From_Duplicate_Dialog();
         }
 
         #region Additional test attributes
@@ -33,6 +49,8 @@ namespace Warewolf.UITests.DebugInputWindow
         public void MyTestCleanup()
         {
             Playback.PlaybackError -= Uimap.OnError;
+            Uimap.TryRemoveFromExplorer(TestingWF);
+            Uimap.TryRemoveFromExplorer(ValidWFName);
         }
 
         public TestContext TestContext
