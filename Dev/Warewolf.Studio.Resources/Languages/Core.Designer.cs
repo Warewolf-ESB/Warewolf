@@ -7387,6 +7387,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ServiceTestStepOptionsForValueHelpText.
+        /// </summary>
+        public static string ServiceTestStepOptionsForValueHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestStepOptionsForValueHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestStepOptionsForValueTooltip.
+        /// </summary>
+        public static string ServiceTestStepOptionsForValueTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepOptionsForValueTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stop this test.
         /// </summary>
         public static string ServiceTestStopSelectedTestHelpText {

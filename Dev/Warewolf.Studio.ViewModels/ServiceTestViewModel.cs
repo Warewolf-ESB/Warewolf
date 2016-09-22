@@ -82,7 +82,6 @@ namespace Warewolf.Studio.ViewModels
             DeleteTestCommand = new DelegateCommand<IServiceTestModel>(DeleteTest, CanDeleteTest);
             DeleteTestStepCommand = new DelegateCommand<IServiceTestStep>(DeleteTestStep);
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
-            AddNewTestStepCommand = new DelegateCommand(NewTestStep);
             CanSave = true;
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
             IsLoading = true;
@@ -110,14 +109,28 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (modelItem.ItemType == typeof(DsfForEachActivity) || modelItem.ItemType == typeof(FlowDecision))
                 {
-                    dynamic test = modelItem;
-                    //ModelItem innerActivity = RecursiveForEachCheck(test);
-                    //if (innerActivity != null)
-                    //{
-                    //    //Commenting this out to allow for the Foreach tool to expand to large view.
-                    //    //Do not take out until we have finalized that this is not to be used
-                    //    //selectedItem = innerActivity;
-                    //}
+                    string displayName = "";
+
+                    var displayNameProperty = modelItem.Properties["DisplayName"];
+                    if (displayNameProperty != null)
+                    {
+                        displayName = displayNameProperty.ComputedValue.ToString();
+                    }
+                    var conditionProperty = modelItem.Properties["Condition"];
+                    if (conditionProperty != null)
+                    {
+                        var condition = conditionProperty.ComputedValue;
+                    }
+                    var falseArmProperty = modelItem.Properties["False"];
+                    if (falseArmProperty != null)
+                    {
+                        var falseArm = falseArmProperty.ComputedValue;
+                    }
+                    var trueArmProperty = modelItem.Properties["True"];
+                    if (trueArmProperty != null)
+                    {
+                        var trueArm = trueArmProperty.ComputedValue;
+                    }
                 }
                 else if (modelItem.ItemType == typeof(DsfSequenceActivity))
                 {
@@ -167,13 +180,22 @@ namespace Warewolf.Studio.ViewModels
                     var computedValue = modelItem.GetCurrentValue(); 
                     var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
                     var outputs = dsfActivityAbstract?.GetOutputs();
-                    if(outputs!=null && outputs.Count > 0)
+                    var activityTypeName = computedValue.ToString().Replace(":", "");
+
+                    var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => dsfActivityAbstract != null && a.UniqueId.ToString() == dsfActivityAbstract.UniqueID);
+
+                    if (exists == null)
                     {
-                        var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                        if (outputs != null && outputs.Count > 0)
                         {
-                            HasOptionsForValue = false
-                        }).Cast<IServiceTestOutput>().ToList();
-                        SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, modelItem.ItemType.Name, serviceTestOutputs);
+                            var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                            {
+                                HasOptionsForValue = false
+                            }).Cast<IServiceTestOutput>().ToList();
+                            //Remove the empty row
+                            serviceTestOutputs.RemoveAt(serviceTestOutputs.Count - 1);
+                            SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, activityTypeName, serviceTestOutputs);
+                        }
                     }
                 }
             }
@@ -190,16 +212,6 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
             return innerAct;
-        }
-        private void NewTestStep()
-        {
-            var serviceTestOutput = new ServiceTestOutput("Var", "Val")
-            {
-                HasOptionsForValue = true,
-                OptionsForValue = new List<string> {"True", "False"}
-            };
-
-            SelectedServiceTest.AddTestStep(Guid.NewGuid().ToString(), "Test Activity Name", new List<IServiceTestOutput> {serviceTestOutput});
         }
 
         private void SetServerName(IContextualResourceModel resourceModel)
@@ -473,8 +485,6 @@ namespace Warewolf.Studio.ViewModels
                 return false;
             }
         }
-
-        public ICommand AddNewTestStepCommand { get; set; }
 
         public void Save()
         {
