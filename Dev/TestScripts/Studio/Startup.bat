@@ -63,7 +63,7 @@ set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 exit 1
 rem wait for 5 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%PROGRAMDATA%\Warewolf" folder cleanup...
-waitfor ProgramDataClean /t 5 
+waitfor ProgramDataClean /t 5 2>NUL
 set errorlevel=0
 goto RetryClean
 
@@ -93,7 +93,7 @@ IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 echo Timed out waiting for the Warewolf server to start. &exit /b
 @echo Waiting 2 more seconds for %DeploymentDirectory%\ServerStarted file to appear...
-waitfor ServerStart /t 2 
+waitfor ServerStart /t 2 2>NUL
 goto MainLoopBody
 
 :StartStudio
