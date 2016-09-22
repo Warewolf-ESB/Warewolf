@@ -1,4 +1,4 @@
-﻿@Data
+﻿@Utils
 Feature: ExchangeEmail
 	In order to avoid silly mistakes
 	As a math idiot

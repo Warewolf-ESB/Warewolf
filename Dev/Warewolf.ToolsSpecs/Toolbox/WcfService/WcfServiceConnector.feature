@@ -1,8 +1,8 @@
-﻿Feature: WcfServiceConnector
+﻿@Utils
+Feature: WcfServiceConnector
 	In Order to access an Wcf endpoint
 	as a Warewolf user.
 
-@mytag
 Scenario: create Wcf tool
 	Given I open New Wcf Tool
 	Then  "Sources" wcf combobox is enabled
