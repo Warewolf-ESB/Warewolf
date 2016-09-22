@@ -288,6 +288,7 @@ namespace Warewolf.Studio.ViewModels
                 child.CanCreateSource = CanCreateSource;
                 child.CanShowVersions = CanShowVersions;
                 child.CanRename = true;
+                child.CanDelete = true;
                 child.CanDeploy = CanDeploy;
                 child.CanCreateWorkflowService = CanCreateWorkflowService;
 
