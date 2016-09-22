@@ -6,8 +6,7 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-
-    xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
