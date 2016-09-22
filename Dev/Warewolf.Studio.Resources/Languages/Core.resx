@@ -3638,4 +3638,13 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
   <data name="ServerVersionUnavailable" xml:space="preserve">
     <value>Unavailable</value>
   </data>
+  <data name="TreatNullAsZeroToolTip" xml:space="preserve">
+    <value>TreatNullAsZeroToolTip</value>
+  </data>
+  <data name="TreatNullAsZeroHelp" xml:space="preserve">
+    <value>TreatNullAsZeroHelp</value>
+  </data>
+  <data name="javascript_Tag" xml:space="preserve">
+    <value>javascript</value>
+  </data>
 </root>

@@ -209,13 +209,37 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfCountRecordsetActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfCountRecordsetActivity");
+            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfCountRecordsetNullHandlerActivity");
             if (type == null)
             {
-                Assert.Fail("Could not find DsfCountRecordsetActivity.");
+                Assert.Fail("Could not find DsfCountRecordsetNullHandlerActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Length == 2);
+            Assert.IsTrue(properties.Length == 3);
+        }
+
+        [TestMethod]
+        public void DsfDeleteRecordsetActivity_Property_Check_Expected_No_Change_To_Properties()
+        {
+            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfDeleteRecordNullHandlerActivity");
+            if (type == null)
+            {
+                Assert.Fail("Could not find DsfDeleteRecordNullHandlerActivity.");
+            }
+            PropertyInfo[] properties = GetPropertyInfo(type);
+            Assert.IsTrue(properties.Length == 3);
+        }
+
+        [TestMethod]
+        public void DsfRecordsetLengthActivity_Property_Check_Expected_No_Change_To_Properties()
+        {
+            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfRecordsetNullhandlerLengthActivity");
+            if (type == null)
+            {
+                Assert.Fail("Could not find DsfRecordsetNullhandlerLengthActivity.");
+            }
+            PropertyInfo[] properties = GetPropertyInfo(type);
+            Assert.IsTrue(properties.Length == 3);
         }
 
         [TestMethod]
@@ -334,10 +358,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfCountRecordSetActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfCountRecordsetActivity");
+            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfCountRecordsetNullHandlerActivity");
             if (type == null)
             {
-                Assert.Fail("Could not find DsfCountRecordsetActivity.");
+                Assert.Fail("Could not find DsfCountRecordsetNullHandlerActivity.");
             }
 
             MemberInfo[] RecordsetName = GetMembers(type, "RecordsetName");
