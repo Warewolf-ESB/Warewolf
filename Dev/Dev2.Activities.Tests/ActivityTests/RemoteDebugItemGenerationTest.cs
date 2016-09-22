@@ -62,7 +62,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void CanGenerateRemoteDebugItems()
         {
-            DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
+            DsfCountRecordsetNullHandlerActivity act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
             var cat = new Mock<IResourceCatalog>();
             var res = new Mock<IResource>();
             res.Setup(a => a.ResourceName).Returns("bob");
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void CanSerializeRemoteDebugItems()
         {
-            DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
+            DsfCountRecordsetNullHandlerActivity act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
             var cat = new Mock<IResourceCatalog>();
             var res = new Mock<IResource>();
             res.Setup(a => a.ResourceName).Returns("bob");
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void CanFetchRemoteDebugItemsViaSystemService()
         {
-            DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
+            DsfCountRecordsetNullHandlerActivity act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
             var cat = new Mock<IResourceCatalog>();
             var res = new Mock<IResource>();
             res.Setup(a => a.ResourceName).Returns("bob");

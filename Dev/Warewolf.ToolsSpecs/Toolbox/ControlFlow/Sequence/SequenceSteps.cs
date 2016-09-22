@@ -133,26 +133,26 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             _commonSteps.AddVariableToVariableList(result);
 
-            DsfCountRecordsetActivity countRecordsetActivity = new DsfCountRecordsetActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
+            DsfCountRecordsetNullHandlerActivity countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
 
-            _commonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetActivity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetNullHandlerActivity);
         }
 
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
         public void GivenItContainsDeleteAs(string parentName, string activityName, Table table)
         {
-            DsfDeleteRecordActivity activity = new DsfDeleteRecordActivity { DisplayName = activityName };
+            DsfDeleteRecordNullHandlerActivity nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity { DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var result = tableRow["result"];
                 var variable = tableRow["Variable"];
 
                 _commonSteps.AddVariableToVariableList(result);
-                activity.RecordsetName = variable;
-                activity.Result = result;
+                nullHandlerActivity.RecordsetName = variable;
+                nullHandlerActivity.Result = result;
             }
 
-            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, nullHandlerActivity);
         }
 
         [Given(@"""(.*)"" contains Find Record Index ""(.*)"" search ""(.*)"" and result ""(.*)"" as")]

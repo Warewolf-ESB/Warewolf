@@ -16,7 +16,6 @@ using Dev2.Activities.Designers2.CaseConvert;
 using Dev2.Activities.Designers2.CommandLine;
 using Dev2.Activities.Designers2.Comment;
 using Dev2.Activities.Designers2.Copy;
-using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.Create;
 using Dev2.Activities.Designers2.CreateJSON;
 using Dev2.Activities.Designers2.DataMerge;
@@ -24,7 +23,6 @@ using Dev2.Activities.Designers2.DataSplit;
 using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.DateTimeDifference;
 using Dev2.Activities.Designers2.Delete;
-using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.DropBox2016.Delete;
 using Dev2.Activities.Designers2.DropBox2016.Download;
 using Dev2.Activities.Designers2.DropBox2016.DropboxFile;
@@ -50,7 +48,6 @@ using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.Designers2.Random;
 using Dev2.Activities.Designers2.ReadFile;
 using Dev2.Activities.Designers2.ReadFolder;
-using Dev2.Activities.Designers2.RecordsLength;
 using Dev2.Activities.Designers2.Rename;
 using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
@@ -97,6 +94,8 @@ using Dev2.Activities.Designers2.ComDLL;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
 
+// ReSharper disable RedundantNameQualifier
+
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -112,9 +111,12 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesigner) },
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
-                { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesigner) },
-                { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesigner) },
-                { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
+                { typeof(DsfCountRecordsetNullHandlerActivity), typeof(Activities.Designers2.CountRecordsNullHandler.CountRecordsDesigner) },
+                { typeof(DsfCountRecordsetActivity), typeof(Activities.Designers2.CountRecords.CountRecordsDesigner) },
+                { typeof(DsfRecordsetLengthActivity), typeof(Dev2.Activities.Designers2.RecordsLength.RecordsLengthDesigner) },
+                { typeof(DsfRecordsetNullhandlerLengthActivity), typeof(Dev2.Activities.Designers2.RecordsLengthNullHandler.RecordsLengthDesigner) },
+                { typeof(DsfDeleteRecordNullHandlerActivity), typeof(Dev2.Activities.Designers2.DeleteRecordsNullHandler.DeleteRecordsDesigner) },
+                { typeof(DsfDeleteRecordActivity), typeof(Dev2.Activities.Designers2.DeleteRecords.DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },

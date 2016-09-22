@@ -3,6 +3,10 @@
 	As a Warewolf user
 	I want a tool that takes a record set counts it
 
+Background: Setup for workflows for tests
+		Given this feature 
+		Then activity is DsfCountRecordsetNullHandlerActivity
+
 Scenario: Count a number of records in a recordset with 3 rows
 	Given I have a recordset with this shape
 	| [[rs]]   |   |
