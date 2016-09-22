@@ -1,4 +1,5 @@
-﻿Feature: WebRequest
+﻿@Utils
+Feature: WebRequest
 	In order to download html content
 	As a Warewolf user
 	I want a tool that I can input a url and get a html document
