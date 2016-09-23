@@ -1,4 +1,5 @@
-﻿Feature: DateandTimeDifference
+﻿@Utils
+Feature: DateandTimeDifference
 	In order to work with date and time
 	As a Warewolf user
 	I want a tool that will allow me to compare two dates

@@ -1031,6 +1031,29 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void RunSelectedTestCommand_GivenTestNameExists_ShouldShowDuplicateError()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
+            testFrameworkViewModel.Save();
+            //---------------Assert Precondition----------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
+            var selectedServiceTest = testFrameworkViewModel.SelectedServiceTest;
+            Assert.IsNotNull(selectedServiceTest);
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.RunSelectedTestCommand.Execute(null);
+            //---------------Test Result -----------------------
+            popupController.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false));
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CanSave_GivenIsDirtynameHastrailingSpaces_ShouldSetCanSaveFalse()
         {

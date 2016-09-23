@@ -31,7 +31,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Data.DataMerge
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DataMerge", "\tIn order to merge data\r\n\tAs Warewolf user\r\n\tI want a tool that joins two or more" +
-                    " pieces of data together", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    " pieces of data together", ProgrammingLanguage.CSharp, new string[] {
+                        "Data"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -71,26 +72,27 @@ namespace Warewolf.ToolsSpecs.Toolbox.Data.DataMerge
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a scalar to a scalar using merge type none")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeAScalarToAScalarUsingMergeTypeNone()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a scalar to a scalar using merge type none", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.And("a merge variable \"[[b]]\" equal to \"Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
+ testRunner.And("a merge variable \"[[b]]\" equal to \"Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 10
  testRunner.And("an Input \"[[a]]\" and merge type \"None\" and string at as \"\" and Padding \"\" and Ali" +
                     "gnment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
+#line 11
  testRunner.And("an Input \"[[b]]\" and merge type \"None\" and string at as \"\" and Padding \"\" and Ali" +
                     "gnment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 12
- testRunner.Then("the merged result is \"Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
+ testRunner.Then("the merged result is \"Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -114,14 +116,14 @@ this.ScenarioSetup(scenarioInfo);
                         "\"\"",
                         "\"\"",
                         "Left"});
-#line 14
+#line 15
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2.AddRow(new string[] {
                         "[[result]] = Warewolf Rocks"});
-#line 18
+#line 19
  testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -130,10 +132,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a recordset table and free text using None")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeARecordsetTableAndFreeTextUsingNone()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a recordset table and free text using None", ((string[])(null)));
-#line 22
+#line 23
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -148,19 +151,19 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "rs().row",
                         "3"});
-#line 23
+#line 24
  testRunner.Given("a merge recordset", ((string)(null)), table3, "Given ");
-#line 28
+#line 29
  testRunner.And("an Input \"[[rs(*).row]]0\" and merge type \"None\" and string at as \"\" and Padding \"" +
                     "\" and Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 30
  testRunner.And("an Input \"0\" and merge type \"None\" and string at as \"\" and Padding \"\" and Alignme" +
                     "nt \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 31
- testRunner.Then("the merged result is \"100200300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 32
+ testRunner.Then("the merged result is \"100200300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 33
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -205,14 +208,14 @@ this.ScenarioSetup(scenarioInfo);
                         "\"\"",
                         "\"\"",
                         "Left"});
-#line 33
+#line 34
  testRunner.And("the debug inputs as", ((string)(null)), table4, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table5.AddRow(new string[] {
                         "[[result]] = 100200300"});
-#line 40
+#line 41
  testRunner.And("the debug output as", ((string)(null)), table5, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -221,10 +224,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a recordset table and free text using Chars")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeARecordsetTableAndFreeTextUsingChars()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a recordset table and free text using Chars", ((string[])(null)));
-#line 45
+#line 46
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -239,22 +243,22 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "rs().row",
                         "3"});
-#line 46
+#line 47
  testRunner.Given("a merge recordset", ((string)(null)), table6, "Given ");
-#line 51
+#line 52
  testRunner.And("an Input \"[[rs(*).row]]\" and merge type \"Chars\" and string at as \"0\" and Padding " +
                     "\"\" and Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
+#line 53
  testRunner.And("an Input \"0\" and merge type \"Chars\" and string at as \"0\" and Padding \"\" and Align" +
                     "ment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
+#line 54
  testRunner.And("an Input \"0\" and merge type \"None\" and string at as \"\" and Padding \"\" and Alignme" +
                     "nt \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 55
- testRunner.Then("the merged result is \"100002000030000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 56
+ testRunner.Then("the merged result is \"100002000030000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 57
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -306,14 +310,14 @@ this.ScenarioSetup(scenarioInfo);
                         "\"\"",
                         "\"\"",
                         "Left"});
-#line 57
+#line 58
  testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table8.AddRow(new string[] {
                         "[[result]] = 100002000030000"});
-#line 65
+#line 66
  testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -322,10 +326,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a recordset table and free text using New Line")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeARecordsetTableAndFreeTextUsingNewLine()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a recordset table and free text using New Line", ((string[])(null)));
-#line 69
+#line 70
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -340,19 +345,19 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "rs().row",
                         "3"});
-#line 70
+#line 71
  testRunner.Given("a merge recordset", ((string)(null)), table9, "Given ");
-#line 75
+#line 76
  testRunner.And("an Input \"[[rs(*).row]]\" and merge type \"New Line\" and string at as \"\" and Paddin" +
                     "g \"\" and Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 77
  testRunner.And("an Input \"0\" and merge type \"New Line\" and string at as \"\" and Padding \"\" and Ali" +
                     "gnment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 78
- testRunner.Then("the merged result is the same as file \"NewLineExample.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 79
+ testRunner.Then("the merged result is the same as file \"NewLineExample.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 80
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -397,7 +402,7 @@ this.ScenarioSetup(scenarioInfo);
                         "\"\"",
                         "\"\"",
                         "Left"});
-#line 80
+#line 81
  testRunner.And("the debug inputs as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -406,10 +411,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a recordset table and free text using Tab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeARecordsetTableAndFreeTextUsingTab()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a recordset table and free text using Tab", ((string[])(null)));
-#line 88
+#line 89
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -424,19 +430,19 @@ this.ScenarioSetup(scenarioInfo);
             table11.AddRow(new string[] {
                         "rs().row",
                         "3"});
-#line 89
+#line 90
  testRunner.Given("a merge recordset", ((string)(null)), table11, "Given ");
-#line 94
+#line 95
  testRunner.And("an Input \"[[rs(*).row]]tab->\" and merge type \"Tab\" and string at as \"\" and Paddin" +
                     "g \"\" and Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 95
+#line 96
  testRunner.And("an Input \"<-\" and merge type \"None\" and string at as \"\" and Padding \"\" and Alignm" +
                     "ent \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 96
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 97
- testRunner.Then("the merged result is \"1tab->\t<-2tab->\t<-3tab->\t<-\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 98
+ testRunner.Then("the merged result is \"1tab->\t<-2tab->\t<-3tab->\t<-\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 99
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -481,14 +487,14 @@ this.ScenarioSetup(scenarioInfo);
                         "\"\"",
                         "\"\"",
                         "Left"});
-#line 99
+#line 100
  testRunner.And("the debug inputs as", ((string)(null)), table12, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table13.AddRow(new string[] {
                         "[[result]] = 1tab->\t<-2tab->\t<-3tab->\t<-"});
-#line 106
+#line 107
  testRunner.And("the debug output as", ((string)(null)), table13, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -497,21 +503,22 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable using index that is a char")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeAVariableUsingIndexThatIsAChar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a variable using index that is a char", ((string[])(null)));
-#line 110
-this.ScenarioSetup(scenarioInfo);
 #line 111
- testRunner.Given("a merge variable \"[[a]]\" equal to \"aA \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 112
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"aA \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 113
  testRunner.And("an Input \"[[a]]\" and merge type \"Index\" and string at as \"b\" and Padding \"\" and A" +
                     "lignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 114
- testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 115
+ testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 116
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -528,14 +535,14 @@ this.ScenarioSetup(scenarioInfo);
                         "b",
                         "\"\"",
                         "Left"});
-#line 116
+#line 117
  testRunner.And("the debug inputs as", ((string)(null)), table14, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table15.AddRow(new string[] {
                         "[[result]] ="});
-#line 119
+#line 120
  testRunner.And("the debug output as", ((string)(null)), table15, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -544,23 +551,24 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable using index that is a variable and is blank")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeAVariableUsingIndexThatIsAVariableAndIsBlank()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a variable using index that is a variable and is blank", ((string[])(null)));
-#line 123
-this.ScenarioSetup(scenarioInfo);
 #line 124
- testRunner.Given("a merge variable \"[[a]]\" equal to \"aA \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 125
- testRunner.And("a merge variable \"[[b]]\" equal to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"aA \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 126
+ testRunner.And("a merge variable \"[[b]]\" equal to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 127
  testRunner.And("an Input \"[[a]]\" and merge type \"Index\" and string at as \"[[b]]\" and Padding \"\" a" +
                     "nd Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 128
- testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 129
+ testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 130
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -577,14 +585,14 @@ this.ScenarioSetup(scenarioInfo);
                         "[[b]] =",
                         "\"\"",
                         "Left"});
-#line 130
+#line 131
  testRunner.And("the debug inputs as", ((string)(null)), table16, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table17.AddRow(new string[] {
                         "[[result]] ="});
-#line 133
+#line 134
  testRunner.And("the debug output as", ((string)(null)), table17, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -593,26 +601,27 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge multiple variables on Chars with blank lines")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeMultipleVariablesOnCharsWithBlankLines()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge multiple variables on Chars with blank lines", ((string[])(null)));
-#line 137
-this.ScenarioSetup(scenarioInfo);
 #line 138
- testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 139
- testRunner.And("a merge variable \"[[b]]\" equal to \"Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 140
+ testRunner.And("a merge variable \"[[b]]\" equal to \"Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 141
  testRunner.And("an Input \"[[a]]\" and merge type \"Chars\" and string at as \"/\" and Padding \" \" and " +
                     "Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 141
+#line 142
  testRunner.And("an Input \"[[b]]\" and merge type \"Chars\" and string at as \"/\" and Padding \" \" and " +
                     "Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 142
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 143
- testRunner.Then("the merged result is \"Warewolf /Rocks/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 144
+ testRunner.Then("the merged result is \"Warewolf /Rocks/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 145
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -636,14 +645,14 @@ this.ScenarioSetup(scenarioInfo);
                         "/",
                         "\" \"",
                         "Left"});
-#line 145
+#line 146
  testRunner.And("the debug inputs as", ((string)(null)), table18, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table19.AddRow(new string[] {
                         "[[result]] = Warewolf /Rocks/"});
-#line 149
+#line 150
  testRunner.And("the debug output as", ((string)(null)), table19, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -652,10 +661,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a recordset that has xml data using Tabs")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeARecordsetThatHasXmlDataUsingTabs()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a recordset that has xml data using Tabs", ((string[])(null)));
-#line 153
+#line 154
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -670,23 +680,23 @@ this.ScenarioSetup(scenarioInfo);
             table20.AddRow(new string[] {
                         "rs().row",
                         "<x id=\"3\">three</x>"});
-#line 154
+#line 155
  testRunner.Given("a merge recordset", ((string)(null)), table20, "Given ");
-#line 159
+#line 160
  testRunner.And("an Input \"<record>\" and merge type \"Tab\" and string at as \"\" and Padding \"\" and A" +
                     "lignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 160
+#line 161
  testRunner.And("an Input \"[[rs(*).row]]\" and merge type \"Tab\" and string at as \"\" and Padding \"\" " +
                     "and Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 161
+#line 162
  testRunner.And("an Input \"</record>\" and merge type \"None\" and string at as \"\" and Padding \"\" and" +
                     " Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 162
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 163
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 164
  testRunner.Then("the merged result is \"<record>\t<x id=\"1\">One</x>\t</record><record>\t<x id=\"2\">two<" +
                     "/x>\t</record><record>\t<x id=\"3\">three</x>\t</record>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 164
+#line 165
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -738,7 +748,7 @@ this.ScenarioSetup(scenarioInfo);
                         "\"\"",
                         "\"\"",
                         "Left"});
-#line 165
+#line 166
  testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -746,7 +756,7 @@ this.ScenarioSetup(scenarioInfo);
             table22.AddRow(new string[] {
                         "[[result]] = <record>\t<x id=\"1\">One</x>\t</record><record>\t<x id=\"2\">two</x>\t</rec" +
                             "ord><record>\t<x id=\"3\">three</x>\t</record>"});
-#line 173
+#line 174
  testRunner.And("the debug output as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -755,26 +765,27 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a short string using big index and padding and alignment")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeAShortStringUsingBigIndexAndPaddingAndAlignment()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a short string using big index and padding and alignment", ((string[])(null)));
-#line 178
-this.ScenarioSetup(scenarioInfo);
 #line 179
- testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 180
- testRunner.And("a merge variable \"[[b]]\" equal to \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 181
+ testRunner.And("a merge variable \"[[b]]\" equal to \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 182
  testRunner.And("an Input \"[[a]]\" and merge type \"Index\" and string at as \"10\" and Padding \" \" and" +
                     " Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
+#line 183
  testRunner.And("an Input \"[[b]]\" and merge type \"Index\" and string at as \"5\" and Padding \"0\" and " +
                     "Alignment \"Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 184
- testRunner.Then("the merged result is \"Warewolf  00123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 185
+ testRunner.Then("the merged result is \"Warewolf  00123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 186
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -798,14 +809,14 @@ this.ScenarioSetup(scenarioInfo);
                         "5",
                         "0",
                         "Right"});
-#line 186
+#line 187
  testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table24.AddRow(new string[] {
                         "[[result]] = Warewolf  00123"});
-#line 190
+#line 191
  testRunner.And("the debug output as", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -814,26 +825,27 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a long string using small index and padding and alignment")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeALongStringUsingSmallIndexAndPaddingAndAlignment()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a long string using small index and padding and alignment", ((string[])(null)));
-#line 195
-this.ScenarioSetup(scenarioInfo);
 #line 196
- testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 197
- testRunner.And("a merge variable \"[[b]]\" equal to \"12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 198
+ testRunner.And("a merge variable \"[[b]]\" equal to \"12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 199
  testRunner.And("an Input \"[[a]]\" and merge type \"Index\" and string at as \"3\" and Padding \"\" and A" +
                     "lignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
+#line 200
  testRunner.And("an Input \"[[b]]\" and merge type \"Index\" and string at as \"3\" and Padding \"0\" and " +
                     "Alignment \"Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 201
- testRunner.Then("the merged result is \"War123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 202
+ testRunner.Then("the merged result is \"War123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 203
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -857,14 +869,14 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "0",
                         "Right"});
-#line 203
+#line 204
  testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table26.AddRow(new string[] {
                         "[[result]] = War123"});
-#line 207
+#line 208
  testRunner.And("the debug output as", ((string)(null)), table26, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -873,26 +885,27 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a long string using small index and padding and alignment at invalid index")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeALongStringUsingSmallIndexAndPaddingAndAlignmentAtInvalidIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a long string using small index and padding and alignment at invalid index", ((string[])(null)));
-#line 212
-this.ScenarioSetup(scenarioInfo);
 #line 213
- testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 214
- testRunner.And("a merge variable \"[[b]]\" equal to \"12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 215
+ testRunner.And("a merge variable \"[[b]]\" equal to \"12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 216
  testRunner.And("an Input \"[[a]]\" and merge type \"Index\" and string at as \"-1\" and Padding \" \" and" +
                     " Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
+#line 217
  testRunner.And("an Input \"[[b]]\" and merge type \"Index\" and string at as \"-1\" and Padding \"0\" and" +
                     " Alignment \"Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 218
- testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 219
+ testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 220
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
@@ -916,14 +929,14 @@ this.ScenarioSetup(scenarioInfo);
                         "-1",
                         "0",
                         "Right"});
-#line 220
+#line 221
  testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table28.AddRow(new string[] {
                         "[[result]] ="});
-#line 224
+#line 225
  testRunner.And("the debug output as", ((string)(null)), table28, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -933,27 +946,28 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a long string using small index and padding and alignment at invalid quoted" +
             " index")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeALongStringUsingSmallIndexAndPaddingAndAlignmentAtInvalidQuotedIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a long string using small index and padding and alignment at invalid quoted" +
                     " index", ((string[])(null)));
-#line 228
-this.ScenarioSetup(scenarioInfo);
 #line 229
- testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 230
- testRunner.And("a merge variable \"[[b]]\" equal to \"12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 231
+ testRunner.And("a merge variable \"[[b]]\" equal to \"12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 232
  testRunner.And("an Input \"[[a]]\" and merge type \"Index\" and string at as \"\"-1\"\" and Padding \" \" a" +
                     "nd Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 232
+#line 233
  testRunner.And("an Input \"[[b]]\" and merge type \"Index\" and string at as \"\"-1\"\" and Padding \"0\" a" +
                     "nd Alignment \"Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 233
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 234
- testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 235
+ testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 236
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
@@ -977,14 +991,14 @@ this.ScenarioSetup(scenarioInfo);
                         "\"-1\"",
                         "0",
                         "Right"});
-#line 236
+#line 237
  testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table30.AddRow(new string[] {
                         "[[result]] ="});
-#line 240
+#line 241
  testRunner.And("the debug output as", ((string)(null)), table30, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -994,27 +1008,28 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a long string using small index and padding multiple character and alignmen" +
             "t at index")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeALongStringUsingSmallIndexAndPaddingMultipleCharacterAndAlignmentAtIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a long string using small index and padding multiple character and alignmen" +
                     "t at index", ((string[])(null)));
-#line 244
-this.ScenarioSetup(scenarioInfo);
 #line 245
- testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 246
- testRunner.And("a merge variable \"[[b]]\" equal to \"12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 247
+ testRunner.And("a merge variable \"[[b]]\" equal to \"12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 248
  testRunner.And("an Input \"[[a]]\" and merge type \"Index\" and string at as \"1\" and Padding \"eee\" an" +
                     "d Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 248
+#line 249
  testRunner.And("an Input \"[[b]]\" and merge type \"Index\" and string at as \"1\" and Padding \"0\" and " +
                     "Alignment \"Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 249
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 250
- testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 251
+ testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 252
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1038,14 +1053,14 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "0",
                         "Right"});
-#line 252
+#line 253
  testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table32.AddRow(new string[] {
                         "[[result]] ="});
-#line 256
+#line 257
  testRunner.And("the debug output as", ((string)(null)), table32, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1054,17 +1069,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a negative recordset index Input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeANegativeRecordsetIndexInput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a negative recordset index Input", ((string[])(null)));
-#line 260
-this.ScenarioSetup(scenarioInfo);
 #line 261
+this.ScenarioSetup(scenarioInfo);
+#line 262
  testRunner.Given("an Input \"[[my(-1).a]]\" and merge type \"Index\" and string at as \"10\" and Padding " +
                     "\" \" and Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 262
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 263
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 264
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1081,14 +1097,14 @@ this.ScenarioSetup(scenarioInfo);
                         "10",
                         "\" \"",
                         "Left"});
-#line 264
+#line 265
  testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table34.AddRow(new string[] {
                         "[[result]] ="});
-#line 267
+#line 268
  testRunner.And("the debug output as", ((string)(null)), table34, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1097,17 +1113,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a negative recordset index for String At")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeANegativeRecordsetIndexForStringAt()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a negative recordset index for String At", ((string[])(null)));
-#line 271
-this.ScenarioSetup(scenarioInfo);
 #line 272
+this.ScenarioSetup(scenarioInfo);
+#line 273
  testRunner.Given("an Input \"12\" and merge type \"Index\" and string at as \"[[my(-1).a]]\" and Padding " +
                     "\" \" and Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 273
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 274
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 275
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1124,14 +1141,14 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).a]] =",
                         "\" \"",
                         "Left"});
-#line 275
+#line 276
  testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table36.AddRow(new string[] {
                         "[[result]] ="});
-#line 278
+#line 279
  testRunner.And("the debug output as", ((string)(null)), table36, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1140,28 +1157,29 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable using index that is a variable and is not blank")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeAVariableUsingIndexThatIsAVariableAndIsNotBlank()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a variable using index that is a variable and is not blank", ((string[])(null)));
-#line 282
-this.ScenarioSetup(scenarioInfo);
 #line 283
- testRunner.Given("a merge variable \"[[a]]\" equal to \"aA \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 284
- testRunner.And("a merge variable \"[[b]]\" equal to \"bB \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"aA \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 285
- testRunner.And("a merge variable \"[[c]]\" equal to \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("a merge variable \"[[b]]\" equal to \"bB \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 286
+ testRunner.And("a merge variable \"[[c]]\" equal to \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 287
  testRunner.And("an Input \"[[a]]\" and merge type \"Index\" and string at as \"[[c]]\" and Padding \"\" a" +
                     "nd Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 287
+#line 288
  testRunner.And("an Input \"[[b]]\" and merge type \"Index\" and string at as \"[[c]]\" and Padding \"\" a" +
                     "nd Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 288
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 289
- testRunner.Then("the merged result is \"ab\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 290
+ testRunner.Then("the merged result is \"ab\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 291
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1185,14 +1203,14 @@ this.ScenarioSetup(scenarioInfo);
                         "[[c]] = 1",
                         "\"\"",
                         "Left"});
-#line 291
+#line 292
  testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table38.AddRow(new string[] {
                         "[[result]] = ab"});
-#line 295
+#line 296
  testRunner.And("the debug output as", ((string)(null)), table38, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1201,28 +1219,29 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable using index that is blank")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeAVariableUsingIndexThatIsBlank()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a variable using index that is blank", ((string[])(null)));
-#line 299
-this.ScenarioSetup(scenarioInfo);
 #line 300
- testRunner.Given("a merge variable \"[[a]]\" equal to \"aA \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 301
- testRunner.And("a merge variable \"[[b]]\" equal to \"bB \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"aA \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 302
- testRunner.And("a merge variable \"[[c]]\" equal to \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("a merge variable \"[[b]]\" equal to \"bB \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 303
+ testRunner.And("a merge variable \"[[c]]\" equal to \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 304
  testRunner.And("an Input \"[[a]]\" and merge type \"Index\" and string at as \"\" and Padding \"\" and Al" +
                     "ignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 304
+#line 305
  testRunner.And("an Input \"[[b]]\" and merge type \"Index\" and string at as \"[[c]]\" and Padding \"\" a" +
                     "nd Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 305
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 306
- testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 307
+ testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 308
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1246,14 +1265,14 @@ this.ScenarioSetup(scenarioInfo);
                         "[[c]] = 1",
                         "\"\"",
                         "Left"});
-#line 308
+#line 309
  testRunner.And("the debug inputs as", ((string)(null)), table39, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table40.AddRow(new string[] {
                         "[[result]] ="});
-#line 312
+#line 313
  testRunner.And("the debug output as", ((string)(null)), table40, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1262,30 +1281,31 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable inside a variable")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeAVariableInsideAVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a variable inside a variable", ((string[])(null)));
-#line 316
-this.ScenarioSetup(scenarioInfo);
 #line 317
- testRunner.Given("a merge variable \"[[a]]\" equal to \"b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 318
- testRunner.And("a merge variable \"[[b]]\" equal to \"c\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 319
- testRunner.And("a merge variable \"[[c]]\" equal to \"test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("a merge variable \"[[b]]\" equal to \"c\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 320
- testRunner.And("a merge variable \"[[test]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("a merge variable \"[[c]]\" equal to \"test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 321
+ testRunner.And("a merge variable \"[[test]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 322
  testRunner.And("an Input \"[[[[[[[[a]]]]]]]]\" and merge type \"Index\" and string at as \"8\" and Padd" +
                     "ing \"\" and Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 322
+#line 323
  testRunner.And("an Input \"[[c]]\" and merge type \"Index\" and string at as \"4\" and Padding \"\" and A" +
                     "lignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 323
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 324
- testRunner.Then("the merged result is \"Warewolftest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 325
+ testRunner.Then("the merged result is \"Warewolftest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 326
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1309,14 +1329,14 @@ this.ScenarioSetup(scenarioInfo);
                         "\"4\"",
                         "\"\"",
                         "Left"});
-#line 326
+#line 327
  testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table42.AddRow(new string[] {
                         "[[result]] = Warewolftest"});
-#line 330
+#line 331
  testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1325,23 +1345,24 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable inside the invalid varaible")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void MergeAVariableInsideTheInvalidVaraible()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a variable inside the invalid varaible", ((string[])(null)));
-#line 334
-this.ScenarioSetup(scenarioInfo);
 #line 335
- testRunner.Given("a merge variable \"[[a]]\" equal to \"test%$ \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 336
- testRunner.And("a merge variable \"[[b]]\" equal to \"warewolf \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"test%$ \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 337
+ testRunner.And("a merge variable \"[[b]]\" equal to \"warewolf \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 338
  testRunner.And("an Input \"[[test%$]]\" and merge type \"Index\" and string at as \"\" and Padding \"\" a" +
                     "nd Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 338
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 339
- testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 340
+ testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 341
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1358,14 +1379,14 @@ this.ScenarioSetup(scenarioInfo);
                         "\"\"",
                         "\"\"",
                         "Left"});
-#line 341
+#line 342
  testRunner.And("the debug inputs as", ((string)(null)), table43, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table44.AddRow(new string[] {
                         "[[result]] ="});
-#line 344
+#line 345
  testRunner.And("the debug output as", ((string)(null)), table44, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1374,18 +1395,18 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MergeAVariableThatDoesNotExist(string no, string type, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a variable that does not exist", exampleTags);
-#line 348
-this.ScenarioSetup(scenarioInfo);
 #line 349
+this.ScenarioSetup(scenarioInfo);
+#line 350
  testRunner.Given(string.Format("an Input \"[[a]]\" and merge type \"{0}\" and string at as \"[[b]]\" and Padding \"[[c]]" +
                         "\" and Alignment \"Left\"", type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 350
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 351
- testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 352
- testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 353
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 354
  testRunner.And("the execution has \"Scalar value { a } is NULL\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1394,6 +1415,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable that does not exist: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "None")]
@@ -1406,6 +1428,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable that does not exist: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "Index")]
@@ -1418,6 +1441,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable that does not exist: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "Chars")]
@@ -1430,6 +1454,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable that does not exist: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "New Line")]
@@ -1442,6 +1467,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable that does not exist: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "Tab")]

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools
@@ -24,40 +23,10 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
+            Uimap.SetPlaybackSettings();
             Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
             Uimap.InitializeABlankWorkflow();
         }
-
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(WebSourceName);
-            Uimap.TryCloseWorkflowTabs();
-            Uimap.TryCloseNewWebSourceWizardTab();
-        }
-
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {
@@ -75,20 +44,5 @@ namespace Warewolf.UITests.Tools
         private UIMap _uiMap;
 
         #endregion
-
-        public UIMap UIMap
-        {
-            get
-            {
-                if ((this.map == null))
-                {
-                    this.map = new UIMap();
-                }
-
-                return this.map;
-            }
-        }
-
-        private UIMap map;
     }
 }

@@ -12,7 +12,6 @@ namespace Warewolf.UITests
         string DLLPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll";
 
         [TestMethod]
-        [Ignore]
         public void BigPluginConnectorUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
@@ -47,35 +46,9 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
+            Uimap.SetPlaybackSettings();
             Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(PluginSourceName);
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseNewPluginSourceWizardTab();
-            Uimap.TryCloseWorkflowTabs();
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {
@@ -92,6 +65,6 @@ namespace Warewolf.UITests
 
         private UIMap _uiMap;
 
-#endregion
+        #endregion
     }
 }

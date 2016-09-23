@@ -1,4 +1,5 @@
-﻿Feature: Assign
+﻿@Data
+Feature: Assign
 	In order to use variables 
 	As a Warewolf user
 	I want a tool that assigns data to variables

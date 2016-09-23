@@ -271,30 +271,45 @@
     </Compile>
     <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApplySteps.cs" />
     <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQSteps.cs" />
+    <Compile Include="Toolbox\Recordset\CountNullHandler\CountNullHandler.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CountNullHandler.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\CountSteps.cs" />
     <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Count.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Recordset\Count\CountSteps.cs" />
+    <Compile Include="Toolbox\Recordset\DeleteNullHandler\Delete.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Delete.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\DeleteSteps.cs" />
     <Compile Include="Toolbox\Recordset\Delete\Delete.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Delete.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Recordset\Delete\DeleteSteps.cs" />
     <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultiple.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FindRecordsetIndexMultiple.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultipleSteps.cs" />
-    <Compile Include="Toolbox\Recordset\Length\Length.feature.cs">
+    <Compile Include="Toolbox\Recordset\LengthNullHandler\Length.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Length.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Recordset\Length\LengthSteps.cs" />
+    <Compile Include="Toolbox\Recordset\LengthSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Length\Length1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Length.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Recordset\Sort\Sort.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -367,6 +382,21 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\Scripting\Command\CommandSteps.cs" />
+    <Compile Include="Toolbox\Scripting\javascript\Javascript.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Javascript.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Scripting\Python\Python.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Python.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Scripting\ruby\Ruby.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Ruby.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Scripting\Script\Script.feature.cs">
       <DependentUpon>Script.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -576,9 +606,17 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PublishRabbitMQ.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\Recordset\CountNullHandler\CountNullHandler.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CountNullHandler.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Recordset\Count\Count.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Count.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\DeleteNullHandler\Delete.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Delete.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Delete\Delete.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -588,9 +626,13 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FindRecordsetIndexMultiple.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Recordset\Length\Length.feature">
+    <None Include="Toolbox\Recordset\LengthNullHandler\Length.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Length.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\Length\Length.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Length1.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Sort\Sort.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -639,6 +681,18 @@
     <None Include="Toolbox\Scripting\Command\Command.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Command.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Scripting\javascript\Javascript.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Javascript.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Scripting\Python\Python.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Python.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Scripting\ruby\Ruby.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Ruby.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\Script\Script.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
