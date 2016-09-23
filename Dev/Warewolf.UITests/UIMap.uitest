@@ -21422,7 +21422,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Passing</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Passed</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21435,7 +21435,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Failing</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Failed</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21581,7 +21581,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Passing</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Passed</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21594,7 +21594,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Failing</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Failed</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />

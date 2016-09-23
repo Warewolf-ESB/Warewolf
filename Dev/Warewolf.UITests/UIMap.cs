@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using System.IO;
+using Warewolf.UITests.Common;
 
 namespace Warewolf.UITests
 {
@@ -37,7 +38,7 @@ namespace Warewolf.UITests
             Playback.PlaybackError -= OnError;
             Playback.PlaybackError += OnError;
         }
-        
+
         public void WaitForStudioStart()
         {
             Console.WriteLine("Waiting for studio to start.");
@@ -1077,7 +1078,7 @@ namespace Warewolf.UITests
             var point = new Point();
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton, new Point(21, 16));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.Spinner);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ErrorText.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
         }
 
@@ -1280,26 +1281,61 @@ namespace Warewolf.UITests
         {
             WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
             Mouse.Click(deleteButton);
-
             Assert.IsTrue(MessageBoxWindow.Exists);
+        }
+        
+        private static WpfText GetSelectedTestRunTimeDisplay(WpfListItem test, int instance)
+        {
+            WpfText testRunTimeDisplay;
+            switch (instance)
+            {
+                case 2:
+                    var test2 = test as Test2;
+                    testRunTimeDisplay = test2.RunTimeDisplay;
+                    break;
+                case 3:
+                    var test3 = test as Test3;
+                    testRunTimeDisplay = test3.RunTimeDisplay;
+                    break;
+                default:
+                    var test1 = test as Test1;
+                    testRunTimeDisplay = test1.RunTimeDisplay;
+                    break;
+            }
+            return testRunTimeDisplay;
         }
 
         /// <summary>
         /// Click_Run_Test_Button
         /// </summary>
-        public void Click_Run_Test_Button(int instance = 1)
+        public void Click_Run_Test_Button(TestResultEnum? expectedTestResultEnum = null, int instance = 1)
         {
             var currentTest = GetCurrentTest(instance);
             var selectedTestRunButton = GetSelectedTestRunButton(currentTest, instance);
-            WpfText testRunTimeDisplay = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.RunTimeDisplay;
-            WpfText failing = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Failing;
 
             Mouse.Click(selectedTestRunButton);
-            Assert.IsTrue(testRunTimeDisplay.Exists, "Test run time does not exist");
-            Assert.IsTrue(failing.Exists, "Failing does not exist");
-
+            if (expectedTestResultEnum != null)
+                AssertTestResults(expectedTestResultEnum.Value, instance, currentTest);
         }
 
+        private void AssertTestResults(TestResultEnum expectedTestResultEnum, int instance, WpfListItem currentTest)
+        {
+            switch(expectedTestResultEnum)
+            {
+                case TestResultEnum.Invalid:
+                    TestResults.GetSelectedTestInvalidResult(currentTest, instance);
+                    break;
+                case TestResultEnum.Pending:
+                    TestResults.GetSelectedTestPendingResult(currentTest, instance);
+                    break;
+                case TestResultEnum.Pass:
+                    TestResults.GetSelectedTestPassingResult(currentTest, instance);
+                    break;
+                case TestResultEnum.Fail:
+                    TestResults.GetSelectedTestFailingResult(currentTest, instance);
+                    break;
+            }            
+        }
 
         /// <summary>
         /// Click_Duplicate_Test_Button
@@ -1484,6 +1520,7 @@ namespace Warewolf.UITests
             else if (tabName == "PerfomanceCounterTab")
                 Assert.AreEqual("Dice", ResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
+
         public WpfButton GetSelectedTestRunButton(WpfListItem test, int testInstance = 1)
         {
             WpfButton value;
@@ -1625,13 +1662,13 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(textEdit, this.Enter_Recordset_valuesParams.TextEditSendKeys, ModifierKeys.None);
 
             // Type '[[rec().b]]' in 'UI__Row2_FieldName_AutoID' text box
-            textbox1.Text = this.Enter_Recordset_valuesParams.TextboxText1;            
+            textbox1.Text = this.Enter_Recordset_valuesParams.TextboxText1;
 
             // Click 'Text' text box
-            Mouse.Click(row2Value,MouseButtons.Right, ModifierKeys.None, new Point(35, 14));
+            Mouse.Click(row2Value, MouseButtons.Right, ModifierKeys.None, new Point(35, 14));
             // Type '1' in 'UI__Row2_FieldName_AutoID' text box
             row2Value.Text = "1";
-            
+
             // Type '[[var]]' in 'UI__Row3_FieldName_AutoID' text box
             textbox2.Text = this.Enter_Recordset_valuesParams.TextboxText2;
 
@@ -1819,5 +1856,5 @@ namespace Warewolf.UITests
         /// </summary>
         public string TextEditSendKeys2 = "{Tab}";
         #endregion
-    }
+    }   
 }
