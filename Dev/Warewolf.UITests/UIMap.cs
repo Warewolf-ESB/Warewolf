@@ -571,7 +571,7 @@ namespace Warewolf.UITests
             #endregion
 
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
-            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
+            //WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
 
             var point = new Point();
@@ -1128,8 +1128,9 @@ namespace Warewolf.UITests
         }
         public void Select_Test(int instance = 1)
         {
-            var test = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
-            Mouse.Click(test);
+            var currentTest = GetCurrentTest(instance);
+            //var test = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
+            Mouse.Click(currentTest);
         }
         /// <summary>
         /// Click_RunAll_Button - Use 'Click_RunAll_ButtonParams' to pass parameters into this method.
@@ -1299,13 +1300,14 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Run_Test_Button
         /// </summary>
-        public void Click_Run_Test_Button()
+        public void Click_Run_Test_Button(int instance = 1)
         {
-            WpfButton runButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.RunButton;
+            var currentTest = GetCurrentTest(instance);
+            var selectedTestRunButton = GetSelectedTestRunButton(currentTest, instance);
             WpfText testRunTimeDisplay = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.RunTimeDisplay;
             WpfText failing = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Failing;
 
-            Mouse.Click(runButton);
+            Mouse.Click(selectedTestRunButton);
             Assert.IsTrue(testRunTimeDisplay.Exists, "Test run time does not exist");
             Assert.IsTrue(failing.Exists, "Failing does not exist");
 
@@ -1494,6 +1496,26 @@ namespace Warewolf.UITests
                 Assert.AreEqual("Dice", addResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
             else if (tabName == "PerfomanceCounterTab")
                 Assert.AreEqual("Dice", ResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+        }
+        public WpfButton GetSelectedTestRunButton(WpfListItem test, int testInstance = 1)
+        {
+            WpfButton value;
+            switch (testInstance)
+            {
+                case 2:
+                    var test2 = test as Test2;
+                    value = test2.RunButton;
+                    break;
+                case 3:
+                    var test3 = test as Test3;
+                    value = test3.RunButton;
+                    break;
+                default:
+                    var test1 = test as Test1;
+                    value = test1.RunButton;
+                    break;
+            }
+            return value;
         }
         public WpfListItem GetCurrentTest(int testInstance)
         {

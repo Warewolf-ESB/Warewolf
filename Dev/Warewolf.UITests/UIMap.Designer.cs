@@ -4441,7 +4441,7 @@ namespace Warewolf.UITests
             Mouse.Click(tests, new Point(30, 11));
 
             // Verify that the 'Exists' property of 'Run All' button equals 'True'
-            Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.RunAllButtonExists, runAllButton.Exists, "Run all button does not exist on tests tab");
+             Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.RunAllButtonExists, runAllButton.Exists, "Run all button does not exist on tests tab");
         }
         
         /// <summary>
