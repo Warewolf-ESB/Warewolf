@@ -634,6 +634,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
             Assert.IsFalse(ControlExistsNow(SaveDialogWindow));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
         public void TryCloseNewPluginSourceWizardTab()
@@ -836,7 +837,7 @@ namespace Warewolf.UITests
                 MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
             }
             Click_Server_Source_Wizard_Test_Connection_Button();
-            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.ErrorText.Spinner);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.ErrorText.Spinner);
             Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
             Click_Close_Server_Source_Wizard_Tab_Button();
         }
