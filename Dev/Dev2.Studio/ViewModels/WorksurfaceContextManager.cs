@@ -983,23 +983,18 @@ namespace Dev2.Studio.ViewModels
             }
 
             var exists = IsInOpeningState(resourceModel) || ActivateWorkSurfaceIfPresent(resourceModel);
-
-            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel);
-
             if (exists)
             {
                 return;
             }
+
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel);
 
             _mainViewModel.CanDebug = false;
 
             if (!isLoadingWorkspace)
             {
                 OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
-            }
-
-            if (!isLoadingWorkspace)
-            {
                 resourceModel.IsWorkflowSaved = true;
             }
 
