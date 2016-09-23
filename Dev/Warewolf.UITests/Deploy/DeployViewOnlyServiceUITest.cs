@@ -30,8 +30,7 @@ namespace Warewolf.UITests.Deploy
 
         [TestInitialize()]
         public void MyTestInitialize()
-        {
-            Uimap.SetGlobalPlaybackSettings();
+        {            
             Uimap.WaitForStudioStart();
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
         }

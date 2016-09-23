@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Common;
 
 namespace Warewolf.UITests
 {
@@ -150,13 +151,11 @@ namespace Warewolf.UITests
             Uimap.Click_Duplicate_Test_Button();
             Uimap.Update_Test_Name(TestName);
             Uimap.Select_Test(2);
-            Uimap.Click_Run_Test_Button(2);
+            Uimap.Click_Run_Test_Button(expectedTestResultEnum: TestResultEnum.Fail, instance: 2);
             Uimap.Click_MessageBox_OK();
             Uimap.Update_Test_Name(DuplicateTestName);
             Uimap.Select_Test(2);
-            Uimap.Click_Run_Test_Button();
-            var invalidWpfText = Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2.Invalid;
-            Assert.IsTrue(invalidWpfText.Exists);
+            Uimap.Click_Run_Test_Button(instance: 2);
         }
 
         [TestMethod]
@@ -174,10 +173,10 @@ namespace Warewolf.UITests
             Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(Testing123Test);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Click_Run_Test_Button();
+            Uimap.Click_Run_Test_Button(TestResultEnum.Pass);
             Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Passing.Exists);
-            Uimap.Click_EnableDisable_This_Test_CheckBox(nameContainsStar: true);
-            Uimap.Click_Run_Test_Button();
+            Uimap.Click_EnableDisable_This_Test_CheckBox(true);
+            Uimap.Click_Run_Test_Button(TestResultEnum.Pass);
             Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Invalid.Exists);
             Uimap.Click_Delete_Test_Button();
             Uimap.Click_MessageBox_Yes();

@@ -55,6 +55,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Common.cs" />
     <Compile Include="SaveDialogWindow\SaveDialogWindowTets.cs" />
     <Compile Include="Deploy\DeployViewOnlyServiceUITest.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Explorer\ItemDragAndDrop.cs" />
     <Compile Include="Explorer\ContextMenuItemsTest.cs" />
+    <Compile Include="WorkflowTesting\TestsResults.cs" />
     <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
     <Compile Include="HelpWindow\HelpWindowTests.cs" />
     <Compile Include="Tools\HTTP Web Methods\Create_WEB_Source_From_Tool.cs" />
