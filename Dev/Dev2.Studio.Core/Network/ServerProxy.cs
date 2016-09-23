@@ -24,12 +24,13 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Core.Interfaces;
+// ReSharper disable CheckNamespace
 
 namespace Dev2.Network
 {
     public class ServerProxy :  IEnvironmentConnection
     {
-        IEnvironmentConnection _wrappedConnection;
+        readonly IEnvironmentConnection _wrappedConnection;
         public ServerProxy(Uri serverUri)
         {
            _wrappedConnection = new ServerProxyWithoutChunking(serverUri);
@@ -261,9 +262,7 @@ namespace Dev2.Network
             }
         }
 
-        // ReSharper disable VirtualMemberNeverOverriden.Global
-        protected virtual void OnNetworkStateChanged(NetworkStateEventArgs e)
-            // ReSharper restore VirtualMemberNeverOverriden.Global
+        protected void OnNetworkStateChanged(NetworkStateEventArgs e)
         {
             var handler = NetworkStateChanged;
             handler?.Invoke(this, e);
