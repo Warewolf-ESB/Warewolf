@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
@@ -35,6 +36,24 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Test Name", testModel.TestName);
             Assert.IsTrue(_wasCalled);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestModel_Constructor")]
+        public void ServiceTestModel_Constructor_WithResourceId_ShouldSetProperties()
+        {
+            //------------Setup for test--------------------------
+            var resourceId = Guid.NewGuid();
+            //------------Execute Test---------------------------
+            var serviceTestModel = new ServiceTestModel(resourceId);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(resourceId,serviceTestModel.ParentId);
+            Assert.IsTrue(serviceTestModel.NeverRunStringVisibility);
+            Assert.IsFalse(serviceTestModel.IsTestRunning);
+            Assert.AreEqual("Never run", serviceTestModel.NeverRunString);
+            Assert.AreEqual(0,serviceTestModel.TestSteps.Count);
+        }
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -624,18 +643,24 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var dataListModel = new DataListModel();
             var shapeRecordSets = new List<IRecordSet>();
-            var recordSet = new RecordSet();
-            recordSet.IODirection = enDev2ColumnArgumentDirection.Input;
-            recordSet.Name = "rec";
-            var recordSetColumns = new Dictionary<int, List<IScalar>>();
-            recordSetColumns.Add(1, new List<IScalar>
+            var recordSet = new RecordSet
             {
-                new Scalar
+                IODirection = enDev2ColumnArgumentDirection.Input,
+                Name = "rec"
+            };
+            var recordSetColumns = new Dictionary<int, List<IScalar>>
+            {
                 {
-                    Name = "a",
-                    IODirection = enDev2ColumnArgumentDirection.Input
+                    1, new List<IScalar>
+                    {
+                        new Scalar
+                        {
+                            Name = "a",
+                            IODirection = enDev2ColumnArgumentDirection.Input
+                        }
+                    }
                 }
-            });
+            };
             recordSet.Columns = recordSetColumns;
             shapeRecordSets.Add(recordSet);
             dataListModel.ShapeRecordSets = shapeRecordSets;
@@ -895,5 +920,97 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(condition);
            
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestModel_AddTestStep")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ServiceTestModel_AddTestStep_EmtpyUniqueID_ShouldThrowException()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+
+            //------------Execute Test---------------------------
+            serviceTestModel.AddTestStep("",typeof(DsfDecision).Name,new List<IServiceTestOutput>());
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestModel_AddTestStep")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ServiceTestModel_AddTestStep_NullUniqueID_ShouldThrowException()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+
+            //------------Execute Test---------------------------
+            serviceTestModel.AddTestStep(null,typeof(DsfDecision).Name,new List<IServiceTestOutput>());
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestModel_AddTestStep")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ServiceTestModel_AddTestStep_NullTypeName_ShouldThrowException()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+
+            //------------Execute Test---------------------------
+            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(),null,new List<IServiceTestOutput>());
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestModel_AddTestStep")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ServiceTestModel_AddTestStep_EmptyTypeName_ShouldThrowException()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+
+            //------------Execute Test---------------------------
+            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(), "",new List<IServiceTestOutput>());
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestModel_AddTestStep")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ServiceTestModel_AddTestStep_NullOutputs_ShouldThrowException()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+
+            //------------Execute Test---------------------------
+            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(),typeof(DsfDecision).Name,null);
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestModel_AddTestStep")]
+        public void ServiceTestModel_AddTestStep_ValidArguments_ShouldAddToTestSteps()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var uniqueID = Guid.NewGuid().ToString();
+            var activityTypeName = typeof(DsfDecision).Name;
+            var outputs = new List<IServiceTestOutput>();
+            //------------Execute Test---------------------------
+            serviceTestModel.AddTestStep(uniqueID,activityTypeName,outputs);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,serviceTestModel.TestSteps.Count);
+            var testStep = serviceTestModel.TestSteps[0];
+            Assert.IsNotNull(testStep);
+            Assert.AreEqual(uniqueID,testStep.UniqueId.ToString());
+            Assert.AreEqual(activityTypeName,testStep.ActivityType);
+            Assert.AreEqual(outputs,testStep.StepOutputs);
+            Assert.AreEqual(StepType.Mock,testStep.Type);
+        }        
     }
 }

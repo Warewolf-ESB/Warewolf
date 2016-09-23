@@ -138,4 +138,60 @@ namespace Dev2.Activities
 
         #endregion
     }
+
+    public class TestMockSwitchStep : DsfActivityAbstract<string>
+    {
+        private readonly DsfSwitch _dsfSwitch;
+
+        public TestMockSwitchStep(DsfSwitch dsfSwitch)
+            : base(dsfSwitch.DisplayName)
+        {
+            _dsfSwitch = dsfSwitch;
+        }
+
+        public string ConditionToUse { get; set; }
+
+        #region Overrides of DsfNativeActivity<string>
+
+        protected override void OnExecute(NativeActivityContext context)
+        {
+        }
+
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
+        {
+        }
+
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
+        {
+        }
+
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            return null;
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
+        {
+            return null;
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            var dsfSwitchSwitches = _dsfSwitch.Switches;
+            if (dsfSwitchSwitches.ContainsKey(ConditionToUse))
+            {
+                NextNodes = new List<IDev2Activity> { dsfSwitchSwitches[ConditionToUse] };
+                return;
+            }
+            if (_dsfSwitch.Default != null)
+            {
+                var activity = _dsfSwitch.Default;
+                NextNodes = activity;
+                return;
+            }
+            throw new ArgumentException($"No matching arm for Decision Mock. Mock Arm value '{ConditionToUse}'. Switch Arms True Arm: '{string.Join(",",dsfSwitchSwitches.Select(pair => pair.Key))}'.");
+        }
+
+        #endregion
+    }
 }

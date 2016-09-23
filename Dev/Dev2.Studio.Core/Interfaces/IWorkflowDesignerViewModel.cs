@@ -8,7 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Activities.Presentation;
+using System.Activities.Presentation.Model;
+using System.Text;
 using System.Windows;
 using Dev2.Studio.Core.Interfaces;
 
@@ -21,6 +24,9 @@ namespace Dev2.Studio.Core.ViewModels
         string WorkflowName { get; }
         WorkflowDesigner Designer { get; }
         UIElement DesignerView { get; }
+        StringBuilder DesignerText { get; }
+        Action<ModelItem> ItemSelectedAction { get; set; }
+
         void UpdateWorkflowLink(string newLink);
         void Dispose();
         bool NotifyItemSelected(object primarySelection);

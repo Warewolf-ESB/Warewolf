@@ -83,6 +83,28 @@ namespace Dev2.Utilities
             return text;
         }
 
+        public ActivityBuilder ReadXamlDefinition(StringBuilder xaml)
+        {
+            try
+            {
+                if(xaml != null && xaml.Length!=0)
+                {
+                    using(var sw = new StringReader(xaml.ToString()))
+                    {
+                        var xamlXmlWriterSettings = new XamlXmlReaderSettings();
+                        var xw = ActivityXamlServices.CreateBuilderReader(new XamlXmlReader(sw, new XamlSchemaContext(),xamlXmlWriterSettings));
+                        var load = XamlServices.Load(xw);
+                        return load as ActivityBuilder;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Error("Error loading XAML: ",e);
+            }
+            return null;
+        }
+
         #endregion
 
         #region CreateWorkflow

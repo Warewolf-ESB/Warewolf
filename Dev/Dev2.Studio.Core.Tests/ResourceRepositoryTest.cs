@@ -46,6 +46,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Warewolf.Studio.ViewModels;
+// ReSharper disable ReturnTypeCanBeEnumerable.Local
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -596,21 +597,20 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceModel_SaveTests")]
-        public void ResourceModel_Save_ExecuteMessageIsSuccessful_NoException()
+        public void ResourceModel_SaveTests_ExecuteMessageIsSuccessful_NoException()
         {
             //------------Setup for test--------------------------
-            var serviceTestModel = new ServiceTestModelTO()
+            var serviceTestModel = new ServiceTestModelTO
             {
                 TestName = "Test Input",
                 AuthenticationType = AuthenticationType.Public,
                 Enabled = true,
                 ErrorExpected = false,
                 NoErrorExpected = true,
-                Inputs = new List<IServiceTestInput> { new ServiceTestInput("var", "val") },
-                Outputs = new List<IServiceTestOutput> { new ServiceTestOutput("var", "val") },
-                ResourceId = Guid.NewGuid()
-
-
+                Inputs = new List<IServiceTestInput> { new ServiceTestInputTO { Variable = "var", Value = "val" } },
+                Outputs = new List<IServiceTestOutput> { new ServiceTestOutputTO { Variable = "var", Value = "val" } },
+                ResourceId = Guid.NewGuid(),
+                TestSteps = new List<IServiceTestStep> { new ServiceTestStep(Guid.NewGuid(),"type",new List<IServiceTestOutput>(),StepType.Mock, null) }                
             };
             var retVal = new StringBuilder();
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -649,6 +649,8 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.IsNotNull(serviceTestModelTos);
             Assert.AreEqual(1, serviceTestModelTos.Count);
             Assert.AreEqual(serviceTestModel.TestName, serviceTestModelTos[0].TestName);
+            Assert.AreEqual(serviceTestModel.TestSteps.Count,serviceTestModelTos[0].TestSteps.Count);
+            Assert.AreEqual(1,serviceTestModelTos[0].TestSteps.Count);
         }
 
         [TestMethod]
@@ -1504,7 +1506,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
 
 
-            var serviceTestModel = new List<IServiceTestModelTO>() {};
+            var serviceTestModel = new List<IServiceTestModelTO>();
             Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(serviceTestModel);
             CompressedExecuteMessage message = new CompressedExecuteMessage();
@@ -1708,8 +1710,7 @@ namespace BusinessDesignStudio.Unit.Tests
             env.Setup(e => e.Connection).Returns(con.Object);
 
             Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
-            message.HasError = true;
+            CompressedExecuteMessage message = new CompressedExecuteMessage { HasError = true };
             var stringBuilder = new StringBuilder("An error occured");
             message.SetMessage(jsonSerializer.Serialize(stringBuilder));
             var msgResult = jsonSerializer.Serialize(message);
@@ -1741,8 +1742,7 @@ namespace BusinessDesignStudio.Unit.Tests
             env.Setup(e => e.Connection).Returns(con.Object);
 
             Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
-            message.HasError = true;
+            CompressedExecuteMessage message = new CompressedExecuteMessage { HasError = true };
             var stringBuilder = new StringBuilder("An error occured");
             message.SetMessage(jsonSerializer.Serialize(stringBuilder));
             var msgResult = jsonSerializer.Serialize(message);
@@ -1812,10 +1812,6 @@ namespace BusinessDesignStudio.Unit.Tests
         public void GetResourceList_GivenDropboxSource_ShouldCreateCorrectServiceName()
         {
             //---------------Set up test pack-------------------
-            var res = new DropBoxSource() { ResourceID = Guid.NewGuid() };
-            var resList = new List<DropBoxSource> { res };
-            var src = JsonConvert.SerializeObject(resList);
-            var env = EnviromentRepositoryTest.CreateMockEnvironment(true, src);
             ResourceRepository resourceRepository = GetResourceRepository();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------

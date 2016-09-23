@@ -8,6 +8,7 @@ namespace Warewolf.Studio.ViewModels
     {
         private string _variable;
         private string _value;
+        private string _assertOp;
 
         public ServiceTestOutput(string variable, string value)
         {
@@ -39,6 +40,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _value = value;
                 OnPropertyChanged(() => Value);
+            }
+        }
+
+        public string AssertOp
+        {
+            get { return _assertOp; }
+            set
+            {
+                _assertOp = value; 
+                OnPropertyChanged(() => AssertOp);
             }
         }
     }

@@ -131,6 +131,7 @@
                                     <TextBlock Grid.Column="2" 
                                                Grid.Row="0" 
                                                Text="{Binding NameForDisplay}" 
+                                               ToolTip="Test Name"
                                                TextTrimming="CharacterEllipsis"
                                                FontSize="12" 
                                                Margin="0,0,0,-4" 
@@ -146,6 +147,7 @@
                                     <TextBlock Grid.Column="2" 
                                                Grid.Row="1" 
                                                Text="{Binding NeverRunString}" 
+                                               ToolTip="{x:Static languages:Core.ServiceTestNeverRunTooltip}"
                                                FontSize="11" 
                                                Margin="0,-4,0,0"
                                                Visibility="{Binding NeverRunStringVisibility, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -383,7 +385,8 @@
                                                        AutoGenerateColumns="False"
                                                        BorderThickness="0"      
                                                        Style="{StaticResource ActivityMapppingDataGridStyle}"
-                                                       x:Name="TestInputs">
+                                                       x:Name="TestInputs"
+                                                       AutomationProperties.AutomationId="UI_TestInputsDev2DataGrid_AutoID">
 
                                     <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                                     <DataGrid.Columns>
@@ -465,7 +468,8 @@
                                                        AutoGenerateColumns="False"
                                                        BorderThickness="0"      
                                                        Style="{StaticResource ActivityMapppingDataGridStyle}"
-                                                       x:Name="TestOutputsGrid">
+                                                       x:Name="TestOutputsGrid"
+                                                       AutomationProperties.AutomationId="UI_TestOutputsDev2DataGrid_AutoID">
 
                                     <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                                     <DataGrid.Columns>

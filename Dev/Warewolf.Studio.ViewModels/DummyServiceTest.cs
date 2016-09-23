@@ -28,6 +28,7 @@ namespace Warewolf.Studio.ViewModels
             NeverRunString = "Never run";
             _isNewTest = true;
             _newCommand = new DelegateCommand(createNewAction);
+            TestSteps = new ObservableCollection<IServiceTestStep>();
         }
 
         #region Implementation of INewServiceResource
@@ -79,9 +80,16 @@ namespace Warewolf.Studio.ViewModels
 
         public string DuplicateTestTooltip { get; set; }
 
+        public ObservableCollection<IServiceTestStep> TestSteps { get; set; }
+        public IServiceTestStep SelectedTestStep { get; set; }
+
         public void SetItem(IServiceTestModel model)
         {
             
+        }
+
+        public void AddTestStep(string activityUniqueID, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
+        {
         }
 
         public bool IsTestSelected { get; set; }
