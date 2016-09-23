@@ -3647,4 +3647,10 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
   <data name="javascript_Tag" xml:space="preserve">
     <value>javascript</value>
   </data>
+  <data name="ruby_Tag" xml:space="preserve">
+    <value>ruby</value>
+  </data>
+  <data name="python_Tag" xml:space="preserve">
+    <value>python</value>
+  </data>
 </root>
