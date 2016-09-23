@@ -32,9 +32,9 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
-        /// Assign_Value_To_Variable - Use 'Assign_Value_To_VariableParams' to pass parameters into this method.
+        /// Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1 - Use 'Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params' to pass parameters into this method.
         /// </summary>
-        public void Assign_Value_To_Variable()
+        public void Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1()
         {
             #region Variable Declarations
             WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.ValueCell.AssignValueCombobox.TextEdit;
@@ -42,10 +42,10 @@ namespace Warewolf.UITests
             #endregion
 
             // Verify that the 'Exists' property of 'Text' text box equals 'True'
-            Assert.AreEqual(this.Assign_Value_To_VariableParams.TextEditExists, textEdit.Exists, "Value textbox does not exist");
+            Assert.AreEqual(this.Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params.TextEditExists, textEdit.Exists, "Value textbox does not exist");
 
             // Type '50' in 'Text' text box
-            textEdit.Text = this.Assign_Value_To_VariableParams.TextEditText;
+            textEdit.Text = this.Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params.TextEditText;
 
             // Click 'Done' button
             Mouse.Click(doneButton, new Point(35, 3));
@@ -817,27 +817,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_DotNet_DLL_Large_View_Generate_Outputs - Use 'Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Click_DotNet_DLL_Large_View_Generate_Outputs()
-        {
-            #region Variable Declarations
-            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton;
-            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.TestButton;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton;
-            #endregion
-
-            // Click 'Generate Outputs' button
-            Mouse.Click(generateOutputsButton, new Point(7, 7));
-
-            // Verify that the 'Exists' property of 'Test' button equals 'True'
-            Assert.AreEqual(this.Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues.TestButtonExists, testButton.Exists, "DotNet DLL generate outputs test button does not exist.");
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues.DoneButtonExists, doneButton.Exists, "DotNet DLL generate outputs done button does not exist.");
-        }
-        
-        /// <summary>
         /// Click_DotNet_DLL_Large_View_Test_Inputs_Button
         /// </summary>
         public void Click_DotNet_DLL_Large_View_Test_Inputs_Button()
@@ -1177,23 +1156,6 @@ namespace Warewolf.UITests
 
             // Click 'Create a new database source' button
             Mouse.Click(databaseSourceButton, new Point(16, 15));
-        }
-        
-        /// <summary>
-        /// Click_New_Web_Source_Test_Connection_Button - Use 'Click_New_Web_Source_Test_Connection_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_New_Web_Source_Test_Connection_Button()
-        {
-            #region Variable Declarations
-            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton;
-            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
-
-            // Click 'Test Connection' button
-            Mouse.Click(testConnectionButton, new Point(52, 14));
-
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(this.Click_New_Web_Source_Test_Connection_ButtonParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is not enabled after testing a valid web source.");
         }
         
         /// <summary>
@@ -6566,15 +6528,15 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public virtual Assign_Value_To_VariableParams Assign_Value_To_VariableParams
+        public virtual Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params
         {
             get
             {
-                if ((this.mAssign_Value_To_VariableParams == null))
+                if ((this.mAssign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params == null))
                 {
-                    this.mAssign_Value_To_VariableParams = new Assign_Value_To_VariableParams();
+                    this.mAssign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params = new Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params();
                 }
-                return this.mAssign_Value_To_VariableParams;
+                return this.mAssign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params;
             }
         }
         
@@ -6878,18 +6840,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues
-        {
-            get
-            {
-                if ((this.mClick_DotNet_DLL_Large_View_Generate_OutputsExpectedValues == null))
-                {
-                    this.mClick_DotNet_DLL_Large_View_Generate_OutputsExpectedValues = new Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues();
-                }
-                return this.mClick_DotNet_DLL_Large_View_Generate_OutputsExpectedValues;
-            }
-        }
-        
         public virtual Click_Duplicate_From_Duplicate_DialogParams Click_Duplicate_From_Duplicate_DialogParams
         {
             get
@@ -6983,18 +6933,6 @@ namespace Warewolf.UITests
                     this.mClick_MessageBox_YesParams = new Click_MessageBox_YesParams();
                 }
                 return this.mClick_MessageBox_YesParams;
-            }
-        }
-        
-        public virtual Click_New_Web_Source_Test_Connection_ButtonParams Click_New_Web_Source_Test_Connection_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_New_Web_Source_Test_Connection_ButtonParams == null))
-                {
-                    this.mClick_New_Web_Source_Test_Connection_ButtonParams = new Click_New_Web_Source_Test_Connection_ButtonParams();
-                }
-                return this.mClick_New_Web_Source_Test_Connection_ButtonParams;
             }
         }
         
@@ -9160,7 +9098,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
+        private Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params mAssign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params;
         
         private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
         
@@ -9212,8 +9150,6 @@ namespace Warewolf.UITests
         
         private Click_DotNet_DLL_Large_View_Done_ButtonParams mClick_DotNet_DLL_Large_View_Done_ButtonParams;
         
-        private Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues mClick_DotNet_DLL_Large_View_Generate_OutputsExpectedValues;
-        
         private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
         
         private Click_Duplicate_From_ExplorerContextMenuParams mClick_Duplicate_From_ExplorerContextMenuParams;
@@ -9229,8 +9165,6 @@ namespace Warewolf.UITests
         private Click_GET_Web_Large_View_Generate_OutputsExpectedValues mClick_GET_Web_Large_View_Generate_OutputsExpectedValues;
         
         private Click_MessageBox_YesParams mClick_MessageBox_YesParams;
-        
-        private Click_New_Web_Source_Test_Connection_ButtonParams mClick_New_Web_Source_Test_Connection_ButtonParams;
         
         private Click_NewPluginSource_Ribbon_ButtonParams mClick_NewPluginSource_Ribbon_ButtonParams;
         
@@ -9595,10 +9529,10 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assign_Value_To_Variable'
+    /// Parameters to be passed into 'Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assign_Value_To_VariableParams
+    public class Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params
     {
         
         #region Fields
@@ -10188,26 +10122,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_DotNet_DLL_Large_View_Generate_Outputs'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Test' button equals 'True'
-        /// </summary>
-        public bool TestButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Click_Duplicate_From_Duplicate_Dialog'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10344,21 +10258,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'False'
         /// </summary>
         public bool MessageBoxWindowExists = false;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_New_Web_Source_Test_Connection_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_New_Web_Source_Test_Connection_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-        /// </summary>
-        public bool SaveButtonEnabled = true;
         #endregion
     }
     
@@ -33364,12 +33263,31 @@ namespace Warewolf.UITests
                 return this.mTestConnectionButton;
             }
         }
+        
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfEdit mAddressTextbox;
         
         private WpfButton mTestConnectionButton;
+        
+        private WpfCustom mSpinner;
         #endregion
     }
     
