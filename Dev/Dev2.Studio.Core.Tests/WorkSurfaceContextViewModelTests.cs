@@ -10,6 +10,7 @@
 
 using System;
 using System.Activities.Presentation;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -1153,6 +1154,12 @@ namespace Dev2.Core.Tests
         {
             get { throw new NotImplementedException(); }
         }
+
+        public StringBuilder DesignerText
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public Action<ModelItem> ItemSelectedAction { get; set; }
 
         public void UpdateWorkflowLink(string newLink)
         {

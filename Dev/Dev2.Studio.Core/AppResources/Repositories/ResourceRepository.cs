@@ -23,7 +23,6 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -559,40 +558,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public TestSaveResult SaveTests(IResourceModel resource, List<IServiceTestModelTO> tests)
         {
             var comsController = GetCommunicationController("SaveTests");
-            var testDefinitions = new List<ServiceTestModelTO>(tests.Select(model =>
-            {
-                var serviceTestModelTo = new ServiceTestModelTO
-                {
-                    TestName = model.TestName,
-                    OldTestName = model.OldTestName,
-                    AuthenticationType = model.AuthenticationType,
-                    Enabled = model.Enabled,
-                    ErrorExpected = model.ErrorExpected,
-                    NoErrorExpected = model.NoErrorExpected,
-                    UserName = model.UserName,
-                    Password = model.Password,
-                    ResourceId = model.ResourceId,
-                    TestPending = model.TestPending,
-                    TestFailing = model.TestFailing,
-                    TestInvalid = model.TestInvalid,
-                    TestPassed = model.TestPassed,
-                    Inputs = model.Inputs.Select(input => new ServiceTestInputTO
-                    {
-                        Variable = input.Variable,
-                        Value = input.Value,
-                        EmptyIsNull = input.EmptyIsNull
-                    } as IServiceTestInput).ToList(),
-                    Outputs = model.Outputs.Select(output => new ServiceTestOutputTO
-                    {
-                        Variable = output.Variable,
-                        Value = output.Value
-                    } as IServiceTestOutput).ToList()
-                };
-                return serviceTestModelTo;
-            }));
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             CompressedExecuteMessage message = new CompressedExecuteMessage();
-            message.SetMessage(serializer.Serialize(testDefinitions));
+            message.SetMessage(serializer.Serialize(tests));
             comsController.AddPayloadArgument("resourceID", resource.ID.ToString());
             comsController.AddPayloadArgument("resourcePath", resource.Category);
             comsController.AddPayloadArgument("testDefinitions", serializer.SerializeToBuilder(message));

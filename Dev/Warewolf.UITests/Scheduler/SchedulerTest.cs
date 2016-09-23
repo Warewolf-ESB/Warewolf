@@ -12,7 +12,7 @@ namespace Warewolf.UITests
             Uimap.Click_Scheduler_Ribbon_Button();
             Uimap.Click_Scheduler_Create_New_Task_Ribbon_Button();
             Uimap.Click_Scheduler_ResourcePicker();
-            Uimap.Select_Service_From_Service_Picker_Dialog("Hello World");
+            Uimap.Enter_ServiceName_Into_Service_Picker_Dialog("Hello World");
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Scheduler_Disable_Task_Radio_Button();
             Uimap.Click_Close_Workflow_Tab_Button();
