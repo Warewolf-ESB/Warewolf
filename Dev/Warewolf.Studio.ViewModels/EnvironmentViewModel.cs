@@ -456,7 +456,7 @@ namespace Warewolf.Studio.ViewModels
                     return new AsyncObservableCollection<IExplorerItemViewModel>();
                 }
                 var orderedCollection = _children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToObservableCollection();
-                return String.IsNullOrEmpty(_filter) ? orderedCollection : new AsyncObservableCollection<IExplorerItemViewModel>(orderedCollection.Where(a => a.IsVisible));
+                return new AsyncObservableCollection<IExplorerItemViewModel>(orderedCollection.Where(a => a.IsVisible));
             }
             set
             {

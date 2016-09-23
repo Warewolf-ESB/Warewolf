@@ -1054,6 +1054,31 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void DeleteSelectedTestCommand_GivenTestNameExists_ShouldDeleteSelectedTest()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
+            testFrameworkViewModel.Save();
+            //---------------Assert Precondition----------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
+            var selectedServiceTest = testFrameworkViewModel.SelectedServiceTest;
+            Assert.IsNotNull(selectedServiceTest);
+            Assert.AreEqual(3, testFrameworkViewModel.Tests.Count);
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.DeleteTestCommand.Execute(testFrameworkViewModel.SelectedServiceTest);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CanSave_GivenIsDirtynameHastrailingSpaces_ShouldSetCanSaveFalse()
         {
