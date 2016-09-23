@@ -1,12 +1,8 @@
-﻿Feature: Ruby
+﻿@RubyFeature
+Feature: Ruby
 	In order to execute Ruby
 	As a Warewolf user
 	I want a tool that allows me to execute Ruby
-
-Background: Setup for workflows for tests
-		Given this Ruby feature 
-		Then activity is DsfRubyActivity
-
 
 Scenario: Execute Ruby Variable is 1
 	Given I have a script variable "[[val]]" with this value "1"

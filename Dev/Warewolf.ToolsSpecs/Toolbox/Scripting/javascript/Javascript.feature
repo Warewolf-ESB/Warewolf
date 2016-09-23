@@ -1,11 +1,8 @@
-﻿Feature: Javascript
+﻿@JavascriptFeature
+Feature: Javascript
 	In order to execute javascripts
 	As a Warewolf user
 	I want a tool that allows me to execute javascripts
-
-Background: Setup for workflows for tests
-		Given this Javascript feature 
-		Then activity is DsfJavascriptActivity
 
 Scenario: Execute Javascript Variable is 1
 	Given I have a script variable "[[val]]" with this value "1"
