@@ -10,7 +10,7 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-    xmlns:scriptRuby="clr-namespace:Dev2.Activities.Designers2.Script_Ruby"
+                               xmlns:scriptRuby="clr-namespace:Dev2.Activities.Designers2.Script_Ruby"
                                Width="320"
                                MinWidth="320"
                                MinHeight="280"
@@ -43,14 +43,11 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="Include File" Margin="{StaticResource ControlBorderTop}"/>
-        <Grid Grid.Column="1" Grid.Row="0" Margin="0,0,0,1">
+        <TextBlock x:Name="IncludeFileTextBlock" Grid.Column="0" Grid.Row="0" Text="Include File" Margin="{StaticResource ControlBorderTop}"/>
+        <Grid Grid.Column="1" Grid.Row="0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -82,73 +79,86 @@
             </Button>
         </Grid>
 
-        <CheckBox Grid.Column="1"
-                  Grid.Row="1"
-                  Margin="-6,-2,0,0"
-                  Content="Escape sequences in variables"
-                  IsChecked="{Binding Path=ModelItem.EscapeScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static languages:Core.ScriptingToolTipEscapeScript}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpEscapeScript}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.EscapeScript"
-                                     SourcePropertyValue="{Binding  ModelItem.EscapeScript, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </CheckBox>
+        <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=IncludeFileTextBlock, Path=ActualWidth}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <ui:IntellisenseTextBox  Grid.ColumnSpan="2"
-                                 Grid.Column="0"
-                                 Grid.Row="2" 
-                                 AllowMultilinePaste="True"
-                                 AcceptsReturn="True"
-                                 AllowUserInsertLine="True"
-                                 TextWrapping="Wrap"
-                                 Height="Auto"
-                                 MinHeight="53"
-                                 FilterType="All"
-                                 Margin="0,1,0,0"
-                                 ToolTip="{x:Static languages:Core.ScriptingToolTipScript}"
-                                 AllowUserCalculateMode="False"
-                                 IsInCalculateMode="True"
-                                 VerticalContentAlignment="Top"
-                                 Text="{Binding Path=ModelItem.Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtScript_AutoID}">
-            <ui:IntellisenseTextBox.DefaultText>
-                <TextBlock Text="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,-1,0,0"></TextBlock>
-            </ui:IntellisenseTextBox.DefaultText>
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpScript}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.Script"
-                                     SourcePropertyValue="{Binding ModelItem.Script, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+            <CheckBox Grid.Column="1"
+                      Grid.Row="0"
+                      Margin="-6,0,0,0"
+                      Content="Escape sequences in variables"
+                      IsChecked="{Binding Path=ModelItem.EscapeScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ToolTip="{x:Static languages:Core.ScriptingToolTipEscapeScript}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpEscapeScript}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="ModelItem.EscapeScript"
+                                         SourcePropertyValue="{Binding  ModelItem.EscapeScript, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </CheckBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="3" Margin="{StaticResource ControlBorderTop}" Text="Result" />
-        <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="3"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                WrapInBrackets="True"
-                                AllowUserInsertLine="False"
-                                DefaultText="[[Result]]"
-                                Margin="0,2,0,0"
-                                FilterType="All"
-                                ToolTip="{x:Static languages:Core.ScriptingToolTipResult}"
-                                Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpResult}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="Result"
-                                     SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+            <ui:IntellisenseTextBox  Grid.ColumnSpan="2"
+                                     Grid.Column="0"
+                                     Grid.Row="1" 
+                                     AllowMultilinePaste="True"
+                                     AcceptsReturn="True"
+                                     AllowUserInsertLine="True"
+                                     TextWrapping="Wrap"
+                                     Height="Auto"
+                                     MinHeight="53"
+                                     FilterType="All"
+                                     Margin="0,-1,0,0"
+                                     ToolTip="{x:Static languages:Core.ScriptingToolTipScript}"
+                                     AllowUserCalculateMode="False"
+                                     IsInCalculateMode="True"
+                                     VerticalContentAlignment="Top"
+                                     Text="{Binding Path=ModelItem.Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtScript_AutoID}">
+                <ui:IntellisenseTextBox.DefaultText>
+                    <TextBlock Text="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,-1,0,0"></TextBlock>
+                </ui:IntellisenseTextBox.DefaultText>
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpScript}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="ModelItem.Script"
+                                         SourcePropertyValue="{Binding ModelItem.Script, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
 
-        <errors:OnError Grid.Column="0"
-                        Grid.Row="4"
-                        Grid.ColumnSpan="2" />
+            <TextBlock Grid.Column="0" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" Text="Result" />
+            <ui:IntellisenseTextBox Grid.Column="1"
+                                    Grid.Row="2"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    WrapInBrackets="True"
+                                    AllowUserInsertLine="False"
+                                    DefaultText="[[Result]]"
+                                    Margin="{StaticResource ControlBorderTop}"
+                                    FilterType="All"
+                                    ToolTip="{x:Static languages:Core.ScriptingToolTipResult}"
+                                    Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpResult}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="Result"
+                                         SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+
+            <errors:OnError Grid.Column="0"
+                            Grid.Row="3"
+                            Grid.ColumnSpan="2" />
+        </Grid>
     </Grid>
 </core:ActivityDesignerTemplate>
