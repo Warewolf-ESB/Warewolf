@@ -65,7 +65,6 @@
     <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
     <Compile Include="HelpWindow\HelpWindowTests.cs" />
     <Compile Include="Tools\HTTP Web Methods\Create_WEB_Source_From_Tool.cs" />
-    <Compile Include="Variables\Variables.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="Explorer\WebConnector.cs" />
     <Compile Include="Explorer\PluginConnector.cs" />
