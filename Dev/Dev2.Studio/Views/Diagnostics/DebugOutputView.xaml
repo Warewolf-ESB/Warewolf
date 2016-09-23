@@ -345,12 +345,16 @@
                 </i:Interaction.Behaviors>
             </Button>
             <Button Grid.Column="3"
-                    Content="{Binding AddNewTestMode, Converter={ StaticResource BoolToPlusMinusConverter}}"
                     FontSize="24"
                     Command="{Binding AddNewTestCommand}"
                     Margin="3,0,0,-1"
                     ToolTip="AddNewTest"
                     AutomationProperties.AutomationId="UI_DebugOutputAddNewTestMode_AutoID" >
+                <Button.Content>
+                    <fa:FontAwesome FontSize="14"
+                                FontWeight="Light"
+                                Icon="Flask" />
+                </Button.Content>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="AddNewTestHelp" />
                 </i:Interaction.Behaviors>
@@ -397,7 +401,7 @@
                                                    AutomationProperties.AutomationId="UI_DebugOutputValueTextBlock_AutoID" />
                                     </Grid>
                                 </StackPanel>
-                                
+
                                 <Button x:Name="MoreLink"
                                         Focusable="False"
                                         VerticalAlignment="Bottom"
