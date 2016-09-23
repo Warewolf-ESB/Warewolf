@@ -1427,7 +1427,7 @@ namespace BusinessDesignStudio.Unit.Tests
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
-            var msg = MakeCompressedMsg("model definition");
+            var msg = MakeMsg("model definition");
             var payload = JsonConvert.SerializeObject(msg);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
 
@@ -1451,7 +1451,7 @@ namespace BusinessDesignStudio.Unit.Tests
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
-            var msg = MakeCompressedMsg(string.Empty);
+            var msg = MakeMsg(string.Empty);
             var payload = JsonConvert.SerializeObject(msg);
 
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
@@ -1882,7 +1882,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.ForceLoad();
 
             const string modelDefinition = "model definition";
-            var msg = MakeCompressedMsg(modelDefinition);
+            var msg = MakeMsg(modelDefinition);
             var payload = JsonConvert.SerializeObject(msg);
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
 
@@ -2537,6 +2537,14 @@ namespace BusinessDesignStudio.Unit.Tests
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(e => e.ServerEvents).Returns(new EventPublisher());
             return connection;
+        }
+
+        static ExecuteMessage MakeMsg(string msg)
+        {
+            var executeMessage = new ExecuteMessage();
+            executeMessage.SetMessage(msg);
+            var exePayload = JsonConvert.SerializeObject(executeMessage);
+            return executeMessage;
         }
 
         static CompressedExecuteMessage MakeCompressedMsg(string msg)
