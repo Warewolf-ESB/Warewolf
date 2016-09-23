@@ -25,12 +25,10 @@ using System.Xaml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Decision;
-using Microsoft.VisualBasic.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Utilities
 {
-    // BUG 9304 - 2013.05.08 - TWR - .NET 4.5 upgrade
     public class WorkflowHelper : IWorkflowHelper
     {
         #region Singleton Instance
@@ -70,7 +68,8 @@ namespace Dev2.Utilities
                     using(var sw = new StringWriter(sb))
                     {
                         var xamlXmlWriterSettings = new XamlXmlWriterSettings { AssumeValidInput = true };
-                        var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, new XamlSchemaContext(),xamlXmlWriterSettings));                    
+                        var xamlSchemaContext = new XamlSchemaContext();
+                        var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, xamlSchemaContext,xamlXmlWriterSettings));                    
                         XamlServices.Save(xw, builder);
                         text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "");
                     }
@@ -135,7 +134,6 @@ namespace Dev2.Utilities
 
         void EnsureImplementation(ActivityBuilder builder, Flowchart chart)
         {
-            SetProperties(builder.Properties);
             FixExpressions(chart);
             SetVariables(chart.Variables);
             SetNamespaces(builder);
@@ -151,30 +149,7 @@ namespace Dev2.Utilities
         #endregion
 
 
-        #region SetProperties
-
-        public void SetProperties(ICollection<DynamicActivityProperty> properties)
-        {
-
-            if (properties == null)
-            {
-                throw new ArgumentNullException(nameof(properties));
-            }
-            try
-            {
-                properties.Clear();
-
-                properties.Add(new DynamicActivityProperty { Name = "AmbientDataList", Type = typeof(InOutArgument<List<string>>) });
-                properties.Add(new DynamicActivityProperty { Name = "ParentWorkflowInstanceId", Type = typeof(InOutArgument<Guid>) });
-                properties.Add(new DynamicActivityProperty { Name = "ParentServiceName", Type = typeof(InOutArgument<string>) });
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e.Message, e);
-            }
-        }
-
-        #endregion
+        
 
         #region SetVariables
 
@@ -230,22 +205,22 @@ namespace Dev2.Utilities
 
             #region Set VB assembly references
 
-            var vbSettings = VisualBasic.GetSettings(target) ?? new VisualBasicSettings();
-            vbSettings.ImportReferences.Clear();
-
-            foreach(var ns in namespaces.Keys)
-            {
-                try
-                {
-                    vbSettings.ImportReferences.Add(new VisualBasicImportReference { Assembly = namespaces[ns].GetName().Name, Import = ns });
-                }
-                catch(Exception e)
-                {
-                    Dev2Logger.Error(e.Message,e);
-                }
-            }
-
-            VisualBasic.SetSettings(target, vbSettings);
+//            var vbSettings = VisualBasic.GetSettings(target) ?? new VisualBasicSettings();
+//            vbSettings.ImportReferences.Clear();
+//
+//            foreach(var ns in namespaces.Keys)
+//            {
+//                try
+//                {
+//                    vbSettings.ImportReferences.Add(new VisualBasicImportReference { Assembly = namespaces[ns].GetName().Name, Import = ns });
+//                }
+//                catch(Exception e)
+//                {
+//                    Dev2Logger.Error(e.Message,e);
+//                }
+//            }
+//
+//            VisualBasic.SetSettings(target, vbSettings);
 
             #endregion
         }
