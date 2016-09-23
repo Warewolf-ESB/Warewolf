@@ -23,5 +23,6 @@ namespace Dev2.Studio.Core.Messages
         }
 
         public IEnumerable<string> SelectedFiles { get { return _selectedFiles; } set { OnPropertyChanged(ref _selectedFiles, value); } }
+        public string Filter { get; set; }
     }
 }
