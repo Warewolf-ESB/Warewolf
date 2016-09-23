@@ -1059,6 +1059,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
             // Click 'Test Connection' button
             Mouse.Click(testConnectionButton, new Point(21, 16));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton.);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
         }
 
@@ -1129,7 +1130,6 @@ namespace Warewolf.UITests
         }
         public void CreateAndSave_Dice_Workflow()
         {
-            RightClick_Localhost();
             Select_NewWorkFlowService_From_ContextMenu();
             Drag_Toolbox_Random_Onto_DesignSurface();
             Enter_Dice_Roll_Values();
