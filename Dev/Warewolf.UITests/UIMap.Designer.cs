@@ -5841,6 +5841,26 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
+            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
+            #endregion
+
+            // Click 'ActionsComboBox' combo box
+            Mouse.Click(actionsComboBox, new Point(216, 7));
+
+            // Click 'Item1' list item
+            Mouse.Click(item1, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Dev2.Common.Interfaces.PluginAction'
+            Assert.AreEqual(this.Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+        }
+        
+        /// <summary>
         /// Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox - Use 'Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox()
@@ -6409,26 +6429,6 @@ namespace Warewolf.UITests
 
             // Click 'Tests' menu item
             Mouse.Click(tests, new Point(46, 16));
-        }
-        
-        /// <summary>
-        /// Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
-            #endregion
-
-            // Click 'ActionsComboBox' combo box
-            Mouse.Click(actionsComboBox, new Point(216, 7));
-
-            // Click 'Item1' list item
-            Mouse.Click(item1, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'ToString'
-            Assert.AreEqual(this.Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
         
         /// <summary>
@@ -8798,6 +8798,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
+        {
+            get
+            {
+                if ((this.mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues == null))
+                {
+                    this.mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues = new Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues();
+                }
+                return this.mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
+            }
+        }
+        
         public virtual Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues
         {
             get
@@ -8963,18 +8975,6 @@ namespace Warewolf.UITests
                     this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues = new Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues();
                 }
                 return this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
-            }
-        }
-        
-        public virtual Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-        {
-            get
-            {
-                if ((this.mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues == null))
-                {
-                    this.mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues = new Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues();
-                }
-                return this.mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
             }
         }
         
@@ -9532,6 +9532,8 @@ namespace Warewolf.UITests
         
         private Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
         
+        private Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
+        
         private Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues;
         
         private Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams;
@@ -9559,8 +9561,6 @@ namespace Warewolf.UITests
         private Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
         
         private Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
-        
-        private Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
         
         private Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
         
@@ -13513,6 +13513,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Dev2.Common.Interfaces.PluginAction'
+        /// </summary>
+        public string ActionsComboBoxSelectedItem = "Dev2.Common.Interfaces.PluginAction";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13788,21 +13803,6 @@ namespace Warewolf.UITests
         public string ClassNameComboBoxSelectedItem = "{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
             "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Random\",\"MethodName\":nul" +
             "l}";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'ToString'
-        /// </summary>
-        public string ActionsComboBoxSelectedItem = "ToString";
         #endregion
     }
     
