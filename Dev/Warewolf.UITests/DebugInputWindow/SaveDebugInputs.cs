@@ -32,18 +32,9 @@ namespace Warewolf.UITests.DebugInputWindow
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
+            Uimap.SetPlaybackSettings();
             Uimap.WaitForStudioStart();
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
-        }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingDebugInputDialog();
-            Uimap.TryCloseWorkflowTabs();
-            Uimap.TryClearExplorerFilter();
         }
 
         public TestContext TestContext

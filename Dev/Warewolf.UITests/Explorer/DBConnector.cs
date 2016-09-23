@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -10,7 +9,6 @@ namespace Warewolf.UITests
         const string DBSourceName = "UITestingDBSource";
 
         [TestMethod]
-        [Ignore]
         public void BigDBConnectorUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
@@ -19,7 +17,6 @@ namespace Warewolf.UITests
             Uimap.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox();
             Uimap.Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist();
             Uimap.Click_DB_Source_Wizard_Test_Connection_Button();
-            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ErrorText.Spinner);
             Uimap.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox();
             Uimap.Save_With_Ribbon_Button_And_Dialog(DBSourceName);
             Uimap.Click_Close_DB_Source_Wizard_Tab_Button();
@@ -43,34 +40,9 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
+            Uimap.SetPlaybackSettings();
             Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(DBSourceName);
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseWorkflowTabs();
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {

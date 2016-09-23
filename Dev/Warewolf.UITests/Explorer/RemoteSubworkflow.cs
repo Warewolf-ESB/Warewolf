@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -14,7 +13,6 @@ namespace Warewolf.UITests
         private const string ServerAddress = "tst-ci-";
 
         [TestMethod]
-        [Ignore]
         public void BigRemoteSubworkflowUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
@@ -47,36 +45,9 @@ namespace Warewolf.UITests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
+            Uimap.SetPlaybackSettings();
             Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
-        
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryCloseHangingWindowsGroupDialog();
-            Uimap.TryCloseHangingDebugInputDialog();
-            Uimap.TryRemoveFromExplorer(LocalWorkflowName);
-            Uimap.TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(ServerSourceName);
-            Uimap.TryCloseAllTabs();
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {

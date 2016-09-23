@@ -166,6 +166,10 @@ namespace Warewolf.Studio.ViewModels
         {
             if (SelectedServiceTest.IsDirty)
             {
+                if (ShowPopupWhenDuplicates())
+                {
+                    return;
+                }
                 Save(new List<IServiceTestModel> { SelectedServiceTest });
             }
             ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
@@ -385,7 +389,7 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                if (ShowPoputWhenDuplicates())
+                if (ShowPopupWhenDuplicates())
                 {
                     return;
                 }
@@ -470,7 +474,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        private bool ShowPoputWhenDuplicates()
+        private bool ShowPopupWhenDuplicates()
         {
             if (HasDuplicates())
             {

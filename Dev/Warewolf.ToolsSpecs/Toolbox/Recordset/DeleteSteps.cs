@@ -19,7 +19,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
 
-namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
+namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 {
     [Binding]
     public class DeleteSteps : RecordSetBases
@@ -29,7 +29,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         public DeleteSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             this.scenarioContext = scenarioContext;
         }
 
@@ -48,11 +48,26 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             BuildShapeAndTestData();
 
             var recordset = scenarioContext.Get<string>("recordset");
-            var delete = new DsfDeleteRecordActivity
+            bool treaNullAsZero;
+            scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
+            DsfActivityAbstract<string> delete;
+            scenarioContext.TryGetValue("activityMode", out delete);
+            if (delete != null)
+               
+            delete = new DsfDeleteRecordNullHandlerActivity
+            {
+                RecordsetName = recordset,
+                Result = ResultVariable,
+                TreatNullAsZero = treaNullAsZero
+            };
+            else
+            {
+                delete = new DsfDeleteRecordActivity
                 {
                     RecordsetName = recordset,
-                    Result = ResultVariable
+                    Result = ResultVariable,
                 };
+            }
 
             TestStartNode = new FlowStep
                 {
@@ -180,5 +195,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         {
             scenarioContext.Add("recordset", recordset);
         }
+
+        [Given(@"delete treat null as Empty Recordset is not selected")]
+        public void GivenDeleteTreatNullAsEmptyRecordsetIsNotSelected()
+        {
+            scenarioContext.Add("treaNullAsZero", false);
+        }
+
+        [Given(@"Treat Null as Empty Recordset is selected")]
+        public void GivenTreatNullAsEmptyRecordsetIsSelected()
+        {
+            scenarioContext.Add("treaNullAsZero", true);
+        }
+
+
+
     }
 }

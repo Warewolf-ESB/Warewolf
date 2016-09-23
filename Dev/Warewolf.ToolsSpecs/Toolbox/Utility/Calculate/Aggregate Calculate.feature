@@ -1,4 +1,5 @@
-﻿Feature: Aggregated Calculation
+﻿@Utils
+Feature: Aggregated Calculation
 	In order to perform aggrgate calculations
 	As a Warewolf user
 	I want a tool that I can input a formula and will calculate and retun a result
