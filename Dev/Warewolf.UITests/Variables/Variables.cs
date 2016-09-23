@@ -33,6 +33,11 @@ namespace Warewolf.UITests
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             Uimap.Open_Assign_Tool_Large_View();
             Uimap.Enter_Recordset_values();
+            Uimap.Select_InputOutput_CheckBox_Recordset_values();
+            Uimap.F5_Keyboard_Click();
+            Uimap.Type_Value_And_Click_Enter_Keyboard_Then_Backspace();
+            Uimap.Click_Cancel_DebugInput_Window();
+
         }
 
         #region Additional test attributes
@@ -40,7 +45,6 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
             Uimap.WaitForStudioStart();
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }

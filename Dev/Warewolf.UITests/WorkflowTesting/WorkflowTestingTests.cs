@@ -51,7 +51,7 @@ namespace Warewolf.UITests
             Uimap.Click_EnableDisable_This_Test_CheckBox(true);
             Uimap.Click_Delete_Test_Button();
             Uimap.Click_Yes_On_The_Confirm_Delete();
-            Uimap.Select_Test();
+            Uimap.Select_Test(2);
             Uimap.Click_EnableDisable_This_Test_CheckBox(true);
             Uimap.Click_Delete_Test_Button();
             Uimap.Click_Yes_On_The_Confirm_Delete();
@@ -65,11 +65,9 @@ namespace Warewolf.UITests
             Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(TestName);
             Uimap.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest();
+            Uimap.Enter_Text_Into_Workflow_Tests_Output_Row1_Value_Textbox_As_CodedUITest();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Click_EnableDisable_This_Test_CheckBox();
-            Uimap.Click_Run_Test_Button();
-            Uimap.Click_Create_New_Tests();
-            Uimap.Update_Test_Name(DuplicateTestName);
+            Uimap.Click_Run_Test_Button(expectedTestResultEnum:TestResultEnum.Pass);
         }
 
         [TestMethod]
@@ -139,6 +137,7 @@ namespace Warewolf.UITests
             Uimap.Click_Delete_Test_Button();
             Uimap.Click_Yes_On_The_Confirm_Delete();
         }
+        
         [TestMethod]
         public void RunTestsWithDuplicatedName()
         {

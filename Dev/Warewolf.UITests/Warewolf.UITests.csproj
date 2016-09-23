@@ -65,6 +65,7 @@
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Explorer\ItemDragAndDrop.cs" />
     <Compile Include="Explorer\ContextMenuItemsTest.cs" />
+    <Compile Include="Variables\Variables.cs" />
     <Compile Include="WorkflowTesting\TestsResults.cs" />
     <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
     <Compile Include="HelpWindow\HelpWindowTests.cs" />
