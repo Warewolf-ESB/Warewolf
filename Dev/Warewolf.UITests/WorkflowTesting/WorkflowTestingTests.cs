@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -151,12 +150,13 @@ namespace Warewolf.UITests
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Duplicate_Test_Button();
             Uimap.Update_Test_Name(TestName);
-            Uimap.Click_Run_Test_Button();
+            Uimap.Select_Test(2);
+            Uimap.Click_Run_Test_Button(2);
             Uimap.Click_MessageBox_OK();
             Uimap.Update_Test_Name(DuplicateTestName);
-            Uimap.Click_Run_Test_Button();
             Uimap.Select_Test(2);
-            WpfText invalidWpfText = Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2.Invalid;
+            Uimap.Click_Run_Test_Button();
+            var invalidWpfText = Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2.Invalid;
             Assert.IsTrue(invalidWpfText.Exists);
         }
 
