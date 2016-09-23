@@ -6,7 +6,7 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class RemoteSubworkflow
     {
-        const string ServerSourceName = "TSTCIREMOTE";        
+        const string ServerSourceName = "TSTCIREMOTE";
         const string LocalWorkflowName = "RemoteServerUITestWorkflow";
         const string RemoteSubWorkflowName = "workflow1";
         const string WindowsGroup = "Domain Users";
@@ -19,7 +19,7 @@ namespace Warewolf.UITests
             Uimap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
             Uimap.CreateRemoteServerSource(ServerSourceName, ServerAddress);
             Uimap.Enter_Text_Into_Explorer_Filter(ServerSourceName);
-            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
             Uimap.Select_From_Explorer_Remote_Server_Dropdown_List(Uimap.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE);
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
