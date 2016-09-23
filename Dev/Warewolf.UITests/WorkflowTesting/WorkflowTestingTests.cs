@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -120,7 +121,7 @@ namespace Warewolf.UITests
             Uimap.Click_RunAll_Button();
         }
         [TestMethod]
-        public void RunTestsWithDuplicatedName()
+        public void SaveAndRunAllTestsWithDuplicatedName()
         {
             Uimap.Enter_Text_Into_Explorer_Filter(HelloWorld);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
@@ -138,6 +139,25 @@ namespace Warewolf.UITests
             Uimap.Click_EnableDisable_This_Test_CheckBox(true);
             Uimap.Click_Delete_Test_Button();
             Uimap.Click_Yes_On_The_Confirm_Delete();
+        }
+        [TestMethod]
+        public void RunTestsWithDuplicatedName()
+        {
+            Uimap.Enter_Text_Into_Explorer_Filter(HelloWorld);
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Uimap.Open_Explorer_First_Item_Tests_With_Context_Menu();
+            Uimap.Click_Create_New_Tests(true);
+            Uimap.Update_Test_Name(TestName);
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_Duplicate_Test_Button();
+            Uimap.Update_Test_Name(TestName);
+            Uimap.Click_Run_Test_Button();
+            Uimap.Click_MessageBox_OK();
+            Uimap.Update_Test_Name(DuplicateTestName);
+            Uimap.Click_Run_Test_Button();
+            Uimap.Select_Test(2);
+            WpfText invalidWpfText = Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2.Invalid;
+            Assert.IsTrue(invalidWpfText.Exists);
         }
 
         [TestMethod]
