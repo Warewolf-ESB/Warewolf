@@ -49,6 +49,18 @@ namespace Dev2.Studio.Core.Models.DataList
             return name;
         }
 
+        public void Filter(string searchText)
+        {
+            if (!string.IsNullOrEmpty(DisplayName) && !string.IsNullOrEmpty(searchText))
+            {
+                IsVisible = DisplayName.ToLower().Contains(searchText.ToLower());
+            }
+            else
+            {
+                IsVisible = true;
+            }
+        }
+
         #endregion
     }
 }

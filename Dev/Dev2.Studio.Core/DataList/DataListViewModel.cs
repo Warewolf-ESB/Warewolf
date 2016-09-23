@@ -85,8 +85,37 @@ namespace Dev2.Studio.ViewModels.DataList
             get { return _searchText; }
             set
             {
-                _searchText = value;
-                NotifyOfPropertyChange(() => SearchText);
+                if (!string.Equals(_searchText, value, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _searchText = value;
+                    NotifyOfPropertyChange(() => SearchText);
+                    FilterCollection(_searchText);
+                }
+            }
+        }
+
+        private void FilterCollection(string searchText)
+        {
+            if(ScalarCollection!=null && ScalarCollection.Count > 1)
+            {
+                foreach(var scalarItemModel in ScalarCollection)
+                {
+                    scalarItemModel.Filter(searchText);
+                }
+            }
+            if (RecsetCollection != null && RecsetCollection.Count>1)
+            {
+                foreach(var recordSetItemModel in RecsetCollection)
+                {
+                    recordSetItemModel.Filter(searchText);
+                }
+            }
+            if (ComplexObjectCollection != null && ComplexObjectCollection.Count>0)
+            {
+                foreach(var complexObjectItemModel in ComplexObjectCollection)
+                {
+                    complexObjectItemModel.Filter(searchText);
+                }
             }
         }
 
