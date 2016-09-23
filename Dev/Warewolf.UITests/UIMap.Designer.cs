@@ -32,6 +32,19 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfCustom spinner = this.ServicePickerDialog.Explorer.ExplorerTree.Localhost.Checkbox.Spinner;
+            #endregion
+
+            // Verify that the 'ControlType' property of first custom control next to 'Checkbox' check box equals 'Custom'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.SpinnerControlType, spinner.ControlType.ToString());
+        }
+        
+        /// <summary>
         /// Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1 - Use 'Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params' to pass parameters into this method.
         /// </summary>
         public void Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1()
@@ -1542,23 +1555,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Scheduler_ResourcePicker - Use 'Click_Scheduler_ResourcePickerParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Scheduler_ResourcePicker()
-        {
-            #region Variable Declarations
-            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton;
-            WpfWindow servicePickerDialog = this.ServicePickerDialog;
-            #endregion
-
-            // Click '...' button
-            Mouse.Click(resourcePickerButton, new Point(20, 12));
-
-            // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
-            Assert.AreEqual(this.Click_Scheduler_ResourcePickerParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does exist");
-        }
-        
-        /// <summary>
         /// Click_Scheduler_ResourcePicker_Button
         /// </summary>
         public void Click_Scheduler_ResourcePicker_Button()
@@ -1675,46 +1671,16 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Service_Picker_Dialog_Cancel
-        /// </summary>
-        public void Click_Service_Picker_Dialog_Cancel()
-        {
-            #region Variable Declarations
-            WpfButton cancel = this.ServicePickerDialog.Cancel;
-            #endregion
-
-            // Click 'Cancel' button
-            Mouse.Click(cancel, new Point(57, 6));
-        }
-        
-        /// <summary>
         /// Click_Service_Picker_Dialog_First_Service_In_Explorer
         /// </summary>
         public void Click_Service_Picker_Dialog_First_Service_In_Explorer()
         {
             #region Variable Declarations
-            WpfTreeItem subTreeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
+            WpfTreeItem treeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1;
             #endregion
 
             // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(subTreeItem1, new Point(91, 9));
-        }
-        
-        /// <summary>
-        /// Click_Service_Picker_Dialog_OK - Use 'Click_Service_Picker_Dialog_OKParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Service_Picker_Dialog_OK()
-        {
-            #region Variable Declarations
-            WpfButton ok = this.ServicePickerDialog.OK;
-            WpfWindow servicePickerDialog = this.ServicePickerDialog;
-            #endregion
-
-            // Click 'OK' button
-            Mouse.Click(ok, new Point(52, 10));
-
-            // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
-            Assert.AreEqual(this.Click_Service_Picker_Dialog_OKParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does exist");
+            Mouse.Click(treeItem1, new Point(91, 9));
         }
         
         /// <summary>
@@ -6505,6 +6471,18 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
         public virtual Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params
         {
             get
@@ -7045,18 +7023,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Scheduler_ResourcePickerParams Click_Scheduler_ResourcePickerParams
-        {
-            get
-            {
-                if ((this.mClick_Scheduler_ResourcePickerParams == null))
-                {
-                    this.mClick_Scheduler_ResourcePickerParams = new Click_Scheduler_ResourcePickerParams();
-                }
-                return this.mClick_Scheduler_ResourcePickerParams;
-            }
-        }
-        
         public virtual Click_Scheduler_RunTaskParams Click_Scheduler_RunTaskParams
         {
             get
@@ -7102,18 +7068,6 @@ namespace Warewolf.UITests
                     this.mClick_Server_Source_Wizard_Test_Connection_ButtonParams = new Click_Server_Source_Wizard_Test_Connection_ButtonParams();
                 }
                 return this.mClick_Server_Source_Wizard_Test_Connection_ButtonParams;
-            }
-        }
-        
-        public virtual Click_Service_Picker_Dialog_OKParams Click_Service_Picker_Dialog_OKParams
-        {
-            get
-            {
-                if ((this.mClick_Service_Picker_Dialog_OKParams == null))
-                {
-                    this.mClick_Service_Picker_Dialog_OKParams = new Click_Service_Picker_Dialog_OKParams();
-                }
-                return this.mClick_Service_Picker_Dialog_OKParams;
             }
         }
         
@@ -9063,6 +9017,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
         private Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params mAssign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params;
         
         private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
@@ -9153,8 +9109,6 @@ namespace Warewolf.UITests
         
         private Click_Scheduler_Enable_Task_Radio_ButtonParams mClick_Scheduler_Enable_Task_Radio_ButtonParams;
         
-        private Click_Scheduler_ResourcePickerParams mClick_Scheduler_ResourcePickerParams;
-        
         private Click_Scheduler_RunTaskParams mClick_Scheduler_RunTaskParams;
         
         private Click_Select_Resource_Button_From_Resource_PermissionsParams mClick_Select_Resource_Button_From_Resource_PermissionsParams;
@@ -9162,8 +9116,6 @@ namespace Warewolf.UITests
         private Click_Select_Windows_Group_Cancel_ButtonParams mClick_Select_Windows_Group_Cancel_ButtonParams;
         
         private Click_Server_Source_Wizard_Test_Connection_ButtonParams mClick_Server_Source_Wizard_Test_Connection_ButtonParams;
-        
-        private Click_Service_Picker_Dialog_OKParams mClick_Service_Picker_Dialog_OKParams;
         
         private Click_Show_Dependencies_In_Explorer_Context_MenuParams mClick_Show_Dependencies_In_Explorer_Context_MenuParams;
         
@@ -9488,6 +9440,21 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of first custom control next to 'Checkbox' check box equals 'Custom'
+        /// </summary>
+        public string SpinnerControlType = "Custom";
         #endregion
     }
     
@@ -10510,21 +10477,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Scheduler_ResourcePicker'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Scheduler_ResourcePickerParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
-        /// </summary>
-        public bool ServicePickerDialogExists = false;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Click_Scheduler_RunTask'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10581,21 +10533,6 @@ namespace Warewolf.UITests
         /// Wait for 3 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Service_Picker_Dialog_OK'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Service_Picker_Dialog_OKParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
-        /// </summary>
-        public bool ServicePickerDialogExists = false;
         #endregion
     }
     
@@ -42176,29 +42113,29 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public TreeItem1 TreeItem1
+        public Localhost2 Localhost
         {
             get
             {
-                if ((this.mTreeItem1 == null))
+                if ((this.mLocalhost == null))
                 {
-                    this.mTreeItem1 = new TreeItem1(this);
+                    this.mLocalhost = new Localhost2(this);
                 }
-                return this.mTreeItem1;
+                return this.mLocalhost;
             }
         }
         #endregion
         
         #region Fields
-        private TreeItem1 mTreeItem1;
+        private Localhost2 mLocalhost;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem1 : WpfTreeItem
+    public class Localhost2 : WpfTreeItem
     {
         
-        public TreeItem1(UITestControl searchLimitContainer) : 
+        public Localhost2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42208,27 +42145,80 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfTreeItem SubTreeItem1
+        public WpfTreeItem TreeItem1
         {
             get
             {
-                if ((this.mSubTreeItem1 == null))
+                if ((this.mTreeItem1 == null))
                 {
-                    this.mSubTreeItem1 = new WpfTreeItem(this);
+                    this.mTreeItem1 = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mSubTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mSubTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mSubTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mSubTreeItem1.WindowTitles.Add("Warewolf");
+                    this.mTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mTreeItem1.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mSubTreeItem1;
+                return this.mTreeItem1;
+            }
+        }
+        
+        public Checkbox3 Checkbox
+        {
+            get
+            {
+                if ((this.mCheckbox == null))
+                {
+                    this.mCheckbox = new Checkbox3(this);
+                }
+                return this.mCheckbox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfTreeItem mSubTreeItem1;
+        private WpfTreeItem mTreeItem1;
+        
+        private Checkbox3 mCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Checkbox3 : WpfCheckBox
+    {
+        
+        public Checkbox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "Checkbox";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mSpinner;
         #endregion
     }
     

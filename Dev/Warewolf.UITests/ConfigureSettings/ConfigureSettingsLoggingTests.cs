@@ -13,6 +13,7 @@ namespace Warewolf.UITests
             Uimap.Select_LoggingTab();
             Uimap.Click_Server_Log_File_Button();
             Uimap.Click_Studio_Log_File();
+            Uimap.Click_Close_Settings_Tab_Button();
         }
 
         #region Additional test attributes
