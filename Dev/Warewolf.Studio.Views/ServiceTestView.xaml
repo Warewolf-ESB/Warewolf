@@ -420,12 +420,8 @@
                                                                             AcceptsReturn="True"
                                                                             ToolTip="{x:Static languages:Core.ServiceTestInputValueTooltip}"
                                                                             AllowUserInsertLine="True"
-                                                                            SelectAllOnGotFocus="True">
-                                                        <AutomationProperties.AutomationId>
-                                                            <MultiBinding StringFormat="UI_{0}txt_AutoID">
-                                                                <Binding Path="Value"/>
-                                                            </MultiBinding>
-                                                        </AutomationProperties.AutomationId>
+                                                                            SelectAllOnGotFocus="True"
+                                                                            AutomationProperties.AutomationId="UI_TestInputsValue_AutoID">
                                                         <ui:IntellisenseTextBox.IntellisenseProvider>
                                                             <interfaceImplementors:CompositeIntellisenseProvider>
                                                                 <provider:BlankIntellisenseProvider />
@@ -447,9 +443,10 @@
                                                 <DataTemplate>
                                                     <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                               HorizontalAlignment="Center"
-                                                                  Checked="ToggleButton_OnChecked"
-                                                                  Unchecked="ToggleButton_OnChecked"
-                                                              ToolTip="{x:Static languages:Core.InputEmptyIsNullToolTip}">
+                                                              Checked="ToggleButton_OnChecked"
+                                                              Unchecked="ToggleButton_OnChecked"
+                                                              ToolTip="{x:Static languages:Core.InputEmptyIsNullToolTip}"
+                                                              AutomationProperties.AutomationId="UI_TestInputsEmptyIsNull_AutoID">
                                                         <i:Interaction.Behaviors>
                                                             <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                         </i:Interaction.Behaviors>
@@ -505,12 +502,8 @@
                                                                             AcceptsReturn="True"
                                                                             ToolTip="{x:Static languages:Core.ServiceTestOutputValueTooltip}"
                                                                             AllowUserInsertLine="True"
-                                                                            SelectAllOnGotFocus="True">
-                                                        <AutomationProperties.AutomationId>
-                                                            <MultiBinding StringFormat="UI_{0}txt_AutoID">
-                                                                <Binding Path="Value"/>
-                                                            </MultiBinding>
-                                                        </AutomationProperties.AutomationId>
+                                                                            SelectAllOnGotFocus="True"
+                                                                            AutomationProperties.AutomationId="UI_TestOutputsValue_AutoID">
                                                         <ui:IntellisenseTextBox.IntellisenseProvider>
                                                             <interfaceImplementors:CompositeIntellisenseProvider>
                                                                 <provider:BlankIntellisenseProvider />
