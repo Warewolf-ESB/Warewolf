@@ -14,7 +14,7 @@ namespace Warewolf.UITests
             Uimap.Click_Reset_Perfomance_Counter();
             Uimap.Click_Select_Resource_Button();
             Uimap.Select_Dice_From_Service_Picker("PerfomanceCounterTab");
-
+            Uimap.Click_Close_Settings_Tab_Button();
         }
 
         #region Additional test attributes

@@ -32,47 +32,24 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             this.scenarioContext = scenarioContext;
         }
-        [Given(@"this Javascript feature")]
-        public void GivenThisJavascriptFeature()
-        {
 
+        [BeforeFeature("PythonFeature")]
+        public static void SetupPython()
+        {
+            FeatureContext.Current.Add("pythonActivity", new DsfPythonActivity());
         }
 
-        [Given(@"this Python feature")]
-        public void GivenThisPythonFeature()
+        [BeforeFeature("JavascriptFeature")]
+        public static void SetupJavascript()
         {
-
+            FeatureContext.Current.Add("javascript", new DsfJavascriptActivity());
         }
-
-        [Given(@"this Ruby feature")]
-        public void GivenThisRubyFeature()
+        [BeforeFeature("RubyFeature")]
+        public static void SetupRuby()
         {
-            
+            FeatureContext.Current.Add("rubyActivity", new DsfRubyActivity());
         }
-
-
-        [Then(@"activity is DsfJavascriptActivity")]
-        public void ThenActivityIsDsfJavascriptActivity()
-        {
-            scenarioContext.Add("javascript", new DsfJavascriptActivity());
-
-
-        }
-
-        [Then(@"activity is DsfPythonActivity")]
-        public void ThenActivityIsDsfPythonActivity()
-        {
-            scenarioContext.Add("pythonActivity", new DsfPythonActivity());
-        }
-
-        [Then(@"activity is DsfRubyActivity")]
-        public void ThenActivityIsDsfRubyActivity()
-        {
-            scenarioContext.Add("rubyActivity", new DsfRubyActivity());
-        }
-
-
-
+        
 
         protected override void BuildDataList()
         {
@@ -109,7 +86,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             }
 
             DsfPythonActivity pythonActivity;
-            scenarioContext.TryGetValue("pythonActivity", out pythonActivity);
+            FeatureContext.Current.TryGetValue("pythonActivity", out pythonActivity);
 
             if (pythonActivity != null)
             {
@@ -121,6 +98,22 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                     Action = pythonActivity
                 };
                 scenarioContext.Add("activity", pythonActivity);
+                return;
+            }
+
+            DsfRubyActivity rubyActivity;
+            FeatureContext.Current.TryGetValue("rubyActivity", out rubyActivity);
+
+            if (rubyActivity != null)
+            {
+                rubyActivity.Script = scriptToExecute;
+                rubyActivity.Result = ResultVariable;
+
+                TestStartNode = new FlowStep
+                {
+                    Action = rubyActivity
+                };
+                scenarioContext.Add("activity", rubyActivity);
                 return;
             }
 

@@ -55,7 +55,7 @@ namespace Dev2.Settings.Security
         public IResourcePickerDialog CreateResourcePickerDialog()
         {
             var env = GetEnvironment();
-            var res = new ResourcePickerDialog(enDsfActivityType.All, env);
+            var res = new ResourcePickerDialog(enDsfActivityType.Workflow, env);
             ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, env).ContinueWith(a => _resourcePicker = a.Result);
             return res;
         }

@@ -31,6 +31,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
+using Infragistics.Windows.DockManager;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Core;
 
@@ -173,6 +174,8 @@ namespace Dev2.Studio
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
                 _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
             }
+            var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
+            toolboxPane?.Activate();
         }
 
         private async void CheckForDuplicateResources()

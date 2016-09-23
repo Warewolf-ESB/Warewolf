@@ -51,8 +51,19 @@ namespace Warewolf.Studio.Views
 
         private void ToolGrid_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            var toolboxPane = Application.Current.MainWindow.FindName("Toolbox") as ContentPane;
-            toolboxPane?.Activate();
+            var variablesPane = Application.Current.MainWindow.FindName("Variables") as ContentPane;
+            var explorerPane = Application.Current.MainWindow.FindName("Explorer") as ContentPane;
+            var outputPane = Application.Current.MainWindow.FindName("OutputPane") as ContentPane;
+            var documentHostPane = Application.Current.MainWindow.FindName("DocumentHost") as ContentPane;
+
+            if (variablesPane != null && !variablesPane.IsActivePane &&
+                explorerPane != null && !explorerPane.IsActivePane &&
+                outputPane != null && !outputPane.IsActivePane &&
+                documentHostPane != null && !documentHostPane.IsActivePane)
+            {
+                var toolboxPane = Application.Current.MainWindow.FindName("Toolbox") as ContentPane;
+                toolboxPane?.Activate();
+            }
         }
     }
 }
