@@ -606,10 +606,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 try
                 {
-                    ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, test.TestName);
-                    var testToRemove = _tests.SingleOrDefault(model => model.ParentId == test.ParentId && model.TestName == SelectedServiceTest.TestName);
-                    _tests.Remove(testToRemove); //test
-                    OnPropertyChanged(() => Tests); //test
+                    if (!test.IsNewTest)
+                    {
+                        ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, test.TestName);
+                    }
+                    _tests.Remove(test);
+                    OnPropertyChanged(() => Tests);
                     SelectedServiceTest = null;
                 }
                 catch (Exception ex)
