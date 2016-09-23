@@ -31,7 +31,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Scripting.Ruby
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Ruby", "\tIn order to execute Ruby\r\n\tAs a Warewolf user\r\n\tI want a tool that allows me to " +
-                    "execute Ruby", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "execute Ruby", ProgrammingLanguage.CSharp, new string[] {
+                        "RubyFeature"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -68,37 +69,26 @@ namespace Warewolf.ToolsSpecs.Toolbox.Scripting.Ruby
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void FeatureBackground()
-        {
-#line 6
-#line 7
-  testRunner.Given("this Ruby feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 8
-  testRunner.Then("activity is DsfRubyActivity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-        }
-        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby Variable is 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Ruby")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RubyFeature")]
         public virtual void ExecuteRubyVariableIs1()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 1", ((string[])(null)));
-#line 11
+#line 7
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 12
+#line 8
  testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 13
+#line 9
  testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
+#line 10
  testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
+#line 11
  testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 16
+#line 12
  testRunner.Then("the script result should be \"one\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 17
+#line 13
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -107,14 +97,14 @@ this.FeatureBackground();
             table1.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
-#line 18
+#line 14
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2.AddRow(new string[] {
                         "[[result]] = one"});
-#line 21
+#line 17
  testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -123,22 +113,21 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby blank script")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Ruby")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RubyFeature")]
         public virtual void ExecuteRubyBlankScript()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby blank script", ((string[])(null)));
-#line 25
+#line 21
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 26
+#line 22
  testRunner.Given("I have this script to execute \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 27
+#line 23
  testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
+#line 24
  testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 29
+#line 25
  testRunner.Then("the script result should be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 30
+#line 26
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -147,14 +136,14 @@ this.FeatureBackground();
             table3.AddRow(new string[] {
                         "Ruby",
                         "\"\""});
-#line 31
+#line 27
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table4.AddRow(new string[] {
                         "[[result]] ="});
-#line 34
+#line 30
  testRunner.And("the debug output as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -163,24 +152,23 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby Variable is 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Ruby")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RubyFeature")]
         public virtual void ExecuteRubyVariableIs2()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 2", ((string[])(null)));
-#line 38
+#line 34
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 39
+#line 35
  testRunner.Given("I have a script variable \"[[val]]\" with this value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 40
+#line 36
  testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
+#line 37
  testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
+#line 38
  testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 43
+#line 39
  testRunner.Then("the script result should be \"two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 44
+#line 40
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -189,14 +177,14 @@ this.FeatureBackground();
             table5.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
-#line 45
+#line 41
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table6.AddRow(new string[] {
                         "[[result]] = two"});
-#line 48
+#line 44
  testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -205,24 +193,23 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby Variable is 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Ruby")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RubyFeature")]
         public virtual void ExecuteRubyVariableIs3()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 3", ((string[])(null)));
-#line 52
+#line 48
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 53
+#line 49
  testRunner.Given("I have a script variable \"[[val]]\" with this value \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 54
+#line 50
  testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
+#line 51
  testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 52
  testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
+#line 53
  testRunner.Then("the script result should be \"not one or two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 58
+#line 54
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -231,14 +218,14 @@ this.FeatureBackground();
             table7.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
-#line 59
+#line 55
  testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table8.AddRow(new string[] {
                         "[[result]] = not one or two"});
-#line 62
+#line 58
  testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -247,24 +234,23 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby Variable is 100")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Ruby")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RubyFeature")]
         public virtual void ExecuteRubyVariableIs100()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 100", ((string[])(null)));
-#line 66
+#line 62
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 67
+#line 63
  testRunner.Given("I have a script variable \"[[val]]\" with this value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 68
+#line 64
  testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 65
  testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 66
  testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 71
+#line 67
  testRunner.Then("the script result should be \"not one or two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 72
+#line 68
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -273,14 +259,14 @@ this.FeatureBackground();
             table9.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
-#line 73
+#line 69
  testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table10.AddRow(new string[] {
                         "[[result]] = not one or two"});
-#line 76
+#line 72
  testRunner.And("the debug output as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -289,22 +275,21 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute badly formed Ruby")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Ruby")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RubyFeature")]
         public virtual void ExecuteBadlyFormedRuby()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute badly formed Ruby", ((string[])(null)));
-#line 80
+#line 76
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 81
+#line 77
  testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 82
+#line 78
  testRunner.And("I have this script to execute \"ruby_badly_formatted.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 79
  testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 80
  testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 85
+#line 81
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -313,14 +298,14 @@ this.FeatureBackground();
             table11.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
-#line 86
+#line 82
  testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table12.AddRow(new string[] {
                         "[[result]] ="});
-#line 89
+#line 85
  testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -329,26 +314,25 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby with 2 variables")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Ruby")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RubyFeature")]
         public virtual void ExecuteRubyWith2Variables()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby with 2 variables", ((string[])(null)));
-#line 93
+#line 89
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 94
+#line 90
  testRunner.Given("I have a script variable \"[[val1]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 95
+#line 91
  testRunner.Given("I have a script variable \"[[val2]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 96
+#line 92
  testRunner.And("I have this script to execute \"ruby_two_variables.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 93
  testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
+#line 94
  testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 99
+#line 95
  testRunner.Then("the script result should be \"two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 100
+#line 96
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -357,14 +341,14 @@ this.FeatureBackground();
             table13.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
-#line 101
+#line 97
  testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table14.AddRow(new string[] {
                         "[[result]] = two"});
-#line 104
+#line 100
  testRunner.And("the debug output as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -373,20 +357,19 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby with a negative recordset index")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Ruby")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RubyFeature")]
         public virtual void ExecuteRubyWithANegativeRecordsetIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby with a negative recordset index", ((string[])(null)));
-#line 108
+#line 104
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 109
+#line 105
  testRunner.Given("I have this script to execute \"[[my(-1).val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 110
+#line 106
  testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 107
  testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 112
+#line 108
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -395,14 +378,14 @@ this.FeatureBackground();
             table15.AddRow(new string[] {
                         "Ruby",
                         "[[my(-1).val]] ="});
-#line 113
+#line 109
  testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table16.AddRow(new string[] {
                         "[[result]] ="});
-#line 116
+#line 112
  testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();

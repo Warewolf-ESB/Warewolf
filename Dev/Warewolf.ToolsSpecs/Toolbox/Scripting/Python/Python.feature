@@ -1,12 +1,8 @@
-﻿Feature: Python
+﻿@PythonFeature
+Feature: Python
 	In order to execute Python
 	As a Warewolf user
 	I want a tool that allows me to execute Python
-
-Background: Setup for workflows for tests
-		Given this Python feature 
-		Then activity is DsfPythonActivity
-
 
 Scenario: Execute Python Variable is 1
 	Given I have a script variable "[[val]]" with this value "1"

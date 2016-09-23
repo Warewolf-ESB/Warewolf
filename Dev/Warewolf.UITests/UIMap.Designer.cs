@@ -1670,23 +1670,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Server_Source_Wizard_Address_Protocol_Dropdown - Use 'Click_Server_Source_Wizard_Address_Protocol_DropdownParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Server_Source_Wizard_Address_Protocol_Dropdown()
-        {
-            #region Variable Declarations
-            WpfButton toggleDropdown = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
-            WpfCustom comboboxListItemAsHttp = this.MainStudioWindow.ComboboxListItemAsHttp;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(toggleDropdown, new Point(54, 8));
-
-            // Verify that the 'Exists' property of 'http' custom control equals 'True'
-            Assert.AreEqual(this.Click_Server_Source_Wizard_Address_Protocol_DropdownParams.ComboboxListItemAsHttpExists, comboboxListItemAsHttp.Exists, "Http does not exist in server source wizard address protocol dropdown list.");
-        }
-        
-        /// <summary>
         /// Click_Server_Source_Wizard_Test_Connection_Button - Use 'Click_Server_Source_Wizard_Test_Connection_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Server_Source_Wizard_Test_Connection_Button()
@@ -5848,10 +5831,17 @@ namespace Warewolf.UITests
         public void Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown()
         {
             #region Variable Declarations
+            WpfButton toggleDropdown = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
             WpfCustom comboboxListItemAsHttp = this.MainStudioWindow.ComboboxListItemAsHttp;
             WpfText httpSelectedItemText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.HttpSelectedItemText;
             WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
             #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleDropdown, new Point(54, 8));
+
+            // Verify that the 'Exists' property of 'http' custom control equals 'True'
+            Assert.AreEqual(this.Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams.ComboboxListItemAsHttpExists, comboboxListItemAsHttp.Exists, "Http does not exist in server source wizard address protocol dropdown list.");
 
             // Click 'http' custom control
             Mouse.Click(comboboxListItemAsHttp, new Point(31, 12));
@@ -7113,18 +7103,6 @@ namespace Warewolf.UITests
                     this.mClick_Select_Windows_Group_Cancel_ButtonParams = new Click_Select_Windows_Group_Cancel_ButtonParams();
                 }
                 return this.mClick_Select_Windows_Group_Cancel_ButtonParams;
-            }
-        }
-        
-        public virtual Click_Server_Source_Wizard_Address_Protocol_DropdownParams Click_Server_Source_Wizard_Address_Protocol_DropdownParams
-        {
-            get
-            {
-                if ((this.mClick_Server_Source_Wizard_Address_Protocol_DropdownParams == null))
-                {
-                    this.mClick_Server_Source_Wizard_Address_Protocol_DropdownParams = new Click_Server_Source_Wizard_Address_Protocol_DropdownParams();
-                }
-                return this.mClick_Server_Source_Wizard_Address_Protocol_DropdownParams;
             }
         }
         
@@ -9095,18 +9073,6 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
-        
-        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
-                {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
-                }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -9207,8 +9173,6 @@ namespace Warewolf.UITests
         private Click_Select_Resource_Button_From_Resource_PermissionsParams mClick_Select_Resource_Button_From_Resource_PermissionsParams;
         
         private Click_Select_Windows_Group_Cancel_ButtonParams mClick_Select_Windows_Group_Cancel_ButtonParams;
-        
-        private Click_Server_Source_Wizard_Address_Protocol_DropdownParams mClick_Server_Source_Wizard_Address_Protocol_DropdownParams;
         
         private Click_Server_Source_Wizard_Test_Connection_ButtonParams mClick_Server_Source_Wizard_Test_Connection_ButtonParams;
         
@@ -9537,8 +9501,6 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
-        
-        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -10617,21 +10579,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Cancel' button equals 'True'
         /// </summary>
         public bool CancelExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Server_Source_Wizard_Address_Protocol_Dropdown'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Server_Source_Wizard_Address_Protocol_DropdownParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'http' custom control equals 'True'
-        /// </summary>
-        public bool ComboboxListItemAsHttpExists = true;
         #endregion
     }
     
@@ -13463,6 +13410,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'http' custom control equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsHttpExists = true;
+        
         /// <summary>
         /// Verify that the 'DisplayText' property of 'http' label equals 'http'
         /// </summary>
@@ -42261,140 +42213,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2ASHLEYLEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDsfDotNetDllActivityCustom UIDsfDotNetDllActivityCustom
-        {
-            get
-            {
-                if ((this.mUIDsfDotNetDllActivityCustom == null))
-                {
-                    this.mUIDsfDotNetDllActivityCustom = new UIDsfDotNetDllActivityCustom(this);
-                }
-                return this.mUIDsfDotNetDllActivityCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDsfDotNetDllActivityCustom mUIDsfDotNetDllActivityCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDsfDotNetDllActivityCustom : WpfCustom
-    {
-        
-        public UIDsfDotNetDllActivityCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DotNetDllDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DotNet DLL - Outputs(DotNetDllDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UILargeViewContentCustom UILargeViewContentCustom
-        {
-            get
-            {
-                if ((this.mUILargeViewContentCustom == null))
-                {
-                    this.mUILargeViewContentCustom = new UILargeViewContentCustom(this);
-                }
-                return this.mUILargeViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UILargeViewContentCustom mUILargeViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UILargeViewContentCustom : WpfCustom
-    {
-        
-        public UILargeViewContentCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UITestButton UITestButton
-        {
-            get
-            {
-                if ((this.mUITestButton == null))
-                {
-                    this.mUITestButton = new UITestButton(this);
-                }
-                return this.mUITestButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UITestButton mUITestButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UITestButton : WpfButton
-    {
-        
-        public UITestButton(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UITestText
-        {
-            get
-            {
-                if ((this.mUITestText == null))
-                {
-                    this.mUITestText = new WpfText(this);
-                    #region Search Criteria
-                    this.mUITestText.SearchProperties[WpfText.PropertyNames.Name] = "Test";
-                    this.mUITestText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUITestText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUITestText;
         #endregion
     }
 }
