@@ -3,6 +3,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Dev2.Common.Common;
 using Dev2.Data;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
@@ -12,6 +13,7 @@ namespace Dev2.Studio.Core.Models.DataList
     public class RecordSetItemModel : DataListItemModel, IRecordSetItemModel
     {
         private ObservableCollection<IRecordSetFieldItemModel> _children;
+        private string _searchText;
 
         public RecordSetItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IRecordSetFieldItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true) 
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
@@ -23,6 +25,14 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
+                if (!string.IsNullOrEmpty(_searchText))
+                {
+                    if (_children != null)
+                    {
+                        var itemModels = _children.Where(model => model.IsVisible).ToObservableCollection();
+                        return itemModels;
+                    }
+                }
                 return _children ?? (_children = new ObservableCollection<IRecordSetFieldItemModel>());
             }
             set
@@ -34,36 +44,37 @@ namespace Dev2.Studio.Core.Models.DataList
 
         public void Filter(string searchText)
         {
-            if(!string.IsNullOrEmpty(DisplayName) && !string.IsNullOrEmpty(searchText))
+            if(!string.IsNullOrEmpty(searchText))
             {
-                if (Children != null)
+                if (_children != null)
                 {
-                    foreach (var recordSetFieldItemModel in Children)
+                    foreach (var recordSetFieldItemModel in _children)
                     {
                         recordSetFieldItemModel.Filter(searchText);
                     }
                 }
-                if(Children != null && Children.Any(model => model.IsVisible))
+                if(_children != null && _children.Any(model => model.IsVisible))
                 {
                     IsVisible = true;
                 }
                 else
                 {
-                    IsVisible = DisplayName.ToLower().Contains(searchText.ToLower());
+                    IsVisible = !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
                 }
             }
             else
             {
                 IsVisible = true;
-                if (Children != null)
+                if (_children != null)
                 {
-                    foreach(var recordSetFieldItemModel in Children)
+                    foreach(var recordSetFieldItemModel in _children)
                     {
                         recordSetFieldItemModel.IsVisible = true;
                     }
                 }
             }
-
+            _searchText = searchText;
+            NotifyOfPropertyChange(()=>Children);
         }
 
         public override bool Input

@@ -494,14 +494,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Used to transform the WorkflowInputs into XML
         /// </summary>
-        public void SetXmlData()
+        public void SetXmlData(bool includeBlank = false)
         {
             var dataListObject = new JObject();
             var objects = WorkflowInputs.Where(item => item.IsObject);
             var recSets = WorkflowInputs.Where(item => item.CanHaveMutipleRows && !item.IsObject);
             var scalars = WorkflowInputs.Where(item => !item.CanHaveMutipleRows && !item.IsObject);
             AddScalarsToObject(scalars, dataListObject);
-            AddRecordsetsToObject(recSets, dataListObject);
+            AddRecordsetsToObject(recSets, dataListObject,includeBlank);
             AddObjectsToObject(objects, dataListObject);
 
             var dataListString = dataListObject.ToString(Formatting.Indented);
@@ -564,7 +564,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private static void AddRecordsetsToObject(IEnumerable<IDataListItem> recSets, JObject dataListObject)
+        private static void AddRecordsetsToObject(IEnumerable<IDataListItem> recSets, JObject dataListObject,bool includeBlank = false)
         {
             var groupedRecsets = recSets.GroupBy(item => item.Recordset);
             foreach (var groupedRecset in groupedRecsets)
@@ -584,7 +584,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                         jObjForArray.Add(new JProperty(listItem.Field, listItem.Value ?? string.Empty));
                     }
-                    if (!empty)
+                    if (!empty || includeBlank)
                     {
                         newArray.Add(jObjForArray);
                     }

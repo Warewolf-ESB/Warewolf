@@ -248,12 +248,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Searching Variables in Variable list")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sorting Variables in Variable list")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
-        public virtual void SearchingVariablesInVariableList()
+        public virtual void SortingVariablesInVariableList()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching Variables in Variable list", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sorting Variables in Variable list", ((string[])(null)));
 #line 61
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -302,32 +302,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 62
  testRunner.Given("I have variables as", ((string)(null)), table6, "Given ");
 #line 70
- testRunner.Then("\"Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 71
- testRunner.And("variables filter box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
- testRunner.And("\"Filter Clear\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
- testRunner.And("\"Delete Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
- testRunner.And("\"Sort Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
- testRunner.When("I search for variable \"[[lr().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Sort the variables", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Delete IsEnabled",
-                        "Note Visible",
                         "Note Highlighted",
                         "Input",
                         "Output"});
-#line 76
- testRunner.Then("the Variable Names are", ((string)(null)), table7, "Then ");
+            table7.AddRow(new string[] {
+                        "a",
+                        "YES",
+                        "",
+                        "",
+                        ""});
+            table7.AddRow(new string[] {
+                        "Var",
+                        "",
+                        "",
+                        "YES",
+                        ""});
+#line 71
+ testRunner.And("the Variable Names are", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset Name",
                         "Delete IsEnabled",
-                        "Note Visible",
                         "Note Highlighted",
                         "Input",
                         "Output"});
@@ -336,177 +336,319 @@ this.ScenarioSetup(scenarioInfo);
                         "YES",
                         "",
                         "",
-                        "",
                         ""});
             table8.AddRow(new string[] {
                         "lr().a",
                         "YES",
                         "",
                         "",
-                        "",
                         ""});
-#line 78
- testRunner.And("the Recordset Names are", ((string)(null)), table8, "And ");
-#line 82
- testRunner.And("I click delete for \"lr().a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Variable Name",
-                        "Delete IsEnabled",
-                        "Note Visible",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-#line 83
- testRunner.Then("the Variable Names are", ((string)(null)), table9, "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Recordset Name",
-                        "Delete IsEnabled",
-                        "Note Visible",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-#line 85
- testRunner.And("the Recordset Names are", ((string)(null)), table10, "And ");
-#line 87
- testRunner.And("I click \"Delete Variables\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Variable Name",
-                        "Delete IsEnabled",
-                        "Note Visible",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-#line 88
- testRunner.Then("the Variable Names are", ((string)(null)), table11, "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Recordset Name",
-                        "Delete IsEnabled",
-                        "Note Visible",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-#line 90
- testRunner.And("the Recordset Names are", ((string)(null)), table12, "And ");
-#line 92
- testRunner.When("I press the clear filter button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Variable Name",
-                        "Delete IsEnabled",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-            table13.AddRow(new string[] {
-                        "Var",
+            table8.AddRow(new string[] {
+                        "mr()",
                         "",
-                        "",
-                        "YES",
-                        ""});
-            table13.AddRow(new string[] {
-                        "a",
-                        "YES",
                         "",
                         "",
                         ""});
-#line 93
- testRunner.And("the Variable Names are", ((string)(null)), table13, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Recordset Name",
-                        "Delete IsEnabled",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-            table14.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "rec()",
                         "",
                         "",
                         "",
                         ""});
-            table14.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "rec().a",
                         "",
                         "YES",
                         "",
                         "YES"});
-            table14.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "rec().b",
                         "YES",
                         "",
                         "",
                         ""});
-            table14.AddRow(new string[] {
-                        "mr()",
+#line 75
+ testRunner.And("the Recordset Names are", ((string)(null)), table8, "And ");
+#line 83
+ testRunner.When("I Sort the variables", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Delete IsEnabled",
+                        "Note Highlighted",
+                        "Input",
+                        "Output"});
+            table9.AddRow(new string[] {
+                        "Var",
+                        "",
+                        "",
+                        "YES",
+                        ""});
+            table9.AddRow(new string[] {
+                        "a",
                         "YES",
                         "",
                         "",
                         ""});
-#line 97
- testRunner.And("the Recordset Names are", ((string)(null)), table14, "And ");
+#line 84
+ testRunner.And("the Variable Names are", ((string)(null)), table9, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Recordset Name",
+                        "Delete IsEnabled",
+                        "Note Highlighted",
+                        "Input",
+                        "Output"});
+            table10.AddRow(new string[] {
+                        "rec()",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table10.AddRow(new string[] {
+                        "rec().b",
+                        "YES",
+                        "",
+                        "",
+                        ""});
+            table10.AddRow(new string[] {
+                        "rec().a",
+                        "",
+                        "YES",
+                        "",
+                        "YES"});
+            table10.AddRow(new string[] {
+                        "mr()",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table10.AddRow(new string[] {
+                        "lr()",
+                        "YES",
+                        "",
+                        "",
+                        ""});
+            table10.AddRow(new string[] {
+                        "lr().a",
+                        "YES",
+                        "",
+                        "",
+                        ""});
+#line 88
+ testRunner.And("the Recordset Names are", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sorting Variables in Variable list")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Variable Errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
-        public virtual void SortingVariablesInVariableList()
+        public virtual void VariableErrors()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sorting Variables in Variable list", ((string[])(null)));
-#line 104
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Variable Errors", ((string[])(null)));
+#line 97
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Error State",
+                        "Delete IsEnabled",
+                        "Error Tooltip"});
+            table11.AddRow(new string[] {
+                        "a",
+                        "",
+                        "",
+                        ""});
+            table11.AddRow(new string[] {
+                        "1b",
+                        "YES",
+                        "",
+                        "Variables must begin with alphabetical characters"});
+            table11.AddRow(new string[] {
+                        "b@",
+                        "YES",
+                        "",
+                        "Variables contains invalid character"});
+            table11.AddRow(new string[] {
+                        "b1",
+                        "",
+                        "",
+                        ""});
+#line 98
+ testRunner.Given("the Variable Names are", ((string)(null)), table11, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Recordset Name",
+                        "Error State",
+                        "Delete IsEnabled",
+                        "Error Tooltip"});
+            table12.AddRow(new string[] {
+                        "1r()",
+                        "YES",
+                        "",
+                        "Recordset names must begin with alphabetical characters"});
+            table12.AddRow(new string[] {
+                        "1r().a",
+                        "",
+                        "",
+                        ""});
+            table12.AddRow(new string[] {
+                        "rec()",
+                        "",
+                        "",
+                        ""});
+            table12.AddRow(new string[] {
+                        "rec().a",
+                        "",
+                        "",
+                        ""});
+            table12.AddRow(new string[] {
+                        "rec().1a",
+                        "YES",
+                        "",
+                        "Recordset fields must begin with alphabetical characters"});
+            table12.AddRow(new string[] {
+                        "rec().b",
+                        "YES",
+                        "",
+                        "Duplicate Variable"});
+            table12.AddRow(new string[] {
+                        "rec().b",
+                        "YES",
+                        "",
+                        "Duplicate Variable"});
+#line 104
+ testRunner.And("the Recordset Names are", ((string)(null)), table12, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Variables removed from design surface and list")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
+        public virtual void VariablesRemovedFromDesignSurfaceAndList()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Variables removed from design surface and list", ((string[])(null)));
+#line 114
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable",
                         "Note",
                         "Input",
                         "Output",
                         "IsUsed"});
-            table15.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "[[rec().a]]",
                         "This is recordset",
                         "",
                         "YES",
                         "YES"});
-            table15.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "[[rec().b]]",
                         "",
                         "",
                         "",
                         ""});
-            table15.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "[[mr()]]",
                         "",
                         "",
                         "",
-                        "YES"});
-            table15.AddRow(new string[] {
+                        ""});
+            table13.AddRow(new string[] {
                         "[[Var]]",
                         "",
                         "YES",
                         "",
                         "YES"});
-            table15.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "[[a]]",
                         "",
                         "",
                         "",
                         ""});
-            table15.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "[[lr().a]]",
                         "",
                         "",
                         "",
                         ""});
-#line 105
- testRunner.Given("I have variables as", ((string)(null)), table15, "Given ");
-#line 113
- testRunner.When("I Sort the variables", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 115
+ testRunner.Given("I have variables as", ((string)(null)), table13, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Delete IsEnabled",
+                        "Note Highlighted",
+                        "Input",
+                        "Output"});
+            table14.AddRow(new string[] {
+                        "Var",
+                        "",
+                        "",
+                        "YES",
+                        ""});
+            table14.AddRow(new string[] {
+                        "a",
+                        "YES",
+                        "",
+                        "",
+                        ""});
+#line 123
+ testRunner.And("the Variable Names are", ((string)(null)), table14, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Recordset Name",
+                        "Delete IsEnabled",
+                        "Note Highlighted",
+                        "Input",
+                        "Output"});
+            table15.AddRow(new string[] {
+                        "rec()",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table15.AddRow(new string[] {
+                        "rec().a",
+                        "",
+                        "YES",
+                        "",
+                        "YES"});
+            table15.AddRow(new string[] {
+                        "rec().b",
+                        "YES",
+                        "",
+                        "",
+                        ""});
+            table15.AddRow(new string[] {
+                        "mr()",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table15.AddRow(new string[] {
+                        "lr()",
+                        "YES",
+                        "",
+                        "",
+                        ""});
+            table15.AddRow(new string[] {
+                        "lr().a",
+                        "YES",
+                        "",
+                        "",
+                        ""});
+#line 127
+ testRunner.And("the Recordset Names are", ((string)(null)), table15, "And ");
+#line 135
+ testRunner.And("I click delete for \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 136
+ testRunner.And("I click delete for \"mr()\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
@@ -520,13 +662,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table16.AddRow(new string[] {
-                        "Var",
-                        "",
-                        "",
-                        "YES",
-                        ""});
-#line 114
+#line 137
  testRunner.And("the Variable Names are", ((string)(null)), table16, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -536,24 +672,6 @@ this.ScenarioSetup(scenarioInfo);
                         "Input",
                         "Output"});
             table17.AddRow(new string[] {
-                        "lr()",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-            table17.AddRow(new string[] {
-                        "lr().a",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-            table17.AddRow(new string[] {
-                        "mr()",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table17.AddRow(new string[] {
                         "rec()",
                         "",
                         "",
@@ -571,10 +689,24 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 118
+            table17.AddRow(new string[] {
+                        "lr()",
+                        "YES",
+                        "",
+                        "",
+                        ""});
+            table17.AddRow(new string[] {
+                        "lr().a",
+                        "YES",
+                        "",
+                        "",
+                        ""});
+#line 140
  testRunner.And("the Recordset Names are", ((string)(null)), table17, "And ");
-#line 126
- testRunner.When("I Sort the variables", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 147
+ testRunner.And("I change variable Name from \"a\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 148
+ testRunner.And("I change Recordset Name from \"rec()\" to \"this\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
@@ -582,19 +714,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Note Highlighted",
                         "Input",
                         "Output"});
-            table18.AddRow(new string[] {
-                        "Var",
-                        "",
-                        "",
-                        "YES",
-                        ""});
-            table18.AddRow(new string[] {
-                        "a",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-#line 127
+#line 149
  testRunner.And("the Variable Names are", ((string)(null)), table18, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -604,373 +724,49 @@ this.ScenarioSetup(scenarioInfo);
                         "Input",
                         "Output"});
             table19.AddRow(new string[] {
-                        "rec()",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table19.AddRow(new string[] {
-                        "rec().b",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-            table19.AddRow(new string[] {
-                        "rec().a",
-                        "",
-                        "YES",
-                        "",
-                        "YES"});
-            table19.AddRow(new string[] {
-                        "mr()",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table19.AddRow(new string[] {
-                        "lr()",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-            table19.AddRow(new string[] {
-                        "lr().a",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-#line 131
- testRunner.And("the Recordset Names are", ((string)(null)), table19, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Variable Errors")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
-        public virtual void VariableErrors()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Variable Errors", ((string[])(null)));
-#line 140
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Variable",
-                        "Error State",
-                        "Delete IsEnabled",
-                        "Error Tooltip"});
-            table20.AddRow(new string[] {
-                        "a",
-                        "",
-                        "",
-                        ""});
-            table20.AddRow(new string[] {
-                        "1b",
-                        "YES",
-                        "",
-                        "Variables must begin with alphabetical characters"});
-            table20.AddRow(new string[] {
-                        "b@",
-                        "YES",
-                        "",
-                        "Variables contains invalid character"});
-            table20.AddRow(new string[] {
-                        "b1",
-                        "",
-                        "",
-                        ""});
-#line 141
- testRunner.Given("the Variable Names are", ((string)(null)), table20, "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Recordset Name",
-                        "Error State",
-                        "Delete IsEnabled",
-                        "Error Tooltip"});
-            table21.AddRow(new string[] {
-                        "1r()",
-                        "YES",
-                        "",
-                        "Recordset names must begin with alphabetical characters"});
-            table21.AddRow(new string[] {
-                        "1r().a",
-                        "",
-                        "",
-                        ""});
-            table21.AddRow(new string[] {
-                        "rec()",
-                        "",
-                        "",
-                        ""});
-            table21.AddRow(new string[] {
-                        "rec().a",
-                        "",
-                        "",
-                        ""});
-            table21.AddRow(new string[] {
-                        "rec().1a",
-                        "YES",
-                        "",
-                        "Recordset fields must begin with alphabetical characters"});
-            table21.AddRow(new string[] {
-                        "rec().b",
-                        "YES",
-                        "",
-                        "Duplicate Variable"});
-            table21.AddRow(new string[] {
-                        "rec().b",
-                        "YES",
-                        "",
-                        "Duplicate Variable"});
-#line 147
- testRunner.And("the Recordset Names are", ((string)(null)), table21, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Variables removed from design surface and list")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
-        public virtual void VariablesRemovedFromDesignSurfaceAndList()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Variables removed from design surface and list", ((string[])(null)));
-#line 157
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Variable",
-                        "Note",
-                        "Input",
-                        "Output",
-                        "IsUsed"});
-            table22.AddRow(new string[] {
-                        "[[rec().a]]",
-                        "This is recordset",
-                        "",
-                        "YES",
-                        "YES"});
-            table22.AddRow(new string[] {
-                        "[[rec().b]]",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table22.AddRow(new string[] {
-                        "[[mr()]]",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table22.AddRow(new string[] {
-                        "[[Var]]",
-                        "",
-                        "YES",
-                        "",
-                        "YES"});
-            table22.AddRow(new string[] {
-                        "[[a]]",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table22.AddRow(new string[] {
-                        "[[lr().a]]",
-                        "",
-                        "",
-                        "",
-                        ""});
-#line 158
- testRunner.Given("I have variables as", ((string)(null)), table22, "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Variable Name",
-                        "Delete IsEnabled",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-            table23.AddRow(new string[] {
-                        "Var",
-                        "",
-                        "",
-                        "YES",
-                        ""});
-            table23.AddRow(new string[] {
-                        "a",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-#line 166
- testRunner.And("the Variable Names are", ((string)(null)), table23, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Recordset Name",
-                        "Delete IsEnabled",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-            table24.AddRow(new string[] {
-                        "rec()",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table24.AddRow(new string[] {
-                        "rec().a",
-                        "",
-                        "YES",
-                        "",
-                        "YES"});
-            table24.AddRow(new string[] {
-                        "rec().b",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-            table24.AddRow(new string[] {
-                        "mr()",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table24.AddRow(new string[] {
-                        "lr()",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-            table24.AddRow(new string[] {
-                        "lr().a",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-#line 170
- testRunner.And("the Recordset Names are", ((string)(null)), table24, "And ");
-#line 178
- testRunner.And("I click delete for \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
- testRunner.And("I click delete for \"mr()\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Variable Name",
-                        "Delete IsEnabled",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-            table25.AddRow(new string[] {
-                        "a",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-#line 180
- testRunner.And("the Variable Names are", ((string)(null)), table25, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Recordset Name",
-                        "Delete IsEnabled",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-            table26.AddRow(new string[] {
-                        "rec()",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table26.AddRow(new string[] {
-                        "rec().a",
-                        "",
-                        "YES",
-                        "",
-                        "YES"});
-            table26.AddRow(new string[] {
-                        "rec().b",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-            table26.AddRow(new string[] {
-                        "lr()",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-            table26.AddRow(new string[] {
-                        "lr().a",
-                        "YES",
-                        "",
-                        "",
-                        ""});
-#line 183
- testRunner.And("the Recordset Names are", ((string)(null)), table26, "And ");
-#line 190
- testRunner.And("I change variable Name from \"a\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 191
- testRunner.And("I change Recordset Name from \"rec()\" to \"this\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Variable Name",
-                        "Delete IsEnabled",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-#line 192
- testRunner.And("the Variable Names are", ((string)(null)), table27, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Recordset Name",
-                        "Delete IsEnabled",
-                        "Note Highlighted",
-                        "Input",
-                        "Output"});
-            table28.AddRow(new string[] {
                         "this()",
                         "YES",
                         "",
                         "",
                         ""});
-            table28.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "this().a",
                         "YES",
                         "YES",
                         "",
                         "YES"});
-            table28.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "this().b",
                         "YES",
                         "",
                         "",
                         ""});
-            table28.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "lr()",
                         "YES",
                         "",
                         "",
                         ""});
-            table28.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "lr().a",
                         "YES",
                         "",
                         "",
                         ""});
-            table28.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "rec()",
                         "",
                         "",
                         "",
                         ""});
-            table28.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "rec().a",
                         "",
                         "YES",
                         "",
                         "YES"});
-#line 194
- testRunner.And("the Recordset Names are", ((string)(null)), table28, "And ");
+#line 151
+ testRunner.And("the Recordset Names are", ((string)(null)), table19, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
