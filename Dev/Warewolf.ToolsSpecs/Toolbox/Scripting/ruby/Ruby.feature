@@ -1,22 +1,12 @@
 ﻿Feature: Ruby
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	In order to execute Ruby
+	As a Warewolf user
+	I want a tool that allows me to execute Ruby
 
-Scenario: Execute Python with 2 variables
-	Given I have a script variable "[[val1]]" with this value "1"
-	Given I have a script variable "[[val2]]" with this value "1"
-	And I have this script to execute "python_two_variables.txt"
-	And I have selected the language as "Python"
-	When I execute the script tool
-	Then the script result should be "two"
-	And the execution has "NO" error
-	And the debug inputs as  
-	| Language | Script          |
-	| Python   | String = String |
-	And the debug output as 
-	|                   |
-	| [[result]] = two |
+Background: Setup for workflows for tests
+		Given this Ruby feature 
+		Then activity is DsfRubyActivity
+
 
 Scenario: Execute Ruby Variable is 1
 	Given I have a script variable "[[val]]" with this value "1"
