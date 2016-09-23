@@ -25,7 +25,6 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense();
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();
             Uimap.Click_Assign_Tool_ExpandAll();
-            Uimap.Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1();
             Uimap.Click_Workflow_CollapseAll();
             Uimap.Click_Assign_Tool_url();
             Uimap.Open_Assign_Tool_Qvi_Large_View();
