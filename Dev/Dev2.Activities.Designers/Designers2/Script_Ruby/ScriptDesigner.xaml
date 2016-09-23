@@ -13,7 +13,7 @@
                        Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>
-        <Binding Source="{StaticResource Scripting-JavaScript-Icon}"/>
+        <Binding Source="{StaticResource Scripting-Ruby-Icon}"/>
     </sap:ActivityDesigner.Icon>
 
     <sap:ActivityDesigner.Resources>
