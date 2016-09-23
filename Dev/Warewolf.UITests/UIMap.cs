@@ -441,7 +441,7 @@ namespace Warewolf.UITests
                     Console.WriteLine("TryClose method failed to close all Workflow tabs.\n" + e.Message);
                 }
             }
-            Assert_RunDebug_Button_Disabled();
+            Assert.IsFalse(MainStudioWindow.SideMenuBar.RunAndDebugButton.Enabled, "RunDebug button is enabled");
         }
 
         public void TryCloseWorkflowTab()
@@ -1042,35 +1042,7 @@ namespace Warewolf.UITests
             Select_Deploy_First_Source_Item();
             Click_Deploy_Tab_Deploy_Button();
         }
-
-        /// <summary>
-        /// Assert_Help_Text_Exist - Use 'Assert_Help_Text_ExistParams' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Help_Text_Exist()
-        {
-            #region Variable Declarations
-            WpfCustom helpTextEditor = this.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor;
-            #endregion
-
-            // Verify that the 'Exists' property of 'XamRichTextEditor' custom control equals 'True'
-            Assert.IsTrue(helpTextEditor.Exists, "Help text does not exist");
-        }
-
-        /// <summary>
-        /// Assert_RunDebug_Button_Disabled - Use 'Assert_RunDebug_Button_DisabledExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_RunDebug_Button_Disabled()
-        {
-            #region Variable Declarations
-            WpfButton runAndDebugButton = this.MainStudioWindow.SideMenuBar.RunAndDebugButton;
-            #endregion
-            // Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'False'
-            Assert.IsFalse(runAndDebugButton.Enabled, "RunDebug button is enabled");
-        }
-
-        /// <summary>
-        /// Click_RunAll_Button - Use 'Click_RunAll_ButtonParams' to pass parameters into this method.
-        /// </summary>
+        
         public void Click_RunAll_Button(string BrokenRule = null)
         {
             string DuplicateNameError = "DuplicateNameError";
