@@ -823,7 +823,6 @@ namespace Warewolf.UITests
 
         public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress, bool PublicAuth = false)
         {
-            Click_Server_Source_Wizard_Address_Protocol_Dropdown();
             Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
             MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext
                 .NewServerSourceWizard.AddressComboBox.AddressEditBox.Text = ServerAddress;
