@@ -7309,11 +7309,15 @@ Error while saving: This task requires that the user account specified has 'Log 
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetValueAction UIObjectName="UIMap.UIWarewolfDEV2SANELEMTWindow.UITabItemsTabList.UIInputDataTabPage.UIDataListInputsTable.UICCell">
+    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2SANELEMTWindow.UILargeViewContentCustom.UILargeDataGridTable.UIUI_ActivityGridRow_1Row.UIItemUnlimitedApplicaCell.UIUI__Row2_FieldValue_ComboBox.UITextEdit">
       <ParameterName />
-      <Value Encoded="false">Coded UI Test</Value>
-      <Type>String</Type>
-    </SetValueAction>
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="35" Y="14" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
     <TestStepMarkerAction Comment="" MarkerInformation="RecordedMethod1">
       <ParameterName />
       <StepId>-1</StepId>
@@ -19245,7 +19249,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                                                       </SearchConfigurations>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="ControlType">Row</PropertyCondition>
-                                                                        <PropertyCondition Name="AutomationId">UI_ActivityGridRow_0_AutoID</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId" Operator="Contains">UI_ActivityGridRow_0_AutoID</PropertyCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -19361,7 +19365,6 @@ Error while saving: This task requires that the user account specified has 'Log 
                                                                             <PropertyCondition Name="ColumnHeader">Variable</PropertyCondition>
                                                                             <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
@@ -19404,7 +19407,6 @@ Error while saving: This task requires that the user account specified has 'Log 
                                                                             <PropertyCondition Name="ColumnHeader">New Value</PropertyCondition>
                                                                             <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                            <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
@@ -26477,7 +26479,7 @@ Error while saving: This task requires that the user account specified has 'Log 
             </UIObject>
           </Descendants>
         </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2SANELEMTWindow" FriendlyName="Warewolf (DEV2\SANELE.MTHEMBU)" SpecialControlType="None" SessionId="525820">
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2SANELEMTWindow" FriendlyName="Warewolf (DEV2\SANELE.MTHEMBU)" SpecialControlType="None" SessionId="2032406">
           <TechnologyName>UIA</TechnologyName>
           <WindowTitles>
             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -26490,63 +26492,7 @@ Error while saving: This task requires that the user account specified has 'Log 
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>
-            <UIObject ControlType="TabList" Id="UITabItemsTabList" FriendlyName="TabItems" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">TabList</PropertyCondition>
-                <PropertyCondition Name="AutomationId">TabItems</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="TabPage" Id="UIInputDataTabPage" FriendlyName="Input Data" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">UI_InputDataTab_AutoID</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Table" Id="UIDataListInputsTable" FriendlyName="DataListInputs" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">DataListInputs</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="Cell" Id="UICCell" FriendlyName="C" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="ColumnHeader" />
-                            <PropertyCondition Name="Value">C</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="Custom" Id="UIUI_SettingsView_AutoCustom" FriendlyName="UI_SettingsView_AutoID" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="UILargeViewContentCustom" FriendlyName="LargeViewContent" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -26554,34 +26500,81 @@ Error while saving: This task requires that the user account specified has 'Log 
               <AndCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.SettingsView</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_SettingsView_AutoID</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.Large</PropertyCondition>
+                <PropertyCondition Name="AutomationId">LargeViewContent</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="TabList" Id="UIItemTabList" FriendlyName="" SpecialControlType="None">
+                <UIObject ControlType="Table" Id="UILargeDataGridTable" FriendlyName="LargeDataGrid" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">LargeDataGrid</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
-                    <UIObject ControlType="TabPage" Id="UISystemWindowsControlTabPage" FriendlyName="System.Windows.Controls.TabItem Header: Content:" SpecialControlType="None">
+                    <UIObject ControlType="Row" Id="UIUI_ActivityGridRow_1Row" FriendlyName="UI_ActivityGridRow_1_AutoID" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                       </WindowTitles>
+                      <SearchConfigurations>
+                        <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                      </SearchConfigurations>
                       <AndCondition>
+                        <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">UI_ActivityGridRow_1_AutoID</PropertyCondition>
                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
-                        <PropertyCondition Name="Name">System.Windows.Controls.TabItem Header: Content:</PropertyCondition>
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
-                      <Descendants />
+                      <Descendants>
+                        <UIObject ControlType="Cell" Id="UIItemUnlimitedApplicaCell" FriendlyName="Item: Unlimited.Applications.BusinessDesignStudio...." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="ColumnHeader">New Value</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants>
+                            <UIObject ControlType="ComboBox" Id="UIUI__Row2_FieldValue_ComboBox" FriendlyName="UI__Row2_FieldValue_AutoID" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">UI__Row2_FieldValue_AutoID</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                          </Descendants>
+                        </UIObject>
+                      </Descendants>
                     </UIObject>
                   </Descendants>
                 </UIObject>
