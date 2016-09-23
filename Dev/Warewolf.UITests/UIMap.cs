@@ -1288,11 +1288,11 @@ namespace Warewolf.UITests
                 Assert.IsFalse(descriptions.Contains("*"));
             }
         }
-        
+
         public void Select_Test_From_TestList(int testInstance = 1)
         {
             var test = GetCurrentTest(testInstance);
-            
+
             if (test != null)
                 Mouse.Click(test);
         }
@@ -1346,12 +1346,18 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.TestButton.Exists);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton.Exists);
         }
-        
+
         public void Click_New_Web_Source_Test_Connection_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton, new Point(52, 14));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.Spinner);
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after testing a valid web source.");
+        }
+
+        public void Click_Scheduler_Ribbon_Button()
+        {
+            Mouse.Click(MainStudioWindow.SideMenuBar.SchedulerButton, new Point(4, 12));
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab, 3000);
         }
     }
 }
