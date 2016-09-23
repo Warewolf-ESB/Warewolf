@@ -16,9 +16,7 @@ using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Infragistics.Windows.DataPresenter;
 using Infragistics.Windows.DataPresenter.Events;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -161,8 +159,8 @@ namespace Dev2.Studio.Views.DataList
                     return DeleteButton.Command.CanExecute(null);
                 case "Sort Variables":
                     return SortButton.Command.CanExecute(null);
-                //case "Variables":
-                //   return Xtg.IsEnabled;
+                case "Variables":
+                   return ScalarExplorer.IsEnabled;
             }
             
             return false;
