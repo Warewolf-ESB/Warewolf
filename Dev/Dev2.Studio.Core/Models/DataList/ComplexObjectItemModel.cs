@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
@@ -132,6 +133,40 @@ namespace Dev2.Studio.Core.Models.DataList
                 }
             }
             return jsonString.ToString();
+        }
+
+        public void Filter(string searchText)
+        {
+            if (!string.IsNullOrEmpty(DisplayName) && !string.IsNullOrEmpty(searchText))
+            {
+                if (Children != null)
+                {
+                    foreach (var recordSetFieldItemModel in Children)
+                    {
+                        recordSetFieldItemModel.Filter(searchText);
+                    }
+                }
+                if (Children != null && Children.Any(model => model.IsVisible))
+                {
+                    IsVisible = true;
+                }
+                else
+                {
+                    IsVisible = DisplayName.ToLower().Contains(searchText.ToLower());
+                }
+            }
+            else
+            {
+                IsVisible = true;
+                if (Children != null)
+                {
+                    foreach (var recordSetFieldItemModel in Children)
+                    {
+                        recordSetFieldItemModel.IsVisible = true;
+                    }
+                }
+            }
+
         }
 
         private void AppendCloseArrayChar(StringBuilder jsonString)
