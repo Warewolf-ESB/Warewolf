@@ -55,6 +55,7 @@ namespace Dev2.Studio.ViewModels
     public interface IWorksurfaceContextManager
     {
         void Handle(RemoveResourceAndCloseTabMessage message);
+        void Handle(NewTestFromDebugMessage message, IWorkSurfaceKey workSurfaceKey = null);
         void EditServer(IServerSource selectedServer);
         void EditResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
         void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
@@ -98,24 +99,14 @@ namespace Dev2.Studio.ViewModels
         Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, IExplorerItemViewModel explorerItemViewModel = null);
         void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource);
         void AddSettingsWorkSurface();
-
         void AddSchedulerWorkSurface();
-
         void AddWorkspaceItem(IContextualResourceModel model);
-
         void DeleteContext(IContextualResourceModel model);
-
-        T ActivateOrCreateUniqueWorkSurface<T>(WorkSurfaceContext context)
-            where T : IWorkSurfaceViewModel;
-
+        T ActivateOrCreateUniqueWorkSurface<T>(WorkSurfaceContext context)where T : IWorkSurfaceViewModel;
         WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IContextualResourceModel resource);
-
         void AddWorkSurfaceContextImpl(IContextualResourceModel resourceModel, bool isLoadingWorkspace);
-
         void AddAndActivateWorkSurface(WorkSurfaceContextViewModel context);
-
         void AddWorkSurface(IWorkSurfaceObject obj);
-
         bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false);
         void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
     }
@@ -152,6 +143,18 @@ namespace Dev2.Studio.ViewModels
 
             _mainViewModel.PreviousActive = null;
 
+        }
+
+        public void Handle(NewTestFromDebugMessage message, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            Dev2Logger.Debug(message.GetType().Name);
+            var workflow = new WorkflowDesignerViewModel(message.ResourceModel);
+            var testViewModel = new ServiceTestViewModel(message.ResourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow);
+            var vm = new StudioTestViewModel(_mainViewModel.EventPublisher, testViewModel, _mainViewModel.PopupProvider, new ServiceTestView());
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, message.ResourceModel.ID);
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         IServer ActiveServer => _mainViewModel.ActiveServer;
