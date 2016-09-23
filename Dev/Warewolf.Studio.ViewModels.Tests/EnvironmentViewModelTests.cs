@@ -535,7 +535,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.Children.Count,1);
             Assert.IsTrue(_target.Children[0].CanCreateSource);
             Assert.IsTrue(_target.Children[0].ShowContextMenu);
-            Assert.IsFalse(_target.Children[0].CanDelete);
+            Assert.IsTrue(_target.Children[0].CanDelete);
             Assert.IsFalse(_target.Children[0].CanCreateFolder);
             Assert.IsFalse(_target.Children[0].CanShowVersions);
             Assert.IsFalse(_target.Children[0].CanCreateWorkflowService);
