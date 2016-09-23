@@ -24,6 +24,10 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Click_Assign_Tool_Large_View_Done_Button();
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense();
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();
+            Uimap.Click_Assign_Tool_ExpandAll();
+            Uimap.Assign_Value_To_Variable();
+            Uimap.Click_Workflow_CollapseAll();
+            Uimap.Click_Assign_Tool_url();
             Uimap.Open_Assign_Tool_Qvi_Large_View();
             Uimap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
             Uimap.Click_Debug_Ribbon_Button();

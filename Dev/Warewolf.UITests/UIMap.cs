@@ -1047,18 +1047,12 @@ namespace Warewolf.UITests
                     " is selected");
         }
 
-        /// <summary>
-        /// Click_DB_Source_Wizard_Test_Connection_Button
-        /// </summary>
         public void Click_DB_Source_Wizard_Test_Connection_Button()
         {
-            #region Variable Declarations
-            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton;
-            #endregion
             var point = new Point();
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
-            // Click 'Test Connection' button
-            Mouse.Click(testConnectionButton, new Point(21, 16));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton, new Point(21, 16));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
         }
 
@@ -1129,7 +1123,6 @@ namespace Warewolf.UITests
         }
         public void CreateAndSave_Dice_Workflow()
         {
-            RightClick_Localhost();
             Select_NewWorkFlowService_From_ContextMenu();
             Drag_Toolbox_Random_Onto_DesignSurface();
             Enter_Dice_Roll_Values();
