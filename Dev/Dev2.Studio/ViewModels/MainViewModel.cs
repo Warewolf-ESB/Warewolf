@@ -77,6 +77,7 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<SaveAllOpenTabsMessage>,
                                         IHandle<ShowReverseDependencyVisualizer>,
                                         IHandle<FileChooserMessage>,
+                                        IHandle<NewTestFromDebugMessage>,
                                         IShellViewModel
     {
 
@@ -532,6 +533,11 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.Handle(message);
         }
 
+        public void Handle(NewTestFromDebugMessage message)
+        {
+            _worksurfaceContextManager.Handle(message);
+        }
+
         public IContextualResourceModel DeployResource { get; set; }
         public void RefreshActiveEnvironment()
         {
@@ -646,15 +652,15 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void CloseResourceTestView(Guid resourceId,Guid serverId,Guid environmentId)
+        public void CloseResourceTestView(Guid resourceId, Guid serverId, Guid environmentId)
         {
-            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer,resourceId,serverId,environmentId);
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer, resourceId, serverId, environmentId);
             var testViewModelForResource = FindWorkSurfaceContextViewModel(key);
             if (testViewModelForResource != null)
             {
-                DeactivateItem(testViewModelForResource,true);
+                DeactivateItem(testViewModelForResource, true);
             }
-            
+
         }
 
         private WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key)
@@ -687,7 +693,7 @@ namespace Dev2.Studio.ViewModels
         {
             var environmentModel = EnvironmentRepository.Get(destinationEnvironmentId);
             var sourceEnvironmentModel = EnvironmentRepository.Get(sourceEnvironmentId);
-            var dto = new DeployDto { ResourceModels = resources.Select(a => sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(a) as IResourceModel).ToList(), DeployTests = deployTests};
+            var dto = new DeployDto { ResourceModels = resources.Select(a => sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(a) as IResourceModel).ToList(), DeployTests = deployTests };
             environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel, dto);
             ServerAuthorizationService.Instance.GetResourcePermissions(dto.ResourceModels.First().ID);
             ExplorerViewModel.RefreshEnvironment(destinationEnvironmentId);

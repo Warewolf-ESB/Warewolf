@@ -301,6 +301,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <customControls1:SearchTextBox Grid.Row="0" 
                                            Grid.Column="0"
@@ -341,6 +342,17 @@
                     AutomationProperties.AutomationId="UI_DebugOutputExpandAllMode_AutoID" >
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.DebugOutputViewExpandAllHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <Button Grid.Column="3"
+                    Content="{Binding AddNewTestMode, Converter={ StaticResource BoolToPlusMinusConverter}}"
+                    FontSize="24"
+                    Command="{Binding AddNewTestCommand}"
+                    Margin="3,0,0,-1"
+                    ToolTip="AddNewTest"
+                    AutomationProperties.AutomationId="UI_DebugOutputAddNewTestMode_AutoID" >
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="AddNewTestHelp" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
