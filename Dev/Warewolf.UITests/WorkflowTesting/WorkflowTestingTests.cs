@@ -31,7 +31,7 @@ namespace Warewolf.UITests
             Uimap.Click_EnableDisable_This_Test_CheckBox(true);
             //Remove Check
             Uimap.Click_EnableDisable_This_Test_CheckBox(false);
-            Uimap.Click_Create_New_Tests(testInstance:3, nameContainsStar: true);
+            Uimap.Click_Create_New_Tests(testInstance: 3, nameContainsStar: true);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Assert.IsFalse(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TabDescription.DisplayText.Contains("*"));
             Assert.IsFalse(Uimap.GetCurrentTest(1).DisplayText.Contains("*"));
@@ -67,7 +67,7 @@ namespace Warewolf.UITests
             Uimap.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest();
             Uimap.Enter_Text_Into_Workflow_Tests_Output_Row1_Value_Textbox_As_CodedUITest();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Click_Run_Test_Button(expectedTestResultEnum:TestResultEnum.Pass);
+            Uimap.Click_Run_Test_Button(expectedTestResultEnum: TestResultEnum.Pass);
         }
 
         [TestMethod]
@@ -89,7 +89,7 @@ namespace Warewolf.UITests
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_RunAll_Button();
         }
-        
+
         [TestMethod]
         public void RunTestAsSpecificUser()
         {
@@ -114,7 +114,7 @@ namespace Warewolf.UITests
             Uimap.Update_Test_Name(TestName);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Duplicate_Test_Button();
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();            
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_RunAll_Button();
         }
         [TestMethod]
@@ -137,7 +137,7 @@ namespace Warewolf.UITests
             Uimap.Click_Delete_Test_Button();
             Uimap.Click_Yes_On_The_Confirm_Delete();
         }
-        
+
         [TestMethod]
         public void RunTestsWithDuplicatedName()
         {

@@ -12,9 +12,10 @@ namespace Warewolf.UITests
 
         [TestMethod]
         public void ContextMenuItemsUITest()
-        {
+        {            
             Uimap.CreateAndSave_Dice_Workflow();
             Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Click_Explorer_Refresh_Button();
             Uimap.Drag_Dice_Onto_DesignSurface();
             Uimap.Drag_Dice_Onto_Dice_On_The_DesignSurface();
             Uimap.Click_Workflow_CollapseAll();
@@ -36,7 +37,7 @@ namespace Warewolf.UITests
             Uimap.Open_Explorer_First_Item_Dependancies_With_Context_Menu();
             Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.Click_Close_Dependecy_Tab();
-            //Uimap.Click_View_Api_From_Context_Menu();
+            Uimap.Click_View_Api_From_Context_Menu();
         }
 
         #region Additional test attributes

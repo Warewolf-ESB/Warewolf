@@ -6,12 +6,7 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DeployTests
     {
-        const string ServerSourceName = "TSTCIREMOTE";
-        const string LocalWorkflowName = "RemoteServerUITestWorkflow";
-        const string RemoteSubWorkflowName = "workflow1";
         const string LocalWorkflow = "LocalWorkflow";
-        const string WindowsGroup = "Domain Users";
-        private const string ServerAddress = "tst-ci-";
 
         [TestMethod]
         public void Deploy_WorkFlow_To_Remote_Server()
@@ -32,30 +27,6 @@ namespace Warewolf.UITests
             Uimap.SetPlaybackSettings();
             Uimap.WaitForStudioStart();
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(LocalWorkflow);
-            Uimap.TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(ServerSourceName);
-            Uimap.TryCloseAllTabs();
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {
