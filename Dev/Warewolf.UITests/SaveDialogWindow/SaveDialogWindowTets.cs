@@ -19,7 +19,7 @@ namespace Warewolf.UITests.DebugInputWindow
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             Uimap.Open_Assign_Tool_Large_View();
             Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
-            Uimap.Assign_Value_To_Variable();
+            Uimap.Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1();
             Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             Uimap.Remove_WorkflowName_From_Save_Dialog();
             Uimap.Enter_Service_Name_Into_Save_Dialog(TestingWF);
