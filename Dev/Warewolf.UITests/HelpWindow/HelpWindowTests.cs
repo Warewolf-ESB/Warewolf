@@ -4,15 +4,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    [Ignore]
     public class HelpWindowTests
     {
         [TestMethod]
-        [Ignore]
         public void HelpWindowTestHelpTextChangesAsControlFocusChange()
         {
-            var helpTextEditor = Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor;
-            Assert.IsTrue(helpTextEditor.Exists, "Help text does not exist");
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             Uimap.Open_Assign_Tool_Large_View();
@@ -21,7 +17,8 @@ namespace Warewolf.UITests
             Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
             Uimap.Click_Assign_Tool_Large_View_Done_Button();
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense();
-            Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();            
+            Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();
+            Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor.Exists, "Help text does not exist");
         }
 
         #region Additional test attributes

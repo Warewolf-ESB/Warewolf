@@ -14,7 +14,7 @@ namespace Warewolf.UITests
         {
             Uimap.Select_NewWorkFlowService_From_ContextMenu();
             Uimap.Drag_Toolbox_Random_Onto_DesignSurface();
-            Uimap.Enter_Dice_Roll_Values();            
+            Uimap.Enter_Dice_Roll_Values();
             Uimap.Save_With_Ribbon_Button_And_Dialog(Dice);
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.Click_Explorer_Refresh_Button();
@@ -25,7 +25,7 @@ namespace Warewolf.UITests
             Uimap.Check_Public_Administrator();
             Uimap.UnCheck_Public_Administrator();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Click_Select_Resource_Button_From_Resource_Permissions();            
+            Uimap.Click_Select_Resource_Button_From_Resource_Permissions();
             Uimap.Select_Dice_From_Service_Picker(TabName);
             Uimap.Enter_Public_As_Windows_Group();
             Uimap.Check_Resource_Contribute();
