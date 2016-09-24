@@ -21,10 +21,10 @@ namespace Warewolf.UITests.DebugInputWindow
             Uimap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox(InputDataText);
             Uimap.Click_DebugInput_Cancel_Button();
             Uimap.Click_Debug_Ribbon_Button();
-            Assert.AreEqual(InputDataText, Uimap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Cancelling and re-openning the debug input dialog loses input values.");
+            Assert.AreEqual(InputDataText, Uimap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.ComboBox.Textbox.Text, "Cancelling and re-openning the debug input dialog loses input values.");
             Uimap.Click_DebugInput_Debug_Button();
             Uimap.Click_Debug_Ribbon_Button();
-            Assert.AreEqual(InputDataText, Uimap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debugging Hello World workflow and then re-openning the debug input dialog loses input values.");
+            Assert.AreEqual(InputDataText, Uimap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.ComboBox.Textbox.Text, "Debugging Hello World workflow and then re-openning the debug input dialog loses input values.");
         }
 
         #region Additional test attributes
