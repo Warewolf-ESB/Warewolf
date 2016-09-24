@@ -777,11 +777,11 @@ namespace Warewolf.UITests
 
         public void Enter_Text_Into_Debug_Input_Row1_Value_Textbox(string text)
         {
-            if (MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.ComboBox.Textbox.Text != text)
+            if (MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text != text)
             {
-                MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.ComboBox.Textbox.Text = text;
+                MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text = text;
             }
-            Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.ComboBox.Textbox.Text, "Debug input data row1 textbox text is not equal to \'" + text + "\'.");
+            Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debug input data row1 textbox text is not equal to \'" + text + "\'.");
         }
 
         public void Click_Debug_Ribbon_Button()
@@ -996,7 +996,7 @@ namespace Warewolf.UITests
             }
         }
 
-        public void Click_EnableDisable_This_Test_CheckBox()
+        public void Click_EnableDisable_This_Test_CheckBox(bool nameContainsStar = false)
         {
             WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
             WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
@@ -1066,7 +1066,25 @@ namespace Warewolf.UITests
             Select_Deploy_First_Source_Item();
             Click_Deploy_Tab_Deploy_Button();
         }
-        
+
+        public void Enter_Text_Into_Workflow_Tests_Output_Row1_Value_Textbox_As_CodedUITest()
+        {
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+
+            var helloUser = "Hello User.";
+            Keyboard.SendKeys(textbox, helloUser, ModifierKeys.None);
+
+            // Verify that the 'Text' property of 'Text' text box equals 'User'
+            Assert.AreEqual(helloUser, textbox.Text, "Workflow tests output row 1 value textbox text does not equal 'Hello User' after typing that in.");
+        }
+
+        public void Select_Test(int instance = 1)
+        {
+            var currentTest = GetCurrentTest(instance);
+            //var test = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
+            Mouse.Click(currentTest);
+        }
+
         public void Click_RunAll_Button(string BrokenRule = null)
         {
             string DuplicateNameError = "DuplicateNameError";
@@ -1382,22 +1400,22 @@ namespace Warewolf.UITests
                 Assert.AreEqual("Dice", ResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
 
-        private WpfText GetCurrentTest(int testInstance)
+        public WpfListItem GetCurrentTest(int testInstance)
         {
-            WpfText test;
+            WpfListItem test;
             switch (testInstance)
             {
                 case 1:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
                     break;
                 case 2:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2;
                     break;
                 case 3:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test3.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test3;
                     break;
                 default:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
                     break;
             }
             return test;
@@ -1423,26 +1441,6 @@ namespace Warewolf.UITests
             }
             return value;
         }
-        public WpfListItem GetCurrentTest(int testInstance)
-        {
-            WpfListItem test;
-            switch (testInstance)
-            {
-                case 1:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
-                    break;
-                case 2:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2;
-                    break;
-                case 3:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test3;
-                    break;
-                default:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
-                    break;
-            }
-            return test;
-        }
         
         public void Click_Save_Ribbon_Button_With_No_Save_Dialog()
         {
@@ -1450,13 +1448,11 @@ namespace Warewolf.UITests
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
             
-            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonExists, saveButton.Exists, "Save ribbon button does not exist");
+            Assert.IsTrue(saveButton.Exists, "Save ribbon button does not exist");
             Mouse.Click(saveButton, new Point(10, 5));
             Playback.Wait(2000);
-            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
+            Assert.IsTrue(saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
         }
-
-        private Click_Save_Ribbon_Button_With_No_Save_DialogParams mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
         
         public void DeleteAssign_FromContextMenu()
         {
@@ -1548,7 +1544,7 @@ namespace Warewolf.UITests
 
         public void Type_Value_And_Click_Enter_Keyboard_Then_Backspace()
         {
-            var varValue = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCell.InputValueComboboxl.InputValueText;
+            var varValue = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
 
             var heightBeforeEnterClick = varValue.Height;
             varValue.Text = "Bob";
@@ -1562,7 +1558,7 @@ namespace Warewolf.UITests
         public void F5_Keyboard_Click()
         {
             WpfCheckBox uIUI_IsOutputCheckbox_CheckBox = MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem.OutputCell.IsOutputCheckbox;
-            var varText = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.ComboBox.Textbox;
+            var varText = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
             
             Keyboard.SendKeys(uIUI_IsOutputCheckbox_CheckBox, "{F5}", ModifierKeys.None);
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.DebugF6Button.Exists, "Debug button in Debug Input window does not exist.");
