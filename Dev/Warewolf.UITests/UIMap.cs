@@ -48,7 +48,25 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             TryClickMessageBoxOK();
+            TryCloseHangingDebugInputDialog();
+            TryCloseHangingSaveDialog();
+            TryCloseHangingServicePickerDialog();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+        }
+
+        private void TryCloseHangingServicePickerDialog()
+        {
+            try
+            {
+                if (ControlExistsNow(ServicePickerDialog.Cancel))
+                {
+                    Click_Service_Picker_Dialog_Cancel();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("No hanging service picker dialog to clean up.\n" + e.Message);
+            }
         }
 
         public void OnError(object sender, PlaybackErrorEventArgs e)
@@ -1378,26 +1396,13 @@ namespace Warewolf.UITests
                 Mouse.Click(test);
         }
 
-        public void Select_Dice_From_Service_Picker(string tabName)
+        public void Select_Service_From_Service_Picker(string serviceName)
         {
-            #region Variable Declarations
-            WpfEdit filterTextbox = this.ServicePickerDialog.Explorer.FilterTextbox;
-            WpfTreeItem subTreeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1;
-            WpfButton ok = this.ServicePickerDialog.OK;
-            WpfText addResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText;
-            WpfText ResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceTextBox;
-            #endregion
-
-            Mouse.Click(filterTextbox, new Point(93, 6));
-            filterTextbox.Text = "Dice";
-            Mouse.Click(subTreeItem1, MouseButtons.Right, ModifierKeys.None, new Point(53, 12));
-            Mouse.Click(subTreeItem1, new Point(53, 12));
-            Mouse.Click(ok, new Point(52, 15));
-
-            if (tabName == "SecurityTab")
-                Assert.AreEqual("Dice", addResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
-            else if (tabName == "PerfomanceCounterTab")
-                Assert.AreEqual("Dice", ResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+            ServicePickerDialog.Explorer.FilterTextbox.Text = serviceName;
+            Mouse.Click(ServicePickerDialog.Explorer.Refresh, new Point(5, 5));
+            WaitForSpinner(ServicePickerDialog.Explorer.ExplorerTree.Localhost.Checkbox.Spinner);
+            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem2.TreeItem1, new Point(73, 12));
+            Mouse.Click(ServicePickerDialog.OK, new Point(52, 15));
         }
 
         public WpfListItem GetCurrentTest(int testInstance)
