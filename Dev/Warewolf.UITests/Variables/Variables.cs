@@ -26,7 +26,9 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
+#if RELEASE
             Uimap.WaitForStudioStart();
+#endif
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
         
