@@ -33,8 +33,8 @@ namespace Warewolf.UITests.DebugInputWindow
         public void MyTestInitialize()
         {
             Uimap.SetPlaybackSettings();
-#if RELEASE
-            Uimap.WaitForStudioStart();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
 #endif
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
         }

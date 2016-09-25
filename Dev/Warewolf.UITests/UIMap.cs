@@ -44,7 +44,7 @@ namespace Warewolf.UITests
             Playback.PlaybackError += OnError;
         }
 
-        public void WaitForStudioStart()
+        public void CloseHangingDialogs()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             TryClickMessageBoxOK();
@@ -572,6 +572,7 @@ namespace Warewolf.UITests
         public void Filter_Explorer(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
