@@ -651,15 +651,18 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhost, new Point(94, 10));
         }
 
-        public void Save_With_Ribbon_Button_And_Dialog(string Name)
+        public void Save_With_Ribbon_Button_And_Dialog(string Name, bool skipExplorerFilter = false)
         {
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
-            WaitForControlNotVisible(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Enter_Service_Name_Into_Save_Dialog(Name);
             Click_SaveDialog_Save_Button();
-            Enter_Text_Into_Explorer_Filter(Name);
-            Click_Explorer_Refresh_Button();
-            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            if (!skipExplorerFilter)
+            {
+                Enter_Text_Into_Explorer_Filter(Name);
+                Click_Explorer_Refresh_Button();
+            }
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
             Click_Explorer_Filter_Clear_Button();
         }
@@ -1396,12 +1399,19 @@ namespace Warewolf.UITests
                 Mouse.Click(test);
         }
 
-        public void Select_Service_From_Service_Picker(string serviceName)
+        public void Select_Service_From_Service_Picker(string serviceName, bool inSubFolder = false)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = serviceName;
             Mouse.Click(ServicePickerDialog.Explorer.Refresh, new Point(5, 5));
             WaitForSpinner(ServicePickerDialog.Explorer.ExplorerTree.Localhost.Checkbox.Spinner);
-            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem2.TreeItem1, new Point(73, 12));
+            if (inSubFolder)
+            {
+                Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem2.TreeItem1, new Point(73, 12));
+            }
+            else
+            {
+                Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1, new Point(53, 12));
+            }
             Mouse.Click(ServicePickerDialog.OK, new Point(52, 15));
         }
 
@@ -1449,14 +1459,10 @@ namespace Warewolf.UITests
         
         public void Click_Save_Ribbon_Button_With_No_Save_Dialog()
         {
-            #region Variable Declarations
-            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
-            
-            Assert.IsTrue(saveButton.Exists, "Save ribbon button does not exist");
-            Mouse.Click(saveButton, new Point(10, 5));
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
+            Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
             Playback.Wait(2000);
-            Assert.IsTrue(saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
+            Assert.IsFalse(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
         }
         
         public void DeleteAssign_FromContextMenu()
