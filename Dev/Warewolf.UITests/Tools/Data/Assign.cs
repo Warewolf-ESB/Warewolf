@@ -60,7 +60,9 @@ namespace Warewolf.UITests.Tools.Data
         public void MyTestInitialize()
         {
             Uimap.SetPlaybackSettings();
-            Uimap.WaitForStudioStart();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
         }
 
         UIMap Uimap

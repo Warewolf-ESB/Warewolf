@@ -26,7 +26,9 @@ namespace Warewolf.UITests.Tools.Utility
         public void MyTestInitialize()
         {
             Uimap.SetPlaybackSettings();
-            Uimap.WaitForStudioStart();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
             Uimap.InitializeABlankWorkflow();
         }
 

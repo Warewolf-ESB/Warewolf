@@ -25,7 +25,7 @@ namespace Warewolf.UITests.DebugInputWindow
             Uimap.Enter_Service_Name_Into_Save_Dialog(TestingWF);
             Uimap.Click_SaveDialog_Save_Button();
             Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Enter_Text_Into_Explorer_Filter(TestingWF);
+            Uimap.Filter_Explorer(TestingWF);
             Uimap.RightClick_Explorer_Localhost_First_Item();
             Uimap.Click_Duplicate_From_ExplorerContextMenu();
             Uimap.Enter_Service_Name_Into_Save_Dialog(TestingWF, true);
@@ -40,7 +40,9 @@ namespace Warewolf.UITests.DebugInputWindow
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.WaitForStudioStart();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
         }
         

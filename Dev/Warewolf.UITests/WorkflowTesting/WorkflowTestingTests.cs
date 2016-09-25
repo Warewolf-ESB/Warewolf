@@ -107,7 +107,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void RunDuplicatedTest()
         {
-            Uimap.Enter_Text_Into_Explorer_Filter("Hello World");
+            Uimap.Filter_Explorer("Hello World");
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.Open_Explorer_First_Item_Tests_With_Context_Menu();
             Uimap.Click_Create_New_Tests(true);
@@ -120,7 +120,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void SaveAndRunAllTestsWithDuplicatedName()
         {
-            Uimap.Enter_Text_Into_Explorer_Filter(HelloWorld);
+            Uimap.Filter_Explorer(HelloWorld);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.Open_Explorer_First_Item_Tests_With_Context_Menu();
             Uimap.Click_Create_New_Tests(true);
@@ -141,7 +141,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void RunTestsWithDuplicatedName()
         {
-            Uimap.Enter_Text_Into_Explorer_Filter(HelloWorld);
+            Uimap.Filter_Explorer(HelloWorld);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.Open_Explorer_First_Item_Tests_With_Context_Menu();
             Uimap.Click_Create_New_Tests(true);
@@ -166,7 +166,7 @@ namespace Warewolf.UITests
             Uimap.Enter_Service_Name_Into_Save_Dialog(Testing123);
             Uimap.Click_SaveDialog_Save_Button();
             Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Enter_Text_Into_Explorer_Filter(Testing123);
+            Uimap.Filter_Explorer(Testing123);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.Open_Explorer_First_Item_Tests_With_Context_Menu();
             Uimap.Click_Create_New_Tests(true);
@@ -187,7 +187,9 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             Uimap.SetPlaybackSettings();
-            Uimap.WaitForStudioStart();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
         }
 
         UIMap Uimap
