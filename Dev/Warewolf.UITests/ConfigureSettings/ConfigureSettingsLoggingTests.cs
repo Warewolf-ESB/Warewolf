@@ -9,6 +9,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void ConfigureSettingLogging()
         {
+            Uimap.TryCloseSettingsTab();
             Uimap.Click_ConfigureSetting_From_Menu();
             Uimap.Select_LoggingTab();
             Uimap.Click_Server_Log_File_Button();

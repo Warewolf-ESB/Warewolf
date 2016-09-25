@@ -6,16 +6,21 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class ConfigureSettingsPermissionsTests
     {
-        const string Dice = "Dice";
-        const string TabName = "SecurityTab";
+        const string Dice = "Dice1";
 
         [TestMethod]
         public void ConfigureSettingPermission()
         {
+            Uimap.Enter_Text_Into_Explorer_Filter(Dice);
+            if (Uimap.ControlExistsNow(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
+            {
+                Uimap.RightClick_Explorer_Localhost_First_Item();
+                Uimap.Select_Delete_FromContextMenu();
+            }
             Uimap.Select_NewWorkFlowService_From_ContextMenu();
             Uimap.Drag_Toolbox_Random_Onto_DesignSurface();
             Uimap.Enter_Dice_Roll_Values();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(Dice);
+            Uimap.Save_With_Ribbon_Button_And_Dialog(Dice, true);
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.Click_Explorer_Refresh_Button();
             Uimap.Click_ConfigureSetting_From_Menu();
@@ -26,7 +31,8 @@ namespace Warewolf.UITests
             Uimap.UnCheck_Public_Administrator();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Select_Resource_Button_From_Resource_Permissions();
-            Uimap.Select_Dice_From_Service_Picker(TabName);
+            Uimap.Select_Service_From_Service_Picker(Dice);
+            Assert.AreEqual(Dice, Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
             Uimap.Enter_Public_As_Windows_Group();
             Uimap.Check_Resource_Contribute();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
