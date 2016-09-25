@@ -11,7 +11,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void ConfigureSettingPermission()
         {
-            Uimap.Enter_Text_Into_Explorer_Filter(Dice);
+            Uimap.Filter_Explorer(Dice);
             if (Uimap.ControlExistsNow(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
             {
                 Uimap.RightClick_Explorer_Localhost_First_Item();
@@ -45,7 +45,9 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             Uimap.SetPlaybackSettings();
+#if RELEASE
             Uimap.WaitForStudioStart();
+#endif
         }
 
         UIMap Uimap
