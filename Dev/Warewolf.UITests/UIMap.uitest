@@ -1312,7 +1312,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton" ThinkTime="500">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2385,7 +2385,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ItemButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2934,7 +2934,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Right</MouseButton>
     </MouseAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.ViewApisJsonMenuItem">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.ExplorerEnvironmentContextMenu.ViewApisJsonMenuItem">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -7518,7 +7518,7 @@
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="107" Y="9" />
+      <Location X="77" Y="9" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Right</MouseButton>
@@ -8836,7 +8836,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Right</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.NewWorkflow">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow">
       <ParameterName />
       <PropertyName>Enabled</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -8844,7 +8844,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.NewWorkflow">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -9640,7 +9640,7 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Menu" Id="ExplorerContextMenu" FriendlyName="ExplorerMenu" SpecialControlType="None">
+            <UIObject ControlType="Menu" Id="ExplorerEnvironmentContextMenu" FriendlyName="ExplorerMenu" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf</WindowTitle>
@@ -9649,9 +9649,9 @@
                 <SearchConfiguration>Expand</SearchConfiguration>
               </SearchConfigurations>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Menu</PropertyCondition>
-                <PropertyCondition Name="AutomationId">ExplorerMenu</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="AutomationId">ExplorerEnvironmentMenu</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -9971,6 +9971,343 @@
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
                     <PropertyCondition Name="AutomationId">ViewApisJson</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
+            </UIObject>
+            <UIObject ControlType="Menu" Id="ExplorerContextMenu" FriendlyName="ExplorerMenu" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <SearchConfigurations>
+                <SearchConfiguration>Expand</SearchConfiguration>
+              </SearchConfigurations>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">Menu</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="AutomationId">ExplorerMenu</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="MenuItem" Id="Open" FriendlyName="Open" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">Open</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="NewWorkflow" FriendlyName="New Workflow Service" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">NewService</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="NewServerSource" FriendlyName="New Server Source" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">NewServerSource</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="NewDatabaseSource" FriendlyName="New Database Source" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">NewDataBaseSource</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="NewWebServiceSource" FriendlyName="New Web Service Source" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">NewWebSource</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="NewPluginSource" FriendlyName="New Plugin Source" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">NewPluginSource</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="NewEmailSource" FriendlyName="New Email Source" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">NewEmailSource</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="NewDropboxSource" FriendlyName="New Dropbox Source" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">NewDropboxSource</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="NewSharepointSource" FriendlyName="New Sharepoint Source" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">NewSharepointSource</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="NewFolder" FriendlyName="New Folder" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">NewFolderFromItem</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="Rename" FriendlyName="Rename" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">Rename</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="Delete" FriendlyName="Delete" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">Delete</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="Deploy" FriendlyName="Deploy" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">Deploy</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="ShowServerVersion" FriendlyName="Server Version" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">ServerVersion</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="ShowDependencies" FriendlyName="Show Dependencies" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">Dependencies</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="Duplicate" FriendlyName="Duplicate" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">Duplicate</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="ViewSwagger" FriendlyName="View Swagger" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">ViewSwagger</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="ShowVersionHistory" FriendlyName="Show Version History" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">ShowHideVersions</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="Tests" FriendlyName="Tests" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">Test</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="ViewSwaggerMenuItem" FriendlyName="View Swagger" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">ViewSwagger</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -14959,7 +15296,6 @@
                                                               <AndCondition>
                                                                 <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                <PropertyCondition Name="Instance">1</PropertyCondition>
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
@@ -14972,20 +15308,6 @@
                                                               <AndCondition>
                                                                 <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                <PropertyCondition Name="Instance">2</PropertyCondition>
-                                                              </AndCondition>
-                                                              <SupportLevel>0</SupportLevel>
-                                                              <Descendants />
-                                                            </UIObject>
-                                                            <UIObject ControlType="Button" Id="ItemButton" FriendlyName="..." SpecialControlType="None">
-                                                              <TechnologyName>UIA</TechnologyName>
-                                                              <WindowTitles>
-                                                                <WindowTitle>Warewolf</WindowTitle>
-                                                              </WindowTitles>
-                                                              <AndCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">UI__AddResourceButton_AutoID</PropertyCondition>
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
@@ -26229,9 +26551,64 @@ Error while saving: This task requires that the user account specified has 'Log 
                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                             <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
                             <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                            <PropertyCondition Name="Instance">1</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
-                          <Descendants />
+                          <Descendants>
+                            <UIObject ControlType="TreeItem" Id="TreeItem11" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf</WindowTitle>
+                              </WindowTitles>
+                              <SearchConfigurations>
+                                <SearchConfiguration>Distinct</SearchConfiguration>
+                                <SearchConfiguration>Expand</SearchConfiguration>
+                              </SearchConfigurations>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants />
+                            </UIObject>
+                          </Descendants>
+                        </UIObject>
+                        <UIObject ControlType="TreeItem" Id="TreeItem2" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf</WindowTitle>
+                          </WindowTitles>
+                          <SearchConfigurations>
+                            <SearchConfiguration>Distinct</SearchConfiguration>
+                            <SearchConfiguration>Expand</SearchConfiguration>
+                          </SearchConfigurations>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                            <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                            <PropertyCondition Name="Instance">2</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants>
+                            <UIObject ControlType="TreeItem" Id="TreeItem1" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf</WindowTitle>
+                              </WindowTitles>
+                              <SearchConfigurations>
+                                <SearchConfiguration>Distinct</SearchConfiguration>
+                                <SearchConfiguration>Expand</SearchConfiguration>
+                              </SearchConfigurations>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants />
+                            </UIObject>
+                          </Descendants>
                         </UIObject>
                         <UIObject ControlType="CheckBox" Id="Checkbox" FriendlyName="Checkbox" SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
