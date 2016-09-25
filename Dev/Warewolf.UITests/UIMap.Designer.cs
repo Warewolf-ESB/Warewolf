@@ -1489,11 +1489,11 @@ namespace Warewolf.UITests
         public void Click_Scheduler_Disable_Task_Radio_Button()
         {
             #region Variable Declarations
-            WpfCheckBox statusCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox;
+            WpfRadioButton disabledRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.DisabledRadioButton;
             #endregion
 
-            // Clear check box
-            statusCheckBox.Checked = this.Click_Scheduler_Disable_Task_Radio_ButtonParams.StatusCheckBoxChecked;
+            // Select 'Disabled' radio button
+            disabledRadioButton.Selected = this.Click_Scheduler_Disable_Task_Radio_ButtonParams.DisabledRadioButtonSelected;
         }
         
         /// <summary>
@@ -3647,6 +3647,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab - Use 'Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab()
+        {
+            #region Variable Declarations
+            WpfEdit userNameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit;
+            WpfEdit passwordTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox;
+            #endregion
+
+            // Type 'LocalSchedulerAdmin' in 'UI_UserNameTextBox' text box
+            userNameTextBoxEdit.Text = this.Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams.UserNameTextBoxEditText;
+
+            // Type '987Sched#@!' in 'UI_PasswordBox' text box
+            passwordTextbox.Text = this.Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams.PasswordTextboxText;
+        }
+        
+        /// <summary>
         /// Enter_Public_As_Windows_Group - Use 'Enter_Public_As_Windows_GroupParams' to pass parameters into this method.
         /// </summary>
         public void Enter_Public_As_Windows_Group()
@@ -3811,26 +3828,6 @@ namespace Warewolf.UITests
             // Verify that the 'Text' property of 'Text' text box equals 'User'
             Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests row 1 value textbox text does not equal User after typing that in." +
                     "");
-        }
-        
-        /// <summary>
-        /// Enter_User_Details_For_Scheduler - Use 'Enter_User_Details_For_SchedulerParams' to pass parameters into this method.
-        /// </summary>
-        public void Enter_User_Details_For_Scheduler()
-        {
-            #region Variable Declarations
-            WpfEdit userNameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit;
-            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextBoxEdit;
-            #endregion
-
-            // Type 'user' in 'UI_UserNameTextBox' text box
-            userNameTextBoxEdit.Text = this.Enter_User_Details_For_SchedulerParams.UserNameTextBoxEditText;
-
-            // Click 'UI_PasswordBox' text box
-            Mouse.Click(passwordTextBoxEdit, new Point(53, 16));
-
-            // Type '********' in 'UI_PasswordBox' text box
-            Keyboard.SendKeys(passwordTextBoxEdit, this.Enter_User_Details_For_SchedulerParams.PasswordTextBoxEditSendKeys, true);
         }
         
         /// <summary>
@@ -7962,6 +7959,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams
+        {
+            get
+            {
+                if ((this.mEnter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams == null))
+                {
+                    this.mEnter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams = new Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams();
+                }
+                return this.mEnter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams;
+            }
+        }
+        
         public virtual Enter_Public_As_Windows_GroupParams Enter_Public_As_Windows_GroupParams
         {
             get
@@ -8079,18 +8088,6 @@ namespace Warewolf.UITests
                     this.mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams = new Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams();
                 }
                 return this.mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
-            }
-        }
-        
-        public virtual Enter_User_Details_For_SchedulerParams Enter_User_Details_For_SchedulerParams
-        {
-            get
-            {
-                if ((this.mEnter_User_Details_For_SchedulerParams == null))
-                {
-                    this.mEnter_User_Details_For_SchedulerParams = new Enter_User_Details_For_SchedulerParams();
-                }
-                return this.mEnter_User_Details_For_SchedulerParams;
             }
         }
         
@@ -9310,6 +9307,8 @@ namespace Warewolf.UITests
         
         private Enter_InputDebug_valueParams mEnter_InputDebug_valueParams;
         
+        private Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams mEnter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams;
+        
         private Enter_Public_As_Windows_GroupParams mEnter_Public_As_Windows_GroupParams;
         
         private Enter_RunAsUser_Username_And_PasswordParams mEnter_RunAsUser_Username_And_PasswordParams;
@@ -9329,8 +9328,6 @@ namespace Warewolf.UITests
         private Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams;
         
         private Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
-        
-        private Enter_User_Details_For_SchedulerParams mEnter_User_Details_For_SchedulerParams;
         
         private Filter_variablesParams mFilter_variablesParams;
         
@@ -10473,9 +10470,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Clear check box
+        /// Select 'Disabled' radio button
         /// </summary>
-        public bool StatusCheckBoxChecked = false;
+        public bool DisabledRadioButtonSelected = true;
         #endregion
     }
     
@@ -12225,6 +12222,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'LocalSchedulerAdmin' in 'UI_UserNameTextBox' text box
+        /// </summary>
+        public string UserNameTextBoxEditText = "LocalSchedulerAdmin";
+        
+        /// <summary>
+        /// Type '987Sched#@!' in 'UI_PasswordBox' text box
+        /// </summary>
+        public string PasswordTextboxText = "987Sched#@!";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Enter_Public_As_Windows_Group'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12416,26 +12433,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'Text' text box equals 'User'
         /// </summary>
         public string TextboxText = "User";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Enter_User_Details_For_Scheduler'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_User_Details_For_SchedulerParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'user' in 'UI_UserNameTextBox' text box
-        /// </summary>
-        public string UserNameTextBoxEditText = "user";
-        
-        /// <summary>
-        /// Type '********' in 'UI_PasswordBox' text box
-        /// </summary>
-        public string PasswordTextBoxEditSendKeys = "He8mTUyAdZCC71Q9mDVs29xgH7T3gaEA+Frc0JJbw11KkI6kxU4Ln9YMMobjniYD";
         #endregion
     }
     
@@ -35211,19 +35208,19 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfEdit PasswordTextBoxEdit
+        public WpfEdit PasswordTextbox
         {
             get
             {
-                if ((this.mPasswordTextBoxEdit == null))
+                if ((this.mPasswordTextbox == null))
                 {
-                    this.mPasswordTextBoxEdit = new WpfEdit(this);
+                    this.mPasswordTextbox = new WpfEdit(this);
                     #region Search Criteria
-                    this.mPasswordTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_PasswordBox";
-                    this.mPasswordTextBoxEdit.WindowTitles.Add("Warewolf");
+                    this.mPasswordTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_PasswordBox";
+                    this.mPasswordTextbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mPasswordTextBoxEdit;
+                return this.mPasswordTextbox;
             }
         }
         
@@ -35505,6 +35502,22 @@ namespace Warewolf.UITests
                 return this.mWorkflowText;
             }
         }
+        
+        public WpfRadioButton DisabledRadioButton
+        {
+            get
+            {
+                if ((this.mDisabledRadioButton == null))
+                {
+                    this.mDisabledRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDisabledRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DisabledRadioButton";
+                    this.mDisabledRadioButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mDisabledRadioButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -35514,7 +35527,7 @@ namespace Warewolf.UITests
         
         private WpfButton mResourcePickerButton;
         
-        private WpfEdit mPasswordTextBoxEdit;
+        private WpfEdit mPasswordTextbox;
         
         private WpfText mPasswordText;
         
@@ -35551,6 +35564,8 @@ namespace Warewolf.UITests
         private WpfEdit mWorkflowNameTextBox;
         
         private WpfText mWorkflowText;
+        
+        private WpfRadioButton mDisabledRadioButton;
         #endregion
     }
     
