@@ -9,6 +9,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void ConfigureSettingPerfomanceCounter()
         {
+            Uimap.TryCloseSettingsTab();
             Uimap.Click_ConfigureSetting_From_Menu();
             Uimap.Select_PerfomanceCounterTab();
             Uimap.Click_Reset_Perfomance_Counter();

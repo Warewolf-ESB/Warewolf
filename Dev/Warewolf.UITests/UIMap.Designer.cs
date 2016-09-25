@@ -1554,11 +1554,11 @@ namespace Warewolf.UITests
         public void Click_Select_Resource_Button()
         {
             #region Variable Declarations
-            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ItemButton;
+            WpfButton resourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton;
             #endregion
 
             // Click '...' button
-            Mouse.Click(itemButton, new Point(9, 8));
+            Mouse.Click(resourceButton, new Point(9, 8));
         }
         
         /// <summary>
@@ -23931,30 +23931,12 @@ namespace Warewolf.UITests
                 return this.mResourceButton;
             }
         }
-        
-        public WpfButton ItemButton
-        {
-            get
-            {
-                if ((this.mItemButton == null))
-                {
-                    this.mItemButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mItemButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__AddResourceButton_AutoID";
-                    this.mItemButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mItemButton;
-            }
-        }
         #endregion
         
         #region Fields
         private WpfText mResourceTextBox;
         
         private WpfButton mResourceButton;
-        
-        private WpfButton mItemButton;
         #endregion
     }
     
