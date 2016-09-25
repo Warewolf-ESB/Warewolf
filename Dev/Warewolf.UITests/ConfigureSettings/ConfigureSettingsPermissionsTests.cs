@@ -7,7 +7,6 @@ namespace Warewolf.UITests
     public class ConfigureSettingsPermissionsTests
     {
         const string Dice = "Dice";
-        const string TabName = "SecurityTab";
 
         [TestMethod]
         public void ConfigureSettingPermission()
@@ -26,7 +25,8 @@ namespace Warewolf.UITests
             Uimap.UnCheck_Public_Administrator();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Select_Resource_Button_From_Resource_Permissions();
-            Uimap.Select_Dice_From_Service_Picker(TabName);
+            Uimap.Select_Service_From_Service_Picker(Dice);
+            Assert.AreEqual("Dice", Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
             Uimap.Enter_Public_As_Windows_Group();
             Uimap.Check_Resource_Contribute();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();

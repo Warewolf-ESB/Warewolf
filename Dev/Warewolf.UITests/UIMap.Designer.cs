@@ -6047,8 +6047,8 @@ namespace Warewolf.UITests
             // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
             Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
 
-            // Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
-            Assert.AreEqual(this.Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowEnabled, newWorkflow.Enabled, "NewWorkFlowService button is disabled.");
+            // Verify that the 'Exists' property of 'New Workflow Service' menu item equals 'True'
+            Assert.AreEqual(this.Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowExists, newWorkflow.Exists, "NewWorkFlowService button is missing.");
 
             // Click 'New Workflow Service' menu item
             Mouse.Click(newWorkflow, new Point(79, 13));
@@ -13488,9 +13488,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
+        /// Verify that the 'Exists' property of 'New Workflow Service' menu item equals 'True'
         /// </summary>
-        public bool NewWorkflowEnabled = true;
+        public bool NewWorkflowExists = true;
         #endregion
     }
     
@@ -14546,7 +14546,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerMenu";
+            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerEnvironmentMenu";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -23908,7 +23908,6 @@ namespace Warewolf.UITests
                 {
                     this.mResourceTextBox = new WpfText(this);
                     #region Search Criteria
-                    this.mResourceTextBox.SearchProperties[WpfText.PropertyNames.Instance] = "1";
                     this.mResourceTextBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -23924,7 +23923,6 @@ namespace Warewolf.UITests
                 {
                     this.mResourceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mResourceButton.SearchProperties[WpfButton.PropertyNames.Instance] = "2";
                     this.mResourceButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -42827,21 +42825,27 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfTreeItem TreeItem1
+        public TreeItem1 TreeItem1
         {
             get
             {
                 if ((this.mTreeItem1 == null))
                 {
-                    this.mTreeItem1 = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mTreeItem1.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mTreeItem1 = new TreeItem1(this);
                 }
                 return this.mTreeItem1;
+            }
+        }
+        
+        public TreeItem2 TreeItem2
+        {
+            get
+            {
+                if ((this.mTreeItem2 == null))
+                {
+                    this.mTreeItem2 = new TreeItem2(this);
+                }
+                return this.mTreeItem2;
             }
         }
         
@@ -42859,9 +42863,93 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfTreeItem mTreeItem1;
+        private TreeItem1 mTreeItem1;
+        
+        private TreeItem2 mTreeItem2;
         
         private Checkbox3 mCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem1 : WpfTreeItem
+    {
+        
+        public TreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem TreeItem11
+        {
+            get
+            {
+                if ((this.mTreeItem11 == null))
+                {
+                    this.mTreeItem11 = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mTreeItem11.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mTreeItem11.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mTreeItem11.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mTreeItem11.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTreeItem11;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mTreeItem11;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem2 : WpfTreeItem
+    {
+        
+        public TreeItem2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem TreeItem1
+        {
+            get
+            {
+                if ((this.mTreeItem1 == null))
+                {
+                    this.mTreeItem1 = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mTreeItem1.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mTreeItem1;
         #endregion
     }
     
