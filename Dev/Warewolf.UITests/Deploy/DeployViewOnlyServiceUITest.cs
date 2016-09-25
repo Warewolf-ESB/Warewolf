@@ -31,8 +31,8 @@ namespace Warewolf.UITests.Deploy
         [TestInitialize()]
         public void MyTestInitialize()
         {            
-#if RELEASE
-            Uimap.WaitForStudioStart();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
 #endif
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
         }
