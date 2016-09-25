@@ -44,7 +44,7 @@ namespace Warewolf.UITests
             Playback.PlaybackError += OnError;
         }
 
-        public void WaitForStudioStart()
+        public void CloseHangingDialogs()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             TryClickMessageBoxOK();
@@ -306,7 +306,7 @@ namespace Warewolf.UITests
                     }
                 }
                 Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
-                Enter_Text_Into_Explorer_Filter(SourceName);
+                Filter_Explorer(SourceName);
                 WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
                 {
@@ -330,7 +330,7 @@ namespace Warewolf.UITests
                 var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
                 if (File.Exists(resourcesFolder + @"\" + ResourceName + ".xml"))
                 {
-                    Enter_Text_Into_Explorer_Filter(ResourceName);
+                    Filter_Explorer(ResourceName);
                     WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                     if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
                     {
@@ -569,9 +569,10 @@ namespace Warewolf.UITests
                 Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
-        public void Enter_Text_Into_Explorer_Filter(string FilterText)
+        public void Filter_Explorer(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
@@ -659,7 +660,7 @@ namespace Warewolf.UITests
             Click_SaveDialog_Save_Button();
             if (!skipExplorerFilter)
             {
-                Enter_Text_Into_Explorer_Filter(Name);
+                Filter_Explorer(Name);
                 Click_Explorer_Refresh_Button();
             }
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
@@ -1034,20 +1035,13 @@ namespace Warewolf.UITests
             Assert_Display_Text_ContainStar(Test, nameContainsStar);
         }
 
-        public void Drag_Dice_Onto_DesignSurface()
+        public void Drag_From_Explorer_Onto_DesignSurface(string WorkflowName)
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton;
-            #endregion
-
-            Mouse.Click(firstItem, new Point(49, 10));
-            flowchart.EnsureClickable(new Point(308, 127));
-            Mouse.StartDragging(firstItem, new Point(49, 10));
-            Mouse.StopDragging(flowchart, new Point(308, 127));
-            Assert.IsTrue(doneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
-            Mouse.Click(doneButton, new Point(53, 16));
+            Filter_Explorer(WorkflowName);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(49, 10));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 127));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(49, 10));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 127));
         }
 
 
@@ -1123,12 +1117,12 @@ namespace Warewolf.UITests
             }
         }
 
-        public void CreateAndSave_Dice_Workflow()
+        public void CreateAndSave_Dice_Workflow(string WorkflowName)
         {
             Select_NewWorkFlowService_From_ContextMenu();
             Drag_Toolbox_Random_Onto_DesignSurface();
             Enter_Dice_Roll_Values();
-            Save_With_Ribbon_Button_And_Dialog("Dice");
+            Save_With_Ribbon_Button_And_Dialog(WorkflowName);
             Click_Close_Workflow_Tab_Button();
         }
 
@@ -1457,14 +1451,14 @@ namespace Warewolf.UITests
             return value;
         }
         
-        public void Click_Save_Ribbon_Button_With_No_Save_Dialog()
+        public void Click_Save_Ribbon_Button_With_No_Save_Dialog(int WaitForSave = 2000)
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
-            Playback.Wait(2000);
-            Assert.IsFalse(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
+            MainStudioWindow.SideMenuBar.SaveButton.WaitForControlCondition(uicontrol => !uicontrol.Enabled, WaitForSave * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+            Assert.IsFalse(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is still enabled after clicking it and waiting for " + WaitForSave + "ms.");
         }
-        
+
         public void DeleteAssign_FromContextMenu()
         {
             #region Variable Declarations
@@ -1625,6 +1619,18 @@ namespace Warewolf.UITests
         {
             Mouse.Click(ServicePickerDialog.Explorer.Refresh, new Point(10, 11));
             WaitForSpinner(ServicePickerDialog.Explorer.ExplorerTree.Localhost.Checkbox.Spinner);
+        }
+
+        public void Click_Subworkflow_Done_Button()
+        {
+            Assert.IsTrue(
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView
+                    .DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow
+                    .DoneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
+            Mouse.Click(
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView
+                    .DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow
+                    .DoneButton, new Point(53, 16));
         }
     }
 }
