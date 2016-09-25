@@ -838,7 +838,8 @@ namespace Warewolf.UITests
             WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton;
             #endregion
 
-            // Click 'Done' button
+            // Wait for 1 seconds for user delay between actions; Click 'Done' button
+            Playback.Wait(500);
             Mouse.Click(doneButton, new Point(35, 6));
         }
         
