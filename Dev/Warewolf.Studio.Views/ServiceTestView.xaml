@@ -734,7 +734,6 @@
                 <ContentControl Grid.Column="4" 
                                 x:Name="WorkflowControl"
                                 Visibility="{Binding SelectedServiceTest, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}" 
-                                IsVisibleChanged="WorkflowControl_OnIsVisibleChanged"
                                 Content="{Binding Path=WorkflowDesignerViewModel.DesignerView}"
                                 DataContext="{Binding ElementName=ServiceTestUserControl, Path=DataContext}"
                                 AutomationProperties.AutomationId="{Binding Path=WorkflowDesignerViewModel.DesignerText}">

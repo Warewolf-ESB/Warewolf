@@ -57,10 +57,7 @@ namespace Dev2.Activities.Designers2.Core
             OpenErrorsLinkCommand = new DelegateCommand(o =>
             {
                 var actionableErrorInfo = o as IActionableErrorInfo;
-                if(actionableErrorInfo != null)
-                {
-                    actionableErrorInfo.Do();
-                }
+                actionableErrorInfo?.Do();
             });
 
             BindingOperations.SetBinding(this, IsClosedProperty, new Binding(ShowLargeProperty.Name)
