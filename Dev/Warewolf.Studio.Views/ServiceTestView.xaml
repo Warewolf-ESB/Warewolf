@@ -499,7 +499,7 @@
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
 
-                                                    <Expander Header="{Binding Path=Node.Data}" Style="{StaticResource ServiceTestTestStepExpander}" AutomationProperties.AutomationId="UI_ServiceTestTestStepExpander_AutoID">
+                                                    <Expander Header="{Binding Path=Node.Data}" IsExpanded="{Binding Path=IsTestStepExpanded}" Style="{StaticResource ServiceTestTestStepExpander}" AutomationProperties.AutomationId="UI_ServiceTestTestStepExpander_AutoID">
                                                         <Expander.HeaderTemplate>
                                                             <DataTemplate>
                                                                 <DockPanel LastChildFill="False" >
@@ -736,6 +736,7 @@
                                 Visibility="{Binding SelectedServiceTest, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}" 
                                 IsVisibleChanged="WorkflowControl_OnIsVisibleChanged"
                                 Content="{Binding Path=WorkflowDesignerViewModel.DesignerView}"
+                                DataContext="{Binding ElementName=ServiceTestUserControl, Path=DataContext}"
                                 AutomationProperties.AutomationId="{Binding Path=WorkflowDesignerViewModel.DesignerText}">
                     <ig:DragDropManager.DropTarget >
                         <ig:DropTarget IsDropTarget="False" />

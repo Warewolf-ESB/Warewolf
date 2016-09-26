@@ -31,6 +31,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Utilities;
 using FontAwesome.WPF;
+using Warewolf.Studio.CustomControls;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -90,13 +91,27 @@ namespace Dev2.Activities.Designers2.Core
         //don't TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
         {
-            ToggleView(e);
-            if(!(e.OriginalSource is IScrollInfo))
+            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
+            var dataContext = parentContentPane?.DataContext;
+            if (dataContext != null)
             {
-                e.Handled = true;
+                if (dataContext.GetType().Name == "ServiceTestViewModel")
+                {
+                    e.Handled = true;
+                }
+                else
+                {
+                    ToggleView(e);
+                    if (!(e.OriginalSource is IScrollInfo))
+                    {
+                        e.Handled = true;
+                    }
+                    base.OnPreviewMouseDoubleClick(e);
+                }
             }
-            base.OnPreviewMouseDoubleClick(e);
         }
+
+        
 
         #region Overrides of UIElement
 
@@ -222,10 +237,7 @@ namespace Dev2.Activities.Designers2.Core
             var viewModel = (TViewModel)sender;
 
             var element = Parent as FrameworkElement;
-            if(element != null)
-            {
-                element.SetZIndex(viewModel.ZIndexPosition);
-            }
+            element?.SetZIndex(viewModel.ZIndexPosition);
         }
 
         void OnSelectionChanged(Selection item)
@@ -369,24 +381,35 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
         {
-            base.OnContextMenuOpening(e);
-
-            if(ViewModel != null && ViewModel.HasLargeView)
+            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
+            var dataContext = parentContentPane?.DataContext;
+            if (dataContext != null)
             {
-                if(ViewModel.ShowLarge)
+                if (dataContext.GetType().Name == "ServiceTestViewModel")
                 {
-                    
-                    var imageSource = ImageAwesome.CreateImageSource(  FontAwesomeIcon.Compress, Brushes.Black);
-                    var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
-                    _showCollapseLargeView.Header = "Collapse Large View";
-                    _showCollapseLargeView.Icon = icon;
+                    e.Handled = true;
                 }
-                else if(ViewModel.ShowSmall)
+                else
                 {
-                    var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
-                    var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
-                    _showCollapseLargeView.Header = "Show Large View";
-                    _showCollapseLargeView.Icon = icon;
+                    base.OnContextMenuOpening(e);
+
+                    if (ViewModel != null && ViewModel.HasLargeView)
+                    {
+                        if (ViewModel.ShowLarge)
+                        {
+                            var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Compress, Brushes.Black);
+                            var icon = new Image {Source = imageSource, Height = 14, Width = 14};
+                            _showCollapseLargeView.Header = "Collapse Large View";
+                            _showCollapseLargeView.Icon = icon;
+                        }
+                        else if (ViewModel.ShowSmall)
+                        {
+                            var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
+                            var icon = new Image {Source = imageSource, Height = 14, Width = 14};
+                            _showCollapseLargeView.Header = "Show Large View";
+                            _showCollapseLargeView.Icon = icon;
+                        }
+                    }
                 }
             }
         }
