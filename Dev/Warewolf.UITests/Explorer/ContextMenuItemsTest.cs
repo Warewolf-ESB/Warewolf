@@ -10,10 +10,12 @@ namespace Warewolf.UITests
         const string Dice = "Local_DiceWF";
         const string DoubleDice = "Local_DoubleDice";
         const string DuplicatedWorkFlow = "DuplicatedWorkFlow";
+        const string SecondWorkflowName = "SecondWorkflow";
 
         [TestMethod]
         public void ContextMenuItemsUITest()
         {
+            Uimap.TryRemoveFromExplorer(Dice);
             Uimap.CreateAndSave_Dice_Workflow(Dice);
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Click_Explorer_Refresh_Button();
@@ -28,6 +30,7 @@ namespace Warewolf.UITests
             Uimap.Click_ViewSwagger_From_ExplorerContextMenu();
             Uimap.Open_Explorer_First_Item_Dependancies_With_Context_Menu();
             Uimap.Open_Explorer_First_Item_Version_History_With_Context_Menu();
+            Uimap.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditText = SecondWorkflowName;
             Uimap.Rename_LocalWorkflow_To_SecodWorkFlow();
             Uimap.Open_Explorer_First_Item_Dependancies_With_Context_Menu();
             Uimap.Click_Duplicate_From_ExplorerContextMenu();
@@ -35,11 +38,13 @@ namespace Warewolf.UITests
             Uimap.Enter_Duplicate_workflow_name();
             Uimap.Click_UpdateDuplicateRelationships();
             Uimap.Click_Duplicate_From_Duplicate_Dialog();
+            Uimap.Filter_Explorer(SecondWorkflowName);
             Uimap.Open_Explorer_First_Item_Dependancies_With_Context_Menu();
             Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.Click_Close_Dependecy_Tab();
             Uimap.Click_View_Api_From_Context_Menu();
         }
+
 
         #region Additional test attributes
 
