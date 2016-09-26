@@ -23,7 +23,6 @@ namespace Warewolf.UITests
             File.Delete(resourcesFolder + @"\" + WorkflowName + ".xml");
             Uimap.Filter_Explorer(WorkflowName);
             Uimap.Click_Explorer_Refresh_Button();
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Point point;
             Assert.IsFalse(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.TryGetClickablePoint(out point));
         }

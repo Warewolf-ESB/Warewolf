@@ -835,19 +835,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Explorer_Refresh_Button
-        /// </summary>
-        public void Click_Explorer_Refresh_Button()
-        {
-            #region Variable Declarations
-            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
-            #endregion
-
-            // Click '' button
-            Mouse.Click(explorerRefreshButton, new Point(10, 10));
-        }
-        
-        /// <summary>
         /// Click_Explorer_RemoteServer_Connect_Button - Use 'Click_Explorer_RemoteServer_Connect_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Explorer_RemoteServer_Connect_Button()
@@ -15916,6 +15903,23 @@ namespace Warewolf.UITests
                 return this.mExplorerTree;
             }
         }
+        
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
         #endregion
         
         #region Fields
@@ -15928,6 +15932,8 @@ namespace Warewolf.UITests
         private WpfButton mExplorerRefreshButton;
         
         private ExplorerTree mExplorerTree;
+        
+        private WpfCustom mSpinner;
         #endregion
     }
     
