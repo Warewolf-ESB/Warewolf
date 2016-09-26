@@ -4796,10 +4796,6 @@ namespace Warewolf.UITests
             Mouse.Click(rename, new Point(73, 15));
 
             // Type 'SecondWorkflow' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            foreach (var child in MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.GetChildren())
-            {
-                child.DrawHighlight();
-            }
             itemEdit.Text = this.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditText;
 
             // Type '{Enter}' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -16260,7 +16256,6 @@ namespace Warewolf.UITests
                 {
                     this.mSecondItem = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mSecondItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
                     this.mSecondItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
                     this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
@@ -16348,7 +16343,6 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
@@ -16487,7 +16481,6 @@ namespace Warewolf.UITests
                 {
                     this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
                     this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
@@ -16506,7 +16499,6 @@ namespace Warewolf.UITests
                 {
                     this.mSecondItem = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mSecondItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
                     this.mSecondItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
                     this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
