@@ -233,18 +233,6 @@ namespace Dev2.ViewModels.Diagnostics
         #endregion
     }
 
-    public interface IDebugTreeViewItemViewModel : INotifyPropertyChanged
-    {
-        bool IsExpanded { get; set; }
-        bool IsSelected { get; set; }
-        int Depth { get; }
-        ObservableCollection<IDebugTreeViewItemViewModel> Children { get; }
-        IDebugTreeViewItemViewModel Parent { get; set; }
-        bool? HasError { get; set; }
-
-        void VerifyErrorState();
-    }
-
     public abstract class DebugTreeViewItemViewModel<TContent> : IDebugTreeViewItemViewModel
         where TContent : class
     {

@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Data.SystemTemplates.Models;
@@ -107,30 +108,9 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return;
                 }
-                if (modelItem.ItemType == typeof(DsfForEachActivity) || modelItem.ItemType == typeof(FlowDecision))
+                if (modelItem.ItemType == typeof(DsfForEachActivity))
                 {
-                    string displayName = "";
 
-                    var displayNameProperty = modelItem.Properties["DisplayName"];
-                    if (displayNameProperty != null)
-                    {
-                        displayName = displayNameProperty.ComputedValue.ToString();
-                    }
-                    var conditionProperty = modelItem.Properties["Condition"];
-                    if (conditionProperty != null)
-                    {
-                        var condition = conditionProperty.ComputedValue;
-                    }
-                    var falseArmProperty = modelItem.Properties["False"];
-                    if (falseArmProperty != null)
-                    {
-                        var falseArm = falseArmProperty.ComputedValue;
-                    }
-                    var trueArmProperty = modelItem.Properties["True"];
-                    if (trueArmProperty != null)
-                    {
-                        var trueArm = trueArmProperty.ComputedValue;
-                    }
                 }
                 else if (modelItem.ItemType == typeof(DsfSequenceActivity))
                 {
@@ -146,7 +126,7 @@ namespace Warewolf.Studio.ViewModels
                         var switchOptions = cases?.Select(pair => pair.Key).ToList();
                         if (defaultCase != null)
                         {
-                            switchOptions.Insert(0,"Default");
+                            switchOptions.Insert(0, "Default");
                         }
                         var serviceTestOutputs = new List<IServiceTestOutput>();
                         var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
@@ -155,12 +135,40 @@ namespace Warewolf.Studio.ViewModels
                             OptionsForValue = switchOptions
                         };
                         serviceTestOutputs.Add(serviceTestOutput);
-                        SelectedServiceTest.AddTestStep(uniqueId, typeof(DsfSwitch).Name, serviceTestOutputs);
+                        SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfSwitch).Name, serviceTestOutputs);
+                    }
+                }
+                else if (modelItem.ItemType == typeof(FlowDecision))
+                {
+                    var condition = modelItem.GetProperty("Condition");
+                    var activity = (DsfFlowNodeActivity<bool>)condition;
+                    var expression = activity.ExpressionText;
+                    if (expression != null)
+                    {
+                        var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression);
+
+                        if (!string.IsNullOrEmpty(eval))
+                        {
+                            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+                            var dds = ser.Deserialize<Dev2DecisionStack>(eval);
+                            var uniqueId = activity.UniqueID;
+                            if (SelectedServiceTest != null)
+                            {
+                                var serviceTestOutputs = new List<IServiceTestOutput>();
+                                var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                                {
+                                    HasOptionsForValue = true,
+                                    OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
+                                };
+                                serviceTestOutputs.Add(serviceTestOutput);
+                                SelectedServiceTest.AddTestStep(uniqueId,dds.DisplayText, typeof(DsfDecision).Name, serviceTestOutputs);
+                            }
+                        }
                     }
                 }
                 else if (modelItem.ItemType == typeof(DsfDecision))
                 {
-                    var dds = modelItem.GetProperty("Conditions") as Dev2DecisionStack;
+                    Dev2DecisionStack dds = modelItem.GetProperty("Conditions") as Dev2DecisionStack;
                     var uniqueId = modelItem.GetProperty("UniqueID").ToString();
                     if (SelectedServiceTest != null)
                     {
@@ -171,13 +179,13 @@ namespace Warewolf.Studio.ViewModels
                             OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
                         };
                         serviceTestOutputs.Add(serviceTestOutput);
-                        SelectedServiceTest.AddTestStep(uniqueId,typeof(DsfDecision).Name,serviceTestOutputs);
+                        SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfDecision).Name, serviceTestOutputs);
                     }
-                    
+
                 }
                 else
                 {
-                    var computedValue = modelItem.GetCurrentValue(); 
+                    var computedValue = modelItem.GetCurrentValue();
                     var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
                     var outputs = dsfActivityAbstract?.GetOutputs();
                     var activityTypeName = computedValue.ToString().Replace(":", "");
@@ -194,7 +202,7 @@ namespace Warewolf.Studio.ViewModels
                             }).Cast<IServiceTestOutput>().ToList();
                             //Remove the empty row
                             serviceTestOutputs.RemoveAt(serviceTestOutputs.Count - 1);
-                            SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, activityTypeName, serviceTestOutputs);
+                            SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, dsfActivityAbstract.DisplayName, activityTypeName, serviceTestOutputs);
                         }
                     }
                 }
@@ -273,6 +281,10 @@ namespace Warewolf.Studio.ViewModels
         {
             if (SelectedServiceTest.IsDirty)
             {
+                if (ShowPopupWhenDuplicates())
+                {
+                    return;
+                }
                 Save(new List<IServiceTestModel> { SelectedServiceTest });
             }
             ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
@@ -490,7 +502,7 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                if (ShowPoputWhenDuplicates())
+                if (ShowPopupWhenDuplicates())
                 {
                     return;
                 }
@@ -575,7 +587,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        private bool ShowPoputWhenDuplicates()
+        private bool ShowPopupWhenDuplicates()
         {
             if (HasDuplicates())
             {
@@ -756,10 +768,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 try
                 {
-                    ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, test.TestName);
-                    var testToRemove = _tests.SingleOrDefault(model => model.ParentId == test.ParentId && model.TestName == SelectedServiceTest.TestName);
-                    _tests.Remove(testToRemove); //test
-                    OnPropertyChanged(() => Tests); //test
+                    if (!test.IsNewTest)
+                    {
+                        ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, test.TestName);
+                    }
+                    _tests.Remove(test);
+                    OnPropertyChanged(() => Tests);
                     SelectedServiceTest = null;
                 }
                 catch (Exception ex)

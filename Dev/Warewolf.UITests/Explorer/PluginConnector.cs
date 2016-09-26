@@ -12,7 +12,6 @@ namespace Warewolf.UITests
         string DLLPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll";
 
         [TestMethod]
-        [Ignore]
         public void BigPluginConnectorUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
@@ -29,11 +28,10 @@ namespace Warewolf.UITests
             Uimap.Save_With_Ribbon_Button_And_Dialog(PluginSourceName);
             Uimap.Click_Close_Plugin_Source_Wizard_Tab_Button();
             Uimap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
-            Uimap.TryClearToolboxFilter();
             Uimap.Open_DotNet_DLL_Connector_Tool_Large_View();
             Uimap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
             Uimap.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox();
-            Uimap.Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox();
+            Uimap.Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox();
             Uimap.Click_DotNet_DLL_Large_View_Generate_Outputs();
             Uimap.Click_DotNet_DLL_Large_View_Test_Inputs_Button();
             Uimap.Click_DotNet_DLL_Large_View_Test_Inputs_Done_Button();
@@ -47,35 +45,11 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
+            Uimap.SetPlaybackSettings();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(PluginSourceName);
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseNewPluginSourceWizardTab();
-            Uimap.TryCloseWorkflowTabs();
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {
@@ -92,6 +66,6 @@ namespace Warewolf.UITests
 
         private UIMap _uiMap;
 
-#endregion
+        #endregion
     }
 }

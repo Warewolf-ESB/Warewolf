@@ -186,6 +186,7 @@ namespace Warewolf.Studio.ViewModels
                 ShowContextMenu = explorerItem.ShowContextMenu,
                 IsSelected = true,
                 IsRenaming = true,
+                CanDelete =  true,
                 IsFolder = true
             };
             return child;

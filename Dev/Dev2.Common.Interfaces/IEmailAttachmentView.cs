@@ -6,5 +6,7 @@ namespace Dev2.Common.Interfaces
     {
         void ShowView(IList<string> current);
         void RequestClose();
+
+        void ShowView(IList<string> attachments, string filter);
     }
 }

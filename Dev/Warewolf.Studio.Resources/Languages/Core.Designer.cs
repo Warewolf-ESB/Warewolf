@@ -3368,6 +3368,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to javascript.
+        /// </summary>
+        public static string javascript_Tag {
+            get {
+                return ResourceManager.GetString("javascript_Tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]]	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset()]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string LengthHelpRecordset {
@@ -5343,6 +5352,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to python.
+        /// </summary>
+        public static string python_Tag {
+            get {
+                return ResourceManager.GetString("python_Tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Append will add the variables onto the list of variables already in the input grid. The values of the last row will be repeated for all of these additional values..
         /// </summary>
         public static string QuickVariableAppendHelpText {
@@ -6222,6 +6240,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RollbackMessage {
             get {
                 return ResourceManager.GetString("RollbackMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ruby.
+        /// </summary>
+        public static string ruby_Tag {
+            get {
+                return ResourceManager.GetString("ruby_Tag", resourceCulture);
             }
         }
         
@@ -9330,6 +9357,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ToolboxViewRefreshHelp {
             get {
                 return ResourceManager.GetString("ToolboxViewRefreshHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TreatNullAsZeroHelp.
+        /// </summary>
+        public static string TreatNullAsZeroHelp {
+            get {
+                return ResourceManager.GetString("TreatNullAsZeroHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TreatNullAsZeroToolTip.
+        /// </summary>
+        public static string TreatNullAsZeroToolTip {
+            get {
+                return ResourceManager.GetString("TreatNullAsZeroToolTip", resourceCulture);
             }
         }
         

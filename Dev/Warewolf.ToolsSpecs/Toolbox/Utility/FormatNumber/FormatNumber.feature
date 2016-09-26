@@ -1,4 +1,5 @@
-﻿Feature: FormatNumber
+﻿@Utils
+Feature: FormatNumber
 	In order to round off numbers
 	As a Warewolf user
 	I want a tool that will aid me to do so 

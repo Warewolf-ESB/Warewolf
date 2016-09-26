@@ -45,7 +45,10 @@ using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
 using Warewolf.Resource.Errors;
-// ReSharper disable ExceptionNotDocumentedOptional
+// ReSharper disable CheckNamespace
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMethodReturnValue.Global
 
 namespace Dev2.Network
 {
@@ -53,7 +56,6 @@ namespace Dev2.Network
     {
         System.Timers.Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
-        readonly IAsyncWorker _asyncWorker;
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
 
         public ServerProxyWithoutChunking(Uri serverUri)
@@ -62,7 +64,7 @@ namespace Dev2.Network
             AuthenticationType = AuthenticationType.Windows;
         }
 
-        public static bool IsShuttingDown { get; private set; }
+        private static bool IsShuttingDown { get; set; }
 
         public ServerProxyWithoutChunking(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
@@ -85,11 +87,11 @@ namespace Dev2.Network
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
             InitializeEsbProxy();
-            _asyncWorker = worker;
+            AsyncWorker = worker;
 
         }
         
-        public IPrincipal Principal { get; set; }
+        public IPrincipal Principal { get; private set; }
 
         public ServerProxyWithoutChunking(string webAddress, string userName, string password)
             : this(webAddress, new NetworkCredential(userName, password), new AsyncWorker())
@@ -117,7 +119,7 @@ namespace Dev2.Network
             }
         }
 
-        protected void InitializeEsbProxy()
+        private void InitializeEsbProxy()
         {
             if (EsbProxy == null)
             {
@@ -205,7 +207,7 @@ namespace Dev2.Network
         }
 
         public bool IsConnected { get; set; }
-        public bool IsConnecting { get; set; }
+        public bool IsConnecting { get; private set; }
         public string Alias { get; set; }
         public string DisplayName { get; set; }
 
@@ -265,8 +267,6 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                var x = HubConnection.State;
-                x.ToString();
                 if (!IsLocalHost)
                 {
                     if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
@@ -370,7 +370,7 @@ namespace Dev2.Network
             StartReconnectTimer();
         }
 
-        protected virtual void StartReconnectTimer()
+        protected void StartReconnectTimer()
         {
             if (IsLocalHost)
             {
@@ -385,7 +385,7 @@ namespace Dev2.Network
             }
         }
 
-        public virtual void StopReconnectHeartbeat()
+        protected void StopReconnectHeartbeat()
         {
             if (_reconnectHeartbeat != null)
             {
@@ -479,11 +479,11 @@ namespace Dev2.Network
             StartReconnectTimer();
         }
 
-        public IEventPublisher ServerEvents { get; set; }
+        public IEventPublisher ServerEvents { get; }
 
         public IHubProxyWrapper EsbProxy { get; protected set; }
 
-        public IHubConnectionWrapper HubConnection { get; private set; }
+        public IHubConnectionWrapper HubConnection { get; }
 
         void OnHubConnectionError(Exception exception)
         {
@@ -547,17 +547,17 @@ namespace Dev2.Network
 
         public Guid ServerID { get; set; }
         public Guid WorkspaceID { get; private set; }
-        public Uri AppServerUri { get; private set; }
-        public Uri WebServerUri { get; private set; }
-        public AuthenticationType AuthenticationType { get; private set; }
-        public string UserName { get; private set; }
-        public string Password { get; private set; }
+        public Uri AppServerUri { get; }
+        public Uri WebServerUri { get; }
+        public AuthenticationType AuthenticationType { get; }
+        public string UserName { get; }
+        public string Password { get; }
 
         /// <summary>
         /// <code>True</code> unless server returns Unauthorized or Forbidden status.
         /// </summary>
         public bool IsAuthorized { get; set; }
-        public IAsyncWorker AsyncWorker => _asyncWorker;
+        public IAsyncWorker AsyncWorker { get; }
 
         public event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
         public event EventHandler PermissionsChanged;
@@ -583,7 +583,7 @@ namespace Dev2.Network
             }
         }
 
-        protected virtual void OnNetworkStateChanged(NetworkStateEventArgs e)
+        protected void OnNetworkStateChanged(NetworkStateEventArgs e)
         {
             var handler = NetworkStateChanged;
             handler?.Invoke(this, e);
@@ -686,9 +686,7 @@ namespace Dev2.Network
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e);
-                var popupController = CustomContainer.Get<IPopupController>();
-                popupController?.Show(ErrorResource.ErrorConnectingToServer, "Error connecting", MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
+                Dev2Logger.Error(e);                
             }
             return result;
         }

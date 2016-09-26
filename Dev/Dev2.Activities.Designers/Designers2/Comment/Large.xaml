@@ -20,7 +20,7 @@
                                MinWidth="250"
                                MinHeight="50"
                                Width="250"
-                               MaxWidth="350"
+                               MaxWidth="700"
                                MaxHeight="700"
                                d:DesignHeight="300" d:DesignWidth="300"
                                d:DataContext="{d:DesignInstance comment:CommentDesignerViewModel}">

@@ -1,4 +1,5 @@
-﻿Feature: XPath
+﻿@Utils
+Feature: XPath
 	In order to run a query against xml
 	As a Warewolf user
 	I want a tool that I can use to execute xpath queries
