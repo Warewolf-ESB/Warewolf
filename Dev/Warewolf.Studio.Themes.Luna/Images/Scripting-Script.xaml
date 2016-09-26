@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <DrawingImage x:Key="Scripting-JavaScript">
+    <DrawingImage x:Key="Scripting-Script">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
@@ -9,7 +9,7 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
-    <DrawingBrush x:Key="Scripting-JavaScript-Icon">
+    <DrawingBrush x:Key="Scripting-Script-Icon">
         <DrawingBrush.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
