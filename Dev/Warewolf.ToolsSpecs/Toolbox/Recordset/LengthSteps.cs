@@ -21,9 +21,10 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
 using WarewolfParserInterop;
+
 // ReSharper disable NotAccessedVariable
 
-namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
+namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 {
     [Binding]
     public class LengthSteps : RecordSetBases
@@ -71,12 +72,33 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
             scenarioContext.TryGetValue("recordset", out recordSetName);
 
             var recordset = scenarioContext.Get<string>("recordset");
+            bool treaNullAsZero;
+            scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
 
-            var length = new DsfRecordsetLengthActivity
+            //var length = new DsfRecordsetNullhandlerLengthActivity
+            //{
+            //    RecordsetName = recordset,
+            //    RecordsLength = ResultVariable, 
+            //    TreatNullAsZero = treaNullAsZero
+            //};
+            DsfActivityAbstract<string> length;
+            scenarioContext.TryGetValue("activityMode", out length);
+            if (length != null)
+
+                length = new DsfRecordsetNullhandlerLengthActivity
+                {
+                    RecordsetName = recordset,
+                    RecordsLength = ResultVariable,
+                    TreatNullAsZero = treaNullAsZero
+                };
+            else
             {
-                RecordsetName = recordset,
-                RecordsLength = ResultVariable
-            };
+               length = new DsfRecordsetLengthActivity
+               {
+                   RecordsetName = recordset,
+                   RecordsLength = ResultVariable,
+               };
+            }
 
             TestStartNode = new FlowStep
             {
@@ -151,5 +173,18 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;
             Assert.AreEqual(expectedResult, actualValue);
         }
+
+        [Given(@"Length Treat Null as Empty Recordset is not selected")]
+        public void GivenLengthTreatNullAsEmptyRecordsetIsNotSelected()
+        {
+            scenarioContext.Add("treaNullAsZero", false);
+        }
+
+        [Given(@"Length Treat Null as Empty Recordset is selected")]
+        public void GivenLengthTreatNullAsEmptyRecordsetIsSelected()
+        {
+            scenarioContext.Add("treaNullAsZero", true);
+        }
+
     }
 }

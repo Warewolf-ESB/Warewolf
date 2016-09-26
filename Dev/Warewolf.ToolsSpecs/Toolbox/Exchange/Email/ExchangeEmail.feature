@@ -1,9 +1,9 @@
-﻿Feature: ExchangeEmail
+﻿@Utils
+Feature: ExchangeEmail
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@mytag
 Scenario: Send Exchange Email to multiple receipients
 	Given I have an exchange email variable "[[firstMail]]" equal to "testmail@freemail.com"
 	And I have an exchange email variable "[[secondMail]]" equal to "test2@freemail.com"	

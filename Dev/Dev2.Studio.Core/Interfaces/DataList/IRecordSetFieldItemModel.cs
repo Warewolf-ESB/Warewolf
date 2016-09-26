@@ -4,5 +4,6 @@
     {
         IRecordSetItemModel Parent { get; set; }
 
+        void Filter(string searchText);
     }
 }

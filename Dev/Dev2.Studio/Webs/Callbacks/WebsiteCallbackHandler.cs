@@ -63,7 +63,7 @@ namespace Dev2.Webs.Callbacks
 
             if(string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
             value = JSONUtils.ScrubJSON(value);
 
@@ -77,7 +77,9 @@ namespace Dev2.Webs.Callbacks
         }
 
         // ReSharper disable once EventNeverSubscribedTo.Global
+#pragma warning disable 67
         public event NavigateRequestedEventHandler NavigateRequested;
+#pragma warning restore 67
 
         #endregion
 

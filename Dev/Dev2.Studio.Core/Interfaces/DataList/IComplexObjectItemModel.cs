@@ -8,5 +8,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         bool IsArray { get; set; }
         IComplexObjectItemModel Parent { get; set; }
         string GetJson();
+
+        void Filter(string searchText);
     }
 }

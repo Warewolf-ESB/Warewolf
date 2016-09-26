@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using Dev2.Common.Common;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Parsers;
@@ -15,6 +17,7 @@ namespace Dev2.Studio.Core.Models.DataList
         private IComplexObjectItemModel _parent;
         private bool _isParentObject;
         private bool _isArray;
+        private string _searchText;
 
         public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent = null, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", OptomizedObservableCollection<IComplexObjectItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true) 
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
@@ -59,6 +62,13 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
+                if (!string.IsNullOrEmpty(_searchText))
+                {
+                    if (_children != null)
+                    {
+                        return _children.Where(model => model.IsVisible).ToObservableCollection();
+                    }
+                }
                 return _children ?? (_children = new ObservableCollection<IComplexObjectItemModel>());
             }
             set
@@ -132,6 +142,41 @@ namespace Dev2.Studio.Core.Models.DataList
                 }
             }
             return jsonString.ToString();
+        }
+
+        public void Filter(string searchText)
+        {
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                if (_children != null)
+                {
+                    foreach (var itemModel in _children)
+                    {
+                        itemModel.Filter(searchText);
+                    }
+                }
+                if (_children != null && _children.Any(model => model.IsVisible))
+                {
+                    IsVisible = true;
+                }
+                else
+                {
+                    IsVisible = !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
+                }
+            }
+            else
+            {
+                IsVisible = true;
+                if (_children != null)
+                {
+                    foreach (var itemModel in _children)
+                    {
+                        itemModel.IsVisible = true;
+                    }
+                }
+            }
+            _searchText = searchText;
+            NotifyOfPropertyChange(() => Children);
         }
 
         private void AppendCloseArrayChar(StringBuilder jsonString)
