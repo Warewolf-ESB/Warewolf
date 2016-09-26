@@ -677,8 +677,8 @@ namespace Warewolf.Studio.ViewModels
         private IServiceTestStep _parent;
         private ObservableCollection<IServiceTestStep> _children;
         private bool _isTestStepExpanded;
-        //private bool _assertSelected;
-        //private bool _mockSelected;
+        private bool _assertSelected;
+        private bool _mockSelected;
 
         public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
@@ -689,6 +689,8 @@ namespace Warewolf.Studio.ViewModels
             StepDescription = activityTypeName;
             Children = new ObservableCollection<IServiceTestStep>();
             IsTestStepExpanded = true;
+            AssertSelected = true;
+            MockSelected = false;
         }
 
         public Guid UniqueId
@@ -773,32 +775,32 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsExpanderVisible => Children.Count > 0;
 
-        //public bool AssertSelected
-        //{
-        //    get { return _assertSelected; }
-        //    set
-        //    {
-        //        _assertSelected = value;
-        //        if (_assertSelected)
-        //        {
-        //            Type = StepType.Assert;
-        //        }
-        //        OnPropertyChanged(() => AssertSelected);
-        //    }
-        //}
+        public bool AssertSelected
+        {
+            get { return _assertSelected; }
+            set
+            {
+                _assertSelected = value;
+                if (_assertSelected)
+                {
+                    Type = StepType.Assert;
+                }
+                OnPropertyChanged(() => AssertSelected);
+            }
+        }
 
-        //public bool MockSelected
-        //{
-        //    get { return _mockSelected; }
-        //    set
-        //    {
-        //        _mockSelected = value;
-        //        if (_mockSelected)
-        //        {
-        //            Type = StepType.Mock;
-        //        }
-        //        OnPropertyChanged(() => MockSelected);
-        //    }
-        //}
+        public bool MockSelected
+        {
+            get { return _mockSelected; }
+            set
+            {
+                _mockSelected = value;
+                if (_mockSelected)
+                {
+                    Type = StepType.Mock;
+                }
+                OnPropertyChanged(() => MockSelected);
+            }
+        }
     }
 }
