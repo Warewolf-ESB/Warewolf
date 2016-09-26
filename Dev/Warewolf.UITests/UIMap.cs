@@ -1654,187 +1654,35 @@ namespace Warewolf.UITests
                     .DoneButton, new Point(53, 16));
         }
 
-        /// <summary>
-        /// Click_Assign_Tool_url - Use 'Click_Assign_Tool_urlParams' to pass parameters into this method.
-        /// </summary>
         public void Click_Assign_Tool_url()
         {
-            #region Variable Declarations
-            WpfHyperlink hyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink;
-            WpfWindow messageBoxWindow = this.MessageBoxWindow;
-            WpfButton oKButton = this.MessageBoxWindow.OKButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Hyperlink' link equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_urlParams.HyperlinkExists, hyperlink.Exists, "Url hyperlink does not exist");
-
-            // Click 'Hyperlink' link
-            Mouse.Click(hyperlink, new Point(201, 10));
-
-            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_urlParams.MessageBoxWindowExists, messageBoxWindow.Exists, "Did you know popup does not exis");
-
-            // Verify that the 'Exists' property of 'OK' button equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_urlParams.OKButtonExists, oKButton.Exists, "Ok button does not exist on the DidYouKnow button");
-
-            // Click 'OK' button
-            Mouse.Click(oKButton, new Point(38, 12));
-        }
-        public virtual Click_Assign_Tool_urlParams Click_Assign_Tool_urlParams
-        {
-            get
-            {
-                if ((this.mClick_Assign_Tool_urlParams == null))
-                {
-                    this.mClick_Assign_Tool_urlParams = new Click_Assign_Tool_urlParams();
-                }
-                return this.mClick_Assign_Tool_urlParams;
-            }
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink.Exists, "Url hyperlink does not exist");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink, new Point(201, 10));
+            Assert.IsTrue(MessageBoxWindow.Exists, "Did you know popup does not exis");
+            Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Ok button does not exist on the DidYouKnow button");
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
         }
 
-        private Click_Assign_Tool_urlParams mClick_Assign_Tool_urlParams;
-
-        /// <summary>
-        /// Click_Assign_Tool_Remove_Variable_From_Tool - Use 'Click_Assign_Tool_Remove_Variable_From_ToolParams' to pass parameters into this method.
-        /// </summary>
         public void Click_Assign_Tool_Remove_Variable_From_Tool()
         {
-            #region Variable Declarations
-            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-            WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
-            WpfEdit variableSearchTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit;
-            WpfButton clearSearchButton = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.ClearSearchButton;
-            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox.DeleteButton;
-            #endregion
-
             Click_Assign_Tool_ExpandAll();
-
-            // Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_ToolParams.MultiAssignExists, multiAssign.Exists, "Assign tool large view on the design surface does not exist");
-
-            // Type '[[SomeOtherVariable]]' in 'UI__Row1_FieldName_AutoID' text box
-            textbox.Text = this.Click_Assign_Tool_Remove_Variable_From_ToolParams.TextboxText;
-
-            // Type '{Right}{Tab}' in 'UI__Row1_FieldName_AutoID' text box
-            Keyboard.SendKeys(textbox, this.Click_Assign_Tool_Remove_Variable_From_ToolParams.TextboxSendKeys, ModifierKeys.None);
-
-            // Verify that the 'Text' property of 'UI__Row1_FieldName_AutoID' text box equals '[[SomeOtherVariable]]'
-            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_ToolParams.TextboxText1, textbox.Text, "Multiassign small view row 1 variable textbox text does not equal \"[[Some$Invalid" +
-                    "%Variable]]\".");
-
-            // Verify that the 'Exists' property of 'UI__Row1_FieldName_AutoID' text box equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_ToolParams.TextboxExists, textbox.Exists, "Assign large view row 1 variable textbox does not exist");
-
-            // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_ToolParams.VariableSearchTextBoxEditExists, variableSearchTextBoxEdit.Exists, "Variable filter textbox does not exist");
-
-            // Type 'Other' in 'SearchTextBox' text box
-            variableSearchTextBoxEdit.Text = this.Click_Assign_Tool_Remove_Variable_From_ToolParams.VariableSearchTextBoxEditText;
-
-            // Verify that the 'Exists' property of 'ClearSearchButton' button equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_ToolParams.ClearSearchButtonExists, clearSearchButton.Exists, "Variable clear filter button does not exist");
-
-            // Click 'ClearSearchButton' button
-            Mouse.Click(clearSearchButton, new Point(8, 13));
-
-            // Verify that the 'Exists' property of 'DeleteButton' button equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_ToolParams.DeleteButtonExists, deleteButton.Exists, "Variable delete does not exist");
-
-            // Click 'DeleteButton' button
-            Mouse.Click(deleteButton, new Point(9, 8));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool large view on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox.Text = "[[SomeOtherVariable]]";
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox, "{Right}{Tab}", ModifierKeys.None);
+            Assert.AreEqual("[[Some$Invalid%Variable]]", MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox.Text, "Multiassign small view row 1 variable textbox text does not equal \"[[Some$Invalid%Variable]]\".");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox.Exists, "Assign large view row 1 variable textbox does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.Exists, "Variable filter textbox does not exist");
+            MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.Text = "Other";
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.ClearSearchButton.Exists, "Variable clear filter button does not exist");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.ClearSearchButton, new Point(8, 13));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox.DeleteButton.Exists, "Variable delete does not exist");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox.DeleteButton, new Point(9, 8));
         }
-
-        public virtual Click_Assign_Tool_Remove_Variable_From_ToolParams Click_Assign_Tool_Remove_Variable_From_ToolParams
+        
+        public void Click_Explorer_Refresh_Button()
         {
-            get
-            {
-                if ((this.mClick_Assign_Tool_Remove_Variable_From_ToolParams == null))
-                {
-                    this.mClick_Assign_Tool_Remove_Variable_From_ToolParams = new Click_Assign_Tool_Remove_Variable_From_ToolParams();
-                }
-                return this.mClick_Assign_Tool_Remove_Variable_From_ToolParams;
-            }
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
-
-        private Click_Assign_Tool_Remove_Variable_From_ToolParams mClick_Assign_Tool_Remove_Variable_From_ToolParams;
-    }
-    /// <summary>
-    /// Parameters to be passed into 'Click_Assign_Tool_url'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Assign_Tool_urlParams
-    {
-
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Hyperlink' link equals 'True'
-        /// </summary>
-        public bool HyperlinkExists = true;
-
-        /// <summary>
-        /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
-        /// </summary>
-        public bool MessageBoxWindowExists = true;
-
-        /// <summary>
-        /// Verify that the 'Exists' property of 'OK' button equals 'True'
-        /// </summary>
-        public bool OKButtonExists = true;
-        #endregion
-    }
-    /// <summary>
-    /// Parameters to be passed into 'Click_Assign_Tool_Remove_Variable_From_Tool'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Assign_Tool_Remove_Variable_From_ToolParams
-    {
-
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
-        /// </summary>
-        public bool MultiAssignExists = true;
-
-        /// <summary>
-        /// Type '[[SomeOtherVariable]]' in 'UI__Row1_FieldName_AutoID' text box
-        /// </summary>
-        public string TextboxText = "[[SomeOtherVariable]]";
-
-        /// <summary>
-        /// Type '{Right}{Tab}' in 'UI__Row1_FieldName_AutoID' text box
-        /// </summary>
-        public string TextboxSendKeys = "{Right}{Tab}";
-
-        /// <summary>
-        /// Verify that the 'Text' property of 'UI__Row1_FieldName_AutoID' text box equals '[[SomeOtherVariable]]'
-        /// </summary>
-        public string TextboxText1 = "[[SomeOtherVariable]]";
-
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_FieldName_AutoID' text box equals 'True'
-        /// </summary>
-        public bool TextboxExists = true;
-
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
-        /// </summary>
-        public bool VariableSearchTextBoxEditExists = true;
-
-        /// <summary>
-        /// Type 'Other' in 'SearchTextBox' text box
-        /// </summary>
-        public string VariableSearchTextBoxEditText = "Other";
-
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ClearSearchButton' button equals 'True'
-        /// </summary>
-        public bool ClearSearchButtonExists = true;
-
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DeleteButton' button equals 'True'
-        /// </summary>
-        public bool DeleteButtonExists = true;
-        #endregion
     }
 }

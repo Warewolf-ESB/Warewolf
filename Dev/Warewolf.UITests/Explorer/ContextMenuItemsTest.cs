@@ -15,10 +15,9 @@ namespace Warewolf.UITests
         [TestMethod]
         public void ContextMenuItemsUITest()
         {
-            Uimap.TryRemoveFromExplorer(Dice);
+            Uimap.Click_Explorer_Refresh_Button();
             Uimap.CreateAndSave_Dice_Workflow(Dice);
             Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Click_Explorer_Refresh_Button();
             Uimap.Drag_From_Explorer_Onto_DesignSurface(Dice);
             Uimap.Click_Subworkflow_Done_Button();
             Uimap.Drag_Dice_Onto_Dice_On_The_DesignSurface();
