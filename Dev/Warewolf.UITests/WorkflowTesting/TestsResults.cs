@@ -26,6 +26,7 @@ namespace Warewolf.UITests
                 default:
                     var test1 = test as Test1;
                     Assert.IsNotNull(test1);
+                    test1.Pending.DrawHighlight();
                     Assert.IsTrue(test1.Pending.TryGetClickablePoint(out point));
                     break;
             }

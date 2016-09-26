@@ -28,14 +28,13 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1();
             Uimap.Click_Workflow_CollapseAll();
             Uimap.Click_Assign_Tool_url();
-            Uimap.Open_Assign_Tool_Qvi_Large_View();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
+            Uimap.Open_Assign_Tool_Qvi_Large_View();            
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.Click_DebugInput_Debug_Button();
             Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             Uimap.Click_Debug_Output_Assign_Cell();
             Uimap.Click_Assign_Tool_Remove_Variable_From_Tool();
-            Uimap.Click_Assign_Tool_url();
+            Uimap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
         }
 
         [TestMethod]
