@@ -4288,6 +4288,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_Explorer_First_Item_Version_History_With_Context_Menu
+        /// </summary>
+        public void Open_Explorer_First_Item_Version_History_With_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
+
+            // Click 'Show Version History' menu item
+            Mouse.Click(showVersionHistory, new Point(66, 15));
+        }
+        
+        /// <summary>
         /// Open_Explorer_First_Item_With_Context_Menu - Use 'Open_Explorer_First_Item_With_Context_MenuParams' to pass parameters into this method.
         /// </summary>
         public void Open_Explorer_First_Item_With_Context_Menu()
@@ -4849,13 +4866,25 @@ namespace Warewolf.UITests
         public void Rename_LocalWorkflow_To_SecodWorkFlow()
         {
             #region Variable Declarations
-            WpfEdit itemEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ResourceImageImage.ItemEdit;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem rename = this.MainStudioWindow.ExplorerContextMenu.Rename;
+            WpfEdit itemEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit;
             #endregion
 
-            // Type 'SecondWorkflow' in first text box next to 'ResourceImage' image
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
+
+            // Click 'Rename' menu item
+            Mouse.Click(rename, new Point(73, 15));
+
+            // Type 'SecondWorkflow' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            foreach (var child in MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.GetChildren())
+            {
+                child.DrawHighlight();
+            }
             itemEdit.Text = this.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditText;
 
-            // Type '{Enter}' in first text box next to 'ResourceImage' image
+            // Type '{Enter}' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
             Keyboard.SendKeys(itemEdit, this.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditSendKeys, ModifierKeys.None);
         }
         
@@ -6198,19 +6227,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Rename_FromExplorerContextMenu
-        /// </summary>
-        public void Select_Rename_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem rename = this.MainStudioWindow.ExplorerContextMenu.Rename;
-            #endregion
-
-            // Click 'Rename' menu item
-            Mouse.Click(rename, new Point(73, 15));
-        }
-        
-        /// <summary>
         /// Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist - Use 'Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
@@ -6264,23 +6280,6 @@ namespace Warewolf.UITests
 
             // Click 'Set as Start Node' menu item
             Mouse.Click(setasStartNode, new Point(67, 16));
-        }
-        
-        /// <summary>
-        /// Select_Show_Version_History - Use 'Select_Show_Version_HistoryParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_Show_Version_History()
-        {
-            #region Variable Declarations
-            WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
-            WpfEdit itemEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ResourceImageImage.ItemEdit;
-            #endregion
-
-            // Click 'Show Version History' menu item
-            Mouse.Click(showVersionHistory, new Point(66, 15));
-
-            // Verify that the 'Text' property of first text box next to 'ResourceImage' image equals 'Exists'
-            Assert.AreEqual(this.Select_Show_Version_HistoryParams.ItemEditText, itemEdit.Text, "Version history does not exist after clicking Show version history.");
         }
         
         /// <summary>
@@ -8835,18 +8834,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_Show_Version_HistoryParams Select_Show_Version_HistoryParams
-        {
-            get
-            {
-                if ((this.mSelect_Show_Version_HistoryParams == null))
-                {
-                    this.mSelect_Show_Version_HistoryParams = new Select_Show_Version_HistoryParams();
-                }
-                return this.mSelect_Show_Version_HistoryParams;
-            }
-        }
-        
         public virtual Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
         {
             get
@@ -9452,8 +9439,6 @@ namespace Warewolf.UITests
         private Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams mSelect_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams;
         
         private Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
-        
-        private Select_Show_Version_HistoryParams mSelect_Show_Version_HistoryParams;
         
         private Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
         
@@ -13225,12 +13210,12 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Type 'SecondWorkflow' in first text box next to 'ResourceImage' image
+        /// Type 'SecondWorkflow' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
         /// </summary>
         public string ItemEditText = "SecondWorkflow";
         
         /// <summary>
-        /// Type '{Enter}' in first text box next to 'ResourceImage' image
+        /// Type '{Enter}' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
         /// </summary>
         public string ItemEditSendKeys = "{Enter}";
         #endregion
@@ -13593,21 +13578,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'Text' text box equals 'RSAKLFSVRGENDEV'
         /// </summary>
         public string TextboxText = "RSAKLFSVRGENDEV";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_Show_Version_History'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Show_Version_HistoryParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Text' property of first text box next to 'ResourceImage' image equals 'Exists'
-        /// </summary>
-        public string ItemEditText = "Exists";
         #endregion
     }
     
@@ -16589,10 +16559,29 @@ namespace Warewolf.UITests
                 return this.mResourceImageImage;
             }
         }
+        
+        public WpfEdit ItemEdit
+        {
+            get
+            {
+                if ((this.mItemEdit == null))
+                {
+                    this.mItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemEdit.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mItemEdit;
+            }
+        }
         #endregion
         
         #region Fields
         private ResourceImageImage mResourceImageImage;
+        
+        private WpfEdit mItemEdit;
         #endregion
     }
     
@@ -16611,23 +16600,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfEdit ItemEdit
-        {
-            get
-            {
-                if ((this.mItemEdit == null))
-                {
-                    this.mItemEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.NextSibling);
-                    this.mItemEdit.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mItemEdit;
-            }
-        }
-        
         public WpfButton ViewIcon
         {
             get
@@ -16664,8 +16636,6 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfEdit mItemEdit;
-        
         private WpfButton mViewIcon;
         
         private WpfButton mExecuteIcon;
