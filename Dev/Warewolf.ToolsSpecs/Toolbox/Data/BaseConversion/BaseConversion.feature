@@ -1,4 +1,5 @@
-﻿Feature: BaseConversion
+﻿@Data
+Feature: BaseConversion
 	In order to convert base encoding types
 	As a Warewolf user
 	I want a tool that converts data from one base econding to another

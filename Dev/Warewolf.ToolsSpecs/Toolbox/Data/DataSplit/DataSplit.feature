@@ -1,4 +1,5 @@
-﻿Feature: DataSplit
+﻿@Data
+Feature: DataSplit
 	In order to split data
 	As a Warewolf user
 	I want a tool that splits two or more pieces of data

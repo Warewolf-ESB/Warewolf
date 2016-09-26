@@ -274,6 +274,7 @@
     <Compile Include="Interfaces\DataList\IScalarItemModel.cs" />
     <Compile Include="Interfaces\IComplexObjectHandler.cs" />
     <Compile Include="Interfaces\IDataListViewModelHelper.cs" />
+    <Compile Include="Interfaces\IDebugTreeViewItemViewModel.cs" />
     <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="Interfaces\IPartIsUsed.cs" />
@@ -282,6 +283,7 @@
     <Compile Include="Interfaces\IServiceTestCommandHandler.cs" />
     <Compile Include="Interfaces\IServiceTestViewModel.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
+    <Compile Include="Messages\NewTestFromDebugMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
     <Compile Include="Models\DataList\RecordSetFieldItemModel.cs" />

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,18 +7,18 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class ContextMenuItemsTest
     {
-        const string Dice = "Dice";
-        const string DoubleDice = "DoubleDice";
+        const string Dice = "Local_DiceWF";
+        const string DoubleDice = "Local_DoubleDice";
         const string DuplicatedWorkFlow = "DuplicatedWorkFlow";
 
         [TestMethod]
-        [Ignore]
         public void ContextMenuItemsUITest()
         {            
-            Uimap.CreateAndSave_Dice_Workflow();
+            Uimap.CreateAndSave_Dice_Workflow(Dice);
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Click_Explorer_Refresh_Button();
-            Uimap.Drag_Dice_Onto_DesignSurface();
+            Uimap.Drag_From_Explorer_Onto_DesignSurface(Dice);
+            Uimap.Click_Subworkflow_Done_Button();
             Uimap.Drag_Dice_Onto_Dice_On_The_DesignSurface();
             Uimap.Click_Workflow_CollapseAll();
             Uimap.Save_With_Ribbon_Button_And_Dialog(DoubleDice);
@@ -47,34 +47,11 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
+            Uimap.SetPlaybackSettings();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseAllTabs();
-            Uimap.TryRemoveFromExplorer(Dice);
-            Uimap.TryRemoveFromExplorer(DoubleDice);
-            Uimap.TryRemoveFromExplorer(DuplicatedWorkFlow);
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {

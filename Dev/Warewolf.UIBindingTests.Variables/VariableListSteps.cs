@@ -38,17 +38,11 @@ namespace Warewolf.UIBindingTests.Variables
         [BeforeScenario("VariableList")]
         public void SetupForScenerio()
         {
-            /*var mockEventAggregator = new Mock<IEventAggregator>();
-
-            IView manageVariableListViewControl = new DataListView(mockEventAggregator.Object);
-            var viewModel = new DataListViewModel(mockEventAggregator.Object);
-            viewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
-            manageVariableListViewControl.DataContext = viewModel;
-            Utils.ShowTheViewForTesting(manageVariableListViewControl);*/
-
+  
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<DataListView>(Utils.ViewNameKey));
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey));
-            //ScenarioContext.Current.Add("eventAggregator", mockEventAggregator);
+            var dataListViewModel = FeatureContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            dataListViewModel.SearchText = "";
+            ScenarioContext.Current.Add(Utils.ViewModelNameKey, dataListViewModel);
         }
 
         [Given(@"I have variables as")]
@@ -137,7 +131,7 @@ namespace Warewolf.UIBindingTests.Variables
         [When(@"I search for variable ""(.*)""")]
         public void WhenISearchForVariable(string searchTerm)
         {
-            var expectedVisibility = String.Equals(searchTerm, "[[lr().a]]", StringComparison.InvariantCultureIgnoreCase);
+            var expectedVisibility = String.Equals(searchTerm, "lr().a", StringComparison.InvariantCultureIgnoreCase);
             Assert.IsTrue(expectedVisibility);
         }
 
@@ -176,9 +170,6 @@ namespace Warewolf.UIBindingTests.Variables
                     varName = variableName.Substring(variableName.IndexOf(".", StringComparison.Ordinal) + 1);
                     var variableListViewScalarCollection = sourceControl.ScalarCollection.FirstOrDefault(model => model.DisplayName == varName);
                     Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
-                    //var variableListViewScalarCollection = sourceControl.ScalarCollection.SelectMany(a => a.Children).FirstOrDefault(model => model.Name == varName);
-                    //Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
-                    //sourceViewControl.ExecuteCommand(variableName);
                 }
                 else
                 {
@@ -192,6 +183,8 @@ namespace Warewolf.UIBindingTests.Variables
         public void WhenIClearTheFilter()
         {
             var variableListViewModel = Utils.GetView<DataListViewModel>();
+            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            sourceControl.SearchText = "";
             variableListViewModel.SearchText = string.Empty;
         }
 
@@ -258,7 +251,11 @@ namespace Warewolf.UIBindingTests.Variables
             var variableListViewRecsetCollection = sourceControl.RecsetCollection;
             if (variableListViewRecsetCollection.Count > 0)
             {
-                variableListViewRecsetCollection.RemoveAt(0);
+                var variableListViewRecset = variableListViewRecsetCollection[0];
+                if (string.IsNullOrEmpty(variableListViewRecset.DisplayName))
+                {
+                    variableListViewRecsetCollection.RemoveAt(0);
+                }
             }
             var rows = table.Rows;
             var i = 0;

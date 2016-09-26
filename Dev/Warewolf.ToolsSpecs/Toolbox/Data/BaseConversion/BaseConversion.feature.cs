@@ -31,7 +31,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Data.BaseConversion
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BaseConversion", "\tIn order to convert base encoding types\r\n\tAs a Warewolf user\r\n\tI want a tool tha" +
-                    "t converts data from one base econding to another", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "t converts data from one base econding to another", ProgrammingLanguage.CSharp, new string[] {
+                        "Data"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -71,20 +72,21 @@ namespace Warewolf.ToolsSpecs.Toolbox.Data.BaseConversion
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromTextToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to text", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
+ testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 12
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -97,7 +99,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = AA",
                         "Text",
                         "Text"});
-#line 12
+#line 13
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -106,7 +108,7 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "1",
                         "[[var]] = AA"});
-#line 15
+#line 16
  testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -115,20 +117,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromTextToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to binary", ((string[])(null)));
-#line 19
-this.ScenarioSetup(scenarioInfo);
 #line 20
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 21
- testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
- testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
+ testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 25
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -141,7 +144,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = AA",
                         "Text",
                         "Binary"});
-#line 25
+#line 26
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -150,7 +153,7 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001"});
-#line 28
+#line 29
  testRunner.And("the debug output as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -159,20 +162,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromTextToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to hexadecimal", ((string[])(null)));
-#line 32
-this.ScenarioSetup(scenarioInfo);
 #line 33
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 34
- testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 35
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
- testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 37
+ testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 38
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -185,7 +189,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = AA",
                         "Text",
                         "Hex"});
-#line 38
+#line 39
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -194,7 +198,7 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141"});
-#line 41
+#line 42
  testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -203,20 +207,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromTextToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to base64", ((string[])(null)));
-#line 45
-this.ScenarioSetup(scenarioInfo);
 #line 46
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 47
- testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 48
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
- testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 50
+ testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 51
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -229,7 +234,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = AA",
                         "Text",
                         "Base 64"});
-#line 51
+#line 52
  testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -238,7 +243,7 @@ this.ScenarioSetup(scenarioInfo);
             table8.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE="});
-#line 54
+#line 55
  testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -247,20 +252,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromBinaryToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to binary", ((string[])(null)));
-#line 58
-this.ScenarioSetup(scenarioInfo);
 #line 59
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 60
- testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 61
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
- testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 63
+ testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 64
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -273,7 +279,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = 0100000101000001",
                         "Binary",
                         "Binary"});
-#line 64
+#line 65
  testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -282,7 +288,7 @@ this.ScenarioSetup(scenarioInfo);
             table10.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001"});
-#line 67
+#line 68
  testRunner.And("the debug output as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -291,20 +297,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromBinaryToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to text", ((string[])(null)));
-#line 71
-this.ScenarioSetup(scenarioInfo);
 #line 72
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 73
- testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 74
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 75
- testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 76
+ testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 77
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -317,7 +324,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = 0100000101000001",
                         "Binary",
                         "Text"});
-#line 77
+#line 78
  testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -326,7 +333,7 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "1",
                         "[[var]] = AA"});
-#line 80
+#line 81
  testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -335,20 +342,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromBinaryToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to hexadecimal", ((string[])(null)));
-#line 84
-this.ScenarioSetup(scenarioInfo);
 #line 85
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 86
- testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 87
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 88
- testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 89
+ testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 90
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -361,7 +369,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = 0100000101000001",
                         "Binary",
                         "Hex"});
-#line 90
+#line 91
  testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -370,7 +378,7 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141"});
-#line 93
+#line 94
  testRunner.And("the debug output as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -379,20 +387,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromBinaryToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to base64", ((string[])(null)));
-#line 97
-this.ScenarioSetup(scenarioInfo);
 #line 98
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 99
- testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 100
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 101
- testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 102
+ testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 103
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -405,7 +414,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = 0100000101000001",
                         "Binary",
                         "Base 64"});
-#line 103
+#line 104
  testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -414,7 +423,7 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE="});
-#line 106
+#line 107
  testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -423,20 +432,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromHexadecimalToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to hexadecimal", ((string[])(null)));
-#line 110
-this.ScenarioSetup(scenarioInfo);
 #line 111
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 112
- testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 113
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 114
- testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 115
+ testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 116
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -449,7 +459,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = 0x4141",
                         "Hex",
                         "Hex"});
-#line 116
+#line 117
  testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -458,7 +468,7 @@ this.ScenarioSetup(scenarioInfo);
             table18.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141"});
-#line 119
+#line 120
  testRunner.And("the debug output as", ((string)(null)), table18, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -467,20 +477,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromHexadecimalToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to text", ((string[])(null)));
-#line 123
-this.ScenarioSetup(scenarioInfo);
 #line 124
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 125
- testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 126
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 127
- testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 128
+ testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 129
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -493,7 +504,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = 0x4141",
                         "Hex",
                         "Text"});
-#line 129
+#line 130
  testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -502,7 +513,7 @@ this.ScenarioSetup(scenarioInfo);
             table20.AddRow(new string[] {
                         "1",
                         "[[var]] = AA"});
-#line 132
+#line 133
  testRunner.And("the debug output as", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -511,20 +522,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromHexadecimalToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to binary", ((string[])(null)));
-#line 136
-this.ScenarioSetup(scenarioInfo);
 #line 137
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 138
- testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 139
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
- testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 141
+ testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 142
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -537,7 +549,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = 0x4141",
                         "Hex",
                         "Binary"});
-#line 142
+#line 143
  testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -546,7 +558,7 @@ this.ScenarioSetup(scenarioInfo);
             table22.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001"});
-#line 145
+#line 146
  testRunner.And("the debug output as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -555,20 +567,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromHexadecimalToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to base64", ((string[])(null)));
-#line 149
-this.ScenarioSetup(scenarioInfo);
 #line 150
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 151
- testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 152
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 153
- testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 154
+ testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 155
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -581,7 +594,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = 0x4141",
                         "Hex",
                         "Base 64"});
-#line 155
+#line 156
  testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -590,7 +603,7 @@ this.ScenarioSetup(scenarioInfo);
             table24.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE="});
-#line 158
+#line 159
  testRunner.And("the debug output as", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -599,20 +612,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromBase64ToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to hexadecimal", ((string[])(null)));
-#line 162
-this.ScenarioSetup(scenarioInfo);
 #line 163
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 164
- testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 165
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 166
- testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 167
+ testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 168
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -625,7 +639,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = QUE=",
                         "Base 64",
                         "Hex"});
-#line 168
+#line 169
  testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -634,7 +648,7 @@ this.ScenarioSetup(scenarioInfo);
             table26.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141"});
-#line 171
+#line 172
  testRunner.And("the debug output as", ((string)(null)), table26, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -643,20 +657,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromBase64ToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to text", ((string[])(null)));
-#line 175
-this.ScenarioSetup(scenarioInfo);
 #line 176
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 177
- testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 178
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 179
- testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 180
+ testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 181
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
@@ -669,7 +684,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = QUE=",
                         "Base 64",
                         "Text"});
-#line 181
+#line 182
  testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
@@ -678,7 +693,7 @@ this.ScenarioSetup(scenarioInfo);
             table28.AddRow(new string[] {
                         "1",
                         "[[var]] = AA"});
-#line 184
+#line 185
  testRunner.And("the debug output as", ((string)(null)), table28, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -687,20 +702,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromBase64ToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to binary", ((string[])(null)));
-#line 188
-this.ScenarioSetup(scenarioInfo);
 #line 189
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 190
- testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 191
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 192
- testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 193
+ testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 194
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
@@ -713,7 +729,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = QUE=",
                         "Base 64",
                         "Binary"});
-#line 194
+#line 195
  testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
@@ -722,7 +738,7 @@ this.ScenarioSetup(scenarioInfo);
             table30.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001"});
-#line 197
+#line 198
  testRunner.And("the debug output as", ((string)(null)), table30, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -731,20 +747,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertFromBase64ToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to base64", ((string[])(null)));
-#line 201
-this.ScenarioSetup(scenarioInfo);
 #line 202
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 203
- testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 204
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 205
- testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 206
+ testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 207
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
@@ -757,7 +774,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] = QUE=",
                         "Base 64",
                         "Base 64"});
-#line 207
+#line 208
  testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
@@ -766,7 +783,7 @@ this.ScenarioSetup(scenarioInfo);
             table32.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE="});
-#line 210
+#line 211
  testRunner.And("the debug output as", ((string)(null)), table32, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -775,20 +792,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from text to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromTextToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to binary", ((string[])(null)));
-#line 214
-this.ScenarioSetup(scenarioInfo);
 #line 215
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 216
- testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 217
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 218
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 219
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 220
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
@@ -801,7 +819,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Text",
                         "Binary"});
-#line 220
+#line 221
  testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
@@ -810,7 +828,7 @@ this.ScenarioSetup(scenarioInfo);
             table34.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 223
+#line 224
  testRunner.And("the debug output as", ((string)(null)), table34, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -819,20 +837,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from text to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromTextToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to hexadecimal", ((string[])(null)));
-#line 227
-this.ScenarioSetup(scenarioInfo);
 #line 228
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 229
- testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 230
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 231
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 232
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 233
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
@@ -845,7 +864,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Text",
                         "Hex"});
-#line 233
+#line 234
  testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
@@ -854,7 +873,7 @@ this.ScenarioSetup(scenarioInfo);
             table36.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 236
+#line 237
  testRunner.And("the debug output as", ((string)(null)), table36, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -863,20 +882,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from text to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromTextToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to base64", ((string[])(null)));
-#line 240
-this.ScenarioSetup(scenarioInfo);
 #line 241
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 242
- testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 243
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 244
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 245
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 246
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
@@ -889,7 +909,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Text",
                         "Base 64"});
-#line 246
+#line 247
  testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
@@ -898,7 +918,7 @@ this.ScenarioSetup(scenarioInfo);
             table38.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 249
+#line 250
  testRunner.And("the debug output as", ((string)(null)), table38, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -907,20 +927,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from binary to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromBinaryToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to text", ((string[])(null)));
-#line 253
-this.ScenarioSetup(scenarioInfo);
 #line 254
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 255
- testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 256
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 257
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 258
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 259
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
@@ -933,7 +954,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Binary",
                         "Text"});
-#line 259
+#line 260
  testRunner.And("the debug inputs as", ((string)(null)), table39, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
@@ -942,7 +963,7 @@ this.ScenarioSetup(scenarioInfo);
             table40.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 262
+#line 263
  testRunner.And("the debug output as", ((string)(null)), table40, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -951,20 +972,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from binary to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromBinaryToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to hexadecimal", ((string[])(null)));
-#line 266
-this.ScenarioSetup(scenarioInfo);
 #line 267
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 268
- testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 269
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 270
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 271
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 272
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
@@ -977,7 +999,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Binary",
                         "Hex"});
-#line 272
+#line 273
  testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
@@ -986,7 +1008,7 @@ this.ScenarioSetup(scenarioInfo);
             table42.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 275
+#line 276
  testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -995,20 +1017,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from binary to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromBinaryToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to base64", ((string[])(null)));
-#line 279
-this.ScenarioSetup(scenarioInfo);
 #line 280
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 281
- testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 282
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 283
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 284
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 285
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1021,7 +1044,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Binary",
                         "Base 64"});
-#line 285
+#line 286
  testRunner.And("the debug inputs as", ((string)(null)), table43, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1030,7 +1053,7 @@ this.ScenarioSetup(scenarioInfo);
             table44.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 288
+#line 289
  testRunner.And("the debug output as", ((string)(null)), table44, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1039,20 +1062,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from hexadecimal to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromHexadecimalToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to text", ((string[])(null)));
-#line 292
-this.ScenarioSetup(scenarioInfo);
 #line 293
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 294
- testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 295
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 296
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 297
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 298
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1065,7 +1089,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Hex",
                         "Text"});
-#line 298
+#line 299
  testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1074,7 +1098,7 @@ this.ScenarioSetup(scenarioInfo);
             table46.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 301
+#line 302
  testRunner.And("the debug output as", ((string)(null)), table46, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1083,20 +1107,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from hexadecimal to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromHexadecimalToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to binary", ((string[])(null)));
-#line 305
-this.ScenarioSetup(scenarioInfo);
 #line 306
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 307
- testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 308
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 309
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 310
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 311
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1109,7 +1134,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Hex",
                         "Binary"});
-#line 311
+#line 312
  testRunner.And("the debug inputs as", ((string)(null)), table47, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1118,7 +1143,7 @@ this.ScenarioSetup(scenarioInfo);
             table48.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 314
+#line 315
  testRunner.And("the debug output as", ((string)(null)), table48, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1127,20 +1152,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from hexadecimal to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromHexadecimalToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to base64", ((string[])(null)));
-#line 318
-this.ScenarioSetup(scenarioInfo);
 #line 319
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 320
- testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 321
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 322
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 323
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 324
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1153,7 +1179,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Hex",
                         "Base 64"});
-#line 324
+#line 325
  testRunner.And("the debug inputs as", ((string)(null)), table49, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1162,7 +1188,7 @@ this.ScenarioSetup(scenarioInfo);
             table50.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 327
+#line 328
  testRunner.And("the debug output as", ((string)(null)), table50, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1171,20 +1197,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from base64 to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromBase64ToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to hexadecimal", ((string[])(null)));
-#line 331
-this.ScenarioSetup(scenarioInfo);
 #line 332
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 333
- testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 334
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 335
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 336
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 337
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1197,7 +1224,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Base 64",
                         "Hex"});
-#line 337
+#line 338
  testRunner.And("the debug inputs as", ((string)(null)), table51, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1206,7 +1233,7 @@ this.ScenarioSetup(scenarioInfo);
             table52.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 340
+#line 341
  testRunner.And("the debug output as", ((string)(null)), table52, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1215,20 +1242,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from base64 to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromBase64ToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to text", ((string[])(null)));
-#line 344
-this.ScenarioSetup(scenarioInfo);
 #line 345
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 346
- testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 347
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 348
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 349
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 350
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1241,7 +1269,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Base 64",
                         "Text"});
-#line 350
+#line 351
  testRunner.And("the debug inputs as", ((string)(null)), table53, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1250,7 +1278,7 @@ this.ScenarioSetup(scenarioInfo);
             table54.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 353
+#line 354
  testRunner.And("the debug output as", ((string)(null)), table54, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1259,20 +1287,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from base64 to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertBlankFromBase64ToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to binary", ((string[])(null)));
-#line 357
-this.ScenarioSetup(scenarioInfo);
 #line 358
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 359
- testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 360
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 361
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 362
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 363
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1285,7 +1314,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var]] =",
                         "Base 64",
                         "Binary"});
-#line 363
+#line 364
  testRunner.And("the debug inputs as", ((string)(null)), table55, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1294,7 +1323,7 @@ this.ScenarioSetup(scenarioInfo);
             table56.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
-#line 366
+#line 367
   testRunner.And("the debug output as", ((string)(null)), table56, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1303,20 +1332,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from text to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromTextToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to binary", ((string[])(null)));
-#line 370
-this.ScenarioSetup(scenarioInfo);
 #line 371
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 372
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 373
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 374
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 375
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 376
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1329,13 +1359,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Text",
                         "Binary"});
-#line 376
+#line 377
  testRunner.And("the debug inputs as", ((string)(null)), table57, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 379
+#line 380
  testRunner.And("the debug output as", ((string)(null)), table58, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1344,20 +1374,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from text to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromTextToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to hexadecimal", ((string[])(null)));
-#line 382
-this.ScenarioSetup(scenarioInfo);
 #line 383
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 384
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 385
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 386
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 387
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 388
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1370,13 +1401,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Text",
                         "Hex"});
-#line 388
+#line 389
  testRunner.And("the debug inputs as", ((string)(null)), table59, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 391
+#line 392
  testRunner.And("the debug output as", ((string)(null)), table60, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1385,20 +1416,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from text to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromTextToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to base64", ((string[])(null)));
-#line 394
-this.ScenarioSetup(scenarioInfo);
 #line 395
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 396
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 397
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 398
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 399
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 400
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1411,13 +1443,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Text",
                         "Base 64"});
-#line 400
+#line 401
  testRunner.And("the debug inputs as", ((string)(null)), table61, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 403
+#line 404
  testRunner.And("the debug output as", ((string)(null)), table62, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1426,20 +1458,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from binary to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromBinaryToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to text", ((string[])(null)));
-#line 406
-this.ScenarioSetup(scenarioInfo);
 #line 407
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 408
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 409
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 410
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 411
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 412
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1452,13 +1485,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Binary",
                         "Text"});
-#line 412
+#line 413
  testRunner.And("the debug inputs as", ((string)(null)), table63, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 415
+#line 416
  testRunner.And("the debug output as", ((string)(null)), table64, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1467,20 +1500,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from binary to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromBinaryToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to hexadecimal", ((string[])(null)));
-#line 418
-this.ScenarioSetup(scenarioInfo);
 #line 419
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0100000101000001\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 420
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0100000101000001\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 421
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 422
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 423
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 424
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1493,13 +1527,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Binary",
                         "Hex"});
-#line 424
+#line 425
  testRunner.And("the debug inputs as", ((string)(null)), table65, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table66 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 427
+#line 428
  testRunner.And("the debug output as", ((string)(null)), table66, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1508,20 +1542,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from binary to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromBinaryToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to base64", ((string[])(null)));
-#line 430
-this.ScenarioSetup(scenarioInfo);
 #line 431
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 432
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 433
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 434
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 435
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 436
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1534,13 +1569,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Binary",
                         "Base 64"});
-#line 436
+#line 437
  testRunner.And("the debug inputs as", ((string)(null)), table67, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table68 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 439
+#line 440
  testRunner.And("the debug output as", ((string)(null)), table68, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1549,20 +1584,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from hexadecimal to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromHexadecimalToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to text", ((string[])(null)));
-#line 442
-this.ScenarioSetup(scenarioInfo);
 #line 443
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 444
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 445
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 446
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 447
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 448
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1575,13 +1611,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Hex",
                         "Text"});
-#line 448
+#line 449
  testRunner.And("the debug inputs as", ((string)(null)), table69, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table70 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 451
+#line 452
  testRunner.And("the debug output as", ((string)(null)), table70, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1590,20 +1626,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from hexadecimal to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromHexadecimalToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to binary", ((string[])(null)));
-#line 454
-this.ScenarioSetup(scenarioInfo);
 #line 455
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 456
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 457
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 458
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 459
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 460
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table71 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1616,13 +1653,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Hex",
                         "Binary"});
-#line 460
+#line 461
  testRunner.And("the debug inputs as", ((string)(null)), table71, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table72 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 463
+#line 464
  testRunner.And("the debug output as", ((string)(null)), table72, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1631,20 +1668,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from hexadecimal to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromHexadecimalToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to base64", ((string[])(null)));
-#line 466
-this.ScenarioSetup(scenarioInfo);
 #line 467
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 468
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 469
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 470
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 471
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 472
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1657,13 +1695,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Hex",
                         "Base 64"});
-#line 472
+#line 473
  testRunner.And("the debug inputs as", ((string)(null)), table73, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table74 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 475
+#line 476
  testRunner.And("the debug output as", ((string)(null)), table74, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1672,20 +1710,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from base64 to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromBase64ToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to hexadecimal", ((string[])(null)));
-#line 478
-this.ScenarioSetup(scenarioInfo);
 #line 479
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 480
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 481
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 482
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 483
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 484
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table75 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1698,13 +1737,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Base 64",
                         "Hex"});
-#line 484
+#line 485
  testRunner.And("the debug inputs as", ((string)(null)), table75, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table76 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 487
+#line 488
  testRunner.And("the debug output as", ((string)(null)), table76, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1713,20 +1752,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from base64 to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromBase64ToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to text", ((string[])(null)));
-#line 490
-this.ScenarioSetup(scenarioInfo);
 #line 491
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 492
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 493
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 494
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 495
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 496
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table77 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1739,13 +1779,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Base 64",
                         "Text"});
-#line 496
+#line 497
  testRunner.And("the debug inputs as", ((string)(null)), table77, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table78 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         ""});
-#line 499
+#line 500
  testRunner.And("the debug output as", ((string)(null)), table78, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1754,20 +1794,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from base64 to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertNegativeRecordsetIndexFromBase64ToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to binary", ((string[])(null)));
-#line 502
-this.ScenarioSetup(scenarioInfo);
 #line 503
- testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 504
- testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[my(-1).var]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 505
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[my(-1).var]]\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 506
- testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 507
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 508
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table79 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1780,13 +1821,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).var]] =",
                         "Base 64",
                         "Binary"});
-#line 508
+#line 509
  testRunner.And("the debug inputs as", ((string)(null)), table79, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table80 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         ""});
-#line 511
+#line 512
  testRunner.And("the debug output as", ((string)(null)), table80, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1795,17 +1836,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertingTwoVariblesOnOneRow(string no, string from, string to, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Converting two varibles on one row", exampleTags);
-#line 515
-this.ScenarioSetup(scenarioInfo);
 #line 516
- testRunner.Given("I have a convert variable \"[[a]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 517
- testRunner.And("I have a convert variable \"[[b]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[a]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 518
- testRunner.And(string.Format("I convert a variable \"[[a]][[b]]\" from type \"{0}\" to type \"{1}\"", from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a convert variable \"[[b]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 519
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("I convert a variable \"[[a]][[b]]\" from type \"{0}\" to type \"{1}\"", from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 520
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 521
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1818,7 +1859,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[a]][[b]] = QUE=QUE=",
                         string.Format("{0}", from),
                         string.Format("{0}", to)});
-#line 521
+#line 522
  testRunner.And("the debug inputs as", ((string)(null)), table81, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1827,6 +1868,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
@@ -1840,6 +1882,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
@@ -1853,6 +1896,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
@@ -1866,6 +1910,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
@@ -1879,6 +1924,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
@@ -1892,6 +1938,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
@@ -1905,6 +1952,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
@@ -1918,6 +1966,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
@@ -1931,6 +1980,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
@@ -1944,6 +1994,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
@@ -1957,6 +2008,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
@@ -1970,6 +2022,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting two varibles on one row: 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
@@ -1983,15 +2036,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertingVariblesWithData(string no, string from, string to, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Converting varibles with data", exampleTags);
-#line 540
-this.ScenarioSetup(scenarioInfo);
 #line 541
- testRunner.Given("I have a convert variable \"[[a]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 542
- testRunner.And(string.Format("I convert a variable \"[[a]]test\" from type \"{0}\" to type \"{1}\"", from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[a]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 543
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("I convert a variable \"[[a]]test\" from type \"{0}\" to type \"{1}\"", from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 544
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 545
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -2000,6 +2053,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
@@ -2013,6 +2067,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
@@ -2026,6 +2081,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
@@ -2039,6 +2095,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
@@ -2052,6 +2109,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
@@ -2065,6 +2123,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
@@ -2078,6 +2137,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
@@ -2091,6 +2151,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
@@ -2104,6 +2165,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
@@ -2117,6 +2179,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
@@ -2130,6 +2193,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
@@ -2143,6 +2207,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
@@ -2156,6 +2221,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
@@ -2169,6 +2235,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
@@ -2182,6 +2249,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
@@ -2195,6 +2263,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Converting varibles with data: 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
@@ -2208,15 +2277,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ValidationMessagesWhenConvertInvalidVariables(string no, string variable, string value, string from, string to, string error, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation messages when Convert Invalid Variables", exampleTags);
-#line 566
-this.ScenarioSetup(scenarioInfo);
 #line 567
- testRunner.Given(string.Format("I have a convert variable \"{0}\" with a value of \"{1}\"", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 568
- testRunner.And(string.Format("I convert a variable \"{0}\" from type \"{1}\" to type \"{2}\"", variable, from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a convert variable \"{0}\" with a value of \"{1}\"", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 569
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("I convert a variable \"{0}\" from type \"{1}\" to type \"{2}\"", variable, from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 570
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 571
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -2225,6 +2294,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
@@ -2241,6 +2311,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
@@ -2257,6 +2328,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my([-1]).var]]")]
@@ -2273,6 +2345,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[rec().a]]=]]")]
@@ -2289,6 +2362,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -2305,6 +2379,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -2321,6 +2396,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\".a]]")]
@@ -2337,6 +2413,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec.a]]")]
@@ -2353,6 +2430,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()*.a]]")]
@@ -2369,6 +2447,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]*")]
@@ -2385,6 +2464,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1]]")]
@@ -2401,6 +2481,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[@]]")]
@@ -2417,6 +2498,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var#]]")]
@@ -2433,6 +2515,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]00]]")]
@@ -2449,6 +2532,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]@]]")]
@@ -2465,6 +2549,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
@@ -2481,6 +2566,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[]]")]
@@ -2497,6 +2583,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[()]]")]
@@ -2513,6 +2600,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[a]*]]]")]
@@ -2529,6 +2617,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
@@ -2545,6 +2634,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
@@ -2561,6 +2651,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()!a]]")]
@@ -2577,6 +2668,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
@@ -2593,6 +2685,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
@@ -2609,6 +2702,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
@@ -2625,6 +2719,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]")]
@@ -2647,6 +2742,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]&[[a]]")]
@@ -2663,6 +2759,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "a[[rec([[[[b]]]]).a]]@")]
@@ -2679,6 +2776,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var  ]]")]
@@ -2695,6 +2793,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
@@ -2711,6 +2810,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
@@ -2727,6 +2827,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
@@ -2743,6 +2844,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -2759,6 +2861,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -2775,6 +2878,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\".a]]")]
@@ -2791,6 +2895,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec.a]]")]
@@ -2807,6 +2912,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()*.a]]")]
@@ -2823,6 +2929,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]*")]
@@ -2839,6 +2946,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1]]")]
@@ -2855,6 +2963,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[@]]")]
@@ -2871,6 +2980,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var#]]")]
@@ -2887,6 +2997,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]00]]")]
@@ -2903,6 +3014,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]@]]")]
@@ -2919,6 +3031,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
@@ -2935,6 +3048,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[]]")]
@@ -2951,6 +3065,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[()]]")]
@@ -2967,6 +3082,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "19")]
@@ -2983,6 +3099,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
@@ -2999,6 +3116,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
@@ -3015,6 +3133,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()!a]]")]
@@ -3031,6 +3150,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
@@ -3047,6 +3167,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
@@ -3063,6 +3184,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
@@ -3079,6 +3201,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]")]
@@ -3101,6 +3224,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]&[[a]]")]
@@ -3117,6 +3241,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "a[[rec([[[[b]]]]).a]]@")]
@@ -3133,6 +3258,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var  ]]")]
@@ -3149,6 +3275,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
@@ -3165,6 +3292,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
@@ -3181,6 +3309,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
@@ -3197,6 +3326,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -3213,6 +3343,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -3229,6 +3360,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\".a]]")]
@@ -3245,6 +3377,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec.a]]")]
@@ -3261,6 +3394,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()*.a]]")]
@@ -3277,6 +3411,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]*")]
@@ -3293,6 +3428,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1]]")]
@@ -3309,6 +3445,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[@]]")]
@@ -3325,6 +3462,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var#]]")]
@@ -3341,6 +3479,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]00]]")]
@@ -3357,6 +3496,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]@]]")]
@@ -3373,6 +3513,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
@@ -3389,6 +3530,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[]]")]
@@ -3405,6 +3547,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[()]]")]
@@ -3421,6 +3564,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "19")]
@@ -3437,6 +3581,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
@@ -3453,6 +3598,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
@@ -3469,6 +3615,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()!a]]")]
@@ -3485,6 +3632,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
@@ -3501,6 +3649,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
@@ -3517,6 +3666,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
@@ -3533,6 +3683,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]")]
@@ -3555,6 +3706,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "83")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]&[[a]]")]
@@ -3571,6 +3723,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 83")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 83")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "84")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "a[[rec([[[[b]]]]).a]]@")]
@@ -3587,6 +3740,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 84")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 84")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "85")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var  ]]")]
@@ -3603,6 +3757,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 85")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 85")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "86")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
@@ -3619,6 +3774,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 86")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 86")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "87")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
@@ -3635,6 +3791,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 87")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 87")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "88")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
@@ -3651,6 +3808,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 88")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 88")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "89")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -3667,6 +3825,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 89")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 89")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "90")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -3683,6 +3842,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 90")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 90")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "91")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\".a]]")]
@@ -3699,6 +3859,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 91")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 91")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "92")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec.a]]")]
@@ -3715,6 +3876,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 92")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 92")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "93")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()*.a]]")]
@@ -3731,6 +3893,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 93")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 93")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "94")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]*")]
@@ -3747,6 +3910,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 94")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 94")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "95")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1]]")]
@@ -3763,6 +3927,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 95")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 95")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "96")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[@]]")]
@@ -3779,6 +3944,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 96")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 96")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "97")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var#]]")]
@@ -3795,6 +3961,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 97")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 97")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "98")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]00]]")]
@@ -3811,6 +3978,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 98")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 98")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "99")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]@]]")]
@@ -3827,6 +3995,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 99")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 99")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "100")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
@@ -3843,6 +4012,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 100")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 100")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "101")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[]]")]
@@ -3859,6 +4029,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 101")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 101")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "102")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[()]]")]
@@ -3875,6 +4046,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 102")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 102")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "103")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "19")]
@@ -3891,6 +4063,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 103")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 103")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "104")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
@@ -3907,6 +4080,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 104")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 104")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "105")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
@@ -3923,6 +4097,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 105")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 105")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "106")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()!a]]")]
@@ -3939,6 +4114,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 106")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 106")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "107")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
@@ -3955,6 +4131,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 107")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 107")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "108")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
@@ -3971,6 +4148,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 108")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 108")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "109")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
@@ -3987,6 +4165,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Convert Invalid Variables: Variant 109")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 109")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "110")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1")]
@@ -4009,18 +4188,19 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a Variable That Does Not Exist")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertAVariableThatDoesNotExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable That Does Not Exist", ((string[])(null)));
-#line 684
-this.ScenarioSetup(scenarioInfo);
 #line 685
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 686
- testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 687
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 688
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 689
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -4029,15 +4209,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertAnEmptyRecordset(string no, string variable, string value, string from, string to, string error, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert an empty recordset *", exampleTags);
-#line 690
-this.ScenarioSetup(scenarioInfo);
 #line 691
- testRunner.Given(string.Format("I have a convert variable \"{0}\" with a value of \"{1}\"", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 692
- testRunner.And(string.Format("I convert a variable \"{0}\" from type \"{1}\" to type \"{2}\"", variable, from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a convert variable \"{0}\" with a value of \"{1}\"", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 693
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("I convert a variable \"{0}\" from type \"{1}\" to type \"{2}\"", variable, from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 694
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 695
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -4046,6 +4226,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4062,6 +4243,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4078,6 +4260,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4094,6 +4277,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4110,6 +4294,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4126,6 +4311,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4142,6 +4328,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4158,6 +4345,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4174,6 +4362,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4190,6 +4379,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4206,6 +4396,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4222,6 +4413,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4238,6 +4430,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4254,6 +4447,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4270,6 +4464,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4286,6 +4481,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).row]]")]
@@ -4302,6 +4498,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4318,6 +4515,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4334,6 +4532,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4350,6 +4549,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4366,6 +4566,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4382,6 +4583,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4398,6 +4600,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4414,6 +4617,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4430,6 +4634,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4446,6 +4651,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4462,6 +4668,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4478,6 +4685,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4494,6 +4702,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4510,6 +4719,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4526,6 +4736,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4542,6 +4753,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs([[var]]).row]]")]
@@ -4558,6 +4770,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4574,6 +4787,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4590,6 +4804,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4606,6 +4821,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4622,6 +4838,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4638,6 +4855,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4654,6 +4872,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4670,6 +4889,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4686,6 +4906,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4702,6 +4923,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4718,6 +4940,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4734,6 +4957,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4750,6 +4974,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4766,6 +4991,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4782,6 +5008,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4798,6 +5025,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an empty recordset *: 48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().row]]")]
@@ -4814,20 +5042,21 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a Variable that is null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         public virtual void ConvertAVariableThatIsNull()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable that is null", ((string[])(null)));
-#line 747
-this.ScenarioSetup(scenarioInfo);
 #line 748
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 749
- testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 750
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 751
- testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 752
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 753
  testRunner.And("the execution has \"Scalar value {[[var]]} is NULL\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

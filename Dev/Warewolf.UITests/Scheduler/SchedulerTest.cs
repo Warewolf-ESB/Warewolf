@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -8,19 +7,15 @@ namespace Warewolf.UITests
     public class SchedulerTest
     {
         [TestMethod]
-        [Ignore]
         public void SchedulerUITest()
         {
             Uimap.Click_Scheduler_Ribbon_Button();
             Uimap.Click_Scheduler_Create_New_Task_Ribbon_Button();
             Uimap.Click_Scheduler_ResourcePicker();
-            Uimap.Click_Service_Picker_Dialog_First_Service_In_Explorer();
-            Uimap.Click_Service_Picker_Dialog_OK();
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Select_Service_From_Service_Picker_Dialog("Hello World");
+            Uimap.Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab();
             Uimap.Click_Scheduler_Disable_Task_Radio_Button();
-            Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Enter_User_Details_For_Scheduler();
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog(30000);
         }
 
         #region Additional test attributes
@@ -28,31 +23,11 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
+            Uimap.SetPlaybackSettings();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            //Uimap.TryCloseAllTabs();
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {

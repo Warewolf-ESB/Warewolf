@@ -20,7 +20,7 @@ namespace Warewolf.UITests
             Uimap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
             File.Delete(resourcesFolder + @"\" + WorkflowName + ".xml");
-            Uimap.Enter_Text_Into_Explorer_Filter(WorkflowName);
+            Uimap.Filter_Explorer(WorkflowName);
             Uimap.Click_Explorer_Refresh_Button();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsFalse(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved blank workflow appears in the explorer tree after delete from disk.");
@@ -31,32 +31,11 @@ namespace Warewolf.UITests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
+            Uimap.SetPlaybackSettings();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
         }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(WorkflowName);
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {

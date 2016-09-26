@@ -193,7 +193,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 if (_environmentModel != null)
                 {
                     // MUST use connection server event publisher - debug events are published from the server!
-                    DebugOutputViewModel = new DebugOutputViewModel(_environmentModel.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
+                    DebugOutputViewModel = new DebugOutputViewModel(_environmentModel.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ContextualResourceModel);
                     _environmentModel.IsConnectedChanged += EnvironmentModelOnIsConnectedChanged();
                     _environmentModel.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
                 }
@@ -203,7 +203,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 if (DebugOutputViewModel == null)
                 {
-                    DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
+                    DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ContextualResourceModel);
                 }
             }
             _popupController = popupController;

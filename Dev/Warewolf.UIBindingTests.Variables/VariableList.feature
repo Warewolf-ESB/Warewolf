@@ -58,49 +58,6 @@ Scenario: Variables adding in variable list and removing unused
 	| rec().a        |                  | YES              |       | YES    |
 								
 
-Scenario: Searching Variables in Variable list
-	Given I have variables as
-    | Variable    | Note              | Input | Output | IsUsed |
-    | [[rec().a]] | This is recordset |       | YES    | YES    |
-    | [[rec().b]] |                   |       |        |        |
-    | [[mr()]]    |                   |       |        | YES    |
-    | [[Var]]     |                   | YES   |        | YES    |
-    | [[a]]       |                   |       |        |        |
-    | [[lr().a]]  |                   |       |        |        |
-	Then "Variables" is "Enabled"
-	And variables filter box is "Visible"
-	And "Filter Clear" is "Disabled"
-	And "Delete Variables" is "Enabled"
-	And "Sort Variables" is "Enabled" 
-	When I search for variable "[[lr().a]]"
-	Then the Variable Names are
-	| Variable Name | Delete IsEnabled | Note Visible | Note Highlighted | Input       | Output      |
-	And the Recordset Names are 
-	| Recordset Name | Delete IsEnabled | Note Visible | Note Highlighted | Input | Output |
-	| lr()           | YES              |              |                  |       |        |
-	| lr().a         | YES              |              |                  |       |        |
-	And I click delete for "lr().a"
-	Then the Variable Names are
-	| Variable Name | Delete IsEnabled | Note Visible | Note Highlighted | Input       | Output      |
-	And the Recordset Names are 
-	| Recordset Name | Delete IsEnabled | Note Visible | Note Highlighted | Input       | Output      |
-	And I click "Delete Variables"
-	Then the Variable Names are
-	| Variable Name | Delete IsEnabled | Note Visible | Note Highlighted | Input       | Output      |
-	And the Recordset Names are 
-	| Recordset Name | Delete IsEnabled | Note Visible | Note Highlighted | Input       | Output      |
-	When I press the clear filter button
-	And the Variable Names are
-	| Variable Name | Delete IsEnabled | Note Highlighted | Input | Output |
-	| Var           |                  |                  | YES   |        |
-	| a             | YES              |                  |       |        |
-	And the Recordset Names are
-	| Recordset Name | Delete IsEnabled | Note Highlighted | Input | Output |
-	| rec()          |                  |                  |       |        |
-	| rec().a        |                  | YES              |       | YES    |
-	| rec().b        | YES              |                  |       |        |
-	| mr()           | YES              |                  |       |        |
-
 Scenario: Sorting Variables in Variable list
 	Given I have variables as
 	 | Variable    | Note              | Input | Output | IsUsed |
