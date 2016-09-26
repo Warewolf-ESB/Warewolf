@@ -192,6 +192,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 _environmentModel = model.EnvironmentModel;
                 if (_environmentModel != null)
                 {
+
                     // MUST use connection server event publisher - debug events are published from the server!
                     DebugOutputViewModel = new DebugOutputViewModel(_environmentModel.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ContextualResourceModel);
                     _environmentModel.IsConnectedChanged += EnvironmentModelOnIsConnectedChanged();
@@ -201,10 +202,30 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler || WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.ServiceTestsViewer)
             {
-                if (DebugOutputViewModel == null)
+                
+                
+               /* if(WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.ServiceTestsViewer)
                 {
-                    DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ContextualResourceModel);
+                    if(WorkSurfaceKey.ResourceID != null)
+                    {
+                        var resourceModel = EnvironmentRepository.Instance.ActiveEnvironment.ResourceRepository.LoadContextualResourceModel(WorkSurfaceKey.ResourceID.Value);
+                        //var resourceModel = Environment.ResourceRepository.LoadContextualResourceModel(WorkSurfaceKey.ResourceID.Value);
+                        if (DebugOutputViewModel == null)
+                        {
+                            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), resourceModel);
+                        }
+
+                    }
                 }
+                else
+                {*/
+                    if (DebugOutputViewModel == null)
+                    {
+                        DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
+                    }
+
+               // }
+               
             }
             _popupController = popupController;
             _saveDialogAction = saveDialogAction;

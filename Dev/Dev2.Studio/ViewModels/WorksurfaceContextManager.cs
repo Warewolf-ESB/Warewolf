@@ -149,7 +149,7 @@ namespace Dev2.Studio.ViewModels
         {
             Dev2Logger.Debug(message.GetType().Name);
             var workflow = new WorkflowDesignerViewModel(message.ResourceModel);
-            var testViewModel = new ServiceTestViewModel(message.ResourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow);
+            var testViewModel = new ServiceTestViewModel(message.ResourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow, message);
             var vm = new StudioTestViewModel(_mainViewModel.EventPublisher, testViewModel, _mainViewModel.PopupProvider, new ServiceTestView());
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, message.ResourceModel.ID);
             var key = workSurfaceKey as WorkSurfaceKey;
