@@ -1186,6 +1186,11 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
+        public List<ModelItem> GetModelItems()
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnvironmentModel EnvironmentModel
         {
             get { throw new NotImplementedException(); }
