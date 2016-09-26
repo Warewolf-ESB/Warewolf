@@ -13,8 +13,6 @@ namespace Warewolf.Studio.ViewModels
         private List<string> _assertOps;
         private bool _hasOptionsForValue;
         private List<string> _optionsForValue;
-        private bool _assertSelected;
-        private bool _mockSelected;
 
         public ServiceTestOutput(string variable, string value)
         {
@@ -23,8 +21,6 @@ namespace Warewolf.Studio.ViewModels
             Variable = variable;
             Value = value;
             AssertOps = new List<string> { "=" };
-            AssertSelected = true;
-            MockSelected = false;
         }
 
         public string Variable
@@ -89,26 +85,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _assertOps = value; 
                 OnPropertyChanged(() => AssertOps);
-            }
-        }
-
-        public bool AssertSelected
-        {
-            get { return _assertSelected; }
-            set
-            {
-                _assertSelected = value;
-                OnPropertyChanged(() => AssertSelected);
-            }
-        }
-
-        public bool MockSelected
-        {
-            get { return _mockSelected; }
-            set
-            {
-                _mockSelected = value;
-                OnPropertyChanged(() => MockSelected);
             }
         }
     }
