@@ -10,17 +10,20 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
@@ -28,6 +31,7 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+// ReSharper disable PossibleNullReferenceException
 
 // ReSharper disable ObjectCreationAsStatement
 
@@ -36,7 +40,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    public class ServiceTestViewModelTests
+    public class ServiceTestViewModelTests 
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -48,8 +52,89 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            new ServiceTestViewModel(null, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            new ServiceTestViewModel(default(IContextualResourceModel), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
             //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("TestFrameworkViewModel_Constructor")]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void TestFrameworkViewModel_MsgConstructor_NullMessage_ShouldThrowException()
+        {
+            //------------Setup for test--------------------------
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            //------------Execute Test---------------------------
+            new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            //------------Assert Results-------------------------
+        }
+
+
+     
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void TestFrameworkViewModel_MsgConstructor_MessageResourceModel_ShouldCreateNewtest()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var env = new Mock<IEnvironmentModel>();
+            var debugTreeMock = new Mock<List<IDebugState>>();
+            var con = new Mock<IEnvironmentConnection>();
+            resourceModel.Setup(model => model.Environment).Returns(env.Object);
+            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
+            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, DebugStates = debugTreeMock.Object };
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testViewModel.SelectedServiceTest);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void TestFrameworkViewModel_MsgConstructor_PopulatedCorrectly_ShouldCreateNewtestWithInputsAndOutPuts()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var env = new Mock<IEnvironmentModel>();
+            var debugStates = new List<IDebugState> { new DebugState() { } };
+            var con = new Mock<IEnvironmentConnection>();
+            resourceModel.Setup(model => model.Environment).Returns(env.Object);
+            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
+            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, DebugStates = debugStates };
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
+            bool wasCaled = false;
+            testViewModel.PropertyChanged += (sender, args) =>
+            {
+
+                if(args.PropertyName == "Inputs" || args.PropertyName == "Outputs")
+                {
+                    wasCaled=true;
+                };
+            };
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testViewModel.SelectedServiceTest);
+            Assert.IsTrue(wasCaled);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void TestFrameworkViewModel_MsgConstructor_MsgWithInputValues_ShouldAddInputvalues()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var env = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            var debugTreeMock = new Mock<List<IDebugState>>();
+            resourceModel.Setup(model => model.Environment).Returns(env.Object);
+            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
+            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, DebugStates = debugTreeMock.Object };
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testViewModel.SelectedServiceTest);
         }
 
         [TestMethod]
@@ -124,7 +209,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.DuplicateTestCommand.CanExecute(null));
         }
-        
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -175,7 +260,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             moqModel.SetupAllProperties();
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
             moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() {Result = SaveResult.Success});
+            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() { Result = SaveResult.Success });
             return moqModel.Object;
         }
 
@@ -434,10 +519,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(con.Object);
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
-            resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);            
+            resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             resourceModelMock.Setup(model => model.Category).Returns("My WF");
             resourceModelMock.Setup(model => model.ResourceName).Returns("My WF");
-            
+
 
             var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -581,12 +666,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             vm.CreateTestCommand.Execute(null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
-            
+
             Assert.IsTrue(vm.SelectedServiceTest != null);
             var isConnected = vm.ResourceModel.Environment.IsConnected;
             Assert.IsTrue(isConnected);
             //---------------Execute Test ----------------------
-         
+
             vm.SelectedServiceTest.Enabled = false;
             //---------------Test Result -----------------------
             var canExecute = vm.DeleteTestCommand.CanExecute(vm.SelectedServiceTest);
@@ -1403,18 +1488,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.SelectedServiceTest = testModel;
             //---------------Assert Precondition----------------          
             //---------------Execute Test ----------------------
-            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);            
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
-            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Mock,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
-            Assert.AreEqual(dsfDecision.GetType().Name,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
-            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(dsfDecision.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
             var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
             Assert.AreEqual(2, serviceTestOutput.OptionsForValue.Count);
             Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
             Assert.AreEqual("True Path", serviceTestOutput.OptionsForValue[0]);
             Assert.AreEqual("False Path", serviceTestOutput.OptionsForValue[1]);
-            Assert.AreEqual("Condition Result",serviceTestOutput.Variable);
+            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
         }
 
         [TestMethod]
@@ -1430,7 +1515,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dsfSwitch = new DsfSwitch();
             var uniqueId = Guid.NewGuid();
             dsfSwitch.UniqueID = uniqueId.ToString();
-            dsfSwitch.Switches = new Dictionary<string, IDev2Activity> { {"Case1",new Mock<IDev2Activity>().Object}, { "Case2", new Mock<IDev2Activity>().Object }, { "Case3", new Mock<IDev2Activity>().Object } };
+            dsfSwitch.Switches = new Dictionary<string, IDev2Activity> { { "Case1", new Mock<IDev2Activity>().Object }, { "Case2", new Mock<IDev2Activity>().Object }, { "Case3", new Mock<IDev2Activity>().Object } };
             var modelItem = ModelItemUtils.CreateModelItem(dsfSwitch);
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
@@ -1442,19 +1527,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.SelectedServiceTest = testModel;
             //---------------Assert Precondition----------------          
             //---------------Execute Test ----------------------
-            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);            
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
-            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Mock,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
-            Assert.AreEqual(dsfSwitch.GetType().Name,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
-            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(dsfSwitch.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
             var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
             Assert.AreEqual(3, serviceTestOutput.OptionsForValue.Count);
             Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
             Assert.AreEqual("Case1", serviceTestOutput.OptionsForValue[0]);
             Assert.AreEqual("Case2", serviceTestOutput.OptionsForValue[1]);
             Assert.AreEqual("Case3", serviceTestOutput.OptionsForValue[2]);
-            Assert.AreEqual("Condition Result",serviceTestOutput.Variable);
+            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
         }
 
         [TestMethod]
@@ -1470,7 +1555,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dsfSwitch = new DsfSwitch();
             var uniqueId = Guid.NewGuid();
             dsfSwitch.UniqueID = uniqueId.ToString();
-            dsfSwitch.Switches = new Dictionary<string, IDev2Activity> { {"Case1",new Mock<IDev2Activity>().Object}, { "Case2", new Mock<IDev2Activity>().Object }, { "Case3", new Mock<IDev2Activity>().Object } };
+            dsfSwitch.Switches = new Dictionary<string, IDev2Activity> { { "Case1", new Mock<IDev2Activity>().Object }, { "Case2", new Mock<IDev2Activity>().Object }, { "Case3", new Mock<IDev2Activity>().Object } };
             dsfSwitch.Default = new List<IDev2Activity>();
             var modelItem = ModelItemUtils.CreateModelItem(dsfSwitch);
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
@@ -1483,12 +1568,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.SelectedServiceTest = testModel;
             //---------------Assert Precondition----------------          
             //---------------Execute Test ----------------------
-            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);            
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
-            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Mock,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
-            Assert.AreEqual(dsfSwitch.GetType().Name,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
-            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(dsfSwitch.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
             var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
             Assert.AreEqual(4, serviceTestOutput.OptionsForValue.Count);
             Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
@@ -1496,7 +1581,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Case1", serviceTestOutput.OptionsForValue[1]);
             Assert.AreEqual("Case2", serviceTestOutput.OptionsForValue[2]);
             Assert.AreEqual("Case3", serviceTestOutput.OptionsForValue[3]);
-            Assert.AreEqual("Condition Result",serviceTestOutput.Variable);
+            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
         }
 
 
@@ -1513,7 +1598,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var assignActivity = new DsfMultiAssignActivity();
             var uniqueId = Guid.NewGuid();
             assignActivity.UniqueID = uniqueId.ToString();
-            assignActivity.FieldsCollection = new List<ActivityDTO> {new ActivityDTO("[[Var1]]","bob",1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
+            assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
             var modelItem = ModelItemUtils.CreateModelItem(assignActivity);
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
@@ -1537,9 +1622,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(serviceTestOutput1.HasOptionsForValue);
             Assert.IsFalse(serviceTestOutput2.HasOptionsForValue);
             Assert.IsFalse(serviceTestOutput3.HasOptionsForValue);
-            Assert.AreEqual("[[Var1]]",serviceTestOutput1.Variable);
-            Assert.AreEqual("[[Var2]]",serviceTestOutput2.Variable);
-            Assert.AreEqual("[[name]]",serviceTestOutput3.Variable);
+            Assert.AreEqual("[[Var1]]", serviceTestOutput1.Variable);
+            Assert.AreEqual("[[Var2]]", serviceTestOutput2.Variable);
+            Assert.AreEqual("[[name]]", serviceTestOutput3.Variable);
         }
 
 
@@ -1565,9 +1650,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(moqModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
             //---------------Assert Precondition----------------
             var fieldInfo = typeof(ServiceTestViewModel).GetField("_serverName", BindingFlags.Instance | BindingFlags.NonPublic);
-            
+
             // ReSharper disable once PossibleNullReferenceException
-            var server=    fieldInfo.GetValue(testFrameworkViewModel).ToString();
+            var server = fieldInfo.GetValue(testFrameworkViewModel).ToString();
             Assert.AreEqual(" - GenDev", server);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
@@ -1595,9 +1680,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(moqModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
             //---------------Assert Precondition----------------
             var fieldInfo = typeof(ServiceTestViewModel).GetField("_serverName", BindingFlags.Instance | BindingFlags.NonPublic);
-            
+
             // ReSharper disable once PossibleNullReferenceException
-            var server=    fieldInfo.GetValue(testFrameworkViewModel).ToString();
+            var server = fieldInfo.GetValue(testFrameworkViewModel).ToString();
             Assert.AreEqual("", server);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
@@ -1648,7 +1733,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
             dataListViewModel.WriteToResourceModel();
             moqModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
-            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() {Result = SaveResult.Success}).Verifiable();
+            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() { Result = SaveResult.Success }).Verifiable();
             moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true).Verifiable();
             moqModel.Setup(model => model.Environment.IsConnected).Returns(true).Verifiable();
             return moqModel.Object;

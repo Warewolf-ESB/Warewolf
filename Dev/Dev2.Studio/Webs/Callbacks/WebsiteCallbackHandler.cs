@@ -73,12 +73,10 @@ namespace Dev2.Webs.Callbacks
 
         public virtual void Close()
         {
-            if(Owner != null)
-            {
-                Owner.Close();
-            }
+            Owner?.Close();
         }
 
+        // ReSharper disable once EventNeverSubscribedTo.Global
         public event NavigateRequestedEventHandler NavigateRequested;
 
         #endregion
