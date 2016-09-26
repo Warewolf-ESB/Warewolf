@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,7 +8,6 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class ContextMenuItemsTest
     {
-        const string Dice = "Local_DiceWF";
         const string DoubleDice = "Local_DoubleDice";
         const string DuplicatedWorkFlow = "DuplicatedWorkFlow";
         const string SecondWorkflowName = "SecondWorkflow";
@@ -15,11 +15,8 @@ namespace Warewolf.UITests
         [TestMethod]
         public void ContextMenuItemsUITest()
         {
-            Uimap.Click_Explorer_Refresh_Button();
-            Uimap.CreateAndSave_Dice_Workflow(Dice);
             Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Filter_Explorer(Dice);
-            Uimap.Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface();
+            Uimap.Drag_Dice_Roll_Example_Onto_DesignSurface();
             Uimap.Click_Subworkflow_Done_Button();
             Uimap.Drag_Dice_Onto_Dice_On_The_DesignSurface();
             Uimap.Click_Workflow_CollapseAll();

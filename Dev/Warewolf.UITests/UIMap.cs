@@ -1035,14 +1035,17 @@ namespace Warewolf.UITests
             Assert_Display_Text_ContainStar(Test, nameContainsStar);
         }
 
-        //public void Drag_From_Explorer_Onto_DesignSurface(string WorkflowName)
-        //{
-        //    Filter_Explorer(WorkflowName);
-        //    MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 127));
-        //    Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(49, 10));
-        //    Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 127));
-        //}
+        public void Drag_From_Explorer_Onto_DesignSurface(string ServicePath)
+        {
+            Filter_Explorer(ServicePath);
+            Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface();
+        }
 
+        public void Drag_Dice_Roll_Example_Onto_DesignSurface()
+        {
+            Filter_Explorer("Dice Roll");
+            Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_Surface();
+        }
 
         public void Select_Show_Dependencies_In_Explorer_Context_Menu(string ServiceName)
         {

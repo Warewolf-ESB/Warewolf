@@ -835,6 +835,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Explorer_Localhost_First_Item
+        /// </summary>
+        public void Click_Explorer_Localhost_First_Item()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, new Point(63, 11));
+        }
+        
+        /// <summary>
         /// Click_Explorer_RemoteServer_Connect_Button - Use 'Click_Explorer_RemoteServer_Connect_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Explorer_RemoteServer_Connect_Button()
@@ -1062,6 +1075,19 @@ namespace Warewolf.UITests
 
             // Click 'Create a new database source' button
             Mouse.Click(databaseSourceButton, new Point(16, 15));
+        }
+        
+        /// <summary>
+        /// Click_New_Workflow_Tab
+        /// </summary>
+        public void Click_New_Workflow_Tab()
+        {
+            #region Variable Declarations
+            WpfTabPage workflowTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab;
+            #endregion
+
+            // Click 'Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi...' tab
+            Mouse.Click(workflowTab, new Point(63, 18));
         }
         
         /// <summary>
@@ -1694,6 +1720,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Start_Node
+        /// </summary>
+        public void Click_Start_Node()
+        {
+            #region Variable Declarations
+            WpfCustom startNode = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
+            #endregion
+
+            // Click 'StartNode' custom control
+            Mouse.Click(startNode, new Point(29, 76));
+        }
+        
+        /// <summary>
         /// Click_Studio_Log_File
         /// </summary>
         public void Click_Studio_Log_File()
@@ -1916,14 +1955,14 @@ namespace Warewolf.UITests
         public void Drag_Dice_Onto_Dice_On_The_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfTreeItem firstSubItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton;
             #endregion
 
-            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(301, 228));
-            Mouse.StartDragging(firstItem, new Point(49, 10));
+            Mouse.StartDragging(firstSubItem, new Point(49, 10));
             Mouse.StopDragging(flowchart, new Point(301, 228));
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
@@ -1982,6 +2021,58 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+        }
+        
+        /// <summary>
+        /// Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstSubItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.FirstSubItemExists, firstSubItem.Exists, "No items to drag found in the explorer tree.");
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstSubItem, new Point(90, 10));
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(firstSubItem, new Point(90, 10));
+            Mouse.StopDragging(flowchart, new Point(307, 128));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+        }
+        
+        /// <summary>
+        /// Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_Surface()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstSubItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.FirstSubItemExists, firstSubItem.Exists, "No items to drag found in the explorer tree.");
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstSubItem, new Point(90, 10));
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(firstSubItem, new Point(90, 10));
+            Mouse.StopDragging(flowchart, new Point(307, 128));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -7127,6 +7218,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams == null))
+                {
+                    this.mDrag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams();
+                }
+                return this.mDrag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams == null))
+                {
+                    this.mDrag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams();
+                }
+                return this.mDrag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams;
+            }
+        }
+        
         public virtual Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
         {
             get
@@ -9049,6 +9164,10 @@ namespace Warewolf.UITests
         
         private Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams;
         
+        private Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams;
+        
+        private Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams;
+        
         private Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
         
         private Drag_GET_Web_Connector_Onto_DesignSurfaceParams mDrag_GET_Web_Connector_Onto_DesignSurfaceParams;
@@ -10586,6 +10705,46 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstSubItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_Surface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstSubItemExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
@@ -16254,20 +16413,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfTreeItem SecondItem
+        public SecondItem SecondItem
         {
             get
             {
                 if ((this.mSecondItem == null))
                 {
-                    this.mSecondItem = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mSecondItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
-                    this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-                    this.mSecondItem.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSecondItem = new SecondItem(this);
                 }
                 return this.mSecondItem;
             }
@@ -16279,7 +16431,7 @@ namespace Warewolf.UITests
         
         private FirstItem mFirstItem;
         
-        private WpfTreeItem mSecondItem;
+        private SecondItem mSecondItem;
         #endregion
     }
     
@@ -16386,12 +16538,26 @@ namespace Warewolf.UITests
                 return this.mItemEdit;
             }
         }
+        
+        public FirstSubItem FirstSubItem
+        {
+            get
+            {
+                if ((this.mFirstSubItem == null))
+                {
+                    this.mFirstSubItem = new FirstSubItem(this);
+                }
+                return this.mFirstSubItem;
+            }
+        }
         #endregion
         
         #region Fields
         private ResourceImageImage mResourceImageImage;
         
         private WpfEdit mItemEdit;
+        
+        private FirstSubItem mFirstSubItem;
         #endregion
     }
     
@@ -16400,6 +16566,263 @@ namespace Warewolf.UITests
     {
         
         public ResourceImageImage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ResourceImage";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ViewIcon
+        {
+            get
+            {
+                if ((this.mViewIcon == null))
+                {
+                    this.mViewIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mViewIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "EditButton";
+                    this.mViewIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mViewIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mViewIcon;
+            }
+        }
+        
+        public WpfButton ExecuteIcon
+        {
+            get
+            {
+                if ((this.mExecuteIcon == null))
+                {
+                    this.mExecuteIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExecuteIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ExecuteButton";
+                    this.mExecuteIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExecuteIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExecuteIcon;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mViewIcon;
+        
+        private WpfButton mExecuteIcon;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FirstSubItem : WpfTreeItem
+    {
+        
+        public FirstSubItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ResourceImageImage1 ResourceImageImage
+        {
+            get
+            {
+                if ((this.mResourceImageImage == null))
+                {
+                    this.mResourceImageImage = new ResourceImageImage1(this);
+                }
+                return this.mResourceImageImage;
+            }
+        }
+        
+        public WpfEdit ItemEdit
+        {
+            get
+            {
+                if ((this.mItemEdit == null))
+                {
+                    this.mItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemEdit.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mItemEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ResourceImageImage1 mResourceImageImage;
+        
+        private WpfEdit mItemEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResourceImageImage1 : WpfImage
+    {
+        
+        public ResourceImageImage1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ResourceImage";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ViewIcon
+        {
+            get
+            {
+                if ((this.mViewIcon == null))
+                {
+                    this.mViewIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mViewIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "EditButton";
+                    this.mViewIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mViewIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mViewIcon;
+            }
+        }
+        
+        public WpfButton ExecuteIcon
+        {
+            get
+            {
+                if ((this.mExecuteIcon == null))
+                {
+                    this.mExecuteIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExecuteIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ExecuteButton";
+                    this.mExecuteIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExecuteIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExecuteIcon;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mViewIcon;
+        
+        private WpfButton mExecuteIcon;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SecondItem : WpfTreeItem
+    {
+        
+        public SecondItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public FirstSubItem1 FirstSubItem
+        {
+            get
+            {
+                if ((this.mFirstSubItem == null))
+                {
+                    this.mFirstSubItem = new FirstSubItem1(this);
+                }
+                return this.mFirstSubItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private FirstSubItem1 mFirstSubItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FirstSubItem1 : WpfTreeItem
+    {
+        
+        public FirstSubItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ResourceImageImage2 ResourceImageImage
+        {
+            get
+            {
+                if ((this.mResourceImageImage == null))
+                {
+                    this.mResourceImageImage = new ResourceImageImage2(this);
+                }
+                return this.mResourceImageImage;
+            }
+        }
+        
+        public WpfEdit ItemEdit
+        {
+            get
+            {
+                if ((this.mItemEdit == null))
+                {
+                    this.mItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemEdit.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mItemEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ResourceImageImage2 mResourceImageImage;
+        
+        private WpfEdit mItemEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResourceImageImage2 : WpfImage
+    {
+        
+        public ResourceImageImage2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -31670,7 +32093,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "local_DiceWF(ServiceDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "(ServiceDesigner)", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -42371,13 +42794,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ResourceImageImage1 ResourceImageImage
+        public ResourceImageImage3 ResourceImageImage
         {
             get
             {
                 if ((this.mResourceImageImage == null))
                 {
-                    this.mResourceImageImage = new ResourceImageImage1(this);
+                    this.mResourceImageImage = new ResourceImageImage3(this);
                 }
                 return this.mResourceImageImage;
             }
@@ -42385,15 +42808,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ResourceImageImage1 mResourceImageImage;
+        private ResourceImageImage3 mResourceImageImage;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ResourceImageImage1 : WpfImage
+    public class ResourceImageImage3 : WpfImage
     {
         
-        public ResourceImageImage1(UITestControl searchLimitContainer) : 
+        public ResourceImageImage3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
