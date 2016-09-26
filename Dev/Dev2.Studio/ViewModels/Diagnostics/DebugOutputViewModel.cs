@@ -121,7 +121,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var newTestFromDebugMessage = new NewTestFromDebugMessage
             {
-                ResourceModel = _contextualResourceModel
+                ResourceModel = _contextualResourceModel,
+                DebugStates = _contentItems
+
             };
             eventPublisher.Publish(newTestFromDebugMessage);
         }

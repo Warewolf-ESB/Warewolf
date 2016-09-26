@@ -31,7 +31,6 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Utilities;
 using FontAwesome.WPF;
-using Warewolf.Studio.CustomControls;
 
 namespace Dev2.Activities.Designers2.Core
 {
