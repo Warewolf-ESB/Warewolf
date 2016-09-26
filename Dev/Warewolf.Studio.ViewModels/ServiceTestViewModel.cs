@@ -110,11 +110,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (modelItem.ItemType == typeof(DsfForEachActivity))
                 {
-
+                   
                 }
                 else if (modelItem.ItemType == typeof(DsfSequenceActivity))
                 {
-
+                    ProcessSequence(modelItem);
                 }
                 else if(modelItem.ItemType == typeof(FlowSwitch<string>))
                 {                    
@@ -136,6 +136,61 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ProcessActivity(modelItem);
                 }
+            }
+        }
+
+        private void ProcessSequence(ModelItem modelItem)
+        {
+            var sequence = modelItem.GetCurrentValue() as DsfSequenceActivity;
+            AddSequence(sequence, SelectedServiceTest.TestSteps);
+        }
+
+        private void AddSequence(DsfSequenceActivity sequence, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        {
+            if(sequence != null)
+            {
+                var uniqueId = sequence.UniqueID;
+                var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+
+                if(exists == null)
+                {
+                    var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfSequenceActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
+                    {
+                        StepDescription = sequence.DisplayName
+                    };
+                    foreach(var activity in sequence.Activities)
+                    {
+                        var act = activity as DsfNativeActivity<string>;
+                        if(act != null)
+                        {
+                            if(act.GetType() == typeof(DsfSequenceActivity))
+                            {
+                                AddSequence(act as DsfSequenceActivity, testStep.Children);
+                            }
+                            AddSequenceActivity(act, testStep);
+                        }
+                    }
+                    serviceTestSteps.Add(testStep);
+                }
+            }
+        }
+
+        private static void AddSequenceActivity(DsfNativeActivity<string> act, ServiceTestStep testStep)
+        {
+            var outputs = act.GetOutputs();
+            if(outputs != null && outputs.Count > 0)
+            {
+                var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                {
+                    HasOptionsForValue = false
+                }).Cast<IServiceTestOutput>().ToList();                
+
+                var serviceTestStep = new ServiceTestStep(Guid.Parse(act.UniqueID), act.GetType().Name, serviceTestOutputs, StepType.Mock)
+                {
+                    StepDescription = act.DisplayName,
+                    Parent = testStep
+                };
+                testStep.Children.Add(serviceTestStep);
             }
         }
 
