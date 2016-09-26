@@ -161,6 +161,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string> {CountNumber};
+        }
+
         #region Get Debug Inputs/Outputs
 
         #region GetDebugInputs
