@@ -95,7 +95,7 @@ namespace Warewolf.UITests
         {
             Uimap.Search_And_Select_HelloWolrd();
             Uimap.Select_Tests_From_Context_Menu();
-            Uimap.Click_Create_New_Tests();
+            Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(TestName);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Select_User_From_RunTestAs();
