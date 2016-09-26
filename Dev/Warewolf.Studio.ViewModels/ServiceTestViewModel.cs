@@ -23,6 +23,7 @@ using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
@@ -30,6 +31,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels;
+using Dev2.Utilities;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -52,7 +54,44 @@ namespace Warewolf.Studio.ViewModels
         private readonly IShellViewModel _shellViewModel;
         private IContextualResourceModel _resourceModel;
 
-        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel)
+        private List<IDebugState> _debugStates;
+
+        private void PrepopulateTestsUsingDebug()
+        {
+            CreateTestCommand.Execute(null);
+            
+           
+            var inputState = _debugStates.FirstOrDefault();
+            if (inputState != null)
+            {
+               
+                foreach (var debugItem in inputState.Inputs)
+                {
+                    var variable = debugItem.ResultsList.Single().Variable.Replace("[[", "").Replace("]]", "");
+                    var value = debugItem.ResultsList.Single().Value;
+                    var serviceTestInput = SelectedServiceTest.Inputs.Single(input => input.Variable.Equals(variable));
+                    serviceTestInput.Value = value;
+                }
+            }
+
+
+            var outPutState = _debugStates.LastOrDefault();
+            if (outPutState != null)
+            {
+                foreach (var debugItem in outPutState.Outputs)
+                {
+                    var variable = debugItem.ResultsList.Single().Variable.Replace("[[", "").Replace("]]", "");
+                    var value = debugItem.ResultsList.Single().Value;
+                    var serviceTestInput = SelectedServiceTest.Outputs.Single(input => input.Variable.Equals(variable));
+                    serviceTestInput.Value = value;
+                }
+            }
+            OnPropertyChanged(() => SelectedServiceTest.Inputs);
+            OnPropertyChanged(() => SelectedServiceTest.Outputs);
+
+        }
+
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg = null)
         {
 
             if (resourceModel == null)
@@ -86,6 +125,7 @@ namespace Warewolf.Studio.ViewModels
             CanSave = true;
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
             IsLoading = true;
+
             AsyncWorker.Start(GetTests, models =>
             {
                 var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
@@ -94,6 +134,32 @@ namespace Warewolf.Studio.ViewModels
                 Tests = models;
                 IsLoading = false;
             });
+
+
+            AsyncWorker.Start(() =>
+            {
+                if (msg != null)
+                {
+                    var test = msg as NewTestFromDebugMessage;
+                    if (test != null)
+                    {
+                        NewTestFromDebugMessage newTest = test;
+                        if (newTest.ResourceModel == null)
+                            throw new ArgumentNullException(nameof(newTest.ResourceModel));
+                        if (newTest.DebugStates == null)
+                            throw new ArgumentNullException(nameof(newTest.DebugStates));
+                        _debugStates = newTest.DebugStates;
+                        PrepopulateTestsUsingDebug();
+                    }
+                    else
+                    {
+                        throw new Exception("expected " + typeof(NewTestFromDebugMessage).Name + " but got " + msg.GetType().Name);
+                    }
+                }
+
+            });
+
+
             UpdateHelpDescriptor(Resources.Languages.Core.ServiceTestGenericHelpText);
 
             WorkflowDesignerViewModel = workflowDesignerViewModel;
@@ -104,17 +170,17 @@ namespace Warewolf.Studio.ViewModels
         {
             if (modelItem != null)
             {
-                if (modelItem.ItemType == typeof (Flowchart) || modelItem.ItemType == typeof(ActivityBuilder))
+                if (modelItem.ItemType == typeof(Flowchart) || modelItem.ItemType == typeof(ActivityBuilder))
                 {
                     return;
                 }
                 if (modelItem.ItemType == typeof(DsfForEachActivity))
                 {
-
+                   
                 }
                 else if (modelItem.ItemType == typeof(DsfSequenceActivity))
                 {
-
+                    ProcessSequence(modelItem);
                 }
                 else if(modelItem.ItemType == typeof(FlowSwitch<string>))
                 {                    
@@ -136,6 +202,61 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ProcessActivity(modelItem);
                 }
+            }
+        }
+
+        private void ProcessSequence(ModelItem modelItem)
+        {
+            var sequence = modelItem.GetCurrentValue() as DsfSequenceActivity;
+            AddSequence(sequence, SelectedServiceTest.TestSteps);
+        }
+
+        private void AddSequence(DsfSequenceActivity sequence, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        {
+            if(sequence != null)
+            {
+                var uniqueId = sequence.UniqueID;
+                var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+
+                if(exists == null)
+                {
+                    var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfSequenceActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
+                    {
+                        StepDescription = sequence.DisplayName
+                    };
+                    foreach(var activity in sequence.Activities)
+                    {
+                        var act = activity as DsfNativeActivity<string>;
+                        if(act != null)
+                        {
+                            if(act.GetType() == typeof(DsfSequenceActivity))
+                            {
+                                AddSequence(act as DsfSequenceActivity, testStep.Children);
+                            }
+                            AddSequenceActivity(act, testStep);
+                        }
+                    }
+                    serviceTestSteps.Add(testStep);
+                }
+            }
+        }
+
+        private static void AddSequenceActivity(DsfNativeActivity<string> act, ServiceTestStep testStep)
+        {
+            var outputs = act.GetOutputs();
+            if(outputs != null && outputs.Count > 0)
+            {
+                var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                {
+                    HasOptionsForValue = false
+                }).Cast<IServiceTestOutput>().ToList();                
+
+                var serviceTestStep = new ServiceTestStep(Guid.Parse(act.UniqueID), act.GetType().Name, serviceTestOutputs, StepType.Mock)
+                {
+                    StepDescription = act.DisplayName,
+                    Parent = testStep
+                };
+                testStep.Children.Add(serviceTestStep);
             }
         }
 
@@ -297,7 +418,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _serverName = string.Empty;
             }
-            else if(!resourceModel.Environment.IsLocalHost)
+            else if (!resourceModel.Environment.IsLocalHost)
             {
                 _serverName = " - " + resourceModel.Environment.Name;
             }
@@ -305,6 +426,8 @@ namespace Warewolf.Studio.ViewModels
 
         private string _serverName;
         private IWorkflowDesignerViewModel _workflowDesignerViewModel;
+
+
 
         private void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList changeList)
         {
@@ -595,12 +718,12 @@ namespace Warewolf.Studio.ViewModels
                 Enabled = model.Enabled,
                 ErrorExpected = model.ErrorExpected,
                 NoErrorExpected = model.NoErrorExpected,
-                TestSteps = model.TestSteps.Select(step=>new ServiceTestStepTO(step.UniqueId, step.ActivityType,step.StepOutputs.Select(output => new ServiceTestOutputTO
+                TestSteps = model.TestSteps.Select(step => new ServiceTestStepTO(step.UniqueId, step.ActivityType, step.StepOutputs.Select(output => new ServiceTestOutputTO
                 {
                     Variable = output.Variable,
                     Value = output.Value,
                     AssertOp = output.AssertOp
-                } as IServiceTestOutput).ToList(),step.Type) as IServiceTestStep).ToList(),
+                } as IServiceTestOutput).ToList(), step.Type) as IServiceTestStep).ToList(),
                 Inputs = model.Inputs.Select(input => new ServiceTestInputTO
                 {
                     Variable = input.Variable,
