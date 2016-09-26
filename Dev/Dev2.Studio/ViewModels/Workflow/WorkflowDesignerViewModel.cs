@@ -1474,9 +1474,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         [ExcludeFromCodeCoverage]
         private bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
         {
-            if (HandleDoubleClick(leftButtonState, clickCount, dp, designerView))
-                return true;
-
+            if (designerView.DataContext.GetType().Name != "ServiceTestViewModel")
+            {
+                if (HandleDoubleClick(leftButtonState, clickCount, dp, designerView))
+                    return true;
+            }
             if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
             {
                 var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
