@@ -53,8 +53,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.SearchText = _target.SearchText;
 
             //assert
-            _environmentViewModelMock.Verify(it => it.Filter(It.IsAny<Func<IExplorerItemViewModel, bool>>()),
-                Times.Never);
+            _environmentViewModelMock.Verify(it => it.Filter(It.IsAny<Func<IExplorerItemViewModel, bool>>()));
             Assert.IsTrue(string.IsNullOrEmpty(_target.SearchText));
             Assert.IsFalse(isSearchTextChanged);
         }

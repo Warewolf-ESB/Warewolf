@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -7,16 +6,20 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class ConfigureSettingsperfomanceCounter
     {
+        private string _serviceName = "Dice Roll";
+
         [TestMethod]
-        [Ignore]
         public void ConfigureSettingPerfomanceCounter()
         {
+            Uimap.TryCloseSettingsTab();
             Uimap.Click_ConfigureSetting_From_Menu();
             Uimap.Select_PerfomanceCounterTab();
             Uimap.Click_Reset_Perfomance_Counter();
             Uimap.Click_Select_Resource_Button();
-            Uimap.Select_Dice_From_Service_Picker("PerfomanceCounterTab");
-
+            Uimap.Select_Service_From_Service_Picker(_serviceName, true);
+            Assert.AreEqual("My Category\\" + _serviceName, Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceTextBox.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_Close_Settings_Tab_Button();
         }
 
         #region Additional test attributes
@@ -24,31 +27,11 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
+            Uimap.SetPlaybackSettings();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            //Uimap.TryCloseAllTabs();
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {

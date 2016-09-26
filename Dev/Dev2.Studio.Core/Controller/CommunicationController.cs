@@ -281,6 +281,10 @@ namespace Dev2.Controller
                 var payload = connection.ExecuteCommand(toSend, workspaceId);
                 try
                 {
+                    if(payload==null || payload.Length == 0)
+                    {
+                        return default(T);
+                    }
                     var message = serializer.Deserialize<CompressedExecuteMessage>(payload).GetDecompressedMessage();
                     return serializer.Deserialize<T>(message);
                 }

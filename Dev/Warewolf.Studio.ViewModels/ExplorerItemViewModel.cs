@@ -661,7 +661,6 @@ namespace Warewolf.Studio.ViewModels
                                 }
 
                                 _resourceName = newName;
-                                Server.UpdateRepository.FireItemSaved(true);
                             }
                         }
                     }
@@ -700,7 +699,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return String.IsNullOrEmpty(_filter) ? _children : new AsyncObservableCollection<IExplorerItemViewModel>(_children.Where(a => a.IsVisible));
+                return _children == null ? new AsyncObservableCollection<IExplorerItemViewModel>() : new AsyncObservableCollection<IExplorerItemViewModel>(_children.Where(a => a.IsVisible));
             }
             set
             {

@@ -433,6 +433,34 @@ namespace Dev2.Tests.Activities {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;root&gt;
+        ///	&lt;recset1&gt;
+        ///	&lt;/recset1&gt;	
+        ///	&lt;res&gt;&lt;/res&gt;
+        ///&lt;/root&gt;.
+        /// </summary>
+        internal static string EmptyRecordSet {
+            get {
+                return ResourceManager.GetString("EmptyRecordSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;root&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;&lt;/field1&gt;
+        ///		&lt;field2&gt;&lt;/field2&gt;		
+        ///	&lt;/recset1&gt;
+        ///	&lt;res&gt;&lt;/res&gt;
+        ///&lt;/root&gt;.
+        /// </summary>
+        internal static string EmptyRecordSetNoData {
+            get {
+                return ResourceManager.GetString("EmptyRecordSetNoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;Inputs&gt;&lt;Input Name=&quot;innerrec&quot; Source=&quot;&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Input Name=&quot;innerrec2&quot; Source=&quot;&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Input Name=&quot;innerdate&quot; Source=&quot;&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Input Name=&quot;innertest&quot; Source=&quot;[[recset(*).rec2]]&quot; Recordset=&quot;innertesting&quot; /&gt;&lt;Input Name=&quot;innerScalar&quot; Source=&quot;[[recset(*).rec]]&quot; /&gt;&lt;/Inputs&gt;.
         /// </summary>
         internal static string ForEach_Input_Mapping {

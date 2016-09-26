@@ -1,10 +1,10 @@
-﻿using System.CodeDom.Compiler;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Windows.Input;
 using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
 using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+using System.CodeDom.Compiler;
+using System.Windows.Input;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -15,17 +15,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using System.IO;
+using Warewolf.UITests.Common;
 
 namespace Warewolf.UITests
 {
     public partial class UIMap
     {
-        const int _lenientSearchTimeout = 10000;
-        const int _lenientMaximumRetryCount = 6;
-        const int _strictSearchTimeout = 1000;
+        const int _lenientSearchTimeout = 9000;
+        const int _lenientMaximumRetryCount = 3;
+        const int _strictSearchTimeout = 3000;
         const int _strictMaximumRetryCount = 1;
 
-        public void SetGlobalPlaybackSettings()
+        public void SetPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
@@ -41,6 +42,31 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackError -= OnError;
             Playback.PlaybackError += OnError;
+        }
+
+        public void CloseHangingDialogs()
+        {
+            Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+            TryClickMessageBoxOK();
+            TryCloseHangingDebugInputDialog();
+            TryCloseHangingSaveDialog();
+            TryCloseHangingServicePickerDialog();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+        }
+
+        private void TryCloseHangingServicePickerDialog()
+        {
+            try
+            {
+                if (ControlExistsNow(ServicePickerDialog.Cancel))
+                {
+                    Click_Service_Picker_Dialog_Cancel();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("No hanging service picker dialog to clean up.\n" + e.Message);
+            }
         }
 
         public void OnError(object sender, PlaybackErrorEventArgs e)
@@ -151,21 +177,6 @@ namespace Warewolf.UITests
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             }
             return controlExists;
-        }
-
-        public void WaitForStudioStart(int timeout = 60000)
-        {
-            Console.WriteLine("Waiting for studio to start.");
-            WaitForControlVisible(MainStudioWindow, timeout);
-            if (!MainStudioWindow.Exists)
-            {
-                throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
-            }
-            TryClickMessageBoxOK();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-
-            //TODO: remove this workaround for WOLF-2061
-            MainStudioWindow.SideMenuBar.NewWorkflowButton.WaitForControlEnabled();
         }
 
         private void TryClickMessageBoxOK()
@@ -295,7 +306,7 @@ namespace Warewolf.UITests
                     }
                 }
                 Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
-                Enter_Text_Into_Explorer_Filter(SourceName);
+                Filter_Explorer(SourceName);
                 WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
                 {
@@ -319,7 +330,7 @@ namespace Warewolf.UITests
                 var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
                 if (File.Exists(resourcesFolder + @"\" + ResourceName + ".xml"))
                 {
-                    Enter_Text_Into_Explorer_Filter(ResourceName);
+                    Filter_Explorer(ResourceName);
                     WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                     if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
                     {
@@ -449,7 +460,7 @@ namespace Warewolf.UITests
                     Console.WriteLine("TryClose method failed to close all Workflow tabs.\n" + e.Message);
                 }
             }
-            Assert_RunDebug_Button_Disabled();
+            Assert.IsFalse(MainStudioWindow.SideMenuBar.RunAndDebugButton.Enabled, "RunDebug button is enabled");
         }
 
         public void TryCloseWorkflowTab()
@@ -514,7 +525,6 @@ namespace Warewolf.UITests
             control.WaitForControlCondition((uicontrol) =>
             {
                 var point = new Point();
-                TryClickMessageBoxOK();
                 return control.TryGetClickablePoint(out point);
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
@@ -523,7 +533,6 @@ namespace Warewolf.UITests
         {
             control.WaitForControlCondition((uicontrol) =>
             {
-                TryClickMessageBoxOK();
                 var point = new Point();
                 return !uicontrol.TryGetClickablePoint(out point);
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
@@ -534,42 +543,53 @@ namespace Warewolf.UITests
             WaitForControlNotVisible(control, searchTimeout);
         }
 
-        public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
+        public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false)
         {
+            WpfText errorLabel = this.SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
-            Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+            if (duplicate || invalid || nameHasWhiteSpace)
+            {
+                if (duplicate)
+                {
+                    Assert.AreEqual(string.Format("An item with name '{0}' already exists in this folder.", ServiceName), errorLabel.DisplayText, "Error is not the same as expected");
+                    Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                }
+                if (invalid)
+                {
+                    Assert.AreEqual("'Name' contains invalid characters", errorLabel.DisplayText, "Error is not the same as expected");
+                    Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                }
+                if (nameHasWhiteSpace)
+                {
+                    Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
+                    Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                }
+            }
+            else
+                Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
-        public void Enter_Text_Into_Explorer_Filter(string FilterText)
+        public void Filter_Explorer(string FilterText)
         {
-
-            #region Variable Declarations
-
-            WpfButton executeIcon = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ResourceImageImage.ExecuteIcon;
-            WpfButton viewIcon = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ResourceImageImage.ViewIcon;
-
-            #endregion
-
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
-
-            // Verify that the 'Exists' property of 'Permission Icon' window equals 'True'
-            Assert.IsTrue(executeIcon.Exists, "executeIcon button does not exist");
-            Assert.IsTrue(viewIcon.Exists, "viewIcon button does not exist");
-
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
         public void Enter_GroupName_Into_Windows_Group_Dialog(string GroupName)
         {
             SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Text = GroupName;
-            Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");            
+            Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");
         }
 
-        public void Enter_ServiceName_Into_Service_Picker_Dialog(string ServiceName)
+        public void Select_Service_From_Service_Picker_Dialog(string ServiceName)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = ServiceName;
-            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1, new Point(91, 9));
+            Click_Service_Picker_Dialog_Refresh_Button();
+            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1, new Point(91, 9));
             Assert.IsTrue(ServicePickerDialog.OK.Enabled, "Service picker dialog OK button is not enabled.");
+            Click_Service_Picker_Dialog_OK();
         }
 
         public void TryCloseHangingDebugInputDialog()
@@ -632,15 +652,18 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhost, new Point(94, 10));
         }
 
-        public void Save_With_Ribbon_Button_And_Dialog(string Name)
+        public void Save_With_Ribbon_Button_And_Dialog(string Name, bool skipExplorerFilter = false)
         {
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
-            WaitForControlNotVisible(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Enter_Service_Name_Into_Save_Dialog(Name);
             Click_SaveDialog_Save_Button();
-            Enter_Text_Into_Explorer_Filter(Name);
-            Click_Explorer_Refresh_Button();
-            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            if (!skipExplorerFilter)
+            {
+                Filter_Explorer(Name);
+                Click_Explorer_Refresh_Button();
+            }
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
             Click_Explorer_Filter_Clear_Button();
         }
@@ -649,6 +672,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
             Assert.IsFalse(ControlExistsNow(SaveDialogWindow));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
         public void TryCloseNewPluginSourceWizardTab()
@@ -679,10 +703,7 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.NewWorkflowButton.Exists, "New Workflow Ribbon Button Does Not Exist!");
             Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(3, 8));
-            var getTimeBefore = System.DateTime.Now;
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode);
-            var timeWaited = System.DateTime.Now - getTimeBefore;
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after waiting for " + timeWaited.Milliseconds + "ms.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Exists, "Toolbox filter textbox does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Exists, "Explorer does not exist in the studio");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox.Exists, "Explorer connect control does not exist");
@@ -740,7 +761,6 @@ namespace Warewolf.UITests
         public void Click_New_Web_Source_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.WebSourceButton, new Point(13, 18));
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Exists, "Web server address textbox does not exist on new web source wizard tab.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
         }
@@ -779,20 +799,17 @@ namespace Warewolf.UITests
 
         public void Enter_Text_Into_Debug_Input_Row1_Value_Textbox(string text)
         {
-            if (MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.ComboBox.Textbox.Text != text)
+            if (MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text != text)
             {
-                MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.ComboBox.Textbox.Text = text;
+                MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text = text;
             }
-            Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.ComboBox.Textbox.Text, "Debug input data row1 textbox text is not equal to \'" + text + "\'.");
+            Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debug input data row1 textbox text is not equal to \'" + text + "\'.");
         }
 
         public void Click_Debug_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.RunAndDebugButton, new Point(13, 14));
-            var getTimeBefore = System.DateTime.Now;
-            WaitForControlVisible(MainStudioWindow.DebugInputDialog);
-            var timeWaited = System.DateTime.Now - getTimeBefore;
-            Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after waiting for " + timeWaited.Milliseconds + "ms.");
+            Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after clicking debug ribbon button.");
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.DebugF6Button.Exists, "Debug button in Debug Input window does not exist.");
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.CancelButton.Exists, "Cancel Debug Input Window button does not exist.");
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Exists, "Remember Checkbox does not exist in the Debug Input window.");
@@ -818,7 +835,7 @@ namespace Warewolf.UITests
         {
             Click_Settings_Ribbon_Button();
             Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
-            Enter_ServiceName_Into_Service_Picker_Dialog(ResourceName);
+            Select_Service_From_Service_Picker_Dialog(ResourceName);
             Click_Service_Picker_Dialog_OK();
             Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
             if (setView)
@@ -838,7 +855,6 @@ namespace Warewolf.UITests
 
         public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress, bool PublicAuth = false)
         {
-            Click_Server_Source_Wizard_Address_Protocol_Dropdown();
             Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
             MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext
                 .NewServerSourceWizard.AddressComboBox.AddressEditBox.Text = ServerAddress;
@@ -852,7 +868,7 @@ namespace Warewolf.UITests
                 MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
             }
             Click_Server_Source_Wizard_Test_Connection_Button();
-            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.ErrorText.Spinner);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.ErrorText.Spinner);
             Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
             Click_Close_Server_Source_Wizard_Tab_Button();
         }
@@ -948,7 +964,7 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.ConfigureSettingsButton.Exists, "Settings ribbon does not exist.");
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 2));
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.Exists, "settings tab does not exist after clicking settings ribbon button.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.Exists, "Security tab does not exist in the settings window");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.Exists, "Logging tab does not exist in the settings window");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Exists, "Resource Permissions does not exist in the settings window");
@@ -960,7 +976,7 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.DeployButton.Exists, "Deploy ribbon button does not exist");
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.Exists, "Source explorer tree does not exist on deploy.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.Exists, "Source server name in deploy window does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.RefreshSourceServerButton.Exists, "Refresh button source server does not exist in the deploy window");
@@ -1002,12 +1018,7 @@ namespace Warewolf.UITests
             }
         }
 
-        //public void Select_test_From_Test_List()
-        //{
-
-        //}
-
-        public void Click_EnableDisable_This_Test_CheckBox()
+        public void Click_EnableDisable_This_Test_CheckBox(bool nameContainsStar = false)
         {
             WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
             WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
@@ -1018,23 +1029,19 @@ namespace Warewolf.UITests
             Assert.AreNotEqual(beforeClick, testEnabledSelector.Checked);
 
             WaitForControlVisible(deleteButton);
-            Assert.IsTrue(deleteButton.Enabled, "Delete button is disabled");
+            if (beforeClick)
+                Assert.IsTrue(deleteButton.Enabled, "Delete button is disabled");
+            Assert_Display_Text_ContainStar(Tab, nameContainsStar);
+            Assert_Display_Text_ContainStar(Test, nameContainsStar);
         }
 
-        public void Drag_Dice_Onto_DesignSurface()
+        public void Drag_From_Explorer_Onto_DesignSurface(string WorkflowName)
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton;
-            #endregion
-
-            Mouse.Click(firstItem, new Point(49, 10));
-            flowchart.EnsureClickable(new Point(308, 127));
-            Mouse.StartDragging(firstItem, new Point(49, 10));
-            Mouse.StopDragging(flowchart, new Point(308, 127));
-            Assert.IsTrue(doneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
-            Mouse.Click(doneButton, new Point(53, 16));
+            Filter_Explorer(WorkflowName);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(49, 10));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 127));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(49, 10));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 127));
         }
 
 
@@ -1058,18 +1065,12 @@ namespace Warewolf.UITests
                     " is selected");
         }
 
-        /// <summary>
-        /// Click_DB_Source_Wizard_Test_Connection_Button
-        /// </summary>
         public void Click_DB_Source_Wizard_Test_Connection_Button()
         {
-            #region Variable Declarations
-            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton;
-            #endregion
             var point = new Point();
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
-            // Click 'Test Connection' button
-            Mouse.Click(testConnectionButton, new Point(21, 16));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton, new Point(21, 16));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
         }
 
@@ -1081,70 +1082,47 @@ namespace Warewolf.UITests
             Click_Deploy_Tab_Deploy_Button();
         }
 
-        /// <summary>
-        /// Assert_Help_Text_Exist - Use 'Assert_Help_Text_ExistParams' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Help_Text_Exist()
+        public void Enter_Text_Into_Workflow_Tests_Output_Row1_Value_Textbox_As_CodedUITest()
         {
-            #region Variable Declarations
-            WpfCustom helpTextEditor = this.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor;
-            #endregion
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
 
-            // Verify that the 'Exists' property of 'XamRichTextEditor' custom control equals 'True'
-            Assert.IsTrue(helpTextEditor.Exists, "Help text does not exist");
+            var helloUser = "Hello User.";
+            Keyboard.SendKeys(textbox, helloUser, ModifierKeys.None);
+
+            // Verify that the 'Text' property of 'Text' text box equals 'User'
+            Assert.AreEqual(helloUser, textbox.Text, "Workflow tests output row 1 value textbox text does not equal 'Hello User' after typing that in.");
         }
 
-        /// <summary>
-        /// Assert_RunDebug_Button_Disabled - Use 'Assert_RunDebug_Button_DisabledExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_RunDebug_Button_Disabled()
+        public void Select_Test(int instance = 1)
         {
-            #region Variable Declarations
-            WpfButton runAndDebugButton = this.MainStudioWindow.SideMenuBar.RunAndDebugButton;
-            #endregion
-            // Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'False'
-            Assert.IsFalse(runAndDebugButton.Enabled, "RunDebug button is enabled");
+            var currentTest = GetCurrentTest(instance);
+            //var test = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
+            Mouse.Click(currentTest);
         }
 
-        /// <summary>
-        /// Click_RunAll_Button - Use 'Click_RunAll_ButtonParams' to pass parameters into this method.
-        /// </summary>
         public void Click_RunAll_Button(string BrokenRule = null)
         {
             string DuplicateNameError = "DuplicateNameError";
             string UnsavedResourceError = "UnsavedResourceError";
-
-            #region Variable Declarations
-            WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton;
-            WpfWindow messageBoxWindow = this.MessageBoxWindow;
-            WpfText message = this.MessageBoxWindow.UIPleasesavecurrentlyeText;
-            #endregion
-
-            // Click 'Run All' button
-            Mouse.Click(runAllButton, new Point(35, 10));
-
-            // Verify that the 'ControlType' property of 'WarewolfMessageBox' window equals 'Window'
-            Assert.AreEqual(this.Click_RunAll_ButtonParams.MessageBoxWindowControlType, messageBoxWindow.ControlType.ToString(), "Messagebox does not exist after clicking RunAll button");
-
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton, new Point(35, 10));
+            Assert.AreEqual("Window", MessageBoxWindow.ControlType.ToString(), "Messagebox does not exist after clicking RunAll button");
 
             if (!string.IsNullOrEmpty(BrokenRule))
             {
                 if (BrokenRule.ToUpper().Equals(UnsavedResourceError))
-                // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
-                Assert.AreEqual(this.Click_RunAll_ButtonParams.UIPleasesavecurrentlyeTextDisplayText, message.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
-                        "ests.");
-                if(BrokenRule.ToUpper().Equals(DuplicateNameError))
-                    // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
-                    Assert.AreEqual(this.Click_RunAll_ButtonParams.UIThenamealreadyexistsTextDisplayText, message.DisplayText, "Messagebox does not show duplicated name error");
+                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
+                            "ests.");
+                if (BrokenRule.ToUpper().Equals(DuplicateNameError))
+                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Messagebox does not show duplicated name error");
             }
         }
-        public void CreateAndSave_Dice_Workflow()
+
+        public void CreateAndSave_Dice_Workflow(string WorkflowName)
         {
-            RightClick_Localhost();
             Select_NewWorkFlowService_From_ContextMenu();
             Drag_Toolbox_Random_Onto_DesignSurface();
             Enter_Dice_Roll_Values();
-            Save_With_Ribbon_Button_And_Dialog("Dice");
+            Save_With_Ribbon_Button_And_Dialog(WorkflowName);
             Click_Close_Workflow_Tab_Button();
         }
 
@@ -1209,94 +1187,77 @@ namespace Warewolf.UITests
             Assert.IsFalse(public_ContributeCheckBox.Checked, "Public Contribute checkbox is checked after UnChecking Execute/View.");
             Assert.IsFalse(public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Contribute.");
         }
-        public virtual Click_RunAll_ButtonParams Click_RunAll_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_RunAll_ButtonParams == null))
-                {
-                    this.mClick_RunAll_ButtonParams = new Click_RunAll_ButtonParams();
-                }
-                return this.mClick_RunAll_ButtonParams;
-            }
-        }
 
-        private Click_RunAll_ButtonParams mClick_RunAll_ButtonParams;
-
-        /// <summary>
-        /// Update_Test_Name - Use 'Update_Test_NameParams' to pass parameters into this method.
-        /// </summary>
         public void Update_Test_Name(string overrideName = null)
         {
-            #region Variable Declarations
-            WpfEdit uIItemEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit;
-            #endregion
-
-            // Click first text box next to 'Test Name' label
-            Mouse.Click(uIItemEdit, new Point(59, 16));
-
-            // Type '' in first text box next to 'Test Name' label
-            uIItemEdit.Text = this.Update_Test_NameParams.UIItemEditText;
-
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit, new Point(59, 16));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit.Text = "";
             if (!string.IsNullOrEmpty(overrideName))
-                uIItemEdit.Text = overrideName;
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit.Text = overrideName;
             else
-                // Type 'Dice_Test' in first text box next to 'Test Name' label
-                uIItemEdit.Text = this.Update_Test_NameParams.UIItemEditText1;
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit.Text = "Dice_Test";
         }
 
-        public virtual Update_Test_NameParams Update_Test_NameParams
-        {
-            get
-            {
-                if ((this.mUpdate_Test_NameParams == null))
-                {
-                    this.mUpdate_Test_NameParams = new Update_Test_NameParams();
-                }
-                return this.mUpdate_Test_NameParams;
-            }
-        }
-
-        private Update_Test_NameParams mUpdate_Test_NameParams;
-
-        /// <summary>
-        /// Click_Delete_Test_Button
-        /// </summary>
         public void Click_Delete_Test_Button()
         {
             WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
             Mouse.Click(deleteButton);
-
             Assert.IsTrue(MessageBoxWindow.Exists);
         }
 
-        /// <summary>
-        /// Click_Run_Test_Button
-        /// </summary>
-        public void Click_Run_Test_Button()
+        private static WpfText GetSelectedTestRunTimeDisplay(WpfListItem test, int instance)
         {
-            WpfButton runButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.RunButton;
-            WpfText testRunTimeDisplay = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.RunTimeDisplay;
-            WpfText failing = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Failing;
-
-            Mouse.Click(runButton);
-            Assert.IsTrue(testRunTimeDisplay.Exists, "Test run time does not exist");
-            Assert.IsTrue(failing.Exists, "Failing does not exist");
-
+            WpfText testRunTimeDisplay;
+            switch (instance)
+            {
+                case 2:
+                    var test2 = test as Test2;
+                    testRunTimeDisplay = test2.RunTimeDisplay;
+                    break;
+                case 3:
+                    var test3 = test as Test3;
+                    testRunTimeDisplay = test3.RunTimeDisplay;
+                    break;
+                default:
+                    var test1 = test as Test1;
+                    testRunTimeDisplay = test1.RunTimeDisplay;
+                    break;
+            }
+            return testRunTimeDisplay;
         }
 
+        public void Click_Run_Test_Button(TestResultEnum? expectedTestResultEnum = null, int instance = 1)
+        {
+            var currentTest = GetCurrentTest(instance);
+            var selectedTestRunButton = GetSelectedTestRunButton(currentTest, instance);
 
-        /// <summary>
-        /// Click_Duplicate_Test_Button
-        /// </summary>
+            Mouse.Click(selectedTestRunButton);
+            //if (expectedTestResultEnum != null)
+            //    AssertTestResults(expectedTestResultEnum.Value, instance, currentTest);
+        }
+
+        private void AssertTestResults(TestResultEnum expectedTestResultEnum, int instance, WpfListItem currentTest)
+        {
+            switch (expectedTestResultEnum)
+            {
+                case TestResultEnum.Invalid:
+                    TestResults.GetSelectedTestInvalidResult(currentTest, instance);
+                    break;
+                case TestResultEnum.Pending:
+                    TestResults.GetSelectedTestPendingResult(currentTest, instance);
+                    break;
+                case TestResultEnum.Pass:
+                    TestResults.GetSelectedTestPassingResult(currentTest, instance);
+                    break;
+                case TestResultEnum.Fail:
+                    TestResults.GetSelectedTestFailingResult(currentTest, instance);
+                    break;
+            }
+        }
+
         public void Click_Duplicate_Test_Button()
         {
-            #region Variable Declarations
-            WpfButton duplicateButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.DuplicateButton;
-            #endregion
-
-            // Click '' button
-            Mouse.Click(duplicateButton, new Point(14, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.DuplicateButton, new Point(14, 10));
         }
 
         public void Assert_MultiAssign_Does_Not_Exist_On_DesignSurface()
@@ -1314,17 +1275,16 @@ namespace Warewolf.UITests
             if (result == "Passing")
                 Assert.IsTrue(passing.Exists, "Test is not passing");
             if (result == "Failing")
-                    Assert.IsTrue(failing.Exists, "Test is not failing");
+                Assert.IsTrue(failing.Exists, "Test is not failing");
             if (result == "Invalid")
-                        Assert.IsTrue(invalid.Exists, "Test is not invalid");
+                Assert.IsTrue(invalid.Exists, "Test is not invalid");
             if (result == "Pending")
                 Assert.IsTrue(pending.Exists, "Test is not pending");
         }
-        /// <summary>
-        /// Click_Create_New_Tests - Use 'Click_Create_New_TestsParams' to pass parameters into this method.
-        /// testInstance = What number is the test you are creating e.g. 4th test, 5th test
-        /// </summary>
-        public void Click_Create_New_Tests(int testInstance = 1)
+
+        const string Tab = "Tab";
+        const string Test = "Test";
+        public void Click_Create_New_Tests(bool nameContainsStar = false, int testInstance = 1)
         {
             #region Variable Declarations
             WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
@@ -1337,27 +1297,23 @@ namespace Warewolf.UITests
 
             #endregion
 
-            // Click 'Create a new test' button
             Mouse.Click(createTestButton, new Point(158, 10));
 
             Assert.AreEqual(testInstance + 1, testsListBox.GetContent().Length);
             Assert.AreEqual("Never run", testNeverRun.DisplayText);
             Assert.IsTrue(pending.Exists, "Pending Icon does not exist");
+            Assert.IsTrue(testNameText.Exists, "Test1 Name textbox does not exist after clicking Create New Test");
+            Assert.IsTrue(testEnabledSelector.Checked, "Test 1 is diabled after clicking Create new test from context menu");
+            //Assert.IsTrue(textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
 
-            //Verify that the 'Exists' property of 'Test Name' label equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TestNameTextExists, testNameText.Exists, "Test1 Name textbox does not exist after clicking Create New Test");
-
-            // Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TestEnabledSelectorChecked, testEnabledSelector.Checked, "Test 1 is diabled after clicking Create new test from context menu");
-
-            // Verify that the 'Exists' property of 'Text' text box equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
+            Assert_Display_Text_ContainStar(Tab, nameContainsStar, testInstance);
+            Assert_Display_Text_ContainStar(Test, nameContainsStar, testInstance);
         }
 
-        public void Assert_Display_Text_ContainStar(string control, bool containsStar, int instance = 1)
-        {            
+        private void Assert_Display_Text_ContainStar(string control, bool containsStar, int instance = 1)
+        {
             WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
-
+            var test = GetCurrentTest(instance);
             string description = string.Empty;
             if (control == "Tab")
             {
@@ -1369,10 +1325,9 @@ namespace Warewolf.UITests
             }
             else if (control == "Test")
             {
-                var wpfListItem = GetCurrentTest(instance);
-                description = wpfListItem.DisplayText;
+                description = GetTestNameDisplayText(instance, test).DisplayText;
                 if (containsStar)
-                    Assert.IsTrue(description.Contains("*"), description +" DOES NOT contain a Star");
+                    Assert.IsTrue(description.Contains("*"), description + " DOES NOT contain a Star");
                 else
                     Assert.IsFalse(description.Contains("*"), description + " contains a Star");
             }
@@ -1388,135 +1343,294 @@ namespace Warewolf.UITests
             }
         }
 
-        public virtual Click_Create_New_TestsParams Click_Create_New_TestsParams
+        private bool GetTestRunState(int testInstance, WpfListItem test)
         {
-            get
+            bool value;
+            switch (testInstance)
             {
-                if ((this.mClick_Create_New_TestsParams == null))
-                {
-                    this.mClick_Create_New_TestsParams = new Click_Create_New_TestsParams();
-                }
-                return this.mClick_Create_New_TestsParams;
+                case 2:
+                    var test2 = test as Test2;
+                    value = test2.TestEnabledSelector.Checked;
+                    break;
+                case 3:
+                    var test3 = test as Test3;
+                    value = test3.TestEnabledSelector.Checked;
+                    break;
+                default:
+                    var test1 = test as Test1;
+                    value = test1.TestEnabledSelector.Checked;
+                    break;
             }
+            return value;
+        }
+        private WpfText GetTestNameDisplayText(int instance, WpfListItem test)
+        {
+            WpfText property;
+            switch (instance)
+            {
+                case 2:
+                    var test2 = test as Test2;
+                    property = test2.TestNameDisplay;
+                    break;
+                case 3:
+                    var test3 = test as Test3;
+                    property = test3.TestNameDisplay;
+                    break;
+                default:
+                    var test1 = test as Test1;
+                    property = test1.TestNameDisplay;
+                    break;
+            }
+
+            return property;
         }
 
-        private Click_Create_New_TestsParams mClick_Create_New_TestsParams;
-
-        /// <summary>
-        /// Select_Test_From_TestList
-        /// </summary>
         public void Select_Test_From_TestList(int testInstance = 1)
         {
             var test = GetCurrentTest(testInstance);
-            
-            // Click 'Warewolf.Studio.ViewModels.ServiceTestModel' list item
-            //Mouse.Click(test, new Point(189, 19));
-            if(test != null)
+
+            if (test != null)
                 Mouse.Click(test);
         }
-        public void Select_Dice_From_Service_Picker(string tabName)
+
+        public void Select_Service_From_Service_Picker(string serviceName, bool inSubFolder = false)
         {
-            #region Variable Declarations
-            WpfEdit filterTextbox = this.ServicePickerDialog.Explorer.FilterTextbox;
-            WpfTreeItem subTreeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
-            WpfButton ok = this.ServicePickerDialog.OK;
-            WpfText addResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText;
-            WpfText ResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.ResourceCell.ResourceTextBox;
-            #endregion
-
-            Mouse.Click(filterTextbox, new Point(93, 6));
-            filterTextbox.Text = "Dice";
-            Mouse.Click(subTreeItem1, MouseButtons.Right, ModifierKeys.None, new Point(53, 12));
-            Mouse.Click(subTreeItem1, new Point(53, 12));
-            Mouse.Click(ok, new Point(52, 15));
-
-            if (tabName == "SecurityTab")
-                Assert.AreEqual("Dice", addResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
-            else if (tabName == "PerfomanceCounterTab")
-                Assert.AreEqual("Dice", ResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+            ServicePickerDialog.Explorer.FilterTextbox.Text = serviceName;
+            Mouse.Click(ServicePickerDialog.Explorer.Refresh, new Point(5, 5));
+            WaitForSpinner(ServicePickerDialog.Explorer.ExplorerTree.Localhost.Checkbox.Spinner);
+            if (inSubFolder)
+            {
+                Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem2.TreeItem1, new Point(73, 12));
+            }
+            else
+            {
+                Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1, new Point(53, 12));
+            }
+            Mouse.Click(ServicePickerDialog.OK, new Point(52, 15));
         }
-        private WpfText GetCurrentTest(int testInstance)
+
+        public WpfListItem GetCurrentTest(int testInstance)
         {
-            WpfText test;
-            switch(testInstance)
+            WpfListItem test;
+            switch (testInstance)
             {
                 case 1:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
                     break;
                 case 2:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2;
                     break;
                 case 3:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test3.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test3;
                     break;
                 default:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
                     break;
             }
             return test;
         }
-    }
-    /// <summary>
-    /// Parameters to be passed into 'Click_RunAll_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_RunAll_ButtonParams
-    {
 
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'WarewolfMessageBox' window equals 'Window'
-        /// </summary>
-        public string MessageBoxWindowControlType = "Window";
+        public WpfButton GetSelectedTestRunButton(WpfListItem test, int testInstance = 1)
+        {
+            WpfButton value;
+            switch (testInstance)
+            {
+                case 2:
+                    var test2 = test as Test2;
+                    value = test2.RunButton;
+                    break;
+                case 3:
+                    var test3 = test as Test3;
+                    value = test3.RunButton;
+                    break;
+                default:
+                    var test1 = test as Test1;
+                    value = test1.RunButton;
+                    break;
+            }
+            return value;
+        }
+        
+        public void Click_Save_Ribbon_Button_With_No_Save_Dialog(int WaitForSave = 2000)
+        {
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
+            Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
+            MainStudioWindow.SideMenuBar.SaveButton.WaitForControlCondition(uicontrol => !uicontrol.Enabled, WaitForSave * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+            Assert.IsFalse(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is still enabled after clicking it and waiting for " + WaitForSave + "ms.");
+        }
 
-        /// <summary>
-        /// Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
-        /// </summary>
-        public string UIPleasesavecurrentlyeTextDisplayText = "Please save currently edited Test(s) before running the tests.";
-        public string UIThenamealreadyexistsTextDisplayText = "The name already exists. Please choose a different name.";
-        #endregion
-    }
-    /// <summary>
-    /// Parameters to be passed into 'Update_Test_Name'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Update_Test_NameParams
-    {
+        public void DeleteAssign_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem delete = this.MainStudioWindow.DesignSurfaceContextMenu.Delete;
+            WpfWindow messageBoxWindow = this.MessageBoxWindow;
+            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            #endregion
 
-        #region Fields
-        /// <summary>
-        /// Type '' in first text box next to 'Test Name' label
-        /// </summary>
-        public string UIItemEditText = "";
+            var point = new Point();
+            Assert.IsTrue(multiAssign.TryGetClickablePoint(out point));
+            // Right-Click 'DsfMultiAssignActivity' custom control
+            Mouse.Click(multiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
 
-        /// <summary>
-        /// Type 'Dice_Test' in first text box next to 'Test Name' label
-        /// </summary>
-        public string UIItemEditText1 = "Dice_Test";
-        #endregion
-    }
-    /// <summary>
-    /// Parameters to be passed into 'Click_Create_New_Tests'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Create_New_TestsParams
-    {
+            // Click 'Delete' menu item
+            Mouse.Click(delete, new Point(27, 18));
+            Assert.IsFalse(multiAssign.TryGetClickablePoint(out point));
+        }
 
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Test Name' label equals 'True'
-        /// </summary>
-        public bool TestNameTextExists = true;
+        public void Enter_Recordset_values()
+        {
+            #region Variable Declarations
+            WpfCell variableCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.ValueCell.AssignValueCombobox.TextEdit;
+            WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.VariableCell.Listbox.Textbox;
+            WpfEdit row2Value = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.ValueCell.AssignValueCombobox.TextEdit;
+            WpfEdit textbox2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.VariableCell.Listbox.Textbox;
+            WpfEdit textEdit1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.ValueCell.AssignValueCombobox.TextEdit;
+            WpfEdit textbox3 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row4.VariableCell.Listbox.Textbox;
+            WpfEdit textEdit2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row4.ValueCell.AssignValueCombobox.TextEdit;
 
-        /// <summary>
-        /// Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
-        /// </summary>
-        public bool TestEnabledSelectorChecked = true;
+            var firstVariable = MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1;
+            var rec = MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem;
+            var mr = MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem2.List.ListItem.Table.DataItem;
+            #endregion
 
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
-        /// </summary>
-        public bool TextboxExists = true;
-        #endregion
+            //// Click 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
+            //Mouse.Click(variableCell, new Point(33, 28));
+
+            //// Type '[[rec().a]]' in 'UI__Row1_FieldName_AutoID' text box
+            //textbox.Text = this.Enter_Recordset_valuesParams.TextboxText;
+
+            //// Type '5' in 'Text' text box
+            //textEdit.Text = this.Enter_Recordset_valuesParams.TextEditText;
+
+            //// Type '{Tab}' in 'Text' text box
+            //Keyboard.SendKeys(textEdit, this.Enter_Recordset_valuesParams.TextEditSendKeys, ModifierKeys.None);
+
+            //// Type '[[rec().b]]' in 'UI__Row2_FieldName_AutoID' text box
+            //textbox1.Text = this.Enter_Recordset_valuesParams.TextboxText1;
+
+            //// Type '[[var]]' in 'UI__Row3_FieldName_AutoID' text box
+            //textbox2.Text = this.Enter_Recordset_valuesParams.TextboxText2;
+
+            //// Type '{Tab}' in 'UI__Row3_FieldName_AutoID' text box
+            //Keyboard.SendKeys(textbox2, this.Enter_Recordset_valuesParams.TextboxSendKeys, ModifierKeys.None);
+
+            //// Type '1' in 'Text' text box
+            //textEdit1.Text = this.Enter_Recordset_valuesParams.TextEditText1;
+
+            //// Type '{Tab}' in 'Text' text box
+            //Keyboard.SendKeys(textEdit1, this.Enter_Recordset_valuesParams.TextEditSendKeys1, ModifierKeys.None);
+
+            //// Type '[[mr()]]' in 'UI__Row4_FieldName_AutoID' text box
+            //textbox3.Text = this.Enter_Recordset_valuesParams.TextboxText3;
+
+            //// Type '{Tab}' in 'Text' text box
+            //Keyboard.SendKeys(textEdit2, this.Enter_Recordset_valuesParams.TextEditSendKeys2, ModifierKeys.None);
+
+            Assert.IsTrue(firstVariable.Exists, "var does not exist in the variable explorer");
+            Assert.IsTrue(rec.Exists, "rec().a does not exist in the variable explorer");
+            Assert.IsTrue(mr.Exists, "rec().a does not exist in the variable explorer");
+        }
+        
+        public void Select_InputOutput_CheckBox_Recordset_values()
+        {
+            #region Variable Declarations
+
+            var IsOutputCheckboxRecA = MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem.OutputCell.IsOutputCheckbox;
+            var IsInputCheckboxVar = MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.InputCell.IsInputCheckbox;
+
+            #endregion
+
+            // Click 'Records' table
+            IsInputCheckboxVar.Checked = true;
+            IsOutputCheckboxRecA.Checked = true;
+        }
+
+        public void Type_Value_And_Click_Enter_Keyboard_Then_Backspace()
+        {
+            var varValue = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
+
+            var heightBeforeEnterClick = varValue.Height;
+            varValue.Text = "Bob";
+            Keyboard.SendKeys(varValue, "{Enter}", ModifierKeys.None);
+            Assert.IsTrue(varValue.Height > heightBeforeEnterClick);
+
+            Keyboard.SendKeys(varValue, "{Back}", ModifierKeys.None);
+            Assert.AreEqual(heightBeforeEnterClick, varValue.Height);
+        }
+        
+        public void F5_Keyboard_Click()
+        {
+            WpfCheckBox uIUI_IsOutputCheckbox_CheckBox = MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem.OutputCell.IsOutputCheckbox;
+            var varText = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
+            
+            Keyboard.SendKeys(uIUI_IsOutputCheckbox_CheckBox, "{F5}", ModifierKeys.None);
+            Assert.IsTrue(MainStudioWindow.DebugInputDialog.DebugF6Button.Exists, "Debug button in Debug Input window does not exist.");
+            Assert.IsTrue(MainStudioWindow.DebugInputDialog.CancelButton.Exists, "Cancel Debug Input Window button does not exist.");
+            Assert.IsTrue(MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Exists, "Remember Checkbox does not exist in the Debug Input window.");
+            Assert.IsTrue(MainStudioWindow.DebugInputDialog.ViewInBrowserF7Button.Enabled, "View in Browser button does not exist in Debug Input window.");
+            Assert.IsTrue(MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Exists, "Input Data Window does not exist in Debug Input window.");
+            Assert.IsTrue(MainStudioWindow.DebugInputDialog.TabItemsTabList.XMLTab.Exists, "Xml tab does not Exist in the Debug Input window.");
+            Assert.IsTrue(MainStudioWindow.DebugInputDialog.TabItemsTabList.JSONTab.Exists, "Assert Json tab does not exist in the debug input window.");
+
+            Assert.AreEqual(varText.Text, "var");
+        }
+
+        public void Click_DotNet_DLL_Large_View_Generate_Outputs()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton, new Point(7, 7));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.TestButton.Exists);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton.Exists);
+        }
+
+        public void Click_New_Web_Source_Test_Connection_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton, new Point(52, 14));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.Spinner);
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after testing a valid web source.");
+        }
+
+        public void Click_Scheduler_Ribbon_Button()
+        {
+            Mouse.Click(MainStudioWindow.SideMenuBar.SchedulerButton, new Point(4, 12));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.Exists, "Scheduler tab does not exist after clicking scheduler ribbon button.");
+        }
+
+        public void Click_Scheduler_ResourcePicker()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton, new Point(20, 12));
+            Assert.IsTrue(ServicePickerDialog.Exists, "Service picker dialog doesn't exist after clicking the resource picker button.");
+        }
+
+        public void Click_Service_Picker_Dialog_OK()
+        {
+            Mouse.Click(ServicePickerDialog.OK, new Point(52, 10));
+            Assert.IsFalse(ControlExistsNow(ServicePickerDialog), "Service picker dialog still exists after clicking OK button.");
+        }
+
+        public void Click_Service_Picker_Dialog_Cancel()
+        {
+            Mouse.Click(ServicePickerDialog.Cancel, new Point(57, 6));
+            Assert.IsFalse(ControlExistsNow(ServicePickerDialog), "Service picker dialog still exists after clicking cancel button.");
+        }
+        
+        public void Click_Service_Picker_Dialog_Refresh_Button()
+        {
+            Mouse.Click(ServicePickerDialog.Explorer.Refresh, new Point(10, 11));
+            WaitForSpinner(ServicePickerDialog.Explorer.ExplorerTree.Localhost.Checkbox.Spinner);
+        }
+
+        public void Click_Subworkflow_Done_Button()
+        {
+            Assert.IsTrue(
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView
+                    .DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow
+                    .DoneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
+            Mouse.Click(
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView
+                    .DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow
+                    .DoneButton, new Point(53, 16));
+        }
     }
 }
