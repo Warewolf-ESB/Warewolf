@@ -1,4 +1,5 @@
-﻿Feature: CaseConversion
+﻿@Data
+Feature: CaseConversion
 	In order to convert the case of words
 	As a Warewolf user
 	I want a tool that converts words from their current case to a selected case

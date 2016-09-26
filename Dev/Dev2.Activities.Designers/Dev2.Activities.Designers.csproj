@@ -249,11 +249,13 @@
     <Compile Include="Designers2\Core\DropboxSourceManager.cs" />
     <Compile Include="Designers2\Core\ErrorRegion.cs" />
     <Compile Include="Designers2\Core\Extensions\ActivityDesignerViewModelExtensions.cs" />
+    <Compile Include="Designers2\Core\FindDependencyParent.cs" />
     <Compile Include="Designers2\Core\GenerateInputsRegion.cs" />
     <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
+    <Compile Include="Designers2\Core\IScriptChooser.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageComPluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
@@ -262,6 +264,7 @@
     <Compile Include="Designers2\Core\NamespaceRegion\ComNamespaceRegion.cs" />
     <Compile Include="Designers2\Core\NamespaceRegion\DotNetNamespaceRegion.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
+    <Compile Include="Designers2\Core\ScriptChooser.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\ComSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\DotNetSourceRegion.cs" />
@@ -276,9 +279,13 @@
     <Compile Include="Designers2\Core\WebPostInputRegionClone.cs" />
     <Compile Include="Designers2\Core\Web\Put\WebPutInputRegion.cs" />
     <Compile Include="Designers2\Core\Web\Put\WebPutRegionClone.cs" />
-    <Compile Include="Designers2\CountRecords\Large.xaml.cs">
+    <Compile Include="Designers2\CountRecordsNullHandler\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\CountRecords\CountRecordsDesigner.xaml.cs" />
+    <Compile Include="Designers2\CountRecords\CountRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\CountRecords\Large.xaml.cs" />
+    <Compile Include="Designers2\CountRecords\Small.xaml.cs" />
     <Compile Include="Designers2\CreateJSON\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -299,8 +306,18 @@
     <Compile Include="Designers2\Decision\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\DeleteRecordsNullHandler\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml.cs">
+      <DependentUpon>DeleteRecordsDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesignerViewModel.cs" />
     <Compile Include="Designers2\DeleteRecords\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\DropBox2016\Delete\DropBoxDeleteDesigner.xaml.cs">
       <DependentUpon>DropBoxDeleteDesigner.xaml</DependentUpon>
@@ -437,14 +454,14 @@
     <Compile Include="Designers2\PostgreSql\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
+    <Compile Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesigner.xaml.cs">
       <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\RecordsLength\RecordsLengthDesignerViewModel.cs" />
-    <Compile Include="Designers2\RecordsLength\Large.xaml.cs">
+    <Compile Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesignerViewModel.cs" />
+    <Compile Include="Designers2\RecordsLengthNullHandler\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\RecordsLength\Small.xaml.cs">
+    <Compile Include="Designers2\RecordsLengthNullHandler\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Copy\CopyDesigner.xaml.cs">
@@ -482,12 +499,12 @@
     <Compile Include="Designers2\Core\IClosable.cs" />
     <Compile Include="Designers2\Core\IsItemDragged.cs" />
     <Compile Include="Designers2\Core\ZIndexPosition.cs" />
-    <Compile Include="Designers2\CountRecords\CountRecordsDesigner.xaml.cs">
+    <Compile Include="Designers2\CountRecordsNullHandler\CountRecordsDesigner.xaml.cs">
       <DependentUpon>CountRecordsDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\CountRecords\CountRecordsDesignerViewModel.cs" />
-    <Compile Include="Designers2\CountRecords\Small.xaml.cs">
+    <Compile Include="Designers2\CountRecordsNullHandler\CountRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\CountRecordsNullHandler\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -551,12 +568,12 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml.cs">
+    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesigner.xaml.cs">
       <DependentUpon>DeleteRecordsDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesignerViewModel.cs" />
-    <Compile Include="Designers2\DeleteRecords\Small.xaml.cs">
+    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\DeleteRecordsNullHandler\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -698,6 +715,16 @@
     <Compile Include="Designers2\ReadFolder\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\RecordsLength\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
+      <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLength\RecordsLengthDesignerViewModel.cs" />
+    <Compile Include="Designers2\RecordsLength\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Rename\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -721,6 +748,36 @@
     <Compile Include="Designers2\Replace\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Script_Python\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Python\PythonDesignerViewModel.cs" />
+    <Compile Include="Designers2\Script_Python\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Python\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Ruby\RubyDesignerViewModel.cs" />
+    <Compile Include="Designers2\Script_Ruby\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Ruby\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Ruby\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\JavaScriptDesignerViewModel.cs" />
+    <Compile Include="Designers2\Script_Javascript\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Script\ScriptDesigner.xaml.cs">
       <DependentUpon>ScriptDesigner.xaml</DependentUpon>
@@ -1247,7 +1304,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\CountRecordsNullHandler\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CountRecords\CountRecordsDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\CountRecords\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CountRecords\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1275,7 +1344,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Designers2\DeleteRecordsNullHandler\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\DeleteRecords\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DeleteRecords\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1443,15 +1524,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml">
+    <Page Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\RecordsLength\Large.xaml">
+    <Page Include="Designers2\RecordsLengthNullHandler\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\RecordsLength\Small.xaml">
+    <Page Include="Designers2\RecordsLengthNullHandler\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1479,11 +1560,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\CountRecords\CountRecordsDesigner.xaml">
+    <Page Include="Designers2\CountRecordsNullHandler\CountRecordsDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\CountRecords\Small.xaml">
+    <Page Include="Designers2\CountRecordsNullHandler\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1539,11 +1620,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml">
+    <Page Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\DeleteRecords\Small.xaml">
+    <Page Include="Designers2\DeleteRecordsNullHandler\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1679,6 +1760,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\RecordsLength\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLength\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\Rename\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1702,6 +1795,42 @@
     <Page Include="Designers2\Replace\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Script_Python\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Python\ScriptDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Python\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Ruby\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Ruby\ScriptDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Ruby\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Javascript\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Javascript\ScriptDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Javascript\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Script\ScriptDesigner.xaml">
       <SubType>Designer</SubType>

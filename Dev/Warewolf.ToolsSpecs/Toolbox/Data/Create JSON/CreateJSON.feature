@@ -1,4 +1,5 @@
-﻿Feature: CreateJSON
+﻿@Data
+Feature: CreateJSON
 	In order to create a json payload
 	As a warewolf user
 	I want to be given the JSON representation of my variables

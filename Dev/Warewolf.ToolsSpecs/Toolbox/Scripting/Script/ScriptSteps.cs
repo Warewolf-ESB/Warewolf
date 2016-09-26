@@ -11,6 +11,7 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using Dev2.Activities.Scripting;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
@@ -28,16 +29,34 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         public ScriptSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             this.scenarioContext = scenarioContext;
         }
+
+        [BeforeFeature("PythonFeature")]
+        public static void SetupPython()
+        {
+            FeatureContext.Current.Add("pythonActivity", new DsfPythonActivity());
+        }
+
+        [BeforeFeature("JavascriptFeature")]
+        public static void SetupJavascript()
+        {
+            FeatureContext.Current.Add("javascript", new DsfJavascriptActivity());
+        }
+        [BeforeFeature("RubyFeature")]
+        public static void SetupRuby()
+        {
+            FeatureContext.Current.Add("rubyActivity", new DsfRubyActivity());
+        }
+        
 
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
             scenarioContext.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -50,18 +69,65 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             scenarioContext.TryGetValue("scriptToExecute", out scriptToExecute);
             enScriptType language;
             scenarioContext.TryGetValue("language", out language);
+            DsfJavascriptActivity javascriptActivity;
+            scenarioContext.TryGetValue("javascript", out javascriptActivity);
 
-            var dsfScripting = new DsfScriptingActivity
+            if (javascriptActivity != null)
+            {
+                javascriptActivity.Script = scriptToExecute;
+                javascriptActivity.Result = ResultVariable;
+
+                TestStartNode = new FlowStep
                 {
-                    Script = scriptToExecute,
-                    ScriptType = language,
-                    Result = ResultVariable
+                    Action = javascriptActivity
                 };
+                scenarioContext.Add("activity", javascriptActivity);
+                return;
+            }
+
+            DsfPythonActivity pythonActivity;
+            FeatureContext.Current.TryGetValue("pythonActivity", out pythonActivity);
+
+            if (pythonActivity != null)
+            {
+                pythonActivity.Script = scriptToExecute;
+                pythonActivity.Result = ResultVariable;
+
+                TestStartNode = new FlowStep
+                {
+                    Action = pythonActivity
+                };
+                scenarioContext.Add("activity", pythonActivity);
+                return;
+            }
+
+            DsfRubyActivity rubyActivity;
+            FeatureContext.Current.TryGetValue("rubyActivity", out rubyActivity);
+
+            if (rubyActivity != null)
+            {
+                rubyActivity.Script = scriptToExecute;
+                rubyActivity.Result = ResultVariable;
+
+                TestStartNode = new FlowStep
+                {
+                    Action = rubyActivity
+                };
+                scenarioContext.Add("activity", rubyActivity);
+                return;
+            }
+
+            DsfScriptingActivity dsfScripting = new DsfScriptingActivity
+            {
+                Script = scriptToExecute,
+                ScriptType = language,
+                Result = ResultVariable
+            };
 
             TestStartNode = new FlowStep
-                {
-                    Action = dsfScripting
-                };
+            {
+                Action = dsfScripting
+            };
             scenarioContext.Add("activity", dsfScripting);
         }
 
@@ -71,7 +137,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             List<Tuple<string, string>> variableList;
             scenarioContext.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -84,7 +150,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         public void GivenIHaveThisScriptToExecute(string scriptFileName)
         {
             string scriptToExecute;
-            if(DataListUtil.IsEvaluated(scriptFileName))
+            if (DataListUtil.IsEvaluated(scriptFileName))
             {
                 scriptToExecute = scriptFileName;
             }
@@ -118,7 +184,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            GetScalarValueFromEnvironment(result.Environment,ResultVariable,out actualValue,out error);
+            GetScalarValueFromEnvironment(result.Environment, ResultVariable, out actualValue, out error);
             if (string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));

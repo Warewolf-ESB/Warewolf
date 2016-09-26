@@ -6,5 +6,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
     {
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         string ValidateName(string name);
+
+        void Filter(string searchText);
     }
 }

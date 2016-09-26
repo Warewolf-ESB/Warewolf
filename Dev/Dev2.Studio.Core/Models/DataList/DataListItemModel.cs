@@ -184,8 +184,7 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                return _columnIODir == enDev2ColumnArgumentDirection.Both
-                       || _columnIODir == enDev2ColumnArgumentDirection.Input;
+                return _columnIODir == enDev2ColumnArgumentDirection.Both || _columnIODir == enDev2ColumnArgumentDirection.Input;
             }
             set
             {
@@ -330,7 +329,6 @@ namespace Dev2.Studio.Core.Models.DataList
 
         private void NotifyIOPropertyChanged()
         {
-            NotifyOfPropertyChange(() => ColumnIODirection);
             NotifyOfPropertyChange(() => Input);
             NotifyOfPropertyChange(() => Output);
         }

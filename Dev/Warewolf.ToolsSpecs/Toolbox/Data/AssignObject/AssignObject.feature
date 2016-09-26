@@ -1,4 +1,5 @@
-﻿Feature: AssignObject
+﻿@Data
+Feature: AssignObject
 	In order to use json 
 	As a Warewolf user
 	I want a tool that assigns data to json objects

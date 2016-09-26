@@ -1,0 +1,90 @@
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Script_Javascript.Small"
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:scriptJavascript="clr-namespace:Dev2.Activities.Designers2.Script_Javascript"
+                               Width="230"
+                               MaxWidth="230"
+                               mc:Ignorable="d"
+                               d:DesignWidth="230"
+                               d:DataContext="{d:DesignInstance scriptJavascript:JavaScriptDesignerViewModel}">
+
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+
+    <Grid Margin="{StaticResource ElementBorder}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+       
+
+        <ui:IntellisenseTextBox  Grid.ColumnSpan="2"
+                                 Grid.Column="0"
+                                 Grid.Row="0" 
+                                 AllowMultilinePaste="True"
+                                 AcceptsReturn="True"
+                                 AllowUserInsertLine="True"
+                                 MaxHeight="53"
+                                 TextWrapping="Wrap"
+                                 Height="53"
+                                 MinHeight="53"
+                                 FilterType="All"
+                                 ToolTip="{x:Static languages:Core.ScriptingToolTipScript}"
+                                 AllowUserCalculateMode="False"
+                                 IsInCalculateMode="True"
+                                 Margin="{StaticResource ControlBorderTop}"
+                                 VerticalContentAlignment="Top"
+                                 Text="{Binding Path=ModelItem.Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtScript_AutoID}">
+            <ui:IntellisenseTextBox.DefaultText>
+                <TextBlock Text="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,-1,0,0"></TextBlock>
+            </ui:IntellisenseTextBox.DefaultText>
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpScript}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.Script"
+                                     SourcePropertyValue="{Binding ModelItem.Script, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Text="Result" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="1"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                WrapInBrackets="True"
+                                DefaultText="[[Result]]"
+                                AllowUserInsertLine="False"
+                                Margin="{StaticResource ControlBorderTop}"
+                                FilterType="All"
+                                ToolTip="{x:Static languages:Core.ScriptingToolTipResult}"
+                                Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpResult}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="Result"
+                                     SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+    </Grid>
+</core:ActivityDesignerTemplate>

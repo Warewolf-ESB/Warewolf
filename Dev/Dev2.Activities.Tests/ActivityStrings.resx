@@ -686,6 +686,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
+  
   <data name="DeleteRecordsDataListShape" xml:space="preserve">
     <value>&lt;root&gt;
 	&lt;recset1&gt;
@@ -694,7 +695,16 @@
 	&lt;/recset1&gt;	
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
+  </data> 
+  
+  <data name="EmptyRecordSet" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+	&lt;/recset1&gt;	
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
   </data>
+  
   <data name="DeleteRecordsDataListWithData" xml:space="preserve">
     <value>&lt;root&gt;
 	&lt;recset1&gt;
@@ -723,7 +733,18 @@
 	&lt;/recset1&gt;
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
+  </data> 
+  
+  <data name="EmptyRecordSetNoData" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;&lt;/field1&gt;
+		&lt;field2&gt;&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
   </data>
+  
   <data name="IndexDataListShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;recset1&gt;

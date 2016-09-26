@@ -19,6 +19,7 @@ using System.Windows.Input;
 using System.Xml;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Utils;
 using Dev2.Data;
@@ -85,9 +86,41 @@ namespace Dev2.Studio.ViewModels.DataList
             get { return _searchText; }
             set
             {
-                _searchText = value;
-                NotifyOfPropertyChange(() => SearchText);
+                if (!string.Equals(_searchText, value, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _searchText = value;
+                    NotifyOfPropertyChange(() => SearchText);
+                    FilterCollection(_searchText);
+                }
             }
+        }
+
+        private void FilterCollection(string searchText)
+        {
+            if(_scalarCollection!=null && _scalarCollection.Count > 1)
+            {
+                foreach(var scalarItemModel in _scalarCollection)
+                {
+                    scalarItemModel.Filter(searchText);
+                }
+            }
+            if (_recsetCollection != null && _recsetCollection.Count>1)
+            {
+                foreach(var recordSetItemModel in _recsetCollection)
+                {
+                    recordSetItemModel.Filter(searchText);
+                }
+            }
+            if (_complexObjectCollection != null && _complexObjectCollection.Count>0)
+            {
+                foreach(var complexObjectItemModel in _complexObjectCollection)
+                {
+                    complexObjectItemModel.Filter(searchText);
+                }
+            }
+            NotifyOfPropertyChange(() => ScalarCollection);
+            NotifyOfPropertyChange(() => RecsetCollection);
+            NotifyOfPropertyChange(() => ComplexObjectCollection);
         }
 
         public bool ViewSortDelete
@@ -123,9 +156,15 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                if (_scalarCollection != null) return _scalarCollection;
+                if (_scalarCollection != null)
+                {
+                    if (string.IsNullOrEmpty(_searchText))
+                    {
+                        return _scalarCollection;
+                    }
+                    return _scalarCollection.Where(model => model.IsVisible).ToObservableCollection();
+                }
                 _scalarCollection = new ObservableCollection<IScalarItemModel>();
-
                 _scalarCollection.CollectionChanged += (o, args) =>
                 {
                     RemoveItemPropertyChangeEvent(args);
@@ -139,7 +178,15 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                if (_complexObjectCollection != null) return _complexObjectCollection;
+
+                if (_complexObjectCollection != null)
+                {
+                    if (string.IsNullOrEmpty(_searchText))
+                    {
+                        return _complexObjectCollection;
+                    }
+                    return _complexObjectCollection.Where(model => model.IsVisible).ToObservableCollection();
+                }
                 _complexObjectCollection = new ObservableCollection<IComplexObjectItemModel>();
 
                 _complexObjectCollection.CollectionChanged += (o, args) =>
@@ -199,7 +246,13 @@ namespace Dev2.Studio.ViewModels.DataList
                         AddItemPropertyChangeEvent(args);
                     };
                 }
-                return _recsetCollection;
+
+                if (string.IsNullOrEmpty(_searchText))
+                {
+                    return _recsetCollection;
+                }
+                var recordSetItemModels = _recsetCollection.Where(model => model.IsVisible).ToObservableCollection();
+                return recordSetItemModels; 
             }
         }
 

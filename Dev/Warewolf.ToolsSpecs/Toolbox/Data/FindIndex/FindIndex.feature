@@ -1,4 +1,5 @@
-﻿Feature: Find Index
+﻿@Data
+Feature: Find Index
 	In order to find where characters or values are in sentences or words
 	As a Warewolf user
 	I want a tool that finds indexes

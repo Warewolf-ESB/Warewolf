@@ -8,12 +8,12 @@ namespace Warewolf.UITests.DebugInputWindow
     public class SaveDebugInputs
     {
         private const string InputDataText = "Coded UI Test";
+        const string HelloWorld = "Hello World";
 
         [TestMethod]
-        [Ignore]
         public void SaveDebugInputsUITest()
         {
-            Uimap.Enter_Text_Into_Explorer_Filter("Hello World");
+            Uimap.Filter_Explorer(HelloWorld);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.Open_Explorer_First_Item_With_Context_Menu();
             Uimap.Click_Debug_Ribbon_Button();
@@ -21,10 +21,10 @@ namespace Warewolf.UITests.DebugInputWindow
             Uimap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox(InputDataText);
             Uimap.Click_DebugInput_Cancel_Button();
             Uimap.Click_Debug_Ribbon_Button();
-            Assert.AreEqual(InputDataText, Uimap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.ComboBox.Textbox.Text, "Cancelling and re-openning the debug input dialog loses input values.");
+            Assert.AreEqual(InputDataText, Uimap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Cancelling and re-openning the debug input dialog loses input values.");
             Uimap.Click_DebugInput_Debug_Button();
             Uimap.Click_Debug_Ribbon_Button();
-            Assert.AreEqual(InputDataText, Uimap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.ComboBox.Textbox.Text, "Debugging Hello World workflow and then re-openning the debug input dialog loses input values.");
+            Assert.AreEqual(InputDataText, Uimap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debugging Hello World workflow and then re-openning the debug input dialog loses input values.");
         }
 
         #region Additional test attributes
@@ -32,18 +32,11 @@ namespace Warewolf.UITests.DebugInputWindow
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitForStudioStart();
+            Uimap.SetPlaybackSettings();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
-        }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingDebugInputDialog();
-            Uimap.TryCloseWorkflowTabs();
-            Uimap.TryClearExplorerFilter();
         }
 
         public TestContext TestContext

@@ -207,6 +207,7 @@
     <Compile Include="Activities\DsfBaseActivity.cs" />
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfComDllActivity.cs" />
+    <Compile Include="Activities\DsfDeleteRecordActivity.cs" />
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
     <Compile Include="Activities\DsfMethodBasedActivity.cs" />
@@ -216,13 +217,14 @@
     <Compile Include="Activities\DsfOracleDatabaseActivity.cs" />
     <Compile Include="Activities\DsfPostgreSqlActivity.cs" />
     <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
+    <Compile Include="Activities\DsfRecordsetNullhandlerLengthActivity.cs" />
     <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
     <Compile Include="Activities\Debug\DebugOutputBase.cs" />
     <Compile Include="Activities\DsfFindRecordsMultipleCriteriaActivity.cs" />
     <Compile Include="Activities\DsfPluginActivity.cs" />
     <Compile Include="Activities\DsfDatabaseActivity.cs" />
     <Compile Include="Activities\DsfDataMergeActivity.cs" />
-    <Compile Include="Activities\DsfDeleteRecordActivity.cs" />
+    <Compile Include="Activities\DsfDeleteRecordNullHandlerActivity.cs" />
     <Compile Include="Activities\DsfBaseConvertActivity.cs" />
     <Compile Include="Activities\DsfCalculateActivity.cs" />
     <Compile Include="Activities\DsfCaseConvertActivity.cs" />
@@ -243,7 +245,7 @@
     <Compile Include="Activities\DsfSendEmailActivity.cs" />
     <Compile Include="Activities\DsfSequenceActivity.cs" />
     <Compile Include="Activities\DsfSortRecordsActivity.cs" />
-    <Compile Include="Activities\DsfCountRecordsetActivity.cs" />
+    <Compile Include="Activities\DsfCountRecordsetNullHandlerActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignActivity.cs" />
     <Compile Include="Activities\DsfSqlBulkInsertActivity.cs" />
     <Compile Include="Activities\DsfSqlServerDatabaseActivity.cs" />
@@ -269,6 +271,10 @@
     <Compile Include="Activities\IFlowNodeActivity.cs" />
     <Compile Include="Activities\RabbitMQ\Consume\DsfConsumeRabbitMQActivity.cs" />
     <Compile Include="Activities\RabbitMQ\Publish\DsfPublishRabbitMQActivity.cs" />
+    <Compile Include="Activities\RecordsetOld\DsfCountRecordsetActivity.cs" />
+    <Compile Include="Activities\Scripting\DsfJavascriptActivity.cs" />
+    <Compile Include="Activities\Scripting\DsfPythonActivity.cs" />
+    <Compile Include="Activities\Scripting\DsfRubyActivity.cs" />
     <Compile Include="Activities\SelectAndApply\DsfSelectAndApplyActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointCopyFileActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointCreateListItemActivity.cs" />

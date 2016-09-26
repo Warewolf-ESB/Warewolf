@@ -15,6 +15,5 @@ for /d %%d in (*.Specs) do (
 for /d %%d in (Warewolf.UIBindingTests.*) do (
 	packages\SpecFlow.1.9.0\tools\specflow.exe generateAll "%%d\%%d.csproj" /force /verbose
 )
-packages\SpecFlow.1.9.0\tools\specflow.exe generateAll Dev2.Studio.UISpecs\Dev2.Studio.UI.Specs.csproj /force /verbose
 packages\SpecFlow.1.9.0\tools\specflow.exe generateAll Dev2.Installer.Specs\Warewolf.UIBindingTests.Installer.csproj /force /verbose
 packages\SpecFlow.1.9.0\tools\specflow.exe generateAll Warewolf.ToolsSpecs\Warewolf.ToolsSpecs.csproj /force /verbose
