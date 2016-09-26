@@ -3,6 +3,7 @@
 	As a Warewolf user
 	I want a tool that takes a record set and deletes it
 
+
 Scenario: Delete last record in a recordset 
 	Given I have the following recordset
 	| rs       | val |

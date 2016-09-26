@@ -23,7 +23,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Activities.Designers2.CountRecords;
+using Dev2.Activities.Designers2.CountRecordsNullHandler;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.Service;
@@ -483,11 +483,11 @@ namespace Dev2.Core.Tests.Workflows
                 <av:PointCollection x:Key=""ConnectorLocation"">450,135 450,157 460,157</av:PointCollection>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <uaba:DsfCountRecordsetActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" AddMode=""False"" AmbientDataList=""[AmbientDataList]"" CountNumber=""[[test5]]"" DatabindRecursive=""False"" DisplayName=""Count Records"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""200,86"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" RecordsetName=""[[test4()]]"" SimulationMode=""OnDemand"" UniqueID=""6ffbfe4f-2425-4fa3-805d-4815652f4236"">
-              <uaba:DsfCountRecordsetActivity.ParentInstanceID>
+            <uaba:DsfCountRecordsetNullHandlerActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" AddMode=""False"" AmbientDataList=""[AmbientDataList]"" CountNumber=""[[test5]]"" DatabindRecursive=""False"" DisplayName=""Count Records"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""200,86"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" RecordsetName=""[[test4()]]"" SimulationMode=""OnDemand"" UniqueID=""6ffbfe4f-2425-4fa3-805d-4815652f4236"">
+              <uaba:DsfCountRecordsetNullHandlerActivity.ParentInstanceID>
                 <InOutArgument x:TypeArguments=""x:String"" />
-              </uaba:DsfCountRecordsetActivity.ParentInstanceID>
-            </uaba:DsfCountRecordsetActivity>
+              </uaba:DsfCountRecordsetNullHandlerActivity.ParentInstanceID>
+            </uaba:DsfCountRecordsetNullHandlerActivity>
             <FlowStep.Next>
               <FlowStep x:Name=""__ReferenceID12"">
                 <sap:WorkflowViewStateService.ViewState>
@@ -3979,7 +3979,7 @@ namespace Dev2.Core.Tests.Workflows
                 { typeof(DsfActivity), typeof(ServiceDesigner) },
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) }, 
                 { typeof(DsfForEachActivity), typeof(ForeachDesigner) }, 
-                { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesigner) }
+                { typeof(DsfCountRecordsetNullHandlerActivity), typeof(CountRecordsDesigner) }
             };
 
             wf.InitializeDesigner(designerAttributes);

@@ -37,15 +37,7 @@ namespace Warewolf.UITests.Tools
         public void MyTestInitialize()
         {
             Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
             Uimap.InitializeABlankWorkflow();
-        }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.CleanupABlankWorkflow();
         }
 
         /// <summary>

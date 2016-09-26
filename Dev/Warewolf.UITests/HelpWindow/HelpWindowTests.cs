@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -27,33 +26,11 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
+            Uimap.SetPlaybackSettings();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            //Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseWorkflowTabs();
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {

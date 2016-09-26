@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -10,7 +9,6 @@ namespace Warewolf.UITests
         const string WebSourceName = "UITestingWebSource";
 
         [TestMethod]
-        [Ignore]
         public void BigWebConnectorUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
@@ -36,35 +34,11 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
+            Uimap.SetPlaybackSettings();
+#if !DEBUG
+            Uimap.CloseHangingDialogs();
+#endif
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(WebSourceName);
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseNewWebSourceWizardTab();
-            Uimap.TryCloseWorkflowTabs();
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {
@@ -81,6 +55,6 @@ namespace Warewolf.UITests
 
         private UIMap _uiMap;
 
-#endregion
+        #endregion
     }
 }

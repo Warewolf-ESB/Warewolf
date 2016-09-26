@@ -55,6 +55,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Common.cs" />
+    <Compile Include="SaveDialogWindow\SaveDialogWindowTets.cs" />
+    <Compile Include="Deploy\DeployViewOnlyServiceUITest.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
@@ -62,10 +65,11 @@
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Explorer\ItemDragAndDrop.cs" />
     <Compile Include="Explorer\ContextMenuItemsTest.cs" />
+    <Compile Include="Variables\Variables.cs" />
+    <Compile Include="WorkflowTesting\TestsResults.cs" />
     <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
     <Compile Include="HelpWindow\HelpWindowTests.cs" />
     <Compile Include="Tools\HTTP Web Methods\Create_WEB_Source_From_Tool.cs" />
-    <Compile Include="Variables\Variables.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="Explorer\WebConnector.cs" />
     <Compile Include="Explorer\PluginConnector.cs" />

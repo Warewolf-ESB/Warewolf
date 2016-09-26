@@ -15,6 +15,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using ActivityUnitTests;
+using Dev2.Activities;
 using Dev2.Data.Util;
 using Dev2.Integration.Tests.Services.Sql;
 using Dev2.Interfaces;
@@ -25,7 +26,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using WarewolfParserInterop;
 
-namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
+namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 {
     [Binding]
     public class SqlBulkInsertSteps : BaseActivityUnitTest
