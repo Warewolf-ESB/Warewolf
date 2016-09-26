@@ -41522,29 +41522,10 @@ namespace Warewolf.UITests
                 return this.mRow1;
             }
         }
-        
-        public WpfCell InputValueCell100
-        {
-            get
-            {
-                if ((this.mInputValueCell100 == null))
-                {
-                    this.mInputValueCell100 = new WpfCell(this);
-                    #region Search Criteria
-                    this.mInputValueCell100.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-                    this.mInputValueCell100.SearchProperties[WpfCell.PropertyNames.Value] = "100";
-                    this.mInputValueCell100.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputValueCell100;
-            }
-        }
         #endregion
         
         #region Fields
         private Row112 mRow1;
-        
-        private WpfCell mInputValueCell100;
         #endregion
     }
     
@@ -41574,24 +41555,10 @@ namespace Warewolf.UITests
                 return this.mInputValueCell;
             }
         }
-        
-        public ComboBox2 ComboBox
-        {
-            get
-            {
-                if ((this.mComboBox == null))
-                {
-                    this.mComboBox = new ComboBox2(this);
-                }
-                return this.mComboBox;
-            }
-        }
         #endregion
         
         #region Fields
         private InputValueCell mInputValueCell;
-        
-        private ComboBox2 mComboBox;
         #endregion
     }
     
@@ -41636,7 +41603,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_SomeVariabletxt_AutoID";
+            this.SearchProperties[WpfComboBox.PropertyNames.Instance] = "1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -41650,7 +41617,7 @@ namespace Warewolf.UITests
                 {
                     this.mInputValueText = new WpfEdit(this);
                     #region Search Criteria
-                    this.mInputValueText.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mInputValueText.SearchProperties[WpfEdit.PropertyNames.Instance] = "1";
                     this.mInputValueText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -41661,42 +41628,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mInputValueText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ComboBox2 : WpfComboBox
-    {
-        
-        public ComboBox2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_SomeVariabletxt_AutoID";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit Textbox
-        {
-            get
-            {
-                if ((this.mTextbox == null))
-                {
-                    this.mTextbox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
-                    this.mTextbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mTextbox;
         #endregion
     }
     
