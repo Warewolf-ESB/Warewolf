@@ -184,7 +184,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (modelItem.ItemType == typeof(DsfForEachActivity))
                 {
-
+                   ProcessForEach(modelItem);
                 }
                 else if (modelItem.ItemType == typeof(DsfSequenceActivity))
                 {
@@ -219,6 +219,46 @@ namespace Warewolf.Studio.ViewModels
             AddSequence(sequence, SelectedServiceTest.TestSteps);
         }
 
+        private void ProcessForEach(ModelItem modelItem)
+        {
+            var forEachActivity = modelItem.GetCurrentValue() as DsfForEachActivity;
+            AddForEach(forEachActivity, SelectedServiceTest.TestSteps);
+        }
+
+        private void AddForEach(DsfForEachActivity forEachActivity, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        {
+            if(forEachActivity != null)
+            {
+                var uniqueId = forEachActivity.UniqueID;
+                var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+
+                if(exists == null)
+                {
+                    var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfForEachActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
+                    {
+                        StepDescription = forEachActivity.DisplayName
+                    };
+                    var act = forEachActivity.DataFunc.Handler as DsfNativeActivity<string>;
+                    if(act != null)
+                    {
+                        if (act.GetType() == typeof(DsfSequenceActivity))
+                        {
+                            AddSequence(act as DsfSequenceActivity, testStep.Children);
+                        }
+                        else if (act.GetType() == typeof(DsfForEachActivity))
+                        {
+                            AddForEach(forEachActivity.DataFunc.Handler as DsfForEachActivity, testStep.Children);
+                        }
+                        else
+                        {
+                            AddChildActivity(act, testStep);
+                        }
+                    }
+                    serviceTestSteps.Add(testStep);
+                }
+            }
+        }
+
         private void AddSequence(DsfSequenceActivity sequence, ObservableCollection<IServiceTestStep> serviceTestSteps)
         {
             if (sequence != null)
@@ -240,8 +280,18 @@ namespace Warewolf.Studio.ViewModels
                             if (act.GetType() == typeof(DsfSequenceActivity))
                             {
                                 AddSequence(act as DsfSequenceActivity, testStep.Children);
+                            }                            
+                            else
+                            {
+                                AddChildActivity(act, testStep);
                             }
-                            AddSequenceActivity(act, testStep);
+                        }
+                        else
+                        {
+                            if (activity.GetType() == typeof(DsfForEachActivity))
+                            {
+                                AddForEach(activity as DsfForEachActivity, testStep.Children);
+                            }
                         }
                     }
                     serviceTestSteps.Add(testStep);
@@ -249,7 +299,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private static void AddSequenceActivity(DsfNativeActivity<string> act, ServiceTestStep testStep)
+        private static void AddChildActivity(DsfNativeActivity<string> act, ServiceTestStep testStep)
         {
             var outputs = act.GetOutputs();
             if (outputs != null && outputs.Count > 0)
