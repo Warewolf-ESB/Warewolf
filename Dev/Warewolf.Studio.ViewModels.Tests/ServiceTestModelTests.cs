@@ -931,7 +931,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
 
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep("",typeof(DsfDecision).Name,new List<IServiceTestOutput>());
+            serviceTestModel.AddTestStep("", "", typeof(DsfDecision).Name,new List<IServiceTestOutput>());
             //------------Assert Results-------------------------
         }
 
@@ -945,7 +945,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
 
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep(null,typeof(DsfDecision).Name,new List<IServiceTestOutput>());
+            serviceTestModel.AddTestStep(null, "", typeof(DsfDecision).Name,new List<IServiceTestOutput>());
             //------------Assert Results-------------------------
         }
 
@@ -959,7 +959,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
 
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(),null,new List<IServiceTestOutput>());
+            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(), "", null,new List<IServiceTestOutput>());
             //------------Assert Results-------------------------
         }
 
@@ -973,7 +973,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
 
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(), "",new List<IServiceTestOutput>());
+            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(), "", "",new List<IServiceTestOutput>());
             //------------Assert Results-------------------------
         }
 
@@ -987,7 +987,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
 
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(),typeof(DsfDecision).Name,null);
+            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(), "", typeof(DsfDecision).Name,null);
             //------------Assert Results-------------------------
         }
 
@@ -1002,7 +1002,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var activityTypeName = typeof(DsfDecision).Name;
             var outputs = new List<IServiceTestOutput>();
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep(uniqueID,activityTypeName,outputs);
+            serviceTestModel.AddTestStep(uniqueID, "", activityTypeName,outputs);
             //------------Assert Results-------------------------
             Assert.AreEqual(1,serviceTestModel.TestSteps.Count);
             var testStep = serviceTestModel.TestSteps[0];

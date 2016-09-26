@@ -59,6 +59,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             TreatNullAsZero = true;
         }
 
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { RecordsLength };
+        }
+
         public bool TreatNullAsZero { get; set; }
 
         // ReSharper disable RedundantOverridenMember

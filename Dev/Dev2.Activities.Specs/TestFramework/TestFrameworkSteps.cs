@@ -1297,11 +1297,11 @@ namespace Dev2.Activities.Specs.TestFramework
                                     if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText) };
-                                        test.AddTestStep(activity.UniqueID, typeof(DsfDecision).Name, serviceTestOutputs);
+                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText) };
-                                        test.AddTestStep(activity.UniqueID, typeof(DsfDecision).Name, serviceTestOutputs);
+                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }
                                 }
                             }                            
@@ -1326,7 +1326,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         var value = tableRow["Output Value"];
                         var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput(var, value) };
                         var type = activity.GetType();
-                        test.AddTestStep(activity.UniqueID, type.Name, serviceTestOutputs);
+                        test.AddTestStep(activity.UniqueID, activity.DisplayName, type.Name, serviceTestOutputs);
                     }
                 }
             }

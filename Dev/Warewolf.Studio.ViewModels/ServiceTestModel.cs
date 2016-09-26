@@ -469,7 +469,7 @@ namespace Warewolf.Studio.ViewModels
             Item = model as ServiceTestModel;
         }
 
-        public void AddTestStep(string activityUniqueID, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
+        public void AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
         {
             if(string.IsNullOrEmpty(activityUniqueID))
                 throw new ArgumentNullException(nameof(activityUniqueID));
@@ -477,7 +477,7 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException(nameof(activityTypeName));
             if (serviceTestOutputs == null)
                 throw new ArgumentNullException(nameof(serviceTestOutputs));
-            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock);
+            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock) { StepDescription = activityDisplayName };
             TestSteps.Add(testStep);
         }
 
@@ -684,10 +684,7 @@ namespace Warewolf.Studio.ViewModels
             UniqueId = uniqueId;
             ActivityType = activityTypeName;
             StepOutputs = serviceTestOutputs;
-            Type = stepType;
-
-            //AssertSelected = stepType == StepType.Assert;
-            //MockSelected = stepType == StepType.Mock;
+            Type = stepType;            
             StepDescription = activityTypeName;
             Children = new ObservableCollection<IServiceTestStep>();
         }
