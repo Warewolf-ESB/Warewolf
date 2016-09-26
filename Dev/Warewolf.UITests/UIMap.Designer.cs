@@ -20419,18 +20419,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public ServiceTestView ServiceTestView
-        {
-            get
-            {
-                if ((this.mServiceTestView == null))
-                {
-                    this.mServiceTestView = new ServiceTestView(this);
-                }
-                return this.mServiceTestView;
-            }
-        }
-        
         public TestsTabPage TestsTabPage
         {
             get
@@ -20480,8 +20468,6 @@ namespace Warewolf.UITests
         private PluginSourceWizardTab mPluginSourceWizardTab;
         
         private WebSourceWizardTab mWebSourceWizardTab;
-        
-        private ServiceTestView mServiceTestView;
         
         private TestsTabPage mTestsTabPage;
         
@@ -33319,107 +33305,6 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ServiceTestView : WpfCustom
-    {
-        
-        public ServiceTestView(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceTestView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ServiceTestView_AutoID";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public TestsListbox TestsListbox
-        {
-            get
-            {
-                if ((this.mTestsListbox == null))
-                {
-                    this.mTestsListbox = new TestsListbox(this);
-                }
-                return this.mTestsListbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private TestsListbox mTestsListbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TestsListbox : WpfList
-    {
-        
-        public TestsListbox(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "TestsListbox";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WarewolfStudioView WarewolfStudioView
-        {
-            get
-            {
-                if ((this.mWarewolfStudioView == null))
-                {
-                    this.mWarewolfStudioView = new WarewolfStudioView(this);
-                }
-                return this.mWarewolfStudioView;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WarewolfStudioView mWarewolfStudioView;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WarewolfStudioView : WpfListItem
-    {
-        
-        public WarewolfStudioView(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.DummyServiceTest";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton CreateanewtestButton
-        {
-            get
-            {
-                if ((this.mCreateanewtestButton == null))
-                {
-                    this.mCreateanewtestButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mCreateanewtestButton.SearchProperties[WpfButton.PropertyNames.Instance] = "1";
-                    this.mCreateanewtestButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mCreateanewtestButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mCreateanewtestButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestsTabPage : WpfTabPage
     {
         
@@ -33448,13 +33333,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ServiceTestView1 ServiceTestView
+        public ServiceTestView ServiceTestView
         {
             get
             {
                 if ((this.mServiceTestView == null))
                 {
-                    this.mServiceTestView = new ServiceTestView1(this);
+                    this.mServiceTestView = new ServiceTestView(this);
                 }
                 return this.mServiceTestView;
             }
@@ -33464,15 +33349,15 @@ namespace Warewolf.UITests
         #region Fields
         private WpfText mTabDescription;
         
-        private ServiceTestView1 mServiceTestView;
+        private ServiceTestView mServiceTestView;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ServiceTestView1 : WpfCustom
+    public class ServiceTestView : WpfCustom
     {
         
-        public ServiceTestView1(UITestControl searchLimitContainer) : 
+        public ServiceTestView(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
