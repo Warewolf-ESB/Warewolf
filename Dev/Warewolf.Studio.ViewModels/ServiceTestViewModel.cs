@@ -116,93 +116,162 @@ namespace Warewolf.Studio.ViewModels
                 {
 
                 }
-                else if (modelItem.ItemType == typeof(DsfSwitch) || modelItem.ItemType == typeof(FlowSwitch<string>))
+                else if(modelItem.ItemType == typeof(FlowSwitch<string>))
+                {                    
+                    ProcessFlowSwitch(modelItem);
+                }
+                else if (modelItem.ItemType == typeof(DsfSwitch))
                 {
-                    var cases = modelItem.GetProperty("Switches") as Dictionary<string, IDev2Activity>;
-                    var defaultCase = modelItem.GetProperty("Default") as IDev2Activity;
-                    var uniqueId = modelItem.GetProperty("UniqueID").ToString();
-                    if (SelectedServiceTest != null)
-                    {
-                        var switchOptions = cases?.Select(pair => pair.Key).ToList();
-                        if (defaultCase != null)
-                        {
-                            switchOptions.Insert(0, "Default");
-                        }
-                        var serviceTestOutputs = new List<IServiceTestOutput>();
-                        var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
-                        {
-                            HasOptionsForValue = true,
-                            OptionsForValue = switchOptions
-                        };
-                        serviceTestOutputs.Add(serviceTestOutput);
-                        SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfSwitch).Name, serviceTestOutputs);
-                    }
+                    ProcessSwitch(modelItem);
                 }
                 else if (modelItem.ItemType == typeof(FlowDecision))
                 {
-                    var condition = modelItem.GetProperty("Condition");
-                    var activity = (DsfFlowNodeActivity<bool>)condition;
-                    var expression = activity.ExpressionText;
-                    if (expression != null)
-                    {
-                        var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression);
-
-                        if (!string.IsNullOrEmpty(eval))
-                        {
-                            Dev2JsonSerializer ser = new Dev2JsonSerializer();
-                            var dds = ser.Deserialize<Dev2DecisionStack>(eval);
-                            var uniqueId = activity.UniqueID;
-                            if (SelectedServiceTest != null)
-                            {
-                                var serviceTestOutputs = new List<IServiceTestOutput>();
-                                var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
-                                {
-                                    HasOptionsForValue = true,
-                                    OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
-                                };
-                                serviceTestOutputs.Add(serviceTestOutput);
-                                SelectedServiceTest.AddTestStep(uniqueId,dds.DisplayText, typeof(DsfDecision).Name, serviceTestOutputs);
-                            }
-                        }
-                    }
+                    ProcessFlowDecision(modelItem);
                 }
                 else if (modelItem.ItemType == typeof(DsfDecision))
                 {
-                    Dev2DecisionStack dds = modelItem.GetProperty("Conditions") as Dev2DecisionStack;
-                    var uniqueId = modelItem.GetProperty("UniqueID").ToString();
-                    if (SelectedServiceTest != null)
-                    {
-                        var serviceTestOutputs = new List<IServiceTestOutput>();
-                        var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
-                        {
-                            HasOptionsForValue = true,
-                            OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
-                        };
-                        serviceTestOutputs.Add(serviceTestOutput);
-                        SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfDecision).Name, serviceTestOutputs);
-                    }
-
+                    ProcessDecision(modelItem);
                 }
                 else
                 {
-                    var computedValue = modelItem.GetCurrentValue();
-                    var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
-                    var outputs = dsfActivityAbstract?.GetOutputs();
-                    var activityTypeName = computedValue.ToString().Replace(":", "");
+                    ProcessActivity(modelItem);
+                }
+            }
+        }
 
-                    var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => dsfActivityAbstract != null && a.UniqueId.ToString() == dsfActivityAbstract.UniqueID);
+        private void ProcessSwitch(ModelItem modelItem)
+        {
+            var cases = modelItem.GetProperty("Switches") as Dictionary<string, IDev2Activity>;
+            var defaultCase = modelItem.GetProperty("Default") as IDev2Activity;
+            var uniqueId = modelItem.GetProperty("UniqueID").ToString();
+            var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+
+            if (exists == null)
+            {
+                if (SelectedServiceTest != null)
+                {
+                    var switchOptions = cases?.Select(pair => pair.Key).ToList();
+                    if (defaultCase != null)
+                    {
+                        switchOptions.Insert(0, "Default");
+                    }
+                    var serviceTestOutputs = new List<IServiceTestOutput>();
+                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                    {
+                        HasOptionsForValue = true,
+                        OptionsForValue = switchOptions
+                    };
+                    serviceTestOutputs.Add(serviceTestOutput);
+                    SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfSwitch).Name, serviceTestOutputs);
+                }
+            }
+        }
+
+        private void ProcessFlowSwitch(ModelItem modelItem)
+        {
+            var condition = modelItem.GetProperty("Expression");
+            var activity = (DsfFlowNodeActivity<string>)condition;
+            var flowSwitch = modelItem.GetCurrentValue() as FlowSwitch<string>;
+            var cases = flowSwitch.Cases;
+            var defaultCase = flowSwitch.Default;
+            var uniqueId = activity.UniqueID;
+            var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+
+            if (exists == null)
+            {
+                if (SelectedServiceTest != null)
+                {
+                    var switchOptions = cases?.Select(pair => pair.Key).ToList();
+                    if (defaultCase != null)
+                    {
+                        switchOptions.Insert(0, "Default");
+                    }
+                    var serviceTestOutputs = new List<IServiceTestOutput>();
+                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                    {
+                        HasOptionsForValue = true,
+                        OptionsForValue = switchOptions
+                    };
+                    serviceTestOutputs.Add(serviceTestOutput);
+                    SelectedServiceTest.AddTestStep(uniqueId, flowSwitch.DisplayName, typeof(DsfSwitch).Name, serviceTestOutputs);
+                }
+            }
+        }
+
+        private void ProcessActivity(ModelItem modelItem)
+        {
+            var computedValue = modelItem.GetCurrentValue();
+            var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
+            var outputs = dsfActivityAbstract?.GetOutputs();
+            var activityTypeName = computedValue.ToString().Replace(":", "");
+
+            var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => dsfActivityAbstract != null && a.UniqueId.ToString() == dsfActivityAbstract.UniqueID);
+
+            if(exists == null)
+            {
+                if(outputs != null && outputs.Count > 0)
+                {
+                    var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                    {
+                        HasOptionsForValue = false
+                    }).Cast<IServiceTestOutput>().ToList();
+                    //Remove the empty row
+                    serviceTestOutputs.RemoveAt(serviceTestOutputs.Count - 1);
+                    SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, dsfActivityAbstract.DisplayName, activityTypeName, serviceTestOutputs);
+                }
+            }
+        }
+
+        private void ProcessDecision(ModelItem modelItem)
+        {
+            Dev2DecisionStack dds = modelItem.GetProperty("Conditions") as Dev2DecisionStack;
+            var uniqueId = modelItem.GetProperty("UniqueID").ToString();
+            var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a =>  a.UniqueId.ToString() == uniqueId);
+
+            if (exists == null)
+            {
+                if (SelectedServiceTest != null)
+                {
+                    var serviceTestOutputs = new List<IServiceTestOutput>();
+                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                    {
+                        HasOptionsForValue = true,
+                        OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
+                    };
+                    serviceTestOutputs.Add(serviceTestOutput);
+                    SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfDecision).Name, serviceTestOutputs);
+                }
+            }
+        }
+
+        private void ProcessFlowDecision(ModelItem modelItem)
+        {
+            var condition = modelItem.GetProperty("Condition");
+            var activity = (DsfFlowNodeActivity<bool>)condition;
+            var expression = activity.ExpressionText;
+            if(expression != null)
+            {
+                var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression);
+
+                if (!string.IsNullOrEmpty(eval))
+                {
+                    Dev2JsonSerializer ser = new Dev2JsonSerializer();
+                    var dds = ser.Deserialize<Dev2DecisionStack>(eval);
+                    var uniqueId = activity.UniqueID;
+                    var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
 
                     if (exists == null)
                     {
-                        if (outputs != null && outputs.Count > 0)
+                        if (SelectedServiceTest != null)
                         {
-                            var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                            var serviceTestOutputs = new List<IServiceTestOutput>();
+                            var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
                             {
-                                HasOptionsForValue = false
-                            }).Cast<IServiceTestOutput>().ToList();
-                            //Remove the empty row
-                            serviceTestOutputs.RemoveAt(serviceTestOutputs.Count - 1);
-                            SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, dsfActivityAbstract.DisplayName, activityTypeName, serviceTestOutputs);
+                                HasOptionsForValue = true,
+                                OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
+                            };
+                            serviceTestOutputs.Add(serviceTestOutput);
+                            SelectedServiceTest.AddTestStep(uniqueId, dds.DisplayText, typeof(DsfDecision).Name, serviceTestOutputs);
                         }
                     }
                 }
