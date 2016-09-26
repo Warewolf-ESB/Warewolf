@@ -459,6 +459,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Images\Scripting-Script.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Images\Scripting-Python.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
