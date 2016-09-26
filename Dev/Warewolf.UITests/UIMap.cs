@@ -1035,17 +1035,16 @@ namespace Warewolf.UITests
             Assert_Display_Text_ContainStar(Test, nameContainsStar);
         }
 
-        public void Drag_From_Explorer_Onto_DesignSurface(string WorkflowName)
-        {
-            Filter_Explorer(WorkflowName);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(49, 10));
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 127));
-            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(49, 10));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 127));
-        }
+        //public void Drag_From_Explorer_Onto_DesignSurface(string WorkflowName)
+        //{
+        //    Filter_Explorer(WorkflowName);
+        //    MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 127));
+        //    Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(49, 10));
+        //    Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 127));
+        //}
 
 
-        public void Select_Show_Dependencies_In_Explorer_Context_Menu()
+        public void Select_Show_Dependencies_In_Explorer_Context_Menu(string ServiceName)
         {
             #region Variable Declarations
             WpfMenuItem showDependencies = this.MainStudioWindow.ExplorerContextMenu.ShowDependencies;
@@ -1059,7 +1058,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
             Assert.IsTrue(textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
             Assert.IsTrue(refreshButton.Exists, "Refresh button does not exist on dependency graph");
-            Assert.AreEqual("RemoteServerUITestWorkflow", text.DisplayText, "Dependant workflow not shown in dependency diagram");
+            Assert.AreEqual(ServiceName, text.DisplayText, "Dependant workflow not shown in dependency diagram");
             Assert.IsTrue(showwhatdependsonthisRadioButton.Exists, "Show what depends on workflow does not exist after Show Dependencies is selected");
             Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Show what depends on workflow radio button is not selected after Show dependecies" +
                     " is selected");
