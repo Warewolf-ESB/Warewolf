@@ -241,9 +241,8 @@ namespace Warewolf.Studio.ViewModels
                     var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof (DsfForEachActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
                     {
                         StepDescription = forEachActivity.DisplayName,
+                        StepIcon = Application.Current?.TryFindResource("Execution-ForEach") as ImageSource,
                         Parent = parent
-                        StepDescription = forEachActivity.DisplayName,
-                        StepIcon = Application.Current?.TryFindResource("Execution-ForEach") as ImageSource
                     };
                     var act = forEachActivity.DataFunc.Handler as DsfNativeActivity<string>;
                     if(act != null)
@@ -278,9 +277,8 @@ namespace Warewolf.Studio.ViewModels
                     var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfSequenceActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
                     {
                         StepDescription = sequence.DisplayName,
+                        StepIcon = Application.Current?.TryFindResource("ControlFlow-Sequence") as ImageSource,
                         Parent = parent
-                        StepDescription = sequence.DisplayName,
-                        StepIcon = Application.Current?.TryFindResource("ControlFlow-Sequence") as ImageSource
                     };
                     foreach (var activity in sequence.Activities)
                     {
