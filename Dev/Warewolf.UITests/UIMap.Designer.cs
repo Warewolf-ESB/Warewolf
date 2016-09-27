@@ -6390,16 +6390,21 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Tests_From_Context_Menu
+        /// Select_Tests_From_Context_Menu - Use 'Select_Tests_From_Context_MenuParams' to pass parameters into this method.
         /// </summary>
         public void Select_Tests_From_Context_Menu()
         {
             #region Variable Declarations
             WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
+            WpfTabPage testsTabPage = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage;
             #endregion
 
             // Click 'Tests' menu item
             Mouse.Click(tests, new Point(46, 16));
+
+            // Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
+            Assert.AreEqual(this.Select_Tests_From_Context_MenuParams.TestsTabPageExists, testsTabPage.Exists, "TestsTabPage does not exist after clicking view tests in the explorer context men" +
+                    "u.");
         }
         
         /// <summary>
@@ -8933,6 +8938,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_Tests_From_Context_MenuParams Select_Tests_From_Context_MenuParams
+        {
+            get
+            {
+                if ((this.mSelect_Tests_From_Context_MenuParams == null))
+                {
+                    this.mSelect_Tests_From_Context_MenuParams = new Select_Tests_From_Context_MenuParams();
+                }
+                return this.mSelect_Tests_From_Context_MenuParams;
+            }
+        }
+        
         public virtual Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
         {
             get
@@ -9534,6 +9551,8 @@ namespace Warewolf.UITests
         private Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
         
         private Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
+        
+        private Select_Tests_From_Context_MenuParams mSelect_Tests_From_Context_MenuParams;
         
         private Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
         
@@ -13725,6 +13744,21 @@ namespace Warewolf.UITests
         public string ClassNameComboBoxSelectedItem = "{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
             "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Random\",\"MethodName\":nul" +
             "l}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_Tests_From_Context_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_Tests_From_Context_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
+        /// </summary>
+        public bool TestsTabPageExists = true;
         #endregion
     }
     
