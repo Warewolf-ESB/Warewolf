@@ -772,7 +772,7 @@
                                 </RadioButton>
                                 <TextBlock Grid.Column="3" Text="Contains" Visibility="{Binding SelectedServiceTest.ErrorExpected, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <TextBox Grid.Column="4" 
-                                         Text="{Binding SelectedServiceTest.ErrorContainsText}" 
+                                         Text="{Binding SelectedServiceTest.ErrorContainsText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                          ToolTip="{x:Static languages:Core.ServiceTestErrorContainsTextTooltip}"
                                          Visibility="{Binding SelectedServiceTest.ErrorExpected, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <i:Interaction.Behaviors>
