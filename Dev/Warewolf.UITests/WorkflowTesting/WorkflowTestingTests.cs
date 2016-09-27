@@ -196,8 +196,8 @@ namespace Warewolf.UITests
         [TestCleanup()]
         public void MyTestCleanup()
         {
-            Uimap.TryRemoveTests();
             Playback.PlaybackError -= Uimap.OnError;
+            Uimap.TryRemoveTests();
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
             File.Delete(resourcesFolder + @"\" + Testing123 + ".xml");
         }
