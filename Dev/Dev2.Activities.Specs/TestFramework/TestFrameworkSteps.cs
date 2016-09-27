@@ -731,6 +731,21 @@ namespace Dev2.Activities.Specs.TestFramework
             serviceTest.SelectedServiceTest.TestName = testName;
         }
 
+        [Then(@"I set ErrorExpected to ""(.*)""")]
+        public void ThenISetErrorExpectedTo(string value)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            if (value == "true")
+                serviceTest.SelectedServiceTest.ErrorExpected = true;
+        }
+
+        [Then(@"change ErrorContainsText to ""(.*)""")]
+        public void ThenChangeErrorContainsTextTo(string errorContainsText)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.SelectedServiceTest.ErrorContainsText = errorContainsText;
+        }
+
         [Then(@"test URL is ""(.*)""")]
         public void ThenTestURLIs(string testUrl)
         {
