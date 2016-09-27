@@ -1843,7 +1843,7 @@ namespace Warewolf.UITests
         public void Click_VariableList_Recordset_Row1_IsInputCheckbox()
         {
             #region Variable Declarations
-            WpfCheckBox inputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field.InputCheckbox;
+            WpfCheckBox inputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field1.InputCheckbox;
             #endregion
 
             // Select 'UI_IsInputCheckbox_AutoID' check box
@@ -29812,7 +29812,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.BaseConvertDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Base Conversion (1)(BaseConvertDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "BaseConvertDesigner", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -30252,7 +30252,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CaseConvertDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Case Conversion (1)(CaseConvertDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "CaseConvertDesigner", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -31061,7 +31061,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XPathDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "XPath (1)(XPathDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "XPathDesigner", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -31117,7 +31117,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign (1)(MultiAssignDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "MultiAssignDesigner", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -37758,7 +37758,7 @@ namespace Warewolf.UITests
                     this.mDisabledRadioButton = new WpfRadioButton(this);
                     #region Search Criteria
                     this.mDisabledRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DisabledRadioButton";
-                    this.mDisabledRadioButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDisabledRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDisabledRadioButton;
@@ -38231,7 +38231,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataListView";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_VariablesControl_AutoID";
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38269,7 +38269,7 @@ namespace Warewolf.UITests
                     this.mRemoveUnused = new WpfButton(this);
                     #region Search Criteria
                     this.mRemoveUnused.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_AddRemovebtn_AutoID";
-                    this.mRemoveUnused.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mRemoveUnused.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mRemoveUnused;
@@ -38285,7 +38285,7 @@ namespace Warewolf.UITests
                     this.mSort = new WpfButton(this);
                     #region Search Criteria
                     this.mSort.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_Sortbtn_AutoID";
-                    this.mSort.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mSort.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mSort;
@@ -38313,7 +38313,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "UI_VariableTreeView_AutoID";
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38359,7 +38359,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Variable";
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38434,7 +38434,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
                     this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mExpanderButton;
@@ -38468,7 +38468,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38495,7 +38495,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -38512,7 +38512,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
@@ -38540,7 +38540,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38573,7 +38573,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38588,7 +38588,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -38605,7 +38605,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
@@ -38622,7 +38622,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
                     this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteButton;
@@ -38650,7 +38650,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38677,7 +38677,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -38694,7 +38694,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
@@ -38722,7 +38722,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38755,7 +38755,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38770,7 +38770,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -38787,7 +38787,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
@@ -38804,7 +38804,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
                     this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteButton;
@@ -38832,7 +38832,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38859,7 +38859,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -38876,7 +38876,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
@@ -38904,7 +38904,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38937,7 +38937,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -38952,7 +38952,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -38969,7 +38969,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
@@ -38986,7 +38986,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
                     this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteButton;
@@ -39014,7 +39014,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "4";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39041,7 +39041,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -39058,7 +39058,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
@@ -39086,7 +39086,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39119,7 +39119,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39134,7 +39134,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -39151,7 +39151,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
@@ -39168,7 +39168,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
                     this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteButton;
@@ -39196,7 +39196,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39223,7 +39223,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -39240,7 +39240,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
@@ -39268,7 +39268,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39301,7 +39301,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39316,7 +39316,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -39333,7 +39333,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
@@ -39350,7 +39350,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
                     this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteButton;
@@ -39376,7 +39376,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Recordset";
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39451,7 +39451,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
                     this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mExpanderButton;
@@ -39485,7 +39485,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39512,7 +39512,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -39529,22 +39529,34 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
             }
         }
         
-        public Field Field
+        public Field1 Field1
         {
             get
             {
-                if ((this.mField == null))
+                if ((this.mField1 == null))
                 {
-                    this.mField = new Field(this);
+                    this.mField1 = new Field1(this);
                 }
-                return this.mField;
+                return this.mField1;
+            }
+        }
+        
+        public Field2 Field2
+        {
+            get
+            {
+                if ((this.mField2 == null))
+                {
+                    this.mField2 = new Field2(this);
+                }
+                return this.mField2;
             }
         }
         
@@ -39558,7 +39570,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
                     this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mExpanderButton;
@@ -39573,7 +39585,9 @@ namespace Warewolf.UITests
         
         private WpfCheckBox mOutputCheckbox;
         
-        private Field mField;
+        private Field1 mField1;
+        
+        private Field2 mField2;
         
         private WpfButton mExpanderButton;
         #endregion
@@ -39590,7 +39604,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39623,7 +39637,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39638,7 +39652,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -39655,7 +39669,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
@@ -39672,7 +39686,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
                     this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteButtonButton;
@@ -39690,16 +39704,17 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field : WpfTreeItem
+    public class Field1 : WpfTreeItem
     {
         
-        public Field(UITestControl searchLimitContainer) : 
+        public Field1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39726,7 +39741,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -39743,7 +39758,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
@@ -39771,7 +39786,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39804,7 +39819,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39819,7 +39834,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -39836,7 +39851,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
@@ -39852,17 +39867,17 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem21 : WpfTreeItem
+    public class Field2 : WpfTreeItem
     {
         
-        public TreeItem21(UITestControl searchLimitContainer) : 
+        public Field2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -39889,7 +39904,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -39906,39 +39921,10 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
-            }
-        }
-        
-        public Field1 Field
-        {
-            get
-            {
-                if ((this.mField == null))
-                {
-                    this.mField = new Field1(this);
-                }
-                return this.mField;
-            }
-        }
-        
-        public WpfButton ExpanderButton
-        {
-            get
-            {
-                if ((this.mExpanderButton == null))
-                {
-                    this.mExpanderButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
-                    #endregion
-                }
-                return this.mExpanderButton;
             }
         }
         #endregion
@@ -39949,10 +39935,6 @@ namespace Warewolf.UITests
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
-        
-        private Field1 mField;
-        
-        private WpfButton mExpanderButton;
         #endregion
     }
     
@@ -39967,7 +39949,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40000,7 +39982,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40015,7 +39997,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -40032,27 +40014,10 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButtonButton
-        {
-            get
-            {
-                if ((this.mDeleteButtonButton == null))
-                {
-                    this.mDeleteButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
-                    #endregion
-                }
-                return this.mDeleteButtonButton;
             }
         }
         #endregion
@@ -40061,22 +40026,21 @@ namespace Warewolf.UITests
         private WpfText mLabel;
         
         private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButtonButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field1 : WpfTreeItem
+    public class TreeItem21 : WpfTreeItem
     {
         
-        public Field1(UITestControl searchLimitContainer) : 
+        public TreeItem21(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40103,7 +40067,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -40120,10 +40084,39 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
+            }
+        }
+        
+        public Field Field
+        {
+            get
+            {
+                if ((this.mField == null))
+                {
+                    this.mField = new Field(this);
+                }
+                return this.mField;
+            }
+        }
+        
+        public WpfButton ExpanderButton
+        {
+            get
+            {
+                if ((this.mExpanderButton == null))
+                {
+                    this.mExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExpanderButton;
             }
         }
         #endregion
@@ -40134,6 +40127,10 @@ namespace Warewolf.UITests
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
+        
+        private Field mField;
+        
+        private WpfButton mExpanderButton;
         #endregion
     }
     
@@ -40148,7 +40145,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40181,7 +40178,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40196,7 +40193,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -40213,10 +40210,27 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButtonButton
+        {
+            get
+            {
+                if ((this.mDeleteButtonButton == null))
+                {
+                    this.mDeleteButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButtonButton;
             }
         }
         #endregion
@@ -40225,21 +40239,22 @@ namespace Warewolf.UITests
         private WpfText mLabel;
         
         private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButtonButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem31 : WpfTreeItem
+    public class Field : WpfTreeItem
     {
         
-        public TreeItem31(UITestControl searchLimitContainer) : 
+        public Field(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40266,7 +40281,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -40283,39 +40298,10 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
-            }
-        }
-        
-        public Field2 Field
-        {
-            get
-            {
-                if ((this.mField == null))
-                {
-                    this.mField = new Field2(this);
-                }
-                return this.mField;
-            }
-        }
-        
-        public WpfButton ExpanderButton
-        {
-            get
-            {
-                if ((this.mExpanderButton == null))
-                {
-                    this.mExpanderButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
-                    #endregion
-                }
-                return this.mExpanderButton;
             }
         }
         #endregion
@@ -40326,10 +40312,6 @@ namespace Warewolf.UITests
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
-        
-        private Field2 mField;
-        
-        private WpfButton mExpanderButton;
         #endregion
     }
     
@@ -40344,7 +40326,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40377,7 +40359,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40392,7 +40374,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -40409,27 +40391,10 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButtonButton
-        {
-            get
-            {
-                if ((this.mDeleteButtonButton == null))
-                {
-                    this.mDeleteButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
-                    #endregion
-                }
-                return this.mDeleteButtonButton;
             }
         }
         #endregion
@@ -40438,22 +40403,21 @@ namespace Warewolf.UITests
         private WpfText mLabel;
         
         private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButtonButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field2 : WpfTreeItem
+    public class TreeItem31 : WpfTreeItem
     {
         
-        public Field2(UITestControl searchLimitContainer) : 
+        public TreeItem31(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40480,7 +40444,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -40497,10 +40461,39 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
+            }
+        }
+        
+        public Field3 Field
+        {
+            get
+            {
+                if ((this.mField == null))
+                {
+                    this.mField = new Field3(this);
+                }
+                return this.mField;
+            }
+        }
+        
+        public WpfButton ExpanderButton
+        {
+            get
+            {
+                if ((this.mExpanderButton == null))
+                {
+                    this.mExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExpanderButton;
             }
         }
         #endregion
@@ -40511,6 +40504,10 @@ namespace Warewolf.UITests
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
+        
+        private Field3 mField;
+        
+        private WpfButton mExpanderButton;
         #endregion
     }
     
@@ -40525,7 +40522,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40558,7 +40555,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40573,7 +40570,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -40590,10 +40587,27 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButtonButton
+        {
+            get
+            {
+                if ((this.mDeleteButtonButton == null))
+                {
+                    this.mDeleteButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButtonButton;
             }
         }
         #endregion
@@ -40602,21 +40616,22 @@ namespace Warewolf.UITests
         private WpfText mLabel;
         
         private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButtonButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem41 : WpfTreeItem
+    public class Field3 : WpfTreeItem
     {
         
-        public TreeItem41(UITestControl searchLimitContainer) : 
+        public Field3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "4";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40643,7 +40658,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -40660,39 +40675,10 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
-            }
-        }
-        
-        public Field3 Field
-        {
-            get
-            {
-                if ((this.mField == null))
-                {
-                    this.mField = new Field3(this);
-                }
-                return this.mField;
-            }
-        }
-        
-        public WpfButton ExpanderButton
-        {
-            get
-            {
-                if ((this.mExpanderButton == null))
-                {
-                    this.mExpanderButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
-                    #endregion
-                }
-                return this.mExpanderButton;
             }
         }
         #endregion
@@ -40703,10 +40689,6 @@ namespace Warewolf.UITests
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
-        
-        private Field3 mField;
-        
-        private WpfButton mExpanderButton;
         #endregion
     }
     
@@ -40721,7 +40703,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40754,7 +40736,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40769,7 +40751,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -40786,27 +40768,10 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButtonButton
-        {
-            get
-            {
-                if ((this.mDeleteButtonButton == null))
-                {
-                    this.mDeleteButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
-                    #endregion
-                }
-                return this.mDeleteButtonButton;
             }
         }
         #endregion
@@ -40815,22 +40780,21 @@ namespace Warewolf.UITests
         private WpfText mLabel;
         
         private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButtonButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field3 : WpfTreeItem
+    public class TreeItem41 : WpfTreeItem
     {
         
-        public Field3(UITestControl searchLimitContainer) : 
+        public TreeItem41(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "4";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40857,7 +40821,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -40874,10 +40838,39 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
+            }
+        }
+        
+        public Field4 Field
+        {
+            get
+            {
+                if ((this.mField == null))
+                {
+                    this.mField = new Field4(this);
+                }
+                return this.mField;
+            }
+        }
+        
+        public WpfButton ExpanderButton
+        {
+            get
+            {
+                if ((this.mExpanderButton == null))
+                {
+                    this.mExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExpanderButton;
             }
         }
         #endregion
@@ -40888,6 +40881,10 @@ namespace Warewolf.UITests
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
+        
+        private Field4 mField;
+        
+        private WpfButton mExpanderButton;
         #endregion
     }
     
@@ -40902,7 +40899,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40935,7 +40932,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -40950,7 +40947,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -40967,10 +40964,27 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButtonButton
+        {
+            get
+            {
+                if ((this.mDeleteButtonButton == null))
+                {
+                    this.mDeleteButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButtonButton;
             }
         }
         #endregion
@@ -40979,21 +40993,22 @@ namespace Warewolf.UITests
         private WpfText mLabel;
         
         private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButtonButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem51 : WpfTreeItem
+    public class Field4 : WpfTreeItem
     {
         
-        public TreeItem51(UITestControl searchLimitContainer) : 
+        public Field4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -41020,7 +41035,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -41037,39 +41052,10 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
-            }
-        }
-        
-        public Field4 Field
-        {
-            get
-            {
-                if ((this.mField == null))
-                {
-                    this.mField = new Field4(this);
-                }
-                return this.mField;
-            }
-        }
-        
-        public WpfButton ExpanderButton
-        {
-            get
-            {
-                if ((this.mExpanderButton == null))
-                {
-                    this.mExpanderButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
-                    #endregion
-                }
-                return this.mExpanderButton;
             }
         }
         #endregion
@@ -41080,10 +41066,6 @@ namespace Warewolf.UITests
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
-        
-        private Field4 mField;
-        
-        private WpfButton mExpanderButton;
         #endregion
     }
     
@@ -41098,7 +41080,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -41131,7 +41113,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -41146,7 +41128,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -41163,27 +41145,10 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButtonButton
-        {
-            get
-            {
-                if ((this.mDeleteButtonButton == null))
-                {
-                    this.mDeleteButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
-                    #endregion
-                }
-                return this.mDeleteButtonButton;
             }
         }
         #endregion
@@ -41192,22 +41157,21 @@ namespace Warewolf.UITests
         private WpfText mLabel;
         
         private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButtonButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field4 : WpfTreeItem
+    public class TreeItem51 : WpfTreeItem
     {
         
-        public Field4(UITestControl searchLimitContainer) : 
+        public TreeItem51(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -41234,7 +41198,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
                     this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInputCheckbox;
@@ -41251,10 +41215,39 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
                     this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOutputCheckbox;
+            }
+        }
+        
+        public Field5 Field
+        {
+            get
+            {
+                if ((this.mField == null))
+                {
+                    this.mField = new Field5(this);
+                }
+                return this.mField;
+            }
+        }
+        
+        public WpfButton ExpanderButton
+        {
+            get
+            {
+                if ((this.mExpanderButton == null))
+                {
+                    this.mExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExpanderButton;
             }
         }
         #endregion
@@ -41265,6 +41258,10 @@ namespace Warewolf.UITests
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
+        
+        private Field5 mField;
+        
+        private WpfButton mExpanderButton;
         #endregion
     }
     
@@ -41279,7 +41276,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -41312,7 +41309,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -41327,7 +41324,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
                     this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mLabel.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mLabel;
@@ -41344,7 +41341,188 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
                     this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButtonButton
+        {
+            get
+            {
+                if ((this.mDeleteButtonButton == null))
+                {
+                    this.mDeleteButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButtonButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButtonButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Field5 : WpfTreeItem
+    {
+        
+        public Field5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane16 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane16(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane16 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane16 : WpfPane
+    {
+        
+        public ScrollViewerPane16(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox15 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox15(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox15 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox15 : WpfEdit
+    {
+        
+        public NameTextbox15(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteDisabledImage;
@@ -41368,7 +41546,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -41382,7 +41560,7 @@ namespace Warewolf.UITests
                     this.mFilterText = new WpfText(this);
                     #region Search Criteria
                     this.mFilterText.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mFilterText.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mFilterText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mFilterText;
@@ -41398,7 +41576,7 @@ namespace Warewolf.UITests
                     this.mClearSearchDisabled = new WpfImage(this);
                     #region Search Criteria
                     this.mClearSearchDisabled.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ClearSearchDisabled";
-                    this.mClearSearchDisabled.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mClearSearchDisabled.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mClearSearchDisabled;
@@ -41414,7 +41592,7 @@ namespace Warewolf.UITests
                     this.mClearSearchButton = new WpfButton(this);
                     #region Search Criteria
                     this.mClearSearchButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ClearSearchButton";
-                    this.mClearSearchButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    this.mClearSearchButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mClearSearchButton;
