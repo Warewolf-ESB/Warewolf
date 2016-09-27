@@ -179,7 +179,7 @@ namespace Warewolf.UITests
             return controlExists;
         }
 
-        private void TryClickMessageBoxOK()
+        public void TryClickMessageBoxOK()
         {
             if (ControlExistsNow(MessageBoxWindow.OKButton))
             {
