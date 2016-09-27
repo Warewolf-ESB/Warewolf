@@ -5425,10 +5425,10 @@
     </TestStepMarkerAction>
     <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox">
       <ParameterName />
-      <Value Encoded="false">[[SomeVariable]]</Value>
+      <Value Encoded="false">SomeData</Value>
       <Type>String</Type>
     </SetValueAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox">
+    <TestStepMarkerAction Comment="" MarkerInformation="Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
