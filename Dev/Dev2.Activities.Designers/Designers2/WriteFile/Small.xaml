@@ -73,14 +73,13 @@
                Grid.Row="1" />
         <ui:IntellisenseTextBox  Grid.Column="1"
                                  Grid.Row="1"
+                                 ToolTip="{x:Static languages:Core.WriteFileToolTipContents}"
                                  DefaultText="[[DataToWrite]]"
-                                 AllowUserInsertLine="True"                                 
                                  AcceptsReturn="True"
                                  Margin="{StaticResource ControlBorderTop}"
-                                 FilterType="All"
-                                 WrapInBrackets="False"
-                                 Text="{Binding Path=ModelItem.FileContents, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 ToolTip="{x:Static languages:Core.WriteFileToolTipContents}"
+                                TextWrapping="Wrap"
+                                AcceptsTab="True"
+                                Text="{Binding Path=ModelItem.FileContents, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Contentstxt_AutoID}">
             <i:Interaction.Behaviors>
