@@ -17,6 +17,8 @@ namespace Warewolf.UITests.Deploy
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.SetResourcePermissions(WorkflowName, GroupName, true);
             Uimap.Click_Deploy_Ribbon_Button();
+            Uimap.TryClickMessageBoxOK();//Possible version confict dialog
+            Uimap.TryClickMessageBoxOK();//Possible deploy conflict dialog
             Uimap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             Uimap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             Uimap.Deploy_Service_From_Deploy_View(WorkflowName);
