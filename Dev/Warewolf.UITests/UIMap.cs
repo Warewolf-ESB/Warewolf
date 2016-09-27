@@ -1032,21 +1032,23 @@ namespace Warewolf.UITests
             }
         }
 
-        public void Click_EnableDisable_This_Test_CheckBox(bool nameContainsStar = false)
+        public void Click_EnableDisable_This_Test_CheckBox(bool nameContainsStar = false, int testInstance = 1)
         {
-            WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
-            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
-            var beforeClick = testEnabledSelector.Checked;
+            var currentTest = GetCurrentTest(testInstance);
+            var testRunState = GetTestRunState(testInstance, currentTest);
+            var selectedTestDeleteButton = GetSelectedTestDeleteButton(currentTest, testInstance);
+            var beforeClick = testRunState.Checked;            
+            testRunState.DrawHighlight();
 
-            Mouse.Click(testEnabledSelector);
-            WaitForControlVisible(testEnabledSelector);
-            Assert.AreNotEqual(beforeClick, testEnabledSelector.Checked);
+            Mouse.Click(testRunState);
+            WaitForControlVisible(testRunState);
+            Assert.AreNotEqual(beforeClick, testRunState.Checked);
 
-            WaitForControlVisible(deleteButton);
+            WaitForControlVisible(selectedTestDeleteButton);
             if (beforeClick)
-                Assert.IsTrue(deleteButton.Enabled, "Delete button is disabled");
-            Assert_Display_Text_ContainStar(Tab, nameContainsStar);
-            Assert_Display_Text_ContainStar(Test, nameContainsStar);
+                Assert.IsTrue(selectedTestDeleteButton.Enabled, "Delete button is disabled");
+            Assert_Display_Text_ContainStar(Tab, nameContainsStar, testInstance);
+            Assert_Display_Text_ContainStar(Test, nameContainsStar, testInstance);
         }
 
         public void Drag_From_Explorer_Onto_DesignSurface(string ServicePath)
@@ -1112,7 +1114,6 @@ namespace Warewolf.UITests
         public void Select_Test(int instance = 1)
         {
             var currentTest = GetCurrentTest(instance);
-            //var test = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
             Mouse.Click(currentTest);
         }
 
@@ -1214,10 +1215,12 @@ namespace Warewolf.UITests
                 MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit.Text = "Dice_Test";
         }
 
-        public void Click_Delete_Test_Button()
+        public void Click_Delete_Test_Button(int testInstance = 1)
         {
-            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
-            Mouse.Click(deleteButton);
+            var currentTest = GetCurrentTest(testInstance);
+            var selectedTestDeleteButton = GetSelectedTestDeleteButton(currentTest, testInstance);
+            selectedTestDeleteButton.DrawHighlight();
+            Mouse.Click(selectedTestDeleteButton);
             Assert.IsTrue(MessageBoxWindow.Exists);
         }
 
@@ -1334,7 +1337,7 @@ namespace Warewolf.UITests
             Mouse.Click(createTestButton, new Point(158, 10));
 
             var currentTest = GetCurrentTest(testInstance);
-            var testEnabledSelector = GetTestRunState(testInstance, currentTest);
+            var testEnabledSelector = GetTestRunState(testInstance, currentTest).Checked;
             var testNeverRun = GetSelectedTestNeverRunDisplay(currentTest, testInstance);
 
             Assert.AreEqual(testInstance + 1, testsListBox.GetContent().Length);
@@ -1381,22 +1384,22 @@ namespace Warewolf.UITests
             }
         }
 
-        private bool GetTestRunState(int testInstance, WpfListItem test)
+        private WpfCheckBox GetTestRunState(int testInstance, WpfListItem test)
         {
-            bool value;
+            WpfCheckBox value;
             switch (testInstance)
             {
                 case 2:
                     var test2 = test as Test2;
-                    value = test2.TestEnabledSelector.Checked;
+                    value = test2.TestEnabledSelector;
                     break;
                 case 3:
                     var test3 = test as Test3;
-                    value = test3.TestEnabledSelector.Checked;
+                    value = test3.TestEnabledSelector;
                     break;
                 default:
                     var test1 = test as Test1;
-                    value = test1.TestEnabledSelector.Checked;
+                    value = test1.TestEnabledSelector;
                     break;
             }
             return value;
@@ -1452,9 +1455,6 @@ namespace Warewolf.UITests
             WpfListItem test;
             switch (testInstance)
             {
-                case 1:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
-                    break;
                 case 2:
                     test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2;
                     break;
@@ -1484,6 +1484,27 @@ namespace Warewolf.UITests
                 default:
                     var test1 = test as Test1;
                     value = test1.RunButton;
+                    break;
+            }
+            return value;
+        }
+
+        public WpfButton GetSelectedTestDeleteButton(WpfListItem test, int testInstance = 1)
+        {
+            WpfButton value;
+            switch (testInstance)
+            {
+                case 2:
+                    var test2 = test as Test2;
+                    value = test2.DeleteButton;
+                    break;
+                case 3:
+                    var test3 = test as Test3;
+                    value = test3.DeleteButton;
+                    break;
+                default:
+                    var test1 = test as Test1;
+                    value = test1.DeleteButton;
                     break;
             }
             return value;
@@ -1702,6 +1723,32 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+        }
+
+        public void TryRemoveTests()
+        {
+            WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
+            if(testsListBox.GetContent().Length >= 4)
+            {
+                Select_Test(3);
+                Click_EnableDisable_This_Test_CheckBox(true, 3);
+                Click_Delete_Test_Button(3);
+                Click_MessageBox_Yes();
+            }
+            if (testsListBox.GetContent().Length >= 3)
+            {
+                Select_Test(2);
+                Click_EnableDisable_This_Test_CheckBox(true, 2);
+                Click_Delete_Test_Button(2);
+                Click_MessageBox_Yes();
+            }
+            if (testsListBox.GetContent().Length >= 2)
+            {
+                Select_Test();
+                Click_EnableDisable_This_Test_CheckBox(true);
+                Click_Delete_Test_Button();
+                Click_MessageBox_Yes();
+            }
         }
     }
 }
