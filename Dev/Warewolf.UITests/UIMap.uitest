@@ -16103,10 +16103,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.MultiAssignObjectDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Assign Object (1)(MultiAssignObjectDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">MultiAssignObjectDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -16864,10 +16864,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.DataMergeDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Data Merge (1)(DataMergeDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">DataMergeDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -17382,10 +17382,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.DataSplitDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Data Split (1)(DataSplitDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">DataSplitDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -18235,10 +18235,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.FindRecordsMultipleCriteriaDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Find Record Index (1)(FindRecordsMultipleCriteriaDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">FindRecordsMultipleCriteriaDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
@@ -18333,10 +18333,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.CreateJsonDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Create JSON (1)(CreateJsonDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">CreateJsonDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -18403,10 +18403,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.SharepointListDeleteDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Sharepoint Delete List Item (1)(SharepointListDeleteDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">SharepointListDeleteDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
@@ -18417,10 +18417,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.SharepointListReadDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Sharepoint Read List Item (1)(SharepointListReadDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">SharepointListReadDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
@@ -18431,10 +18431,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.SharepointListUpdateDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Sharepoint Update List Item (1)(SharepointListUpdateDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">SharepointListUpdateDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
@@ -18585,10 +18585,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.GatherSystemInformationDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Gather System Information (1)(GatherSystemInformationDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">GatherSystemInformationDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
