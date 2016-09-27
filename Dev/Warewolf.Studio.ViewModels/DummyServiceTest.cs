@@ -90,7 +90,7 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-        public IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
+        public IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType = StepType.Mock)
         {
             return null;
         }
