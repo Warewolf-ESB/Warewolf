@@ -8,7 +8,7 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IServiceTestModel: INotifyPropertyChanged, ICloneable
+    public interface IServiceTestModel : INotifyPropertyChanged, ICloneable
     {
         Guid ParentId { get; set; }
         string OldTestName { get; set; }
@@ -44,7 +44,7 @@ namespace Dev2.Common.Interfaces
 
         void SetItem(IServiceTestModel model);
 
-        IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs);
+        IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType = StepType.Mock);
     }
 
     public interface IServiceTestInput

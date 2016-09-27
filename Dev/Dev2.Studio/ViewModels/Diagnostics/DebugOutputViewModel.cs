@@ -122,6 +122,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             var newTestFromDebugMessage = new NewTestFromDebugMessage
             {
                 ResourceModel = _contextualResourceModel,
+                RootItems = RootItems.ToList(),
                 DebugStates = _contentItems
 
             };
@@ -742,7 +743,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             if (content.StateType == StateType.Message && content.ParentID == Guid.Empty)
             {
-                RootItems.Add(new DebugStringTreeViewItemViewModel { Content = content.Message });
+                RootItems.Add(new DebugStringTreeViewItemViewModel { Content = content.Message, ActivityTypeName = content.ActualType});
             }
             else
             {
@@ -784,7 +785,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             IDebugTreeViewItemViewModel parent;
             if (!_contentItemMap.TryGetValue(content.ParentID, out parent))
             {
-                parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository);
+                parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository) { ActivityTypeName = content.ActualType };
                 _contentItemMap.Add(content.ParentID, parent);
             }
             child.Parent = parent;
@@ -796,9 +797,21 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             IDebugTreeViewItemViewModel child;
             if (content.StateType == StateType.Message)
-                child = new DebugStringTreeViewItemViewModel { Content = content.Message };
+            {
+                child = new DebugStringTreeViewItemViewModel
+                {
+                    Content = content.Message,
+                    ActivityTypeName = content.ActualType
+                };
+            }
             else
-                child = new DebugStateTreeViewItemViewModel(EnvironmentRepository) { Content = content };
+            {
+                child = new DebugStateTreeViewItemViewModel(EnvironmentRepository)
+                {
+                    Content = content,
+                    ActivityTypeName = content.ActualType
+                };
+            }
             return child;
         }
 

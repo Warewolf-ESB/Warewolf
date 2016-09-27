@@ -721,6 +721,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 WorkSurfaceMappingId = WorkSurfaceMappingId,
                 WorkspaceID = dataObject.WorkspaceID,
                 StateType = stateType,
+                ActualType = GetType().Name,
                 StartTime = startTime ?? DateTime.Now,
                 EndTime = endTime ?? DateTime.Now,
                 ActivityType = IsWorkflow ? ActivityType.Workflow : ActivityType.Step,
