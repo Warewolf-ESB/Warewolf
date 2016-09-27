@@ -1677,7 +1677,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.ClearSearchButton.Exists, "Variable clear filter button does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.ClearSearchButton, new Point(8, 13));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Exists, "Variable delete does not exist");
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox.DeleteButton, new Point(9, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton, new Point(9, 8));
         }
         
         public void Click_Explorer_Refresh_Button()
