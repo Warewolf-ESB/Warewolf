@@ -665,7 +665,6 @@ namespace Warewolf.UITests
             }
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
-            Click_Explorer_Filter_Clear_Button();
         }
 
         public void Click_SaveDialog_Save_Button()
