@@ -335,17 +335,14 @@ namespace Dev2.Activities.Designers2.Core
         {
             DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(ModelItem.View);
             var dataContext = parentContentPane?.DataContext;
-            if (dataContext != null)
+            var isSelectedOrMouseOver = IsSelectedOrMouseOver;
+            if (dataContext != null && dataContext.GetType().Name == "ServiceTestViewModel")
             {
-                var isSelectedOrMouseOver = IsSelectedOrMouseOver;
-                if (dataContext.GetType().Name == "ServiceTestViewModel")
-                {
-                    TitleBarTogglesVisibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    TitleBarTogglesVisibility = isSelectedOrMouseOver ? Visibility.Visible : Visibility.Collapsed;
-                }
+                TitleBarTogglesVisibility = Visibility.Collapsed;
+            }
+            else
+            {
+                TitleBarTogglesVisibility = isSelectedOrMouseOver ? Visibility.Visible : Visibility.Collapsed;
                 ZIndexPosition = isSelectedOrMouseOver ? ZIndexPosition.Front : ZIndexPosition.Back;
             }
         }
