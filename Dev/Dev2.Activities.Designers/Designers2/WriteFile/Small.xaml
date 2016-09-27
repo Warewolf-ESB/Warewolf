@@ -79,6 +79,7 @@
                                  Margin="{StaticResource ControlBorderTop}"
                                 TextWrapping="Wrap"
                                 AcceptsTab="True"
+                                MinHeight="35"
                                 Text="{Binding Path=ModelItem.FileContents, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Contentstxt_AutoID}">
