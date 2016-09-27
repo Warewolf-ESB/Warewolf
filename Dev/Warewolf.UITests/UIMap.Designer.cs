@@ -31878,7 +31878,6 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row2_FieldValue_AutoID";
-            this.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "Any variable and/or data goes in here.";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
