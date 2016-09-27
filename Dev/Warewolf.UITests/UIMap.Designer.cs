@@ -25970,7 +25970,7 @@ namespace Warewolf.UITests
                     this.mFindRecordsIndex = new WpfCustom(this);
                     #region Search Criteria
                     this.mFindRecordsIndex.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FindRecordsMultipleCriteriaDesigner";
-                    this.mFindRecordsIndex.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Find Record Index (1)(FindRecordsMultipleCriteriaDesigner)";
+                    this.mFindRecordsIndex.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "FindRecordsMultipleCriteriaDesigner", PropertyExpressionOperator.Contains));
                     this.mFindRecordsIndex.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -26130,7 +26130,7 @@ namespace Warewolf.UITests
                     this.mSharepointDelete = new WpfCustom(this);
                     #region Search Criteria
                     this.mSharepointDelete.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListDeleteDesigner";
-                    this.mSharepointDelete.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Delete List Item (1)(SharepointListDeleteDesigner)";
+                    this.mSharepointDelete.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "SharepointListDeleteDesigner", PropertyExpressionOperator.Contains));
                     this.mSharepointDelete.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -26147,7 +26147,7 @@ namespace Warewolf.UITests
                     this.mSharepointRead = new WpfCustom(this);
                     #region Search Criteria
                     this.mSharepointRead.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListReadDesigner";
-                    this.mSharepointRead.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Read List Item (1)(SharepointListReadDesigner)";
+                    this.mSharepointRead.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "SharepointListReadDesigner", PropertyExpressionOperator.Contains));
                     this.mSharepointRead.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -26164,7 +26164,7 @@ namespace Warewolf.UITests
                     this.mSharepointUpdate = new WpfCustom(this);
                     #region Search Criteria
                     this.mSharepointUpdate.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListUpdateDesigner";
-                    this.mSharepointUpdate.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Update List Item (1)(SharepointListUpdateDesigner)";
+                    this.mSharepointUpdate.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "SharepointListUpdateDesigner", PropertyExpressionOperator.Contains));
                     this.mSharepointUpdate.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -26912,7 +26912,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignObjectDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign Object (1)(MultiAssignObjectDesigner)";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "MultiAssignObjectDesigner";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -28231,7 +28231,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataMergeDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Data Merge (1)(DataMergeDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "DataMergeDesigner", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -29150,7 +29150,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataSplitDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Data Split (1)(DataSplitDesigner)";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DataSplitDesigner";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -30534,7 +30534,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CreateJsonDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Create JSON (1)(CreateJsonDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "CreateJsonDesigner", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -30776,7 +30776,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.GatherSystemInformationDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Gather System Information (1)(GatherSystemInformationDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "GatherSystemInformationDesigner", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
