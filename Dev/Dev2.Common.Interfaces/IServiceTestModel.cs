@@ -20,6 +20,7 @@ namespace Dev2.Common.Interfaces
         ObservableCollection<IServiceTestOutput> Outputs { get; set; }
         bool NoErrorExpected { get; set; }
         bool ErrorExpected { get; set; }
+        string ErrorContainsText { get; set; }
         bool IsNewTest { get; set; }
         bool IsTestSelected { get; set; }
         bool TestPassed { get; set; }

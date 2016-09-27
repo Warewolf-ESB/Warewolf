@@ -586,6 +586,28 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("TestModel_ErrorContainsText")]
+        public void TestModel_ErrorContainsText_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "ErrorContainsText")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.ErrorContainsText = "Test";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", testModel.ErrorContainsText);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("TestModel_NoErrorExpected")]
         public void TestModel_NoErrorExpected_WhenSet_ShouldFirePropertyChanged()
         {

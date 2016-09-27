@@ -62,6 +62,8 @@ namespace Warewolf.Studio.ViewModels
         public ObservableCollection<IServiceTestOutput> Outputs { get; set; }
         public bool NoErrorExpected { get; set; }
         public bool ErrorExpected { get; set; }
+        public string ErrorContainsText { get; set; }
+
         public bool IsNewTest
         {
             get
