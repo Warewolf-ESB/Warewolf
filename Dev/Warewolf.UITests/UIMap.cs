@@ -859,7 +859,6 @@ namespace Warewolf.UITests
             Click_Settings_Ribbon_Button();
             Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
             Select_Service_From_Service_Picker_Dialog(ResourceName);
-            Click_Service_Picker_Dialog_OK();
             Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
             if (setView)
             {
