@@ -1,23 +1,16 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Warewolf.UITests.Tools.Data
+namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class Base_Convert
+    public class Python
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void BaseConvertToolUITest()
+        public void PythonScriptToolUITest()
         {
-            Uimap.Drag_Toolbox_Base_Conversion_Onto_DesignSurface();
-            Uimap.Open_Base_Conversion_Tool_Large_View();
-            Uimap.Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox();
-            Uimap.Click_Base_Convert_Large_View_Done_Button();
-            Uimap.Press_F6();
-            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            Uimap.Click_Debug_Output_BaseConvert_Cell();
-            Uimap.Open_Base_Conversion_Tool_Qvi_Large_View();
+            Uimap.Drag_Toolbox_Python_Onto_DesignSurface();
         }
 
         #region Additional test attributes
@@ -32,11 +25,29 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.InitializeABlankWorkflow();
         }
 
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
+        }
+
+        private TestContext testContextInstance;
+
         UIMap Uimap
         {
             get
             {
-                if (_uiMap == null)
+                if ((_uiMap == null))
                 {
                     _uiMap = new UIMap();
                 }

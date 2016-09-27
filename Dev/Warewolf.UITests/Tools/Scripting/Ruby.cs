@@ -4,13 +4,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class Script
+    public class Ruby
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void ScriptToolUITest()
+        public void RubyScriptToolUITest()
         {
-            Uimap.Drag_Toolbox_Script_Onto_DesignSurface();
+            Uimap.Drag_Toolbox_Ruby_Onto_DesignSurface();
         }
 
         #region Additional test attributes
