@@ -356,8 +356,9 @@ namespace Dev2.Runtime.ESB.Execution
                         }
                     }
                 }
+                var fetchErrors = DataObject.Environment.FetchErrors();
                 var hasErrors = DataObject.Environment.HasErrors();
-                if (test.ErrorExpected)
+                if (test.ErrorExpected && test.ErrorContainsText.ToLower().Contains(fetchErrors.ToLower()))
                 {
                     testPassed = hasErrors && testPassed;
                 }
@@ -366,7 +367,8 @@ namespace Dev2.Runtime.ESB.Execution
                     testPassed = !hasErrors && testPassed;
                     if (hasErrors)
                     {
-                        failureMessage.AppendLine(DataObject.Environment.FetchErrors());
+                        
+                        failureMessage.AppendLine(fetchErrors);
                     }
                 }
 

@@ -16,6 +16,7 @@ namespace Dev2.Data
         public List<IServiceTestOutput> Outputs { get; set; }
         public bool NoErrorExpected { get; set; }
         public bool ErrorExpected { get; set; }
+        public string ErrorContainsText { get; set; }
         public bool TestPassed { get; set; }
         public bool TestFailing { get; set; }
         public bool TestInvalid { get; set; }

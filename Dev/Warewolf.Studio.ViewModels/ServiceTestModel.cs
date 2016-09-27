@@ -49,6 +49,7 @@ namespace Warewolf.Studio.ViewModels
         private IList<IDebugState> _debugForTest;
         private IServiceTestStep _selectedTestStep;
         private ObservableCollection<IServiceTestStep> _testSteps;
+        private string _errorContainsText;
 
         public string NeverRunString
         {
@@ -264,6 +265,17 @@ namespace Warewolf.Studio.ViewModels
             {
                 _errorExpected = value;
                 OnPropertyChanged(() => ErrorExpected);
+                OnPropertyChanged(() => IsDirty);
+            }
+        }
+
+        public string ErrorContainsText
+        {
+            get { return _errorContainsText; }
+            set
+            {
+                _errorContainsText = value; 
+                OnPropertyChanged(() => ErrorContainsText);
                 OnPropertyChanged(() => IsDirty);
             }
         }
