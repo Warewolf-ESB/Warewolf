@@ -471,7 +471,7 @@
                                 </controls:Dev2DataGrid>
                             </Border>
 
-                            <TextBlock Grid.Row="2" Text="Assert" FontWeight="Bold" HorizontalAlignment="Left"/>
+                            <TextBlock Grid.Row="2" Text="Assert/Mock" FontWeight="Bold" HorizontalAlignment="Left"/>
                             
                             <ig:XamDataTree Grid.Row="3" 
                                             x:Name="StepTestDataTree"
@@ -499,15 +499,15 @@
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
 
-                                                    <Expander Header="{Binding Path=Node.Data}" IsExpanded="{Binding Path=Node.Data.IsTestStepExpanded}" Style="{StaticResource ServiceTestTestStepExpander}" AutomationProperties.AutomationId="UI_ServiceTestTestStepExpander_AutoID">
+                                                    <Expander x:Name="TestStepExpander" Header="{Binding Path=Node.Data}" IsExpanded="{Binding Path=Node.Data.IsTestStepExpanded}" Style="{StaticResource ServiceTestTestStepExpander}" AutomationProperties.AutomationId="UI_ServiceTestTestStepExpander_AutoID">
                                                         <Expander.HeaderTemplate>
                                                             <DataTemplate>
                                                                 <DockPanel LastChildFill="False" >
-                                                                    <TextBlock DockPanel.Dock="Left" 
-                                                                               Text="{Binding Path=StepDescription}" 
+                                                                    <TextBlock Text="{Binding Path=StepDescription}" 
                                                                                ToolTip="{Binding Path=StepDescription}" 
                                                                                FontWeight="Bold" 
                                                                                HorizontalAlignment="Stretch"/>
+                                                                    
                                                                     <Button DockPanel.Dock="Right" 
                                                                             x:Name="DeleteTestStepButton"
                                                                             Style="{StaticResource ButtonBlackTransparentStyle}" 
@@ -555,7 +555,7 @@
                                                                                              ToolTip="{x:Static languages:Core.ServiceTestStepAssertRadioButtonTooltip}" 
                                                                                              Content="Assert" 
                                                                                              Margin="0,-3,0,0"
-                                                                                             IsChecked="{Binding Path=AssertSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                                             IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
                                                                                              AutomationProperties.AutomationId="UI_AssertRadioButton_AutoID">
                                                                                     <i:Interaction.Behaviors>
                                                                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
@@ -565,7 +565,7 @@
                                                                                              ToolTip="{x:Static languages:Core.ServiceTestStepMockRadioButtonTooltip}" 
                                                                                              Content="Mock" 
                                                                                              Margin="0,-3,0,0"
-                                                                                             IsChecked="{Binding Path=MockSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                                             IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.MockSelected}"
                                                                                              AutomationProperties.AutomationId="UI_MockRadioButton_AutoID">
                                                                                     <i:Interaction.Behaviors>
                                                                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepMockRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
@@ -578,9 +578,9 @@
                                                                         <DataTemplate>
                                                                             <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                                                                                       Margin="0,0,1,1" 
+                                                                                      IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
                                                                                       ItemsSource="{Binding Path=AssertOps}"
                                                                                       SelectedValue="{Binding Path=AssertOp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                                                                      IsEnabled="{Binding Path=AssertSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                                       ToolTip="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}"
                                                                                       AutomationProperties.AutomationId="UI_AssertOps_AutoID">
                                                                                 <i:Interaction.Behaviors>
