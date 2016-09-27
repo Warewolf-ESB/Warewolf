@@ -1332,6 +1332,87 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Then(@"I add Assert steps as")]
+        public void ThenIAddAssertStepsAs(Table table)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var test = serviceTest.SelectedServiceTest;
+            WorkflowHelper helper = new WorkflowHelper();
+            var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
+            Assert.IsNotNull(builder);
+            var act = (Flowchart)builder.Implementation;
+            foreach (var tableRow in table.Rows)
+            {
+                var actNameToFind = tableRow["Step Name"];
+                var actType = tableRow["Activity Type"];
+                if (actNameToFind != null)
+                {
+                    if (string.Equals(actType, "Decision", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var foundNode = act.Nodes.FirstOrDefault(node =>
+                        {
+                            var searchNode = node as FlowDecision;
+                            if (searchNode != null)
+                            {
+                                return searchNode.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                            }
+                            return false;
+                        });
+                        if (foundNode != null)
+                        {
+                            var decisionNode = foundNode as FlowDecision;
+                            var condition = decisionNode.Condition;
+                            var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfFlowNodeActivity<bool>)condition;
+                            var expression = activity.ExpressionText;
+                            if (expression != null)
+                            {
+                                var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression);
+
+                                if (!string.IsNullOrEmpty(eval))
+                                {
+                                    Dev2JsonSerializer ser = new Dev2JsonSerializer();
+                                    var dds = ser.Deserialize<Dev2DecisionStack>(eval);
+                                    var armToUse = tableRow["Output Value"];
+                                    if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
+                                    {
+                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText) };
+                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Assert);
+                                    }
+                                    else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
+                                    {
+                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText) };
+                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Assert);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        var foundNode = act.Nodes.FirstOrDefault(node =>
+                        {
+                            var searchNode = node as FlowStep;
+                            if (searchNode != null)
+                            {
+                                return searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                            }
+                            return false;
+                        });
+                        var decisionNode = foundNode as FlowStep;
+                        var action = decisionNode.Action;
+                        var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
+                        var var = tableRow["Output Variable"];
+                        var value = tableRow["Output Value"];
+                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput(var, value) };
+                        var type = activity.GetType();
+                        test.AddTestStep(activity.UniqueID, activity.DisplayName, type.Name, serviceTestOutputs, StepType.Assert);
+                    }
+                }
+            }
+        }
+
+
 
         private IEnumerable<IServiceTestModel> GetTestForCurrentTestFramework()
         {

@@ -11,7 +11,6 @@
 using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
-using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using Dev2.Studio.Core.Interfaces;
@@ -33,7 +32,6 @@ namespace Dev2.Studio.Core.ViewModels
         bool NotifyItemSelected(object primarySelection);
         void BindToModel();
         void AddMissingWithNoPopUpAndFindUnusedDataListItems();
-
-        List<ModelItem> GetModelItems();
+        ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID);
     }
 }

@@ -3,6 +3,7 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -18,8 +19,8 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Data.SystemTemplates.Models;
-using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
@@ -82,44 +83,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var resourceModel = new Mock<IContextualResourceModel>();
             var env = new Mock<IEnvironmentModel>();
-            var debugTreeMock = new Mock<List<IDebugState>>();
+            var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             var con = new Mock<IEnvironmentConnection>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
-            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, DebugStates = debugTreeMock.Object };
+            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
             var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsNotNull(testViewModel.SelectedServiceTest);
         }
 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void TestFrameworkViewModel_MsgConstructor_PopulatedCorrectly_ShouldCreateNewtestWithInputsAndOutPuts()
-        {
-            //------------Setup for test--------------------------
-            var resourceModel = new Mock<IContextualResourceModel>();
-            var env = new Mock<IEnvironmentModel>();
-            var debugStates = new List<IDebugState> { new DebugState() { } };
-            var con = new Mock<IEnvironmentConnection>();
-            resourceModel.Setup(model => model.Environment).Returns(env.Object);
-            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
-            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, DebugStates = debugStates };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
-            bool wasCaled = false;
-            testViewModel.PropertyChanged += (sender, args) =>
-            {
-
-                if(args.PropertyName == "Inputs" || args.PropertyName == "Outputs")
-                {
-                    wasCaled=true;
-                };
-            };
-            //------------Execute Test---------------------------
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(testViewModel.SelectedServiceTest);
-            Assert.IsTrue(wasCaled);
-        }
+       
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -129,10 +104,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceModel = new Mock<IContextualResourceModel>();
             var env = new Mock<IEnvironmentModel>();
             var con = new Mock<IEnvironmentConnection>();
-            var debugTreeMock = new Mock<List<IDebugState>>();
+            var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
-            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, DebugStates = debugTreeMock.Object };
+            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
             var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -750,9 +725,71 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
             serviceTestViewModel.CreateTestCommand.Execute(null);
+            serviceTestViewModel.SelectedServiceTest.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                new ServiceTestInput("[[var]]","val")
+            };
+            serviceTestViewModel.SelectedServiceTest.Outputs = new ObservableCollection<IServiceTestOutput>
+            {
+                new ServiceTestOutput("[[var]]","val")
+            };
             //------------Execute Test---------------------------
             Assert.IsTrue(serviceTestViewModel.CanSave);
             serviceTestViewModel.Save();
+            //------------Assert Results-------------------------
+            mockResourceRepo.Verify(repository => repository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_Save")]
+        public void ServiceTestViewModel_Save_WithTestSteps_ShouldCallSaveTestOnResourceModel()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+
+            var assignActivity = new DsfMultiAssignActivity();
+            var uniqueId = Guid.NewGuid();
+            assignActivity.UniqueID = uniqueId.ToString();
+            assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
+
+            var dsfSequenceActivity = new DsfSequenceActivity { Activities = new Collection<Activity> { assignActivity } };
+            var dsfSeqId = Guid.NewGuid();
+            dsfSequenceActivity.UniqueID = dsfSeqId.ToString();
+
+
+            var sequenceActivity = new DsfSequenceActivity { Activities = new Collection<Activity> { dsfSequenceActivity } };
+            var seqId = Guid.NewGuid();
+            sequenceActivity.UniqueID = seqId.ToString();
+
+            var modelItem = ModelItemUtils.CreateModelItem(sequenceActivity);
+            var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(connection => connection.IsConnected).Returns(true);
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult {Result = SaveResult.ResourceUpdated});
+            mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(con.Object);
+            resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                new ServiceTestInput("[[var]]","val")
+            };
+            testFrameworkViewModel.SelectedServiceTest.Outputs = new ObservableCollection<IServiceTestOutput>
+            {
+                new ServiceTestOutput("[[var]]","val")
+            };
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
+            //------------Execute Test---------------------------
+            Assert.IsTrue(testFrameworkViewModel.CanSave);
+            testFrameworkViewModel.Save();
             //------------Assert Results-------------------------
             mockResourceRepo.Verify(repository => repository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Once);
         }
@@ -958,6 +995,105 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, tests.Count);
+            Assert.AreEqual("Test From Server", tests[0].TestName);
+            Assert.AreEqual(AuthenticationType.Public, tests[0].AuthenticationType);
+            Assert.IsTrue(tests[0].Enabled);
+            Assert.AreEqual("Create a new test.", tests[1].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_Tests")]
+        public void ServiceTestViewModel_Tests_GetWhenTestsWithSteps_ShouldHaveTestsAndDummyAtBottom()
+        {
+            //------------Setup for test--------------------------
+            var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            mockEnvironment.Setup(model => model.Connection.IsConnected).Returns(true);
+            var mockRepo = new Mock<IResourceRepository>();
+            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing",new List<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b") }, StepType.Mock);
+            serviceTestStep.Children = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStepTO(Guid.NewGuid(),"Random",new List<IServiceTestOutput> {new ServiceTestOutput("[[o]]","a")},StepType.Mock)
+                {
+                    Parent = serviceTestStep
+                }
+                                
+            };
+            mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    AuthenticationType = AuthenticationType.Public,
+                    Enabled = true,
+                    TestName = "Test From Server",
+                    Inputs = new List<IServiceTestInput> {new ServiceTestInputTO { Value = "val", Variable = "[[val]]"} },
+                    Outputs = new List<IServiceTestOutput> {new ServiceTestOutputTO { Value = "out", Variable = "[[pout]]"} },
+                    TestSteps = new List<IServiceTestStep>
+                    {
+                        serviceTestStep
+                    }
+                }
+            });
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
+            resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+
+            //------------Execute Test---------------------------
+            var tests = serviceTestViewModel.Tests;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, tests.Count);
+            Assert.AreEqual("Test From Server", tests[0].TestName);
+            Assert.AreEqual(AuthenticationType.Public, tests[0].AuthenticationType);
+            Assert.IsTrue(tests[0].Enabled);
+            Assert.AreEqual("Create a new test.", tests[1].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_Tests")]
+        public void ServiceTestViewModel_ResourceUpdateMessage_GetWhenTestsWithSteps_ShouldHaveTestsAndDummyAtBottom()
+        {
+            //------------Setup for test--------------------------
+            var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            mockEnvironment.Setup(model => model.Connection.IsConnected).Returns(true);
+            mockEnvironment.SetupProperty(model => model.Connection.ReceivedResourceAffectedMessage);
+            
+            var mockRepo = new Mock<IResourceRepository>();
+            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing",new List<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b") }, StepType.Mock);
+            serviceTestStep.Children = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStepTO(Guid.NewGuid(),"Random",new List<IServiceTestOutput> {new ServiceTestOutput("[[o]]","a")},StepType.Mock)
+                {
+                    Parent = serviceTestStep
+                }
+                                
+            };
+            mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    AuthenticationType = AuthenticationType.Public,
+                    Enabled = true,
+                    TestName = "Test From Server",
+                    Inputs = new List<IServiceTestInput> {new ServiceTestInputTO { Value = "val", Variable = "[[val]]"} },
+                    Outputs = new List<IServiceTestOutput> {new ServiceTestOutputTO { Value = "out", Variable = "[[pout]]"} },
+                    TestSteps = new List<IServiceTestStep>
+                    {
+                        serviceTestStep
+                    }
+                }
+            });
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
+            resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+
+            //------------Execute Test---------------------------
+            var tests = serviceTestViewModel.Tests;
+            mockEnvironment.Object.Connection.ReceivedResourceAffectedMessage.Invoke(resourceMock.Object.ID, new CompileMessageList());
             //------------Assert Results-------------------------
             Assert.AreEqual(2, tests.Count);
             Assert.AreEqual("Test From Server", tests[0].TestName);
@@ -1553,6 +1689,115 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PrepopulateTestsUsingDebug_DebugItemMultiAssign_ShouldHaveAddServiceTestStep()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            var dsfDecision = new DsfDecision();
+            var decisionUniqueId = Guid.NewGuid();
+            dsfDecision.UniqueID = decisionUniqueId.ToString();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var newTestFromDebugMessage = new NewTestFromDebugMessage();
+            var readAllText = File.ReadAllText("DebugStates.json");
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
+            //newTestFromDebugMessage.DebugStates = debugStates;
+            newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
+            //---------------Assert Precondition----------------          
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            StringAssert.Contains("Set the output variable (1)", testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PrepopulateTestsUsingDebug_DebugIDesicion_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            var dsfDecision = new DsfDecision();
+            var decisionUniqueId = Guid.NewGuid();
+            dsfDecision.UniqueID = decisionUniqueId.ToString();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var newTestFromDebugMessage = new NewTestFromDebugMessage();
+            var readAllText = File.ReadAllText("DebugStates.json");
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
+            //newTestFromDebugMessage.DebugStates = debugStates;
+            newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
+            //---------------Assert Precondition----------------          
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            StringAssert.Contains("Set the output variable (1)", testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ItemSelected_GivenDebugStateDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            var dsfDecision = new DsfDecision();
+            var decisionUniqueId = Guid.NewGuid();
+            dsfDecision.UniqueID = decisionUniqueId.ToString();
+            const string expressionText = "{\"TheStack\":[{\"Col1\":\"[[val]]\",\"Col2\":\"5\",\"Col3\":\"\",\"Cols1\":null,\"Cols2\":null,\"Cols3\":null,\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"}],\"TotalDecisions\":1,\"ModelName\":\"Dev2DecisionStack\",\"Mode\":\"AND\",\"TrueArmText\":\"True Path\",\"FalseArmText\":\"False Path\",\"DisplayText\":\"\"}";
+            var ser = new Dev2JsonSerializer();
+            var stack = ser.Deserialize<Dev2DecisionStack>(expressionText);
+            dsfDecision.Conditions = stack;
+            var mock = new Mock<IDSFDataObject>();
+            var dev2Activity = dsfDecision.Execute(mock.Object, 0);
+            var modelItem = ModelItemUtils.CreateModelItem(dsfDecision);
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, new NewTestFromDebugMessage());
+       
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            //---------------Assert Precondition----------------          
+            //---------------Execute Test ----------------------
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(dsfDecision.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+            var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
+            Assert.AreEqual(2, serviceTestOutput.OptionsForValue.Count);
+            Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
+            Assert.AreEqual("True Path", serviceTestOutput.OptionsForValue[0]);
+            Assert.AreEqual("False Path", serviceTestOutput.OptionsForValue[1]);
+            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemFlowDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
         {
@@ -1966,6 +2211,61 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("[[Var1]]", serviceTestOutput1.Variable);
             Assert.AreEqual("[[Var2]]", serviceTestOutput2.Variable);
             Assert.AreEqual("[[name]]", serviceTestOutput3.Variable);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ItemSelected_DeleteTestStep_ShouldHaveAddServiceTestStepShouldHaveOutputs()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+
+            var assignActivity = new DsfMultiAssignActivity();
+            var uniqueId = Guid.NewGuid();
+            assignActivity.UniqueID = uniqueId.ToString();
+            assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
+
+            var forEach = new DsfForEachActivity();
+            var forEachDataFunc = new ActivityFunc<string, bool> { Handler = assignActivity };
+            forEach.DataFunc = forEachDataFunc;
+            var forEachId = Guid.NewGuid();
+            forEach.UniqueID = forEachId.ToString();
+
+
+            var sequenceActivity = new DsfSequenceActivity { Activities = new Collection<Activity> { forEach } };
+            var seqId = Guid.NewGuid();
+            sequenceActivity.UniqueID = seqId.ToString();
+
+            var modelItem = ModelItemUtils.CreateModelItem(sequenceActivity);
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
+            //---------------Assert Precondition----------------      
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            var serviceTestStep = testFrameworkViewModel.SelectedServiceTest.TestSteps[0];
+            Assert.AreEqual(StepType.Mock, serviceTestStep.Type);
+            Assert.AreEqual(sequenceActivity.GetType().Name, serviceTestStep.ActivityType);
+            Assert.AreEqual(seqId, serviceTestStep.UniqueId);
+
+            Assert.AreEqual(1, serviceTestStep.Children.Count);
+            var childItem = serviceTestStep.Children[0];
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.DeleteTestStepCommand.Execute(childItem);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(0, serviceTestStep.Children.Count);
+
         }
 
         [TestMethod]

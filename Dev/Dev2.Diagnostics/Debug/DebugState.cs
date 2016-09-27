@@ -709,6 +709,7 @@ namespace Dev2.Diagnostics.Debug
                 _isDurationVisible = value;
             }
         }
+        public string ActualType { get; set; }
 
         #region Implementation of IEquatable<IDebugState>
 
