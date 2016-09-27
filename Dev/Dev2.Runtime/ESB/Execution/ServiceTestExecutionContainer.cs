@@ -358,9 +358,13 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 var fetchErrors = DataObject.Environment.FetchErrors();
                 var hasErrors = DataObject.Environment.HasErrors();
-                if (test.ErrorExpected && test.ErrorContainsText.ToLower().Contains(fetchErrors.ToLower()))
+                if (test.ErrorExpected )
                 {
-                    testPassed = hasErrors && testPassed;
+                    testPassed = hasErrors && testPassed && test.ErrorContainsText.ToLower().Contains(fetchErrors.ToLower());
+                    if (!testPassed)
+                    {
+                        failureMessage.AppendLine(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, test.ErrorContainsText, "", fetchErrors));
+                    }
                 }
                 else if (test.NoErrorExpected)
                 {

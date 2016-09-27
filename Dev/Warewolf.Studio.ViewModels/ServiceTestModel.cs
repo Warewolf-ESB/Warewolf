@@ -636,6 +636,7 @@ namespace Warewolf.Studio.ViewModels
                    string.Equals(_password, other._password) &&
                    _noErrorExpected == other._noErrorExpected &&
                    _errorExpected == other._errorExpected &&
+                   _errorContainsText == other._errorContainsText &&
                    _enabled == other._enabled &&
                    _authenticationType == other._authenticationType;
         }
