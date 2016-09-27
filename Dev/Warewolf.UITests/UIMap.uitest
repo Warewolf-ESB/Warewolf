@@ -41,123 +41,6 @@
   </Configuration>
   <InitializeActions />
   <ExecuteActions>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
-      <ParameterName />
-      <Value Encoded="false">Ruby</Value>
-      <Type>String</Type>
-    </SetValueAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Ruby">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <TargetElementName>UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
-      <MouseButton>Left</MouseButton>
-      <StartLocation X="49" Y="17" />
-      <StopLocation X="307" Y="130" />
-    </DragDropAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>No connectors exist on design surface.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Ruby tool on the design surface does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Ruby_Onto_DesignSurface">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
-      <ParameterName />
-      <Value Encoded="false">Python</Value>
-      <Type>String</Type>
-    </SetValueAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Python">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <TargetElementName>UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
-      <MouseButton>Left</MouseButton>
-      <StartLocation X="49" Y="17" />
-      <StopLocation X="307" Y="130" />
-    </DragDropAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>No connectors exist on design surface.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Python tool on the design surface does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Python_Onto_DesignSurface">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
-      <ParameterName />
-      <Value Encoded="false">Javascript</Value>
-      <Type>String</Type>
-    </SetValueAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.JavaScript">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <TargetElementName>UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
-      <MouseButton>Left</MouseButton>
-      <StartLocation X="49" Y="17" />
-      <StopLocation X="307" Y="130" />
-    </DragDropAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>No connectors exist on design surface.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Javascript tool on the design surface does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Javascript_Onto_DesignSurface">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.ValueCell.AssignValueCombobox.TextEdit">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -4235,6 +4118,45 @@
     </TestStepMarkerAction>
     <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
       <ParameterName />
+      <Value Encoded="false">Javascript</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.JavaScript">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <TargetElementName>UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
+      <MouseButton>Left</MouseButton>
+      <StartLocation X="49" Y="17" />
+      <StopLocation X="307" Y="130" />
+    </DragDropAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>No connectors exist on design surface.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Javascript tool on the design surface does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Javascript_Onto_DesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
       <Value Encoded="false">Create JSON</Value>
       <Type>String</Type>
     </SetValueAction>
@@ -4430,6 +4352,45 @@
     </TestStepMarkerAction>
     <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
       <ParameterName />
+      <Value Encoded="false">Python</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Python">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <TargetElementName>UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
+      <MouseButton>Left</MouseButton>
+      <StartLocation X="49" Y="17" />
+      <StopLocation X="307" Y="130" />
+    </DragDropAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>No connectors exist on design surface.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Python tool on the design surface does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Python_Onto_DesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
       <Value Encoded="false">Random</Value>
       <Type>String</Type>
     </SetValueAction>
@@ -4615,6 +4576,45 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Replace_Onto_DesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Ruby</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Ruby">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <TargetElementName>UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
+      <MouseButton>Left</MouseButton>
+      <StartLocation X="49" Y="17" />
+      <StopLocation X="307" Y="130" />
+    </DragDropAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>No connectors exist on design surface.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Ruby tool on the design surface does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Ruby_Onto_DesignSurface">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -19964,7 +19964,7 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__txtScript_AutoIDComboBox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ScriptIntellisenseCombobox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -19976,7 +19976,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -19991,7 +19991,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__Resulttxt_AutoIDComboBox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ResultsIntellisenseCombobox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20003,7 +20003,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20033,7 +20033,7 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__txtScript_AutoIDComboBox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ScriptIntellisenseCombobox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20045,7 +20045,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20060,7 +20060,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__AttachmentsTxt_AComboBox" FriendlyName="UI__AttachmentsTxt_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="AttachmentsIntellisenseCombobox" FriendlyName="UI__AttachmentsTxt_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20072,7 +20072,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20087,7 +20087,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="Button" Id="UIItemButton" FriendlyName="..." SpecialControlType="None">
+                                                                <UIObject ControlType="Button" Id="AttachFileButton" FriendlyName="..." SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20100,7 +20100,7 @@
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="CheckBox" Id="UIEscapesequencesinvarCheckBox" FriendlyName="Escape sequences in variables" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="EscapesequencesCheckBox" FriendlyName="Escape sequences in variables" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20113,7 +20113,7 @@
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__Resulttxt_AutoIDComboBox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ResultIntellisenseCombobox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20125,7 +20125,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20140,7 +20140,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="Custom" Id="UIOnErrorCustom" FriendlyName="On Error" SpecialControlType="None">
+                                                                <UIObject ControlType="Custom" Id="OnErrorPane" FriendlyName="On Error" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20153,7 +20153,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Group" Id="UIOnErrorGroup" FriendlyName="On Error" SpecialControlType="None">
+                                                                    <UIObject ControlType="Group" Id="OnErrorGroup" FriendlyName="On Error" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20165,7 +20165,7 @@
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants>
-                                                                        <UIObject ControlType="ComboBox" Id="UIUI__Variable_AutoIDComboBox" FriendlyName="UI__Variable_AutoID" SpecialControlType="None">
+                                                                        <UIObject ControlType="ComboBox" Id="ErrorVariableIntellisenseCombobox" FriendlyName="UI__Variable_AutoID" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20177,7 +20177,7 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                            <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20192,7 +20192,7 @@
                                                                             </UIObject>
                                                                           </Descendants>
                                                                         </UIObject>
-                                                                        <UIObject ControlType="ComboBox" Id="UIUI__Workflow_AutoIDComboBox" FriendlyName="UI__Workflow_AutoID" SpecialControlType="None">
+                                                                        <UIObject ControlType="ComboBox" Id="ExecuteWorkflowIntellisenseCombobox" FriendlyName="UI__Workflow_AutoID" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20204,7 +20204,7 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                            <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20219,7 +20219,7 @@
                                                                             </UIObject>
                                                                           </Descendants>
                                                                         </UIObject>
-                                                                        <UIObject ControlType="CheckBox" Id="UIEndthisworkflowCheckBox" FriendlyName="End this workflow" SpecialControlType="None">
+                                                                        <UIObject ControlType="CheckBox" Id="EndthisworkflowCheckBox" FriendlyName="End this workflow" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20238,7 +20238,7 @@
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
-                                                            <UIObject ControlType="Button" Id="UIDoneButton" FriendlyName="Done" SpecialControlType="None">
+                                                            <UIObject ControlType="Button" Id="DoneButton" FriendlyName="Done" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20266,7 +20266,7 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
-                                                            <UIObject ControlType="Custom" Id="UISmallViewContentCustom" FriendlyName="SmallViewContent" SpecialControlType="None">
+                                                            <UIObject ControlType="Custom" Id="SmallView" FriendlyName="SmallViewContent" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20279,7 +20279,7 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__txtScript_AutoIDComboBox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ScriptIntellisenseCombobox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20291,7 +20291,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20306,7 +20306,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__Resulttxt_AutoIDComboBox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ResultIntellisenseCombobox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20318,7 +20318,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20335,7 +20335,7 @@
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
-                                                            <UIObject ControlType="Custom" Id="UILargeViewContentCustom" FriendlyName="LargeViewContent" SpecialControlType="None">
+                                                            <UIObject ControlType="Custom" Id="LargeView" FriendlyName="LargeViewContent" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20348,7 +20348,7 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__AttachmentsTxt_AComboBox" FriendlyName="UI__AttachmentsTxt_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="AttachmentsIntellisenseCombobox" FriendlyName="UI__AttachmentsTxt_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20360,7 +20360,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20375,7 +20375,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="Button" Id="UIItemButton" FriendlyName="..." SpecialControlType="None">
+                                                                <UIObject ControlType="Button" Id="AttachFileButton" FriendlyName="..." SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20388,7 +20388,7 @@
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="CheckBox" Id="UIEscapesequencesinvarCheckBox" FriendlyName="Escape sequences in variables" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="EscapesequencesCheckBox" FriendlyName="Escape sequences in variables" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20401,7 +20401,7 @@
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__txtScript_AutoIDComboBox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ScriptIntellisenseCombobox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20413,7 +20413,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20428,7 +20428,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__Resulttxt_AutoIDComboBox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ResultIntellisenseCombobox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20440,7 +20440,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20455,7 +20455,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="Custom" Id="UIOnErrorCustom" FriendlyName="On Error" SpecialControlType="None">
+                                                                <UIObject ControlType="Custom" Id="OnErrorPane" FriendlyName="On Error" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20468,7 +20468,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Group" Id="UIOnErrorGroup" FriendlyName="On Error" SpecialControlType="None">
+                                                                    <UIObject ControlType="Group" Id="OnErrorGroup" FriendlyName="On Error" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20480,7 +20480,7 @@
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants>
-                                                                        <UIObject ControlType="ComboBox" Id="UIUI__Variable_AutoIDComboBox" FriendlyName="UI__Variable_AutoID" SpecialControlType="None">
+                                                                        <UIObject ControlType="ComboBox" Id="VariableIntellisenseCombobox" FriendlyName="UI__Variable_AutoID" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20492,7 +20492,7 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                            <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20507,7 +20507,7 @@
                                                                             </UIObject>
                                                                           </Descendants>
                                                                         </UIObject>
-                                                                        <UIObject ControlType="ComboBox" Id="UIUI__Workflow_AutoIDComboBox" FriendlyName="UI__Workflow_AutoID" SpecialControlType="None">
+                                                                        <UIObject ControlType="ComboBox" Id="ExecuteWorkflowIntellisenseCombobox" FriendlyName="UI__Workflow_AutoID" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20519,7 +20519,7 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                            <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20534,7 +20534,7 @@
                                                                             </UIObject>
                                                                           </Descendants>
                                                                         </UIObject>
-                                                                        <UIObject ControlType="CheckBox" Id="UIEndthisworkflowCheckBox" FriendlyName="End this workflow" SpecialControlType="None">
+                                                                        <UIObject ControlType="CheckBox" Id="EndthisworkflowCheckBox" FriendlyName="End this workflow" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20553,7 +20553,7 @@
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
-                                                            <UIObject ControlType="Button" Id="UIDoneButton" FriendlyName="Done" SpecialControlType="None">
+                                                            <UIObject ControlType="Button" Id="DoneButton" FriendlyName="Done" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20581,7 +20581,7 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
-                                                            <UIObject ControlType="Custom" Id="UISmallViewContentCustom" FriendlyName="SmallViewContent" SpecialControlType="None">
+                                                            <UIObject ControlType="Custom" Id="SmallView" FriendlyName="SmallViewContent" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20594,7 +20594,7 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__txtScript_AutoIDComboBox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ScriptIntellisenseCombobox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20606,7 +20606,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20621,7 +20621,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__Resulttxt_AutoIDComboBox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ResultIntellisenseCombobox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20633,7 +20633,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20650,7 +20650,7 @@
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
-                                                            <UIObject ControlType="Custom" Id="UILargeViewContentCustom" FriendlyName="LargeViewContent" SpecialControlType="None">
+                                                            <UIObject ControlType="Custom" Id="LargeView" FriendlyName="LargeViewContent" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20663,7 +20663,7 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__AttachmentsTxt_AComboBox" FriendlyName="UI__AttachmentsTxt_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="AttachmentsIntellisenseCombobox" FriendlyName="UI__AttachmentsTxt_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20675,7 +20675,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20690,7 +20690,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="Button" Id="UIItemButton" FriendlyName="..." SpecialControlType="None">
+                                                                <UIObject ControlType="Button" Id="AttachFileButton" FriendlyName="..." SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20703,7 +20703,7 @@
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="CheckBox" Id="UIEscapesequencesinvarCheckBox" FriendlyName="Escape sequences in variables" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="EscapesequencesCheckBox" FriendlyName="Escape sequences in variables" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20716,7 +20716,7 @@
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__txtScript_AutoIDComboBox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ScriptIntellisenseCombobox" FriendlyName="UI__txtScript_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20728,7 +20728,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20743,7 +20743,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="ComboBox" Id="UIUI__Resulttxt_AutoIDComboBox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="ResultIntellisenseCombobox" FriendlyName="UI__Resulttxt_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20755,7 +20755,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20770,7 +20770,7 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="Custom" Id="UIOnErrorCustom" FriendlyName="On Error" SpecialControlType="None">
+                                                                <UIObject ControlType="Custom" Id="OnErrorPane" FriendlyName="On Error" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20783,7 +20783,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Group" Id="UIOnErrorGroup" FriendlyName="On Error" SpecialControlType="None">
+                                                                    <UIObject ControlType="Group" Id="OnErrorGroup" FriendlyName="On Error" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20795,7 +20795,7 @@
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants>
-                                                                        <UIObject ControlType="ComboBox" Id="UIUI__Variable_AutoIDComboBox" FriendlyName="UI__Variable_AutoID" SpecialControlType="None">
+                                                                        <UIObject ControlType="ComboBox" Id="ErrorVariableIntellisenseCombobox" FriendlyName="UI__Variable_AutoID" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20807,7 +20807,7 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                            <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20822,7 +20822,7 @@
                                                                             </UIObject>
                                                                           </Descendants>
                                                                         </UIObject>
-                                                                        <UIObject ControlType="ComboBox" Id="UIUI__Workflow_AutoIDComboBox" FriendlyName="UI__Workflow_AutoID" SpecialControlType="None">
+                                                                        <UIObject ControlType="ComboBox" Id="ExecuteWorkflowIntellisenseCombobox" FriendlyName="UI__Workflow_AutoID" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20834,7 +20834,7 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                            <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20849,7 +20849,7 @@
                                                                             </UIObject>
                                                                           </Descendants>
                                                                         </UIObject>
-                                                                        <UIObject ControlType="CheckBox" Id="UIEndthisworkflowCheckBox" FriendlyName="End this workflow" SpecialControlType="None">
+                                                                        <UIObject ControlType="CheckBox" Id="EndthisworkflowCheckBox" FriendlyName="End this workflow" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20868,7 +20868,7 @@
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
-                                                            <UIObject ControlType="Button" Id="UIDoneButton" FriendlyName="Done" SpecialControlType="None">
+                                                            <UIObject ControlType="Button" Id="DoneButton" FriendlyName="Done" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
