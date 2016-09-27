@@ -543,32 +543,47 @@ namespace Warewolf.UITests
             WaitForControlNotVisible(control, searchTimeout);
         }
 
-        public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false)
+        public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false, SaveOrDuplicate saveOrDuplicate = SaveOrDuplicate.Save)
         {
+           
             WpfText errorLabel = this.SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
+
             if (duplicate || invalid || nameHasWhiteSpace)
             {
                 if (duplicate)
                 {
                     Assert.AreEqual(string.Format("An item with name '{0}' already exists in this folder.", ServiceName), errorLabel.DisplayText, "Error is not the same as expected");
-                    Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                    if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
+                        Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                    else
+                        Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
                 }
                 if (invalid)
                 {
                     Assert.AreEqual("'Name' contains invalid characters", errorLabel.DisplayText, "Error is not the same as expected");
-                    Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                    if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
+                        Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                    else
+                        Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
                 }
                 if (nameHasWhiteSpace)
                 {
                     Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
-                    Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                    if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
+                        Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                    else
+                        Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
                 }
             }
             else
-                Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+            {
+                if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
+                    Assert.IsTrue(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+                else
+                    Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+            }
         }
-
         public void Filter_Explorer(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
@@ -1254,8 +1269,8 @@ namespace Warewolf.UITests
             var selectedTestRunButton = GetSelectedTestRunButton(currentTest, instance);
 
             Mouse.Click(selectedTestRunButton);
-            //if (expectedTestResultEnum != null)
-            //    AssertTestResults(expectedTestResultEnum.Value, instance, currentTest);
+            if (expectedTestResultEnum != null)
+                AssertTestResults(expectedTestResultEnum.Value, instance, currentTest);
         }
 
         private void AssertTestResults(TestResultEnum expectedTestResultEnum, int instance, WpfListItem currentTest)
@@ -1311,15 +1326,16 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
             WpfText testNameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText;
-            var currentTest = GetCurrentTest(testInstance);
-            var testEnabledSelector = GetTestRunState(testInstance, currentTest);
-            var testNeverRun = GetSelectedTestNeverRunDisplay(currentTest, testInstance);
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
             WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
 
             #endregion
 
             Mouse.Click(createTestButton, new Point(158, 10));
+
+            var currentTest = GetCurrentTest(testInstance);
+            var testEnabledSelector = GetTestRunState(testInstance, currentTest);
+            var testNeverRun = GetSelectedTestNeverRunDisplay(currentTest, testInstance);
 
             Assert.AreEqual(testInstance + 1, testsListBox.GetContent().Length);
             Assert.AreEqual("Never run", testNeverRun.DisplayText);
@@ -1517,38 +1533,40 @@ namespace Warewolf.UITests
             var mr = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem2;
             #endregion
 
-            //// Click 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
-            //Mouse.Click(variableCell, new Point(33, 28));
+            // Click 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
+            Mouse.Click(variableCell, new Point(33, 28));
 
-            //// Type '[[rec().a]]' in 'UI__Row1_FieldName_AutoID' text box
-            //textbox.Text = this.Enter_Recordset_valuesParams.TextboxText;
+            // Type '[[rec().a]]' in 'UI__Row1_FieldName_AutoID' text box
+            textbox.Text = "[[rec().a]]";
 
-            //// Type '5' in 'Text' text box
-            //textEdit.Text = this.Enter_Recordset_valuesParams.TextEditText;
+            // Type '5' in 'Text' text box
+            textEdit.Text = "5";
 
-            //// Type '{Tab}' in 'Text' text box
-            //Keyboard.SendKeys(textEdit, this.Enter_Recordset_valuesParams.TextEditSendKeys, ModifierKeys.None);
+            // Type '{Tab}' in 'Text' text box
+            Keyboard.SendKeys(textEdit, "{Tab}", ModifierKeys.None);
 
-            //// Type '[[rec().b]]' in 'UI__Row2_FieldName_AutoID' text box
-            //textbox1.Text = this.Enter_Recordset_valuesParams.TextboxText1;
+            // Type '[[rec().b]]' in 'UI__Row2_FieldName_AutoID' text box
+            textbox1.Text = "[[rec().b]]";
 
-            //// Type '[[var]]' in 'UI__Row3_FieldName_AutoID' text box
-            //textbox2.Text = this.Enter_Recordset_valuesParams.TextboxText2;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.DrawHighlight();
+            textbox2.DrawHighlight();
+            // Type '[[var]]' in 'UI__Row3_FieldName_AutoID' text box
+            textbox2.Text = "[[var]]";
 
-            //// Type '{Tab}' in 'UI__Row3_FieldName_AutoID' text box
-            //Keyboard.SendKeys(textbox2, this.Enter_Recordset_valuesParams.TextboxSendKeys, ModifierKeys.None);
+            // Type '{Tab}' in 'UI__Row3_FieldName_AutoID' text box
+            Keyboard.SendKeys(textbox2, "{Tab}", ModifierKeys.None);
 
-            //// Type '1' in 'Text' text box
-            //textEdit1.Text = this.Enter_Recordset_valuesParams.TextEditText1;
+            // Type '1' in 'Text' text box
+            textEdit1.Text = "1";
 
-            //// Type '{Tab}' in 'Text' text box
-            //Keyboard.SendKeys(textEdit1, this.Enter_Recordset_valuesParams.TextEditSendKeys1, ModifierKeys.None);
+            // Type '{Tab}' in 'Text' text box
+            Keyboard.SendKeys(textEdit1, "{Tab}", ModifierKeys.None);
 
-            //// Type '[[mr()]]' in 'UI__Row4_FieldName_AutoID' text box
-            //textbox3.Text = this.Enter_Recordset_valuesParams.TextboxText3;
+            // Type '[[mr()]]' in 'UI__Row4_FieldName_AutoID' text box
+            textbox3.Text = "[[mr()]]";
 
-            //// Type '{Tab}' in 'Text' text box
-            //Keyboard.SendKeys(textEdit2, this.Enter_Recordset_valuesParams.TextEditSendKeys2, ModifierKeys.None);
+            // Type '{Tab}' in 'Text' text box
+            Keyboard.SendKeys(textEdit2, "{Tab}", ModifierKeys.None);
 
             Assert.IsTrue(firstVariable.Exists, "var does not exist in the variable explorer");
             Assert.IsTrue(rec.Exists, "rec().a does not exist in the variable explorer");
