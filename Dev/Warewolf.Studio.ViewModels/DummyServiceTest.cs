@@ -88,8 +88,9 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-        public void AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
+        public IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
         {
+            return null;
         }
 
         public bool IsTestSelected { get; set; }

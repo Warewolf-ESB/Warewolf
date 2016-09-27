@@ -598,14 +598,14 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border Padding="{TemplateBinding Padding}">
-                        <Grid Background="{StaticResource WareWolfHeaderButtonBrush}" SnapsToDevicePixels="False">
+                        <Grid Background="{StaticResource WarewolfPanelGreyBrush}" SnapsToDevicePixels="False">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="15"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <fa:FontAwesome Grid.Column="0" x:Name="iconExpand" Icon="CaretRight" VerticalAlignment="Center" FontSize="14" Visibility="Visible"/>
                             <fa:FontAwesome Grid.Column="0" x:Name="iconCollapse" Icon="CaretDown" VerticalAlignment="Center" FontSize="14" Visibility="Collapsed"/>
-                            <ContentPresenter Grid.Column="1" HorizontalAlignment="Stretch" Margin="4,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
+                            <ContentPresenter Grid.Column="1" x:Name="headerContent" HorizontalAlignment="Stretch" Margin="3,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -617,14 +617,19 @@
                             <Setter Property="Foreground"  TargetName="iconExpand" Value="{StaticResource WareWolfOrangeBrush}"/>
                             <Setter Property="Foreground"  TargetName="iconCollapse" Value="{StaticResource WareWolfOrangeBrush}"/>
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Visibility" TargetName="iconExpand" Value="Collapsed"/>
+                            <Setter Property="Visibility" TargetName="iconCollapse" Value="Collapsed"/>
+                            <Setter Property="Margin" TargetName="headerContent" Value="-4,0,0,0"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
     <Style x:Key="ServiceTestTestStepExpander" TargetType="{x:Type Expander}">
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}"/>
+        <Setter Property="Background" Value="{StaticResource WarewolfPanelGreyBrush}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
@@ -669,7 +674,7 @@
                             <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
@@ -469,7 +470,7 @@ namespace Warewolf.Studio.ViewModels
             Item = model as ServiceTestModel;
         }
 
-        public void AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
+        public IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
         {
             if(string.IsNullOrEmpty(activityUniqueID))
                 throw new ArgumentNullException(nameof(activityUniqueID));
@@ -479,6 +480,7 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException(nameof(serviceTestOutputs));
             var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock) { StepDescription = activityDisplayName };
             TestSteps.Add(testStep);
+            return testStep;
         }
 
         #endregion
@@ -677,8 +679,10 @@ namespace Warewolf.Studio.ViewModels
         private IServiceTestStep _parent;
         private ObservableCollection<IServiceTestStep> _children;
         private bool _isTestStepExpanded;
+        private bool _isTestStepExpanderEnabled;
         private bool _assertSelected;
         private bool _mockSelected;
+        private ImageSource _stepIcon;
 
         public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
@@ -688,9 +692,10 @@ namespace Warewolf.Studio.ViewModels
             Type = stepType;            
             StepDescription = activityTypeName;
             Children = new ObservableCollection<IServiceTestStep>();
-            IsTestStepExpanded = true;
-            AssertSelected = true;
-            MockSelected = false;
+            AssertSelected = false;
+            MockSelected = true;
+            IsTestStepExpanded = StepOutputs.Count > 0;
+            IsTestStepExpanderEnabled = StepOutputs.Count > 0;
         }
 
         public Guid UniqueId
@@ -700,6 +705,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _uniqueId = value; 
                 OnPropertyChanged(() => UniqueId);
+            }
+        }
+
+        public ImageSource StepIcon
+        {
+            get { return _stepIcon; }
+            set
+            {
+                _stepIcon = value;
+                OnPropertyChanged(() => StepIcon);
             }
         }
 
@@ -770,6 +785,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isTestStepExpanded = value;
                 OnPropertyChanged(() => IsTestStepExpanded);
+            }
+        }
+
+        public bool IsTestStepExpanderEnabled
+        {
+            get { return _isTestStepExpanderEnabled; }
+            set
+            {
+                _isTestStepExpanderEnabled = value;
+                OnPropertyChanged(() => IsTestStepExpanderEnabled);
             }
         }
 
