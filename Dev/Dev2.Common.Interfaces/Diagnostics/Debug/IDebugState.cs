@@ -165,5 +165,6 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         bool IsFirstStep();
 
         bool IsDurationVisible { get; set; }
+        string ActualType  { get; set; }
     }
 }

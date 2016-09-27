@@ -140,6 +140,8 @@
     <Compile Include="DeployDestinationViewModel.cs" />
     <Compile Include="DeployStatsViewerViewModel.cs" />
     <Compile Include="DummyServiceTest.cs" />
+    <Compile Include="IProcessor.cs" />
+    <Compile Include="DebugStateProcessor.cs" />
     <Compile Include="SingleExplorerDeployViewModel.cs" />
     <Compile Include="ExplorerItemViewModelCommandController.cs" />
     <Compile Include="IDuplicateResourceViewModel.cs" />

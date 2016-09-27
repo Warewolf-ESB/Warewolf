@@ -1186,7 +1186,7 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
-        public List<ModelItem> GetModelItems()
+        public ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID)
         {
             throw new NotImplementedException();
         }
