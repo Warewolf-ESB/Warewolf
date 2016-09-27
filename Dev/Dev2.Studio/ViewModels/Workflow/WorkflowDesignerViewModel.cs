@@ -1041,6 +1041,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         static void DesigenrViewSubscribe(DesignerView instance)
         {
             // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
+            instance.WorkflowShellHeaderItemsVisibility = ShellHeaderItemsVisibility.Breadcrumb;
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
         }

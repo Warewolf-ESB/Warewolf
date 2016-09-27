@@ -404,7 +404,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (outputs != null && outputs.Count > 0)
                 {
-                    var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                    var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "")
                     {
                         HasOptionsForValue = false
                     }).Cast<IServiceTestOutput>().ToList();
