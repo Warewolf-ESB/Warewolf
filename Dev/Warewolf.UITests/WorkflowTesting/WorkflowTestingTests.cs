@@ -12,7 +12,7 @@ namespace Warewolf.UITests
         const string DuplicateNameError = "DuplicateNameError";
         const string UnsavedResourceError = "UnsavedResourceError";
         const string TestName = "HelloWorld_Test";
-        const string DuplicateTestName = "Second_HelloWorld_Test";
+        const string DuplicateTestName = "2nd_HelloWorld_Test";
         const string Testing123 = "Testing123";
         const string Testing123Test = "Testing123_Test";
         const string HelloWorld = "Hello World";
@@ -196,6 +196,7 @@ namespace Warewolf.UITests
         [TestCleanup()]
         public void MyTestCleanup()
         {
+            Uimap.TryRemoveTests();
             Playback.PlaybackError -= Uimap.OnError;
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
             File.Delete(resourcesFolder + @"\" + Testing123 + ".xml");
