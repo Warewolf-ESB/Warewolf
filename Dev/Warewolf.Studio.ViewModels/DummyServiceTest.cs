@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
@@ -15,6 +16,7 @@ using Microsoft.Practices.Prism.Commands;
 
 namespace Warewolf.Studio.ViewModels
 {
+    [ExcludeFromCodeCoverage] //Excluded as this is purely for visual effect
     public class DummyServiceTest : IServiceTestModel, INewServiceResource
     {
 #pragma warning disable 649
