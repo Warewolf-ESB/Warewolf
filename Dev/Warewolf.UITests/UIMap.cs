@@ -1690,5 +1690,12 @@ namespace Warewolf.UITests
                 Click_MessageBox_Yes();
             }
         }
+
+        public void Click_View_Tests_In_Explorer_Context_Menu(string ServiceName)
+        {
+            Filter_Explorer(ServiceName);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Open_Explorer_First_Item_Tests_With_Context_Menu();
+        }
     }
 }
