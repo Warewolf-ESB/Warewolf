@@ -32,6 +32,90 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
+        /// Drag_Toolbox_Ruby_Onto_DesignSurface - Use 'Drag_Toolbox_Ruby_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Toolbox_Ruby_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem ruby = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Ruby;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom ruby1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby;
+            #endregion
+
+            // Type 'Ruby' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_Ruby_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 130));
+            Mouse.StartDragging(ruby, new Point(49, 17));
+            Mouse.StopDragging(flowchart, new Point(307, 130));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Ruby_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'DsfRubyActivity' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Ruby_Onto_DesignSurfaceParams.RubyExists, ruby1.Exists, "Ruby tool on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Drag_Toolbox_Python_Onto_DesignSurface - Use 'Drag_Toolbox_Python_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Toolbox_Python_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem python = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Python;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom python1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python;
+            #endregion
+
+            // Type 'Python' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_Python_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 130));
+            Mouse.StartDragging(python, new Point(49, 17));
+            Mouse.StopDragging(flowchart, new Point(307, 130));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Python_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'DsfPythonActivity' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Python_Onto_DesignSurfaceParams.PythonExists, python1.Exists, "Python tool on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Drag_Toolbox_Javascript_Onto_DesignSurface - Use 'Drag_Toolbox_Javascript_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Toolbox_Javascript_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem javaScript = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.JavaScript;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom javascript1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript;
+            #endregion
+
+            // Type 'Javascript' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_Javascript_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 130));
+            Mouse.StartDragging(javaScript, new Point(49, 17));
+            Mouse.StopDragging(flowchart, new Point(307, 130));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Javascript_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'DsfJavascriptActivity' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Javascript_Onto_DesignSurfaceParams.JavascriptExists, javascript1.Exists, "Javascript tool on the design surface does not exist");
+        }
+        
+        /// <summary>
         /// Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1 - Use 'Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params' to pass parameters into this method.
         /// </summary>
         public void Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1()
@@ -3070,34 +3154,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfReplaceActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Replace_Onto_DesignSurfaceParams.ReplaceExists, replace1.Exists, "Replace on the design surface does not exist");
-        }
-        
-        /// <summary>
-        /// Drag_Toolbox_Script_Onto_DesignSurface - Use 'Drag_Toolbox_Script_Onto_DesignSurfaceParams' to pass parameters into this method.
-        /// </summary>
-        public void Drag_Toolbox_Script_Onto_DesignSurface()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem script = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Script;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom scripting = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Scripting;
-            #endregion
-
-            // Type 'Script' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Drag_Toolbox_Script_Onto_DesignSurfaceParams.SearchTextBoxText;
-
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
-            flowchart.EnsureClickable(new Point(307, 130));
-            Mouse.StartDragging(script, new Point(49, 17));
-            Mouse.StopDragging(flowchart, new Point(307, 130));
-
-            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Script_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-
-            // Verify that the 'Exists' property of 'DsfScriptingActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Script_Onto_DesignSurfaceParams.ScriptingExists, scripting.Exists, "Script tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -6501,6 +6557,42 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public virtual Drag_Toolbox_Ruby_Onto_DesignSurfaceParams Drag_Toolbox_Ruby_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Ruby_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Ruby_Onto_DesignSurfaceParams = new Drag_Toolbox_Ruby_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Ruby_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Python_Onto_DesignSurfaceParams Drag_Toolbox_Python_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Python_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Python_Onto_DesignSurfaceParams = new Drag_Toolbox_Python_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Python_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Javascript_Onto_DesignSurfaceParams Drag_Toolbox_Javascript_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Javascript_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Javascript_Onto_DesignSurfaceParams = new Drag_Toolbox_Javascript_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Javascript_Onto_DesignSurfaceParams;
+            }
+        }
+        
         public virtual Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params
         {
             get
@@ -7674,18 +7766,6 @@ namespace Warewolf.UITests
                     this.mDrag_Toolbox_Replace_Onto_DesignSurfaceParams = new Drag_Toolbox_Replace_Onto_DesignSurfaceParams();
                 }
                 return this.mDrag_Toolbox_Replace_Onto_DesignSurfaceParams;
-            }
-        }
-        
-        public virtual Drag_Toolbox_Script_Onto_DesignSurfaceParams Drag_Toolbox_Script_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((this.mDrag_Toolbox_Script_Onto_DesignSurfaceParams == null))
-                {
-                    this.mDrag_Toolbox_Script_Onto_DesignSurfaceParams = new Drag_Toolbox_Script_Onto_DesignSurfaceParams();
-                }
-                return this.mDrag_Toolbox_Script_Onto_DesignSurfaceParams;
             }
         }
         
@@ -9044,9 +9124,27 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
+            }
+        }
         #endregion
         
         #region Fields
+        private Drag_Toolbox_Ruby_Onto_DesignSurfaceParams mDrag_Toolbox_Ruby_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Python_Onto_DesignSurfaceParams mDrag_Toolbox_Python_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Javascript_Onto_DesignSurfaceParams mDrag_Toolbox_Javascript_Onto_DesignSurfaceParams;
+        
         private Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params mAssign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params;
         
         private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
@@ -9242,8 +9340,6 @@ namespace Warewolf.UITests
         private Drag_Toolbox_Rename_Onto_DesignSurfaceParams mDrag_Toolbox_Rename_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Replace_Onto_DesignSurfaceParams mDrag_Toolbox_Replace_Onto_DesignSurfaceParams;
-        
-        private Drag_Toolbox_Script_Onto_DesignSurfaceParams mDrag_Toolbox_Script_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Sequence_Onto_DesignSurfaceParams mDrag_Toolbox_Sequence_Onto_DesignSurfaceParams;
         
@@ -9470,6 +9566,83 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Ruby_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Ruby_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Ruby' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Ruby";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfRubyActivity' custom control equals 'True'
+        /// </summary>
+        public bool RubyExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Python_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Python_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Python' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Python";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfPythonActivity' custom control equals 'True'
+        /// </summary>
+        public bool PythonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Javascript_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Javascript_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Javascript' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Javascript";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfJavascriptActivity' custom control equals 'True'
+        /// </summary>
+        public bool JavascriptExists = true;
         #endregion
     }
     
@@ -11638,31 +11811,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfReplaceActivity' custom control equals 'True'
         /// </summary>
         public bool ReplaceExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Drag_Toolbox_Script_Onto_DesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Script_Onto_DesignSurfaceParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'Script' in 'SearchTextBox' text box
-        /// </summary>
-        public string SearchTextBoxText = "Script";
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-        /// </summary>
-        public bool Connector1Exists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfScriptingActivity' custom control equals 'True'
-        /// </summary>
-        public bool ScriptingExists = true;
         #endregion
     }
     
@@ -19470,12 +19618,54 @@ namespace Warewolf.UITests
                 return this.mScript;
             }
         }
+        
+        public JavaScript JavaScript
+        {
+            get
+            {
+                if ((this.mJavaScript == null))
+                {
+                    this.mJavaScript = new JavaScript(this);
+                }
+                return this.mJavaScript;
+            }
+        }
+        
+        public Python Python
+        {
+            get
+            {
+                if ((this.mPython == null))
+                {
+                    this.mPython = new Python(this);
+                }
+                return this.mPython;
+            }
+        }
+        
+        public Ruby Ruby
+        {
+            get
+            {
+                if ((this.mRuby == null))
+                {
+                    this.mRuby = new Ruby(this);
+                }
+                return this.mRuby;
+            }
+        }
         #endregion
         
         #region Fields
         private CMDScript mCMDScript;
         
         private Script mScript;
+        
+        private JavaScript mJavaScript;
+        
+        private Python mPython;
+        
+        private Ruby mRuby;
         #endregion
     }
     
@@ -19550,6 +19740,210 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfImage mScriptImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class JavaScript : WpfListItem
+    {
+        
+        public JavaScript(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "JavaScript";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIToolButtonImageText UIToolButtonImageText
+        {
+            get
+            {
+                if ((this.mUIToolButtonImageText == null))
+                {
+                    this.mUIToolButtonImageText = new UIToolButtonImageText(this);
+                }
+                return this.mUIToolButtonImageText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIToolButtonImageText mUIToolButtonImageText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIToolButtonImageText : WpfText
+    {
+        
+        public UIToolButtonImageText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ToolButtonImage";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage UIJavaScriptImage
+        {
+            get
+            {
+                if ((this.mUIJavaScriptImage == null))
+                {
+                    this.mUIJavaScriptImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mUIJavaScriptImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "JavaScript";
+                    this.mUIJavaScriptImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIJavaScriptImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mUIJavaScriptImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Python : WpfListItem
+    {
+        
+        public Python(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Python";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIToolButtonImageText1 UIToolButtonImageText
+        {
+            get
+            {
+                if ((this.mUIToolButtonImageText == null))
+                {
+                    this.mUIToolButtonImageText = new UIToolButtonImageText1(this);
+                }
+                return this.mUIToolButtonImageText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIToolButtonImageText1 mUIToolButtonImageText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIToolButtonImageText1 : WpfText
+    {
+        
+        public UIToolButtonImageText1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ToolButtonImage";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage UIPythonImage
+        {
+            get
+            {
+                if ((this.mUIPythonImage == null))
+                {
+                    this.mUIPythonImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mUIPythonImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Python";
+                    this.mUIPythonImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIPythonImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mUIPythonImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Ruby : WpfListItem
+    {
+        
+        public Ruby(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Ruby";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIToolButtonImageText2 UIToolButtonImageText
+        {
+            get
+            {
+                if ((this.mUIToolButtonImageText == null))
+                {
+                    this.mUIToolButtonImageText = new UIToolButtonImageText2(this);
+                }
+                return this.mUIToolButtonImageText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIToolButtonImageText2 mUIToolButtonImageText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIToolButtonImageText2 : WpfText
+    {
+        
+        public UIToolButtonImageText2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ToolButtonImage";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage UIRubyImage
+        {
+            get
+            {
+                if ((this.mUIRubyImage == null))
+                {
+                    this.mUIRubyImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mUIRubyImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Ruby";
+                    this.mUIRubyImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIRubyImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mUIRubyImage;
         #endregion
     }
     
@@ -26334,6 +26728,42 @@ namespace Warewolf.UITests
                 return this.mExternalWorkFlow;
             }
         }
+        
+        public Javascript1 Javascript
+        {
+            get
+            {
+                if ((this.mJavascript == null))
+                {
+                    this.mJavascript = new Javascript1(this);
+                }
+                return this.mJavascript;
+            }
+        }
+        
+        public Python1 Python
+        {
+            get
+            {
+                if ((this.mPython == null))
+                {
+                    this.mPython = new Python1(this);
+                }
+                return this.mPython;
+            }
+        }
+        
+        public Ruby1 Ruby
+        {
+            get
+            {
+                if ((this.mRuby == null))
+                {
+                    this.mRuby = new Ruby1(this);
+                }
+                return this.mRuby;
+            }
+        }
         #endregion
         
         #region Fields
@@ -26464,6 +26894,12 @@ namespace Warewolf.UITests
         private WebGet mWebGet;
         
         private ExternalWorkFlow mExternalWorkFlow;
+        
+        private Javascript1 mJavascript;
+        
+        private Python1 mPython;
+        
+        private Ruby1 mRuby;
         #endregion
     }
     
@@ -32126,6 +32562,1722 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Javascript1 : WpfCustom
+    {
+        
+        public Javascript1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ScriptDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "JavaScript(ScriptDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public SmallView7 SmallView
+        {
+            get
+            {
+                if ((this.mSmallView == null))
+                {
+                    this.mSmallView = new SmallView7(this);
+                }
+                return this.mSmallView;
+            }
+        }
+        
+        public LargeView8 LargeView
+        {
+            get
+            {
+                if ((this.mLargeView == null))
+                {
+                    this.mLargeView = new LargeView8(this);
+                }
+                return this.mLargeView;
+            }
+        }
+        
+        public WpfButton UIDoneButton
+        {
+            get
+            {
+                if ((this.mUIDoneButton == null))
+                {
+                    this.mUIDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mUIDoneButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIDoneButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SmallView7 mSmallView;
+        
+        private LargeView8 mLargeView;
+        
+        private WpfButton mUIDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SmallView7 : WpfCustom
+    {
+        
+        public SmallView7(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI__txtScript_AutoIDComboBox UIUI__txtScript_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__txtScript_AutoIDComboBox == null))
+                {
+                    this.mUIUI__txtScript_AutoIDComboBox = new UIUI__txtScript_AutoIDComboBox(this);
+                }
+                return this.mUIUI__txtScript_AutoIDComboBox;
+            }
+        }
+        
+        public UIUI__Resulttxt_AutoIDComboBox UIUI__Resulttxt_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Resulttxt_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Resulttxt_AutoIDComboBox = new UIUI__Resulttxt_AutoIDComboBox(this);
+                }
+                return this.mUIUI__Resulttxt_AutoIDComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI__txtScript_AutoIDComboBox mUIUI__txtScript_AutoIDComboBox;
+        
+        private UIUI__Resulttxt_AutoIDComboBox mUIUI__Resulttxt_AutoIDComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__txtScript_AutoIDComboBox : WpfComboBox
+    {
+        
+        public UIUI__txtScript_AutoIDComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__txtScript_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Resulttxt_AutoIDComboBox : WpfComboBox
+    {
+        
+        public UIUI__Resulttxt_AutoIDComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LargeView8 : WpfCustom
+    {
+        
+        public LargeView8(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI__txtScript_AutoIDComboBox1 UIUI__txtScript_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__txtScript_AutoIDComboBox == null))
+                {
+                    this.mUIUI__txtScript_AutoIDComboBox = new UIUI__txtScript_AutoIDComboBox1(this);
+                }
+                return this.mUIUI__txtScript_AutoIDComboBox;
+            }
+        }
+        
+        public UIUI__AttachmentsTxt_AComboBox UIUI__AttachmentsTxt_AComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__AttachmentsTxt_AComboBox == null))
+                {
+                    this.mUIUI__AttachmentsTxt_AComboBox = new UIUI__AttachmentsTxt_AComboBox(this);
+                }
+                return this.mUIUI__AttachmentsTxt_AComboBox;
+            }
+        }
+        
+        public WpfButton UIItemButton
+        {
+            get
+            {
+                if ((this.mUIItemButton == null))
+                {
+                    this.mUIItemButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIItemButton.SearchProperties[WpfButton.PropertyNames.Name] = "...";
+                    this.mUIItemButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemButton;
+            }
+        }
+        
+        public WpfCheckBox UIEscapesequencesinvarCheckBox
+        {
+            get
+            {
+                if ((this.mUIEscapesequencesinvarCheckBox == null))
+                {
+                    this.mUIEscapesequencesinvarCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mUIEscapesequencesinvarCheckBox.SearchProperties[WpfCheckBox.PropertyNames.Name] = "Escape sequences in variables";
+                    this.mUIEscapesequencesinvarCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIEscapesequencesinvarCheckBox;
+            }
+        }
+        
+        public UIUI__Resulttxt_AutoIDComboBox1 UIUI__Resulttxt_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Resulttxt_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Resulttxt_AutoIDComboBox = new UIUI__Resulttxt_AutoIDComboBox1(this);
+                }
+                return this.mUIUI__Resulttxt_AutoIDComboBox;
+            }
+        }
+        
+        public UIOnErrorCustom UIOnErrorCustom
+        {
+            get
+            {
+                if ((this.mUIOnErrorCustom == null))
+                {
+                    this.mUIOnErrorCustom = new UIOnErrorCustom(this);
+                }
+                return this.mUIOnErrorCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI__txtScript_AutoIDComboBox1 mUIUI__txtScript_AutoIDComboBox;
+        
+        private UIUI__AttachmentsTxt_AComboBox mUIUI__AttachmentsTxt_AComboBox;
+        
+        private WpfButton mUIItemButton;
+        
+        private WpfCheckBox mUIEscapesequencesinvarCheckBox;
+        
+        private UIUI__Resulttxt_AutoIDComboBox1 mUIUI__Resulttxt_AutoIDComboBox;
+        
+        private UIOnErrorCustom mUIOnErrorCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__txtScript_AutoIDComboBox1 : WpfComboBox
+    {
+        
+        public UIUI__txtScript_AutoIDComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__txtScript_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__AttachmentsTxt_AComboBox : WpfComboBox
+    {
+        
+        public UIUI__AttachmentsTxt_AComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__AttachmentsTxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Resulttxt_AutoIDComboBox1 : WpfComboBox
+    {
+        
+        public UIUI__Resulttxt_AutoIDComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIOnErrorCustom : WpfCustom
+    {
+        
+        public UIOnErrorCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.OnError";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "On Error";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIOnErrorGroup UIOnErrorGroup
+        {
+            get
+            {
+                if ((this.mUIOnErrorGroup == null))
+                {
+                    this.mUIOnErrorGroup = new UIOnErrorGroup(this);
+                }
+                return this.mUIOnErrorGroup;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIOnErrorGroup mUIOnErrorGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIOnErrorGroup : WpfGroup
+    {
+        
+        public UIOnErrorGroup(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.AutomationId] = "OnErrorGroupBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI__Variable_AutoIDComboBox UIUI__Variable_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Variable_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Variable_AutoIDComboBox = new UIUI__Variable_AutoIDComboBox(this);
+                }
+                return this.mUIUI__Variable_AutoIDComboBox;
+            }
+        }
+        
+        public UIUI__Workflow_AutoIDComboBox UIUI__Workflow_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Workflow_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Workflow_AutoIDComboBox = new UIUI__Workflow_AutoIDComboBox(this);
+                }
+                return this.mUIUI__Workflow_AutoIDComboBox;
+            }
+        }
+        
+        public WpfCheckBox UIEndthisworkflowCheckBox
+        {
+            get
+            {
+                if ((this.mUIEndthisworkflowCheckBox == null))
+                {
+                    this.mUIEndthisworkflowCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mUIEndthisworkflowCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__IsEnded_AutoID";
+                    this.mUIEndthisworkflowCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIEndthisworkflowCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI__Variable_AutoIDComboBox mUIUI__Variable_AutoIDComboBox;
+        
+        private UIUI__Workflow_AutoIDComboBox mUIUI__Workflow_AutoIDComboBox;
+        
+        private WpfCheckBox mUIEndthisworkflowCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Variable_AutoIDComboBox : WpfComboBox
+    {
+        
+        public UIUI__Variable_AutoIDComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Variable_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Workflow_AutoIDComboBox : WpfComboBox
+    {
+        
+        public UIUI__Workflow_AutoIDComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Workflow_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Python1 : WpfCustom
+    {
+        
+        public Python1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ScriptDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Python(ScriptDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UISmallViewContentCustom UISmallViewContentCustom
+        {
+            get
+            {
+                if ((this.mUISmallViewContentCustom == null))
+                {
+                    this.mUISmallViewContentCustom = new UISmallViewContentCustom(this);
+                }
+                return this.mUISmallViewContentCustom;
+            }
+        }
+        
+        public UILargeViewContentCustom UILargeViewContentCustom
+        {
+            get
+            {
+                if ((this.mUILargeViewContentCustom == null))
+                {
+                    this.mUILargeViewContentCustom = new UILargeViewContentCustom(this);
+                }
+                return this.mUILargeViewContentCustom;
+            }
+        }
+        
+        public WpfButton UIDoneButton
+        {
+            get
+            {
+                if ((this.mUIDoneButton == null))
+                {
+                    this.mUIDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mUIDoneButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIDoneButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UISmallViewContentCustom mUISmallViewContentCustom;
+        
+        private UILargeViewContentCustom mUILargeViewContentCustom;
+        
+        private WpfButton mUIDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISmallViewContentCustom : WpfCustom
+    {
+        
+        public UISmallViewContentCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI__txtScript_AutoIDComboBox2 UIUI__txtScript_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__txtScript_AutoIDComboBox == null))
+                {
+                    this.mUIUI__txtScript_AutoIDComboBox = new UIUI__txtScript_AutoIDComboBox2(this);
+                }
+                return this.mUIUI__txtScript_AutoIDComboBox;
+            }
+        }
+        
+        public UIUI__Resulttxt_AutoIDComboBox2 UIUI__Resulttxt_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Resulttxt_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Resulttxt_AutoIDComboBox = new UIUI__Resulttxt_AutoIDComboBox2(this);
+                }
+                return this.mUIUI__Resulttxt_AutoIDComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI__txtScript_AutoIDComboBox2 mUIUI__txtScript_AutoIDComboBox;
+        
+        private UIUI__Resulttxt_AutoIDComboBox2 mUIUI__Resulttxt_AutoIDComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__txtScript_AutoIDComboBox2 : WpfComboBox
+    {
+        
+        public UIUI__txtScript_AutoIDComboBox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__txtScript_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Resulttxt_AutoIDComboBox2 : WpfComboBox
+    {
+        
+        public UIUI__Resulttxt_AutoIDComboBox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UILargeViewContentCustom : WpfCustom
+    {
+        
+        public UILargeViewContentCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI__AttachmentsTxt_AComboBox1 UIUI__AttachmentsTxt_AComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__AttachmentsTxt_AComboBox == null))
+                {
+                    this.mUIUI__AttachmentsTxt_AComboBox = new UIUI__AttachmentsTxt_AComboBox1(this);
+                }
+                return this.mUIUI__AttachmentsTxt_AComboBox;
+            }
+        }
+        
+        public WpfButton UIItemButton
+        {
+            get
+            {
+                if ((this.mUIItemButton == null))
+                {
+                    this.mUIItemButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIItemButton.SearchProperties[WpfButton.PropertyNames.Name] = "...";
+                    this.mUIItemButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemButton;
+            }
+        }
+        
+        public WpfCheckBox UIEscapesequencesinvarCheckBox
+        {
+            get
+            {
+                if ((this.mUIEscapesequencesinvarCheckBox == null))
+                {
+                    this.mUIEscapesequencesinvarCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mUIEscapesequencesinvarCheckBox.SearchProperties[WpfCheckBox.PropertyNames.Name] = "Escape sequences in variables";
+                    this.mUIEscapesequencesinvarCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIEscapesequencesinvarCheckBox;
+            }
+        }
+        
+        public UIUI__txtScript_AutoIDComboBox3 UIUI__txtScript_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__txtScript_AutoIDComboBox == null))
+                {
+                    this.mUIUI__txtScript_AutoIDComboBox = new UIUI__txtScript_AutoIDComboBox3(this);
+                }
+                return this.mUIUI__txtScript_AutoIDComboBox;
+            }
+        }
+        
+        public UIUI__Resulttxt_AutoIDComboBox3 UIUI__Resulttxt_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Resulttxt_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Resulttxt_AutoIDComboBox = new UIUI__Resulttxt_AutoIDComboBox3(this);
+                }
+                return this.mUIUI__Resulttxt_AutoIDComboBox;
+            }
+        }
+        
+        public UIOnErrorCustom1 UIOnErrorCustom
+        {
+            get
+            {
+                if ((this.mUIOnErrorCustom == null))
+                {
+                    this.mUIOnErrorCustom = new UIOnErrorCustom1(this);
+                }
+                return this.mUIOnErrorCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI__AttachmentsTxt_AComboBox1 mUIUI__AttachmentsTxt_AComboBox;
+        
+        private WpfButton mUIItemButton;
+        
+        private WpfCheckBox mUIEscapesequencesinvarCheckBox;
+        
+        private UIUI__txtScript_AutoIDComboBox3 mUIUI__txtScript_AutoIDComboBox;
+        
+        private UIUI__Resulttxt_AutoIDComboBox3 mUIUI__Resulttxt_AutoIDComboBox;
+        
+        private UIOnErrorCustom1 mUIOnErrorCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__AttachmentsTxt_AComboBox1 : WpfComboBox
+    {
+        
+        public UIUI__AttachmentsTxt_AComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__AttachmentsTxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__txtScript_AutoIDComboBox3 : WpfComboBox
+    {
+        
+        public UIUI__txtScript_AutoIDComboBox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__txtScript_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Resulttxt_AutoIDComboBox3 : WpfComboBox
+    {
+        
+        public UIUI__Resulttxt_AutoIDComboBox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIOnErrorCustom1 : WpfCustom
+    {
+        
+        public UIOnErrorCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.OnError";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "On Error";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIOnErrorGroup1 UIOnErrorGroup
+        {
+            get
+            {
+                if ((this.mUIOnErrorGroup == null))
+                {
+                    this.mUIOnErrorGroup = new UIOnErrorGroup1(this);
+                }
+                return this.mUIOnErrorGroup;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIOnErrorGroup1 mUIOnErrorGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIOnErrorGroup1 : WpfGroup
+    {
+        
+        public UIOnErrorGroup1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.AutomationId] = "OnErrorGroupBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI__Variable_AutoIDComboBox1 UIUI__Variable_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Variable_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Variable_AutoIDComboBox = new UIUI__Variable_AutoIDComboBox1(this);
+                }
+                return this.mUIUI__Variable_AutoIDComboBox;
+            }
+        }
+        
+        public UIUI__Workflow_AutoIDComboBox1 UIUI__Workflow_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Workflow_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Workflow_AutoIDComboBox = new UIUI__Workflow_AutoIDComboBox1(this);
+                }
+                return this.mUIUI__Workflow_AutoIDComboBox;
+            }
+        }
+        
+        public WpfCheckBox UIEndthisworkflowCheckBox
+        {
+            get
+            {
+                if ((this.mUIEndthisworkflowCheckBox == null))
+                {
+                    this.mUIEndthisworkflowCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mUIEndthisworkflowCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__IsEnded_AutoID";
+                    this.mUIEndthisworkflowCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIEndthisworkflowCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI__Variable_AutoIDComboBox1 mUIUI__Variable_AutoIDComboBox;
+        
+        private UIUI__Workflow_AutoIDComboBox1 mUIUI__Workflow_AutoIDComboBox;
+        
+        private WpfCheckBox mUIEndthisworkflowCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Variable_AutoIDComboBox1 : WpfComboBox
+    {
+        
+        public UIUI__Variable_AutoIDComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Variable_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Workflow_AutoIDComboBox1 : WpfComboBox
+    {
+        
+        public UIUI__Workflow_AutoIDComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Workflow_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Ruby1 : WpfCustom
+    {
+        
+        public Ruby1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ScriptDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Ruby(ScriptDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UISmallViewContentCustom1 UISmallViewContentCustom
+        {
+            get
+            {
+                if ((this.mUISmallViewContentCustom == null))
+                {
+                    this.mUISmallViewContentCustom = new UISmallViewContentCustom1(this);
+                }
+                return this.mUISmallViewContentCustom;
+            }
+        }
+        
+        public UILargeViewContentCustom1 UILargeViewContentCustom
+        {
+            get
+            {
+                if ((this.mUILargeViewContentCustom == null))
+                {
+                    this.mUILargeViewContentCustom = new UILargeViewContentCustom1(this);
+                }
+                return this.mUILargeViewContentCustom;
+            }
+        }
+        
+        public WpfButton UIDoneButton
+        {
+            get
+            {
+                if ((this.mUIDoneButton == null))
+                {
+                    this.mUIDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mUIDoneButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIDoneButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UISmallViewContentCustom1 mUISmallViewContentCustom;
+        
+        private UILargeViewContentCustom1 mUILargeViewContentCustom;
+        
+        private WpfButton mUIDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISmallViewContentCustom1 : WpfCustom
+    {
+        
+        public UISmallViewContentCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI__txtScript_AutoIDComboBox4 UIUI__txtScript_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__txtScript_AutoIDComboBox == null))
+                {
+                    this.mUIUI__txtScript_AutoIDComboBox = new UIUI__txtScript_AutoIDComboBox4(this);
+                }
+                return this.mUIUI__txtScript_AutoIDComboBox;
+            }
+        }
+        
+        public UIUI__Resulttxt_AutoIDComboBox4 UIUI__Resulttxt_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Resulttxt_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Resulttxt_AutoIDComboBox = new UIUI__Resulttxt_AutoIDComboBox4(this);
+                }
+                return this.mUIUI__Resulttxt_AutoIDComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI__txtScript_AutoIDComboBox4 mUIUI__txtScript_AutoIDComboBox;
+        
+        private UIUI__Resulttxt_AutoIDComboBox4 mUIUI__Resulttxt_AutoIDComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__txtScript_AutoIDComboBox4 : WpfComboBox
+    {
+        
+        public UIUI__txtScript_AutoIDComboBox4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__txtScript_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Resulttxt_AutoIDComboBox4 : WpfComboBox
+    {
+        
+        public UIUI__Resulttxt_AutoIDComboBox4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UILargeViewContentCustom1 : WpfCustom
+    {
+        
+        public UILargeViewContentCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI__AttachmentsTxt_AComboBox2 UIUI__AttachmentsTxt_AComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__AttachmentsTxt_AComboBox == null))
+                {
+                    this.mUIUI__AttachmentsTxt_AComboBox = new UIUI__AttachmentsTxt_AComboBox2(this);
+                }
+                return this.mUIUI__AttachmentsTxt_AComboBox;
+            }
+        }
+        
+        public WpfButton UIItemButton
+        {
+            get
+            {
+                if ((this.mUIItemButton == null))
+                {
+                    this.mUIItemButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIItemButton.SearchProperties[WpfButton.PropertyNames.Name] = "...";
+                    this.mUIItemButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemButton;
+            }
+        }
+        
+        public WpfCheckBox UIEscapesequencesinvarCheckBox
+        {
+            get
+            {
+                if ((this.mUIEscapesequencesinvarCheckBox == null))
+                {
+                    this.mUIEscapesequencesinvarCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mUIEscapesequencesinvarCheckBox.SearchProperties[WpfCheckBox.PropertyNames.Name] = "Escape sequences in variables";
+                    this.mUIEscapesequencesinvarCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIEscapesequencesinvarCheckBox;
+            }
+        }
+        
+        public UIUI__txtScript_AutoIDComboBox5 UIUI__txtScript_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__txtScript_AutoIDComboBox == null))
+                {
+                    this.mUIUI__txtScript_AutoIDComboBox = new UIUI__txtScript_AutoIDComboBox5(this);
+                }
+                return this.mUIUI__txtScript_AutoIDComboBox;
+            }
+        }
+        
+        public UIUI__Resulttxt_AutoIDComboBox5 UIUI__Resulttxt_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Resulttxt_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Resulttxt_AutoIDComboBox = new UIUI__Resulttxt_AutoIDComboBox5(this);
+                }
+                return this.mUIUI__Resulttxt_AutoIDComboBox;
+            }
+        }
+        
+        public UIOnErrorCustom2 UIOnErrorCustom
+        {
+            get
+            {
+                if ((this.mUIOnErrorCustom == null))
+                {
+                    this.mUIOnErrorCustom = new UIOnErrorCustom2(this);
+                }
+                return this.mUIOnErrorCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI__AttachmentsTxt_AComboBox2 mUIUI__AttachmentsTxt_AComboBox;
+        
+        private WpfButton mUIItemButton;
+        
+        private WpfCheckBox mUIEscapesequencesinvarCheckBox;
+        
+        private UIUI__txtScript_AutoIDComboBox5 mUIUI__txtScript_AutoIDComboBox;
+        
+        private UIUI__Resulttxt_AutoIDComboBox5 mUIUI__Resulttxt_AutoIDComboBox;
+        
+        private UIOnErrorCustom2 mUIOnErrorCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__AttachmentsTxt_AComboBox2 : WpfComboBox
+    {
+        
+        public UIUI__AttachmentsTxt_AComboBox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__AttachmentsTxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__txtScript_AutoIDComboBox5 : WpfComboBox
+    {
+        
+        public UIUI__txtScript_AutoIDComboBox5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__txtScript_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Resulttxt_AutoIDComboBox5 : WpfComboBox
+    {
+        
+        public UIUI__Resulttxt_AutoIDComboBox5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIOnErrorCustom2 : WpfCustom
+    {
+        
+        public UIOnErrorCustom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.OnError";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "On Error";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIOnErrorGroup2 UIOnErrorGroup
+        {
+            get
+            {
+                if ((this.mUIOnErrorGroup == null))
+                {
+                    this.mUIOnErrorGroup = new UIOnErrorGroup2(this);
+                }
+                return this.mUIOnErrorGroup;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIOnErrorGroup2 mUIOnErrorGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIOnErrorGroup2 : WpfGroup
+    {
+        
+        public UIOnErrorGroup2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.AutomationId] = "OnErrorGroupBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI__Variable_AutoIDComboBox2 UIUI__Variable_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Variable_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Variable_AutoIDComboBox = new UIUI__Variable_AutoIDComboBox2(this);
+                }
+                return this.mUIUI__Variable_AutoIDComboBox;
+            }
+        }
+        
+        public UIUI__Workflow_AutoIDComboBox2 UIUI__Workflow_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Workflow_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Workflow_AutoIDComboBox = new UIUI__Workflow_AutoIDComboBox2(this);
+                }
+                return this.mUIUI__Workflow_AutoIDComboBox;
+            }
+        }
+        
+        public WpfCheckBox UIEndthisworkflowCheckBox
+        {
+            get
+            {
+                if ((this.mUIEndthisworkflowCheckBox == null))
+                {
+                    this.mUIEndthisworkflowCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mUIEndthisworkflowCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__IsEnded_AutoID";
+                    this.mUIEndthisworkflowCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIEndthisworkflowCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI__Variable_AutoIDComboBox2 mUIUI__Variable_AutoIDComboBox;
+        
+        private UIUI__Workflow_AutoIDComboBox2 mUIUI__Workflow_AutoIDComboBox;
+        
+        private WpfCheckBox mUIEndthisworkflowCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Variable_AutoIDComboBox2 : WpfComboBox
+    {
+        
+        public UIUI__Variable_AutoIDComboBox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Variable_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Workflow_AutoIDComboBox2 : WpfComboBox
+    {
+        
+        public UIUI__Workflow_AutoIDComboBox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Workflow_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
         #endregion
     }
     
@@ -41571,6 +43723,338 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsTabPage UIDev2StudioViewModelsTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsTabPage == null))
+                {
+                    this.mUIDev2StudioViewModelsTabPage = new UIDev2StudioViewModelsTabPage(this);
+                }
+                return this.mUIDev2StudioViewModelsTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsTabPage mUIDev2StudioViewModelsTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsTabPage : WpfTabPage
+    {
+        
+        public UIDev2StudioViewModelsTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsCustom : WpfCustom
+    {
+        
+        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_WorkflowDesigner_Custom UIUI_WorkflowDesigner_Custom
+        {
+            get
+            {
+                if ((this.mUIUI_WorkflowDesigner_Custom == null))
+                {
+                    this.mUIUI_WorkflowDesigner_Custom = new UIUI_WorkflowDesigner_Custom(this);
+                }
+                return this.mUIUI_WorkflowDesigner_Custom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_WorkflowDesigner_Custom mUIUI_WorkflowDesigner_Custom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_WorkflowDesigner_Custom : WpfCustom
+    {
+        
+        public UIUI_WorkflowDesigner_Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_WorkflowDesigner_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUserControl_1Custom UIUserControl_1Custom
+        {
+            get
+            {
+                if ((this.mUIUserControl_1Custom == null))
+                {
+                    this.mUIUserControl_1Custom = new UIUserControl_1Custom(this);
+                }
+                return this.mUIUserControl_1Custom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUserControl_1Custom mUIUserControl_1Custom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUserControl_1Custom : WpfCustom
+    {
+        
+        public UIUserControl_1Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DesignerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UserControl_1";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIScrollViewerPane UIScrollViewerPane
+        {
+            get
+            {
+                if ((this.mUIScrollViewerPane == null))
+                {
+                    this.mUIScrollViewerPane = new UIScrollViewerPane(this);
+                }
+                return this.mUIScrollViewerPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIScrollViewerPane mUIScrollViewerPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIScrollViewerPane : WpfPane
+    {
+        
+        public UIScrollViewerPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "scrollViewer";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIActivityBuilderCustom UIActivityBuilderCustom
+        {
+            get
+            {
+                if ((this.mUIActivityBuilderCustom == null))
+                {
+                    this.mUIActivityBuilderCustom = new UIActivityBuilderCustom(this);
+                }
+                return this.mUIActivityBuilderCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIActivityBuilderCustom mUIActivityBuilderCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIActivityBuilderCustom : WpfCustom
+    {
+        
+        public UIActivityBuilderCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActivityTypeDesigner";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
+        {
+            get
+            {
+                if ((this.mUIWorkflowItemPresenteCustom == null))
+                {
+                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
+                }
+                return this.mUIWorkflowItemPresenteCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWorkflowItemPresenteCustom : WpfCustom
+    {
+        
+        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIFlowchartCustom
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom == null))
+                {
+                    this.mUIFlowchartCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 4(FlowchartDesigner)";
+                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIFlowchartCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIFlowchartCustom;
         #endregion
     }
 }
