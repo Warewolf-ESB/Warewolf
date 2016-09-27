@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Common;
 
@@ -179,7 +181,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Invalid.Exists);
             Uimap.Click_Delete_Test_Button();
             Uimap.Click_MessageBox_Yes();
-            Uimap.TryRemoveFromExplorer(Testing123);
         }
         #region Additional test attributes
 
@@ -190,6 +191,14 @@ namespace Warewolf.UITests
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
+        }
+
+        [TestCleanup()]
+        public void MyTestCleanup()
+        {
+            Playback.PlaybackError -= Uimap.OnError;
+            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
+            File.Delete(resourcesFolder + @"\" + Testing123 + ".xml");
         }
 
         UIMap Uimap
