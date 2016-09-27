@@ -694,8 +694,8 @@ namespace Warewolf.Studio.ViewModels
             Children = new ObservableCollection<IServiceTestStep>();
             AssertSelected = false;
             MockSelected = true;
-            IsTestStepExpanded = StepOutputs.Count > 0;
-            IsTestStepExpanderEnabled = StepOutputs.Count > 0;
+            IsTestStepExpanded = StepOutputs?.Count > 0;
+            IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
         }
 
         public Guid UniqueId
