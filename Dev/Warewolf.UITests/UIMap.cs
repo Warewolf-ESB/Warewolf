@@ -1511,60 +1511,16 @@ namespace Warewolf.UITests
 
         public void Enter_Recordset_values()
         {
-            #region Variable Declarations
-            WpfCell variableCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
-            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.ValueCell.AssignValueCombobox.TextEdit;
-            WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.VariableCell.Listbox.Textbox;
-            WpfEdit row2Value = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.ValueCell.AssignValueCombobox.TextEdit;
-            WpfEdit textbox2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.VariableCell.Listbox.Textbox;
-            WpfEdit textEdit1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.ValueCell.AssignValueCombobox.TextEdit;
-            WpfEdit textbox3 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row4.VariableCell.Listbox.Textbox;
-            WpfEdit textEdit2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row4.ValueCell.AssignValueCombobox.TextEdit;
-
-            var firstVariable = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1;
-            var rec = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1;
-            var mr = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem2;
-            #endregion
-
-            // Click 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
-            Mouse.Click(variableCell, new Point(33, 28));
-
-            // Type '[[rec().a]]' in 'UI__Row1_FieldName_AutoID' text box
-            textbox.Text = "[[rec().a]]";
-
-            // Type '5' in 'Text' text box
-            textEdit.Text = "5";
-
-            // Type '{Tab}' in 'Text' text box
-            Keyboard.SendKeys(textEdit, "{Tab}", ModifierKeys.None);
-
-            // Type '[[rec().b]]' in 'UI__Row2_FieldName_AutoID' text box
-            textbox1.Text = "[[rec().b]]";
-
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.DrawHighlight();
-            textbox2.DrawHighlight();
-            // Type '[[var]]' in 'UI__Row3_FieldName_AutoID' text box
-            textbox2.Text = "[[var]]";
-
-            // Type '{Tab}' in 'UI__Row3_FieldName_AutoID' text box
-            Keyboard.SendKeys(textbox2, "{Tab}", ModifierKeys.None);
-
-            // Type '1' in 'Text' text box
-            textEdit1.Text = "1";
-
-            // Type '{Tab}' in 'Text' text box
-            Keyboard.SendKeys(textEdit1, "{Tab}", ModifierKeys.None);
-
-            // Type '[[mr()]]' in 'UI__Row4_FieldName_AutoID' text box
-            textbox3.Text = "[[mr()]]";
-
-            // Type '{Tab}' in 'Text' text box
-            Keyboard.SendKeys(textEdit2, "{Tab}", ModifierKeys.None);
-
-            Assert.IsTrue(firstVariable.Exists, "var does not exist in the variable explorer");
-            Assert.IsTrue(rec.Exists, "rec().a does not exist in the variable explorer");
-            Assert.IsTrue(mr.Exists, "rec().a does not exist in the variable explorer");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox.Text = "[[rec().a]]";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.ValueCell.AssignValueCombobox.TextEdit.Text = "5";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.VariableCell.Listbox.Textbox.Text = "[[rec().b]]";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.ValueCell.AssignValueCombobox.TextEdit.Text = "10";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.VariableCell.Listbox.Textbox.Text = "[[var]]";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.ValueCell.AssignValueCombobox.TextEdit.Text = "1";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row4.VariableCell.Listbox.Textbox.Text = "[[mr()]]";
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.Exists, "var does not exist in the variable explorer");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field1.Exists, "rec().a does not exist in the variable explorer");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field2.Exists, "rec().b does not exist in the variable explorer");
         }
 
         public void Select_InputOutput_CheckBox_Recordset_values()
@@ -1596,7 +1552,7 @@ namespace Warewolf.UITests
 
         public void F5_Keyboard_Click()
         {
-            WpfCheckBox uIUI_IsOutputCheckbox_CheckBox = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field.OutputCheckbox;
+            WpfCheckBox uIUI_IsOutputCheckbox_CheckBox = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field1.OutputCheckbox;
             var varText = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
 
             Keyboard.SendKeys(uIUI_IsOutputCheckbox_CheckBox, "{F5}", ModifierKeys.None);
