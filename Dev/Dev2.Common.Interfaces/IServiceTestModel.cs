@@ -44,7 +44,7 @@ namespace Dev2.Common.Interfaces
 
         void SetItem(IServiceTestModel model);
 
-        void AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs);
+        IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs);
     }
 
     public interface IServiceTestInput

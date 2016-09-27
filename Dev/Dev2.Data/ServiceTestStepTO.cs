@@ -22,5 +22,6 @@ namespace Dev2.Data
         public List<IServiceTestOutput> StepOutputs { get; set; }
         public IServiceTestStep Parent { get; set; }
         public ObservableCollection<IServiceTestStep> Children { get; set; }
+        public string StepDescription { get; set; }
     }
 }
