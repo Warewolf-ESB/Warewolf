@@ -799,7 +799,7 @@ namespace Warewolf.UITests
 
             // Click 'Duplicate' menu item
             Mouse.Click(duplicate, new Point(62, 12));
-
+            saveDialogWindow.DrawHighlight();
             // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
             Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
         }
@@ -5078,12 +5078,15 @@ namespace Warewolf.UITests
             // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
             Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
 
+            open.DrawHighlight();
             // Verify that the 'Exists' property of 'Open' menu item equals 'True'
             Assert.AreEqual(this.RightClick_Explorer_Localhost_First_ItemParams.OpenExists, open.Exists, "Open does not exist in explorer context menu.");
 
+            showDependencies.DrawHighlight();
             // Verify that the 'Exists' property of 'Show Dependencies' menu item equals 'True'
             Assert.AreEqual(this.RightClick_Explorer_Localhost_First_ItemParams.ShowDependenciesExists, showDependencies.Exists, "ShowDependencies does not exist in explorer context menu.");
 
+            delete.DrawHighlight();
             // Verify that the 'Exists' property of 'Delete' menu item equals 'True'
             Assert.AreEqual(this.RightClick_Explorer_Localhost_First_ItemParams.DeleteExists, delete.Exists, "Delete does not exist in ExplorerContextMenu");
         }
