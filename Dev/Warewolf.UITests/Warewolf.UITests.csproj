@@ -65,6 +65,8 @@
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Explorer\ItemDragAndDrop.cs" />
     <Compile Include="Explorer\ContextMenuItemsTest.cs" />
+    <Compile Include="Tools\Scripting\Ruby.cs" />
+    <Compile Include="Tools\Scripting\Python.cs" />
     <Compile Include="Variables\Variables.cs" />
     <Compile Include="WorkflowTesting\TestsResults.cs" />
     <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
@@ -105,7 +107,7 @@
     <Compile Include="Tools\Resources\Service.cs" />
     <Compile Include="Tools\Resources\DotNet DLL.cs" />
     <Compile Include="Tools\Scripting\CMD Script.cs" />
-    <Compile Include="Tools\Scripting\Script.cs" />
+    <Compile Include="Tools\Scripting\JavaScript.cs" />
     <Compile Include="Tools\Utility\Calculate.cs" />
     <Compile Include="Tools\Utility\Web Request.cs" />
     <Compile Include="Tools\Utility\Xpath.cs" />
