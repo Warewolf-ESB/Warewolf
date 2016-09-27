@@ -455,8 +455,11 @@ namespace Dev2.Runtime.ESB.Execution
                         for(int index = 0; index < acts.Count; index++)
                         {
                             var activity = acts[index];
-                            var replacement = MockActivity(activity as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
-                            acts[index] = replacement;
+                            if(foundTestStep.Children != null)
+                            {
+                                var replacement = MockActivity(activity as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                                acts[index] = replacement;
+                            }
                         }
                     }
                 }else if(foundTestStep.ActivityType == typeof(DsfForEachActivity).Name)
@@ -464,8 +467,11 @@ namespace Dev2.Runtime.ESB.Execution
                     var forEach = resource as DsfForEachActivity;
                     if (forEach != null)
                     {
-                        var replacement = MockActivity(forEach.DataFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
-                        forEach.DataFunc.Handler = replacement;
+                        if(foundTestStep.Children != null)
+                        {
+                            var replacement = MockActivity(forEach.DataFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                            forEach.DataFunc.Handler = replacement;
+                        }
                     }
                 }
                 else
@@ -475,104 +481,5 @@ namespace Dev2.Runtime.ESB.Execution
             }
             return resource;
         }
-    }
-
-    public class TestMockStep : DsfActivityAbstract<string>
-    {
-        private readonly IDev2Activity _originalActivity;
-        private readonly List<IServiceTestOutput> _outputs;
-
-        public TestMockStep(IDev2Activity originalActivity , List<IServiceTestOutput> outputs)
-        {
-            _originalActivity = originalActivity;
-            _outputs = outputs;
-            var act = originalActivity as DsfBaseActivity;
-            if(act != null)
-                DisplayName = act.DisplayName;
-        }
-
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
-
-        #region Overrides of DsfNativeActivity<string>
-
-        protected override void OnExecute(NativeActivityContext context)
-        {
-        }
-
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
-        {
-        }
-
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
-        {
-        }
-
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
-
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
-
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
-        {
-            AddRecordsetsInputs(_outputs.Where(output => DataListUtil.IsValueRecordset(output.Variable) && !output.Variable.Contains("@")), dataObject.Environment);
-            foreach (var output in _outputs)
-            {
-                var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
-                var value = output.Value;
-                if (variable.StartsWith("[[@"))
-                {
-                    var jContainer = JsonConvert.DeserializeObject(value) as JObject;
-                    dataObject.Environment.AddToJsonObjects(variable, jContainer);
-                }
-                else if (!DataListUtil.IsValueRecordset(output.Variable))
-                {
-                    dataObject.Environment.Assign(variable, value, 0);
-                }
-            }
-            NextNodes = _originalActivity.NextNodes;
-        }
-
-
-        private static void AddRecordsetsInputs(IEnumerable<IServiceTestOutput> recSets, IExecutionEnvironment environment)
-        {
-            if(recSets != null)
-            {
-                var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
-                foreach (var groupedRecset in groupedRecsets)
-                {
-                    var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
-                    foreach (var dataListItem in dataListItems)
-                    {
-                        List<IServiceTestOutput> recSetsToAssign = new List<IServiceTestOutput>();
-                        var empty = true;
-                        foreach (var listItem in dataListItem)
-                        {
-                            if (!string.IsNullOrEmpty(listItem.Value))
-                            {
-                                empty = false;
-                            }
-                            recSetsToAssign.Add(listItem);
-                        }
-                        if (!empty)
-                        {
-                            foreach (var serviceTestInput in recSetsToAssign)
-                            {
-                                environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        #endregion
     }
 }
