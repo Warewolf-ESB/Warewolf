@@ -59,42 +59,67 @@ namespace Warewolf.Studio.ViewModels
             CreateTestCommand.Execute(null);
 
             var inputState = _debugStates.FirstOrDefault();
+            var outPutState = _debugStates.LastOrDefault();
             if (inputState != null)
             {
 
                 foreach (var debugItem in inputState.Inputs)
                 {
-                    var variable = debugItem.ResultsList.Single().Variable.Replace("[[", "").Replace("]]", "");
-                    var value = debugItem.ResultsList.Single().Value;
-                    var serviceTestInput = SelectedServiceTest.Inputs.Single(input => input.Variable.Equals(variable));
-                    serviceTestInput.Value = value;
+                    var variable = debugItem.ResultsList.First().Variable.Replace("[[", "").Replace("]]", "");
+                    var value = debugItem.ResultsList.First().Value;
+                    var serviceTestInput = SelectedServiceTest.Inputs.FirstOrDefault(input => input.Variable.Equals(variable));
+                    if (serviceTestInput != null)
+                    {
+                        serviceTestInput.Value = value;
+                    }
+                }
+            }
+            Dev2JsonSerializer f = new Dev2JsonSerializer();
+            var serialize = f.Serialize(_debugStates);
+
+            foreach (var debugState in _debugStates)
+            {
+                if (ReferenceEquals(debugState, inputState) || ReferenceEquals(debugState, outPutState))
+                    continue;
+                var type = Type.GetType(debugState.ActualType);
+                if (type == typeof(FlowSwitch<string>)
+                    || type == typeof(DsfSwitch)
+                    || type == typeof(FlowDecision)
+                    || type == typeof(DsfDecision))
+                {
+                    var modelItem = WorkflowDesignerViewModel.GetModelItem(debugState.WorkSurfaceMappingId, debugState.ParentID);
+                    ItemSelectedAction(modelItem);
+                }
+                else
+                {
+                    if(type == typeof(DsfForEachActivity) || type == typeof(DsfSequenceActivity))
+                    {
+                        var modelItem = WorkflowDesignerViewModel.GetModelItem(debugState.WorkSurfaceMappingId, debugState.ParentID);
+                        var debugStateProcessor = new DebugStateProcessor(debugState, SelectedServiceTest, modelItem);//To do setting of debug values when model item is passed
+                        debugStateProcessor.Process();
+                    }
+                    else
+                    {
+                        var debugStateProcessor = new DebugStateProcessor(debugState, SelectedServiceTest);
+                        debugStateProcessor.Process();
+                    }
+
+                 
                 }
             }
 
-             var modelItems = WorkflowDesignerViewModel.GetModelItems();
-             foreach (var mItem in modelItems)
-             {
-                 if(Application.Current != null)
-                 {
-                     if(Application.Current.Dispatcher != null)
-                     {
-                         Application.Current.Dispatcher.Invoke(() =>
-                         {
-                             ItemSelectedAction(mItem);
-                         });
-                     }
-                 }
-             }
 
-            var outPutState = _debugStates.LastOrDefault();
             if (outPutState != null)
             {
                 foreach (var debugItem in outPutState.Outputs)
                 {
-                    var variable = debugItem.ResultsList.Single().Variable.Replace("[[", "").Replace("]]", "");
-                    var value = debugItem.ResultsList.Single().Value;
-                    var serviceTestInput = SelectedServiceTest.Outputs.Single(input => input.Variable.Equals(variable));
-                    serviceTestInput.Value = value;
+                    var variable = debugItem.ResultsList.First().Variable.Replace("[[", "").Replace("]]", "");
+                    var value = debugItem.ResultsList.First().Value;
+                    var serviceTestInput = SelectedServiceTest.Outputs.FirstOrDefault(input => input.Variable.Equals(variable));
+                    if (serviceTestInput != null)
+                    {
+                        serviceTestInput.Value = value;
+                    }
                 }
             }
         }
@@ -184,7 +209,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (modelItem.ItemType == typeof(DsfForEachActivity))
                 {
-                   ProcessForEach(modelItem);
+                    ProcessForEach(modelItem);
                 }
                 else if (modelItem.ItemType == typeof(DsfSequenceActivity))
                 {
@@ -227,19 +252,19 @@ namespace Warewolf.Studio.ViewModels
 
         private void AddForEach(DsfForEachActivity forEachActivity, ObservableCollection<IServiceTestStep> serviceTestSteps)
         {
-            if(forEachActivity != null)
+            if (forEachActivity != null)
             {
                 var uniqueId = forEachActivity.UniqueID;
                 var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
 
-                if(exists == null)
+                if (exists == null)
                 {
                     var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfForEachActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
                     {
                         StepDescription = forEachActivity.DisplayName
                     };
                     var act = forEachActivity.DataFunc.Handler as DsfNativeActivity<string>;
-                    if(act != null)
+                    if (act != null)
                     {
                         if (act.GetType() == typeof(DsfSequenceActivity))
                         {
@@ -280,7 +305,7 @@ namespace Warewolf.Studio.ViewModels
                             if (act.GetType() == typeof(DsfSequenceActivity))
                             {
                                 AddSequence(act as DsfSequenceActivity, testStep.Children);
-                            }                            
+                            }
                             else
                             {
                                 AddChildActivity(act, testStep);
@@ -400,7 +425,7 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
-       
+
 
         private void ProcessDecision(ModelItem modelItem)
         {

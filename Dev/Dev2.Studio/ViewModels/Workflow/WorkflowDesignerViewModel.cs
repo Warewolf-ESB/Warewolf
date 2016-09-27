@@ -1142,11 +1142,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return selectedModelItem;
         }
 
-        public List<ModelItem> GetModelItems()
-        {
-            var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity)).ToList();
-            return modelItems;
-        } 
+       
         private void SelectSingleModelItem(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
@@ -1165,7 +1161,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
         }
-
+        public List<ModelItem> DebugModels => SelectedDebugItems; 
         private void AddModelItemToSelection(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
@@ -1408,6 +1404,15 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
         {
             DoWorkspaceSave();
+        }
+
+        public ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID)
+        {
+            var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
+            // ReSharper disable MaximumChainedReferences
+            var selectedModelItem = (from mi in modelItems let instanceID = ModelItemUtils.GetUniqueID(mi) where instanceID == workSurfaceMappingId || instanceID == parentID select mi).FirstOrDefault();
+            // ReSharper restore MaximumChainedReferences
+            return selectedModelItem;
         }
 
         /// <summary>
