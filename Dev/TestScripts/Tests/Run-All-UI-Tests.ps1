@@ -37,7 +37,7 @@ $TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
   <Deployment>
 		<DeploymentItem filename=`"Dev2.Server\bin\Debug\`" outputDirectory=`"Server`" />
 		<DeploymentItem filename=`"Dev2.Studio\bin\Debug\`" outputDirectory=`"Studio`" />
-		<DeploymentItem filename=`"Warewolf.Studio.UISpecs\Properties\DefaultWorkspaceLayout.xml`" />
+		<DeploymentItem filename=`"Warewolf.UITests\Properties\DefaultWorkspaceLayout.xml`" />
   </Deployment>
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Scripts setupScript=`"TestScripts\Studio\Startup.bat`" cleanupScript=`"TestScripts\Studio\Cleanup.bat`" />

@@ -1,22 +1,13 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Windows.Input;
-using System.Xml;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -39,6 +30,15 @@ using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Views;
 using ServiceStack.Common.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Windows.Input;
+using System.Xml;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
@@ -52,7 +52,7 @@ namespace Dev2.Studio.ViewModels.DataList
         private readonly IComplexObjectHandler _complexObjectHandler;
         private readonly IScalarHandler _scalarHandler;
         private readonly IRecordsetHandler _recordsetHandler;
-        readonly IDataListViewModelHelper _helper;
+        private readonly IDataListViewModelHelper _helper;
         private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private RelayCommand _findUnusedAndMissingDataListItems;
         private ObservableCollection<IRecordSetItemModel> _recsetCollection;
@@ -69,6 +69,7 @@ namespace Dev2.Studio.ViewModels.DataList
         #endregion Fields
 
         #region Properties
+
         public bool CanSortItems => HasItems();
 
         public ObservableCollection<DataListHeaderItemModel> BaseCollection
@@ -97,23 +98,23 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void FilterCollection(string searchText)
         {
-            if(_scalarCollection!=null && _scalarCollection.Count > 1)
+            if (_scalarCollection != null && _scalarCollection.Count > 1)
             {
-                foreach(var scalarItemModel in _scalarCollection)
+                foreach (var scalarItemModel in _scalarCollection)
                 {
                     scalarItemModel.Filter(searchText);
                 }
             }
-            if (_recsetCollection != null && _recsetCollection.Count>1)
+            if (_recsetCollection != null && _recsetCollection.Count > 1)
             {
-                foreach(var recordSetItemModel in _recsetCollection)
+                foreach (var recordSetItemModel in _recsetCollection)
                 {
                     recordSetItemModel.Filter(searchText);
                 }
             }
-            if (_complexObjectCollection != null && _complexObjectCollection.Count>0)
+            if (_complexObjectCollection != null && _complexObjectCollection.Count > 0)
             {
-                foreach(var complexObjectItemModel in _complexObjectCollection)
+                foreach (var complexObjectItemModel in _complexObjectCollection)
                 {
                     complexObjectItemModel.Filter(searchText);
                 }
@@ -136,6 +137,7 @@ namespace Dev2.Studio.ViewModels.DataList
         public IResourceModel Resource { get; private set; }
 
         public ObservableCollection<IDataListItemModel> DataList => CreateFullDataList();
+
         public bool HasErrors
         {
             get
@@ -178,7 +180,6 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-
                 if (_complexObjectCollection != null)
                 {
                     if (string.IsNullOrEmpty(_searchText))
@@ -198,7 +199,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems == null) return;
             foreach (INotifyPropertyChanged item in args.NewItems)
@@ -252,11 +253,11 @@ namespace Dev2.Studio.ViewModels.DataList
                     return _recsetCollection;
                 }
                 var recordSetItemModels = _recsetCollection.Where(model => model.IsVisible).ToObservableCollection();
-                return recordSetItemModels; 
+                return recordSetItemModels;
             }
         }
 
-        bool _toggleSortOrder = true;
+        private bool _toggleSortOrder = true;
         private ObservableCollection<IComplexObjectItemModel> _complexObjectCollection;
         private IJsonObjectsView _jsonObjectView;
 
@@ -301,7 +302,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        bool CanViewComplexObjects(Object itemx)
+        private bool CanViewComplexObjects(Object itemx)
         {
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsComplexObject;
@@ -313,7 +314,7 @@ namespace Dev2.Studio.ViewModels.DataList
             return item != null && !item.IsUsed;
         }
 
-        #endregion
+        #endregion Ctor
 
         #region Commands
 
@@ -453,6 +454,7 @@ namespace Dev2.Studio.ViewModels.DataList
         #endregion Add/Remove Missing Methods
 
         #region Methods
+
         public void InitializeDataListViewModel(IResourceModel resourceModel)
         {
             Resource = resourceModel;
@@ -482,7 +484,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private IEnumerable<string> RefreshRecordSets(IEnumerable<IRecordSetItemModel> toList, IList<string> accList)
         {
-
             foreach (var dataListItemModel in toList)
             {
                 if (!string.IsNullOrEmpty(dataListItemModel.DisplayName))
@@ -516,7 +517,6 @@ namespace Dev2.Studio.ViewModels.DataList
                         }
                     }
                 }
-
             }
             return accList;
         }
@@ -633,10 +633,13 @@ namespace Dev2.Studio.ViewModels.DataList
                 Resource.DataList = result;
             }
 
-            BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
-            BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
-            BaseCollection[2].Children = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);
-            AddBlankRow(null);
+            if (BaseCollection.Count >= 1)
+            {
+                BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
+                BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
+                BaseCollection[2].Children = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);
+                AddBlankRow(null);
+            }
             return result;
         }
 
@@ -669,13 +672,13 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #region Private Methods
 
-        void ValidateScalar()
+        private void ValidateScalar()
         {
             CheckDataListItemsForDuplicates(DataList);
         }
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-        void CheckDataListItemsForDuplicates(IEnumerable<IDataListItemModel> itemsToCheck)
+        private void CheckDataListItemsForDuplicates(IEnumerable<IDataListItemModel> itemsToCheck)
         {
             List<IGrouping<string, IDataListItemModel>> duplicates = itemsToCheck.ToLookup(x => x.DisplayName).ToList();
             foreach (var duplicate in duplicates)
@@ -874,7 +877,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private bool IsJsonAttribute(XmlNode child) => _helper.IsJsonAttribute(child);
 
-        void AddScalars(XmlNode c)
+        private void AddScalars(XmlNode c)
         {
             _scalarHandler.AddScalars(c);
         }
@@ -929,7 +932,6 @@ namespace Dev2.Studio.ViewModels.DataList
         private void AddItemToBuilder(StringBuilder result, IDataListItemModel item)
         {
             _helper.AddItemToBuilder(result, item);
-
         }
 
         /// <summary>
@@ -944,6 +946,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count >= 1);
         }
+
         #endregion Private Methods
 
         #region Override Methods
@@ -975,7 +978,7 @@ namespace Dev2.Studio.ViewModels.DataList
             _recordsetHandler.SetRecordSetItemsAsUsed();
         }
 
-        #endregion
+        #endregion Implementation of ShowUnusedDataListVariables
 
         /// <summary>
         /// Finds the missing workflow data regions.

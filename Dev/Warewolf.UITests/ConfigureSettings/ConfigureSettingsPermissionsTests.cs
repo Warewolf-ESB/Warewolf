@@ -11,12 +11,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void ConfigureSettingPermission()
         {
-            Uimap.Filter_Explorer(Dice);
-            if (Uimap.ControlExistsNow(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
-            {
-                Uimap.RightClick_Explorer_Localhost_First_Item();
-                Uimap.Select_Delete_FromContextMenu();
-            }
+            Uimap.TryRemoveFromExplorer(Dice);
             Uimap.Select_NewWorkFlowService_From_ContextMenu();
             Uimap.Drag_Toolbox_Random_Onto_DesignSurface();
             Uimap.Enter_Dice_Roll_Values();
