@@ -491,16 +491,37 @@
                                                         </MultiBinding>
                                                     </Grid.Width>
                                                     <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="*"/>
                                                     </Grid.RowDefinitions>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
 
+                                                    <DockPanel Background="{StaticResource WarewolfPanelGreyBrush}" LastChildFill="False" Visibility="{Binding Path=Node.Data.IsTestStepExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterNegative}}" >
+                                                        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="{StaticResource ControlBorderLeft}">
+                                                            <Image Source="{Binding Path=Node.Data.StepIcon}" Margin="{StaticResource ControlBorderRight}" Height="16" Width="16"/>
+                                                            <TextBlock Text="{Binding Path=Node.Data.StepDescription}" 
+                                                                                   ToolTip="{Binding Path=Node.Data.StepDescription}" 
+                                                                                   FontWeight="Bold" Foreground="{StaticResource WareWolfBlackBrush}" 
+                                                                                   HorizontalAlignment="Stretch"/>
+                                                        </StackPanel>
+
+                                                        <Button DockPanel.Dock="Right" 
+                                                                            x:Name="DeleteTestStepButton"
+                                                                            Style="{StaticResource ButtonBlackTransparentStyle}" 
+                                                                            Margin="0,-3,0,0" 
+                                                                            Command="{Binding ElementName=StepTestDataTree, Path=DataContext.DeleteTestStepCommand }" 
+                                                                            CommandParameter="{Binding Path=Node.Data}"
+                                                                            ToolTip="{x:Static languages:Core.ServiceTestStepDeleteStepTooltip}"
+                                                                            AutomationProperties.AutomationId="UI_TestStepDelete_AutoID">
+                                                            <fa:FontAwesome Icon="Trash"/>
+                                                            <i:Interaction.Behaviors>
+                                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepDeleteStepHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                            </i:Interaction.Behaviors>
+                                                        </Button>
+                                                    </DockPanel>
                                                     <Expander x:Name="TestStepExpander" 
-                                                              IsEnabled="{Binding Path=Node.Data.IsTestStepExpanderEnabled}" 
+                                                              Visibility="{Binding Path=Node.Data.IsTestStepExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}" 
                                                               Header="{Binding Path=Node.Data}" 
                                                               IsExpanded="{Binding Path=Node.Data.IsTestStepExpanded}" 
                                                               Style="{StaticResource ServiceTestTestStepExpander}" 
