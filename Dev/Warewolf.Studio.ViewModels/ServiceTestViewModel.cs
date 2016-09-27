@@ -55,6 +55,9 @@ namespace Warewolf.Studio.ViewModels
         private string _errorMessage;
         private readonly IShellViewModel _shellViewModel;
         private IContextualResourceModel _resourceModel;
+        private string _serverName;
+        private IWorkflowDesignerViewModel _workflowDesignerViewModel;
+        private List<IDebugTreeViewItemViewModel> _rootItems;
 
         private List<IDebugState> _debugStates;
 
@@ -64,63 +67,68 @@ namespace Warewolf.Studio.ViewModels
 
             var inputState = _debugStates.FirstOrDefault();
             var outPutState = _debugStates.LastOrDefault();
-            if (inputState != null)
-            {
+            SetInputs(inputState);
+         
 
-                foreach (var debugItem in inputState.Inputs)
+            foreach (IDebugTreeViewItemViewModel debugState in _rootItems)
+            {
+                //var type = Type.GetType(debugState.ActualType);
+                //if (type == typeof(FlowSwitch<string>)
+                //    || type == typeof(DsfSwitch)
+                //    || type == typeof(FlowDecision)
+                //    || type == typeof(DsfDecision))
+                //{
+                //    ItemSelectedAction(modelItem);
+                //}
+                //else
+                //{
+                    //if(type == typeof(DsfForEachActivity) || type == typeof(DsfSequenceActivity))
+                    //{
+                    //    var modelItem = WorkflowDesignerViewModel.GetModelItem(debugState.WorkSurfaceMappingId, debugState.ParentID);
+                    //    var debugStateProcessor = new DebugStateProcessor(debugState, SelectedServiceTest, _rootItems, modelItem);//To do setting of debug values when model item is passed
+                    //    debugStateProcessor.Process();
+                    //}
+                    //else
+                    //{
+                        var debugStateProcessor = new DebugStateProcessor(debugState, SelectedServiceTest);
+                        debugStateProcessor.Process();
+                    //}
+
+                 
+                //}
+            }
+
+
+            SetOutputs(outPutState);
+        }
+
+        private void SetInputs(IDebugState inputState)
+        {
+            if(inputState != null)
+            {
+                foreach(var debugItem in inputState.Inputs)
                 {
                     var variable = debugItem.ResultsList.First().Variable.Replace("[[", "").Replace("]]", "");
                     var value = debugItem.ResultsList.First().Value;
                     var serviceTestInput = SelectedServiceTest.Inputs.FirstOrDefault(input => input.Variable.Equals(variable));
-                    if (serviceTestInput != null)
+                    if(serviceTestInput != null)
                     {
                         serviceTestInput.Value = value;
                     }
                 }
             }
-            Dev2JsonSerializer f = new Dev2JsonSerializer();
-            var serialize = f.Serialize(_debugStates);
+        }
 
-            foreach (var debugState in _debugStates)
+        private void SetOutputs(IDebugState outPutState)
+        {
+            if(outPutState != null)
             {
-                if (ReferenceEquals(debugState, inputState) || ReferenceEquals(debugState, outPutState))
-                    continue;
-                var type = Type.GetType(debugState.ActualType);
-                if (type == typeof(FlowSwitch<string>)
-                    || type == typeof(DsfSwitch)
-                    || type == typeof(FlowDecision)
-                    || type == typeof(DsfDecision))
-                {
-                    var modelItem = WorkflowDesignerViewModel.GetModelItem(debugState.WorkSurfaceMappingId, debugState.ParentID);
-                    ItemSelectedAction(modelItem);
-                }
-                else
-                {
-                    if(type == typeof(DsfForEachActivity) || type == typeof(DsfSequenceActivity))
-                    {
-                        var modelItem = WorkflowDesignerViewModel.GetModelItem(debugState.WorkSurfaceMappingId, debugState.ParentID);
-                        var debugStateProcessor = new DebugStateProcessor(debugState, SelectedServiceTest, modelItem);//To do setting of debug values when model item is passed
-                        debugStateProcessor.Process();
-                    }
-                    else
-                    {
-                        var debugStateProcessor = new DebugStateProcessor(debugState, SelectedServiceTest);
-                        debugStateProcessor.Process();
-                    }
-
-                 
-                }
-            }
-
-
-            if (outPutState != null)
-            {
-                foreach (var debugItem in outPutState.Outputs)
+                foreach(var debugItem in outPutState.Outputs)
                 {
                     var variable = debugItem.ResultsList.First().Variable.Replace("[[", "").Replace("]]", "");
                     var value = debugItem.ResultsList.First().Value;
                     var serviceTestInput = SelectedServiceTest.Outputs.FirstOrDefault(input => input.Variable.Equals(variable));
-                    if (serviceTestInput != null)
+                    if(serviceTestInput != null)
                     {
                         serviceTestInput.Value = value;
                     }
@@ -183,9 +191,10 @@ namespace Warewolf.Studio.ViewModels
                         NewTestFromDebugMessage newTest = test;
                         if (newTest.ResourceModel == null)
                             throw new ArgumentNullException(nameof(newTest.ResourceModel));
-                        if (newTest.DebugStates == null)
-                            throw new ArgumentNullException(nameof(newTest.DebugStates));
+                        if (newTest.RootItems == null)
+                            throw new ArgumentNullException(nameof(newTest.RootItems));
                         _debugStates = newTest.DebugStates;
+                        _rootItems = newTest.RootItems;
                         PrepopulateTestsUsingDebug();
                     }
                     else
@@ -531,10 +540,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private string _serverName;
-        private IWorkflowDesignerViewModel _workflowDesignerViewModel;
-
-
+      
 
         private void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList changeList)
         {
