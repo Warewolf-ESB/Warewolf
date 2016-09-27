@@ -19406,7 +19406,6 @@
                                                                                 <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
                                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                                 <PropertyCondition Name="AutomationId">UI__Row2_FieldValue_AutoID</PropertyCondition>
-                                                                                <PropertyCondition Name="HelpText">Any variable and/or data goes in here.</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants>
