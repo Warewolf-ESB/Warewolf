@@ -677,6 +677,7 @@ namespace Warewolf.Studio.ViewModels
         private IServiceTestStep _parent;
         private ObservableCollection<IServiceTestStep> _children;
         private bool _isTestStepExpanded;
+        private bool _isTestStepExpanderEnabled;
         private bool _assertSelected;
         private bool _mockSelected;
 
@@ -688,9 +689,10 @@ namespace Warewolf.Studio.ViewModels
             Type = stepType;            
             StepDescription = activityTypeName;
             Children = new ObservableCollection<IServiceTestStep>();
-            IsTestStepExpanded = true;
             AssertSelected = true;
             MockSelected = false;
+            IsTestStepExpanded = StepOutputs.Count > 0;
+            IsTestStepExpanderEnabled = StepOutputs.Count > 0;
         }
 
         public Guid UniqueId
@@ -770,6 +772,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isTestStepExpanded = value;
                 OnPropertyChanged(() => IsTestStepExpanded);
+            }
+        }
+
+        public bool IsTestStepExpanderEnabled
+        {
+            get { return _isTestStepExpanderEnabled; }
+            set
+            {
+                _isTestStepExpanderEnabled = value;
+                OnPropertyChanged(() => IsTestStepExpanderEnabled);
             }
         }
 
