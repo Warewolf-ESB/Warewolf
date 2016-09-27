@@ -330,7 +330,7 @@ namespace Warewolf.Studio.ViewModels
         private void ProcessSwitch(ModelItem modelItem)
         {
             var cases = modelItem.GetProperty("Switches") as Dictionary<string, IDev2Activity>;
-            var defaultCase = modelItem.GetProperty("Default") as IDev2Activity;
+            var defaultCase = modelItem.GetProperty("Default") as List<IDev2Activity>;
             var uniqueId = modelItem.GetProperty("UniqueID").ToString();
             var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
 
@@ -397,7 +397,6 @@ namespace Warewolf.Studio.ViewModels
             var type = computedValue.GetType();
            
             var outputs = dsfActivityAbstract?.GetOutputs();
-            var activityTypeName = computedValue.ToString().Replace(":", "");
 
             var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => dsfActivityAbstract != null && a.UniqueId.ToString() == dsfActivityAbstract.UniqueID);
 
@@ -409,9 +408,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         HasOptionsForValue = false
                     }).Cast<IServiceTestOutput>().ToList();
-                    //Remove the empty row
-                    serviceTestOutputs.RemoveAt(serviceTestOutputs.Count - 1);
-                    var serviceTestStep = SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, dsfActivityAbstract.DisplayName, activityTypeName, serviceTestOutputs) as ServiceTestStep;
+                    var serviceTestStep = SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, dsfActivityAbstract.DisplayName, type.Name, serviceTestOutputs) as ServiceTestStep;
                     SetStepIcon(type, serviceTestStep);
                 }
             }

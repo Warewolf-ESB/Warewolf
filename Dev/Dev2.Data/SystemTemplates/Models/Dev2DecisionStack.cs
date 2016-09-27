@@ -111,8 +111,6 @@ namespace Dev2.Data.SystemTemplates.Models
         public static string FromVBPersitableModelToJSON(string val)
         // ReSharper restore InconsistentNaming
         {
-            // ! for old models, __!__ for new modesl ;)
-
             return val.Replace("!", "\"");
 
         }
@@ -134,7 +132,6 @@ namespace Dev2.Data.SystemTemplates.Models
                     start += 2;
                     val = val.Substring(start, end - start);
 
-                    // Convert back for usage ;)
                     return FromVBPersitableModelToJSON(val);
                 }
             }
