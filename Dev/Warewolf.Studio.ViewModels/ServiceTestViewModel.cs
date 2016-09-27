@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Caliburn.Micro;
 using Dev2;
 using Dev2.Activities;
@@ -19,6 +21,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.ServiceModel.Messages;
@@ -33,6 +36,7 @@ using Dev2.Studio.Core.ViewModels;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Core;
 using Warewolf.Resource.Errors;
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 
@@ -234,9 +238,10 @@ namespace Warewolf.Studio.ViewModels
 
                 if(exists == null)
                 {
-                    var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfForEachActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
+                    var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof (DsfForEachActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
                     {
-                        StepDescription = forEachActivity.DisplayName
+                        StepDescription = forEachActivity.DisplayName,
+                        StepIcon = Application.Current?.TryFindResource("Execution-ForEach") as ImageSource
                     };
                     var act = forEachActivity.DataFunc.Handler as DsfNativeActivity<string>;
                     if(act != null)
@@ -270,7 +275,8 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfSequenceActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
                     {
-                        StepDescription = sequence.DisplayName
+                        StepDescription = sequence.DisplayName,
+                        StepIcon = Application.Current?.TryFindResource("ControlFlow-Sequence") as ImageSource
                     };
                     foreach (var activity in sequence.Activities)
                     {
@@ -299,7 +305,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private static void AddChildActivity(DsfNativeActivity<string> act, ServiceTestStep testStep)
+        private void AddChildActivity(DsfNativeActivity<string> act, ServiceTestStep testStep)
         {
             var outputs = act.GetOutputs();
             if (outputs != null && outputs.Count > 0)
@@ -314,6 +320,7 @@ namespace Warewolf.Studio.ViewModels
                     StepDescription = act.DisplayName,
                     Parent = testStep
                 };
+                SetStepIcon(act.GetType(), serviceTestStep);
                 testStep.Children.Add(serviceTestStep);
             }
         }
@@ -341,7 +348,9 @@ namespace Warewolf.Studio.ViewModels
                         OptionsForValue = switchOptions
                     };
                     serviceTestOutputs.Add(serviceTestOutput);
-                    SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfSwitch).Name, serviceTestOutputs);
+                    var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfSwitch).Name, serviceTestOutputs) as ServiceTestStep;
+                    if (serviceTestStep != null)
+                        serviceTestStep.StepIcon = Application.Current?.TryFindResource("ControlFlow-Switch") as ImageSource;
                 }
             }
         }
@@ -372,7 +381,9 @@ namespace Warewolf.Studio.ViewModels
                         OptionsForValue = switchOptions
                     };
                     serviceTestOutputs.Add(serviceTestOutput);
-                    SelectedServiceTest.AddTestStep(uniqueId, flowSwitch.DisplayName, typeof(DsfSwitch).Name, serviceTestOutputs);
+                    var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, flowSwitch.DisplayName, typeof(DsfSwitch).Name, serviceTestOutputs) as ServiceTestStep;
+                    if (serviceTestStep != null)
+                        serviceTestStep.StepIcon = Application.Current?.TryFindResource("ControlFlow-Switch") as ImageSource;
                 }
             }
         }
@@ -381,6 +392,8 @@ namespace Warewolf.Studio.ViewModels
         {
             var computedValue = modelItem.GetCurrentValue();
             var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
+            var type = computedValue.GetType();
+           
             var outputs = dsfActivityAbstract?.GetOutputs();
             var activityTypeName = computedValue.ToString().Replace(":", "");
 
@@ -396,11 +409,28 @@ namespace Warewolf.Studio.ViewModels
                     }).Cast<IServiceTestOutput>().ToList();
                     //Remove the empty row
                     serviceTestOutputs.RemoveAt(serviceTestOutputs.Count - 1);
-                    SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, dsfActivityAbstract.DisplayName, activityTypeName, serviceTestOutputs);
+                    var serviceTestStep = SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, dsfActivityAbstract.DisplayName, activityTypeName, serviceTestOutputs) as ServiceTestStep;
+                    SetStepIcon(type, serviceTestStep);
                 }
             }
         }
-       
+
+        private void SetStepIcon(Type type, ServiceTestStep serviceTestStep)
+        {
+            if (type.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
+            {
+                var desc = GetDescriptorFromAttribute(type);
+                if (serviceTestStep != null)
+                    serviceTestStep.StepIcon = Application.Current?.TryFindResource(desc.Icon) as ImageSource;
+            }
+        }
+
+        IToolDescriptor GetDescriptorFromAttribute(Type type)
+        {
+            var info = type.GetCustomAttributes(typeof(ToolDescriptorInfo)).First() as ToolDescriptorInfo;
+            // ReSharper disable once PossibleNullReferenceException
+            return new ToolDescriptor(info.Id, info.Designer, new WarewolfType(type.FullName, type.Assembly.GetName().Version, type.Assembly.Location), info.Name, info.Icon, type.Assembly.GetName().Version, true, info.Category, ToolType.Native, info.IconUri, info.FilterTag);
+        }
 
         private void ProcessDecision(ModelItem modelItem)
         {
@@ -419,7 +449,9 @@ namespace Warewolf.Studio.ViewModels
                         OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
                     };
                     serviceTestOutputs.Add(serviceTestOutput);
-                    SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfDecision).Name, serviceTestOutputs);
+                    var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfDecision).Name, serviceTestOutputs) as ServiceTestStep;
+                    if (serviceTestStep != null)
+                        serviceTestStep.StepIcon = Application.Current?.TryFindResource("ControlFlow-Descision") as ImageSource;
                 }
             }
         }
@@ -451,7 +483,9 @@ namespace Warewolf.Studio.ViewModels
                                 OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
                             };
                             serviceTestOutputs.Add(serviceTestOutput);
-                            SelectedServiceTest.AddTestStep(uniqueId, dds.DisplayText, typeof(DsfDecision).Name, serviceTestOutputs);
+                            var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, dds.DisplayText, typeof(DsfDecision).Name, serviceTestOutputs) as ServiceTestStep;
+                            if (serviceTestStep != null)
+                                serviceTestStep.StepIcon = Application.Current?.TryFindResource("ControlFlow-Descision") as ImageSource;
                         }
                     }
                 }

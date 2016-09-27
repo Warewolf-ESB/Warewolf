@@ -508,11 +508,14 @@
                                                         <Expander.HeaderTemplate>
                                                             <DataTemplate>
                                                                 <DockPanel LastChildFill="False" >
-                                                                    <TextBlock Text="{Binding Path=StepDescription}" 
-                                                                               ToolTip="{Binding Path=StepDescription}" 
-                                                                               FontWeight="Bold" 
-                                                                               HorizontalAlignment="Stretch"/>
-                                                                    
+                                                                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                                                        <Image Source="{Binding Path=StepIcon}" Margin="{StaticResource ControlBorderRight}" Height="16" Width="16"/>
+                                                                        <TextBlock Text="{Binding Path=StepDescription}" 
+                                                                                   ToolTip="{Binding Path=StepDescription}" 
+                                                                                   FontWeight="Bold" 
+                                                                                   HorizontalAlignment="Stretch"/>
+                                                                    </StackPanel>
+
                                                                     <Button DockPanel.Dock="Right" 
                                                                             x:Name="DeleteTestStepButton"
                                                                             Style="{StaticResource ButtonBlackTransparentStyle}" 
@@ -535,6 +538,7 @@
 									                                           Grid.ColumnSpan="2"
 									                                           ItemsSource="{Binding Path=Data.StepOutputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 									                                           Style="{StaticResource SpacedActivityDataGridStyle}"
+                                                                               BorderBrush="{StaticResource XamGridBorderBrush}"
                                                                                Height="Auto"
 									                                           MaxHeight="107"
                                                                                HeadersVisibility="All"
