@@ -5,6 +5,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
@@ -12,6 +13,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Warewolf.Studio.ViewModels
@@ -19,13 +21,13 @@ namespace Warewolf.Studio.ViewModels
 
     public class DebugStateProcessor : IProcessor
     {
-        private readonly IDebugState _debugState;
+        private readonly IDebugTreeViewItemViewModel _rootItem;
         private readonly IServiceTestModel _selectedServiceTest;
         private readonly ModelItem _modelItem;
 
-        public DebugStateProcessor(IDebugState debugState, IServiceTestModel selectedServiceTest, ModelItem modelItem=null)
+        public DebugStateProcessor(IDebugTreeViewItemViewModel rootItem, IServiceTestModel selectedServiceTest, ModelItem modelItem = null)
         {
-            _debugState = debugState;
+            _rootItem = rootItem;
             _selectedServiceTest = selectedServiceTest;
             _modelItem = modelItem;
         }
@@ -34,27 +36,32 @@ namespace Warewolf.Studio.ViewModels
 
         public void Process()
         {
-            
-            if (!string.IsNullOrEmpty(_debugState?.ActualType))
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                var type = Type.GetType(_debugState.ActualType);
-                if (type == typeof(Flowchart) || type == typeof(ActivityBuilder))
+
+                dynamic debugState = _rootItem;
+                var content = debugState.Content as IDebugState;
+                if (!string.IsNullOrEmpty(content?.ActualType))
                 {
-                    return;
+                    var actualType = content.ActualType;
+                    if (actualType == typeof(Flowchart).Name || actualType == typeof(ActivityBuilder).Name)
+                    {
+                        return;
+                    }
+                    if (actualType == typeof(DsfForEachActivity).Name)
+                    {
+                        ProcessForEach(_modelItem);
+                    }
+                    else if (actualType == typeof(DsfSequenceActivity).Name)
+                    {
+                        ProcessSequence(_modelItem);
+                    }
+                    else
+                    {
+                        ProcessActivity(content);
+                    }
                 }
-                if (type == typeof(DsfForEachActivity))
-                {
-                    ProcessForEach(_modelItem);
-                }
-                else if (type == typeof(DsfSequenceActivity))
-                {
-                    ProcessSequence(_modelItem);
-                }
-                else
-                {
-                    ProcessActivity(_debugState);
-                }
-            }
+            });
         }
 
         private void ProcessSequence(ModelItem modelItem)
@@ -66,46 +73,66 @@ namespace Warewolf.Studio.ViewModels
         private void ProcessForEach(ModelItem modelItem)
         {
             var forEachActivity = modelItem?.GetCurrentValue() as DsfForEachActivity;
-            AddForEach(forEachActivity, _selectedServiceTest.TestSteps);
+            AddForEach(_rootItem, _selectedServiceTest.TestSteps);
         }
 
-        private void AddForEach(DsfForEachActivity forEachActivity, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        private void AddForEach(IDebugTreeViewItemViewModel forEachActivity, ObservableCollection<IServiceTestStep> serviceTestSteps)
         {
-            if (forEachActivity != null)
-            {
-                var uniqueId = forEachActivity.UniqueID;
-                var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
 
-                if (exists == null)
+            dynamic debugState = _rootItem;
+            var content = (IDebugState)debugState.Content;
+            var children = (List<IDebugTreeViewItemViewModel>)debugState.Children;
+            var uniqueId = content.ID.ToString();
+            var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+
+            if (exists == null)
+            {
+                var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfForEachActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
                 {
-                    var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfForEachActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
+                    StepDescription = content.DisplayName
+                };
+                foreach(var child in children)
+                {
+                    dynamic dynamicChild = child;
+                    var childContent = (IDebugState)dynamicChild.Content;
+                    if (childContent.ActualType == typeof(DsfSequenceActivity).Name)
                     {
-                        StepDescription = forEachActivity.DisplayName
-                    };
-                    var act = forEachActivity.DataFunc.Handler as DsfNativeActivity<string>;
-                    if (act != null)
-                    {
-                        if (act.GetType() == typeof(DsfSequenceActivity))
-                        {
-                            AddSequence(act as DsfSequenceActivity, testStep.Children);
-                        }
-                        else if (act.GetType() == typeof(DsfForEachActivity))
-                        {
-                            AddForEach(forEachActivity.DataFunc.Handler as DsfForEachActivity, testStep.Children);
-                        }
-                        else
-                        {
-                            AddChildActivity(act, testStep);
-                        }
+                        AddSequence(dynamicChild as DsfSequenceActivity, testStep.Children);
                     }
-                    serviceTestSteps.Add(testStep);
+                    else if(childContent.ActualType == typeof(DsfForEachActivity).Name)
+                    {
+                        AddForEach(dynamicChild, testStep.Children);
+                    }
+                    else
+                    {
+                        AddChildActivity(dynamicChild, testStep);
+                    }
                 }
+                //var act = forEachActivity.DataFunc.Handler as DsfNativeActivity<string>;
+               /* if (act != null)
+                {
+                    if (act.GetType() == typeof(DsfSequenceActivity))
+                    {
+                        AddSequence(act as DsfSequenceActivity, testStep.Children);
+                    }
+                    else if (act.GetType() == typeof(DsfForEachActivity))
+                    {
+                        // ReSharper disable once ExpressionIsAlwaysNull
+                        AddForEach(forEachActivity.DataFunc.Handler as DsfForEachActivity, testStep.Children);
+                    }
+                    else
+                    {
+                        AddChildActivity(act, testStep);
+                    }
+                }*/
+                serviceTestSteps.Add(testStep);
             }
+
         }
 
         private void AddSequence(DsfSequenceActivity sequence, ObservableCollection<IServiceTestStep> serviceTestSteps)
         {
-            if (sequence != null)
+           /* if (sequence != null)
             {
                 var uniqueId = sequence.UniqueID;
                 var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
@@ -140,14 +167,18 @@ namespace Warewolf.Studio.ViewModels
                     }
                     serviceTestSteps.Add(testStep);
                 }
-            }
+            }*/
         }
 
-        private static void AddChildActivity(DsfNativeActivity<string> act, ServiceTestStep testStep)
+        private void AddChildActivity(DsfNativeActivity<string> act, ServiceTestStep testStep)
         {
             var outputs = act.GetOutputs();
+
             if (outputs != null && outputs.Count > 0)
             {
+                dynamic debugState = _rootItem;
+                var content = (IDebugState)debugState.Content;
+                var debugItems = content.Outputs;
                 var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
                 {
                     HasOptionsForValue = false
@@ -230,7 +261,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 foreach (var debugItemResult in debugItem.ResultsList)
                 {
-                    if(string.IsNullOrEmpty(debugItemResult.Variable))
+                    if (string.IsNullOrEmpty(debugItemResult.Variable))
                         continue;
                     outputs.Add(new KeyValuePair<string, string>(debugItemResult.Variable, debugItemResult.Value));
                 }

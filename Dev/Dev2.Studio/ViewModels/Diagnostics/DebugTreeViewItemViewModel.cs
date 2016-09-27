@@ -280,10 +280,7 @@ namespace Dev2.ViewModels.Diagnostics
                 if(value != _parent)
                 {
                     _parent = value;
-                    if(_parent != null)
-                    {
-                        _parent.VerifyErrorState();
-                    }
+                    _parent?.VerifyErrorState();
                     OnPropertyChanged("Parent");
                     OnPropertyChanged("Depth");
                 }
@@ -299,13 +296,11 @@ namespace Dev2.ViewModels.Diagnostics
             set
             {
                 _hasError = value;
-                if(_parent != null)
-                {
-                    _parent.VerifyErrorState();
-                }
+                _parent?.VerifyErrorState();
                 OnPropertyChanged("HasError");
             }
         }
+        public string ActivityTypeName { get; set; }
 
         public void VerifyErrorState()
         {
@@ -367,10 +362,7 @@ namespace Dev2.ViewModels.Diagnostics
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

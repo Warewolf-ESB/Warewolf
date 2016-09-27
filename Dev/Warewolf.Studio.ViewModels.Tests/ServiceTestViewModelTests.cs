@@ -18,7 +18,6 @@ using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.SystemTemplates.Models;
-using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
@@ -81,11 +80,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var resourceModel = new Mock<IContextualResourceModel>();
             var env = new Mock<IEnvironmentModel>();
-            var debugTreeMock = new Mock<List<IDebugState>>();
+            var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             var con = new Mock<IEnvironmentConnection>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
-            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, DebugStates = debugTreeMock.Object };
+            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
             var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -102,10 +101,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceModel = new Mock<IContextualResourceModel>();
             var env = new Mock<IEnvironmentModel>();
             var con = new Mock<IEnvironmentConnection>();
-            var debugTreeMock = new Mock<List<IDebugState>>();
+            var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
-            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, DebugStates = debugTreeMock.Object };
+            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
             var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -1546,7 +1545,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var readAllText = File.ReadAllText("DebugStates.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
-            newTestFromDebugMessage.DebugStates = debugStates;
+            //newTestFromDebugMessage.DebugStates = debugStates;
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             //---------------Assert Precondition----------------          
             //---------------Execute Test ----------------------
@@ -1578,7 +1577,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var readAllText = File.ReadAllText("DebugStates.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
-            newTestFromDebugMessage.DebugStates = debugStates;
+            //newTestFromDebugMessage.DebugStates = debugStates;
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             //---------------Assert Precondition----------------          
             //---------------Execute Test ----------------------
