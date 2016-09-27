@@ -23,7 +23,6 @@ using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Data.SystemTemplates.Models;
-using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
@@ -31,7 +30,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels;
-using Dev2.Utilities;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -59,12 +57,11 @@ namespace Warewolf.Studio.ViewModels
         private void PrepopulateTestsUsingDebug()
         {
             CreateTestCommand.Execute(null);
-            
-           
+
             var inputState = _debugStates.FirstOrDefault();
             if (inputState != null)
             {
-               
+
                 foreach (var debugItem in inputState.Inputs)
                 {
                     var variable = debugItem.ResultsList.Single().Variable.Replace("[[", "").Replace("]]", "");
@@ -74,6 +71,20 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
 
+             var modelItems = WorkflowDesignerViewModel.GetModelItems();
+             foreach (var mItem in modelItems)
+             {
+                 if(Application.Current != null)
+                 {
+                     if(Application.Current.Dispatcher != null)
+                     {
+                         Application.Current.Dispatcher.Invoke(() =>
+                         {
+                             ItemSelectedAction(mItem);
+                         });
+                     }
+                 }
+             }
 
             var outPutState = _debugStates.LastOrDefault();
             if (outPutState != null)
@@ -86,9 +97,6 @@ namespace Warewolf.Studio.ViewModels
                     serviceTestInput.Value = value;
                 }
             }
-            OnPropertyChanged(() => SelectedServiceTest.Inputs);
-            OnPropertyChanged(() => SelectedServiceTest.Outputs);
-
         }
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg = null)
@@ -176,14 +184,14 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (modelItem.ItemType == typeof(DsfForEachActivity))
                 {
-                   
+                   ProcessForEach(modelItem);
                 }
                 else if (modelItem.ItemType == typeof(DsfSequenceActivity))
                 {
                     ProcessSequence(modelItem);
                 }
-                else if(modelItem.ItemType == typeof(FlowSwitch<string>))
-                {                    
+                else if (modelItem.ItemType == typeof(FlowSwitch<string>))
+                {
                     ProcessFlowSwitch(modelItem);
                 }
                 else if (modelItem.ItemType == typeof(DsfSwitch))
@@ -211,29 +219,39 @@ namespace Warewolf.Studio.ViewModels
             AddSequence(sequence, SelectedServiceTest.TestSteps);
         }
 
-        private void AddSequence(DsfSequenceActivity sequence, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        private void ProcessForEach(ModelItem modelItem)
         {
-            if(sequence != null)
+            var forEachActivity = modelItem.GetCurrentValue() as DsfForEachActivity;
+            AddForEach(forEachActivity, SelectedServiceTest.TestSteps);
+        }
+
+        private void AddForEach(DsfForEachActivity forEachActivity, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        {
+            if(forEachActivity != null)
             {
-                var uniqueId = sequence.UniqueID;
+                var uniqueId = forEachActivity.UniqueID;
                 var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
 
                 if(exists == null)
                 {
-                    var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfSequenceActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
+                    var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfForEachActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
                     {
-                        StepDescription = sequence.DisplayName
+                        StepDescription = forEachActivity.DisplayName
                     };
-                    foreach(var activity in sequence.Activities)
+                    var act = forEachActivity.DataFunc.Handler as DsfNativeActivity<string>;
+                    if(act != null)
                     {
-                        var act = activity as DsfNativeActivity<string>;
-                        if(act != null)
+                        if (act.GetType() == typeof(DsfSequenceActivity))
                         {
-                            if(act.GetType() == typeof(DsfSequenceActivity))
-                            {
-                                AddSequence(act as DsfSequenceActivity, testStep.Children);
-                            }
-                            AddSequenceActivity(act, testStep);
+                            AddSequence(act as DsfSequenceActivity, testStep.Children);
+                        }
+                        else if (act.GetType() == typeof(DsfForEachActivity))
+                        {
+                            AddForEach(forEachActivity.DataFunc.Handler as DsfForEachActivity, testStep.Children);
+                        }
+                        else
+                        {
+                            AddChildActivity(act, testStep);
                         }
                     }
                     serviceTestSteps.Add(testStep);
@@ -241,15 +259,55 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private static void AddSequenceActivity(DsfNativeActivity<string> act, ServiceTestStep testStep)
+        private void AddSequence(DsfSequenceActivity sequence, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        {
+            if (sequence != null)
+            {
+                var uniqueId = sequence.UniqueID;
+                var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+
+                if (exists == null)
+                {
+                    var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfSequenceActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
+                    {
+                        StepDescription = sequence.DisplayName
+                    };
+                    foreach (var activity in sequence.Activities)
+                    {
+                        var act = activity as DsfNativeActivity<string>;
+                        if (act != null)
+                        {
+                            if (act.GetType() == typeof(DsfSequenceActivity))
+                            {
+                                AddSequence(act as DsfSequenceActivity, testStep.Children);
+                            }                            
+                            else
+                            {
+                                AddChildActivity(act, testStep);
+                            }
+                        }
+                        else
+                        {
+                            if (activity.GetType() == typeof(DsfForEachActivity))
+                            {
+                                AddForEach(activity as DsfForEachActivity, testStep.Children);
+                            }
+                        }
+                    }
+                    serviceTestSteps.Add(testStep);
+                }
+            }
+        }
+
+        private static void AddChildActivity(DsfNativeActivity<string> act, ServiceTestStep testStep)
         {
             var outputs = act.GetOutputs();
-            if(outputs != null && outputs.Count > 0)
+            if (outputs != null && outputs.Count > 0)
             {
                 var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
                 {
                     HasOptionsForValue = false
-                }).Cast<IServiceTestOutput>().ToList();                
+                }).Cast<IServiceTestOutput>().ToList();
 
                 var serviceTestStep = new ServiceTestStep(Guid.Parse(act.UniqueID), act.GetType().Name, serviceTestOutputs, StepType.Mock)
                 {
@@ -328,9 +386,9 @@ namespace Warewolf.Studio.ViewModels
 
             var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => dsfActivityAbstract != null && a.UniqueId.ToString() == dsfActivityAbstract.UniqueID);
 
-            if(exists == null)
+            if (exists == null)
             {
-                if(outputs != null && outputs.Count > 0)
+                if (outputs != null && outputs.Count > 0)
                 {
                     var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
                     {
@@ -342,12 +400,13 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+       
 
         private void ProcessDecision(ModelItem modelItem)
         {
             Dev2DecisionStack dds = modelItem.GetProperty("Conditions") as Dev2DecisionStack;
             var uniqueId = modelItem.GetProperty("UniqueID").ToString();
-            var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a =>  a.UniqueId.ToString() == uniqueId);
+            var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
 
             if (exists == null)
             {
@@ -370,7 +429,7 @@ namespace Warewolf.Studio.ViewModels
             var condition = modelItem.GetProperty("Condition");
             var activity = (DsfFlowNodeActivity<bool>)condition;
             var expression = activity.ExpressionText;
-            if(expression != null)
+            if (expression != null)
             {
                 var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression);
 

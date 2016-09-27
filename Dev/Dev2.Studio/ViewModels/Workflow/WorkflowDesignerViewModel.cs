@@ -1142,6 +1142,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             return selectedModelItem;
         }
 
+        public List<ModelItem> GetModelItems()
+        {
+            var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity)).ToList();
+            return modelItems;
+        } 
         private void SelectSingleModelItem(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
