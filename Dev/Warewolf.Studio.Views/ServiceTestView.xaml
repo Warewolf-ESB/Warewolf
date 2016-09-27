@@ -537,14 +537,13 @@
 									                                           Grid.Column="0"
 									                                           Grid.ColumnSpan="2"
 									                                           ItemsSource="{Binding Path=Data.StepOutputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-									                                           Style="{StaticResource SpacedActivityDataGridStyle}"
+									                                           Style="{StaticResource ActivityMapppingDataGridStyle}"
                                                                                BorderBrush="{StaticResource XamGridBorderBrush}"
                                                                                Height="Auto"
 									                                           MaxHeight="107"
-                                                                               HeadersVisibility="All"
-									                                           RowStyle="{StaticResource ActivityGridRowStyle}">
+                                                                               HeadersVisibility="All">
                                                             <DataGrid.Columns>
-                                                                <DataGridTemplateColumn Width="*" Header="Result">
+                                                                <DataGridTemplateColumn Width="*" MinWidth="125" Header="Result" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
                                                                     <DataGridTemplateColumn.CellTemplate>
                                                                         <DataTemplate>
                                                                             <TextBlock Text="{Binding Path=Variable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Variable}" />
@@ -552,7 +551,7 @@
                                                                     </DataGridTemplateColumn.CellTemplate>
                                                                 </DataGridTemplateColumn>
 
-                                                                <DataGridTemplateColumn Width="*" >
+                                                                <DataGridTemplateColumn Width="*" MinWidth="125" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
                                                                     <DataGridTemplateColumn.HeaderTemplate>
                                                                         <DataTemplate>
                                                                             <Grid>
@@ -586,7 +585,7 @@
                                                                     <DataGridTemplateColumn.CellTemplate>
                                                                         <DataTemplate>
                                                                             <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                                                                                      Margin="0,0,1,1" 
+                                                                                      Margin="1,0,1,1"
                                                                                       IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
                                                                                       ItemsSource="{Binding Path=AssertOps}"
                                                                                       SelectedValue="{Binding Path=AssertOp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
@@ -600,11 +599,11 @@
                                                                     </DataGridTemplateColumn.CellTemplate>
                                                                 </DataGridTemplateColumn>
 
-                                                                <DataGridTemplateColumn Width="*" Header="Value">
+                                                                <DataGridTemplateColumn Width="*" MinWidth="125" Header="Value" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
                                                                     <DataGridTemplateColumn.CellTemplate>
                                                                         <DataTemplate>
                                                                             <StackPanel>
-                                                                                <TextBox Margin="0,0,0,1" 
+                                                                                <TextBox Margin="1,0,1,1"
                                                                                          Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                                          ToolTip="{x:Static languages:Core.ServiceTestStepAssertValueTooltip}"
                                                                                          Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}"
@@ -615,7 +614,7 @@
                                                                                 </TextBox>
 
                                                                                 <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                                                                                          Margin="0,0,0,1" 
+                                                                                          Margin="1,0,1,1"
                                                                                           ItemsSource="{Binding Path=OptionsForValue}"
                                                                                           SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                                                                           Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterPositive}}"
