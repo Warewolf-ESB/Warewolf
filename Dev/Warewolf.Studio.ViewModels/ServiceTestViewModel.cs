@@ -216,16 +216,16 @@ namespace Warewolf.Studio.ViewModels
         private void ProcessSequence(ModelItem modelItem)
         {
             var sequence = modelItem.GetCurrentValue() as DsfSequenceActivity;
-            AddSequence(sequence, SelectedServiceTest.TestSteps);
+            AddSequence(sequence, null , SelectedServiceTest.TestSteps);
         }
 
         private void ProcessForEach(ModelItem modelItem)
         {
             var forEachActivity = modelItem.GetCurrentValue() as DsfForEachActivity;
-            AddForEach(forEachActivity, SelectedServiceTest.TestSteps);
+            AddForEach(forEachActivity,null , SelectedServiceTest.TestSteps);
         }
 
-        private void AddForEach(DsfForEachActivity forEachActivity, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        private void AddForEach(DsfForEachActivity forEachActivity, ServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
         {
             if(forEachActivity != null)
             {
@@ -236,18 +236,19 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfForEachActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
                     {
-                        StepDescription = forEachActivity.DisplayName
+                        StepDescription = forEachActivity.DisplayName,
+                        Parent = parent
                     };
                     var act = forEachActivity.DataFunc.Handler as DsfNativeActivity<string>;
                     if(act != null)
                     {
                         if (act.GetType() == typeof(DsfSequenceActivity))
                         {
-                            AddSequence(act as DsfSequenceActivity, testStep.Children);
+                            AddSequence(act as DsfSequenceActivity,testStep, testStep.Children);
                         }
                         else if (act.GetType() == typeof(DsfForEachActivity))
                         {
-                            AddForEach(forEachActivity.DataFunc.Handler as DsfForEachActivity, testStep.Children);
+                            AddForEach(forEachActivity.DataFunc.Handler as DsfForEachActivity,testStep, testStep.Children);
                         }
                         else
                         {
@@ -259,7 +260,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void AddSequence(DsfSequenceActivity sequence, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        private void AddSequence(DsfSequenceActivity sequence, ServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
         {
             if (sequence != null)
             {
@@ -270,7 +271,8 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfSequenceActivity).Name, new List<IServiceTestOutput>(), StepType.Mock)
                     {
-                        StepDescription = sequence.DisplayName
+                        StepDescription = sequence.DisplayName,
+                        Parent = parent
                     };
                     foreach (var activity in sequence.Activities)
                     {
@@ -279,7 +281,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             if (act.GetType() == typeof(DsfSequenceActivity))
                             {
-                                AddSequence(act as DsfSequenceActivity, testStep.Children);
+                                AddSequence(act as DsfSequenceActivity, testStep, testStep.Children);
                             }                            
                             else
                             {
@@ -290,7 +292,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             if (activity.GetType() == typeof(DsfForEachActivity))
                             {
-                                AddForEach(activity as DsfForEachActivity, testStep.Children);
+                                AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
                             }
                         }
                     }
@@ -456,20 +458,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
-        }
-
-        private static ModelItem RecursiveForEachCheck(dynamic activity)
-        {
-            var innerAct = activity.DataFunc.Handler as ModelItem;
-            if (innerAct != null)
-            {
-                if (innerAct.ItemType == typeof(DsfForEachActivity))
-                {
-                    innerAct = RecursiveForEachCheck(innerAct);
-                }
-            }
-            return innerAct;
-        }
+        }       
 
         private void SetServerName(IContextualResourceModel resourceModel)
         {
@@ -769,42 +758,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void Save(List<IServiceTestModel> serviceTestModels)
         {
-            var serviceTestModelTos = serviceTestModels.Select(model => new ServiceTestModelTO
-            {
-                TestName = model.TestName,
-                ResourceId = model.ParentId,
-                AuthenticationType = model.AuthenticationType,
-                Enabled = model.Enabled,
-                ErrorExpected = model.ErrorExpected,
-                NoErrorExpected = model.NoErrorExpected,
-                TestSteps = model.TestSteps.Select(step => new ServiceTestStepTO(step.UniqueId, step.ActivityType, step.StepOutputs.Select(output => new ServiceTestOutputTO
-                {
-                    Variable = output.Variable,
-                    Value = output.Value,
-                    AssertOp = output.AssertOp
-                } as IServiceTestOutput).ToList(), step.Type) as IServiceTestStep).ToList(),
-                Inputs = model.Inputs.Select(input => new ServiceTestInputTO
-                {
-                    Variable = input.Variable,
-                    Value = input.Value,
-                    EmptyIsNull = input.EmptyIsNull
-                } as IServiceTestInput).ToList(),
-                Outputs = model.Outputs.Select(output => new ServiceTestOutputTO
-                {
-                    Variable = output.Variable,
-                    Value = output.Value,
-                    AssertOp = output.AssertOp
-                } as IServiceTestOutput).ToList(),
-                LastRunDate = model.LastRunDate,
-                OldTestName = model.OldTestName,
-                Password = model.Password,
-                IsDirty = model.IsDirty,
-                TestPending = model.TestPending,
-                UserName = model.UserName,
-                TestFailing = model.TestFailing,
-                TestInvalid = model.TestInvalid,
-                TestPassed = model.TestPassed
-            } as IServiceTestModelTO).ToList();
+            var serviceTestModelTos = serviceTestModels.Select(CreateServiceTestModelTO).ToList();
             var result = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel, serviceTestModelTos);
             switch (result.Result)
             {
@@ -823,6 +777,79 @@ namespace Warewolf.Studio.ViewModels
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private static IServiceTestModelTO CreateServiceTestModelTO(IServiceTestModel model)
+        {
+            return new ServiceTestModelTO
+            {
+                TestName = model.TestName,
+                ResourceId = model.ParentId,
+                AuthenticationType = model.AuthenticationType,
+                Enabled = model.Enabled,
+                ErrorExpected = model.ErrorExpected,
+                NoErrorExpected = model.NoErrorExpected,
+                TestSteps = model.TestSteps.Select(CreateServiceTestStepTO).ToList(),
+                Inputs = model.Inputs.Select(CreateServiceTestInputsTO).ToList(),
+                Outputs = model.Outputs.Select(CreateServiceTestOutputTO).ToList(),
+                LastRunDate = model.LastRunDate,
+                OldTestName = model.OldTestName,
+                Password = model.Password,
+                IsDirty = model.IsDirty,
+                TestPending = model.TestPending,
+                UserName = model.UserName,
+                TestFailing = model.TestFailing,
+                TestInvalid = model.TestInvalid,
+                TestPassed = model.TestPassed
+            };
+        }
+
+        private static IServiceTestOutput CreateServiceTestOutputTO(IServiceTestOutput output)
+        {
+            return new ServiceTestOutputTO
+            {
+                Variable = output.Variable,
+                Value = output.Value,
+                AssertOp = output.AssertOp
+            };
+        }
+
+        private static IServiceTestInput CreateServiceTestInputsTO(IServiceTestInput input)
+        {
+            return new ServiceTestInputTO
+            {
+                Variable = input.Variable,
+                Value = input.Value,
+                EmptyIsNull = input.EmptyIsNull
+            };
+        }
+
+        private static IServiceTestStep CreateServiceTestStepTO(IServiceTestStep step)
+        {
+            var serviceTestStepTO = new ServiceTestStepTO(step.UniqueId, step.ActivityType, step.StepOutputs.Select(CreateServiceTestStepOutputsTO).ToList(), step.Type)
+            {
+                Children = new ObservableCollection<IServiceTestStep>(),
+                Parent = step.Parent,
+                StepDescription = step.StepDescription
+            };
+            if (step.Children != null)
+            {
+                foreach (var serviceTestStep in step.Children)
+                {
+                    serviceTestStepTO.Children.Add(CreateServiceTestStepTO(serviceTestStep));
+                }
+            }
+            return serviceTestStepTO;
+        }
+
+        private static IServiceTestOutput CreateServiceTestStepOutputsTO(IServiceTestOutput output)
+        {
+            return new ServiceTestOutputTO
+            {
+                Variable = output.Variable,
+                Value = output.Value,
+                AssertOp = output.AssertOp
+            };
         }
 
         private void UpdateTestsFromResourceUpdate()
@@ -1039,7 +1066,19 @@ namespace Warewolf.Studio.ViewModels
             if (testStep == null)
                 return;
 
-            SelectedServiceTest.TestSteps.Remove(testStep);
+            DeleteStep(testStep, SelectedServiceTest.TestSteps);
+        }
+
+        private void DeleteStep(IServiceTestStep testStep, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        {
+            if (serviceTestSteps.Contains(testStep))
+            {
+                serviceTestSteps.Remove(testStep);
+            }
+            else
+            {
+                testStep.Parent?.Children.Remove(testStep);
+            }
         }
 
         private ObservableCollection<IServiceTestModel> GetTests()
@@ -1085,10 +1124,41 @@ namespace Warewolf.Studio.ViewModels
                 Password = to.Password,
                 ParentId = to.ResourceId,
                 TestInvalid = to.TestInvalid,
+                TestSteps = to.TestSteps?.Select(step => CreateServiceTestStep(step) as IServiceTestStep).ToObservableCollection(),
                 Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToObservableCollection(),
                 Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToObservableCollection()
             };
             return serviceTestModel;
+        }
+
+        private ServiceTestStep CreateServiceTestStep(IServiceTestStep step)
+        {
+            var testStep = new ServiceTestStep(step.UniqueId, step.ActivityType, CreateServiceTestOutputFromStep(step.StepOutputs), step.Type)
+            {
+                Children = new ObservableCollection<IServiceTestStep>(),
+                Parent = step.Parent,
+                StepDescription = step.StepDescription
+            };
+            if (step.Children != null)
+            {
+                foreach (var serviceTestStep in step.Children)
+                {
+                    testStep.Children.Add(CreateServiceTestStep(serviceTestStep));
+                }
+            }
+            return testStep;
+        }
+
+        private List<IServiceTestOutput> CreateServiceTestOutputFromStep(List<IServiceTestOutput> stepStepOutputs)
+        {
+            var stepOutputs = new List<IServiceTestOutput>();
+            foreach(var serviceTestOutput in stepStepOutputs)
+            {
+                var output = new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value) as IServiceTestOutput;
+                output.AssertOp = serviceTestOutput.AssertOp;
+                stepOutputs.Add(output);
+            }
+            return stepOutputs;
         }
 
         public ICommand DeleteTestCommand { get; set; }
