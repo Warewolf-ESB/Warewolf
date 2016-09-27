@@ -14,11 +14,11 @@ namespace Warewolf.UITests
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             Uimap.Open_Assign_Tool_Large_View();
             Uimap.Enter_Recordset_values();
-            Uimap.Select_InputOutput_CheckBox_Recordset_values();
-            Uimap.F5_Keyboard_Click();
-            Uimap.Type_Value_And_Click_Enter_Keyboard_Then_Backspace();
+            Uimap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox.Checked = true;
+            Uimap.Press_F5_To_Debug();
+            Uimap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox_With_Special_Test_For_Textbox_Height("Bob");
+            Uimap.Enter_Text_Into_Debug_Input_Row2_Value_Textbox("Bob");
             Uimap.Click_Cancel_DebugInput_Window();
-
         }
 
         #region Additional test attributes
