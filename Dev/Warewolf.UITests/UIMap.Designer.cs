@@ -31993,7 +31993,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row3_FieldName_AutoID";
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row4_FieldName_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -32062,7 +32062,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row3_FieldValue_AutoID";
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row4_FieldValue_AutoID";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
@@ -32178,7 +32178,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row4_FieldName_AutoID";
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row5_FieldName_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -32247,7 +32247,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row4_FieldValue_AutoID";
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row5_FieldValue_AutoID";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
