@@ -12,7 +12,7 @@ namespace Warewolf.UITests.Tools.Data
         {
             Uimap.Drag_Toolbox_Base_Conversion_Onto_DesignSurface();
             Uimap.Open_Base_Conversion_Tool_Large_View();
-            Uimap.Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox();
+            Uimap.Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox();
             Uimap.Click_Base_Convert_Large_View_Done_Button();
             Uimap.Press_F6();
             Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);

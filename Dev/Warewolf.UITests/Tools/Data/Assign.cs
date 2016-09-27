@@ -28,29 +28,16 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1();
             Uimap.Click_Workflow_CollapseAll();
             Uimap.Click_Assign_Tool_url();
-            Uimap.Open_Assign_Tool_Qvi_Large_View();            
+            Uimap.Open_Assign_Tool_Qvi_Large_View();
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.Click_DebugInput_Debug_Button();
-            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             Uimap.Click_Debug_Output_Assign_Cell();
+            Uimap.Click_Assign_Tool_ExpandAll();
             Uimap.Click_Assign_Tool_Remove_Variable_From_Tool();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
-        }
-
-        [TestMethod]
-		[TestCategory("Tools")]
-        public void DeleteAssignToolFromContextMenuUITest()
-        {
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Uimap.Open_Assign_Tool_Large_View();
-            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            Uimap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
-            Uimap.Click_Assign_Tool_Large_View_Done_Button();
             Uimap.RightClick_Assign_OnDesignSurface();
             Uimap.Select_Delete_FromContextMenu();
-            Uimap.Assert_MultiAssign_Does_Not_Exist_On_DesignSurface();
+            Assert.IsFalse(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool still exists on design surface after deleting with context menu.");
         }
 
         #region Additional test attributes

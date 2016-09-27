@@ -3752,16 +3752,16 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox - Use 'Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams' to pass parameters into this method.
+        /// Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox - Use 'Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams' to pass parameters into this method.
         /// </summary>
-        public void Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox()
+        public void Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox()
         {
             #region Variable Declarations
             WpfEdit valueTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox;
             #endregion
 
-            // Type '[[SomeVariable]]' in 'UI__Row1_FromExpressiontxt_AutoID' text box
-            valueTextbox.Text = this.Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams.ValueTextboxText;
+            // Type 'SomeData' in 'UI__Row1_FromExpressiontxt_AutoID' text box
+            valueTextbox.Text = this.Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams.ValueTextboxText;
         }
         
         /// <summary>
@@ -8069,15 +8069,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams
+        public virtual Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams
         {
             get
             {
-                if ((this.mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams == null))
+                if ((this.mEnter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams == null))
                 {
-                    this.mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams = new Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams();
+                    this.mEnter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams = new Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams();
                 }
-                return this.mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams;
+                return this.mEnter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams;
             }
         }
         
@@ -9391,7 +9391,7 @@ namespace Warewolf.UITests
         
         private Enter_RunAsUser_Username_And_PasswordParams mEnter_RunAsUser_Username_And_PasswordParams;
         
-        private Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams;
+        private Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams mEnter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams;
         
         private Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams mEnter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams;
         
@@ -12375,17 +12375,17 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox'
+    /// Parameters to be passed into 'Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams
+    public class Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams
     {
         
         #region Fields
         /// <summary>
-        /// Type '[[SomeVariable]]' in 'UI__Row1_FromExpressiontxt_AutoID' text box
+        /// Type 'SomeData' in 'UI__Row1_FromExpressiontxt_AutoID' text box
         /// </summary>
-        public string ValueTextboxText = "[[SomeVariable]]";
+        public string ValueTextboxText = "SomeData";
         #endregion
     }
     
