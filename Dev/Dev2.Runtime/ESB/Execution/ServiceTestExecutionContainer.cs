@@ -446,6 +446,28 @@ namespace Dev2.Runtime.ESB.Execution
                     var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
                     resource = new TestMockSwitchStep(resource as DsfSwitch) { ConditionToUse = serviceTestOutput.Value };
                 }
+                else if(foundTestStep.ActivityType == typeof(DsfSequenceActivity).Name)
+                {
+                    var sequenceActivity = resource as DsfSequenceActivity;
+                    if (sequenceActivity != null)
+                    {
+                        var acts = sequenceActivity.Activities;
+                        for(int index = 0; index < acts.Count; index++)
+                        {
+                            var activity = acts[index];
+                            var replacement = MockActivity(activity as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                            acts[index] = replacement;
+                        }
+                    }
+                }else if(foundTestStep.ActivityType == typeof(DsfForEachActivity).Name)
+                {
+                    var forEach = resource as DsfForEachActivity;
+                    if (forEach != null)
+                    {
+                        var replacement = MockActivity(forEach.DataFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                        forEach.DataFunc.Handler = replacement;
+                    }
+                }
                 else
                 {
                     resource = new TestMockStep(resource, foundTestStep.StepOutputs);
