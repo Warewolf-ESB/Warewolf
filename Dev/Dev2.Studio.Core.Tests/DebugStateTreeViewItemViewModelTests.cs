@@ -14,8 +14,8 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Services.Events;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.ViewModels.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

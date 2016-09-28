@@ -25,12 +25,12 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Services.Events;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels.Diagnostics;
-using Dev2.ViewModels.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable CyclomaticComplexity
