@@ -368,7 +368,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Older.Studio.UI.Tests\Oldest.Studio.UI.Tests.csproj">
+    <ProjectReference Include="..\Older.UISpecs\Older.UISpecs.csproj">
       <Project>{9c452452-634e-4a21-ab9e-681d3f05df52}</Project>
       <Name>Oldest.Studio.UI.Tests</Name>
     </ProjectReference>
