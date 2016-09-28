@@ -15,7 +15,7 @@ $PreviousLine = ""
         if ($_ -match "        public void *" -and -not $PreviousLine.StartsWith("        [When(@`""))
         {
             #Add SpecFlow attribute to public function
-            "        [When(@`"" + $_.Substring("        public void ".length, $_.length - "        public void ".length - "()".length).replace("_", " ") + "`")]"
+            "        [When(@`"I " + $_.Substring("        public void ".length, $_.length - "        public void ".length - "()".length).replace("_", " ") + "`")]"
         }
         $_ # send the current line to output
         $PreviousLine = $_
