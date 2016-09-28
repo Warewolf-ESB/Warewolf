@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using System.IO;
+using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
 
 namespace Warewolf.UITests
@@ -482,6 +483,7 @@ namespace Warewolf.UITests
             }
         }
 
+        [When(@"I Try Close Settings Tab")]
         public void TryCloseSettingsTab()
         {
             try
