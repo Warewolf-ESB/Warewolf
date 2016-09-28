@@ -825,7 +825,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var primarySelection = item.PrimarySelection;
             NotifyItemSelected(primarySelection);
             primarySelection.SetProperty("IsSelected", true);
-            var selectedItem = primarySelection;
+            var selectedItem = primarySelection;            
             ItemSelectedAction?.Invoke(selectedItem);
         }
 
@@ -1091,6 +1091,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
 
                 var debugState = args.DebugState;
+                if (IsTestView)
+                {
+                    ClearSelection();
+                    return;
+                }
                 if (debugState != null)
                 {
                     var workSurfaceMappingId = debugState.WorkSurfaceMappingId;
@@ -1118,6 +1123,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             });
         }
+
+        public bool IsTestView { get; set; }
 
         protected virtual ModelItem GetSelectedModelItem(Guid itemId, Guid parentId)
         {

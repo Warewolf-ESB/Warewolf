@@ -402,17 +402,33 @@ namespace Dev2.Activities
         {
             var trueArmText = _dsfDecision.Conditions.TrueArmText;
             var falseArmText = _dsfDecision.Conditions.FalseArmText;
+            DebugItem itemToAdd = new DebugItem();
+            var result = new List<DebugItem>();
+            bool hasResult = false;
             if (NameOfArmToReturn == falseArmText)
             {
                 NextNodes = _dsfDecision.FalseArm;
-                return;
+                itemToAdd.AddRange(new DebugItemStaticDataParams(falseArmText, "").GetDebugItemResult());
+                result.Add(itemToAdd);
+                hasResult = true;
             }
             if (NameOfArmToReturn == trueArmText)
             {
                 NextNodes = _dsfDecision.TrueArm;
-                return;
+                itemToAdd.AddRange(new DebugItemStaticDataParams(falseArmText, "").GetDebugItemResult());
+                result.Add(itemToAdd);
+                hasResult = true;
             }
-            throw new ArgumentException($"No matching arm for Decision Mock. Mock Arm value '{NameOfArmToReturn}'. Decision Arms True Arm: '{trueArmText}' False Arm: '{falseArmText}'");
+            if (dataObject.IsDebugMode() && hasResult)
+            {
+                _debugOutputs = result;
+                DispatchDebugState(dataObject, StateType.After, update);
+                DispatchDebugState(dataObject, StateType.Duration, update);
+            }
+            if (!hasResult)
+            {
+                throw new ArgumentException($"No matching arm for Decision Mock. Mock Arm value '{NameOfArmToReturn}'. Decision Arms True Arm: '{trueArmText}' False Arm: '{falseArmText}'");
+            }
         }
 
 

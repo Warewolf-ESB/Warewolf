@@ -11,11 +11,11 @@
              xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
-             xmlns:diagnostics2="clr-namespace:Dev2.ViewModels.Diagnostics"
-             xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+    xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:diagnostics2="clr-namespace:Dev2.Studio.Core;assembly=Dev2.Studio.Core"
              mc:Ignorable="d"
              Name="DebugOutput"
              d:DataContext="{d:DesignInstance localDiagnostics:DebugOutputViewModel}">

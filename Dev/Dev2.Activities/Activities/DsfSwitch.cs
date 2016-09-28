@@ -16,13 +16,14 @@ namespace Dev2.Activities
     {
               public DsfFlowSwitchActivity Inner;
 
-              public DsfSwitch(DsfFlowSwitchActivity inner)
-            : base("Switch")
+        public DsfSwitch(DsfFlowSwitchActivity inner)
+      : base("Switch")
         {
-                  Inner = inner;
-              }
+            Inner = inner;
+            UniqueID = inner.UniqueID;
+        }
 
-              public DsfSwitch() { }
+       public DsfSwitch() { }
 
         public override List<string> GetOutputs()
         {
@@ -188,18 +189,36 @@ namespace Dev2.Activities
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             var dsfSwitchSwitches = _dsfSwitch.Switches;
+            bool hasResult = false;
+            DebugItem itemToAdd = new DebugItem();
+            var result = new List<DebugItem>();
             if (dsfSwitchSwitches.ContainsKey(ConditionToUse))
             {
                 NextNodes = new List<IDev2Activity> { dsfSwitchSwitches[ConditionToUse] };
-                return;
+                itemToAdd.AddRange(new DebugItemStaticDataParams(ConditionToUse, "").GetDebugItemResult());
+                result.Add(itemToAdd);
+                hasResult = true;
             }
             if (_dsfSwitch.Default != null)
             {
                 var activity = _dsfSwitch.Default;
                 NextNodes = activity;
-                return;
+                itemToAdd.AddRange(new DebugItemStaticDataParams("Default", "").GetDebugItemResult());
+                result.Add(itemToAdd);
+                hasResult = true;
             }
-            throw new ArgumentException($"No matching arm for Decision Mock. Mock Arm value '{ConditionToUse}'. Switch Arms True Arm: '{string.Join(",",dsfSwitchSwitches.Select(pair => pair.Key))}'.");
+
+            if (dataObject.IsDebugMode() && hasResult)
+            {
+                _debugOutputs = result;
+                DispatchDebugState(dataObject, StateType.After, update);
+                DispatchDebugState(dataObject, StateType.Duration, update);
+            }
+
+            if (!hasResult)
+            {
+                throw new ArgumentException($"No matching arm for Switch Mock. Mock Arm value '{ConditionToUse}'. Switch Arms: '{string.Join(",", dsfSwitchSwitches.Select(pair => pair.Key))}'.");
+            }
         }
 
         #endregion
