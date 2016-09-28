@@ -1329,8 +1329,19 @@ namespace Warewolf.Studio.ViewModels
                 Parent = step.Parent,
                 StepDescription = step.StepDescription
             };
+            switch (testStep.ActivityType)
+            {
+                case "DsfDecision":
+                    testStep.StepIcon = Application.Current?.TryFindResource("ControlFlow-Descision") as ImageSource;
+                    break;
+                case "DsfSwitch":
+                    testStep.StepIcon = Application.Current?.TryFindResource("ControlFlow-Switch") as ImageSource;
+                    break;
+                default:
+                    SetStepIcon(testStep.ActivityType, testStep);
+                    break;
+            }
 
-            //SetStepIcon(testStep.ActivityType.GetType(), testStep);
             if (step.Children != null)
             {
                 foreach (var serviceTestStep in step.Children)
@@ -1348,6 +1359,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 var output = new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value) as IServiceTestOutput;
                 output.AssertOp = serviceTestOutput.AssertOp;
+                output.HasOptionsForValue = serviceTestOutput.HasOptionsForValue;
+                output.OptionsForValue = serviceTestOutput.OptionsForValue;
                 stepOutputs.Add(output);
             }
             return stepOutputs;
