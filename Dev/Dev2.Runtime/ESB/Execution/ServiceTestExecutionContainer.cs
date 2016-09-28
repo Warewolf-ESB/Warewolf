@@ -93,6 +93,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             ErrorResultTO to = errors;
             var serviceTestModelTO = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
+            
             if (serviceTestModelTO == null)
             {
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -332,26 +333,31 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     if (!dataObject.StopExecution)
                     {
+                        dataObject.ServiceTest = test;
                         EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue, test.TestSteps);
-                        if (test.Outputs != null)
+                        if (!dataObject.StopExecution)
                         {
-                            foreach (var output in test.Outputs)
+                            if (test.Outputs != null)
                             {
-                                var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
-                                var value = output.Value;
-
-                                var result = dataObject.Environment.Eval(variable, 0);
-                                if (result.IsWarewolfAtomResult)
+                                foreach (var output in test.Outputs)
                                 {
-                                    var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
-                                    // ReSharper disable once PossibleNullReferenceException
-                                    var actualValue = x.ToString();
-                                    if (!string.Equals(actualValue, value))
+                                    var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+                                    var value = output.Value;
+
+                                    var result = dataObject.Environment.Eval(variable, 0);
+                                    if (result.IsWarewolfAtomResult)
                                     {
-                                        testPassed = false;
-                                        failureMessage.AppendLine(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, value, variable, actualValue));
+                                        var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
+                                        // ReSharper disable once PossibleNullReferenceException
+                                        var actualValue = x.ToString();
+                                        if (!string.Equals(actualValue, value))
+                                        {
+                                            testPassed = false;
+                                            failureMessage.AppendLine(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, value, variable, actualValue));
+                                        }
                                     }
                                 }
+
                             }
                         }
                     }

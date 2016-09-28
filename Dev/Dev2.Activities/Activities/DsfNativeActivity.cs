@@ -21,8 +21,10 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
@@ -563,7 +565,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            Copy(GetDebugOutputs(dataObject.Environment, update), _debugState.Outputs);
+                            UpdateDebugWithAssertions(dataObject, null,_debugState.ID);
+                            var debugOutputs = GetDebugOutputs(dataObject.Environment, update);
+                            Copy(debugOutputs, _debugState.Outputs);
                         }
                     }
                     catch(Exception e)
@@ -638,6 +642,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.Environment.Errors.Clear();
                 }
             }
+        }
+
+        private void UpdateDebugWithAssertions(IDSFDataObject dataObject, List<DebugItem> debugOutputs, Guid uniqueID)
+        {
+            if (dataObject.IsServiceTestExecution)
+            {
+                if (dataObject.ServiceTest != null)
+                {
+                    var stepToBeAsserted = dataObject.ServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == uniqueID);
+                    if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
+                    {
+                        foreach(var serviceTestOutput in stepToBeAsserted.StepOutputs)
+                        {
+                            var actualValue = dataObject.Environment.EvalAsList(serviceTestOutput.Variable, 0);
+                            var value = DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.Value);
+                            var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.From) };
+                            var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.To) };
+                            var assertFunc = CreateFuncFromOperator(serviceTestOutput.AssertOp, actualValue, @from, to);
+                            var assertPassed = assertFunc.Invoke(value);
+                            dataObject.ServiceTest.TestPassed = assertPassed;
+                            dataObject.ServiceTest.TestFailing = !assertPassed;
+                            AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                            dataObject.StopExecution = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        Func<DataStorage.WarewolfAtom, bool> CreateFuncFromOperator(string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
+        {
+
+            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(searchType);
+            return opt.GenerateFunc(values, from, to, false);
         }
 
         void AddErrorToDataList(Exception err, IDSFDataObject dataObject)

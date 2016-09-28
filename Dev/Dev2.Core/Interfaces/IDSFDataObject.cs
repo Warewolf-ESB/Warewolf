@@ -103,5 +103,6 @@ namespace Dev2.Interfaces
         Guid DebugEnvironmentId { get; set; }
         bool RemoteNonDebugInvoke { get; set; }
         bool StopExecution { get; set; }
+        IServiceTestModelTO ServiceTest { get; set; }
     }
 }
