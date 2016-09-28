@@ -5,4 +5,4 @@
 
 @ignore	
 Scenario: Use steps from UITests project
-	
+	When I Try Close Settings Tab
