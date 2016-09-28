@@ -84,11 +84,25 @@ namespace Warewolf.Studio.ViewModels
                         var actualType = debugItemContent.ActualType;
                         if (actualType == typeof(DsfDecision).Name)
                         {
-                            ProcessFlowDecision(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID));
+                            var processFlowDecision = ProcessFlowDecision(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID));
+                            if (processFlowDecision != null)
+                            {
+                                if (debugItemContent.Outputs != null && debugItemContent.Outputs.Count > 0)
+                                {
+                                    processFlowDecision.StepOutputs[0].Value = debugItemContent.Outputs[0].ResultsList[0].Value;
+                                }
+                            }                            
                         }
                         else if (actualType == typeof(DsfSwitch).Name)
                         {
-                            ProcessFlowSwitch(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID));
+                            var processFlowSwitch = ProcessFlowSwitch(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID));
+                            if (processFlowSwitch != null)
+                            {
+                                if (debugItemContent.Outputs != null && debugItemContent.Outputs.Count > 0)
+                                {
+                                    processFlowSwitch.StepOutputs[0].Value = debugItemContent.Outputs[0].ResultsList[0].Value;
+                                }
+                            }
                         }
                         else
                         {
@@ -113,8 +127,7 @@ namespace Warewolf.Studio.ViewModels
                 var serviceTestOutputs = new List<IServiceTestOutput>();
                 var outputs = debugItemContent.Outputs;
                 AddOutputs(outputs, serviceTestOutputs);
-                var serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, serviceTestOutputs) as ServiceTestStep;
-
+                var serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, serviceTestOutputs) as ServiceTestStep;                
                 SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
             }
         }
@@ -123,7 +136,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (parent == null)
             {
-                var testStep = new ServiceTestStep(debugItemContent.ID, "", new List<IServiceTestOutput>(), StepType.Mock)
+                var testStep = new ServiceTestStep(debugItemContent.ID, "", new List<IServiceTestOutput>(), StepType.Assert)
                 {
                     StepDescription = debugItemContent.DisplayName,
                     Parent = null
@@ -157,10 +170,11 @@ namespace Warewolf.Studio.ViewModels
                 var outputs = childItemContent.Outputs;
                 AddOutputs(outputs, serviceTestOutputs);
 
-                var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Mock)
+                var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
                 {
                     StepDescription = childItemContent.DisplayName,
-                    Parent = parent
+                    Parent = parent,
+                    Type = StepType.Assert
                 };
                 SetStepIcon(childStep.ActivityType, childStep);
                 parent.Children.Add(childStep);
@@ -181,7 +195,9 @@ namespace Warewolf.Studio.ViewModels
                     var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable).Where(s => !string.IsNullOrEmpty(s.Variable));
                     foreach (var debugItemResult in actualOutputs)
                     {
-                        serviceTestOutputs.Add(new ServiceTestOutput(debugItemResult.Variable, debugItemResult.Value,"",""));
+                        var serviceTestOutput = new ServiceTestOutput(debugItemResult.Variable, debugItemResult.Value,"","");                        
+                        serviceTestOutput.AssertOp = "=";
+                        serviceTestOutputs.Add(serviceTestOutput);
                     }
                 }
             }
@@ -475,7 +491,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void ProcessFlowSwitch(ModelItem modelItem)
+        private ServiceTestStep ProcessFlowSwitch(ModelItem modelItem)
         {
             if (modelItem != null)
             {
@@ -513,9 +529,11 @@ namespace Warewolf.Studio.ViewModels
                         var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, flowSwitch.DisplayName, typeof(DsfSwitch).Name, serviceTestOutputs) as ServiceTestStep;
                         if (serviceTestStep != null)
                             serviceTestStep.StepIcon = Application.Current?.TryFindResource("ControlFlow-Switch") as ImageSource;
+                        return serviceTestStep;
                     }
                 }
             }
+            return null;
         }
 
 
@@ -599,7 +617,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void ProcessFlowDecision(ModelItem modelItem)
+        private ServiceTestStep ProcessFlowDecision(ModelItem modelItem)
         {
             if (modelItem != null)
             {
@@ -642,11 +660,13 @@ namespace Warewolf.Studio.ViewModels
                                 var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, dds.DisplayText, typeof(DsfDecision).Name, serviceTestOutputs) as ServiceTestStep;
                                 if (serviceTestStep != null)
                                     serviceTestStep.StepIcon = Application.Current?.TryFindResource("ControlFlow-Descision") as ImageSource;
+                                return serviceTestStep;
                             }
                         }
                     }
                 }
             }
+            return null;
         }
 
         private void SetServerName(IContextualResourceModel resourceModel)
