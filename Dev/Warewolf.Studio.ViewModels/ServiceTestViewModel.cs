@@ -531,7 +531,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (outputs != null && outputs.Count > 0)
                 {
-                    var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                    var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "")
                     {
                         HasOptionsForValue = false
                     }).Cast<IServiceTestOutput>().ToList();
@@ -973,6 +973,7 @@ namespace Warewolf.Studio.ViewModels
                 Enabled = model.Enabled,
                 ErrorExpected = model.ErrorExpected,
                 NoErrorExpected = model.NoErrorExpected,
+                ErrorContainsText = model.ErrorContainsText,
                 TestSteps = model.TestSteps.Select(CreateServiceTestStepTO).ToList(),
                 Inputs = model.Inputs.Select(CreateServiceTestInputsTO).ToList(),
                 Outputs = model.Outputs.Select(CreateServiceTestOutputTO).ToList(),
@@ -994,7 +995,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 Variable = output.Variable,
                 Value = output.Value,
-                AssertOp = output.AssertOp
+                AssertOp = output.AssertOp,
+                HasOptionsForValue = output.HasOptionsForValue,
+                OptionsForValue = output.OptionsForValue
             };
         }
 
@@ -1032,7 +1035,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 Variable = output.Variable,
                 Value = output.Value,
-                AssertOp = output.AssertOp
+                AssertOp = output.AssertOp,
+                HasOptionsForValue = output.HasOptionsForValue,
+                OptionsForValue = output.OptionsForValue
             };
         }
 
@@ -1301,6 +1306,7 @@ namespace Warewolf.Studio.ViewModels
                 Enabled = to.Enabled,
                 ErrorExpected = to.ErrorExpected,
                 NoErrorExpected = to.NoErrorExpected,
+                ErrorContainsText = to.ErrorContainsText,
                 LastRunDate = to.LastRunDate,
                 TestPending = to.TestPending,
                 TestFailing = to.TestFailing,
@@ -1323,6 +1329,8 @@ namespace Warewolf.Studio.ViewModels
                 Parent = step.Parent,
                 StepDescription = step.StepDescription
             };
+
+            //SetStepIcon(testStep.ActivityType.GetType(), testStep);
             if (step.Children != null)
             {
                 foreach (var serviceTestStep in step.Children)

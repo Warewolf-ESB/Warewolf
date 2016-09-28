@@ -68,6 +68,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testModel);
             Assert.IsTrue(testModel.NoErrorExpected);
             Assert.IsFalse(testModel.ErrorExpected);
+            Assert.AreEqual(string.Empty, testModel.ErrorContainsText);
         }
 
         [TestMethod]

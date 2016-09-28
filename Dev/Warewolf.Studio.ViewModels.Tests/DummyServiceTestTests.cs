@@ -64,6 +64,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.AreEqual(default(bool), dummyServiceTest.Enabled);
             Assert.AreEqual(default(bool), dummyServiceTest.ErrorExpected);
+            Assert.AreEqual(default(string), dummyServiceTest.ErrorContainsText);
             Assert.AreEqual(default(bool), dummyServiceTest.IsDirty);
             Assert.AreEqual(true, dummyServiceTest.IsNewTest);
             Assert.AreEqual(default(bool), dummyServiceTest.IsTestSelected);

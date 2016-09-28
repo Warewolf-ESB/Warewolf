@@ -17,6 +17,7 @@ namespace Dev2.Common.Interfaces
         List<IServiceTestOutput> Outputs { get; set; }
         bool NoErrorExpected { get; set; }
         bool ErrorExpected { get; set; }
+        string ErrorContainsText { get; set; }
         bool TestPassed { get; set; }
         bool TestFailing { get; set; }
         bool TestInvalid { get; set; }

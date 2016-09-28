@@ -62,6 +62,8 @@ namespace Warewolf.Studio.ViewModels
         public ObservableCollection<IServiceTestOutput> Outputs { get; set; }
         public bool NoErrorExpected { get; set; }
         public bool ErrorExpected { get; set; }
+        public string ErrorContainsText { get; set; }
+
         public bool IsNewTest
         {
             get
@@ -90,7 +92,7 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-        public IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
+        public IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType = StepType.Mock)
         {
             return null;
         }
