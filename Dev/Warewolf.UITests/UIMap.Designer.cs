@@ -337,6 +337,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Close_SharepointSource_Tab_Button
+        /// </summary>
+        public void Click_Close_SharepointSource_Tab_Button()
+        {
+            #region Variable Declarations
+            WpfButton sharepointSourceTabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SharepointServerSourceTab.SharepointSourceTabCloseButton;
+            #endregion
+
+            // Click '' button
+            Mouse.Click(sharepointSourceTabCloseButton, new Point(13, 7));
+        }
+        
+        /// <summary>
         /// Click_Close_Studio_TopRibbon_Button
         /// </summary>
         public void Click_Close_Studio_TopRibbon_Button()
@@ -3218,6 +3231,8 @@ namespace Warewolf.UITests
             WpfListItem createListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CreateListItems;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
+            WpfComboBox list = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.List;
             #endregion
 
             // Type 'Create List Item' in 'SearchTextBox' text box
@@ -3230,6 +3245,12 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'UI__Database_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams.ServerExists, server.Exists, "server lookup does not exist on the sharepoin smal view");
+
+            // Verify that the 'Exists' property of 'UI__TableName_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams.ListExists, list.Exists, "sharepint list does not exist on the sharepoint small view");
         }
         
         /// <summary>
@@ -6086,6 +6107,26 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_NewSharepointSource_FromServer_Lookup - Use 'Select_NewSharepointSource_FromServer_LookupParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_NewSharepointSource_FromServer_Lookup()
+        {
+            #region Variable Declarations
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
+            WpfCustom sharepointView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView;
+            #endregion
+
+            // Click 'UI__Database_AutoID' combo box
+            Mouse.Click(server, new Point(54, 11));
+
+            // Click 'UI__Database_AutoID' combo box
+            Mouse.Click(server, new Point(56, 13));
+            
+            // Verify that the 'Exists' property of custom control equals 'True'
+            Assert.AreEqual(this.Select_NewSharepointSource_FromServer_LookupParams.SharepointViewExists, sharepointView.Exists, "sharepoint service source window does not exist");
+        }
+        
+        /// <summary>
         /// Select_NewWebSource_FromExplorerContextMenu
         /// </summary>
         public void Select_NewWebSource_FromExplorerContextMenu()
@@ -6331,6 +6372,23 @@ namespace Warewolf.UITests
 
             // Click 'Set as Start Node' menu item
             Mouse.Click(setasStartNode, new Point(67, 16));
+        }
+        
+        /// <summary>
+        /// Select_SharepointTestServer
+        /// </summary>
+        public void Select_SharepointTestServer()
+        {
+            #region Variable Declarations
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
+            WpfListItem sharepointTestServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server.SharepointTestServer;
+            #endregion
+
+            // Click 'UI__Database_AutoID' combo box
+            Mouse.Click(server, new Point(98, 12));
+
+            // Click '{"Server":"http://rsaklfsvrsharep/","Authenticatio...' list item
+            Mouse.Click(sharepointTestServer, new Point(67, 13));
         }
         
         /// <summary>
@@ -8837,6 +8895,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_NewSharepointSource_FromServer_LookupParams Select_NewSharepointSource_FromServer_LookupParams
+        {
+            get
+            {
+                if ((this.mSelect_NewSharepointSource_FromServer_LookupParams == null))
+                {
+                    this.mSelect_NewSharepointSource_FromServer_LookupParams = new Select_NewSharepointSource_FromServer_LookupParams();
+                }
+                return this.mSelect_NewSharepointSource_FromServer_LookupParams;
+            }
+        }
+        
         public virtual Select_NewWorkFlowService_From_ContextMenuParams Select_NewWorkFlowService_From_ContextMenuParams
         {
             get
@@ -9125,15 +9195,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
         {
             get
             {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
                 {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
                 }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow;
+                return this.mUIWarewolfDEV2SANELEMTWindow;
             }
         }
         #endregion
@@ -9519,6 +9589,8 @@ namespace Warewolf.UITests
         
         private Select_NewDatabaseSource_FromSqlServerToolParams mSelect_NewDatabaseSource_FromSqlServerToolParams;
         
+        private Select_NewSharepointSource_FromServer_LookupParams mSelect_NewSharepointSource_FromServer_LookupParams;
+        
         private Select_NewWorkFlowService_From_ContextMenuParams mSelect_NewWorkFlowService_From_ContextMenuParams;
         
         private Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
@@ -9567,7 +9639,7 @@ namespace Warewolf.UITests
         
         private SwitchCaseDialog mSwitchCaseDialog;
         
-        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -11876,6 +11948,16 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Database_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ServerExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__TableName_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ListExists = true;
         #endregion
     }
     
@@ -13566,6 +13648,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
         /// </summary>
         public bool PasswordTextBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_NewSharepointSource_FromServer_Lookup'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_NewSharepointSource_FromServer_LookupParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of custom control equals 'True'
+        /// </summary>
+        public bool SharepointViewExists = true;
         #endregion
     }
     
@@ -21267,6 +21364,18 @@ namespace Warewolf.UITests
                 return this.mSchedulerTab;
             }
         }
+        
+        public SharepointServerSourceTab SharepointServerSourceTab
+        {
+            get
+            {
+                if ((this.mSharepointServerSourceTab == null))
+                {
+                    this.mSharepointServerSourceTab = new SharepointServerSourceTab(this);
+                }
+                return this.mSharepointServerSourceTab;
+            }
+        }
         #endregion
         
         #region Fields
@@ -21297,6 +21406,8 @@ namespace Warewolf.UITests
         private TestsTabPage mTestsTabPage;
         
         private SchedulerTab mSchedulerTab;
+        
+        private SharepointServerSourceTab mSharepointServerSourceTab;
         #endregion
     }
     
@@ -26104,18 +26215,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom SharepointCreate
+        public SharepointCreate SharepointCreate
         {
             get
             {
                 if ((this.mSharepointCreate == null))
                 {
-                    this.mSharepointCreate = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mSharepointCreate.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListCreateDesigner";
-                    this.mSharepointCreate.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Create List Item(SharepointListCreateDesigner)";
-                    this.mSharepointCreate.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSharepointCreate = new SharepointCreate(this);
                 }
                 return this.mSharepointCreate;
             }
@@ -26815,7 +26921,7 @@ namespace Warewolf.UITests
         
         private WpfCustom mScripting;
         
-        private WpfCustom mSharepointCreate;
+        private SharepointCreate mSharepointCreate;
         
         private WpfCustom mSharepointDelete;
         
@@ -30559,6 +30665,111 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SharepointCreate : WpfCustom
+    {
+        
+        public SharepointCreate(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListCreateDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Create List Item(SharepointListCreateDesigner)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox List
+        {
+            get
+            {
+                if ((this.mList == null))
+                {
+                    this.mList = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mList.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__TableName_AutoID";
+                    this.mList.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mList;
+            }
+        }
+        
+        public Server Server
+        {
+            get
+            {
+                if ((this.mServer == null))
+                {
+                    this.mServer = new Server(this);
+                }
+                return this.mServer;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mList;
+        
+        private Server mServer;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Server : WpfComboBox
+    {
+        
+        public Server(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Database_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem NewSharePointSource
+        {
+            get
+            {
+                if ((this.mNewSharePointSource == null))
+                {
+                    this.mNewSharePointSource = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":null,""AuthenticationType"":""Windows"",""UserName"":null,""Password"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""77fe880c-baa0-4f69-ad3c-94439293c611"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""New Sharepoint Server Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewSharePointSource.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewSharePointSource;
+            }
+        }
+        
+        public WpfListItem SharepointTestServer
+        {
+            get
+            {
+                if ((this.mSharepointTestServer == null))
+                {
+                    this.mSharepointTestServer = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mSharepointTestServer.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":""http://rsaklfsvrsharep/"",""AuthenticationType"":""Windows"",""UserName"":"""",""Password"":"""",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""SharePoint Test Server"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2015-07-07T09:49:43.2102319+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""VersionId"":""6d47f370-c0d3-4b96-89d7-52090a38331a""}}";
+                    this.mSharepointTestServer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSharepointTestServer;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mNewSharePointSource;
+        
+        private WpfListItem mSharepointTestServer;
         #endregion
     }
     
@@ -38124,6 +38335,94 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SharepointServerSourceTab : WpfTabPage
+    {
+        
+        public SharepointServerSourceTab(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.ISharepointServerSource]" +
+                "";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public SharepointServerSourceView SharepointServerSourceView
+        {
+            get
+            {
+                if ((this.mSharepointServerSourceView == null))
+                {
+                    this.mSharepointServerSourceView = new SharepointServerSourceView(this);
+                }
+                return this.mSharepointServerSourceView;
+            }
+        }
+        
+        public WpfButton SharepointSourceTabCloseButton
+        {
+            get
+            {
+                if ((this.mSharepointSourceTabCloseButton == null))
+                {
+                    this.mSharepointSourceTabCloseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mSharepointSourceTabCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mSharepointSourceTabCloseButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSharepointSourceTabCloseButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SharepointServerSourceView mSharepointServerSourceView;
+        
+        private WpfButton mSharepointSourceTabCloseButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SharepointServerSourceView : WpfCustom
+    {
+        
+        public SharepointServerSourceView(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom SharepointView
+        {
+            get
+            {
+                if ((this.mSharepointView == null))
+                {
+                    this.mSharepointView = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSharepointView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointServerSource";
+                    this.mSharepointView.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSharepointView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mSharepointView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitPaneRight : WpfCustom
     {
         
@@ -43727,334 +44026,136 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
     {
         
-        public UIWarewolfDEV2ASHLEYLEWindow()
+        public UIWarewolfDEV2SANELEMTWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        public UISharepointCreateListCustom UISharepointCreateListCustom
         {
             get
             {
-                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                if ((this.mUISharepointCreateListCustom == null))
                 {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                    this.mUISharepointCreateListCustom = new UISharepointCreateListCustom(this);
                 }
-                return this.mUIUI_SplitPane_AutoIDCustom;
+                return this.mUISharepointCreateListCustom;
             }
         }
         #endregion
         
         #region Fields
-        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        private UISharepointCreateListCustom mUISharepointCreateListCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    public class UISharepointCreateListCustom : WpfCustom
     {
         
-        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+        public UISharepointCreateListCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListCreateDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Create List Item(SharepointListCreateDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        public UISmallViewContentCustom UISmallViewContentCustom
         {
             get
             {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                if ((this.mUISmallViewContentCustom == null))
                 {
-                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                    this.mUISmallViewContentCustom = new UISmallViewContentCustom(this);
                 }
-                return this.mUIUI_TabManager_AutoIDTabList;
+                return this.mUISmallViewContentCustom;
             }
         }
         #endregion
         
         #region Fields
-        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        private UISmallViewContentCustom mUISmallViewContentCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    public class UISmallViewContentCustom : WpfCustom
     {
         
-        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+        public UISmallViewContentCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIDev2StudioViewModelsTabPage UIDev2StudioViewModelsTabPage
+        public UIUI__Database_AutoIDComboBox UIUI__Database_AutoIDComboBox
         {
             get
             {
-                if ((this.mUIDev2StudioViewModelsTabPage == null))
+                if ((this.mUIUI__Database_AutoIDComboBox == null))
                 {
-                    this.mUIDev2StudioViewModelsTabPage = new UIDev2StudioViewModelsTabPage(this);
+                    this.mUIUI__Database_AutoIDComboBox = new UIUI__Database_AutoIDComboBox(this);
                 }
-                return this.mUIDev2StudioViewModelsTabPage;
+                return this.mUIUI__Database_AutoIDComboBox;
             }
         }
         #endregion
         
         #region Fields
-        private UIDev2StudioViewModelsTabPage mUIDev2StudioViewModelsTabPage;
+        private UIUI__Database_AutoIDComboBox mUIUI__Database_AutoIDComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDev2StudioViewModelsTabPage : WpfTabPage
+    public class UIUI__Database_AutoIDComboBox : WpfComboBox
     {
         
-        public UIDev2StudioViewModelsTabPage(UITestControl searchLimitContainer) : 
+        public UIUI__Database_AutoIDComboBox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Database_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
+        public WpfListItem UIServernullAuthenticaListItem
         {
             get
             {
-                if ((this.mUIDev2StudioViewModelsCustom == null))
+                if ((this.mUIServernullAuthenticaListItem == null))
                 {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
-                }
-                return this.mUIDev2StudioViewModelsCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDev2StudioViewModelsCustom : WpfCustom
-    {
-        
-        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_WorkflowDesigner_Custom UIUI_WorkflowDesigner_Custom
-        {
-            get
-            {
-                if ((this.mUIUI_WorkflowDesigner_Custom == null))
-                {
-                    this.mUIUI_WorkflowDesigner_Custom = new UIUI_WorkflowDesigner_Custom(this);
-                }
-                return this.mUIUI_WorkflowDesigner_Custom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_WorkflowDesigner_Custom mUIUI_WorkflowDesigner_Custom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_WorkflowDesigner_Custom : WpfCustom
-    {
-        
-        public UIUI_WorkflowDesigner_Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_WorkflowDesigner_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUserControl_1Custom UIUserControl_1Custom
-        {
-            get
-            {
-                if ((this.mUIUserControl_1Custom == null))
-                {
-                    this.mUIUserControl_1Custom = new UIUserControl_1Custom(this);
-                }
-                return this.mUIUserControl_1Custom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUserControl_1Custom mUIUserControl_1Custom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUserControl_1Custom : WpfCustom
-    {
-        
-        public UIUserControl_1Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DesignerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UserControl_1";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIScrollViewerPane UIScrollViewerPane
-        {
-            get
-            {
-                if ((this.mUIScrollViewerPane == null))
-                {
-                    this.mUIScrollViewerPane = new UIScrollViewerPane(this);
-                }
-                return this.mUIScrollViewerPane;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIScrollViewerPane mUIScrollViewerPane;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIScrollViewerPane : WpfPane
-    {
-        
-        public UIScrollViewerPane(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "scrollViewer";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIActivityBuilderCustom UIActivityBuilderCustom
-        {
-            get
-            {
-                if ((this.mUIActivityBuilderCustom == null))
-                {
-                    this.mUIActivityBuilderCustom = new UIActivityBuilderCustom(this);
-                }
-                return this.mUIActivityBuilderCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIActivityBuilderCustom mUIActivityBuilderCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIActivityBuilderCustom : WpfCustom
-    {
-        
-        public UIActivityBuilderCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActivityTypeDesigner";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
-        {
-            get
-            {
-                if ((this.mUIWorkflowItemPresenteCustom == null))
-                {
-                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
-                }
-                return this.mUIWorkflowItemPresenteCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWorkflowItemPresenteCustom : WpfCustom
-    {
-        
-        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new WpfCustom(this);
+                    this.mUIServernullAuthenticaListItem = new WpfListItem(this);
                     #region Search Criteria
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 4(FlowchartDesigner)";
-                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mUIServernullAuthenticaListItem.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":null,""AuthenticationType"":""Windows"",""UserName"":null,""Password"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""77fe880c-baa0-4f69-ad3c-94439293c611"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""New Sharepoint Server Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mUIServernullAuthenticaListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mUIFlowchartCustom;
+                return this.mUIServernullAuthenticaListItem;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCustom mUIFlowchartCustom;
+        private WpfListItem mUIServernullAuthenticaListItem;
         #endregion
     }
 }
