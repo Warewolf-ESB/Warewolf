@@ -16,14 +16,6 @@ namespace Warewolf.UITests
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Click_NewPluginSource_Ribbon_Button();
-            if (!File.Exists(DLLPath))
-            {
-                DLLPath = DLLPath.Replace("Framework64", "Framework");
-                if (!File.Exists(DLLPath))
-                {
-                    throw new Exception("No suitable DLL could be found for this test to use.");
-                }
-            }
             Uimap.Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(DLLPath);
             Uimap.Save_With_Ribbon_Button_And_Dialog(PluginSourceName);
             Uimap.Click_Close_Plugin_Source_Wizard_Tab_Button();

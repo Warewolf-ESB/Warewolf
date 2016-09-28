@@ -30,7 +30,7 @@ namespace Warewolf.UITests
             Uimap.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditText = SecondWorkflowName;
             Uimap.Rename_LocalWorkflow_To_SecodWorkFlow();
             Uimap.Open_Explorer_First_Item_Dependancies_With_Context_Menu();
-            Uimap.Click_Duplicate_From_ExplorerContextMenu();
+            Uimap.Click_Duplicate_From_ExplorerContextMenu(DoubleDice);
             Uimap.Enter_Duplicate_workflow_nameParams.ServiceNameTextBoxText = DuplicatedWorkFlow;
             Uimap.Enter_Duplicate_workflow_name();
             Uimap.Click_UpdateDuplicateRelationships();

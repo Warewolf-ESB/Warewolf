@@ -31,13 +31,14 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -57,19 +58,49 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="StudioUISpecs.feature.cs">
+    <Compile Include="DBConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>StudioUISpecs.feature</DependentUpon>
+      <DependentUpon>DBConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="PluginConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PluginConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="SetDefaultPlaybackSettings.cs" />
+    <Compile Include="Explorer.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Explorer.feature</DependentUpon>
+    </Compile>
+    <Compile Include="WebConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebConnector.feature</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="StudioUISpecs.feature">
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DBConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StudioUISpecs.feature.cs</LastGenOutput>
+      <LastGenOutput>DBConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Explorer.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Explorer.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="PluginConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PluginConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="WebConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WebConnector.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Warewolf.UITests\Warewolf.UITests.csproj">
