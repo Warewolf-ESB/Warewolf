@@ -376,6 +376,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Close_Tests_Tab
+        /// </summary>
+        public void Click_Close_Tests_Tab()
+        {
+            #region Variable Declarations
+            WpfButton closeTestTabButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.CloseTestTabButton;
+            #endregion
+
+            // Click '' button
+            Mouse.Click(closeTestTabButton, new Point(11, 5));
+        }
+        
+        /// <summary>
         /// Click_Close_Web_Source_Wizard_Tab_Button
         /// </summary>
         public void Click_Close_Web_Source_Wizard_Tab_Button()
@@ -792,29 +805,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
             Assert.AreEqual(this.Click_Duplicate_From_Duplicate_DialogParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
-        }
-        
-        /// <summary>
-        /// Click_Duplicate_From_ExplorerContextMenu - Use 'Click_Duplicate_From_ExplorerContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Duplicate_From_ExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem duplicate = this.MainStudioWindow.ExplorerContextMenu.Duplicate;
-            WpfWindow saveDialogWindow = this.SaveDialogWindow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateExists, duplicate.Exists, "Duplicate button does not exist");
-
-            // Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateEnabled, duplicate.Enabled, "Duplicate button is disabled");
-
-            // Click 'Duplicate' menu item
-            Mouse.Click(duplicate, new Point(62, 12));
-
-            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
         }
         
         /// <summary>
@@ -6376,11 +6366,10 @@ namespace Warewolf.UITests
         public void Select_SharepointTestServer()
         {
             #region Variable Declarations
-            WpfComboBox server = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
             WpfListItem sharepointTestServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server.SharepointTestServer;
             #endregion
-            
-            server.DrawHighlight();
+
             // Click 'UI__Database_AutoID' combo box
             Mouse.Click(server, new Point(98, 12));
 
@@ -6914,18 +6903,6 @@ namespace Warewolf.UITests
                     this.mClick_Duplicate_From_Duplicate_DialogParams = new Click_Duplicate_From_Duplicate_DialogParams();
                 }
                 return this.mClick_Duplicate_From_Duplicate_DialogParams;
-            }
-        }
-        
-        public virtual Click_Duplicate_From_ExplorerContextMenuParams Click_Duplicate_From_ExplorerContextMenuParams
-        {
-            get
-            {
-                if ((this.mClick_Duplicate_From_ExplorerContextMenuParams == null))
-                {
-                    this.mClick_Duplicate_From_ExplorerContextMenuParams = new Click_Duplicate_From_ExplorerContextMenuParams();
-                }
-                return this.mClick_Duplicate_From_ExplorerContextMenuParams;
             }
         }
         
@@ -9285,8 +9262,6 @@ namespace Warewolf.UITests
         
         private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
         
-        private Click_Duplicate_From_ExplorerContextMenuParams mClick_Duplicate_From_ExplorerContextMenuParams;
-        
         private Click_ExpandAndStepIn_NestedWorkflowParams mClick_ExpandAndStepIn_NestedWorkflowParams;
         
         private Click_Explorer_Filter_Clear_ButtonParams mClick_Explorer_Filter_Clear_ButtonParams;
@@ -10198,31 +10173,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Duplicate' button equals 'True'
         /// </summary>
         public bool DuplicateButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-        /// </summary>
-        public bool SaveDialogWindowExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Duplicate_From_ExplorerContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Duplicate_From_ExplorerContextMenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
-        /// </summary>
-        public bool DuplicateExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
-        /// </summary>
-        public bool DuplicateEnabled = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
@@ -36299,12 +36249,30 @@ namespace Warewolf.UITests
                 return this.mServiceTestView;
             }
         }
+        
+        public WpfButton CloseTestTabButton
+        {
+            get
+            {
+                if ((this.mCloseTestTabButton == null))
+                {
+                    this.mCloseTestTabButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCloseTestTabButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mCloseTestTabButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCloseTestTabButton;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfText mTabDescription;
         
         private ServiceTestView mServiceTestView;
+        
+        private WpfButton mCloseTestTabButton;
         #endregion
     }
     
@@ -44839,10 +44807,24 @@ namespace Warewolf.UITests
                 return this.mUISharepointCreateListCustom;
             }
         }
+        
+        public UIUI_SplitPane_AutoIDCustom1 UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom1(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
         #endregion
         
         #region Fields
         private UISharepointCreateListCustom mUISharepointCreateListCustom;
+        
+        private UIUI_SplitPane_AutoIDCustom1 mUIUI_SplitPane_AutoIDCustom;
         #endregion
     }
     
@@ -44913,6 +44895,75 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfComboBox mUIUI__Database_AutoIDComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom1 : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList1 UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList1(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList1 mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TabManager_AutoIDTabList1 : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTabPage UIDev2ViewModelsStudioTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2ViewModelsStudioTabPage == null))
+                {
+                    this.mUIDev2ViewModelsStudioTabPage = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mUIDev2ViewModelsStudioTabPage.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.StudioTestViewModel";
+                    this.mUIDev2ViewModelsStudioTabPage.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIDev2ViewModelsStudioTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTabPage mUIDev2ViewModelsStudioTabPage;
         #endregion
     }
 }
