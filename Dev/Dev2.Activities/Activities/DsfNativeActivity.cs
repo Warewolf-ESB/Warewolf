@@ -664,7 +664,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ServiceTest.TestPassed = assertPassed;
                             dataObject.ServiceTest.TestFailing = !assertPassed;
                             AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
-                            dataObject.StopExecution = true;
+                            dataObject.StopExecution = !assertPassed;
                         }
                     }
                 }
