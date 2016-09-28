@@ -147,6 +147,11 @@ namespace Warewolf.Studio.ViewModels
                 if (_assertSelected)
                 {
                     Type = StepType.Assert;
+                    foreach (var serviceTestOutput in StepOutputs)
+                    {
+                        var item = serviceTestOutput as ServiceTestOutput;
+                        item?.OnSearchTypeChanged();
+                    }
                 }
                 OnPropertyChanged(() => AssertSelected);
             }
@@ -161,6 +166,21 @@ namespace Warewolf.Studio.ViewModels
                 if (_mockSelected)
                 {
                     Type = StepType.Mock;
+                    foreach (var serviceTestOutput in StepOutputs)
+                    {
+                        var item = serviceTestOutput as ServiceTestOutput;
+                        if (item != null)
+                        {
+                            if (!item.IsSearchCriteriaEnabled)
+                            {
+                                item.IsSearchCriteriaEnabled = true;
+                            }
+                            if (!item.IsSinglematchCriteriaVisible && !item.IsBetweenCriteriaVisible)
+                            {
+                                item.IsSinglematchCriteriaVisible = true;
+                            }
+                        }
+                    }
                 }
                 OnPropertyChanged(() => MockSelected);
             }
