@@ -869,6 +869,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_First_Recordset_Input_Checkbox - Use 'Click_First_Recordset_Input_CheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_First_Recordset_Input_Checkbox()
+        {
+            #region Variable Declarations
+            WpfCheckBox inputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox;
+            #endregion
+
+            // Select 'UI_IsInputCheckbox_AutoID' check box
+            inputCheckbox.Checked = this.Click_First_Recordset_Input_CheckboxParams.InputCheckboxChecked;
+        }
+        
+        /// <summary>
         /// Click_FullScreen_TopRibbon_Button
         /// </summary>
         public void Click_FullScreen_TopRibbon_Button()
@@ -6942,6 +6955,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_First_Recordset_Input_CheckboxParams Click_First_Recordset_Input_CheckboxParams
+        {
+            get
+            {
+                if ((this.mClick_First_Recordset_Input_CheckboxParams == null))
+                {
+                    this.mClick_First_Recordset_Input_CheckboxParams = new Click_First_Recordset_Input_CheckboxParams();
+                }
+                return this.mClick_First_Recordset_Input_CheckboxParams;
+            }
+        }
+        
         public virtual Click_GET_Web_Large_View_Done_ButtonParams Click_GET_Web_Large_View_Done_ButtonParams
         {
             get
@@ -9268,6 +9293,8 @@ namespace Warewolf.UITests
         
         private Click_Explorer_RemoteServer_Connect_ButtonParams mClick_Explorer_RemoteServer_Connect_ButtonParams;
         
+        private Click_First_Recordset_Input_CheckboxParams mClick_First_Recordset_Input_CheckboxParams;
+        
         private Click_GET_Web_Large_View_Done_ButtonParams mClick_GET_Web_Large_View_Done_ButtonParams;
         
         private Click_GET_Web_Large_View_Generate_OutputsExpectedValues mClick_GET_Web_Large_View_Generate_OutputsExpectedValues;
@@ -10223,6 +10250,21 @@ namespace Warewolf.UITests
         /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstRemoteServerExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_First_Recordset_Input_Checkbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_First_Recordset_Input_CheckboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'UI_IsInputCheckbox_AutoID' check box
+        /// </summary>
+        public bool InputCheckboxChecked = true;
         #endregion
     }
     
