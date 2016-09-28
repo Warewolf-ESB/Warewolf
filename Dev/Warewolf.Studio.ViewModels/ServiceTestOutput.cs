@@ -171,7 +171,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void OnSearchTypeChanged()
+        public void OnSearchTypeChanged()
         {
             UpdateMatchVisibility(_assertOp, _findRecsetOptions);
             var requiresCriteria = _requiresSearchCriteria.Contains(_assertOp);
@@ -185,7 +185,7 @@ namespace Warewolf.Studio.ViewModels
         public void UpdateMatchVisibility( string value, IList<IFindRecsetOptions> whereOptions)
         {
 
-            var opt = whereOptions.FirstOrDefault(a => value.ToLower().StartsWith(a.HandlesType().ToLower()));
+            var opt = whereOptions.FirstOrDefault(a => value != null && value.ToLower().StartsWith(a.HandlesType().ToLower()));
             if (opt != null)
             {
                 switch (opt.ArgumentCount)
