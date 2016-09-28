@@ -137,7 +137,7 @@
     "SessionID": "083eed00-9583-465a-8963-a8383a944298",
     "WorkSurfaceMappingId": "a03172cf-7f8f-417e-be86-8821d696ca40",
     "IsDurationVisible": true,
-    "ActualType": "Dev2.Activities.DsfDecision, Dev2.Activities, Version=0.0.6114.19002, Culture=neutral, PublicKeyToken=null"
+    "ActualType": "DsfDecision"
   },
   {
     "$type": "Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics",
@@ -241,7 +241,7 @@
     "SessionID": "083eed00-9583-465a-8963-a8383a944298",
     "WorkSurfaceMappingId": "670132e7-80d4-4e41-94af-ba4a71b28118",
     "IsDurationVisible": true,
-    "ActualType": "Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity, Dev2.Activities, Version=0.0.6114.19002, Culture=neutral, PublicKeyToken=null"
+    "ActualType": "DsfMultiAssignActivity"
   },
   {
     "$type": "Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics",
