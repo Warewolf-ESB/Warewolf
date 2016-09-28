@@ -933,9 +933,11 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 var vname = tableRow["Variable Name"];
                 var value = tableRow["Value"];
+                var from = tableRow["From"];
+                var to = tableRow["To"];
                 serviceTest.SelectedServiceTest.Outputs.Add
                     (
-                       new ServiceTestOutput(vname, value)
+                       new ServiceTestOutput(vname, value, from, to)
                     );
             }
         }
@@ -1311,11 +1313,11 @@ namespace Dev2.Activities.Specs.TestFramework
                                     var armToUse = tableRow["Output Value"];
                                     if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText) };
+                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText) };
+                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }
                                 }
@@ -1339,7 +1341,9 @@ namespace Dev2.Activities.Specs.TestFramework
                         var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];
                         var value = tableRow["Output Value"];
-                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput(var, value) };
+                        var from = tableRow["Output From"];
+                        var to = tableRow["Output To"];
+                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput(var, value, from, to) };
                         var type = activity.GetType();
                         test.AddTestStep(activity.UniqueID, activity.DisplayName, type.Name, serviceTestOutputs);
                     }
@@ -1390,12 +1394,12 @@ namespace Dev2.Activities.Specs.TestFramework
                                     var armToUse = tableRow["Output Value"];
                                     if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText) };
+                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Assert);
                                     }
                                     else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText) };
+                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Assert);
                                     }
                                 }
@@ -1419,7 +1423,9 @@ namespace Dev2.Activities.Specs.TestFramework
                         var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];
                         var value = tableRow["Output Value"];
-                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput(var, value) };
+                        var from = tableRow["Output From"];
+                        var to = tableRow["Output To"];
+                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput(var, value, from, to) };
                         var type = activity.GetType();
                         test.AddTestStep(activity.UniqueID, activity.DisplayName, type.Name, serviceTestOutputs, StepType.Assert);
                     }

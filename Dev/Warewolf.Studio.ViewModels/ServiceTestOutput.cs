@@ -21,16 +21,20 @@ namespace Warewolf.Studio.ViewModels
         private bool _isSearchCriteriaEnabled;
         private bool _isSearchCriteriaVisible;
         private List<string> _optionsForValue;
+        private string _from;
+        private string _to;
         private readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
         private readonly IList<IFindRecsetOptions> _findRecsetOptions;
 
-
-        public ServiceTestOutput(string variable, string value)
+        public ServiceTestOutput(string variable, string value, string from, string to)
         {
             if(variable == null)
                 throw new ArgumentNullException(nameof(variable));
             Variable = variable;
             Value = value;
+            From = from;
+            To = to;
+            AssertOps = new List<string> { "=" };
             _findRecsetOptions = FindRecsetOptions.FindAllDecision();
             var collection = _findRecsetOptions.Select(c => c.HandlesType());
             AssertOps = new ObservableCollection<string>(collection);
@@ -58,6 +62,30 @@ namespace Warewolf.Studio.ViewModels
             {
                 _value = value;
                 OnPropertyChanged(() => Value);
+            }
+        }
+        public string From
+        {
+            get
+            {
+                return _from;
+            }
+            set
+            {
+                _from = value;
+                OnPropertyChanged(() => From);
+            }
+        }
+        public string To
+        {
+            get
+            {
+                return _to;
+            }
+            set
+            {
+                _to = value;
+                OnPropertyChanged(() => To);
             }
         }
 
