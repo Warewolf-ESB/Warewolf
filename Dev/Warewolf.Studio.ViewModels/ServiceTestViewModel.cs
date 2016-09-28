@@ -346,7 +346,7 @@ namespace Warewolf.Studio.ViewModels
             var outputs = act.GetOutputs();
             if (outputs != null && outputs.Count > 0)
             {
-                var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "", "","")
                 {
                     HasOptionsForValue = false
                 }).Cast<IServiceTestOutput>().ToList();
@@ -378,7 +378,7 @@ namespace Warewolf.Studio.ViewModels
                         switchOptions.Insert(0, "Default");
                     }
                     var serviceTestOutputs = new List<IServiceTestOutput>();
-                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
                     {
                         HasOptionsForValue = true,
                         OptionsForValue = switchOptions
@@ -411,7 +411,7 @@ namespace Warewolf.Studio.ViewModels
                         switchOptions.Insert(0, "Default");
                     }
                     var serviceTestOutputs = new List<IServiceTestOutput>();
-                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
                     {
                         HasOptionsForValue = true,
                         OptionsForValue = switchOptions
@@ -438,7 +438,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (outputs != null && outputs.Count > 0)
                 {
-                    var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "")
+                    var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "", "", "")
                     {
                         HasOptionsForValue = false
                     }).Cast<IServiceTestOutput>().ToList();
@@ -476,7 +476,7 @@ namespace Warewolf.Studio.ViewModels
                 if (SelectedServiceTest != null)
                 {
                     var serviceTestOutputs = new List<IServiceTestOutput>();
-                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
                     {
                         HasOptionsForValue = true,
                         OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
@@ -510,7 +510,7 @@ namespace Warewolf.Studio.ViewModels
                         if (SelectedServiceTest != null)
                         {
                             var serviceTestOutputs = new List<IServiceTestOutput>();
-                            var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                            var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
                             {
                                 HasOptionsForValue = true,
                                 OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
@@ -1194,7 +1194,7 @@ namespace Warewolf.Studio.ViewModels
                 TestInvalid = to.TestInvalid,
                 TestSteps = to.TestSteps?.Select(step => CreateServiceTestStep(step) as IServiceTestStep).ToObservableCollection(),
                 Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToObservableCollection(),
-                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToObservableCollection()
+                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value, output.From, output.To) as IServiceTestOutput).ToObservableCollection()
             };
             return serviceTestModel;
         }
@@ -1224,7 +1224,7 @@ namespace Warewolf.Studio.ViewModels
             var stepOutputs = new List<IServiceTestOutput>();
             foreach(var serviceTestOutput in stepStepOutputs)
             {
-                var output = new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value) as IServiceTestOutput;
+                var output = new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value, serviceTestOutput.From, serviceTestOutput.To) as IServiceTestOutput;
                 output.AssertOp = serviceTestOutput.AssertOp;
                 stepOutputs.Add(output);
             }

@@ -59,6 +59,8 @@ namespace Dev2.Common.Interfaces
     {
         string Variable { get; set; }
         string Value { get; set; }
+        string From { get; set; }
+        string To { get; set; }
         string AssertOp { get; set; }
         bool HasOptionsForValue { get; set; }
         List<string> OptionsForValue { get; set; }

@@ -179,7 +179,7 @@ namespace Warewolf.Studio.ViewModels
                 dynamic debugState = _rootItem;
                 var content = (IDebugState)debugState.Content;
                 var debugItems = content.Outputs;
-                var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "", "", "")
                 {
                     HasOptionsForValue = false
                 }).Cast<IServiceTestOutput>().ToList();
@@ -211,7 +211,7 @@ namespace Warewolf.Studio.ViewModels
                         switchOptions.Insert(0, "Default");
                     }
                     var serviceTestOutputs = new List<IServiceTestOutput>();
-                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
                     {
                         HasOptionsForValue = true,
                         OptionsForValue = switchOptions
@@ -243,7 +243,7 @@ namespace Warewolf.Studio.ViewModels
                         switchOptions.Insert(0, "Default");
                     }
                     var serviceTestOutputs = new List<IServiceTestOutput>();
-                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
                     {
                         HasOptionsForValue = true,
                         OptionsForValue = switchOptions
@@ -274,7 +274,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (outputs.Count > 0)
                 {
-                    var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output.Key, output.Value)
+                    var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output.Key, output.Value, "", "")
                     {
                         HasOptionsForValue = false
                     }).Cast<IServiceTestOutput>().ToList();
@@ -298,7 +298,7 @@ namespace Warewolf.Studio.ViewModels
                 if (_selectedServiceTest != null)
                 {
                     var serviceTestOutputs = new List<IServiceTestOutput>();
-                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
                     {
                         HasOptionsForValue = true,
                         OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
@@ -331,7 +331,7 @@ namespace Warewolf.Studio.ViewModels
                         if (_selectedServiceTest != null)
                         {
                             var serviceTestOutputs = new List<IServiceTestOutput>();
-                            var serviceTestOutput = new ServiceTestOutput("Condition Result", "")
+                            var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
                             {
                                 HasOptionsForValue = true,
                                 OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }

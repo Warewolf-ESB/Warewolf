@@ -13,13 +13,17 @@ namespace Warewolf.Studio.ViewModels
         private List<string> _assertOps;
         private bool _hasOptionsForValue;
         private List<string> _optionsForValue;
+        private string _from;
+        private string _to;
 
-        public ServiceTestOutput(string variable, string value)
+        public ServiceTestOutput(string variable, string value, string from, string to)
         {
             if(variable == null)
                 throw new ArgumentNullException(nameof(variable));
             Variable = variable;
             Value = value;
+            From = from;
+            To = to;
             AssertOps = new List<string> { "=" };
         }
 
@@ -45,6 +49,30 @@ namespace Warewolf.Studio.ViewModels
             {
                 _value = value;
                 OnPropertyChanged(() => Value);
+            }
+        }
+        public string From
+        {
+            get
+            {
+                return _from;
+            }
+            set
+            {
+                _from = value;
+                OnPropertyChanged(() => From);
+            }
+        }
+        public string To
+        {
+            get
+            {
+                return _to;
+            }
+            set
+            {
+                _to = value;
+                OnPropertyChanged(() => To);
             }
         }
 

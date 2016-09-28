@@ -18,7 +18,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            new ServiceTestOutput(null, "someValue");
+            new ServiceTestOutput(null, "someValue", "", "");
             //------------Assert Results-------------------------
         } 
 
@@ -30,7 +30,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var input = new ServiceTestOutput("someVar", "someValue");
+            var input = new ServiceTestOutput("someVar", "someValue", "", "");
             //------------Assert Results-------------------------
             Assert.AreEqual("someVar",input.Variable);
             Assert.AreEqual("someValue",input.Value);
@@ -42,7 +42,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOutput_Variable_WhenSet_ShouldFirePropertyChange()
         {
             //------------Setup for test--------------------------
-            var input = new ServiceTestOutput("someVar", "someValue");
+            var input = new ServiceTestOutput("someVar", "someValue", "", "");
             var _wasCalled = false;
             input.PropertyChanged += (sender, args) =>
             {
@@ -63,7 +63,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOutput_Value_WhenSet_ShouldFirePropertyChange()
         {
             //------------Setup for test--------------------------
-            var input = new ServiceTestOutput("someVar", "someValue");
+            var input = new ServiceTestOutput("someVar", "someValue", "", "");
             var _wasCalled = false;
             input.PropertyChanged += (sender, args) =>
             {
