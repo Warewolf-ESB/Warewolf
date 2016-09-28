@@ -10,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts"
 		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Old.Studio.UI.Specs", "Warewolf.Studio.UISpecs\Old.Studio.UI.Specs.csproj", "{227596D7-ACEE-48AB-8A27-2B20AF449C97}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{86F22FF8-2B3F-491E-9B44-703381DBAAA5}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\Studio\Cleanup.bat = TestScripts\Studio\Cleanup.bat
@@ -42,15 +40,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5176818D
 		TestScripts\Tests\Run-All-Unit-Tests.ps1 = TestScripts\Tests\Run-All-Unit-Tests.ps1
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Older.Studio.UI.Specs", "Warewolf.Studio.UISpecs\Old.Studio.UISpecs\Older.Studio.UI.Specs.csproj", "{2E886FC7-A0F6-4BBF-AE66-6884B3FD8AC5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oldest.Studio.UI.Tests", "Warewolf.Studio.UISpecs\Older.Studio.UI.Tests\Oldest.Studio.UI.Tests.csproj", "{9C452452-634E-4A21-AB9E-681D3F05DF52}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{420E71D8-43C5-48B2-978E-0D37C2349407}"
 	ProjectSection(SolutionItems) = preProject
 		%vs140comntools%..\IDE\CodedUITestBuilder.exe.config = %vs140comntools%..\IDE\CodedUITestBuilder.exe.config
 		Studio.Run.bat = Studio.Run.bat
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UISpecs", "Warewolf.UISpecs\Warewolf.UISpecs.csproj", "{227596D7-ACEE-48AB-8A27-2B20AF449C97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Old.UISpecs", "Warewolf.UISpecs\Old.UISpecs\Old.UISpecs.csproj", "{2E886FC7-A0F6-4BBF-AE66-6884B3FD8AC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Older.UISpecs", "Warewolf.UISpecs\Older.UISpecs\Older.UISpecs.csproj", "{9C452452-634E-4A21-AB9E-681D3F05DF52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,10 +62,12 @@ Global
 		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4278D2F3-3E9F-4031-9983-DD88C77F6119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4278D2F3-3E9F-4031-9983-DD88C77F6119}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E886FC7-A0F6-4BBF-AE66-6884B3FD8AC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E886FC7-A0F6-4BBF-AE66-6884B3FD8AC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C452452-634E-4A21-AB9E-681D3F05DF52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
