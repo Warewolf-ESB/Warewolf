@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.UI;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.Views
@@ -15,15 +14,6 @@ namespace Warewolf.Studio.Views
         public ServiceTestView()
         {
             InitializeComponent();
-        }
-
-        private void TxtValue_OnTextChanged(object sender, RoutedEventArgs e)
-        {
-            var textBox = sender as IntellisenseTextBox;
-            if(textBox != null)
-            {
-                RefreshCommands(e);
-            }
         }
 
         private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
