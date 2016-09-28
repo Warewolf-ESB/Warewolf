@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Dev2.Common.Interfaces;
+using Dev2.DataList;
+using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -10,9 +14,16 @@ namespace Warewolf.Studio.ViewModels
         private string _variable;
         private string _value;
         private string _assertOp;
-        private List<string> _assertOps;
+        private ObservableCollection<string> _assertOps;
         private bool _hasOptionsForValue;
+        private bool _isSinglematchCriteriaVisible;
+        private bool _isBetweenCriteriaVisible;
+        private bool _isSearchCriteriaEnabled;
+        private bool _isSearchCriteriaVisible;
         private List<string> _optionsForValue;
+        private readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
+        private readonly IList<IFindRecsetOptions> _findRecsetOptions;
+
 
         public ServiceTestOutput(string variable, string value)
         {
@@ -20,7 +31,9 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException(nameof(variable));
             Variable = variable;
             Value = value;
-            AssertOps = new List<string> { "=" };
+            _findRecsetOptions = FindRecsetOptions.FindAllDecision();
+            var collection = _findRecsetOptions.Select(c => c.HandlesType());
+            AssertOps = new ObservableCollection<string>(collection);
         }
 
         public string Variable
@@ -55,6 +68,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _assertOp = value; 
                 OnPropertyChanged(() => AssertOp);
+                OnSearchTypeChanged();
             }
         }
 
@@ -68,6 +82,57 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public bool IsSinglematchCriteriaVisible
+        {
+            get
+            {
+                return _isSinglematchCriteriaVisible;
+            }
+            set
+            {
+                _isSinglematchCriteriaVisible = value;
+                OnPropertyChanged(() => IsSinglematchCriteriaVisible);
+            }
+        }
+        public bool IsBetweenCriteriaVisible
+        {
+            get
+            {
+                return _isBetweenCriteriaVisible;
+            }
+            set
+            {
+                _isBetweenCriteriaVisible = value;
+                OnPropertyChanged(() => IsBetweenCriteriaVisible);
+            }
+        }
+
+        public bool IsSearchCriteriaEnabled
+        {
+            get
+            {
+                return _isSearchCriteriaEnabled;
+            }
+            set
+            {
+                _isSearchCriteriaEnabled = value;
+                OnPropertyChanged(() => IsSearchCriteriaEnabled);
+            }
+        }
+
+        public bool IsSearchCriteriaVisible
+        {
+            get
+            {
+                return _isSearchCriteriaVisible;
+            }
+            set
+            {
+                _isSearchCriteriaVisible = value;
+                OnPropertyChanged(() => IsSearchCriteriaVisible);
+            }
+        }
+
         public List<string> OptionsForValue
         {
             get { return _optionsForValue; }
@@ -78,7 +143,46 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public List<string> AssertOps
+        void OnSearchTypeChanged()
+        {
+            UpdateMatchVisibility(_assertOp, _findRecsetOptions);
+            var requiresCriteria = _requiresSearchCriteria.Contains(_assertOp);
+            IsSearchCriteriaEnabled = requiresCriteria;
+            if (!requiresCriteria)
+            {
+                Value = string.Empty;
+            }
+        }
+
+        public void UpdateMatchVisibility( string value, IList<IFindRecsetOptions> whereOptions)
+        {
+
+            var opt = whereOptions.FirstOrDefault(a => value.ToLower().StartsWith(a.HandlesType().ToLower()));
+            if (opt != null)
+            {
+                switch (opt.ArgumentCount)
+                {
+                    case 1:
+                        IsSearchCriteriaVisible = false;
+                        IsBetweenCriteriaVisible = false;
+                        IsSinglematchCriteriaVisible = false;
+                        break;
+                    case 2:
+                        IsSearchCriteriaVisible = true;
+                        IsBetweenCriteriaVisible = false;
+                        IsSinglematchCriteriaVisible = true;
+                        break;
+                    case 3:
+                        IsSearchCriteriaVisible = true;
+                        IsBetweenCriteriaVisible = true;
+                        IsSinglematchCriteriaVisible = false;
+                        break;
+
+                }
+            }
+        }
+
+        public ObservableCollection<string> AssertOps
         {
             get { return _assertOps; }
             set
