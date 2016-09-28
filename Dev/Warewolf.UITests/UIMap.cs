@@ -26,7 +26,7 @@ namespace Warewolf.UITests
         const int _lenientMaximumRetryCount = 3;
         const int _strictSearchTimeout = 3000;
         const int _strictMaximumRetryCount = 1;
-
+        
         public void SetPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
@@ -45,6 +45,7 @@ namespace Warewolf.UITests
             Playback.PlaybackError += OnError;
         }
 
+        [Given("The Warewolf Studio is running")]
         public void CloseHangingDialogs()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
@@ -219,6 +220,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text == string.Empty, "Explorer filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text + " is not empty after clicking clear filter button.");
         }
 
+        [When(@"I Try Clear Toolbox Filter")]
         public void TryClearToolboxFilter()
         {
             if (MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text != string.Empty)
@@ -586,6 +588,8 @@ namespace Warewolf.UITests
                     Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
             }
         }
+
+        [When(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
@@ -669,6 +673,18 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhost, new Point(94, 10));
         }
 
+        [When(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
+        public void Save_With_Ribbon_Button_And_Dialog(string Name)
+        {
+            Save_With_Ribbon_Button_And_Dialog(Name, false);
+        }
+
+        [When(@"I Save With Ribbon Button And Dialog As ""(.*)"" without filtering the explorer")]
+        public void Save_With_Ribbon_Button_And_Dialog_Without_Filtering(string Name)
+        {
+            Save_With_Ribbon_Button_And_Dialog(Name, true);
+        }
+
         public void Save_With_Ribbon_Button_And_Dialog(string Name, bool skipExplorerFilter = false)
         {
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
@@ -715,6 +731,7 @@ namespace Warewolf.UITests
             }
         }
 
+        [When("I Click New Workflow Ribbon Button")]
         public void Click_New_Workflow_Ribbon_Button()
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.NewWorkflowButton.Exists, "New Workflow Ribbon Button Does Not Exist!");
@@ -729,6 +746,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save menu button not enabled for new workflow.");
         }
 
+        [When(@"I Select Last Source From GET Web Large View Source Combobox")]
         public void Select_Last_Source_From_GET_Web_Large_View_Source_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox, new Point(175, 9));
@@ -774,6 +792,7 @@ namespace Warewolf.UITests
             }
         }
 
+        [When(@"I Click New Web Source Ribbon Button")]
         public void Click_New_Web_Source_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.WebSourceButton, new Point(13, 18));
@@ -831,6 +850,7 @@ namespace Warewolf.UITests
             Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debug input data row2 textbox text is not equal to \'" + text + "\' after typing that in.");
         }
 
+        [When(@"I Click Debug Ribbon Button")]
         public void Click_Debug_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.RunAndDebugButton, new Point(13, 14));
@@ -844,8 +864,17 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.TabItemsTabList.JSONTab.Exists, "Assert Json tab does not exist in the debug input window.");
         }
 
+        [When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
         public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(string text)
         {
+            if (!File.Exists(text))
+            {
+                text = text.Replace("Framework64", "Framework");
+                if (!File.Exists(text))
+                {
+                    throw new Exception("No suitable DLL could be found for this test to use.");
+                }
+            }
             MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox.Text = text;
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
         }
@@ -1067,12 +1096,14 @@ namespace Warewolf.UITests
             Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface();
         }
 
+        [When("I Drag Dice Roll Example Onto DesignSurface")]
         public void Drag_Dice_Roll_Example_Onto_DesignSurface()
         {
             Filter_Explorer("Dice Roll");
             Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_Surface();
         }
 
+        [When(@"I Select Show Dependencies In Explorer Context Menu for service ""(.*)""")]
         public void Select_Show_Dependencies_In_Explorer_Context_Menu(string ServiceName)
         {
             #region Variable Declarations
@@ -1093,6 +1124,7 @@ namespace Warewolf.UITests
                     " is selected");
         }
 
+        [When(@"I Click DB Source Wizard Test Connection Button")]
         public void Click_DB_Source_Wizard_Test_Connection_Button()
         {
             var point = new Point();
@@ -1572,6 +1604,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.TabItemsTabList.JSONTab.Exists, "Assert Json tab does not exist in the debug input window.");
         }
 
+        [When(@"I Click DotNet DLL Large View Generate Outputs")]
         public void Click_DotNet_DLL_Large_View_Generate_Outputs()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton, new Point(7, 7));
@@ -1579,6 +1612,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton.Exists);
         }
 
+        [When(@"I Click New Web Source Test Connection Button")]
         public void Click_New_Web_Source_Test_Connection_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton, new Point(52, 14));
@@ -1616,6 +1650,7 @@ namespace Warewolf.UITests
             WaitForSpinner(ServicePickerDialog.Explorer.ExplorerTree.Localhost.Checkbox.Spinner);
         }
 
+        [When("I Click Subworkflow Done Button")]
         public void Click_Subworkflow_Done_Button()
         {
             Assert.IsTrue(
@@ -1695,66 +1730,12 @@ namespace Warewolf.UITests
             Open_Explorer_First_Item_Tests_With_Context_Menu();
         }
 
-        /// <summary>
-        /// Click_Duplicate_From_ExplorerContextMenu - Use 'Click_Duplicate_From_ExplorerContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Duplicate_From_ExplorerContextMenu()
+        [When(@"I Click Duplicate From Explorer Context Menu for Service ""(.*)""")]
+        public void Click_Duplicate_From_ExplorerContextMenu(string ServiceName)
         {
-            #region Variable Declarations
-            WpfMenuItem duplicate = this.MainStudioWindow.ExplorerContextMenu.Duplicate;
-            WpfWindow saveDialogWindow = this.SaveDialogWindow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateExists, duplicate.Exists, "Duplicate button does not exist");
-
-            // Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateEnabled, duplicate.Enabled, "Duplicate button is disabled");
-
-            // Click 'Duplicate' menu item
-            Mouse.Click(duplicate, new Point(62, 12));
-
-            saveDialogWindow.DrawHighlight();
-            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
+            Filter_Explorer(ServiceName);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Duplicate_Explorer_Localhost_First_Item_With_Context_Menu();
         }
-
-        public virtual Click_Duplicate_From_ExplorerContextMenuParams Click_Duplicate_From_ExplorerContextMenuParams
-        {
-            get
-            {
-                if ((this.mClick_Duplicate_From_ExplorerContextMenuParams == null))
-                {
-                    this.mClick_Duplicate_From_ExplorerContextMenuParams = new Click_Duplicate_From_ExplorerContextMenuParams();
-                }
-                return this.mClick_Duplicate_From_ExplorerContextMenuParams;
-            }
-        }
-
-        private Click_Duplicate_From_ExplorerContextMenuParams mClick_Duplicate_From_ExplorerContextMenuParams;
-    }
-    /// <summary>
-    /// Parameters to be passed into 'Click_Duplicate_From_ExplorerContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Duplicate_From_ExplorerContextMenuParams
-    {
-
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
-        /// </summary>
-        public bool DuplicateExists = true;
-
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
-        /// </summary>
-        public bool DuplicateEnabled = true;
-
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-        /// </summary>
-        public bool SaveDialogWindowExists = true;
-        #endregion
     }
 }
