@@ -37,6 +37,7 @@ namespace Warewolf.Studio.ViewModels
             _findRecsetOptions = FindRecsetOptions.FindAllDecision();
             var collection = _findRecsetOptions.Select(c => c.HandlesType());
             AssertOps = new ObservableCollection<string>(collection);
+            IsSinglematchCriteriaVisible = true;
         }
 
         public string Variable
