@@ -14,17 +14,17 @@ namespace Warewolf.UITests
                 case 2:
                     var test2 = test as Test2;
                     Assert.IsNotNull(test2);
-                    Assert.IsTrue(test2.Pending.Exists);
+                    Assert.IsTrue(test2.Pending.Exists, "Test 2 status is not set to Pending");
                     break;
                 case 3:
                     var test3 = test as Test3;
                     Assert.IsNotNull(test3);
-                    Assert.IsTrue(test3.Pending.Exists);
+                    Assert.IsTrue(test3.Pending.Exists, "Test 3 status is not set to Pending");
                     break;
                 default:
                     var test1 = test as Test1;
                     Assert.IsNotNull(test1);
-                    Assert.IsTrue(test1.Pending.Exists);
+                    Assert.IsTrue(test1.Pending.Exists, "Test 1 status is not set to Pending");
                     break;
             }
         }
@@ -36,17 +36,17 @@ namespace Warewolf.UITests
                 case 2:
                     var test2 = test as Test2;
                     Assert.IsNotNull(test2);
-                    Assert.IsTrue(test2.Invalid.Exists);
+                    Assert.IsTrue(test2.Invalid.Exists, "Test 2 status is not set to Invalid");
                     break;
                 case 3:
                     var test3 = test as Test3;
                     Assert.IsNotNull(test3);
-                    Assert.IsTrue(test3.Invalid.Exists);
+                    Assert.IsTrue(test3.Invalid.Exists, "Test 2 status is not set to Invalid");
                     break;
                 default:
                     var test1 = test as Test1;
                     Assert.IsNotNull(test1);
-                    Assert.IsTrue(test1.Invalid.Exists);
+                    Assert.IsTrue(test1.Invalid.Exists, "Test 1 status is not set to Invalid");
                     break;
             }
         }
@@ -56,19 +56,19 @@ namespace Warewolf.UITests
             {
                 var test2 = test as Test2;
                 Assert.IsNotNull(test2);
-                Assert.IsTrue(test2.Passing.Exists);
+                Assert.IsTrue(test2.Passing.Exists, "Test 2 status is not set to Passing");
             }
             if (instance == 3)
             {
                 var test3 = test as Test3;
                 Assert.IsNotNull(test3);
-                Assert.IsTrue(test3.Passing.Exists);
+                Assert.IsTrue(test3.Passing.Exists, "Test 3 status is not set to Passing");
             }
             if (instance == 1)
             {
                 var test1 = test as Test1;
                 Assert.IsNotNull(test1);
-                Assert.IsTrue(test1.Passing.Exists);
+                Assert.IsTrue(test1.Passing.Exists, "Test 1 status is not set to Passing");
             }            
         }
 
@@ -79,17 +79,17 @@ namespace Warewolf.UITests
                 case 2:
                     var test2 = test as Test2;
                     Assert.IsNotNull(test2);
-                    Assert.IsTrue(test2.Failing.Exists);
+                    Assert.IsTrue(test2.Failing.Exists, "Test 2 status is not set to Failing");
                     break;
                 case 3:
                     var test3 = test as Test3;
                     Assert.IsNotNull(test3);
-                    Assert.IsTrue(test3.Failing.Exists);
+                    Assert.IsTrue(test3.Failing.Exists, "Test 3 status is not set to Failing");
                     break;
                 default:
                     var test1 = test as Test1;
                     Assert.IsNotNull(test1);
-                    Assert.IsTrue(test1.Failing.Exists);
+                    Assert.IsTrue(test1.Failing.Exists, "Test 1 status is not set to Failing");
                     break;
             }
         }
