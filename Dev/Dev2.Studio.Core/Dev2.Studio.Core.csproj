@@ -267,6 +267,14 @@
     <Compile Include="DataList\PartIsUsed.cs" />
     <Compile Include="DataList\RecordsetHandler.cs" />
     <Compile Include="DataList\ScalarHandler.cs" />
+    <Compile Include="Diagnostics\DebugLine.cs" />
+    <Compile Include="Diagnostics\DebugLineGroup.cs" />
+    <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
+    <Compile Include="Diagnostics\DebugLineItem.cs" />
+    <Compile Include="Diagnostics\DebugStateTreeViewItemViewModel.cs" />
+    <Compile Include="Diagnostics\DebugStringTreeViewItemViewModel.cs" />
+    <Compile Include="Diagnostics\DebugTreeViewItemViewModel.cs" />
+    <Compile Include="Diagnostics\IDebugLineItem.cs" />
     <Compile Include="Interfaces\DataList\IMissingDataList.cs" />
     <Compile Include="Interfaces\DataList\IComplexObjectItemModel.cs" />
     <Compile Include="Interfaces\DataList\IRecordSetFieldItemModel.cs" />

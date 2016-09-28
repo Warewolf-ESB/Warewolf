@@ -1127,6 +1127,7 @@ namespace Dev2.Core.Tests
         #region Implementation of IWorkSurfaceViewModel
 
         public WorkSurfaceContext WorkSurfaceContext { get; set; }
+        public bool PreventSelection { get; set; }
         public string IconPath { get; set; }
 
         #endregion
@@ -1161,6 +1162,7 @@ namespace Dev2.Core.Tests
             get { throw new NotImplementedException(); }
         }
         public Action<ModelItem> ItemSelectedAction { get; set; }
+        public bool IsTestView { get; set; }
 
         public void UpdateWorkflowLink(string newLink)
         {
