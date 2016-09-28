@@ -2792,7 +2792,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field.InputCheckbox">
+    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field1.InputCheckbox">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -9467,6 +9467,14 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>TestsTabPage does not exist after clicking view tests in the explorer context menu.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Select_Tests_From_Context_Menu">
       <ParameterName />
       <StepId>-1</StepId>
@@ -16199,10 +16207,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.MultiAssignObjectDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Assign Object (1)(MultiAssignObjectDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">MultiAssignObjectDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -16960,10 +16968,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.DataMergeDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Data Merge (1)(DataMergeDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">DataMergeDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -17478,10 +17486,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.DataSplitDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Data Split (1)(DataSplitDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">DataSplitDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -17631,6 +17639,66 @@
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="ControlType">Row</PropertyCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Cell" Id="DataCell" FriendlyName="Item: Warewolf.Core.ServiceInput, Column Display I..." SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="ColumnHeader">Input Data or [[Variable]]</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants>
+                                                                            <UIObject ControlType="ComboBox" Id="DataCombobox" FriendlyName="Hard coded values or variables." SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                                <PropertyCondition Name="HelpText">Hard coded values or variables.</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants>
+                                                                                <UIObject ControlType="Edit" Id="DataTextbox" FriendlyName="Text" SpecialControlType="None">
+                                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                                  <WindowTitles>
+                                                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                                                  </WindowTitles>
+                                                                                  <AndCondition>
+                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                                    <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                                  </AndCondition>
+                                                                                  <SupportLevel>0</SupportLevel>
+                                                                                  <Descendants />
+                                                                                </UIObject>
+                                                                              </Descendants>
+                                                                            </UIObject>
+                                                                          </Descendants>
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="Row" Id="Row2" FriendlyName="" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <SearchConfigurations>
+                                                                        <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                                      </SearchConfigurations>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants>
@@ -17875,10 +17943,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.BaseConvertDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Base Conversion (1)(BaseConvertDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">BaseConvertDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -18108,10 +18176,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.CaseConvertDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Case Conversion (1)(CaseConvertDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">CaseConvertDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -18331,10 +18399,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.FindRecordsMultipleCriteriaDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Find Record Index (1)(FindRecordsMultipleCriteriaDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">FindRecordsMultipleCriteriaDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
@@ -18429,10 +18497,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.CreateJsonDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Create JSON (1)(CreateJsonDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">CreateJsonDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -18553,10 +18621,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.SharepointListDeleteDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Sharepoint Delete List Item (1)(SharepointListDeleteDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">SharepointListDeleteDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
@@ -18567,10 +18635,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.SharepointListReadDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Sharepoint Read List Item (1)(SharepointListReadDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">SharepointListReadDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
@@ -18581,10 +18649,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.SharepointListUpdateDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Sharepoint Update List Item (1)(SharepointListUpdateDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">SharepointListUpdateDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
@@ -18735,10 +18803,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.GatherSystemInformationDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Gather System Information (1)(GatherSystemInformationDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">GatherSystemInformationDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -18948,10 +19016,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.XPathDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">XPath (1)(XPathDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">XPathDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -19228,10 +19296,10 @@
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.MultiAssignDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Assign (1)(MultiAssignDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">MultiAssignDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -19556,7 +19624,6 @@
                                                                                 <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
                                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                                 <PropertyCondition Name="AutomationId">UI__Row2_FieldValue_AutoID</PropertyCondition>
-                                                                                <PropertyCondition Name="HelpText">Any variable and/or data goes in here.</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants>
@@ -19613,9 +19680,9 @@
                                                                                 <WindowTitle>Warewolf</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
-                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                                 <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                                <PropertyCondition Name="AutomationId">UI__Row3_FieldName_AutoID</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI__Row4_FieldName_AutoID</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants>
@@ -19655,9 +19722,9 @@
                                                                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
-                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                                 <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                                <PropertyCondition Name="AutomationId">UI__Row3_FieldValue_AutoID</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI__Row4_FieldValue_AutoID</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants>
@@ -19708,15 +19775,15 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="ComboBox" Id="Listbox" FriendlyName="UI__Row4_FieldName_AutoID" SpecialControlType="None">
+                                                                            <UIObject ControlType="ComboBox" Id="Listbox" FriendlyName="UI__Row5_FieldName_AutoID" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
-                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                                 <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                                <PropertyCondition Name="AutomationId">UI__Row4_FieldName_AutoID</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI__Row5_FieldName_AutoID</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants>
@@ -19750,15 +19817,15 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="ComboBox" Id="AssignValueCombobox" FriendlyName="UI__Row4_FieldValue_AutoID" SpecialControlType="None">
+                                                                            <UIObject ControlType="ComboBox" Id="AssignValueCombobox" FriendlyName="UI__Row5_FieldValue_AutoID" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
-                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                                 <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                                <PropertyCondition Name="AutomationId">UI__Row4_FieldValue_AutoID</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI__Row5_FieldValue_AutoID</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants>
@@ -23484,7 +23551,7 @@
                                     <UIObject ControlType="RadioButton" Id="DisabledRadioButton" FriendlyName="Disabled" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <AndCondition>
                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23601,7 +23668,7 @@
                         <UIObject ControlType="Custom" Id="DatalistView" FriendlyName="UI_VariablesControl_AutoID" SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
-                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                            <WindowTitle>Warewolf</WindowTitle>
                           </WindowTitles>
                           <AndCondition>
                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23614,7 +23681,7 @@
                             <UIObject ControlType="Tree" Id="VariableTree" FriendlyName="UI_VariableTreeView_AutoID" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
-                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                <WindowTitle>Warewolf</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23626,7 +23693,7 @@
                                 <UIObject ControlType="TreeItem" Id="VariableTreeItem" FriendlyName="Variable" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                    <WindowTitle>Warewolf</WindowTitle>
                                   </WindowTitles>
                                   <SearchConfigurations>
                                     <SearchConfiguration>Expand</SearchConfiguration>
@@ -23641,7 +23708,7 @@
                                     <UIObject ControlType="TreeItem" Id="TreeItem1" FriendlyName="" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <SearchConfigurations>
                                         <SearchConfiguration>Distinct</SearchConfiguration>
@@ -23657,7 +23724,7 @@
                                         <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23670,7 +23737,7 @@
                                             <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23682,7 +23749,7 @@
                                                 <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23695,7 +23762,7 @@
                                                 <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23708,7 +23775,7 @@
                                                 <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23725,7 +23792,7 @@
                                         <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23738,7 +23805,7 @@
                                         <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23753,7 +23820,7 @@
                                     <UIObject ControlType="TreeItem" Id="TreeItem2" FriendlyName="" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <SearchConfigurations>
                                         <SearchConfiguration>Distinct</SearchConfiguration>
@@ -23769,7 +23836,7 @@
                                         <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23782,7 +23849,7 @@
                                             <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23794,7 +23861,7 @@
                                                 <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23807,7 +23874,7 @@
                                                 <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23820,7 +23887,7 @@
                                                 <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23837,7 +23904,7 @@
                                         <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23850,7 +23917,7 @@
                                         <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23865,7 +23932,7 @@
                                     <UIObject ControlType="TreeItem" Id="TreeItem3" FriendlyName="" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <SearchConfigurations>
                                         <SearchConfiguration>Distinct</SearchConfiguration>
@@ -23881,7 +23948,7 @@
                                         <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23894,7 +23961,7 @@
                                             <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23906,7 +23973,7 @@
                                                 <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23919,7 +23986,7 @@
                                                 <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23932,7 +23999,7 @@
                                                 <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23949,7 +24016,7 @@
                                         <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23962,7 +24029,7 @@
                                         <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -23977,7 +24044,7 @@
                                     <UIObject ControlType="TreeItem" Id="TreeItem4" FriendlyName="" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <SearchConfigurations>
                                         <SearchConfiguration>Distinct</SearchConfiguration>
@@ -23993,7 +24060,7 @@
                                         <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24006,7 +24073,7 @@
                                             <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24018,7 +24085,7 @@
                                                 <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24031,7 +24098,7 @@
                                                 <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24044,7 +24111,7 @@
                                                 <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24061,7 +24128,7 @@
                                         <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24074,7 +24141,7 @@
                                         <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24089,7 +24156,7 @@
                                     <UIObject ControlType="TreeItem" Id="TreeItem5" FriendlyName="" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <SearchConfigurations>
                                         <SearchConfiguration>Distinct</SearchConfiguration>
@@ -24105,7 +24172,7 @@
                                         <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24118,7 +24185,7 @@
                                             <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24130,7 +24197,7 @@
                                                 <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24143,7 +24210,7 @@
                                                 <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24156,7 +24223,7 @@
                                                 <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24173,7 +24240,7 @@
                                         <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24186,7 +24253,7 @@
                                         <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24201,7 +24268,7 @@
                                     <UIObject ControlType="Button" Id="ExpanderButton" FriendlyName="Expander" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <AndCondition>
                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24216,7 +24283,7 @@
                                 <UIObject ControlType="TreeItem" Id="RecordsetTreeItem" FriendlyName="Recordset" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                    <WindowTitle>Warewolf</WindowTitle>
                                   </WindowTitles>
                                   <SearchConfigurations>
                                     <SearchConfiguration>Expand</SearchConfiguration>
@@ -24231,7 +24298,7 @@
                                     <UIObject ControlType="TreeItem" Id="TreeItem1" FriendlyName="" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <SearchConfigurations>
                                         <SearchConfiguration>Distinct</SearchConfiguration>
@@ -24247,7 +24314,7 @@
                                         <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24260,7 +24327,7 @@
                                             <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24272,7 +24339,7 @@
                                                 <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24285,7 +24352,7 @@
                                                 <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24298,7 +24365,7 @@
                                                 <UIObject ControlType="Button" Id="DeleteButtonButton" FriendlyName="DeleteButton" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24315,7 +24382,7 @@
                                         <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24328,7 +24395,7 @@
                                         <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24338,10 +24405,10 @@
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
                                         </UIObject>
-                                        <UIObject ControlType="TreeItem" Id="Field" FriendlyName="" SpecialControlType="None">
+                                        <UIObject ControlType="TreeItem" Id="Field1" FriendlyName="" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <SearchConfigurations>
                                             <SearchConfiguration>Distinct</SearchConfiguration>
@@ -24350,13 +24417,14 @@
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                            <PropertyCondition Name="Instance">1</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
                                             <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24369,7 +24437,7 @@
                                                 <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24381,7 +24449,7 @@
                                                     <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
-                                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24394,7 +24462,7 @@
                                                     <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
-                                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24411,7 +24479,7 @@
                                             <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24424,7 +24492,106 @@
                                             <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="TreeItem" Id="Field2" FriendlyName="" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <SearchConfigurations>
+                                            <SearchConfiguration>Distinct</SearchConfiguration>
+                                            <SearchConfiguration>Expand</SearchConfiguration>
+                                          </SearchConfigurations>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                            <PropertyCondition Name="Instance">2</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">LabelText</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants />
+                                                    </UIObject>
+                                                    <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Image</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">DeleteDisabled</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants />
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24439,7 +24606,7 @@
                                         <UIObject ControlType="Button" Id="ExpanderButton" FriendlyName="Expander" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24454,7 +24621,7 @@
                                     <UIObject ControlType="TreeItem" Id="TreeItem2" FriendlyName="" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <SearchConfigurations>
                                         <SearchConfiguration>Distinct</SearchConfiguration>
@@ -24470,7 +24637,7 @@
                                         <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24483,7 +24650,7 @@
                                             <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24495,7 +24662,7 @@
                                                 <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24508,7 +24675,7 @@
                                                 <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24521,7 +24688,7 @@
                                                 <UIObject ControlType="Button" Id="DeleteButtonButton" FriendlyName="DeleteButton" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24538,7 +24705,7 @@
                                         <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24551,7 +24718,7 @@
                                         <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24564,7 +24731,7 @@
                                         <UIObject ControlType="TreeItem" Id="Field" FriendlyName="" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <SearchConfigurations>
                                             <SearchConfiguration>Distinct</SearchConfiguration>
@@ -24579,7 +24746,7 @@
                                             <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24592,7 +24759,7 @@
                                                 <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24604,7 +24771,7 @@
                                                     <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
-                                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24617,7 +24784,7 @@
                                                     <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
-                                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24634,7 +24801,7 @@
                                             <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24647,7 +24814,7 @@
                                             <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24662,7 +24829,7 @@
                                         <UIObject ControlType="Button" Id="ExpanderButton" FriendlyName="Expander" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24677,7 +24844,7 @@
                                     <UIObject ControlType="TreeItem" Id="TreeItem3" FriendlyName="" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <SearchConfigurations>
                                         <SearchConfiguration>Distinct</SearchConfiguration>
@@ -24693,7 +24860,7 @@
                                         <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24706,7 +24873,7 @@
                                             <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24718,7 +24885,7 @@
                                                 <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24731,7 +24898,7 @@
                                                 <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24744,7 +24911,7 @@
                                                 <UIObject ControlType="Button" Id="DeleteButtonButton" FriendlyName="DeleteButton" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24761,7 +24928,7 @@
                                         <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24774,7 +24941,7 @@
                                         <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24787,7 +24954,7 @@
                                         <UIObject ControlType="TreeItem" Id="Field" FriendlyName="" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <SearchConfigurations>
                                             <SearchConfiguration>Distinct</SearchConfiguration>
@@ -24802,7 +24969,7 @@
                                             <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24815,7 +24982,7 @@
                                                 <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24827,7 +24994,7 @@
                                                     <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
-                                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24840,7 +25007,7 @@
                                                     <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
-                                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24857,7 +25024,7 @@
                                             <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24870,7 +25037,7 @@
                                             <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24885,7 +25052,7 @@
                                         <UIObject ControlType="Button" Id="ExpanderButton" FriendlyName="Expander" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24900,7 +25067,7 @@
                                     <UIObject ControlType="TreeItem" Id="TreeItem4" FriendlyName="" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <SearchConfigurations>
                                         <SearchConfiguration>Distinct</SearchConfiguration>
@@ -24916,7 +25083,7 @@
                                         <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24929,7 +25096,7 @@
                                             <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24941,7 +25108,7 @@
                                                 <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24954,7 +25121,7 @@
                                                 <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24967,7 +25134,7 @@
                                                 <UIObject ControlType="Button" Id="DeleteButtonButton" FriendlyName="DeleteButton" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24984,7 +25151,7 @@
                                         <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -24997,7 +25164,7 @@
                                         <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25010,7 +25177,7 @@
                                         <UIObject ControlType="TreeItem" Id="Field" FriendlyName="" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <SearchConfigurations>
                                             <SearchConfiguration>Distinct</SearchConfiguration>
@@ -25025,7 +25192,7 @@
                                             <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25038,7 +25205,7 @@
                                                 <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25050,7 +25217,7 @@
                                                     <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
-                                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25063,7 +25230,7 @@
                                                     <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
-                                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25080,7 +25247,7 @@
                                             <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25093,7 +25260,7 @@
                                             <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25108,7 +25275,7 @@
                                         <UIObject ControlType="Button" Id="ExpanderButton" FriendlyName="Expander" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25123,7 +25290,7 @@
                                     <UIObject ControlType="TreeItem" Id="TreeItem5" FriendlyName="" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <SearchConfigurations>
                                         <SearchConfiguration>Distinct</SearchConfiguration>
@@ -25139,7 +25306,7 @@
                                         <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25152,7 +25319,7 @@
                                             <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25164,7 +25331,7 @@
                                                 <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25177,7 +25344,7 @@
                                                 <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25190,7 +25357,7 @@
                                                 <UIObject ControlType="Button" Id="DeleteButtonButton" FriendlyName="DeleteButton" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25207,7 +25374,7 @@
                                         <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25220,7 +25387,7 @@
                                         <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25233,7 +25400,7 @@
                                         <UIObject ControlType="TreeItem" Id="Field" FriendlyName="" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <SearchConfigurations>
                                             <SearchConfiguration>Distinct</SearchConfiguration>
@@ -25248,7 +25415,7 @@
                                             <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25261,7 +25428,7 @@
                                                 <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25273,7 +25440,7 @@
                                                     <UIObject ControlType="Text" Id="Label" FriendlyName="LabelText" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
-                                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25286,7 +25453,7 @@
                                                     <UIObject ControlType="Image" Id="DeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
-                                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25303,7 +25470,7 @@
                                             <UIObject ControlType="CheckBox" Id="InputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25316,7 +25483,7 @@
                                             <UIObject ControlType="CheckBox" Id="OutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25331,7 +25498,7 @@
                                         <UIObject ControlType="Button" Id="ExpanderButton" FriendlyName="Expander" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                            <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25346,7 +25513,7 @@
                                     <UIObject ControlType="Button" Id="ExpanderButton" FriendlyName="Expander" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                        <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <AndCondition>
                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25363,7 +25530,7 @@
                             <UIObject ControlType="Edit" Id="SearchTextbox" FriendlyName="SearchTextBox" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
-                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                <WindowTitle>Warewolf</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25375,7 +25542,7 @@
                                 <UIObject ControlType="Text" Id="FilterText" FriendlyName="Filter" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                    <WindowTitle>Warewolf</WindowTitle>
                                   </WindowTitles>
                                   <AndCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25388,7 +25555,7 @@
                                 <UIObject ControlType="Image" Id="ClearSearchDisabled" FriendlyName="ClearSearchDisabled" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                    <WindowTitle>Warewolf</WindowTitle>
                                   </WindowTitles>
                                   <AndCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25401,7 +25568,7 @@
                                 <UIObject ControlType="Button" Id="ClearSearchButton" FriendlyName="ClearSearchButton" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                    <WindowTitle>Warewolf</WindowTitle>
                                   </WindowTitles>
                                   <AndCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25416,7 +25583,7 @@
                             <UIObject ControlType="Button" Id="RemoveUnused" FriendlyName="" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
-                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                <WindowTitle>Warewolf</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25429,7 +25596,7 @@
                             <UIObject ControlType="Button" Id="Sort" FriendlyName="" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
-                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                                <WindowTitle>Warewolf</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -25815,6 +25982,65 @@
                                 <PropertyCondition Name="ControlType">Pane</PropertyCondition>
                                 <PropertyCondition Name="ClassName">Uia.CellsPanel</PropertyCondition>
                                 <PropertyCondition Name="Name">0</PropertyCondition>
+                                <PropertyCondition Name="Instance">1</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="Cell" Id="InputValueCell" FriendlyName="InputValueCell" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                    <PropertyCondition Name="ColumnHeader" />
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="Instance">2</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="ComboBox" Id="InputValueComboboxl" FriendlyName="UI_SomeVariabletxt_AutoID" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="Instance">1</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Edit" Id="InputValueText" FriendlyName="Text" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                            <UIObject ControlType="Pane" Id="Row2" FriendlyName="Row2" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                <PropertyCondition Name="ClassName">Uia.CellsPanel</PropertyCondition>
+                                <PropertyCondition Name="Name">0</PropertyCondition>
+                                <PropertyCondition Name="Instance">2</PropertyCondition>
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants>
