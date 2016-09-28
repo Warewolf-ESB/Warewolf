@@ -47,14 +47,6 @@ namespace Warewolf.UITests
             Uimap.Click_Run_Test_Button();
             Uimap.Click_Create_New_Tests(true, 2);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Select_Test_From_TestList();
-            Uimap.Click_EnableDisable_This_Test_CheckBox(true);
-            Uimap.Click_Delete_Test_Button();
-            Uimap.Click_Yes_On_The_Confirm_Delete();
-            Uimap.Select_Test(2);
-            Uimap.Click_EnableDisable_This_Test_CheckBox(true);
-            Uimap.Click_Delete_Test_Button();
-            Uimap.Click_Yes_On_The_Confirm_Delete();
         }
 
         [TestMethod]

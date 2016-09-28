@@ -545,7 +545,7 @@ namespace Warewolf.UITests
 
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false, SaveOrDuplicate saveOrDuplicate = SaveOrDuplicate.Save)
         {
-           
+
             WpfText errorLabel = this.SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
 
@@ -1045,7 +1045,7 @@ namespace Warewolf.UITests
             var currentTest = GetCurrentTest(testInstance);
             var testRunState = GetTestRunState(testInstance, currentTest);
             var selectedTestDeleteButton = GetSelectedTestDeleteButton(currentTest, testInstance);
-            var beforeClick = testRunState.Checked;            
+            var beforeClick = testRunState.Checked;
             testRunState.DrawHighlight();
 
             Mouse.Click(testRunState);
@@ -1428,14 +1428,6 @@ namespace Warewolf.UITests
             return property;
         }
 
-        public void Select_Test_From_TestList(int testInstance = 1)
-        {
-            var test = GetCurrentTest(testInstance);
-
-            if (test != null)
-                Mouse.Click(test);
-        }
-
         public void Select_Service_From_Service_Picker(string serviceName, bool inSubFolder = false)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = serviceName;
@@ -1657,7 +1649,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Exists, "Variable delete does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton, new Point(9, 8));
         }
-        
+
         public void Click_Explorer_Refresh_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
@@ -1667,27 +1659,31 @@ namespace Warewolf.UITests
         public void TryRemoveTests()
         {
             WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
-            if(testsListBox.GetContent().Length >= 4)
+            if (testsListBox.GetContent().Length >= 4)
             {
                 Select_Test(3);
-                Click_EnableDisable_This_Test_CheckBox(true, 3);
+                if (MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test3.TestEnabledSelector.Checked)
+                    Click_EnableDisable_This_Test_CheckBox(true, 3);
                 Click_Delete_Test_Button(3);
                 Click_MessageBox_Yes();
             }
             if (testsListBox.GetContent().Length >= 3)
             {
                 Select_Test(2);
-                Click_EnableDisable_This_Test_CheckBox(true, 2);
+                if (MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2.TestEnabledSelector.Checked)
+                    Click_EnableDisable_This_Test_CheckBox(true, 2);
                 Click_Delete_Test_Button(2);
                 Click_MessageBox_Yes();
             }
             if (testsListBox.GetContent().Length >= 2)
             {
                 Select_Test();
-                Click_EnableDisable_This_Test_CheckBox(true);
+                if (MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector.Checked)
+                    Click_EnableDisable_This_Test_CheckBox(true);
                 Click_Delete_Test_Button();
                 Click_MessageBox_Yes();
             }
+            Click_Close_Tests_Tab();
         }
 
         public void Click_View_Tests_In_Explorer_Context_Menu(string ServiceName)
@@ -1696,5 +1692,67 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Open_Explorer_First_Item_Tests_With_Context_Menu();
         }
+
+        /// <summary>
+        /// Click_Duplicate_From_ExplorerContextMenu - Use 'Click_Duplicate_From_ExplorerContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Duplicate_From_ExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem duplicate = this.MainStudioWindow.ExplorerContextMenu.Duplicate;
+            WpfWindow saveDialogWindow = this.SaveDialogWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateExists, duplicate.Exists, "Duplicate button does not exist");
+
+            // Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateEnabled, duplicate.Enabled, "Duplicate button is disabled");
+
+            // Click 'Duplicate' menu item
+            Mouse.Click(duplicate, new Point(62, 12));
+
+            saveDialogWindow.DrawHighlight();
+            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
+        }
+
+        public virtual Click_Duplicate_From_ExplorerContextMenuParams Click_Duplicate_From_ExplorerContextMenuParams
+        {
+            get
+            {
+                if ((this.mClick_Duplicate_From_ExplorerContextMenuParams == null))
+                {
+                    this.mClick_Duplicate_From_ExplorerContextMenuParams = new Click_Duplicate_From_ExplorerContextMenuParams();
+                }
+                return this.mClick_Duplicate_From_ExplorerContextMenuParams;
+            }
+        }
+
+        private Click_Duplicate_From_ExplorerContextMenuParams mClick_Duplicate_From_ExplorerContextMenuParams;
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Click_Duplicate_From_ExplorerContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Duplicate_From_ExplorerContextMenuParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+        /// </summary>
+        public bool DuplicateExists = true;
+
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
+        /// </summary>
+        public bool DuplicateEnabled = true;
+
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+        /// </summary>
+        public bool SaveDialogWindowExists = true;
+        #endregion
     }
 }
