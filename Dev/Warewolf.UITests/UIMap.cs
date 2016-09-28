@@ -179,7 +179,7 @@ namespace Warewolf.UITests
             return controlExists;
         }
 
-        private void TryClickMessageBoxOK()
+        public void TryClickMessageBoxOK()
         {
             if (ControlExistsNow(MessageBoxWindow.OKButton))
             {
@@ -806,7 +806,7 @@ namespace Warewolf.UITests
             Mouse.StopDragging(flowchart, switchRightAutoConnector);
             Assert.IsTrue(SwitchCaseDialog.DoneButton.Exists, "Switch case dialog done button does not exist after dragging onto switch case arm.");
             Mouse.Click(SwitchCaseDialog.DoneButton, new Point(34, 10));
-            Assert.IsTrue(connector3.Exists, "Third auto connector does not exist on design surface after drop onto autoconnector.");
+            Assert.IsTrue(connector3.Exists, "Third connector does not exist on design surface after drop onto autoconnector.");
             Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
             TryClearToolboxFilter();
         }
@@ -817,7 +817,16 @@ namespace Warewolf.UITests
             {
                 MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text = text;
             }
-            Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debug input data row1 textbox text is not equal to \'" + text + "\'.");
+            Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debug input data row1 textbox text is not equal to \'" + text + "\' after typing that in.");
+        }
+
+        public void Enter_Text_Into_Debug_Input_Row2_Value_Textbox(string text)
+        {
+            if (MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2.InputValueCell.InputValueComboboxl.InputValueText.Text != text)
+            {
+                MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2.InputValueCell.InputValueComboboxl.InputValueText.Text = text;
+            }
+            Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debug input data row2 textbox text is not equal to \'" + text + "\' after typing that in.");
         }
 
         public void Click_Debug_Ribbon_Button()
@@ -850,7 +859,6 @@ namespace Warewolf.UITests
             Click_Settings_Ribbon_Button();
             Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
             Select_Service_From_Service_Picker_Dialog(ResourceName);
-            Click_Service_Picker_Dialog_OK();
             Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
             if (setView)
             {
@@ -1532,82 +1540,24 @@ namespace Warewolf.UITests
 
         public void Enter_Recordset_values()
         {
-            #region Variable Declarations
-            WpfCell variableCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
-            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.ValueCell.AssignValueCombobox.TextEdit;
-            WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.VariableCell.Listbox.Textbox;
-            WpfEdit row2Value = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.ValueCell.AssignValueCombobox.TextEdit;
-            WpfEdit textbox2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.VariableCell.Listbox.Textbox;
-            WpfEdit textEdit1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.ValueCell.AssignValueCombobox.TextEdit;
-            WpfEdit textbox3 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row4.VariableCell.Listbox.Textbox;
-            WpfEdit textEdit2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row4.ValueCell.AssignValueCombobox.TextEdit;
-
-            var firstVariable = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1;
-            var rec = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1;
-            var mr = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem2;
-            #endregion
-
-            // Click 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
-            Mouse.Click(variableCell, new Point(33, 28));
-
-            // Type '[[rec().a]]' in 'UI__Row1_FieldName_AutoID' text box
-            textbox.Text = "[[rec().a]]";
-
-            // Type '5' in 'Text' text box
-            textEdit.Text = "5";
-
-            // Type '{Tab}' in 'Text' text box
-            Keyboard.SendKeys(textEdit, "{Tab}", ModifierKeys.None);
-
-            // Type '[[rec().b]]' in 'UI__Row2_FieldName_AutoID' text box
-            textbox1.Text = "[[rec().b]]";
-
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.DrawHighlight();
-            textbox2.DrawHighlight();
-            // Type '[[var]]' in 'UI__Row3_FieldName_AutoID' text box
-            textbox2.Text = "[[var]]";
-
-            // Type '{Tab}' in 'UI__Row3_FieldName_AutoID' text box
-            Keyboard.SendKeys(textbox2, "{Tab}", ModifierKeys.None);
-
-            // Type '1' in 'Text' text box
-            textEdit1.Text = "1";
-
-            // Type '{Tab}' in 'Text' text box
-            Keyboard.SendKeys(textEdit1, "{Tab}", ModifierKeys.None);
-
-            // Type '[[mr()]]' in 'UI__Row4_FieldName_AutoID' text box
-            textbox3.Text = "[[mr()]]";
-
-            // Type '{Tab}' in 'Text' text box
-            Keyboard.SendKeys(textEdit2, "{Tab}", ModifierKeys.None);
-
-            Assert.IsTrue(firstVariable.Exists, "var does not exist in the variable explorer");
-            Assert.IsTrue(rec.Exists, "rec().a does not exist in the variable explorer");
-            Assert.IsTrue(mr.Exists, "rec().a does not exist in the variable explorer");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox.Text = "[[rec().a]]";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.ValueCell.AssignValueCombobox.TextEdit.Text = "5";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.VariableCell.Listbox.Textbox.Text = "[[rec().b]]";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.ValueCell.AssignValueCombobox.TextEdit.Text = "10";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.VariableCell.Listbox.Textbox.Text = "[[var]]";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.ValueCell.AssignValueCombobox.TextEdit.Text = "1";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row4.VariableCell.Listbox.Textbox.Text = "[[mr()]]";
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.Exists, "var does not exist in the variable explorer");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field1.Exists, "rec().a does not exist in the variable explorer");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field2.Exists, "rec().b does not exist in the variable explorer");
         }
 
-        public void Select_InputOutput_CheckBox_Recordset_values()
-        {
-            #region Variable Declarations
-
-            var IsOutputCheckboxRecA = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.OutputCheckbox;
-            var IsInputCheckboxVar = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox;
-
-            #endregion
-
-            // Click 'Records' table
-            IsInputCheckboxVar.Checked = true;
-            IsOutputCheckboxRecA.Checked = true;
-        }
-
-        public void Type_Value_And_Click_Enter_Keyboard_Then_Backspace()
+        public void Enter_Text_Into_Debug_Input_Row1_Value_Textbox_With_Special_Test_For_Textbox_Height(string text)
         {
             var varValue = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
 
             var heightBeforeEnterClick = varValue.Height;
-            varValue.Text = "Bob";
+            varValue.Text = text;
             Keyboard.SendKeys(varValue, "{Enter}", ModifierKeys.None);
             Assert.IsTrue(varValue.Height > heightBeforeEnterClick);
 
@@ -1615,12 +1565,10 @@ namespace Warewolf.UITests
             Assert.AreEqual(heightBeforeEnterClick, varValue.Height);
         }
 
-        public void F5_Keyboard_Click()
+        public void Press_F5_To_Debug()
         {
-            WpfCheckBox uIUI_IsOutputCheckbox_CheckBox = MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field.OutputCheckbox;
-            var varText = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
-
-            Keyboard.SendKeys(uIUI_IsOutputCheckbox_CheckBox, "{F5}", ModifierKeys.None);
+            Keyboard.SendKeys(MainStudioWindow, "{F5}", ModifierKeys.None);
+            Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after pressing F5.");
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.DebugF6Button.Exists, "Debug button in Debug Input window does not exist.");
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.CancelButton.Exists, "Cancel Debug Input Window button does not exist.");
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Exists, "Remember Checkbox does not exist in the Debug Input window.");
@@ -1628,8 +1576,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Exists, "Input Data Window does not exist in Debug Input window.");
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.TabItemsTabList.XMLTab.Exists, "Xml tab does not Exist in the Debug Input window.");
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.TabItemsTabList.JSONTab.Exists, "Assert Json tab does not exist in the debug input window.");
-
-            Assert.AreEqual(varText.Text, "var");
         }
 
         public void Click_DotNet_DLL_Large_View_Generate_Outputs()
@@ -1742,6 +1688,13 @@ namespace Warewolf.UITests
                 Click_Delete_Test_Button();
                 Click_MessageBox_Yes();
             }
+        }
+
+        public void Click_View_Tests_In_Explorer_Context_Menu(string ServiceName)
+        {
+            Filter_Explorer(ServiceName);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Open_Explorer_First_Item_Tests_With_Context_Menu();
         }
     }
 }
