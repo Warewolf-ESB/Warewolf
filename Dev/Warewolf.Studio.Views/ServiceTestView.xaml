@@ -420,29 +420,14 @@
                                                                 d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <ui:IntellisenseTextBox FilterType="All" 
-                                                                            WrapInBrackets="False" 
-                                                                            Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                                            Margin="1,0,1,1"
-                                                                            AllowMultilinePaste="True"
-                                                                            TextWrapping="Wrap"
-                                                                            Focusable="True" 
-                                                                            TextChanged="TxtValue_OnTextChanged"   
-                                                                            IsTabStop="True"
-                                                                            AcceptsReturn="True"
-                                                                            ToolTip="{x:Static languages:Core.ServiceTestInputValueTooltip}"
-                                                                            AllowUserInsertLine="True"
-                                                                            SelectAllOnGotFocus="True"
-                                                                            AutomationProperties.AutomationId="UI_TestInputsValue_AutoID">
-                                                        <ui:IntellisenseTextBox.IntellisenseProvider>
-                                                            <interfaceImplementors:CompositeIntellisenseProvider>
-                                                                <provider:BlankIntellisenseProvider />
-                                                            </interfaceImplementors:CompositeIntellisenseProvider>
-                                                        </ui:IntellisenseTextBox.IntellisenseProvider>
+                                                    <TextBox Margin="1,0,1,1"
+                                                             Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                             ToolTip="{x:Static languages:Core.ServiceTestInputValueTooltip}"
+                                                             AutomationProperties.AutomationId="UI_AssertValue_AutoID">
                                                         <i:Interaction.Behaviors>
                                                             <core:HelpSetter Text="{x:Static languages:Core.ServiceTestInputsValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                         </i:Interaction.Behaviors>
-                                                    </ui:IntellisenseTextBox>
+                                                    </TextBox>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -472,7 +457,7 @@
                             </Border>
 
                             <TextBlock Grid.Row="2" Text="Assert/Mock" FontWeight="Bold" HorizontalAlignment="Left"/>
-                            
+
                             <ig:XamDataTree Grid.Row="3" 
                                             x:Name="StepTestDataTree"
                                             ItemsSource="{Binding SelectedServiceTest.TestSteps}"
@@ -646,7 +631,7 @@
                                                                                         </i:Interaction.Behaviors>
                                                                                     </TextBox>
                                                                                 </StackPanel>
-                                                                                
+
 
                                                                                 <TextBox Margin="1,0,1,1"
                                                                                          Grid.Column="0"
@@ -749,29 +734,66 @@
                                                                 d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestOutput}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <ui:IntellisenseTextBox FilterType="All" 
-                                                                            WrapInBrackets="False" 
-                                                                            Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                                            Margin="1,0,1,1"
-                                                                            AllowMultilinePaste="True"
-                                                                            TextWrapping="Wrap"
-                                                                            TextChanged="TxtValue_OnTextChanged"
-                                                                            Focusable="True" 
-                                                                            IsTabStop="True"
-                                                                            AcceptsReturn="True"
-                                                                            ToolTip="{x:Static languages:Core.ServiceTestOutputValueTooltip}"
-                                                                            AllowUserInsertLine="True"
-                                                                            SelectAllOnGotFocus="True"
-                                                                            AutomationProperties.AutomationId="UI_TestOutputsValue_AutoID">
-                                                        <ui:IntellisenseTextBox.IntellisenseProvider>
-                                                            <interfaceImplementors:CompositeIntellisenseProvider>
-                                                                <provider:BlankIntellisenseProvider />
-                                                            </interfaceImplementors:CompositeIntellisenseProvider>
-                                                        </ui:IntellisenseTextBox.IntellisenseProvider>
-                                                        <i:Interaction.Behaviors>
-                                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestOutputValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                        </i:Interaction.Behaviors>
-                                                    </ui:IntellisenseTextBox>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition />
+                                                            <ColumnDefinition />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0"
+                                                                    Grid.ColumnSpan="2" 
+                                                                    Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                                            <TextBox Margin="1,0,1,1"
+                                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                     ToolTip="{x:Static languages:Core.ServiceTestOutputValueTooltip}"
+                                                                     IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                                                     Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                                     AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                                <i:Interaction.Behaviors>
+                                                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestOutputValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                </i:Interaction.Behaviors>
+                                                            </TextBox>
+                                                        </StackPanel>
+
+                                                        <TextBox Margin="1,0,1,1"
+                                                                 Grid.Column="0"
+                                                                 Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                 ToolTip="{x:Static languages:Core.ServiceTestOutputFromTooltip}"
+                                                                 Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                                 customControls:WatermarkTextBox.Watermark="From"
+                                                                 AutomationProperties.AutomationId="UI_AssertFrom_AutoID">
+                                                            <i:Interaction.Behaviors>
+                                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestOutputFromHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                            </i:Interaction.Behaviors>
+                                                        </TextBox>
+
+                                                        <TextBox Margin="1,0,1,1"
+                                                                 Grid.Column="1"
+                                                                 Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                 ToolTip="{x:Static languages:Core.ServiceTestOutputToTooltip}"
+                                                                 Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                                 customControls:WatermarkTextBox.Watermark="To"
+                                                                 AutomationProperties.AutomationId="UI_AssertTo_AutoID">
+                                                            <i:Interaction.Behaviors>
+                                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestOutputToHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                            </i:Interaction.Behaviors>
+                                                        </TextBox>
+
+                                                        <StackPanel Grid.Column="0"
+                                                                    Grid.ColumnSpan="2" 
+                                                                    Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                                            <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                                                      Margin="1,0,1,1"
+                                                                      ItemsSource="{Binding Path=OptionsForValue}"
+                                                                      SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                                                      Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                                      ToolTip="{x:Static languages:Core.ServiceTestStepOptionsForValueTooltip}"
+                                                                      AutomationProperties.AutomationId="UI_OptionsForValue_AutoID">
+                                                                <i:Interaction.Behaviors>
+                                                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                </i:Interaction.Behaviors>
+                                                            </ComboBox>
+                                                        </StackPanel>
+                                                    </Grid>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
