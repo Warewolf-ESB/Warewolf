@@ -565,7 +565,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            UpdateDebugWithAssertions(dataObject,_debugState.ID);
+                            UpdateDebugWithAssertions(dataObject);
                             var debugOutputs = GetDebugOutputs(dataObject.Environment, update);
                             Copy(debugOutputs, _debugState.Outputs);
                         }
@@ -644,13 +644,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void UpdateDebugWithAssertions(IDSFDataObject dataObject, Guid uniqueID)
+        private void UpdateDebugWithAssertions(IDSFDataObject dataObject)
         {
             if (dataObject.IsServiceTestExecution)
             {
                 if (dataObject.ServiceTest != null)
                 {
-                    var stepToBeAsserted = dataObject.ServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == uniqueID);
+                    var stepToBeAsserted = dataObject.ServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(UniqueID));
                     if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
                     {
                         foreach(var serviceTestOutput in stepToBeAsserted.StepOutputs)
@@ -663,7 +663,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var assertPassed = assertFunc.Invoke(value);
                             dataObject.ServiceTest.TestPassed = assertPassed;
                             dataObject.ServiceTest.TestFailing = !assertPassed;
-                            AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                            if (dataObject.IsDebugMode())
+                            {
+                                AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                            }
+                            else
+                            {
+                                dataObject.Environment.AddError("Assert Failed");
+                            }
                             dataObject.StopExecution = !assertPassed;
                         }
                     }
@@ -857,6 +864,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
                 ExecuteTool(data, update);
+                if (!data.IsDebugMode())
+                {
+                    UpdateDebugWithAssertions(data);
+                }
             }
             catch (Exception ex)
             {
