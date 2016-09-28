@@ -997,6 +997,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 Variable = output.Variable,
                 Value = output.Value,
+                From = output.From,
+                To = output.To,
                 AssertOp = output.AssertOp,
                 HasOptionsForValue = output.HasOptionsForValue,
                 OptionsForValue = output.OptionsForValue
@@ -1320,7 +1322,12 @@ namespace Warewolf.Studio.ViewModels
                 TestInvalid = to.TestInvalid,
                 TestSteps = to.TestSteps?.Select(step => CreateServiceTestStep(step) as IServiceTestStep).ToObservableCollection(),
                 Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToObservableCollection(),
-                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value, output.From, output.To) as IServiceTestOutput).ToObservableCollection()
+                Outputs = to.Outputs?.Select(output =>
+                {
+                    var serviceTestOutput = new ServiceTestOutput(output.Variable, output.Value, output.From, output.To) as IServiceTestOutput;
+                    serviceTestOutput.AssertOp = output.AssertOp;
+                    return serviceTestOutput;
+                }).ToObservableCollection()
             };
             return serviceTestModel;
         }

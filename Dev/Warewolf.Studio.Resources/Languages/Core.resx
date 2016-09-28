@@ -2849,6 +2849,18 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="ServiceTestOutputValueHelpText" xml:space="preserve">
     <value>This is the final output of the service that will be asserted.</value>
   </data>
+  <data name="ServiceTestOutputFromTooltip" xml:space="preserve">
+    <value>ServiceTestOutputFromTooltip</value>
+  </data>
+  <data name="ServiceTestOutputFromHelpText" xml:space="preserve">
+    <value>ServiceTestOutputFromHelpText</value>
+  </data>
+  <data name="ServiceTestOutputToTooltip" xml:space="preserve">
+    <value>ServiceTestOutputToTooltip</value>
+  </data>
+  <data name="ServiceTestOutputToHelpText" xml:space="preserve">
+    <value>ServiceTestOutputToHelpText</value>
+  </data>
   <data name="ServiceTestRunAllTestTooltip" xml:space="preserve">
     <value>Run all tests</value>
   </data>
