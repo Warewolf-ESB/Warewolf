@@ -30,8 +30,8 @@ namespace Warewolf.Studio.ViewModels
             Type = stepType;
             StepDescription = activityTypeName;
             Children = new ObservableCollection<IServiceTestStep>();
-            AssertSelected = false;
-            MockSelected = true;
+            AssertSelected = Type == StepType.Assert;
+            MockSelected = Type == StepType.Mock;
             IsTestStepExpanded = StepOutputs?.Count > 0;
             IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
         }

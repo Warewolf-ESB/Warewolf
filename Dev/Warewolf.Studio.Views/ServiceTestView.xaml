@@ -653,7 +653,8 @@
                                                                                          Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                                          ToolTip="{x:Static languages:Core.ServiceTestStepAssertFromTooltip}"
                                                                                          Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                                                                         AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                                                         customControls:WatermarkTextBox.Watermark="From"
+                                                                                         AutomationProperties.AutomationId="UI_AssertFrom_AutoID">
                                                                                     <i:Interaction.Behaviors>
                                                                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertFromHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                     </i:Interaction.Behaviors>
@@ -664,7 +665,8 @@
                                                                                          Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                                          ToolTip="{x:Static languages:Core.ServiceTestStepAssertToTooltip}"
                                                                                          Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                                                                         AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                                                         customControls:WatermarkTextBox.Watermark="To"
+                                                                                         AutomationProperties.AutomationId="UI_AssertTo_AutoID">
                                                                                     <i:Interaction.Behaviors>
                                                                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertToHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                     </i:Interaction.Behaviors>
