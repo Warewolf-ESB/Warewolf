@@ -789,7 +789,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 
-            lock (_forEachExecutionObject)
+            //lock (_forEachExecutionObject)
             {
                 _previousParentId = dataObject.ParentInstanceID;
                 _debugInputs = new List<DebugItem>();

@@ -129,7 +129,7 @@ namespace Dev2.Activities.SelectAndApply
                 }
                 return;
             }
-            lock (_selectApplyExecutionObject)
+            //lock (_selectApplyExecutionObject)
             {
                 var startTime = DateTime.Now;
                 _previousParentId = dataObject.ParentInstanceID;
