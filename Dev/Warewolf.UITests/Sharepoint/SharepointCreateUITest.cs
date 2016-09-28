@@ -29,6 +29,16 @@ namespace Warewolf.UITests
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Spinner);
             Uimap.Select_AcceptanceTestin_create();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Spinner);
+            Uimap.Select_AppData_From_MethodList();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Spinner);
+            Uimap.Click_Sharepoint_RefreshButton();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Spinner);
+            Uimap.Open_Sharepoint_Create_Tool_Large_View();
+            Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.LargeViewContent.DataGridTable.ContentTypeRow.ItemContentTypeCell.ContentTypeText.Exists);
+            Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.LargeViewContent.DataGridTable.AttachmentsRow.ItemAttachmentsCell.AttachmentsText.Exists);
+            Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.LargeViewContent.DataGridTable.TitleRow.TitleColumnCell.TitleText.Exists);
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
         }
 
         #region Additional test attributes
@@ -40,7 +50,7 @@ namespace Warewolf.UITests
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
-        }
+        }      
 
         UIMap Uimap
         {
