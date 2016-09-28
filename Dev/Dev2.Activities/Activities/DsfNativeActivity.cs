@@ -565,7 +565,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            UpdateDebugWithAssertions(dataObject, null,_debugState.ID);
+                            UpdateDebugWithAssertions(dataObject,_debugState.ID);
                             var debugOutputs = GetDebugOutputs(dataObject.Environment, update);
                             Copy(debugOutputs, _debugState.Outputs);
                         }
@@ -644,7 +644,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void UpdateDebugWithAssertions(IDSFDataObject dataObject, List<DebugItem> debugOutputs, Guid uniqueID)
+        private void UpdateDebugWithAssertions(IDSFDataObject dataObject, Guid uniqueID)
         {
             if (dataObject.IsServiceTestExecution)
             {
