@@ -34,7 +34,6 @@ namespace Warewolf.Studio.ViewModels
             Value = value;
             From = from;
             To = to;
-            AssertOps = new List<string> { "=" };
             _findRecsetOptions = FindRecsetOptions.FindAllDecision();
             var collection = _findRecsetOptions.Select(c => c.HandlesType());
             AssertOps = new ObservableCollection<string>(collection);
