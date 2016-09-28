@@ -670,6 +670,20 @@ namespace Warewolf.Studio.ViewModels
                 {
                     outputCompare = false;
                 }
+                if (_outputs[i].AssertOp != other._outputs[i].AssertOp)
+                {
+                    outputCompare = false;
+                }
+                if (!outputCompare) continue;
+                if (_outputs[i].From != other._outputs[i].From)
+                {
+                    outputCompare = false;
+                }
+                if (!outputCompare) continue;
+                if (_outputs[i].To != other._outputs[i].To)
+                {
+                    outputCompare = false;
+                }
             }
             return outputCompare;
         }
