@@ -705,10 +705,10 @@ namespace Warewolf.Studio.ViewModels
             if (Outputs != null)
             {
                 memberwiseClone.Outputs = new ObservableCollection<IServiceTestOutput>();
-                var serviceTestInputs = Outputs.ToList();
-                foreach (var serviceTestInput in serviceTestInputs)
+                var serviceTestOutputs = Outputs.ToList();
+                foreach (var serviceTestOutput in serviceTestOutputs)
                 {
-                    memberwiseClone.Outputs.Add(new ServiceTestOutput(serviceTestInput.Variable, serviceTestInput.Value));
+                    memberwiseClone.Outputs.Add(new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value, serviceTestOutput.From, serviceTestOutput.To));
                 }
             }
             return memberwiseClone;
