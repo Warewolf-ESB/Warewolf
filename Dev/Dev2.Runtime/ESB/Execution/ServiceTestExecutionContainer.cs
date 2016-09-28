@@ -93,6 +93,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             ErrorResultTO to = errors;
             var serviceTestModelTO = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
+            
             if (serviceTestModelTO == null)
             {
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -332,26 +333,31 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     if (!dataObject.StopExecution)
                     {
+                        dataObject.ServiceTest = test;
                         EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue, test.TestSteps);
-                        if (test.Outputs != null)
+                        if (!dataObject.StopExecution)
                         {
-                            foreach (var output in test.Outputs)
+                            if (test.Outputs != null)
                             {
-                                var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
-                                var value = output.Value;
-
-                                var result = dataObject.Environment.Eval(variable, 0);
-                                if (result.IsWarewolfAtomResult)
+                                foreach (var output in test.Outputs)
                                 {
-                                    var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
-                                    // ReSharper disable once PossibleNullReferenceException
-                                    var actualValue = x.ToString();
-                                    if (!string.Equals(actualValue, value))
+                                    var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+                                    var value = output.Value;
+
+                                    var result = dataObject.Environment.Eval(variable, 0);
+                                    if (result.IsWarewolfAtomResult)
                                     {
-                                        testPassed = false;
-                                        failureMessage.AppendLine(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, value, variable, actualValue));
+                                        var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
+                                        // ReSharper disable once PossibleNullReferenceException
+                                        var actualValue = x.ToString();
+                                        if (!string.Equals(actualValue, value))
+                                        {
+                                            testPassed = false;
+                                            failureMessage.AppendLine(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, value, variable, actualValue));
+                                        }
                                     }
                                 }
+
                             }
                         }
                     }
@@ -440,14 +446,14 @@ namespace Dev2.Runtime.ESB.Execution
         private static IDev2Activity NextActivity(IDev2Activity resource, List<IServiceTestStep> testSteps, IDSFDataObject dataObj = null)
         {
             var foundTestStep = testSteps.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
-            if (foundTestStep != null && foundTestStep.Type == StepType.Mock)
+            if (foundTestStep != null)
             {
-                if (foundTestStep.ActivityType == typeof(DsfDecision).Name)
+                if (foundTestStep.ActivityType == typeof(DsfDecision).Name && foundTestStep.Type == StepType.Mock)
                 {
                     var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
                     resource = new TestMockDecisionStep(resource as DsfDecision) { NameOfArmToReturn = serviceTestOutput.Value };
                 }
-                else if (foundTestStep.ActivityType == typeof(DsfSwitch).Name)
+                else if (foundTestStep.ActivityType == typeof(DsfSwitch).Name && foundTestStep.Type == StepType.Mock)
                 {
                     var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
                     resource = new TestMockSwitchStep(resource as DsfSwitch) { ConditionToUse = serviceTestOutput.Value };
@@ -481,55 +487,10 @@ namespace Dev2.Runtime.ESB.Execution
                         }
                     }
                 }
-                else
+                else if (foundTestStep.Type == StepType.Mock)
                 {
                     resource = new TestMockStep(resource, foundTestStep.StepOutputs);
                 }
-            }
-            else if (foundTestStep != null && foundTestStep.Type == StepType.Assert)
-            {
-                if(foundTestStep.ActivityType == typeof(DsfDecision).Name)
-                {
-                    resource = ((DsfDecision)resource).ExecuteWithAssert(dataObj, foundTestStep, 0);
-                }
-                else if (foundTestStep.ActivityType == typeof(DsfSwitch).Name)
-                {
-                    resource = ((DsfSwitch)resource).ExecuteWithAssert(dataObj, foundTestStep, 0);
-                }
-                else if (foundTestStep.ActivityType == typeof(DsfSequenceActivity).Name)
-                {
-                    var sequenceActivity = resource as DsfSequenceActivity;
-                    if (sequenceActivity != null)
-                    {
-                        var acts = sequenceActivity.Activities;
-                        for (int index = 0; index < acts.Count; index++)
-                        {
-                            var activity = acts[index];
-                            if (foundTestStep.Children != null)
-                            {
-                                var replacement = NextActivity(activity as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
-                                acts[index] = replacement;
-                            }
-                        }
-                    }
-                }
-                else if (foundTestStep.ActivityType == typeof(DsfForEachActivity).Name)
-                {
-                    var forEach = resource as DsfForEachActivity;
-                    if (forEach != null)
-                    {
-                        if (foundTestStep.Children != null)
-                        {
-                            var replacement = NextActivity(forEach.DataFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
-                            forEach.DataFunc.Handler = replacement;
-                        }
-                    }
-                }
-                else
-                {
-                    resource = new TestAssertStep(resource, foundTestStep.StepOutputs);
-                }
-
             }
             return resource;
         }
