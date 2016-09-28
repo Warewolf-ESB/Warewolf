@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
@@ -18,24 +19,24 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
-    public class DsfDecision:DsfActivityAbstract<string>
+    public class DsfDecision : DsfActivityAbstract<string>
     {
 
 
         // ReSharper disable MemberCanBePrivate.Global
-       public IEnumerable<IDev2Activity> TrueArm { get; set; }
-  
-       public IEnumerable<IDev2Activity> FalseArm { get; set; }
-       public Dev2DecisionStack Conditions { get; set; }
-       // ReSharper restore MemberCanBePrivate.Global
-        readonly DsfFlowDecisionActivity _inner;    
+        public IEnumerable<IDev2Activity> TrueArm { get; set; }
+
+        public IEnumerable<IDev2Activity> FalseArm { get; set; }
+        public Dev2DecisionStack Conditions { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
+        readonly DsfFlowDecisionActivity _inner;
         #region Overrides of DsfNativeActivity<string>
-        public DsfDecision(DsfFlowDecisionActivity inner):this()
+        public DsfDecision(DsfFlowDecisionActivity inner) : this()
         {
             _inner = inner;
             UniqueID = _inner.UniqueID;
         }
- 
+
         public DsfDecision()
         : base("Decision") { }
         /// <summary>
@@ -64,78 +65,100 @@ namespace Dev2.Activities
             return null;
         }
 
-        private  Dev2Decision ParseDecision(IExecutionEnvironment env, Dev2Decision decision, bool errorIfNull)
+        private Dev2Decision ParseDecision(IExecutionEnvironment env, Dev2Decision decision, bool errorIfNull)
         {
             var col1 = env.EvalAsList(decision.Col1, 0, errorIfNull);
-            var col2 = env.EvalAsList(decision.Col2??"", 0, errorIfNull);
-            var col3 = env.EvalAsList(decision.Col3??"", 0, errorIfNull);
+            var col2 = env.EvalAsList(decision.Col2 ?? "", 0, errorIfNull);
+            var col3 = env.EvalAsList(decision.Col3 ?? "", 0, errorIfNull);
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
         #region Overrides of DsfNativeActivity<string>
+        private IDev2Activity ExecuteDecision(IDSFDataObject dataObject)
+        {
 
-        public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
+            InitializeDebug(dataObject);
+
+            if (dataObject.IsDebugMode())
+            {
+                _debugInputs = CreateDebugInputs(dataObject.Environment);
+                DispatchDebugState(dataObject, StateType.Before, 0, null, null, true);
+            }
+
+            var errorIfNull = !Conditions.TheStack.Any(decision => decision.EvaluationFn == enDecisionType.IsNull || decision.EvaluationFn == enDecisionType.IsNotNull);
+
+            var stack = Conditions.TheStack.Select(a => ParseDecision(dataObject.Environment, a, errorIfNull));
+
+            var factory = Dev2DecisionFactory.Instance();
+            var res = stack.SelectMany(a =>
+            {
+                if (a.EvaluationFn == enDecisionType.IsError)
+                {
+                    return new[] { dataObject.Environment.AllErrors.Count > 0 };
+                }
+                if (a.EvaluationFn == enDecisionType.IsNotError)
+                {
+                    return new[] { dataObject.Environment.AllErrors.Count == 0 };
+                }
+                IList<bool> ret = new List<bool>();
+                var iter = new WarewolfListIterator();
+                var c1 = new WarewolfAtomIterator(a.Cols1);
+                var c2 = new WarewolfAtomIterator(a.Cols2);
+                var c3 = new WarewolfAtomIterator(a.Cols3);
+                iter.AddVariableToIterateOn(c1);
+                iter.AddVariableToIterateOn(c2);
+                iter.AddVariableToIterateOn(c3);
+                while (iter.HasMoreData())
+                {
+                    ret.Add(factory.FetchDecisionFunction(a.EvaluationFn).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) }));
+                }
+                return ret;
+
+            });
+            var resultval = And ? res.Aggregate(true, (a, b) => a && b) : res.Any(a => a);
+            if (dataObject.IsDebugMode())
+                _debugOutputs = GetDebugOutputs(resultval.ToString());
+            if (resultval)
+            {
+                if (TrueArm != null)
+                {
+                    var activity = TrueArm.FirstOrDefault();
+                    return activity;
+                }
+            }
+            else
+            {
+                if (FalseArm != null)
+                {
+                    var activity = FalseArm.FirstOrDefault();
+                    return activity;
+                }
+            }
+
+            return null;
+        }
+
+        public IDev2Activity ExecuteWithAssert(IDSFDataObject dataObject, IServiceTestStep serviceTestStep, int update)
         {
             ErrorResultTO allErrors = new ErrorResultTO();
             try
             {
-                InitializeDebug(dataObject);
-
-                if (dataObject.IsDebugMode())
+                var activity = ExecuteDecision(dataObject);
+                
+                foreach(var serviceTestOutput in serviceTestStep.StepOutputs)
                 {
-                    _debugInputs = CreateDebugInputs(dataObject.Environment);
-                    DispatchDebugState(dataObject, StateType.Before, 0, null, null, true);
+                    DebugItem itemToAdd = new DebugItem();
+                    if (true)
+                    {
+                        itemToAdd.Add(new DebugItemResult() {Value = $"{serviceTestOutput.Variable},{serviceTestOutput.AssertOp},{serviceTestOutput.Value} passed" });
+                    }
+                    //else
+                    //{
+                    //    itemToAdd.Add(new DebugItemResult() { Value = $"{serviceTestOutput.Variable},{serviceTestOutput.AssertOp},{serviceTestOutput.Value} failed" });
+                    //}
                 }
 
-                var errorIfNull = !Conditions.TheStack.Any(decision => decision.EvaluationFn == enDecisionType.IsNull || decision.EvaluationFn == enDecisionType.IsNotNull);
-
-                var stack = Conditions.TheStack.Select(a => ParseDecision(dataObject.Environment, a, errorIfNull));
-
-                var factory = Dev2DecisionFactory.Instance();
-                var res = stack.SelectMany(a =>
-                {
-                    if (a.EvaluationFn == enDecisionType.IsError)
-                    {
-                        return new[] { dataObject.Environment.AllErrors.Count > 0 };
-                    }
-                    if (a.EvaluationFn == enDecisionType.IsNotError)
-                    {
-                        return new[] { dataObject.Environment.AllErrors.Count == 0 };
-                    }
-                    IList<bool> ret = new List<bool>();
-                    var iter = new WarewolfListIterator();
-                    var c1 = new WarewolfAtomIterator(a.Cols1);
-                    var c2 = new WarewolfAtomIterator(a.Cols2);
-                    var c3 = new WarewolfAtomIterator(a.Cols3);
-                    iter.AddVariableToIterateOn(c1);
-                    iter.AddVariableToIterateOn(c2);
-                    iter.AddVariableToIterateOn(c3);
-                    while (iter.HasMoreData())
-                    {
-                        ret.Add(factory.FetchDecisionFunction(a.EvaluationFn).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) }));
-                    }
-                    return ret;
-
-                });
-                var resultval = And ? res.Aggregate(true, (a, b) => a && b) : res.Any(a => a);
-                if (dataObject.IsDebugMode())
-                    _debugOutputs = GetDebugOutputs(resultval.ToString());
-                if (resultval)
-                {
-                    if (TrueArm != null)
-                    {
-                        var activity = TrueArm.FirstOrDefault();
-                        return activity;
-                    }
-                }
-                else
-                {
-                    if (FalseArm != null)
-                    {
-                        var activity = FalseArm.FirstOrDefault();
-                        return activity;
-                    }
-                }
+                return activity;
             }
             catch (Exception e)
             {
@@ -154,7 +177,43 @@ namespace Dev2.Activities
                 }
                 if (dataObject.IsDebugMode())
                 {
-                    
+
+                    DispatchDebugState(dataObject, StateType.After, update);
+                    _debugOutputs = new List<DebugItem>();
+                    _debugOutputs = new List<DebugItem>();
+                    DispatchDebugState(dataObject, StateType.Duration, update);
+                }
+
+            }
+
+            return null;
+        }
+        public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
+        {
+            ErrorResultTO allErrors = new ErrorResultTO();
+            try
+            {
+                var activity = ExecuteDecision(dataObject);
+                return activity;
+            }
+            catch (Exception e)
+            {
+                allErrors.AddError(e.Message);
+            }
+            finally
+            {
+                // Handle Errors
+                var hasErrors = allErrors.HasErrors();
+                if (hasErrors)
+                {
+                    DisplayAndWriteError("DsfDecision", allErrors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+
+                }
+                if (dataObject.IsDebugMode())
+                {
+
                     DispatchDebugState(dataObject, StateType.After, update);
                     _debugOutputs = new List<DebugItem>();
                     _debugOutputs = new List<DebugItem>();
@@ -170,7 +229,7 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-           
+
         }
 
         #region Overrides of DsfNativeActivity<string>
@@ -188,18 +247,18 @@ namespace Dev2.Activities
 
             var allErrors = new ErrorResultTO();
 
-           
+
 
             try
             {
-                Dev2DecisionStack dds =Conditions;
+                Dev2DecisionStack dds = Conditions;
                 ErrorResultTO error;
                 string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out error);
                 allErrors.MergeErrors(error);
 
                 foreach (Dev2Decision dev2Decision in dds.TheStack)
                 {
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col1, out  error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col1, out error);
                     allErrors.MergeErrors(error);
                     AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col2, out error);
                     allErrors.MergeErrors(error);
@@ -239,7 +298,7 @@ namespace Dev2.Activities
                 }
             }
 
-            var val =  result.Select(a => a as DebugItem).ToList();
+            var val = result.Select(a => a as DebugItem).ToList();
             if (_inner != null)
             {
                 _inner.SetDebugInputs(val);
@@ -313,12 +372,12 @@ namespace Dev2.Activities
                     string expressiomToStringValue;
                     try
                     {
-                         expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));
+                        expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));
                     }
-                    catch(NullValueInVariableException)
+                    catch (NullValueInVariableException)
                     {
-                        
-                         expressiomToStringValue = "";
+
+                        expressiomToStringValue = "";
                     }
                     // EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);

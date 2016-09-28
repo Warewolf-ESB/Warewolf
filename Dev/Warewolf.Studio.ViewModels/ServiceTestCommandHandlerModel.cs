@@ -54,7 +54,7 @@ namespace Warewolf.Studio.ViewModels
                         return (IServiceTestInput)serviceTestInput;
                     }).ToObservableCollection();
 
-                testModel.Outputs = outputList.Select(sca => new ServiceTestOutput(sca.DisplayValue, "") as IServiceTestOutput).ToObservableCollection();
+                testModel.Outputs = outputList.Select(sca => new ServiceTestOutput(sca.DisplayValue, "", "", "") as IServiceTestOutput).ToObservableCollection();
             }
             testModel.Item = testModel;
             return testModel;
