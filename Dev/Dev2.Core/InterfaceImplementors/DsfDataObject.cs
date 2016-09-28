@@ -18,6 +18,7 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Logging;
@@ -318,6 +319,7 @@ namespace Dev2.DynamicServices
         public bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
         public bool RemoteNonDebugInvoke { get; set; }
         public bool StopExecution { get; set; }
+        public IServiceTestModelTO ServiceTest { get; set; }
 
         #endregion Properties
 
@@ -386,6 +388,12 @@ namespace Dev2.DynamicServices
             result.ForEachUpdateValue = ForEachUpdateValue;
             result.TestName = TestName;
             result.IsServiceTestExecution = IsServiceTestExecution;
+            if (ServiceTest != null)
+            {
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var testString = serializer.Serialize(ServiceTest);
+                result.ServiceTest = serializer.Deserialize<IServiceTestModelTO>(testString);
+            }
             return result;
         }
 
