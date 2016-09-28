@@ -683,6 +683,23 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="*" MinWidth="125" Header="Assert Type" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                                              Margin="1,0,1,1"
+                                                              IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
+                                                              ItemsSource="{Binding Path=AssertOps}"
+                                                              SelectedValue="{Binding Path=AssertOp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                                              ToolTip="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}"
+                                                              AutomationProperties.AutomationId="UI_AssertOps_AutoID">
+                                                        <i:Interaction.Behaviors>
+                                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertOpsHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                        </i:Interaction.Behaviors>
+                                                    </ComboBox>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
                                         <DataGridTemplateColumn Width="*"
                                                                 MinWidth="125"
                                                                 Header="Value"
@@ -724,10 +741,12 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="{Binding ElementName=RunAsUserTextBlock, Path=ActualWidth}"/>
                                     <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Row="0" Text="Error" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="0" Text="Error" FontWeight="Bold"/>
                                 <RadioButton x:Name="NoErrorRadioButton"
                                              Grid.Column="1"
                                              Padding="0,0,5,0" 
@@ -751,6 +770,15 @@
                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestErrorExpectedHelpText}" DataContext="{Binding}" />
                                     </i:Interaction.Behaviors>
                                 </RadioButton>
+                                <TextBlock Grid.Column="3" Text="Contains" Visibility="{Binding SelectedServiceTest.ErrorExpected, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <TextBox Grid.Column="4" 
+                                         Text="{Binding SelectedServiceTest.ErrorContainsText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                         ToolTip="{x:Static languages:Core.ServiceTestErrorContainsTextTooltip}"
+                                         Visibility="{Binding SelectedServiceTest.ErrorExpected, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestErrorContainsTextHelpText}" DataContext="{Binding}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
                             </Grid>
                         </Grid>
                     </Grid>

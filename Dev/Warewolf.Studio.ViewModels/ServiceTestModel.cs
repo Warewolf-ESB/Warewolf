@@ -49,6 +49,7 @@ namespace Warewolf.Studio.ViewModels
         private IList<IDebugState> _debugForTest;
         private IServiceTestStep _selectedTestStep;
         private ObservableCollection<IServiceTestStep> _testSteps;
+        private string _errorContainsText;
 
         public string NeverRunString
         {
@@ -268,6 +269,17 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public string ErrorContainsText
+        {
+            get { return _errorContainsText; }
+            set
+            {
+                _errorContainsText = value; 
+                OnPropertyChanged(() => ErrorContainsText);
+                OnPropertyChanged(() => IsDirty);
+            }
+        }
+
         public bool IsNewTest
         {
             get
@@ -470,7 +482,7 @@ namespace Warewolf.Studio.ViewModels
             Item = model as ServiceTestModel;
         }
 
-        public IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
+        public IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType = StepType.Mock)
         {
             if(string.IsNullOrEmpty(activityUniqueID))
                 throw new ArgumentNullException(nameof(activityUniqueID));
@@ -478,7 +490,7 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException(nameof(activityTypeName));
             if (serviceTestOutputs == null)
                 throw new ArgumentNullException(nameof(serviceTestOutputs));
-            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock) { StepDescription = activityDisplayName };
+            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, stepType) { StepDescription = activityDisplayName };
             TestSteps.Add(testStep);
             return testStep;
         }
@@ -557,9 +569,45 @@ namespace Warewolf.Studio.ViewModels
             var equalsSeq = EqualsSeq(other);
             var inputCompare = InputCompare(other, true);
             var outputCompare = OutputCompare(other, true);
-            var @equals = equalsSeq && inputCompare && outputCompare;
+            var testStepCompare = TestStepCompare(other, true);
+            var @equals = equalsSeq && inputCompare && testStepCompare && outputCompare;
 
             return @equals;
+        }
+
+        private bool TestStepCompare(ServiceTestModel other, bool stepCompare)
+        {
+            if (_testSteps == null)
+            {
+                return true;
+            }
+            if (_testSteps.Count != other._testSteps.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _testSteps.Count; i++)
+            {
+                if (TestSteps[i].Type != other.TestSteps[i].Type)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                var stepOutputs = TestSteps[i].StepOutputs;
+                var otherStepOutputs = other.TestSteps[i].StepOutputs;
+                for (int c = 0; c < stepOutputs.Count; c++)
+                {
+                    if (stepOutputs[c].AssertOp != otherStepOutputs[c].AssertOp)
+                    {
+                        stepCompare = false;
+                    }
+                    if (!stepCompare) continue;
+                    if (stepOutputs[c].Value != otherStepOutputs[c].Value)
+                    {
+                        stepCompare = false;
+                    }
+                }
+            }
+            return stepCompare;
         }
 
         private bool InputCompare(ServiceTestModel other, bool inputCompare)
@@ -624,6 +672,7 @@ namespace Warewolf.Studio.ViewModels
                    string.Equals(_password, other._password) &&
                    _noErrorExpected == other._noErrorExpected &&
                    _errorExpected == other._errorExpected &&
+                   _errorContainsText == other._errorContainsText &&
                    _enabled == other._enabled &&
                    _authenticationType == other._authenticationType;
         }
@@ -667,165 +716,5 @@ namespace Warewolf.Studio.ViewModels
         }
 
         #endregion
-    }
-
-    public class ServiceTestStep : BindableBase, IServiceTestStep
-    {
-        private string _stepDescription;
-        private StepType _type;
-        private string _activityType;
-        private List<IServiceTestOutput> _stepOutputs;
-        private Guid _uniqueId;
-        private IServiceTestStep _parent;
-        private ObservableCollection<IServiceTestStep> _children;
-        private bool _isTestStepExpanded;
-        private bool _isTestStepExpanderEnabled;
-        private bool _assertSelected;
-        private bool _mockSelected;
-        private ImageSource _stepIcon;
-
-        public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType)
-        {
-            UniqueId = uniqueId;
-            ActivityType = activityTypeName;
-            StepOutputs = serviceTestOutputs;
-            Type = stepType;            
-            StepDescription = activityTypeName;
-            Children = new ObservableCollection<IServiceTestStep>();
-            AssertSelected = false;
-            MockSelected = true;
-            IsTestStepExpanded = StepOutputs?.Count > 0;
-            IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
-        }
-
-        public Guid UniqueId
-        {
-            get { return _uniqueId; }
-            set
-            {
-                _uniqueId = value; 
-                OnPropertyChanged(() => UniqueId);
-            }
-        }
-
-        public ImageSource StepIcon
-        {
-            get { return _stepIcon; }
-            set
-            {
-                _stepIcon = value;
-                OnPropertyChanged(() => StepIcon);
-            }
-        }
-
-        public string ActivityType
-        {
-            get { return _activityType; }
-            set
-            {
-                _activityType = value; 
-                OnPropertyChanged(() => ActivityType);
-            }
-        }
-
-        public StepType Type
-        {
-            get { return _type; }
-            set
-            {
-                _type = value;
-                OnPropertyChanged(() => Type);
-            }
-        }
-
-        public List<IServiceTestOutput> StepOutputs
-        {
-            get { return _stepOutputs; }
-            set
-            {
-                _stepOutputs = value; 
-                OnPropertyChanged(() => StepOutputs);
-            }
-        }
-
-        public IServiceTestStep Parent
-        {
-            get { return _parent; }
-            set
-            {
-                _parent = value; 
-                OnPropertyChanged(() => Parent);
-            }
-        }
-
-        public ObservableCollection<IServiceTestStep> Children
-        {
-            get { return _children; }
-            set
-            {
-                _children = value; 
-                OnPropertyChanged(() => Children);
-            }
-        }
-
-        public string StepDescription
-        {
-            get { return _stepDescription; }
-            set
-            {
-                _stepDescription = value; 
-                OnPropertyChanged(() => StepDescription);
-            }
-        }
-
-        public bool IsTestStepExpanded
-        {
-            get { return _isTestStepExpanded; }
-            set
-            {
-                _isTestStepExpanded = value;
-                OnPropertyChanged(() => IsTestStepExpanded);
-            }
-        }
-
-        public bool IsTestStepExpanderEnabled
-        {
-            get { return _isTestStepExpanderEnabled; }
-            set
-            {
-                _isTestStepExpanderEnabled = value;
-                OnPropertyChanged(() => IsTestStepExpanderEnabled);
-            }
-        }
-
-        public bool IsExpanderVisible => Children.Count > 0;
-
-        public bool AssertSelected
-        {
-            get { return _assertSelected; }
-            set
-            {
-                _assertSelected = value;
-                if (_assertSelected)
-                {
-                    Type = StepType.Assert;
-                }
-                OnPropertyChanged(() => AssertSelected);
-            }
-        }
-
-        public bool MockSelected
-        {
-            get { return _mockSelected; }
-            set
-            {
-                _mockSelected = value;
-                if (_mockSelected)
-                {
-                    Type = StepType.Mock;
-                }
-                OnPropertyChanged(() => MockSelected);
-            }
-        }
     }
 }

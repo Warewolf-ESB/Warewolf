@@ -37,6 +37,7 @@ namespace Warewolf.Studio.ViewModels
                 NewTest = true,
                 NoErrorExpected = true,
                 ErrorExpected = false,
+                ErrorContainsText = string.Empty,
                 Inputs = new ObservableCollection< IServiceTestInput >(),
                 Outputs = new ObservableCollection< IServiceTestOutput >(),
             };

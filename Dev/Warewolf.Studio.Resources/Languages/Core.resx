@@ -2819,6 +2819,12 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="ServiceTestErrorExpectedHelpText" xml:space="preserve">
     <value>The test expects an error. If this option is selected, ALL other asserts will be ignored.</value>
   </data>
+  <data name="ServiceTestErrorContainsTextTooltip" xml:space="preserve">
+    <value>ServiceTestErrorContainsTextTooltip</value>
+  </data>
+  <data name="ServiceTestErrorContainsTextHelpText" xml:space="preserve">
+    <value>ServiceTestErrorContainsTextHelpText</value>
+  </data>
   <data name="ServiceTestInputValueTooltip" xml:space="preserve">
     <value>Input value to test against</value>
   </data>

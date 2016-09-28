@@ -6990,6 +6990,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ServiceTestErrorContainsTextHelpText.
+        /// </summary>
+        public static string ServiceTestErrorContainsTextHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestErrorContainsTextHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestErrorContainsTextTooltip.
+        /// </summary>
+        public static string ServiceTestErrorContainsTextTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestErrorContainsTextTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The test expects an error. If this option is selected, ALL other asserts will be ignored..
         /// </summary>
         public static string ServiceTestErrorExpectedHelpText {
