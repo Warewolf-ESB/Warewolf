@@ -2707,6 +2707,18 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ServiceTestStepAssertValueHelpText" xml:space="preserve">
     <value>ServiceTestStepAssertValueHelpText</value>
   </data>
+  <data name="ServiceTestStepAssertFromTooltip" xml:space="preserve">
+    <value>ServiceTestStepAssertFromTooltip</value>
+  </data>
+  <data name="ServiceTestStepAssertFromHelpText" xml:space="preserve">
+    <value>ServiceTestStepAssertFromHelpText</value>
+  </data>
+  <data name="ServiceTestStepAssertToTooltip" xml:space="preserve">
+    <value>ServiceTestStepAssertToTooltip</value>
+  </data>
+  <data name="ServiceTestStepAssertToHelpText" xml:space="preserve">
+    <value>ServiceTestStepAssertToHelpText</value>
+  </data>
   <data name="ServiceTestStepAssertOpsTooltip" xml:space="preserve">
     <value>ServiceTestStepAssertOpsTooltip</value>
   </data>

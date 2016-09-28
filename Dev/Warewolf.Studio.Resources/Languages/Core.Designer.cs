@@ -7342,6 +7342,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ServiceTestStepAssertFromHelpText.
+        /// </summary>
+        public static string ServiceTestStepAssertFromHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertFromHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestStepAssertFromTooltip.
+        /// </summary>
+        public static string ServiceTestStepAssertFromTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertFromTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ServiceTestStepAssertOpsHelpText.
         /// </summary>
         public static string ServiceTestStepAssertOpsHelpText {
@@ -7374,6 +7392,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestStepAssertRadioButtonTooltip {
             get {
                 return ResourceManager.GetString("ServiceTestStepAssertRadioButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestStepAssertToHelpText.
+        /// </summary>
+        public static string ServiceTestStepAssertToHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertToHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestStepAssertToTooltip.
+        /// </summary>
+        public static string ServiceTestStepAssertToTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertToTooltip", resourceCulture);
             }
         }
         

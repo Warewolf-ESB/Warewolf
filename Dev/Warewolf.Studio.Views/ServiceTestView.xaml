@@ -620,32 +620,72 @@
                                                                     </DataGridTemplateColumn.CellTemplate>
                                                                 </DataGridTemplateColumn>
 
-                                                                <DataGridTemplateColumn Width="*" MinWidth="125" Header="Value" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
+                                                                <DataGridTemplateColumn Width="*" 
+                                                                                        MinWidth="125" 
+                                                                                        Header="Value" 
+                                                                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                                        Visibility="{Binding Path=IsSearchCriteriaVisible, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
                                                                     <DataGridTemplateColumn.CellTemplate>
                                                                         <DataTemplate>
-                                                                            <StackPanel>
+                                                                            <Grid>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition />
+                                                                                    <ColumnDefinition />
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <StackPanel Grid.Column="0"
+                                                                                            Grid.ColumnSpan="2" 
+                                                                                            Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                                                                    <TextBox Margin="1,0,1,1"
+                                                                                             Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                                             ToolTip="{x:Static languages:Core.ServiceTestStepAssertValueTooltip}"
+                                                                                             IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                                                                             Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                                                             AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                                                        <i:Interaction.Behaviors>
+                                                                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                        </i:Interaction.Behaviors>
+                                                                                    </TextBox>
+                                                                                </StackPanel>
+                                                                                
+
                                                                                 <TextBox Margin="1,0,1,1"
-                                                                                         Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                                                         ToolTip="{x:Static languages:Core.ServiceTestStepAssertValueTooltip}"
-                                                                                         Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                                                                         Grid.Column="0"
+                                                                                         Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                                         ToolTip="{x:Static languages:Core.ServiceTestStepAssertFromTooltip}"
+                                                                                         Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
                                                                                          AutomationProperties.AutomationId="UI_AssertValue_AutoID">
                                                                                     <i:Interaction.Behaviors>
-                                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertFromHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                     </i:Interaction.Behaviors>
                                                                                 </TextBox>
 
-                                                                                <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                                                                                          Margin="1,0,1,1"
-                                                                                          ItemsSource="{Binding Path=OptionsForValue}"
-                                                                                          SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                                                                          Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                                                          ToolTip="{x:Static languages:Core.ServiceTestStepOptionsForValueTooltip}"
-                                                                                          AutomationProperties.AutomationId="UI_OptionsForValue_AutoID">
+                                                                                <TextBox Margin="1,0,1,1"
+                                                                                         Grid.Column="1"
+                                                                                         Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                                         ToolTip="{x:Static languages:Core.ServiceTestStepAssertToTooltip}"
+                                                                                         Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                                                         AutomationProperties.AutomationId="UI_AssertValue_AutoID">
                                                                                     <i:Interaction.Behaviors>
-                                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertToHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                     </i:Interaction.Behaviors>
-                                                                                </ComboBox>
-                                                                            </StackPanel>
+                                                                                </TextBox>
+
+                                                                                <StackPanel Grid.Column="0"
+                                                                                            Grid.ColumnSpan="2" 
+                                                                                            Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                                                                    <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                                                                              Margin="1,0,1,1"
+                                                                                              ItemsSource="{Binding Path=OptionsForValue}"
+                                                                                              SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                                                                              Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                                                              ToolTip="{x:Static languages:Core.ServiceTestStepOptionsForValueTooltip}"
+                                                                                              AutomationProperties.AutomationId="UI_OptionsForValue_AutoID">
+                                                                                        <i:Interaction.Behaviors>
+                                                                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                        </i:Interaction.Behaviors>
+                                                                                    </ComboBox>
+                                                                                </StackPanel>
+                                                                            </Grid>
                                                                         </DataTemplate>
                                                                     </DataGridTemplateColumn.CellTemplate>
                                                                 </DataGridTemplateColumn>
