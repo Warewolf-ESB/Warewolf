@@ -41,6 +41,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 // ReSharper disable LoopCanBeConvertedToQuery
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -1036,6 +1037,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 Variable = output.Variable,
                 Value = output.Value,
+                From = output.From,
+                To = output.To,
                 AssertOp = output.AssertOp,
                 HasOptionsForValue = output.HasOptionsForValue,
                 OptionsForValue = output.OptionsForValue
