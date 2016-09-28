@@ -7143,6 +7143,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ServiceTestOutputFromHelpText.
+        /// </summary>
+        public static string ServiceTestOutputFromHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputFromHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestOutputFromTooltip.
+        /// </summary>
+        public static string ServiceTestOutputFromTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputFromTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestOutputToHelpText.
+        /// </summary>
+        public static string ServiceTestOutputToHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputToHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestOutputToTooltip.
+        /// </summary>
+        public static string ServiceTestOutputToTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputToTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This is the final output of the service that will be asserted..
         /// </summary>
         public static string ServiceTestOutputValueHelpText {
