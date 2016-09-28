@@ -440,14 +440,14 @@ namespace Dev2.Runtime.ESB.Execution
         private static IDev2Activity MockActivity(IDev2Activity resource, List<IServiceTestStep> testSteps)
         {
             var foundTestStep = testSteps.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
-            if(foundTestStep != null && foundTestStep.Type == StepType.Mock)
+            if(foundTestStep != null )
             {
-                if(foundTestStep.ActivityType == typeof(DsfDecision).Name)
+                if(foundTestStep.ActivityType == typeof(DsfDecision).Name && foundTestStep.Type == StepType.Mock)
                 {
                     var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
                     resource = new TestMockDecisionStep(resource as DsfDecision) { NameOfArmToReturn = serviceTestOutput.Value };
                 }
-                else if(foundTestStep.ActivityType == typeof(DsfSwitch).Name)
+                else if(foundTestStep.ActivityType == typeof(DsfSwitch).Name && foundTestStep.Type == StepType.Mock)
                 {
                     var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
                     resource = new TestMockSwitchStep(resource as DsfSwitch) { ConditionToUse = serviceTestOutput.Value };
@@ -468,7 +468,7 @@ namespace Dev2.Runtime.ESB.Execution
                             }
                         }
                     }
-                }else if(foundTestStep.ActivityType == typeof(DsfForEachActivity).Name)
+                }else if(foundTestStep.ActivityType == typeof(DsfForEachActivity).Name )
                 {
                     var forEach = resource as DsfForEachActivity;
                     if (forEach != null)
@@ -482,7 +482,10 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else
                 {
-                    resource = new TestMockStep(resource, foundTestStep.StepOutputs);
+                    if (foundTestStep.Type == StepType.Mock)
+                    {
+                        resource = new TestMockStep(resource, foundTestStep.StepOutputs);
+                    }
                 }
             }
             return resource;
