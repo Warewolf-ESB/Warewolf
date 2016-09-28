@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,7 +15,8 @@ namespace Warewolf.UITests
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             Uimap.Open_Assign_Tool_Large_View();
             Uimap.Enter_Recordset_values();
-            Uimap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox.Checked = true;
+            Mouse.Move(Uimap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox, new Point(10, 10));
+            Mouse.Click();
             Uimap.Press_F5_To_Debug();
             Uimap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox_With_Special_Test_For_Textbox_Height("Bob");
             Uimap.Enter_Text_Into_Debug_Input_Row2_Value_Textbox("Bob");

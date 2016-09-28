@@ -879,6 +879,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_First_Recordset_Input_Checkbox - Use 'Click_First_Recordset_Input_CheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_First_Recordset_Input_Checkbox()
+        {
+            #region Variable Declarations
+            WpfCheckBox inputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox;
+            #endregion
+
+            // Select 'UI_IsInputCheckbox_AutoID' check box
+            inputCheckbox.Checked = this.Click_First_Recordset_Input_CheckboxParams.InputCheckboxChecked;
+        }
+        
+        /// <summary>
         /// Click_FullScreen_TopRibbon_Button
         /// </summary>
         public void Click_FullScreen_TopRibbon_Button()
@@ -6121,7 +6134,7 @@ namespace Warewolf.UITests
 
             // Click 'UI__Database_AutoID' combo box
             Mouse.Click(server, new Point(56, 13));
-            
+
             // Verify that the 'Exists' property of custom control equals 'True'
             Assert.AreEqual(this.Select_NewSharepointSource_FromServer_LookupParams.SharepointViewExists, sharepointView.Exists, "sharepoint service source window does not exist");
         }
@@ -6965,6 +6978,18 @@ namespace Warewolf.UITests
                     this.mClick_Explorer_RemoteServer_Connect_ButtonParams = new Click_Explorer_RemoteServer_Connect_ButtonParams();
                 }
                 return this.mClick_Explorer_RemoteServer_Connect_ButtonParams;
+            }
+        }
+        
+        public virtual Click_First_Recordset_Input_CheckboxParams Click_First_Recordset_Input_CheckboxParams
+        {
+            get
+            {
+                if ((this.mClick_First_Recordset_Input_CheckboxParams == null))
+                {
+                    this.mClick_First_Recordset_Input_CheckboxParams = new Click_First_Recordset_Input_CheckboxParams();
+                }
+                return this.mClick_First_Recordset_Input_CheckboxParams;
             }
         }
         
@@ -9272,6 +9297,8 @@ namespace Warewolf.UITests
         
         private Click_Explorer_RemoteServer_Connect_ButtonParams mClick_Explorer_RemoteServer_Connect_ButtonParams;
         
+        private Click_First_Recordset_Input_CheckboxParams mClick_First_Recordset_Input_CheckboxParams;
+        
         private Click_GET_Web_Large_View_Done_ButtonParams mClick_GET_Web_Large_View_Done_ButtonParams;
         
         private Click_GET_Web_Large_View_Generate_OutputsExpectedValues mClick_GET_Web_Large_View_Generate_OutputsExpectedValues;
@@ -10248,6 +10275,21 @@ namespace Warewolf.UITests
         /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstRemoteServerExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_First_Recordset_Input_Checkbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_First_Recordset_Input_CheckboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'UI_IsInputCheckbox_AutoID' check box
+        /// </summary>
+        public bool InputCheckboxChecked = true;
         #endregion
     }
     
@@ -44454,140 +44496,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISharepointCreateListCustom UISharepointCreateListCustom
-        {
-            get
-            {
-                if ((this.mUISharepointCreateListCustom == null))
-                {
-                    this.mUISharepointCreateListCustom = new UISharepointCreateListCustom(this);
-                }
-                return this.mUISharepointCreateListCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISharepointCreateListCustom mUISharepointCreateListCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISharepointCreateListCustom : WpfCustom
-    {
-        
-        public UISharepointCreateListCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListCreateDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Create List Item(SharepointListCreateDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISmallViewContentCustom UISmallViewContentCustom
-        {
-            get
-            {
-                if ((this.mUISmallViewContentCustom == null))
-                {
-                    this.mUISmallViewContentCustom = new UISmallViewContentCustom(this);
-                }
-                return this.mUISmallViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISmallViewContentCustom mUISmallViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISmallViewContentCustom : WpfCustom
-    {
-        
-        public UISmallViewContentCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI__Database_AutoIDComboBox UIUI__Database_AutoIDComboBox
-        {
-            get
-            {
-                if ((this.mUIUI__Database_AutoIDComboBox == null))
-                {
-                    this.mUIUI__Database_AutoIDComboBox = new UIUI__Database_AutoIDComboBox(this);
-                }
-                return this.mUIUI__Database_AutoIDComboBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI__Database_AutoIDComboBox mUIUI__Database_AutoIDComboBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI__Database_AutoIDComboBox : WpfComboBox
-    {
-        
-        public UIUI__Database_AutoIDComboBox(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Database_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem UIServernullAuthenticaListItem
-        {
-            get
-            {
-                if ((this.mUIServernullAuthenticaListItem == null))
-                {
-                    this.mUIServernullAuthenticaListItem = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIServernullAuthenticaListItem.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":null,""AuthenticationType"":""Windows"",""UserName"":null,""Password"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""77fe880c-baa0-4f69-ad3c-94439293c611"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""New Sharepoint Server Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
-                    this.mUIServernullAuthenticaListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIServernullAuthenticaListItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mUIServernullAuthenticaListItem;
         #endregion
     }
 }
