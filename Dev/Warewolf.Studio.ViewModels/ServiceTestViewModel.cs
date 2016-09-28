@@ -36,6 +36,7 @@ using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -283,16 +284,23 @@ namespace Warewolf.Studio.ViewModels
                             throw new ArgumentNullException(nameof(newTest.RootItems));
                         _debugStates = newTest.DebugStates;
                         PrepopulateTestsUsingDebug(newTest.RootItems);
+                        
                     }
                     else
                     {
-                        throw new Exception("expected " + typeof(NewTestFromDebugMessage).Name + " but got " + msg.GetType().Name);
+                        throw new ArgumentException("expected " + typeof(NewTestFromDebugMessage).Name + " but got " + msg.GetType().Name);
                     }
                 }
+                
 
+            }, OnError);
 
-            });
+        }
 
+        private void OnError(Exception exception)
+        {
+            Dev2Logger.Error(exception);
+            throw exception;
         }
 
         private void ItemSelectedAction(ModelItem modelItem)
@@ -325,6 +333,8 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else if (modelItem.ItemType == typeof(DsfDecision))
                 {
+                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serialize = serializer.Serialize(modelItem);
                     ProcessDecision(modelItem);
                 }
                 else
