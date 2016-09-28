@@ -360,7 +360,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var hasErrors = DataObject.Environment.HasErrors();
                 if (test.ErrorExpected )
                 {
-                    testPassed = hasErrors && testPassed && test.ErrorContainsText.ToLower().Contains(fetchErrors.ToLower());
+                    testPassed = hasErrors && testPassed && fetchErrors.ToLower().Contains(test.ErrorContainsText.ToLower());
                     if (!testPassed)
                     {
                         failureMessage.AppendLine(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, test.ErrorContainsText, "", fetchErrors));

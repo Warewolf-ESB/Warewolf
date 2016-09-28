@@ -873,7 +873,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 Variable = output.Variable,
                 Value = output.Value,
-                AssertOp = output.AssertOp
+                AssertOp = output.AssertOp,
+                HasOptionsForValue = output.HasOptionsForValue,
+                OptionsForValue = output.OptionsForValue
             };
         }
 
@@ -911,7 +913,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 Variable = output.Variable,
                 Value = output.Value,
-                AssertOp = output.AssertOp
+                AssertOp = output.AssertOp,
+                HasOptionsForValue = output.HasOptionsForValue,
+                OptionsForValue = output.OptionsForValue
             };
         }
 
@@ -1203,6 +1207,8 @@ namespace Warewolf.Studio.ViewModels
                 Parent = step.Parent,
                 StepDescription = step.StepDescription
             };
+
+            //SetStepIcon(testStep.ActivityType.GetType(), testStep);
             if (step.Children != null)
             {
                 foreach (var serviceTestStep in step.Children)
