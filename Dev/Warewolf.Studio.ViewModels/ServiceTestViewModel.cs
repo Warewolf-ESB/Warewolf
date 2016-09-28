@@ -177,7 +177,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 foreach(var output in outputs)
                 {
-                    var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable);
+                    var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable).Where(s => !string.IsNullOrEmpty(s.Variable));
                     foreach(var debugItemResult in actualOutputs)
                     {
                         serviceTestOutputs.Add(new ServiceTestOutput(debugItemResult.Variable, debugItemResult.Value));
@@ -429,7 +429,7 @@ namespace Warewolf.Studio.ViewModels
             var outputs = act.GetOutputs();
             if (outputs != null && outputs.Count > 0)
             {
-                var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "")
                 {
                     HasOptionsForValue = false
                 }).Cast<IServiceTestOutput>().ToList();
