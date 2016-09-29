@@ -31,13 +31,14 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -68,7 +69,6 @@
     <Compile Include="ConfigureSettings\ConfigureSettingsLoggingTests.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Explorer\ItemDragAndDrop.cs" />
-    <Compile Include="Explorer\ContextMenuItemsTest.cs" />
     <Compile Include="Sharepoint\SharepointCreateUITest.cs" />
     <Compile Include="Tools\Scripting\Ruby.cs" />
     <Compile Include="Tools\Scripting\Python.cs" />
@@ -78,11 +78,8 @@
     <Compile Include="Tools\HTTP Web Methods\Create_WEB_Source_From_Tool.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="Explorer\WebConnector.cs" />
-    <Compile Include="Explorer\PluginConnector.cs" />
-    <Compile Include="Explorer\DBConnector.cs" />
     <Compile Include="Explorer\Refresh.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Explorer\RemoteSubworkflow.cs" />
     <Compile Include="Tools\Control Flow\Sequence.cs" />
     <Compile Include="Tools\Control Flow\Switch.cs" />
     <Compile Include="Tools\Control Flow\For Each.cs" />

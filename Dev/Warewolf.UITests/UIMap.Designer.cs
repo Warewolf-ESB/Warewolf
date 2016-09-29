@@ -29,6 +29,7 @@ namespace Warewolf.UITests
     
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    [Binding]
     public partial class UIMap
     {
         
@@ -4577,13 +4578,39 @@ namespace Warewolf.UITests
             Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
 
             // Verify that the 'Exists' property of 'Tests' menu item equals 'True'
-            Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.TestsExists, tests.Exists, "Open does not exist in explorer context menu.");
+            Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.TestsExists, tests.Exists, "View tests does not exist in explorer context menu.");
 
             // Click 'Tests' menu item
             Mouse.Click(tests, new Point(30, 11));
 
             // Verify that the 'Exists' property of 'Run All' button equals 'True'
             Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.RunAllButtonExists, runAllButton.Exists, "Run all button does not exist on tests tab");
+        }
+        
+        /// <summary>
+        /// Duplicate_Explorer_Localhost_First_Item_With_Context_Menu - Use 'Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Duplicate Explorer Localhost First Item With Context Menu")]
+        public void Duplicate_Explorer_Localhost_First_Item_With_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem duplicate = this.MainStudioWindow.ExplorerContextMenu.Duplicate;
+            WpfWindow saveDialogWindow = this.SaveDialogWindow;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+
+            // Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+            Assert.AreEqual(this.Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams.DuplicateExists, duplicate.Exists, "Duplicate does not exist in explorer context menu.");
+
+            // Click 'Duplicate' menu item
+            Mouse.Click(duplicate, new Point(62, 10));
+
+            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+            Assert.AreEqual(this.Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Duplicate dialog does not exist after clicking duplicate in the explorer context " +
+                    "menu.");
         }
         
         /// <summary>
@@ -8807,6 +8834,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams
+        {
+            get
+            {
+                if ((this.mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams == null))
+                {
+                    this.mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams = new Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams();
+                }
+                return this.mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams;
+            }
+        }
+        
         public virtual Open_Explorer_First_Item_With_Context_MenuParams Open_Explorer_First_Item_With_Context_MenuParams
         {
             get
@@ -9904,6 +9943,8 @@ namespace Warewolf.UITests
         private Open_Explorer_First_Item_Dependancies_With_Context_MenuParams mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams;
         
         private Open_Explorer_First_Item_Tests_With_Context_MenuParams mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
+        
+        private Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams;
         
         private Open_Explorer_First_Item_With_Context_MenuParams mOpen_Explorer_First_Item_With_Context_MenuParams;
         
@@ -13373,6 +13414,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Duplicate_Explorer_Localhost_First_Item_With_Context_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+        /// </summary>
+        public bool DuplicateExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+        /// </summary>
+        public bool SaveDialogWindowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Open_Explorer_First_Item_With_Context_Menu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -16697,7 +16758,6 @@ namespace Warewolf.UITests
                 {
                     this.mExplorerRefreshButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mExplorerRefreshButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mExplorerRefreshButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -22106,7 +22166,6 @@ namespace Warewolf.UITests
                 {
                     this.mRefreshSourceServerButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mRefreshSourceServerButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mRefreshSourceServerButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -37189,7 +37248,6 @@ namespace Warewolf.UITests
                 {
                     this.mDeleteButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this test";
                     this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
@@ -37406,7 +37464,6 @@ namespace Warewolf.UITests
                     this.mDeleteButton = new WpfButton(this);
                     #region Search Criteria
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this test";
-                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -37623,7 +37680,6 @@ namespace Warewolf.UITests
                 {
                     this.mDeleteButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this test";
                     this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
@@ -38805,7 +38861,6 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfButton.PropertyNames.Name] = "?";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -43991,7 +44046,6 @@ namespace Warewolf.UITests
                 {
                     this.mRefreshButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mRefreshButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mRefreshButton.WindowTitles.Add("SaveDialogView");
                     #endregion
                 }
@@ -44577,7 +44631,6 @@ namespace Warewolf.UITests
                 {
                     this.mRefresh = new WpfButton(this);
                     #region Search Criteria
-                    this.mRefresh.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mRefresh.WindowTitles.Add("Warewolf");
                     #endregion
                 }
