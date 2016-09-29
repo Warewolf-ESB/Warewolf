@@ -11,4 +11,11 @@
        ,
         Invalid = 3
     }
+    public enum SaveOrDuplicate
+    {
+
+        Save = 1
+       ,
+        Duplicate = 2
+    }
 }

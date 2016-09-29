@@ -315,6 +315,8 @@ namespace Dev2.Activities
 
         #endregion
 
+        public new string Result { get; set; }
+
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
         List<DebugItem> GetDebugOutputs(string theResult)
         {
@@ -335,7 +337,7 @@ namespace Dev2.Activities
                 {
                     resultString = dds.FalseArmText;
                 }
-
+                Result = resultString;
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }

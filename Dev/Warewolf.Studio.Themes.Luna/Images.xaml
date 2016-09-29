@@ -69,6 +69,7 @@
         <ResourceDictionary Source="Images/Scripting-CMDScript.xaml" />
         <ResourceDictionary Source="Images/Scripting-CreateJSON.xaml" />
         <ResourceDictionary Source="Images/Scripting-JavaScript.xaml" />
+        <ResourceDictionary Source="Images/Scripting-Script.xaml" />
         <ResourceDictionary Source="Images/Scripting-Python.xaml" />
         <ResourceDictionary Source="Images/Scripting-Ruby.xaml" />
         <ResourceDictionary Source="Images/Scripting-PowerShell.xaml" />
