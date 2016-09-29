@@ -417,7 +417,19 @@ namespace Warewolf.Studio.ViewModels
         private void ProcessSequence(ModelItem modelItem)
         {
             var sequence = modelItem.GetCurrentValue() as DsfSequenceActivity;
-            AddSequence(sequence, null, SelectedServiceTest.TestSteps);
+            var buildParentsFromModelItem = BuildParentsFromModelItem(modelItem);
+            if (buildParentsFromModelItem != null)
+            {
+                AddSequence(sequence, buildParentsFromModelItem as ServiceTestStep, buildParentsFromModelItem.Children);
+                if (FindExistingStep(buildParentsFromModelItem.UniqueId.ToString()) == null)
+                {
+                    SelectedServiceTest.TestSteps.Add(buildParentsFromModelItem);
+                }
+            }
+            else
+            {
+                AddSequence(sequence, null, SelectedServiceTest.TestSteps);
+            }                        
         }
 
         private void ProcessForEach(ModelItem modelItem)
@@ -560,7 +572,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
                         }
-                        else if (act.GetType() == typeof(DsfSelectAndApplyActivity))
+                        else if (activity.GetType() == typeof(DsfSelectAndApplyActivity))
                         {
                             AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
                         }
@@ -569,6 +581,7 @@ namespace Warewolf.Studio.ViewModels
                 if (exists == null)
                 {
                     serviceTestSteps.Add(testStep);
+                    
                 }
                 else
                 {
