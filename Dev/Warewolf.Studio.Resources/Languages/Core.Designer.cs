@@ -7197,6 +7197,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ServiceTestOutputVariableHelpText.
+        /// </summary>
+        public static string ServiceTestOutputVariableHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputVariableHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestOutputVariableTooltip.
+        /// </summary>
+        public static string ServiceTestOutputVariableTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputVariableTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Passed.
         /// </summary>
         public static string ServiceTestPassedTooltip {
@@ -7464,6 +7482,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestStepAssertValueTooltip {
             get {
                 return ResourceManager.GetString("ServiceTestStepAssertValueTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestStepAssertVariableHelpText.
+        /// </summary>
+        public static string ServiceTestStepAssertVariableHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertVariableHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestStepAssertVariableTooltip.
+        /// </summary>
+        public static string ServiceTestStepAssertVariableTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertVariableTooltip", resourceCulture);
             }
         }
         
