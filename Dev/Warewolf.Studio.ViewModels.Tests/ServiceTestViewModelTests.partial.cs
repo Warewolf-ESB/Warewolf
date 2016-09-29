@@ -51,7 +51,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
             var repo = new Mock<IEnvironmentRepository>();
-            var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1],  };
+            var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>()
             {
                 debugTreeMock.Object
@@ -63,7 +63,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
             Assert.AreEqual(0, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.Inputs.Count);
-            Assert.AreEqual(0, testFrameworkViewModel.SelectedServiceTest.Outputs.Count);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.Outputs.Count);
         }
 
         [TestMethod]
@@ -87,8 +87,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             var readAllText = File.ReadAllText("DebugStates.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
-            //newTestFromDebugMessage.DebugStates = debugStates;
+            newTestFromDebugMessage.DebugStates = debugStates;
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
+            var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
+            var repo = new Mock<IEnvironmentRepository>();
+            var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
+            var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
+            var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
+            newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>()
+            {
+                debugTreeMock.Object
+                ,itemViewModel
+                ,itemViewModel1
+                ,itemViewModel2
+            };
             //---------------Assert Precondition----------------          
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
