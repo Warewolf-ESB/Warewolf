@@ -106,7 +106,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(serverEventPublisher);
             _debugWriterSubscriptionService.Subscribe(msg =>
             {
-                Append(msg.DebugState);
+                Append(msg.DebugState);                
             });
 
             SessionID = Guid.NewGuid();
@@ -450,6 +450,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             if (_outputViewModelUtil.QueuePending(content, _pendingItems, IsProcessing))
                 return;
             AddItemToTree(content);
+            ViewModelUtils.RaiseCanExecuteChanged(AddNewTestCommand);
         }
 
         private void IsDebugStateLastStep(IDebugState content)

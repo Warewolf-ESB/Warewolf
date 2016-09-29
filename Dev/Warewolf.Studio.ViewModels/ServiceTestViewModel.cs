@@ -67,27 +67,39 @@ namespace Warewolf.Studio.ViewModels
         private void PrepopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models)
         {
             CreateTests();
+            AddFromDebug(models);
+        }
 
-            foreach (IDebugTreeViewItemViewModel debugState in models)
+
+        public void AddDuplicateTestUsingDebug(NewTestFromDebugMessage message)
+        {
+            DuplicateTest();
+            AddFromDebug(message.RootItems);
+        }
+
+
+        private void AddFromDebug(List<IDebugTreeViewItemViewModel> models)
+        {
+            foreach(IDebugTreeViewItemViewModel debugState in models)
             {
                 var debugItem = debugState as DebugStateTreeViewItemViewModel;
-                if (debugItem != null && debugItem.Parent == null)
+                if(debugItem != null && debugItem.Parent == null)
                 {
                     var debugItemContent = debugItem.Content;
-                    if (debugItemContent != null)
+                    if(debugItemContent != null)
                     {
-                        if (debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.ID==ResourceModel.ID)
+                        if(debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.ID == ResourceModel.ID)
                         {
                             ProcessInputsAndOutputs(debugItemContent);
                         }
-                        else if (debugItemContent.ActivityType != ActivityType.Workflow)
+                        else if(debugItemContent.ActivityType != ActivityType.Workflow)
                         {
                             var actualType = debugItemContent.ActualType;
-                            if (actualType == typeof(DsfDecision).Name)
+                            if(actualType == typeof(DsfDecision).Name)
                             {
                                 DecisionFromDebug(debugItemContent);
                             }
-                            else if (actualType == typeof(DsfSwitch).Name)
+                            else if(actualType == typeof(DsfSwitch).Name)
                             {
                                 SwitchFromDebug(debugItemContent);
                             }

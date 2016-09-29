@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 
 // ReSharper disable UnusedMemberInSuper.Global
@@ -39,5 +40,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool HasDuplicates();
         void ShowDuplicatePopup();
         void RefreshCommands();
+
+        void AddDuplicateTestUsingDebug(NewTestFromDebugMessage message);
     }
 }
