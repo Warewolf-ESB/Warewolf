@@ -109,7 +109,12 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     if (ContentDesignerTemplate != null)
                     {
-                        ContentDesignerTemplate.IsEnabled = false;
+                        if (ContentDesignerTemplate.Parent.GetType().Name != "ForeachDesigner" &&
+                            ContentDesignerTemplate.Parent.GetType().Name != "SequenceDesigner" &&
+                            ContentDesignerTemplate.Parent.GetType().Name != "SelectAndApplyDesigner")
+                        {
+                            ContentDesignerTemplate.IsEnabled = false;
+                        }
                         ContentDesignerTemplate.RightButtons.Clear();
                         ContentDesignerTemplate.LeftButtons.Clear();
                     }
