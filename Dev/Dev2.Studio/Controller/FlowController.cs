@@ -13,9 +13,11 @@
 
 using System;
 using System.Activities.Presentation.Model;
+using System.Activities.Presentation.View;
 using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Decision;
 using Dev2.Activities.Designers2.Switch;
 using Dev2.Common;
@@ -150,8 +152,18 @@ namespace Dev2.Studio.Controller
             {
                 contentPresenter.Content = large;
             }
+            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(modelItem.Parent.View);
+            var dataContext1 = parentContentPane?.DataContext;
+            if (dataContext1 != null)
+            {
+                if (dataContext1.GetType().Name == "ServiceTestViewModel")
+                {
+                    window.SetEnableDoneButtonState(false);
+                }
+            }
 
             var showDialog = window.ShowDialog();
+            window.SetEnableDoneButtonState(true);
             if (showDialog.HasValue && showDialog.Value)
             {
                 var callBack = new Dev2DecisionCallbackHandler { ModelData = JsonConvert.SerializeObject(dataContext.Switch) };
@@ -190,7 +202,8 @@ namespace Dev2.Studio.Controller
             {
                 contentPresenter.Content = large;
             }
-
+            window.SetEnableDoneButtonState(true);
+            
             var showDialog = window.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -270,8 +283,19 @@ namespace Dev2.Studio.Controller
                 contentPresenter.Content = large;
             }
 
-            var showDialog = window.ShowDialog();
+            window.SetEnableDoneButtonState(true);
+            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(mi.Parent.View);
+            var dataContext1 = parentContentPane?.DataContext;
+            if (dataContext1 != null)
+            {
+                if (dataContext1.GetType().Name == "ServiceTestViewModel")
+                {
+                    window.SetEnableDoneButtonState(false);
+                }
+            }
 
+            var showDialog = window.ShowDialog();
+            window.SetEnableDoneButtonState(true);
             if (showDialog.HasValue && showDialog.Value)
             {
                 var dev2DecisionCallbackHandler = new Dev2DecisionCallbackHandler();
