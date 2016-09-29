@@ -465,6 +465,7 @@ namespace Dev2.Activities
         {
             var trueArmText = _dsfDecision.Conditions.TrueArmText;
             var falseArmText = _dsfDecision.Conditions.FalseArmText;
+            InitializeDebug(dataObject);
             DebugItem itemToAdd = new DebugItem();
             var result = new List<DebugItem>();
             bool hasResult = false;

@@ -19,13 +19,21 @@ namespace Dev2.Runtime.ESB.Execution
         private readonly IDev2Activity _originalActivity;
         private readonly List<IServiceTestOutput> _outputs;
 
+        public TestMockStep()
+        {
+            DisplayName = "Mock Step";
+        }
+
         public TestMockStep(IDev2Activity originalActivity , List<IServiceTestOutput> outputs)
         {
             _originalActivity = originalActivity;
             _outputs = outputs;
-            var act = originalActivity as DsfBaseActivity;
-            if(act != null)
+            var act = originalActivity as DsfNativeActivity<string>;
+            if (act != null)
+            {
                 DisplayName = act.DisplayName;
+            }
+
         }
 
         public override List<string> GetOutputs()
