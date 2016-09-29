@@ -85,6 +85,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 _stepOutputs = value;
                 OnPropertyChanged(() => StepOutputs);
+                IsTestStepExpanded = StepOutputs?.Count > 0;
+                IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
             }
         }
 
