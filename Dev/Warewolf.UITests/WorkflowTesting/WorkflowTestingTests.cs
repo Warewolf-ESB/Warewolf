@@ -22,20 +22,23 @@ namespace Warewolf.UITests
         {
             Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Uimap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
-            Uimap.Assert_Workflow_Testing_Tab_First_Test_Exists();
-            Uimap.Select_User_From_RunTestAs();
+            Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Exists, "No tests on workflow testing tab after clicking new tests button.");
+            Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TabDescription.DisplayText.Contains("*"), "Test tab title does not contain unsaved star.");
             Uimap.Click_First_Test_Run_Button();
         }
 
         [TestMethod]
-        public void Create_Save_And_Run_WorkFlowTest()
+        public void Show_Duplicate_Test_Dialog()
         {
             Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            Uimap.Click_Create_New_Tests(true);
-            Uimap.Update_Test_Name(TestName);
-            Uimap.Click_Run_Test_Button();
-            Uimap.Click_Create_New_Tests(true, 2);
+            Uimap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
+            Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Exists, "No first test on workflow testing tab.");
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
+            Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2.Exists, "No second test on workflow testing tab.");
+            Uimap.Update_Test_Name("Test 1");
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Assert.IsTrue(Uimap.MessageBoxWindow.Exists, "No duplicate test error dialog when saving a test while the name of an existing test.");
         }
 
         [TestMethod]
@@ -78,18 +81,6 @@ namespace Warewolf.UITests
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Select_User_From_RunTestAs();
             Uimap.Enter_RunAsUser_Username_And_Password();
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Click_RunAll_Button();
-        }
-
-        [TestMethod]
-        public void RunDuplicatedTest()
-        {
-            Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            Uimap.Click_Create_New_Tests(true);
-            Uimap.Update_Test_Name(TestName);
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Click_Duplicate_Test_Button();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_RunAll_Button();
         }

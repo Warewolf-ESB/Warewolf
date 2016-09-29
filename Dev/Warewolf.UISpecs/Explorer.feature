@@ -30,6 +30,7 @@ Scenario: Explorer Context Menu Items
 	And I Click View Api From Context Menu
 
 Scenario: Drag on Remote Subworkflow from Explorer And Check Permissions Icons
+	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Select NewRemoteServer From Explorer Server Dropdownlist
 	And I Create Remote Server Source As "ServerSourceName" with address "ServerAddress"
@@ -50,7 +51,8 @@ Scenario: Drag on Remote Subworkflow from Explorer And Check Permissions Icons
 	And I Set Resource Permissions For "workflow1" to Group "Domain Users" and Permissions for View to "true" and Contribute to "true" and Execute to "false"
 	And I Click Deploy Ribbon Button
 	
-Scenario: 
+Scenario: Deploy and Reverse Deploy View Only Workflow
+	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Save With Ribbon Button And Dialog As "DeployViewOnly"
 	And I Click Close Workflow Tab Button
