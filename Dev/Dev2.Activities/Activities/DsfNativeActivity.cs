@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.Decisions.Operations;
+using Dev2.Data.Util;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -649,90 +650,159 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (dataObject.IsServiceTestExecution)
             {
-                if (dataObject.ServiceTest != null)
+                var stepToBeAsserted = dataObject.ServiceTest?.TestSteps.Flatten(step => step.Children).FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(UniqueID));
+                if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
                 {
-                    var stepToBeAsserted = dataObject.ServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(UniqueID));
-                    if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
+                    if (stepToBeAsserted.ActivityType == typeof(DsfDecision).Name)
                     {
-                        if (stepToBeAsserted.ActivityType == typeof(DsfDecision).Name)
+                        var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
+                        var dsfDecision = this as DsfDecision;
+                        if (dsfDecision != null)
                         {
-                            var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
-                            var dsfDecision = this as DsfDecision;
-                            if (dsfDecision != null)
+                            var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
+                            dataObject.ServiceTest.TestPassed = assertPassed;
+                            dataObject.ServiceTest.TestFailing = !assertPassed;
+                            if (dataObject.IsDebugMode())
                             {
-                                var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
-                                dataObject.ServiceTest.TestPassed = assertPassed;
-                                dataObject.ServiceTest.TestFailing = !assertPassed;
-                                if(dataObject.IsDebugMode())
-                                {
-                                    AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
-                                }
-                                else
-                                {
-                                    dataObject.Environment.AddError("Assert Failed");
-                                }
+                                AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
                             }
-                        }
-                        else if(stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
-                        {
-                            var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
-                            var dsfDecision = this as DsfSwitch;
-                            if (dsfDecision != null)
+                            else
                             {
-                                var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
-                                dataObject.ServiceTest.TestPassed = assertPassed;
-                                dataObject.ServiceTest.TestFailing = !assertPassed;
-                                if (dataObject.IsDebugMode())
-                                {
-                                    AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
-                                }
-                                else
-                                {
-                                    dataObject.Environment.AddError("Assert Failed");
-                                }
-                            }
-
-                        }
-                        else
-                        {
-                            foreach (var serviceTestOutput in stepToBeAsserted.StepOutputs)
-                            {
-                                var actualValue = dataObject.Environment.EvalAsList(serviceTestOutput.Variable, 0);
-                                var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.Value) };
-                                var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.From) };
-                                var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.To) };
-                                IFindRecsetOptions opt = FindRecsetOptions.FindMatch(serviceTestOutput.AssertOp);
-                                var decisionType = DecisionDisplayHelper.GetValue(serviceTestOutput.AssertOp);
-                                if (decisionType == enDecisionType.Choose)
-                                {
-                                    continue;
-                                }
-                                var func = Dev2DecisionFactory.Instance().FetchDecisionFunction(decisionType);
-                                var assertPassed = true;
-                                
-                                dataObject.ServiceTest.TestPassed = assertPassed;
-                                dataObject.ServiceTest.TestFailing = !assertPassed;
-                                if (dataObject.IsDebugMode())
-                                {
-                                    AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
-                                }
-                                else
-                                {
-                                    dataObject.Environment.AddError("Assert Failed");
-                                }
-                                dataObject.StopExecution = !assertPassed;
+                                dataObject.Environment.AddError("Assert Failed");
                             }
                         }
                     }
+                    else if (stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
+                    {
+                        var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
+                        var dsfDecision = this as DsfSwitch;
+                        if (dsfDecision != null)
+                        {
+                            var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
+                            dataObject.ServiceTest.TestPassed = assertPassed;
+                            dataObject.ServiceTest.TestFailing = !assertPassed;
+                            if (dataObject.IsDebugMode())
+                            {
+                                AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                            }
+                            else
+                            {
+                                dataObject.Environment.AddError("Assert Failed");
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        var factory = Dev2DecisionFactory.Instance();
+                        var res = stepToBeAsserted.StepOutputs.SelectMany(output =>
+                        {
+                            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
+                            var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
+
+                            if (decisionType == enDecisionType.IsError)
+                            {
+                                var hasErrors = dataObject.Environment.AllErrors.Count > 0;
+                                var testResult = new TestRunResult();
+                                if(hasErrors)
+                                {
+                                    testResult.Result = RunResult.TestPassed;
+                                }
+                                else
+                                {
+                                    testResult.Result = RunResult.TestFailed;
+                                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                                }
+                                if(dataObject.IsDebugMode())
+                                {
+                                    var msg = testResult.Message;
+                                    if(testResult.Result == RunResult.TestPassed)
+                                    {
+                                        msg = "Passed";
+                                    }
+                                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                                }
+                                return new[] { testResult };
+                            }
+                            if (decisionType == enDecisionType.IsNotError)
+                            {
+                                var noErrors = dataObject.Environment.AllErrors.Count == 0;
+                                var testResult = new TestRunResult();
+                                if (noErrors)
+                                {
+                                    testResult.Result = RunResult.TestPassed;
+                                }
+                                else
+                                {
+                                    testResult.Result = RunResult.TestFailed;
+                                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                                }
+                                if (dataObject.IsDebugMode())
+                                {
+                                    var msg = testResult.Message;
+                                    if (testResult.Result == RunResult.TestPassed)
+                                    {
+                                        msg = "Passed";
+                                    }
+                                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                                }
+                                return new[] { testResult };
+
+                            }
+                            var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };
+                            var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.From) };
+                            var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.To) };
+
+                            IList<TestRunResult> ret = new List<TestRunResult>();
+                            var iter = new WarewolfListIterator();
+                            var cols1 = dataObject.Environment.EvalAsList(DataListUtil.AddBracketsToValueIfNotExist(output.Variable), 0);
+                            var c1 = new WarewolfAtomIterator(cols1);
+                            var c2 = new WarewolfAtomIterator(value);
+                            var c3 = new WarewolfAtomIterator(from);
+                            if (opt.ArgumentCount > 2)
+                            {
+                                c2 = new WarewolfAtomIterator(to);
+
+                            }
+                            iter.AddVariableToIterateOn(c1);
+                            iter.AddVariableToIterateOn(c2);
+                            iter.AddVariableToIterateOn(c3);
+                            while (iter.HasMoreData())
+                            {
+                                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) });
+                                var testResult = new TestRunResult();
+                                if (assertResult)
+                                {
+                                    testResult.Result = RunResult.TestPassed;
+
+                                }
+                                else
+                                {
+                                    testResult.Result = RunResult.TestFailed;
+                                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                                }
+                                if (dataObject.IsDebugMode())
+                                {
+                                    var msg = testResult.Message;
+                                    if (testResult.Result == RunResult.TestPassed)
+                                    {
+                                        msg = "Passed";
+                                    }
+                                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                                }
+                                ret.Add(testResult);
+                            }
+                            return ret;
+                        });
+                        var testRunResults = res as IList<TestRunResult> ?? res.ToList();
+                        var testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed);
+                        dataObject.ServiceTest.TestFailing = !testPassed;
+                        dataObject.ServiceTest.FailureMessage = string.Join("", testRunResults.Select(result => result.Message));
+                        dataObject.ServiceTest.TestPassed = testPassed;
+                        dataObject.StopExecution = !testPassed;                            
+                    }
                 }
             }
-        }
-
-        Func<DataStorage.WarewolfAtom, bool> CreateFuncFromOperator(string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
-        {
-
-            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(searchType);            
-            return opt.GenerateFunc(values, from, to, false);
         }
 
         void AddErrorToDataList(Exception err, IDSFDataObject dataObject)

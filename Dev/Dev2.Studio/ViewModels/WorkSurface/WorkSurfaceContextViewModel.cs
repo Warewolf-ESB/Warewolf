@@ -44,6 +44,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.ViewModels;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface
@@ -202,30 +203,16 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler || WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.ServiceTestsViewer)
             {
-                
-                
-               /* if(WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.ServiceTestsViewer)
+                if (DebugOutputViewModel == null)
                 {
-                    if(WorkSurfaceKey.ResourceID != null)
+                    DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
+                    var testViewModel = WorkSurfaceViewModel as StudioTestViewModel;
+                    if (testViewModel != null)
                     {
-                        var resourceModel = EnvironmentRepository.Instance.ActiveEnvironment.ResourceRepository.LoadContextualResourceModel(WorkSurfaceKey.ResourceID.Value);
-                        //var resourceModel = Environment.ResourceRepository.LoadContextualResourceModel(WorkSurfaceKey.ResourceID.Value);
-                        if (DebugOutputViewModel == null)
-                        {
-                            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), resourceModel);
-                        }
-
+                        DebugOutputViewModel.ResourceID = testViewModel.ViewModel.ResourceID;
                     }
+                    
                 }
-                else
-                {*/
-                    if (DebugOutputViewModel == null)
-                    {
-                        DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
-                    }
-
-               // }
-               
             }
             _popupController = popupController;
             _saveDialogAction = saveDialogAction;

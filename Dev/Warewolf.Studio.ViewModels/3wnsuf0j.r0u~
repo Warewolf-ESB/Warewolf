@@ -74,7 +74,6 @@ namespace Warewolf.Studio.ViewModels
         public void AddDuplicateTestUsingDebug(NewTestFromDebugMessage message)
         {
             DuplicateTest();
-            SelectedServiceTest.TestSteps = new ObservableCollection<IServiceTestStep>();
             AddFromDebug(message.RootItems);
         }
 
@@ -89,7 +88,7 @@ namespace Warewolf.Studio.ViewModels
                     var debugItemContent = debugItem.Content;
                     if(debugItemContent != null)
                     {
-                        if(debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.OriginatingResourceID == ResourceModel.ID)
+                        if(debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.ID == ResourceModel.ID)
                         {
                             ProcessInputsAndOutputs(debugItemContent);
                         }

@@ -99,7 +99,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             _environmentRepository = environmentRepository;
             _debugOutputFilterStrategy = debugOutputFilterStrategy;
             if (contextualResourceModel != null)
+            {
                 _contextualResourceModel = contextualResourceModel;
+                ResourceID = _contextualResourceModel.ID;
+            }
 
             _contentItems = new List<IDebugState>();
             _contentItemMap = new Dictionary<Guid, IDebugTreeViewItemViewModel>();
@@ -120,12 +123,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var newTestFromDebugMessage = new NewTestFromDebugMessage
             {
+                ResourceID = ResourceID,
                 ResourceModel = _contextualResourceModel,
                 RootItems = RootItems.ToList()
-
             };
             eventPublisher.Publish(newTestFromDebugMessage);
         }
+
+        public Guid ResourceID { get; set; }
 
         private bool CanAddNewTest()
         {
