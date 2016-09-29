@@ -520,6 +520,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     serviceTestSteps.Add(testStep);
                 }
+                else
+                {
+                    AddMissingChild(serviceTestSteps, testStep);
+                }
             }
         }
 
@@ -564,8 +568,46 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (exists == null)
                 {
-
                     serviceTestSteps.Add(testStep);
+                }
+                else
+                {
+                    AddMissingChild(serviceTestSteps, testStep);
+                }
+            }
+        }
+
+        private static void AddMissingChild(ObservableCollection<IServiceTestStep> serviceTestSteps, ServiceTestStep testStep)
+        {
+            if (serviceTestSteps.Count > 0)
+            {
+                foreach (var serviceTestStep in serviceTestSteps)
+                {
+                    if (serviceTestStep.UniqueId == testStep.UniqueId)
+                    {
+                        if (serviceTestStep.Children.Count == testStep.Children.Count)
+                        {
+                            foreach (var child in testStep.Children)
+                            {
+                                var testStepChild = child as ServiceTestStep;
+                                AddMissingChild(serviceTestStep.Children, testStepChild);
+                            }
+                            
+                        }
+                        else if (serviceTestStep.Children.Count != testStep.Children.Count)
+                        {
+                            foreach (var child in testStep.Children)
+                            {
+                                var testSteps = serviceTestStep.Children.Where(a => a.UniqueId == child.UniqueId);
+                                if (!testSteps.Any())
+                                {
+                                    var indexOf = testStep.Children.IndexOf(child);
+                                    child.Parent = serviceTestStep;
+                                    serviceTestStep.Children.Insert(indexOf, child);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -670,17 +712,57 @@ namespace Warewolf.Studio.ViewModels
             return null;
         }
 
-
         private void ProcessActivity(ModelItem modelItem)
+        {
+            var step = BuildParentsFromModelItem(modelItem);
+            if (step != null)
+            {
+                if (step.Parent == null)
+                {
+                    SelectedServiceTest.TestSteps.Add(step);
+                }
+                else
+                {
+                    var parent = step.Parent;
+                    while (parent != null)
+                    {
+                        var child = parent;
+                        if (child.Parent == null)
+                        {
+                            SelectedServiceTest.TestSteps.Add(child);
+                        }
+                        parent = child.Parent;
+                    }
+                }
+            }
+        }
+
+        private IServiceTestStep BuildParentsFromModelItem(ModelItem modelItem)
         {
             var computedValue = modelItem.GetCurrentValue();
             var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
             var type = computedValue.GetType();
-
             var outputs = dsfActivityAbstract?.GetOutputs();
-
-            var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => dsfActivityAbstract != null && a.UniqueId.ToString() == dsfActivityAbstract.UniqueID);
-
+            var item = modelItem.Parent;
+            
+            if (item != null && (item.ItemType != typeof (Flowchart) || item.ItemType == typeof (ActivityBuilder)))
+            {
+                if (outputs != null && outputs.Count > 0)
+                {
+                    IServiceTestStep serviceTestStep;
+                    if (ServiceTestStepWithOutputs(dsfActivityAbstract, outputs, type, item, out serviceTestStep))
+                    {
+                        return serviceTestStep;
+                    }
+                }
+                IServiceTestStep serviceTestStep1;
+                if (ServiceTestStepGetParentType(item, out serviceTestStep1))
+                {
+                    return serviceTestStep1;
+                }
+                return BuildParentsFromModelItem(item);
+            }
+            var exists = FindExistingStep(dsfActivityAbstract?.UniqueID);
             if (exists == null)
             {
                 if (outputs != null && outputs.Count > 0)
@@ -688,17 +770,111 @@ namespace Warewolf.Studio.ViewModels
                     var serviceTestStep = SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, dsfActivityAbstract.DisplayName, type.Name, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
 
                     var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output =>
-                    {
-                        var serviceTestOutput = new ServiceTestOutput(output, "", "", "")
-                        {
-                            HasOptionsForValue = false,
-                            AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
-                        };
-                        return serviceTestOutput;
-                    }).Cast<IServiceTestOutput>().ToObservableCollection();
-                    serviceTestStep.StepOutputs = serviceTestOutputs;
-                    SetStepIcon(type, serviceTestStep);
+                            {
+                                HasOptionsForValue = false
+                            }).Cast<IServiceTestOutput>().ToList();
+                    var step = CreateServiceTestStep(Guid.Parse(dsfActivityAbstract.UniqueID), dsfActivityAbstract.DisplayName, type, serviceTestOutputs);
+                    return step;
                 }
+            }
+            return null;
+        }
+
+        private bool ServiceTestStepWithOutputs(DsfActivityAbstract<string> dsfActivityAbstract, List<string> outputs, Type type, ModelItem item, out IServiceTestStep serviceTestStep)
+        {
+            var exists = FindExistingStep(dsfActivityAbstract.UniqueID);
+            if (exists == null)
+            {
+                var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "", "", "")
+                    {
+                        HasOptionsForValue = false
+                    }).Cast<IServiceTestOutput>().ToList();
+                var step = CreateServiceTestStep(Guid.Parse(dsfActivityAbstract.UniqueID), dsfActivityAbstract.DisplayName, type, serviceTestOutputs);
+                SetParentChild(item, step);
+                {
+                    serviceTestStep = step;
+                    return true;
+                }
+            }
+            serviceTestStep = null;
+            return false;
+        }
+
+        private IServiceTestStep FindExistingStep(string uniqueId)
+        {
+            var exists = SelectedServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+            return exists;
+        }
+
+        private bool ServiceTestStepGetParentType(ModelItem item, out IServiceTestStep serviceTestStep)
+        {
+            Type activityType = null;
+            var uniqueId = string.Empty;
+            var displayName = string.Empty;
+            if (item.ItemType == typeof (DsfSequenceActivity))
+            {
+                var act = item.GetCurrentValue() as DsfSequenceActivity;
+                if (act != null)
+                {
+                    uniqueId = act.UniqueID;
+                    activityType = typeof (DsfSequenceActivity);
+                    displayName = act.DisplayName;
+                }
+            }
+            else if (item.ItemType == typeof (DsfForEachActivity))
+            {
+                var act = item.GetCurrentValue() as DsfForEachActivity;
+                if (act != null)
+                {
+                    uniqueId = act.UniqueID;
+                    activityType = typeof (DsfForEachActivity);
+                    displayName = act.DisplayName;
+                }
+            }
+            else if (item.ItemType == typeof (DsfSelectAndApplyActivity))
+            {
+                var act = item.GetCurrentValue() as DsfSelectAndApplyActivity;
+                if (act != null)
+                {
+                    uniqueId = act.UniqueID;
+                    activityType = typeof (DsfSelectAndApplyActivity);
+                    displayName = act.DisplayName;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(uniqueId))
+            {
+                var exists = FindExistingStep(uniqueId);
+                if (exists == null)
+                {
+                    var step = CreateServiceTestStep(Guid.Parse(uniqueId), displayName, activityType, new List<IServiceTestOutput>());
+                    SetParentChild(item, step);
+                    {
+                        serviceTestStep = step;
+                        return true;
+                    }
+                }
+            }
+            serviceTestStep = null;
+            return false;
+        }
+        
+        private ServiceTestStep CreateServiceTestStep(Guid uniqueID, string displayName, Type type, List<IServiceTestOutput> serviceTestOutputs)
+        {
+            var step = new ServiceTestStep(uniqueID, type.Name, serviceTestOutputs, StepType.Assert)
+            {
+                StepDescription = displayName
+            };
+            SetStepIcon(type, step);
+            return step;
+        }
+
+        private void SetParentChild(ModelItem item, ServiceTestStep step)
+        {
+            var parent = BuildParentsFromModelItem(item);
+            if (parent != null)
+            {
+                step.Parent = parent;
+                parent.Children.Add(step);
             }
         }
 
