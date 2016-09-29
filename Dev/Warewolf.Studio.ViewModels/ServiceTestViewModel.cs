@@ -846,6 +846,8 @@ namespace Warewolf.Studio.ViewModels
                         return true;
                     }
                 }
+                serviceTestStep = SelectedServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+                return true;
             }
             serviceTestStep = null;
             return false;
