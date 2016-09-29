@@ -3,8 +3,8 @@
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions
 
-@mytag
-Scenario: Add two numbers
+Scenario: DB Connector
+	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Click New Database Source Ribbon Button
 	And I Select MSSQLSERVER From DB Source Wizard Address Protocol Dropdown
