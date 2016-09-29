@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Dev2.Common.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
@@ -112,7 +114,13 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => DuplicateTestTooltip);
             }
         }
+        /// <summary>
+        /// For cloning
+        /// </summary>
+        public ServiceTestModel()
+        {
 
+        }
         public ServiceTestModel(Guid resourceId)
         {
             ParentId = resourceId;
@@ -273,7 +281,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _errorContainsText; }
             set
             {
-                _errorContainsText = value; 
+                _errorContainsText = value;
                 OnPropertyChanged(() => ErrorContainsText);
                 OnPropertyChanged(() => IsDirty);
             }
@@ -461,7 +469,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _testSteps; }
             set
             {
-                _testSteps = value; 
+                _testSteps = value;
                 OnPropertyChanged(() => TestSteps);
             }
         }
@@ -471,7 +479,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _selectedTestStep; }
             set
             {
-                _selectedTestStep = value; 
+                _selectedTestStep = value;
                 OnPropertyChanged(() => SelectedTestStep);
             }
         }
@@ -483,7 +491,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType = StepType.Assert)
         {
-            if(string.IsNullOrEmpty(activityUniqueID))
+            if (string.IsNullOrEmpty(activityUniqueID))
                 throw new ArgumentNullException(nameof(activityUniqueID));
             if (string.IsNullOrEmpty(activityTypeName))
                 throw new ArgumentNullException(nameof(activityTypeName));
@@ -528,8 +536,8 @@ namespace Warewolf.Studio.ViewModels
                     }
                     if (addRow)
                     {
-                        
-                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum,dataList);
+
+                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum, dataList);
                     }
                 }
             }
@@ -546,7 +554,7 @@ namespace Warewolf.Studio.ViewModels
                     var recSetName = DataListUtil.ExtractRecordsetNameFromValue(dlItem.Variable);
                     var varName = string.Concat(recSetName, @"(", indexNum, @").", col.Name);
                     var serviceTestInput = new ServiceTestInput(varName, string.Empty);
-                    serviceTestInput.AddNewAction = ()=>AddRow(serviceTestInput, dataList);
+                    serviceTestInput.AddNewAction = () => AddRow(serviceTestInput, dataList);
                     Inputs.Insert(indexToInsertAt + 1, serviceTestInput);
                     indexToInsertAt++;
                 }
@@ -623,7 +631,7 @@ namespace Warewolf.Studio.ViewModels
             if (ReferenceEquals(this, other))
             {
                 return true;
-            }            
+            }
 
             var equalsSeq = EqualsSeq(other);
             var inputCompare = InputCompare(other, true);
@@ -715,7 +723,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return true;
             }
-            if(_outputs.Count!=other._outputs.Count)
+            if (_outputs.Count != other._outputs.Count)
             {
                 return false;
             }
@@ -774,6 +782,7 @@ namespace Warewolf.Studio.ViewModels
         public object Clone()
         {
             var memberwiseClone = (ServiceTestModel)MemberwiseClone();
+
             if (Inputs != null)
             {
                 memberwiseClone.Inputs = new ObservableCollection<IServiceTestInput>();
@@ -784,6 +793,20 @@ namespace Warewolf.Studio.ViewModels
                     {
                         EmptyIsNull = serviceTestInput.EmptyIsNull
                     });
+                }
+            }
+            if (TestSteps != null)
+            {
+                memberwiseClone.TestSteps = new ObservableCollection<IServiceTestStep>();
+                var serviceTestOutputs = TestSteps.ToList();
+                foreach (var testStep in serviceTestOutputs)
+                {
+                    var newStep = new ServiceTestStep(
+                        testStep.UniqueId
+                        , testStep.ActivityType
+                        , new ObservableCollection<IServiceTestOutput>(testStep.StepOutputs.Select(a => a.Clone() as IServiceTestOutput).ToObservableCollection())
+                        , testStep.Type);
+                    memberwiseClone.TestSteps.Add(newStep);
                 }
             }
             if (Outputs != null)
