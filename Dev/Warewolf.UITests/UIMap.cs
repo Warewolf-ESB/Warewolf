@@ -542,6 +542,29 @@ namespace Warewolf.UITests
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
 
+        [When(@"I Wait For Spinner ""(.*)""")]
+        public void WaitForSpinner(String control)
+        {
+            var SpinnerTokens = control.Split(new char[] { '.' });
+            if (SpinnerTokens.Length > 1) {
+                switch (SpinnerTokens[0])
+                {
+                    case "ExplorerTree":
+                        switch (SpinnerTokens[1])
+                        {
+                            case "FirstRemoteServer":
+                                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
+                                break;
+                            case "Localhost":
+                                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                                break;
+
+                        }
+                        break;
+                }
+            }
+        }
+
         public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
         {
             WaitForControlNotVisible(control, searchTimeout);
@@ -636,6 +659,12 @@ namespace Warewolf.UITests
             }
         }
 
+        [When(@"I Select ""(.*)"" From Explorer Remote Server Dropdown List")]
+        public void Select_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
+        {
+            Select_From_Explorer_Remote_Server_Dropdown_List(comboboxListItem);
+        }
+
         public void Select_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem, int openComboboxListRetries = 3)
         {
             while (!ControlExistsNow(comboboxListItem) && openComboboxListRetries-- > 0)
@@ -651,6 +680,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected, new Point(80, 13));
         }
 
+        [When(@"I Select NewRemoteServer From Explorer Server Dropdownlist")]
         public void Select_NewRemoteServer_From_Explorer_Server_Dropdownlist()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox, new Point(217, 8));
@@ -885,6 +915,7 @@ namespace Warewolf.UITests
             Assert.AreEqual(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.WindowsGroupCell.AddWindowsGroupsEdit.Text, GroupName, "Settings security tab resource permissions row 1 windows group textbox text does not equal Public.");
         }
 
+        [When(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
         public void SetResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
         {
             Click_Settings_Ribbon_Button();
@@ -904,6 +935,12 @@ namespace Warewolf.UITests
                 Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox();
             }
             Click_Save_Ribbon_Button_With_No_Save_Dialog();
+        }
+
+        [When(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
+        public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress)
+        {
+            CreateRemoteServerSource(ServerSourceName, ServerAddress);
         }
 
         public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress, bool PublicAuth = false)
@@ -1025,6 +1062,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.Exists, "Settings security tab resource permissions row1 does not exist");
         }
 
+        [When(@"I Click Deploy Ribbon Button")]
         public void Click_Deploy_Ribbon_Button()
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.DeployButton.Exists, "Deploy ribbon button does not exist");
@@ -1687,6 +1725,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton, new Point(9, 8));
         }
 
+        [When(@"I Refresh Explorer")]
         public void Click_Explorer_Refresh_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
