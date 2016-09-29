@@ -554,6 +554,66 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+
+        public void AddRow(IServiceTestOutput itemToAdd, IDataListModel dataList)
+        {
+            if (itemToAdd != null && DataListUtil.IsValueRecordset(itemToAdd.Variable))
+            {
+                var recordsetNameFromValue = DataListUtil.ExtractRecordsetNameFromValue(itemToAdd.Variable);
+                IRecordSet recordset = dataList.ShapeRecordSets.FirstOrDefault(set => set.Name == recordsetNameFromValue);
+                if (recordset != null)
+                {
+                    var recsetCols = new List<IScalar>();
+                    foreach (var column in recordset.Columns)
+                    {
+                        var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Output || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
+                        recsetCols.AddRange(cols);
+                    }
+
+                    var numberOfRows = Outputs.Where(c => DataListUtil.ExtractRecordsetNameFromValue(c.Variable) == recordsetNameFromValue);
+                    IEnumerable<IServiceTestOutput> dataListItems = numberOfRows as IServiceTestOutput[] ?? numberOfRows.ToArray();
+                    var lastItem = dataListItems.Last();
+                    var indexToInsertAt = Outputs.IndexOf(lastItem);
+                    var indexString = DataListUtil.ExtractIndexRegionFromRecordset(lastItem.Variable);
+                    var indexNum = Convert.ToInt32(indexString) + 1;
+                    var lastRow = dataListItems.Where(c => DataListUtil.ExtractIndexRegionFromRecordset(c.Variable) == indexString);
+                    var addRow = false;
+                    foreach (var item in lastRow)
+                    {
+                        if (item.Value != string.Empty)
+                        {
+                            addRow = true;
+                        }
+                    }
+                    if (addRow)
+                    {
+
+                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum, dataList);
+                    }
+                }
+            }
+        }
+
+        private void AddBlankRowToRecordset(IServiceTestOutput dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum, IDataListModel dataList)
+        {
+            IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
+            string colName = null;
+            foreach (var col in recsetCols.Distinct(new ScalarNameComparer()))
+            {
+                if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
+                {
+                    var recSetName = DataListUtil.ExtractRecordsetNameFromValue(dlItem.Variable);
+                    var varName = string.Concat(recSetName, @"(", indexNum, @").", col.Name);
+                    var serviceTestOutput = new ServiceTestOutput(varName, string.Empty, string.Empty, string.Empty);
+                    serviceTestOutput.AddNewAction = () => AddRow(serviceTestOutput, dataList);
+                    Outputs.Insert(indexToInsertAt + 1, serviceTestOutput);
+                    indexToInsertAt++;
+                }
+                colName = col.Name;
+            }
+        }
+
+
         private bool Equals(ServiceTestModel other)
         {
             if (ReferenceEquals(null, other))
