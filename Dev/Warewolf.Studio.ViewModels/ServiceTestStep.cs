@@ -1,8 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using Dev2.Common.Interfaces;
+using Dev2.Data.Util;
+using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -12,7 +13,7 @@ namespace Warewolf.Studio.ViewModels
         private string _stepDescription;
         private StepType _type;
         private string _activityType;
-        private List<IServiceTestOutput> _stepOutputs;
+        private ObservableCollection<IServiceTestOutput> _stepOutputs;
         private Guid _uniqueId;
         private IServiceTestStep _parent;
         private ObservableCollection<IServiceTestStep> _children;
@@ -22,7 +23,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _mockSelected;
         private ImageSource _stepIcon;
 
-        public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType)
+        public ServiceTestStep(Guid uniqueId, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
             UniqueId = uniqueId;
             ActivityType = activityTypeName;
@@ -76,7 +77,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public List<IServiceTestOutput> StepOutputs
+        public ObservableCollection<IServiceTestOutput> StepOutputs
         {
             get { return _stepOutputs; }
             set
@@ -183,6 +184,29 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
                 OnPropertyChanged(() => MockSelected);
+            }
+        }
+
+        public void AddNewOutput(string varName)
+        {
+            if (DataListUtil.IsValueRecordset(varName))
+            {
+                if (DataListUtil.GetRecordsetIndexType(varName) == enRecordsetIndexType.Numeric)
+                {
+                    var extractedIndex = DataListUtil.ExtractIndexRegionFromRecordset(varName);
+                    int intIndex;
+                    if (int.TryParse(extractedIndex, out intIndex))
+                    {
+                        intIndex++;
+                        var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);
+                        var indexedName = DataListUtil.ReplaceRecordsetBlankWithIndex(blankName, intIndex);
+                        StepOutputs.Add(new ServiceTestOutput(indexedName, "", "", ""));
+                    }
+                }
+                else
+                {
+                    StepOutputs.Add(new ServiceTestOutput(varName,"","",""));
+                }
             }
         }
     }
