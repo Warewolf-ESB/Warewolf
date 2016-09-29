@@ -90,27 +90,15 @@ namespace Dev2.Activities.Designers2.Core
         //don't TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
         {
-            //DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
-            //var dataContext = parentContentPane?.DataContext;
-            //if (dataContext != null)
-            //{
-            //    if (dataContext.GetType().Name == "ServiceTestViewModel")
-            //    {
-            //        e.Handled = true;
-            //    }
-            //    else
-            //    {
-                    ToggleView(e);
-                    if (!(e.OriginalSource is IScrollInfo))
-                    {
-                        e.Handled = true;
-                    }
-                    base.OnPreviewMouseDoubleClick(e);
-                //}
-            //}
+            ToggleView(e);
+            if (!(e.OriginalSource is IScrollInfo))
+            {
+                e.Handled = true;
+            }
+            base.OnPreviewMouseDoubleClick(e);
         }
 
-        
+
 
         #region Overrides of UIElement
 
