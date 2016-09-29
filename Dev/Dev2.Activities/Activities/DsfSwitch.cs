@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -61,7 +62,10 @@ namespace Dev2.Activities
         {
             return null;
         }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
+
         public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
           {
               _debugOutputs.Clear();
