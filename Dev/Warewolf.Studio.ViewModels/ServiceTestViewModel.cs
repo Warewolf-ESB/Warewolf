@@ -761,6 +761,7 @@ namespace Warewolf.Studio.ViewModels
             if (item != null && (item.ItemType != typeof (Flowchart) || item.ItemType == typeof (ActivityBuilder)))
             {
                 if (outputs != null && outputs.Count > 0)
+
                 {
                     IServiceTestStep serviceTestStep;
                     if (ServiceTestStepWithOutputs(dsfActivityAbstract, outputs, type, item, out serviceTestStep))
