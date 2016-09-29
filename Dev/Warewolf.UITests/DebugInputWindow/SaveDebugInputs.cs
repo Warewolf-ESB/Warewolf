@@ -13,9 +13,7 @@ namespace Warewolf.UITests.DebugInputWindow
         [TestMethod]
         public void SaveDebugInputsUITest()
         {
-            Uimap.Filter_Explorer(HelloWorld);
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            Uimap.Open_Explorer_First_Item_With_Context_Menu();
+            Uimap.Open_Service_From_Explorer(HelloWorld);
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
             Uimap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox(InputDataText);
