@@ -33,12 +33,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
             CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
-            var resourceId = Guid.NewGuid();
+            var contextualResourceModel = CreateResourceModel();
             var dsfDecision = new DsfDecision();
             var decisionUniqueId = Guid.NewGuid();
             dsfDecision.UniqueID = decisionUniqueId.ToString();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
-            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            mockResourceModel.Setup(model => model.ID).Returns(contextualResourceModel.ID);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDecision());
@@ -50,19 +50,25 @@ namespace Warewolf.Studio.ViewModels.Tests
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
             var repo = new Mock<IEnvironmentRepository>();
+            var itemViewModeInput = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[0], };
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
+            var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
+            var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>()
             {
                 debugTreeMock.Object
+                ,itemViewModeInput
                 ,itemViewModel
+                ,itemViewModel1
+                ,itemViewModel2
+             
             };
             //---------------Assert Precondition----------------          
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
-            Assert.AreEqual(0, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.Inputs.Count);
-            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.Outputs.Count);
+            
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
         }
 
         [TestMethod]
@@ -74,6 +80,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
             CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
+            var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
             var dsfDecision = new DsfDecision();
             var decisionUniqueId = Guid.NewGuid();
@@ -86,7 +93,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var readAllText = File.ReadAllText("DebugStates.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
-            newTestFromDebugMessage.DebugStates = debugStates;
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
             var repo = new Mock<IEnvironmentRepository>();
@@ -103,10 +109,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------          
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
             Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
-            StringAssert.Contains("Set the output variable (1)", testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+            StringAssert.Contains("DsfMultiAssignActivity", testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
         }
 
         [TestMethod]
