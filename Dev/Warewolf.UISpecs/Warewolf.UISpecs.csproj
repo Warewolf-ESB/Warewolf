@@ -79,6 +79,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WebConnector.feature</DependentUpon>
     </Compile>
+    <Compile Include="WorkflowTestingTab.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowTestingTab.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -100,6 +105,10 @@
     <None Include="WebConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WebConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="WorkflowTestingTab.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WorkflowTestingTab.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
