@@ -197,6 +197,7 @@ namespace Dev2.Activities
         {
             var dsfSwitchSwitches = _dsfSwitch.Switches;
             bool hasResult = false;
+            InitializeDebug(dataObject);
             DebugItem itemToAdd = new DebugItem();
             var result = new List<DebugItem>();
             if (dsfSwitchSwitches.ContainsKey(ConditionToUse))

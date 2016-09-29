@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common.Interfaces;
+using Dev2.Communication;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
+using Newtonsoft.Json;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -28,7 +30,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ServiceTestOutput(string variable, string value, string from, string to)
         {
-            if(variable == null)
+            if (variable == null)
                 throw new ArgumentNullException(nameof(variable));
             Variable = variable;
             Value = value;
@@ -41,6 +43,11 @@ namespace Warewolf.Studio.ViewModels
             IsSinglematchCriteriaVisible = true;
         }
 
+        public ServiceTestOutput()
+        {
+
+        }
+
         public string Variable
         {
             get
@@ -50,7 +57,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _variable = value;
-                OnPropertyChanged(()=>Variable);
+                OnPropertyChanged(() => Variable);
             }
         }
         public string Value
@@ -129,7 +136,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _assertOp; }
             set
             {
-                _assertOp = value; 
+                _assertOp = value;
                 OnPropertyChanged(() => AssertOp);
                 OnSearchTypeChanged();
             }
@@ -140,7 +147,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _hasOptionsForValue; }
             set
             {
-                _hasOptionsForValue = value; 
+                _hasOptionsForValue = value;
                 OnPropertyChanged(() => HasOptionsForValue);
             }
         }
@@ -201,7 +208,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _optionsForValue; }
             set
             {
-                _optionsForValue = value; 
+                _optionsForValue = value;
                 OnPropertyChanged(() => OptionsForValue);
             }
         }
@@ -217,7 +224,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void UpdateMatchVisibility( string value, IList<IFindRecsetOptions> whereOptions)
+        public void UpdateMatchVisibility(string value, IList<IFindRecsetOptions> whereOptions)
         {
 
             var opt = whereOptions.FirstOrDefault(a => value != null && value.ToLower().StartsWith(a.HandlesType().ToLower()));
@@ -250,12 +257,42 @@ namespace Warewolf.Studio.ViewModels
             get { return _assertOps; }
             set
             {
-                _assertOps = value; 
+                _assertOps = value;
                 OnPropertyChanged(() => AssertOps);
             }
         }
-
+        [JsonIgnore]
         public Action AddNewAction { get; set; }
+        [JsonIgnore]
         public Action<string> AddStepOutputRow { get; set; }
+
+        #region Implementation of ICloneable
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// A new object that is a copy of this instance.
+        /// </returns>
+        public object Clone()
+        {
+            var memberwiseClone = (ServiceTestOutput)MemberwiseClone();
+            var assertOps = new ObservableCollection<string>();
+            foreach (var assertOp in memberwiseClone.AssertOps)
+            {
+
+                assertOps.Add(string.Copy(assertOp));
+            }
+            memberwiseClone.AssertOps = new ObservableCollection<string>();
+            memberwiseClone.AssertOps = assertOps;
+            var optionsForValue = new ObservableCollection<string>();
+            foreach (var value in memberwiseClone.OptionsForValue)
+            {
+                optionsForValue.Add(string.Copy(value));
+            }
+            return memberwiseClone;
+        }
+
+        #endregion
     }
 }
