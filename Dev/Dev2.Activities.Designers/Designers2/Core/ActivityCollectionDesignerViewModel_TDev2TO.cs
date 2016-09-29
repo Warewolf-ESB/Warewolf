@@ -10,6 +10,7 @@
 
 using System;
 using System.Activities.Presentation.Model;
+using System.Activities.Presentation.View;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -321,21 +322,39 @@ namespace Dev2.Activities.Designers2.Core
                 return;
             }
 
-            var dto = (TDev2TOFn)sender;
-            if(dto.CanAdd())
+            bool canAdd = true;
+            var parent = ModelItemCollection.Parent;
+            if (parent != null)
             {
-                if(ModelItemCollection.Count == 2)
+                DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(parent.View);
+                var dataContext = parentContentPane?.DataContext;
+                if (dataContext != null)
                 {
-                    var firstDto = GetDto(1);
-                    if(!firstDto.CanRemove())
+                    if (dataContext.GetType().Name == "ServiceTestViewModel")
                     {
-                        // first row is not blank
-                        AddBlankRow();
+                        canAdd = false;
                     }
                 }
-                else
+            }
+
+            if (canAdd)
+            {
+                var dto = (TDev2TOFn) sender;
+                if (dto.CanAdd())
                 {
-                    AddBlankRow();
+                    if (ModelItemCollection.Count == 2)
+                    {
+                        var firstDto = GetDto(1);
+                        if (!firstDto.CanRemove())
+                        {
+                            // first row is not blank
+                            AddBlankRow();
+                        }
+                    }
+                    else
+                    {
+                        AddBlankRow();
+                    }
                 }
             }
         }
