@@ -18,24 +18,13 @@ namespace Warewolf.UITests
         const string HelloWorld = "Hello World";
 
         [TestMethod]
-        public void DirtyTest_Should_Set_Star_Next_To_The_Tab_Name_And_Test_Name()
+        public void Create_And_Run_New_Test()
         {
             Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            Uimap.Click_Create_New_Tests(true);
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Click_Create_New_Tests(true, 2);
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            //Remove Check
-            Uimap.Click_EnableDisable_This_Test_CheckBox(true);
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            //Put the Check back
-            Uimap.Click_EnableDisable_This_Test_CheckBox(true);
-            //Remove Check
-            Uimap.Click_EnableDisable_This_Test_CheckBox(false);
-            Uimap.Click_Create_New_Tests(testInstance: 3, nameContainsStar: true);
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Assert.IsFalse(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TabDescription.DisplayText.Contains("*"));
-            Assert.IsFalse(Uimap.GetCurrentTest(1).DisplayText.Contains("*"));
+            Uimap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
+            Uimap.Assert_Workflow_Testing_Tab_First_Test_Exists();
+            Uimap.Select_User_From_RunTestAs();
+            Uimap.Click_First_Test_Run_Button();
         }
 
         [TestMethod]
