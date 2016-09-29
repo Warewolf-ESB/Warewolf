@@ -62,6 +62,10 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _value = value;
+                if (!string.IsNullOrEmpty(_value))
+                {
+                    AddNewAction?.Invoke();
+                }
                 OnPropertyChanged(() => Value);
             }
         }
@@ -74,6 +78,10 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _from = value;
+                if (!string.IsNullOrEmpty(_from))
+                {
+                    AddNewAction?.Invoke();
+                }
                 OnPropertyChanged(() => From);
             }
         }
@@ -86,6 +94,10 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _to = value;
+                if (!string.IsNullOrEmpty(_to))
+                {
+                    AddNewAction?.Invoke();
+                }
                 OnPropertyChanged(() => To);
             }
         }
@@ -220,5 +232,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => AssertOps);
             }
         }
+
+        public Action AddNewAction { get; set; }
     }
 }
