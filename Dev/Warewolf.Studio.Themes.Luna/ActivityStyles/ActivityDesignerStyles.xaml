@@ -142,6 +142,7 @@
                         <TextBox Text="{Binding ModelItem.DisplayName}" 
                                  Visibility="{Binding IsSelected, PresentationTraceSources.TraceLevel=High, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                  ToolTip="{Binding ModelItem.ServiceName}"
+                                 x:Name="ActivityToolDisplayNameTextBox"
                                  VerticalAlignment="Center" 
                                  HorizontalContentAlignment="Left"
                                  Height="20"
@@ -182,7 +183,7 @@
                     </ItemsControl>
                 </Grid>
 
-                <ContentPresenter x:Name="PART_ContentPresenter"
+                <ContentPresenter IsEnabled="{Binding IsServiceTestView}" x:Name="PART_ContentPresenter"
                                   Grid.Row="1"
                                   Content="{Binding Path=Content, RelativeSource={RelativeSource AncestorType={x:Type sap:WorkflowViewElement}}}" />
 
