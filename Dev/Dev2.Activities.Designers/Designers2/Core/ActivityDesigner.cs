@@ -98,8 +98,6 @@ namespace Dev2.Activities.Designers2.Core
             base.OnPreviewMouseDoubleClick(e);
         }
 
-
-
         #region Overrides of UIElement
 
         /// <summary>

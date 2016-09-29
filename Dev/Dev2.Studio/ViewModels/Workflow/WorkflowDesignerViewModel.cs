@@ -825,8 +825,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             var primarySelection = item.PrimarySelection;
             NotifyItemSelected(primarySelection);
             primarySelection.SetProperty("IsSelected", true);
-            var selectedItem = primarySelection;            
-            ItemSelectedAction?.Invoke(selectedItem);
+            var selectedItem = primarySelection;
+            if (IsTestView && selectedItem!=null)
+            {
+                ItemSelectedAction?.Invoke(selectedItem);
+                ClearSelection();
+            }
         }
 
         public Action<ModelItem> ItemSelectedAction { get; set; }
@@ -1471,19 +1475,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var item = sender as Grid;
                 var context = item?.DataContext as WorkflowDesignerViewModel;
-                if (context == null)
-                {
-                    var source = e.OriginalSource;
-                    if (source.GetType().Name != "FlowchartFreeFormPanel")
-                    {
-                        var testContext = item?.DataContext as ServiceTestViewModel;
-                        if (testContext != null)
-                        {
-                            var selectedTestModelItem = testContext.WorkflowDesignerViewModel.SelectedModelItem as ModelItem;
-                            ItemSelectedAction?.Invoke(selectedTestModelItem);
-                        }
-                    }
-                }
                 var selectedModelItem = context?.SelectedModelItem as ModelItem;
                 if (selectedModelItem != null)
                 {
@@ -1491,6 +1482,22 @@ namespace Dev2.Studio.ViewModels.Workflow
                     Selection.Subscribe(_wd.Context, SelectedItemChanged);
                     Selection.Union(_wd.Context, selectedModelItem);
                 }
+//                if (context == null)
+//                {
+//                    var source = e.OriginalSource;
+//                    if (source.GetType().Name != "FlowchartFreeFormPanel")
+//                    {
+//                        var testContext = item?.DataContext as ServiceTestViewModel;
+//                        if (testContext != null)
+//                        {
+//                            var selectedTestModelItem = testContext.WorkflowDesignerViewModel.SelectedModelItem as ModelItem;
+//                            ClearSelection();
+//                            Selection.Subscribe(_wd.Context, SelectedItemChanged);
+//                            if (selectedTestModelItem != null)
+//                                Selection.Union(_wd.Context, selectedTestModelItem);
+//                        }
+//                    }
+//                }
             }
         }
 
