@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Common;
 
 namespace Warewolf.UITests.DebugInputWindow
 {
@@ -25,13 +27,11 @@ namespace Warewolf.UITests.DebugInputWindow
             Uimap.Enter_Service_Name_Into_Save_Dialog(TestingWF);
             Uimap.Click_SaveDialog_Save_Button();
             Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Filter_Explorer(TestingWF);
-            Uimap.RightClick_Explorer_Localhost_First_Item();
-            Uimap.Click_Duplicate_From_ExplorerContextMenu();
-            Uimap.Enter_Service_Name_Into_Save_Dialog(TestingWF, true);
-            Uimap.Enter_Service_Name_Into_Save_Dialog(InvalidName, invalid:true);
-            Uimap.Enter_Service_Name_Into_Save_Dialog(NameHasWhiteSpace, nameHasWhiteSpace:true);
-            Uimap.Enter_Service_Name_Into_Save_Dialog(ValidWFName);
+            Uimap.Click_Duplicate_From_ExplorerContextMenu(TestingWF);
+            Uimap.Enter_Service_Name_Into_Save_Dialog(TestingWF, true, saveOrDuplicate: Common.SaveOrDuplicate.Duplicate);
+            Uimap.Enter_Service_Name_Into_Save_Dialog(InvalidName, invalid: true, saveOrDuplicate: SaveOrDuplicate.Duplicate);
+            Uimap.Enter_Service_Name_Into_Save_Dialog(NameHasWhiteSpace, nameHasWhiteSpace: true, saveOrDuplicate: SaveOrDuplicate.Duplicate);
+            Uimap.Enter_Service_Name_Into_Save_Dialog(ValidWFName, saveOrDuplicate: SaveOrDuplicate.Duplicate);
             Uimap.Click_Duplicate_From_Duplicate_Dialog();
         }
 
@@ -50,8 +50,9 @@ namespace Warewolf.UITests.DebugInputWindow
         public void MyTestCleanup()
         {
             Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryRemoveFromExplorer(TestingWF);
-            Uimap.TryRemoveFromExplorer(ValidWFName);
+            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
+            File.Delete(resourcesFolder + @"\" + ValidWFName + ".xml");
+            File.Delete(resourcesFolder + @"\" + TestingWF + ".xml");
         }
 
         public TestContext TestContext

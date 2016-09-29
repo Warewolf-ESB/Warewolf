@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Deploy
@@ -18,6 +17,8 @@ namespace Warewolf.UITests.Deploy
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.SetResourcePermissions(WorkflowName, GroupName, true);
             Uimap.Click_Deploy_Ribbon_Button();
+            Uimap.TryClickMessageBoxOK();//Possible version confict dialog
+            Uimap.TryClickMessageBoxOK();//Possible deploy conflict dialog
             Uimap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             Uimap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             Uimap.Deploy_Service_From_Deploy_View(WorkflowName);
@@ -30,36 +31,12 @@ namespace Warewolf.UITests.Deploy
 
         [TestInitialize()]
         public void MyTestInitialize()
-        {            
+        {
+            Uimap.SetPlaybackSettings();
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
         }
-
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseDeployTab();
-            Uimap.TryCloseSettingsTab();
-            Uimap.TryCloseWorkflowTab();
-            Uimap.TryRemoveFromExplorer(WorkflowName);
-        }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {

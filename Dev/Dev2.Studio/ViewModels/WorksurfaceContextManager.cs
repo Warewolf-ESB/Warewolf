@@ -148,13 +148,27 @@ namespace Dev2.Studio.ViewModels
         public void Handle(NewTestFromDebugMessage message, IWorkSurfaceKey workSurfaceKey = null)
         {
             Dev2Logger.Debug(message.GetType().Name);
-            var workflow = new WorkflowDesignerViewModel(message.ResourceModel);
-            var testViewModel = new ServiceTestViewModel(message.ResourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow, message);
-            var vm = new StudioTestViewModel(_mainViewModel.EventPublisher, testViewModel, _mainViewModel.PopupProvider, new ServiceTestView());
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, message.ResourceModel.ID);
-            var key = workSurfaceKey as WorkSurfaceKey;
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
-            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+            var found = FindWorkSurfaceContextViewModel(workSurfaceKey as WorkSurfaceKey);
+            if (found != null)
+            {
+                var vm = found.WorkSurfaceViewModel;
+                if (vm != null)
+                {
+                    var studioTestViewModel = vm as StudioTestViewModel;
+                    studioTestViewModel?.ViewModel?.AddDuplicateTestUsingDebug(message);
+                }
+                AddAndActivateWorkSurface(found);
+            }
+            else
+            {
+                var workflow = new WorkflowDesignerViewModel(message.ResourceModel);
+                var testViewModel = new ServiceTestViewModel(message.ResourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow, message);
+                var vm = new StudioTestViewModel(_mainViewModel.EventPublisher, testViewModel, _mainViewModel.PopupProvider, new ServiceTestView());
+                var key = workSurfaceKey as WorkSurfaceKey;
+                var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+                AddAndActivateWorkSurface(workSurfaceContextViewModel);
+            }
         }
 
         IServer ActiveServer => _mainViewModel.ActiveServer;
