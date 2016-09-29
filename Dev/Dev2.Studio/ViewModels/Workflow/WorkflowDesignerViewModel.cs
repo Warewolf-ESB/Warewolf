@@ -1473,11 +1473,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var context = item?.DataContext as WorkflowDesignerViewModel;
                 if (context == null)
                 {
-                    var testContext = item?.DataContext as ServiceTestViewModel;
-                    if (testContext != null)
+                    var source = e.OriginalSource;
+                    if (source.GetType().Name != "FlowchartFreeFormPanel")
                     {
-                        var selectedTestModelItem = testContext.WorkflowDesignerViewModel.SelectedModelItem as ModelItem;
-                        ItemSelectedAction?.Invoke(selectedTestModelItem);
+                        var testContext = item?.DataContext as ServiceTestViewModel;
+                        if (testContext != null)
+                        {
+                            var selectedTestModelItem = testContext.WorkflowDesignerViewModel.SelectedModelItem as ModelItem;
+                            ItemSelectedAction?.Invoke(selectedTestModelItem);
+                        }
                     }
                 }
                 var selectedModelItem = context?.SelectedModelItem as ModelItem;

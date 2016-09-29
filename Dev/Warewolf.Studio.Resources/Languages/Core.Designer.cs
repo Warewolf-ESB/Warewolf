@@ -1805,6 +1805,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DebugOutputViewAddNewTestHelp.
+        /// </summary>
+        public static string DebugOutputViewAddNewTestHelp {
+            get {
+                return ResourceManager.GetString("DebugOutputViewAddNewTestHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DebugOutputViewAddNewTestToolTip.
+        /// </summary>
+        public static string DebugOutputViewAddNewTestToolTip {
+            get {
+                return ResourceManager.GetString("DebugOutputViewAddNewTestToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expand/Collapse all.
         /// </summary>
         public static string DebugOutputViewExpandAllHelp {
