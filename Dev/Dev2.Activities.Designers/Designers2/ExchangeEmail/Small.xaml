@@ -123,7 +123,7 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 AcceptsReturn="True"
                                 MaxHeight="52"
-                                Height="25"                                
+                                Height="35"                                
                                 Padding="2,5,2,2"
                                 TextWrapping="Wrap"
                                 AcceptsTab="True"

@@ -24,6 +24,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Data.Decisions.Operations;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -697,11 +698,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             foreach (var serviceTestOutput in stepToBeAsserted.StepOutputs)
                             {
                                 var actualValue = dataObject.Environment.EvalAsList(serviceTestOutput.Variable, 0);
-                                var value = DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.Value);
+                                var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.Value) };
                                 var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.From) };
                                 var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.To) };
-                                var assertFunc = CreateFuncFromOperator(serviceTestOutput.AssertOp, actualValue, @from, to);
-                                var assertPassed = assertFunc.Invoke(value);
+                                IFindRecsetOptions opt = FindRecsetOptions.FindMatch(serviceTestOutput.AssertOp);
+                                var decisionType = DecisionDisplayHelper.GetValue(serviceTestOutput.AssertOp);
+                                if (decisionType == enDecisionType.Choose)
+                                {
+                                    continue;
+                                }
+                                var func = Dev2DecisionFactory.Instance().FetchDecisionFunction(decisionType);
+                                var assertPassed = true;
+                                
                                 dataObject.ServiceTest.TestPassed = assertPassed;
                                 dataObject.ServiceTest.TestFailing = !assertPassed;
                                 if (dataObject.IsDebugMode())
@@ -723,7 +731,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         Func<DataStorage.WarewolfAtom, bool> CreateFuncFromOperator(string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
         {
 
-            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(searchType);
+            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(searchType);            
             return opt.GenerateFunc(values, from, to, false);
         }
 
