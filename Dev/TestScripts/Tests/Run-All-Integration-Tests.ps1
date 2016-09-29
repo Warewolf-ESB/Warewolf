@@ -34,11 +34,11 @@ $TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
-  name="ExampleWorkflowExecutionSpecs"
-  enableDefaultDataCollectors="false"
+  name=`"ExampleWorkflowExecutionSpecs`"
+  enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>Run example workflow execution specs.</Description>
-  <Deployment enabled="false" />
+  <Deployment enabled=`"false`" />
   <Execution>
     <Timeouts testTimeout=`"180000`" />
   </Execution>
