@@ -552,7 +552,14 @@
                                                                 <DataGridTemplateColumn Width="*" MinWidth="125" Header="Result" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
                                                                     <DataGridTemplateColumn.CellTemplate>
                                                                         <DataTemplate>
-                                                                            <TextBlock Text="{Binding Path=Variable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Variable}" />
+                                                                            <TextBox Margin="1,0,1,1"
+                                                                                     Text="{Binding Path=Variable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                                     ToolTip="{x:Static languages:Core.ServiceTestStepAssertVariableTooltip}"
+                                                                                     AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                                                <i:Interaction.Behaviors>
+                                                                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertVariableHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                </i:Interaction.Behaviors>
+                                                                            </TextBox>
                                                                         </DataTemplate>
                                                                     </DataGridTemplateColumn.CellTemplate>
                                                                 </DataGridTemplateColumn>
@@ -703,10 +710,14 @@
                                                                 d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestOutput}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock KeyboardNavigation.IsTabStop="False" 
-                                                               Focusable="True" 
-                                                               ToolTip="{Binding Path=Variable}" 
-                                                               Text="{Binding Path=Variable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBox Margin="1,0,1,1"
+                                                                     Text="{Binding Path=Variable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                     ToolTip="{x:Static languages:Core.ServiceTestOutputVariableTooltip}"
+                                                                     AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                        <i:Interaction.Behaviors>
+                                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestOutputVariableHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                        </i:Interaction.Behaviors>
+                                                    </TextBox>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
