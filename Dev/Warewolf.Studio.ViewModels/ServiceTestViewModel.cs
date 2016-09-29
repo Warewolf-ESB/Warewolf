@@ -771,7 +771,11 @@ namespace Warewolf.Studio.ViewModels
 
                     var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output =>
                             {
-                                HasOptionsForValue = false
+                                return new ServiceTestOutput(output, "", "", "")
+                                {
+                                    HasOptionsForValue = false,
+                                    AddStepOutputRow = s => serviceTestStep.AddNewOutput(s)
+                                };
                             }).Cast<IServiceTestOutput>().ToList();
                     var step = CreateServiceTestStep(Guid.Parse(dsfActivityAbstract.UniqueID), dsfActivityAbstract.DisplayName, type, serviceTestOutputs);
                     return step;
@@ -860,7 +864,7 @@ namespace Warewolf.Studio.ViewModels
         
         private ServiceTestStep CreateServiceTestStep(Guid uniqueID, string displayName, Type type, List<IServiceTestOutput> serviceTestOutputs)
         {
-            var step = new ServiceTestStep(uniqueID, type.Name, serviceTestOutputs, StepType.Assert)
+            var step = new ServiceTestStep(uniqueID, type.Name, serviceTestOutputs.ToObservableCollection(), StepType.Assert)
             {
                 StepDescription = displayName
             };
