@@ -162,18 +162,13 @@ namespace Warewolf.Studio.ViewModels
                 var serviceTestOutputs = new List<IServiceTestOutput>();
                 var outputs = debugItemContent.Outputs;
                 AddOutputs(outputs, serviceTestOutputs);
-                var serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, serviceTestOutputs) as ServiceTestStep;
-                if(serviceTestStep != null)
-                {
-                    SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
-                }
+                var serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, serviceTestOutputs) as ServiceTestStep;                
+                SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
             }
         }
 
         private void AddChildDebugItems(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, ObservableCollection<IServiceTestStep> testSteps, IServiceTestStep parent)
         {
-            Dev2JsonSerializer k = new Dev2JsonSerializer();
-            var serialize = k.Serialize(debugItemContent);//I want to mock stuff. will remove this
             if (parent == null)
             {
                 var testStep = new ServiceTestStep(debugItemContent.ID, "", new List<IServiceTestOutput>(), StepType.Assert)
@@ -212,27 +207,24 @@ namespace Warewolf.Studio.ViewModels
             {
                 var childItem = debugTreeViewItemViewModel as DebugStateTreeViewItemViewModel;
                 var serviceTestOutputs = new List<IServiceTestOutput>();
-                if(childItem != null)
-                {
-                    var childItemContent = childItem.Content;
-                    var outputs = childItemContent.Outputs;
-                    AddOutputs(outputs, serviceTestOutputs);
+                var childItemContent = childItem.Content;
+                var outputs = childItemContent.Outputs;
+                AddOutputs(outputs, serviceTestOutputs);
 
-                    var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
-                    if (exists==null)
+                var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
+                if (exists==null)
+                {
+                    var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
                     {
-                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
-                        {
-                            StepDescription = childItemContent.DisplayName,
-                            Parent = parent,
-                            Type = StepType.Assert
-                        };
-                        SetStepIcon(childStep.ActivityType, childStep);
-                        parent.Children.Add(childStep);
-                        if (childItem.Children != null && childItem.Children.Count > 0)
-                        {
-                            AddChildDebugItems(childItemContent, childItem, parent.Children, parent);
-                        }
+                        StepDescription = childItemContent.DisplayName,
+                        Parent = parent,
+                        Type = StepType.Assert
+                    };
+                    SetStepIcon(childStep.ActivityType, childStep);
+                    parent.Children.Add(childStep);
+                    if (childItem.Children != null && childItem.Children.Count > 0)
+                    {
+                        AddChildDebugItems(childItemContent, childItem, parent.Children, parent);
                     }
                 }
             }
@@ -601,7 +593,7 @@ namespace Warewolf.Studio.ViewModels
                     var switchOptions = cases?.Select(pair => pair.Key).ToList();
                     if (defaultCase != null)
                     {
-                        switchOptions?.Insert(0, "Default");
+                        switchOptions.Insert(0, "Default");
                     }
                     var serviceTestOutputs = new List<IServiceTestOutput>();
                     var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
@@ -631,34 +623,31 @@ namespace Warewolf.Studio.ViewModels
                     condition = modelItemParent.GetProperty("Expression");
                     activity = (DsfFlowNodeActivity<string>)condition;
                 }
-                if(flowSwitch != null)
-                {
-                    var cases = flowSwitch.Cases;
-                    var defaultCase = flowSwitch.Default;
-                    var uniqueId = activity.UniqueID;
-                    var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+                var cases = flowSwitch.Cases;
+                var defaultCase = flowSwitch.Default;
+                var uniqueId = activity.UniqueID;
+                var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
 
-                    if (exists == null)
+                if (exists == null)
+                {
+                    if (SelectedServiceTest != null)
                     {
-                        if (SelectedServiceTest != null)
+                        var switchOptions = cases?.Select(pair => pair.Key).ToList();
+                        if (defaultCase != null)
                         {
-                            var switchOptions = cases?.Select(pair => pair.Key).ToList();
-                            if (defaultCase != null)
-                            {
-                                switchOptions?.Insert(0, "Default");
-                            }
-                            var serviceTestOutputs = new List<IServiceTestOutput>();
-                            var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
-                            {
-                                HasOptionsForValue = true,
-                                OptionsForValue = switchOptions
-                            };
-                            serviceTestOutputs.Add(serviceTestOutput);
-                            var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, flowSwitch.DisplayName, typeof(DsfSwitch).Name, serviceTestOutputs) as ServiceTestStep;
-                            if (serviceTestStep != null)
-                                SetStepIcon(typeof(DsfSwitch), serviceTestStep);
-                            return serviceTestStep;
+                            switchOptions.Insert(0, "Default");
                         }
+                        var serviceTestOutputs = new List<IServiceTestOutput>();
+                        var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
+                        {
+                            HasOptionsForValue = true,
+                            OptionsForValue = switchOptions
+                        };
+                        serviceTestOutputs.Add(serviceTestOutput);
+                        var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, flowSwitch.DisplayName, typeof(DsfSwitch).Name, serviceTestOutputs) as ServiceTestStep;
+                        if (serviceTestStep != null)
+                            SetStepIcon(typeof(DsfSwitch), serviceTestStep);
+                        return serviceTestStep;
                     }
                 }
             }
@@ -732,15 +721,12 @@ namespace Warewolf.Studio.ViewModels
                     if (SelectedServiceTest != null)
                     {
                         var serviceTestOutputs = new List<IServiceTestOutput>();
-                        if(dds != null)
+                        var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
                         {
-                            var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
-                            {
-                                HasOptionsForValue = true,
-                                OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
-                            };
-                            serviceTestOutputs.Add(serviceTestOutput);
-                        }
+                            HasOptionsForValue = true,
+                            OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
+                        };
+                        serviceTestOutputs.Add(serviceTestOutput);
                         var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, modelItem.GetProperty("DisplayName").ToString(), typeof(DsfDecision).Name, serviceTestOutputs) as ServiceTestStep;
                         if (serviceTestStep != null)
                             SetStepIcon(typeof(DsfDecision), serviceTestStep);

@@ -148,7 +148,7 @@ namespace Dev2.Studio.ViewModels
         public void Handle(NewTestFromDebugMessage message, IWorkSurfaceKey workSurfaceKey = null)
         {
             Dev2Logger.Debug(message.GetType().Name);
-            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, message.ResourceModel.ID);
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, message.ResourceID);
             var found = FindWorkSurfaceContextViewModel(workSurfaceKey as WorkSurfaceKey);
             if (found != null)
             {
