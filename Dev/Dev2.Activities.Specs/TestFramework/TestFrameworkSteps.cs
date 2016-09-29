@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
@@ -1313,11 +1314,11 @@ namespace Dev2.Activities.Specs.TestFramework
                                     var armToUse = tableRow["Output Value"];
                                     if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText, "", "") };
+                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText, "", "") };
+                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }
                                 }
@@ -1343,7 +1344,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         var value = tableRow["Output Value"];
                         var from = tableRow["Output From"];
                         var to = tableRow["Output To"];
-                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput(var, value, from, to) };
+                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(var, value, from, to) };
                         var type = activity.GetType();
                         test.AddTestStep(activity.UniqueID, activity.DisplayName, type.Name, serviceTestOutputs);
                     }
@@ -1394,12 +1395,12 @@ namespace Dev2.Activities.Specs.TestFramework
                                     var armToUse = tableRow["Output Value"];
                                     if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText, "", "") };
+                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Assert);
                                     }
                                     else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText, "", "") };
+                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Assert);
                                     }
                                 }
@@ -1425,7 +1426,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         var value = tableRow["Output Value"];
                         var from = tableRow["Output From"];
                         var to = tableRow["Output To"];
-                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput(var, value, from, to) };
+                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(var, value, from, to) };
                         var type = activity.GetType();
                         test.AddTestStep(activity.UniqueID, activity.DisplayName, type.Name, serviceTestOutputs, StepType.Assert);
                     }

@@ -489,7 +489,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else if (foundTestStep.Type == StepType.Mock)
                 {
-                    resource = new TestMockStep(resource, foundTestStep.StepOutputs);
+                    resource = new TestMockStep(resource, foundTestStep.StepOutputs.ToList());
                 }
             }
             return resource;

@@ -64,11 +64,19 @@ namespace Warewolf.Studio.ViewModels
                 _value = value;
                 if (!string.IsNullOrEmpty(_value))
                 {
-                    AddNewAction?.Invoke();
+                    if (AddNewAction != null)
+                    {
+                        AddNewAction.Invoke();
+                    }
+                    else
+                    {
+                        AddStepOutputRow?.Invoke(Variable);
+                    }
                 }
                 OnPropertyChanged(() => Value);
             }
         }
+
         public string From
         {
             get
@@ -80,7 +88,14 @@ namespace Warewolf.Studio.ViewModels
                 _from = value;
                 if (!string.IsNullOrEmpty(_from))
                 {
-                    AddNewAction?.Invoke();
+                    if (AddNewAction != null)
+                    {
+                        AddNewAction.Invoke();
+                    }
+                    else
+                    {
+                        AddStepOutputRow?.Invoke(Variable);
+                    }
                 }
                 OnPropertyChanged(() => From);
             }
@@ -96,7 +111,14 @@ namespace Warewolf.Studio.ViewModels
                 _to = value;
                 if (!string.IsNullOrEmpty(_to))
                 {
-                    AddNewAction?.Invoke();
+                    if (AddNewAction != null)
+                    {
+                        AddNewAction.Invoke();
+                    }
+                    else
+                    {
+                        AddStepOutputRow?.Invoke(Variable);
+                    }
                 }
                 OnPropertyChanged(() => To);
             }
@@ -234,5 +256,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public Action AddNewAction { get; set; }
+        public Action<string> AddStepOutputRow { get; set; }
     }
 }

@@ -348,7 +348,7 @@
                     FontSize="24"
                     Command="{Binding AddNewTestCommand}"
                     Margin="3,0,0,-1"
-                    ToolTip="AddNewTest"
+                    ToolTip="{x:Static languages:Core.DebugOutputViewAddNewTestToolTip}"
                     AutomationProperties.AutomationId="UI_DebugOutputAddNewTestMode_AutoID" >
                 <Button.Content>
                     <fa:FontAwesome FontSize="14"
@@ -356,7 +356,7 @@
                                 Icon="Flask" />
                 </Button.Content>
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="AddNewTestHelp" />
+                    <core:HelpSetter Text="{x:Static languages:Core.DebugOutputViewAddNewTestHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>

@@ -1776,5 +1776,12 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Duplicate_Explorer_Localhost_First_Item_With_Context_Menu();
         }
+
+        public void Open_Service_From_Explorer(string ServiceName)
+        {
+            Filter_Explorer(ServiceName);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Open_Explorer_First_Item_With_Context_Menu();
+        }
     }
 }
