@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
     <Compile Include="SaveDialogWindow\SaveDialogWindowTets.cs" />
-    <Compile Include="Deploy\DeployViewOnlyServiceUITest.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
