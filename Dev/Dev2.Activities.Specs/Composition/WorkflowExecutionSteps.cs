@@ -1632,6 +1632,23 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
         public void GivenItContainsDeleteAs(string parentName, string activityName, Table table)
         {
+            DsfDeleteRecordActivity nullHandlerActivity = new DsfDeleteRecordActivity { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var result = tableRow["result"];
+                var variable = tableRow["Variable"];
+
+                _commonSteps.AddVariableToVariableList(result);
+                nullHandlerActivity.RecordsetName = variable;
+                nullHandlerActivity.Result = result;
+            }
+
+            _commonSteps.AddActivityToActivityList(parentName, activityName, nullHandlerActivity);
+        }
+
+        [Given(@"""(.*)"" contains NullHandlerDelete ""(.*)"" as")]
+        public void GivenContainsNullHandlerDeleteAs(string parentName, string activityName, Table table)
+        {
             DsfDeleteRecordNullHandlerActivity nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
@@ -1645,6 +1662,7 @@ namespace Dev2.Activities.Specs.Composition
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, nullHandlerActivity);
         }
+
 
         [Given(@"""(.*)"" contains Find Record Index ""(.*)"" search ""(.*)"" and result ""(.*)"" as")]
         public void GivenItContainsFindRecordIndexSearchAndResultAs(string parentName, string activityName, string recsetToSearch, string resultVariable, Table table)
