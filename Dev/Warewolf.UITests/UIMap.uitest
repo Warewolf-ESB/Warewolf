@@ -22366,7 +22366,6 @@
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="Name"></PropertyCondition>
                                             <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
@@ -22526,7 +22525,6 @@
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
-                                            <PropertyCondition Name="Name"></PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -22684,7 +22682,6 @@
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="Name"></PropertyCondition>
                                             <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
@@ -23424,7 +23421,6 @@
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                 <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                                <PropertyCondition Name="Name"></PropertyCondition>
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants>

@@ -2214,11 +2214,6 @@ namespace Warewolf.UITests
             Mouse.StartDragging(firstSubItem, new Point(90, 10));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
-            if (!connector1.Exists)
-            {
-                Mouse.StartDragging(firstSubItem, new Point(90, 10));
-                Mouse.StopDragging(flowchart, new Point(307, 128));
-            }
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
@@ -4611,7 +4606,7 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams.DuplicateExists, duplicate.Exists, "Duplicate does not exist in explorer context menu.");
 
             // Click 'Duplicate' menu item
-            Mouse.Click(duplicate, new Point(30, 11));
+            Mouse.Click(duplicate, new Point(62, 10));
 
             // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
             Assert.AreEqual(this.Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Duplicate dialog does not exist after clicking duplicate in the explorer context " +
@@ -37253,7 +37248,6 @@ namespace Warewolf.UITests
                 {
                     this.mDeleteButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this test";
                     this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
@@ -37470,7 +37464,6 @@ namespace Warewolf.UITests
                     this.mDeleteButton = new WpfButton(this);
                     #region Search Criteria
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this test";
-                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -37687,7 +37680,6 @@ namespace Warewolf.UITests
                 {
                     this.mDeleteButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this test";
                     this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
@@ -38869,7 +38861,6 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfButton.PropertyNames.Name] = "?";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
