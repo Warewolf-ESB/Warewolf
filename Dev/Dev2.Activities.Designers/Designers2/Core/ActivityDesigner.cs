@@ -58,6 +58,7 @@ namespace Dev2.Activities.Designers2.Core
             Loaded += OnRoutedEventHandler;
             Unloaded += ActivityDesignerUnloaded;
             AllowDrop = true;
+            
         }
 
         #region Overrides of WorkflowViewElement
@@ -86,6 +87,38 @@ namespace Dev2.Activities.Designers2.Core
         public TViewModel ViewModel => DataContext as TViewModel;
 
         public ActivityDesignerTemplate ContentDesignerTemplate => (ActivityDesignerTemplate)Content;
+
+        //don't TAKE OUT... This is used to block the test view workflow
+        public bool IsServiceTestView
+        {
+            get
+            {
+                if (UpdateContentEnabled())
+                    return false;
+                return true;
+            }
+        }
+
+        private bool UpdateContentEnabled()
+        {
+            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
+            var dataContext = parentContentPane?.DataContext;
+            if (dataContext != null)
+            {
+                if (dataContext.GetType().Name == "ServiceTestViewModel")
+                {
+                    if (ContentDesignerTemplate != null)
+                    {
+                        ContentDesignerTemplate.IsEnabled = false;
+                        ContentDesignerTemplate.RightButtons.Clear();
+                        ContentDesignerTemplate.LeftButtons.Clear();
+                    }
+
+                }
+                return true;
+            }
+            return false;
+        }
 
         //don't TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
@@ -135,6 +168,7 @@ namespace Dev2.Activities.Designers2.Core
                     eventArgs.Handled = true;
                 }
             }
+            UpdateContentEnabled();
         }
 
         void ShowCollapseLargeView()
