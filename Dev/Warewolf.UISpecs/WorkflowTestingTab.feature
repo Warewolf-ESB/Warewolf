@@ -3,7 +3,8 @@
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions
 
-Scenario: DirtyTest Should Set Star Next To The Tab Name And Test Name
+Scenario: Unsaved Tests Contain a Star in their Name
+	Given The Warewolf Studio is running
 	When I Click View Tests In Explorer Context Menu for "Hello World"
 	And I Click The Create a New Test Button
 	Then The First Test Exists
@@ -19,4 +20,3 @@ Scenario: DirtyTest Should Set Star Next To The Tab Name And Test Name
 	Then The First Test "Has" Unsaved Star
 	When I Click Save Ribbon Button Without Expecting a Dialog
 	Then The First Test "Has No" Unsaved Star
-	
