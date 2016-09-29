@@ -3,7 +3,6 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Diagnostics;
@@ -62,8 +61,8 @@ namespace Dev2.Activities
         {
             return null;
         }
-
-          public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
+        public new string Result { get; set; }
+        public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
           {
               _debugOutputs.Clear();
               _debugInputs.Clear();
@@ -77,19 +76,21 @@ namespace Dev2.Activities
 
                 InitializeDebug(dataObject);
                 Debug(dataObject, firstOrDefault, ds);
-                  if (firstOrDefault != null)
-                  {
-                      var a = firstOrDefault;
-                      if (Switches.ContainsKey(a))
-                      {
-                          return Switches[a];
-                      }
-                          if (Default != null)
-                          {
-                              var activity = Default.FirstOrDefault();
-                            return activity;
-                      }
-                  }
+                if (firstOrDefault != null)
+                {
+                    var a = firstOrDefault;
+                    if (Switches.ContainsKey(a))
+                    {
+                        Result = a;
+                        return Switches[a];
+                    }
+                    if (Default != null)
+                    {
+                        Result = "Default";
+                        var activity = Default.FirstOrDefault();
+                        return activity;
+                    }
+                }
               }
               catch (Exception err)
               {
@@ -98,20 +99,7 @@ namespace Dev2.Activities
               
               return null;
           }
-
-        public IDev2Activity ExecuteWithAssert(IDSFDataObject dataObject, IServiceTestStep serviceTestStep, int update)
-        {
-            var dev2Activity = Execute(dataObject, update);
-            foreach(var serviceTestOutput in serviceTestStep.StepOutputs)
-            {
-                var itemToAdd = new DebugItem();
-                if (true)
-                {
-                    itemToAdd.Add(new DebugItemResult() { Value = $"{serviceTestOutput.Variable},{serviceTestOutput.AssertOp},{serviceTestOutput.Value} passed" });
-                }
-            }
-            return dev2Activity;
-        }
+        
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

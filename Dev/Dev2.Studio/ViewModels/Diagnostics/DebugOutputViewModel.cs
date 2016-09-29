@@ -121,8 +121,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             var newTestFromDebugMessage = new NewTestFromDebugMessage
             {
                 ResourceModel = _contextualResourceModel,
-                RootItems = RootItems.ToList(),
-                DebugStates = _contentItems
+                RootItems = RootItems.ToList()
 
             };
             eventPublisher.Publish(newTestFromDebugMessage);
@@ -130,7 +129,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         private bool CanAddNewTest()
         {
-            return _contextualResourceModel != null;
+            return RootItems!=null && RootItems.Count>0;
         }
 
         public int PendingItemCount => _pendingItems.Count;
