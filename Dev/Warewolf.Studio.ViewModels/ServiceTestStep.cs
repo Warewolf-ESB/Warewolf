@@ -176,9 +176,10 @@ namespace Warewolf.Studio.ViewModels
                             {
                                 item.IsSearchCriteriaEnabled = true;
                             }
-                            if (!item.IsSinglematchCriteriaVisible && !item.IsBetweenCriteriaVisible)
+                            if (!item.IsSinglematchCriteriaVisible)
                             {
                                 item.IsSinglematchCriteriaVisible = true;
+                                item.IsBetweenCriteriaVisible = false;
                             }
                         }
                     }
