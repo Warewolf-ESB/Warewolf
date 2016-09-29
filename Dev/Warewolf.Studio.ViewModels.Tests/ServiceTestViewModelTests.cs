@@ -1011,10 +1011,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockEnvironment = new Mock<IEnvironmentModel>();
             mockEnvironment.Setup(model => model.Connection.IsConnected).Returns(true);
             var mockRepo = new Mock<IResourceRepository>();
-            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing",new List<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
+            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing",new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
             serviceTestStep.Children = new ObservableCollection<IServiceTestStep>
             {
-                new ServiceTestStepTO(Guid.NewGuid(),"Random",new List<IServiceTestOutput> {new ServiceTestOutput("[[o]]","a", "", "") },StepType.Mock)
+                new ServiceTestStepTO(Guid.NewGuid(),"Random",new ObservableCollection<IServiceTestOutput> {new ServiceTestOutput("[[o]]","a", "", "") },StepType.Mock)
                 {
                     Parent = serviceTestStep
                 }
@@ -1060,10 +1060,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockEnvironment.Setup(model => model.Connection.IsConnected).Returns(true);
             mockEnvironment.SetupProperty(model => model.Connection.ReceivedResourceAffectedMessage);
             var mockRepo = new Mock<IResourceRepository>();
-            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing",new List<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
+            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing",new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
             serviceTestStep.Children = new ObservableCollection<IServiceTestStep>
             {
-                new ServiceTestStepTO(Guid.NewGuid(),"Random",new List<IServiceTestOutput> {new ServiceTestOutput("[[o]]","a", "", "") },StepType.Mock)
+                new ServiceTestStepTO(Guid.NewGuid(),"Random",new ObservableCollection<IServiceTestOutput> {new ServiceTestOutput("[[o]]","a", "", "") },StepType.Mock)
                 {
                     Parent = serviceTestStep
                 }
