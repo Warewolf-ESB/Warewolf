@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.UITests.DebugOutputWindow
 {
@@ -7,7 +8,7 @@ namespace Warewolf.UITests.DebugOutputWindow
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
-    public class CodedUITest1
+    public class DebugOutputWindowTests
     {
 
         [TestInitialize()]
@@ -22,14 +23,13 @@ namespace Warewolf.UITests.DebugOutputWindow
         [Owner("Nkosinathi Sangweni")]
         public void Cliick_AddNewTest_From_Debug()
         {
-            //------------Setup for test--------------------------
+
             Uimap.Open_Service_From_Explorer("Hello World");
             Uimap.Press_F6();
-
-            //------------Execute Test---------------------------
             Uimap.Click_AddNewTestFromDebug();
+            Assert.IsTrue(Uimap.GetCurrentTest(1).DisplayText.Contains("*"));
+            
 
-            //------------Assert Results-------------------------
         }
 
         #region Additional test attributes

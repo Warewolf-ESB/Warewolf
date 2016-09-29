@@ -1782,6 +1782,7 @@ namespace Warewolf.UITests
             Filter_Explorer(ServiceName);
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Open_Explorer_First_Item_With_Context_Menu();
+            
         }
     }
 }
