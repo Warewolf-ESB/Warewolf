@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Common;
 
@@ -10,7 +12,7 @@ namespace Warewolf.UITests
         const string DuplicateNameError = "DuplicateNameError";
         const string UnsavedResourceError = "UnsavedResourceError";
         const string TestName = "HelloWorld_Test";
-        const string DuplicateTestName = "Second_HelloWorld_Test";
+        const string DuplicateTestName = "2nd_HelloWorld_Test";
         const string Testing123 = "Testing123";
         const string Testing123Test = "Testing123_Test";
         const string HelloWorld = "Hello World";
@@ -18,8 +20,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void DirtyTest_Should_Set_Star_Next_To_The_Tab_Name_And_Test_Name()
         {
-            Uimap.Search_And_Select_HelloWolrd();
-            Uimap.Select_Tests_From_Context_Menu();
+            Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Uimap.Click_Create_New_Tests(true);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Create_New_Tests(true, 2);
@@ -40,28 +41,18 @@ namespace Warewolf.UITests
         [TestMethod]
         public void Create_Save_And_Run_WorkFlowTest()
         {
-            Uimap.Search_And_Select_HelloWolrd();
-            Uimap.Select_Tests_From_Context_Menu();
+            Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(TestName);
             Uimap.Click_Run_Test_Button();
             Uimap.Click_Create_New_Tests(true, 2);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Select_Test_From_TestList();
-            Uimap.Click_EnableDisable_This_Test_CheckBox(true);
-            Uimap.Click_Delete_Test_Button();
-            Uimap.Click_Yes_On_The_Confirm_Delete();
-            Uimap.Select_Test(2);
-            Uimap.Click_EnableDisable_This_Test_CheckBox(true);
-            Uimap.Click_Delete_Test_Button();
-            Uimap.Click_Yes_On_The_Confirm_Delete();
         }
 
         [TestMethod]
         public void CreateAndSaveWorkFlowTest()
         {
-            Uimap.Search_And_Select_HelloWolrd();
-            Uimap.Select_Tests_From_Context_Menu();
+            Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(TestName);
             Uimap.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest();
@@ -73,8 +64,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void RunAllTestsBeforeSaving()
         {
-            Uimap.Search_And_Select_HelloWolrd();
-            Uimap.Select_Tests_From_Context_Menu();
+            Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(TestName);
             Uimap.Click_RunAll_Button(UnsavedResourceError);
@@ -93,9 +83,8 @@ namespace Warewolf.UITests
         [TestMethod]
         public void RunTestAsSpecificUser()
         {
-            Uimap.Search_And_Select_HelloWolrd();
-            Uimap.Select_Tests_From_Context_Menu();
-            Uimap.Click_Create_New_Tests();
+            Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
+            Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(TestName);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Select_User_From_RunTestAs();
@@ -107,9 +96,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void RunDuplicatedTest()
         {
-            Uimap.Filter_Explorer("Hello World");
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            Uimap.Open_Explorer_First_Item_Tests_With_Context_Menu();
+            Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(TestName);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
@@ -117,12 +104,11 @@ namespace Warewolf.UITests
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_RunAll_Button();
         }
+
         [TestMethod]
         public void SaveAndRunAllTestsWithDuplicatedName()
         {
-            Uimap.Filter_Explorer(HelloWorld);
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            Uimap.Open_Explorer_First_Item_Tests_With_Context_Menu();
+            Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(TestName);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
@@ -141,9 +127,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void RunTestsWithDuplicatedName()
         {
-            Uimap.Filter_Explorer(HelloWorld);
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            Uimap.Open_Explorer_First_Item_Tests_With_Context_Menu();
+            Uimap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(TestName);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
@@ -166,9 +150,7 @@ namespace Warewolf.UITests
             Uimap.Enter_Service_Name_Into_Save_Dialog(Testing123);
             Uimap.Click_SaveDialog_Save_Button();
             Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Filter_Explorer(Testing123);
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            Uimap.Open_Explorer_First_Item_Tests_With_Context_Menu();
+            Uimap.Click_View_Tests_In_Explorer_Context_Menu(Testing123);
             Uimap.Click_Create_New_Tests(true);
             Uimap.Update_Test_Name(Testing123Test);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
@@ -179,7 +161,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Invalid.Exists);
             Uimap.Click_Delete_Test_Button();
             Uimap.Click_MessageBox_Yes();
-            Uimap.TryRemoveFromExplorer(Testing123);
         }
         #region Additional test attributes
 
@@ -190,6 +171,15 @@ namespace Warewolf.UITests
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
+        }
+
+        [TestCleanup()]
+        public void MyTestCleanup()
+        {
+            Playback.PlaybackError -= Uimap.OnError;
+            Uimap.TryRemoveTests();
+            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
+            File.Delete(resourcesFolder + @"\" + Testing123 + ".xml");
         }
 
         UIMap Uimap
