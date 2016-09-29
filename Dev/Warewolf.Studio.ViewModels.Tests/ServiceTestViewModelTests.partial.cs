@@ -4,10 +4,12 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -46,7 +48,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDecision());
             mockWorkflowDesignerViewModel.Setup(model => model.GetModelItem(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(modelItem);
             var newTestFromDebugMessage = new NewTestFromDebugMessage();
-            var readAllText = File.ReadAllText("DebugStates.json");
+            var readAllText = File.ReadAllText("JsonResources\\DebugStates.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
@@ -92,7 +94,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
             var newTestFromDebugMessage = new NewTestFromDebugMessage();
-            var readAllText = File.ReadAllText("DebugStates.json");
+            var readAllText = File.ReadAllText("JsonResources\\DebugStates.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
@@ -137,7 +139,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
             var newTestFromDebugMessage = new NewTestFromDebugMessage();
-            var readAllText = File.ReadAllText("DebugStates.json");
+            var readAllText = File.ReadAllText("JsonResources\\DebugStates.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
@@ -191,7 +193,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
             var newTestFromDebugMessage = new NewTestFromDebugMessage();
-            var readAllText = File.ReadAllText("DebugStates.json");
+            var readAllText = File.ReadAllText("JsonResources\\DebugStates.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
@@ -246,7 +248,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
             var newTestFromDebugMessage = new NewTestFromDebugMessage();
-            var readAllText = File.ReadAllText("DebugStates.json");
+            var readAllText = File.ReadAllText("JsonResources\\DebugStates.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
@@ -279,7 +281,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void AddChildDebugItems_GivenMultiAssign_ShouldAddStepFromDebugState()
+        public void AddChildDebugItems_GivenSequence_ShouldAddtestStepFromDebugState()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -296,21 +298,25 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
             var newTestFromDebugMessage = new NewTestFromDebugMessage();
-            var readAllText = File.ReadAllText("DebugStates.json");
+            var readAllText = File.ReadAllText("JsonResources\\DebugStates.json");
+            var sequncetext = File.ReadAllText("JsonResources\\sequenceState.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
+            var sequenceSate = serializer.Deserialize<IDebugState>(sequncetext);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
             var repo = new Mock<IEnvironmentRepository>();
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
             var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
             var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
+            var seq = new DebugStateTreeViewItemViewModel(repo.Object) { Content = sequenceSate, };
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>()
             {
                 debugTreeMock.Object
                 ,itemViewModel
                 ,itemViewModel1
-                ,itemViewModel2
+                ,itemViewModel2,
+                seq
             };
           
 
@@ -322,14 +328,77 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[2], itemViewModel1, testSteps, default(IServiceTestStep) });
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, testSteps, default(IServiceTestStep) });
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testSteps.Count);
-            Assert.AreEqual(1, testSteps[0].ActivityType);
-            Assert.AreEqual(1, testSteps[0].StepDescription);
-            Assert.AreEqual(1, testSteps[0].StepOutputs.Count);
-            Assert.AreEqual(1, testSteps[0].UniqueId);
+            Assert.AreEqual("DsfSequenceActivity", testSteps[0].ActivityType);
+            Assert.AreEqual("Sequence", testSteps[0].StepDescription);
+            Assert.AreEqual(0, testSteps[0].StepOutputs.Count);
+            Assert.AreEqual("549601d4-c800-4176-89b7-4eba3bac46fa".ToGuid(), testSteps[0].UniqueId);
             Assert.AreEqual(StepType.Assert, testSteps[0].Type);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void AddChildDebugItems_GivenSequenceWithChildren_ShouldAddStepWithOutputsFromDebugState()
+        {
+            Thread.Sleep(10);
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var contextualResourceModel = CreateResourceModel();
+            var resourceId = Guid.NewGuid();
+            var dsfDecision = new DsfDecision();
+            var decisionUniqueId = Guid.NewGuid();
+            dsfDecision.UniqueID = decisionUniqueId.ToString();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var newTestFromDebugMessage = new NewTestFromDebugMessage();
+            var readAllText = File.ReadAllText("JsonResources\\DebugStates.json");
+            var sequncetext = File.ReadAllText("JsonResources\\sequenceState.json");
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
+            var sequenceSate = serializer.Deserialize<IDebugState>(sequncetext);
+            newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
+            var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
+            var repo = new Mock<IEnvironmentRepository>();
+            var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
+            var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
+            var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
+            var seq = new DebugStateTreeViewItemViewModel(repo.Object) { Content = sequenceSate, };
+            newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>()
+            {
+                debugTreeMock.Object
+                ,itemViewModel
+                ,itemViewModel1
+                ,itemViewModel2,
+                seq
+            };
+
+            seq.Children.Add(itemViewModel1);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
+            ObservableCollection<IServiceTestStep> testSteps = new ObservableCollection<IServiceTestStep>() {};
+            
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, testSteps, default(IServiceTestStep) });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, testSteps.Count);
+            Assert.AreEqual("DsfSequenceActivity", testSteps[0].ActivityType);
+            Assert.AreEqual("Sequence", testSteps[0].StepDescription);
+            Assert.AreEqual(0, testSteps[0].StepOutputs.Count);
+            Assert.AreEqual("549601d4-c800-4176-89b7-4eba3bac46fa".ToGuid(), testSteps[0].UniqueId);
+            Assert.AreEqual(StepType.Assert, testSteps[0].Type);
+
+            Assert.AreEqual(1, testSteps[0].Children.Count);
+            Assert.AreEqual(1, testSteps[0].Children[0].StepOutputs.Count);
+
         }
 
         [TestMethod]
@@ -350,7 +419,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
             var newTestFromDebugMessage = new NewTestFromDebugMessage();
-            var readAllText = File.ReadAllText("DebugStates.json");
+            var readAllText = File.ReadAllText("JsonResources\\DebugStates.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);

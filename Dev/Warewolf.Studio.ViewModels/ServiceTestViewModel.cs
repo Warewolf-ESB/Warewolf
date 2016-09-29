@@ -171,8 +171,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void AddChildDebugItems(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, ObservableCollection<IServiceTestStep> testSteps, IServiceTestStep parent)
         {
-            //Dev2JsonSerializer k = new Dev2JsonSerializer();
-            //var serialize = k.Serialize(debugItemContent);//I want to mock stuff. will remove this
+            Dev2JsonSerializer k = new Dev2JsonSerializer();
+            var serialize = k.Serialize(debugItemContent);//I want to mock stuff. will remove this
             if (parent == null)
             {
                 var testStep = new ServiceTestStep(debugItemContent.ID, "", new List<IServiceTestOutput>(), StepType.Assert)
