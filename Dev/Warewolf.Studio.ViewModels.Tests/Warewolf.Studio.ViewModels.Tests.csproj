@@ -171,8 +171,11 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="DebugStates.json">
+    <None Include="JsonResources\DebugStates.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JsonResources\sequenceState.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
