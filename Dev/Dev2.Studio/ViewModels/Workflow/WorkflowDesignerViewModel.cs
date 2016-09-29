@@ -1471,6 +1471,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var item = sender as Grid;
                 var context = item?.DataContext as WorkflowDesignerViewModel;
+                if (context == null)
+                {
+                    var testContext = item?.DataContext as ServiceTestViewModel;
+                    if (testContext != null)
+                    {
+                        var selectedTestModelItem = testContext.WorkflowDesignerViewModel.SelectedModelItem as ModelItem;
+                        ItemSelectedAction?.Invoke(selectedTestModelItem);
+                    }
+                }
                 var selectedModelItem = context?.SelectedModelItem as ModelItem;
                 if (selectedModelItem != null)
                 {
