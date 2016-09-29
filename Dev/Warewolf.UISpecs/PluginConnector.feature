@@ -4,6 +4,7 @@
 	I want to perform a composition of recorded actions
 
 Scenario: Plugin Connector
+	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Click NewPluginSource Ribbon Button
 	And I Type "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll" into Plugin Source Wizard Assembly Textbox
