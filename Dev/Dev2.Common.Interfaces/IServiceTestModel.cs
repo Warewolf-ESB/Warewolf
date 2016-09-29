@@ -55,7 +55,7 @@ namespace Dev2.Common.Interfaces
         bool EmptyIsNull { get; set; }
     }
 
-    public interface IServiceTestOutput
+    public interface IServiceTestOutput:ICloneable
     {
         string Variable { get; set; }
         string Value { get; set; }
