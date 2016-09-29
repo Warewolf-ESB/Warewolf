@@ -50,3 +50,19 @@ Scenario: Drag on Remote Subworkflow from Explorer And Check Permissions Icons
 	And I Set Resource Permissions For "workflow1" to Group "Domain Users" and Permissions for View to "true" and Contribute to "true" and Execute to "false"
 	And I Click Deploy Ribbon Button
 	
+Scenario: 
+	When I Click New Workflow Ribbon Button
+	And I Save With Ribbon Button And Dialog As "DeployViewOnly"
+	And I Click Close Workflow Tab Button
+	I Set Resource Permissions For "DeployViewOnly" to Group "Public" and Permissions for View to "true" and Contribute to "false" and Execute to "false"
+	And I Click Deploy Ribbon Button
+	#Possible version confict dialog
+	And I Try Click Message Box OK
+	#Possible deploy conflict dialog
+	And I Try Click Message Box OK
+	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	And I Click Deploy Tab Destination Server Connect Button
+	And I Deploy "DeployViewOnly" From Deploy View
+	And I Select RemoteConnectionIntegrationConnected From Deploy Tab Source Server Combobox
+	And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
+	And I Deploy "DeployViewOnly" From Deploy View
