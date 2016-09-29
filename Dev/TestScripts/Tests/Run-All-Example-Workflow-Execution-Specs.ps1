@@ -15,7 +15,7 @@ if ($Args.Count -gt 0) {
 		        $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
 	        }
 	    } else {        
-            if ($playlistContent.Playlist.Add.Test -ne $null) {
+            if ($playlistContent.Playlist.Add.Test -ne $NULL) {
                 $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
             } else {
 	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
@@ -29,51 +29,42 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
+$TestSettingsFile = "$PSScriptRoot\ExampleWorkflowExecutionSpecs.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
-<?xml version=`"1.0`" encoding=`"UTF-8`"?>
-<TestSettings name=`"UI Test`" id=`"" + [guid]::NewGuid() + @"`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>These are default test settings for a local test run.</Description>
-  <Deployment>
-		<DeploymentItem filename=`"Dev2.Server\bin\Debug\`" outputDirectory=`"Server`" />
-		<DeploymentItem filename=`"Dev2.Studio\bin\Debug\`" outputDirectory=`"Studio`" />
-		<DeploymentItem filename=`"Warewolf.UITests\Properties\DefaultWorkspaceLayout.xml`" />
-  </Deployment>
-  <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
-  <Scripts setupScript=`"TestScripts\Studio\Startup.bat`" cleanupScript=`"TestScripts\Studio\Cleanup.bat`" />
+<?xml version=`"1.0`" encoding="UTF-8"?>
+<TestSettings
+  id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
+  name="ExampleWorkflowExecutionSpecs"
+  enableDefaultDataCollectors="false"
+  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+  <Description>Run example workflow execution specs.</Description>
+  <Deployment enabled="false" />
   <Execution>
-    <Hosts skipUnhostableTests=`"false`" />
-    <TestTypeSpecific>
-      <UnitTestRunConfig testTypeId=`"13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b`">
-        <AssemblyResolution>
-          <TestDirectory useLoadContext=`"true`" />
-        </AssemblyResolution>
-      </UnitTestRunConfig>
-      <WebTestRunConfiguration testTypeId=`"4e7599fa-5ecb-43e9-a887-cd63cf72d207`">
-        <Browser name=`"Internet Explorer 9.0`" MaxConnections=`"6`">
-          <Headers>
-            <Header name=`"User-Agent`" value=`"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)`" />
-            <Header name=`"Accept`" value=`"*/*`" />
-            <Header name=`"Accept-Language`" value=`"{{`$IEAcceptLanguage}}`" />
-            <Header name=`"Accept-Encoding`" value=`"GZIP`" />
-          </Headers>
-        </Browser>
-      </WebTestRunConfiguration>
-    </TestTypeSpecific>
-    <AgentRule name=`"LocalMachineDefaultRole`">
-    </AgentRule>
+    <Timeouts testTimeout=`"180000`" />
   </Execution>
 </TestSettings>
 "@)
 
+# Create assemblies list.
+$TestAssembliesList = ''
+foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Specs.dll, Warewolf.*.Specs.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
+    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
+}
+
 # Create full VSTest argument string.
-$FullArgsList = "`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+$FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"TestCategory=ExampleWorkflowExecution`""
 
 # Display full command including full argument string.
-Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
+Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
+
+# Start server under test
+cmd.exe /c '$SolutionDir\TestScripts\Studio\Startup.bat'
 
 # Run VSTest with full argument string.
 Start-Process -FilePath "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
+
+# Stop server under test
+cmd.exe /c '$SolutionDir\TestScripts\Studio\Cleanup.bat'
 
 # Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"

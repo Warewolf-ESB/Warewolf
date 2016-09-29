@@ -31,13 +31,14 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -47,6 +48,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="TechTalk.SpecFlow, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpecFlow.2.1.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -64,19 +69,17 @@
     <Compile Include="ConfigureSettings\ConfigureSettingsLoggingTests.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Explorer\ItemDragAndDrop.cs" />
-    <Compile Include="Explorer\ContextMenuItemsTest.cs" />
+    <Compile Include="Sharepoint\SharepointCreateUITest.cs" />
+    <Compile Include="Tools\Scripting\Ruby.cs" />
+    <Compile Include="Tools\Scripting\Python.cs" />
     <Compile Include="Variables\Variables.cs" />
     <Compile Include="WorkflowTesting\TestsResults.cs" />
     <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
-    <Compile Include="HelpWindow\HelpWindowTests.cs" />
     <Compile Include="Tools\HTTP Web Methods\Create_WEB_Source_From_Tool.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="Explorer\WebConnector.cs" />
-    <Compile Include="Explorer\PluginConnector.cs" />
-    <Compile Include="Explorer\DBConnector.cs" />
     <Compile Include="Explorer\Refresh.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Explorer\RemoteSubworkflow.cs" />
     <Compile Include="Tools\Control Flow\Sequence.cs" />
     <Compile Include="Tools\Control Flow\Switch.cs" />
     <Compile Include="Tools\Control Flow\For Each.cs" />
@@ -105,7 +108,7 @@
     <Compile Include="Tools\Resources\Service.cs" />
     <Compile Include="Tools\Resources\DotNet DLL.cs" />
     <Compile Include="Tools\Scripting\CMD Script.cs" />
-    <Compile Include="Tools\Scripting\Script.cs" />
+    <Compile Include="Tools\Scripting\JavaScript.cs" />
     <Compile Include="Tools\Utility\Calculate.cs" />
     <Compile Include="Tools\Utility\Web Request.cs" />
     <Compile Include="Tools\Utility\Xpath.cs" />
@@ -125,6 +128,9 @@
     <Compile Include="Tools\Data\Assign.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="SpecFlow-Attribute-Map.ps1" />
     <None Include="UIMap.uitest">
       <SubType>Designer</SubType>
     </None>
@@ -166,6 +172,9 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>powershell.exe -nologo -noprofile -file "$(ProjectDir)\SpecFlow-Attribute-Map.ps1"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -49,7 +49,6 @@ namespace Dev2.Activities.SelectAndApply
         public string Alias { get; set; }
         public ActivityFunc<string, bool> ApplyActivityFunc { get; set; }
 
-        private readonly object _selectApplyExecutionObject = new object();
         private string _previousParentId;
 
         /// <summary>
@@ -112,122 +111,114 @@ namespace Dev2.Activities.SelectAndApply
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
             ErrorResultTO allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
 
-            if (string.IsNullOrEmpty(DataSource))
+            if(string.IsNullOrEmpty(DataSource))
             {
                 allErrors.AddError(ErrorResource.DataSourceEmpty);
             }
-            if (string.IsNullOrEmpty(Alias))
+            if(string.IsNullOrEmpty(Alias))
             {
                 allErrors.AddError(string.Format(ErrorResource.CanNotBeEmpty, "Alias"));
             }
-            if (allErrors.HasErrors())
+            if(allErrors.HasErrors())
             {
                 DisplayAndWriteError("DsfSelectAndApplyActivity", allErrors);
-                foreach (var fetchError in allErrors.FetchErrors())
+                foreach(var fetchError in allErrors.FetchErrors())
                 {
                     dataObject.Environment.AddError(fetchError);
                 }
                 return;
             }
-            lock (_selectApplyExecutionObject)
+            var startTime = DateTime.Now;
+            _previousParentId = dataObject.ParentInstanceID;
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
+
+            dataObject.ForEachNestingLevel++;
+            var ds = dataObject.Environment.ToStar(DataSource);
+            var expressions = dataObject.Environment.GetIndexes(ds);
+            if(expressions.Count == 0)
             {
-                var startTime = DateTime.Now;
-                _previousParentId = dataObject.ParentInstanceID;
-                _debugInputs = new List<DebugItem>();
-                _debugOutputs = new List<DebugItem>();
+                expressions.Add(ds);
+            }
+            try
+            {
+                if(dataObject.IsDebugMode())
+                {
+                    AddDebugInputItem(new DebugItemStaticDataParams(Alias, "As", DataSource));
+                }
 
+                var executionEnvironment = new ScopedEnvironment(dataObject.Environment, ds, Alias);
+
+                //Push the new environment
+                dataObject.PushEnvironment(executionEnvironment);
                 dataObject.ForEachNestingLevel++;
-                var ds = dataObject.Environment.ToStar(DataSource);
-                var expressions = dataObject.Environment.GetIndexes(ds);
-                if (expressions.Count == 0)
+                if(dataObject.IsDebugMode())
                 {
-                    expressions.Add(ds);
+                    DispatchDebugState(dataObject, StateType.Before, update);
                 }
-                try
+                dataObject.ParentInstanceID = UniqueID;
+                dataObject.IsDebugNested = true;
+                if(dataObject.IsDebugMode())
                 {
-                    if(dataObject.IsDebugMode())
-                    {
-                        AddDebugInputItem(new DebugItemStaticDataParams(Alias, "As", DataSource));
-                    }
-                   
-                    var executionEnvironment = new ScopedEnvironment(dataObject.Environment, ds, Alias);
+                    DispatchDebugState(dataObject, StateType.After, update);
+                }
+                foreach(var exp in expressions)
+                {
+                    //Assign the warewolfAtom to Alias using new environment
+                    executionEnvironment.SetDataSource(exp);
 
-                    //Push the new environment
-                    dataObject.PushEnvironment(executionEnvironment);
-                    dataObject.ForEachNestingLevel++;
-                    if(dataObject.IsDebugMode())
-                    {
-                        DispatchDebugState(dataObject, StateType.Before, update);
-                    }
-                    dataObject.ParentInstanceID = UniqueID;
-                    dataObject.IsDebugNested = true;
-                    if (dataObject.IsDebugMode())
-                    {
-                        DispatchDebugState(dataObject, StateType.After, update);
-                    }
-                    foreach(var exp in expressions)
-                    {
+                    var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
+                    exeAct?.Execute(dataObject, 0);
+                }
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Error("DSFSelectAndApply", e);
+                allErrors.AddError(e.Message);
+            }
+            finally
+            {
+                dataObject.PopEnvironment();
 
-                        //Assign the warewolfAtom to Alias using new environment
-                        executionEnvironment.SetDataSource(exp);
-
-                        var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
-                        if(exeAct != null)
+                dataObject.ForEachNestingLevel--;
+                if(allErrors.HasErrors())
+                {
+                    if(allErrors.HasErrors())
+                    {
+                        DisplayAndWriteError("DsfSelectAndApplyActivity", allErrors);
+                        foreach(var fetchError in allErrors.FetchErrors())
                         {
-                            exeAct.Execute(dataObject, 0);
+                            dataObject.Environment.AddError(fetchError);
                         }
                     }
                 }
-                catch (Exception e)
+                if(dataObject.IsDebugMode())
                 {
-                    Dev2Logger.Error("DSFSelectAndApply", e);
-                    allErrors.AddError(e.Message);
-                }
-                finally
-                {
-                    dataObject.PopEnvironment();
-
-                    dataObject.ForEachNestingLevel--;
-                    if (allErrors.HasErrors())
+                    foreach(var expression in expressions)
                     {
-                        if (allErrors.HasErrors())
+                        var data = dataObject.Environment.Eval(expression, update);
+                        if(data.IsWarewolfAtomListresult)
                         {
-                            DisplayAndWriteError("DsfSelectAndApplyActivity", allErrors);
-                            foreach (var fetchError in allErrors.FetchErrors())
+                            var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+                            AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", expression, "", "", "="));
+                        }
+                        else
+                        {
+                            if(data.IsWarewolfAtomResult)
                             {
-                                dataObject.Environment.AddError(fetchError);
+                                var atom = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                                if(atom != null)
+                                    AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), expression, ""));
                             }
                         }
                     }
-                    if (dataObject.IsDebugMode())
-                    {
-                        foreach(var expression in expressions)
-                        {
-                            var data = dataObject.Environment.Eval(expression, update, false);
-                            if (data.IsWarewolfAtomListresult)
-                            {
-                                var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                                AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", expression, "", "", "="));
-                            }
-                            else
-                            {
-                                if (data.IsWarewolfAtomResult)
-                                {
-                                    var atom = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                                    if (atom != null)
-                                        AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), expression, ""));
-                                }
-                            }
-                        }                        
-                        DispatchDebugState(dataObject, StateType.End, update, startTime,DateTime.Now);
-                    }
-                    dataObject.ParentInstanceID = _previousParentId;
-                    dataObject.IsDebugNested = false;
+                    DispatchDebugState(dataObject, StateType.End, update, startTime, DateTime.Now);
                 }
+                dataObject.ParentInstanceID = _previousParentId;
+                dataObject.IsDebugNested = false;
             }
         }
 
