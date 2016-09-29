@@ -789,11 +789,13 @@ namespace Warewolf.Studio.ViewModels
             var exists = FindExistingStep(dsfActivityAbstract.UniqueID);
             if (exists == null)
             {
+                var step = CreateServiceTestStep(Guid.Parse(dsfActivityAbstract.UniqueID), dsfActivityAbstract.DisplayName, type, new List<IServiceTestOutput>());
                 var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "", "", "")
-                    {
-                        HasOptionsForValue = false
+                {
+                    HasOptionsForValue = false,
+                    AddStepOutputRow = s => step.AddNewOutput(s)
                     }).Cast<IServiceTestOutput>().ToList();
-                var step = CreateServiceTestStep(Guid.Parse(dsfActivityAbstract.UniqueID), dsfActivityAbstract.DisplayName, type, serviceTestOutputs);
+                step.StepOutputs = serviceTestOutputs.ToObservableCollection();
                 SetParentChild(item, step);
                 {
                     serviceTestStep = step;
