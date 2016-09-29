@@ -1674,7 +1674,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             Assert.AreEqual(dsfDecision.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
             var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
@@ -1705,6 +1705,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var stack = ser.Deserialize<Dev2DecisionStack>(expressionText);
             dsfDecision.Conditions = stack;
             var mock = new Mock<IDSFDataObject>();
+            mock.Setup(o => o.Environment.AddError(It.IsAny<string>()));
             var dev2Activity = dsfDecision.Execute(mock.Object, 0);
             var modelItem = ModelItemUtils.CreateModelItem(dsfDecision);
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
@@ -1721,7 +1722,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             Assert.AreEqual(dsfDecision.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
             var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
@@ -1763,7 +1764,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             Assert.AreEqual(typeof(DsfDecision).Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
             var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
@@ -1802,7 +1803,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             Assert.AreEqual(dsfSwitch.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
             var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
@@ -1843,7 +1844,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             Assert.AreEqual(dsfSwitch.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
             var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
@@ -1888,7 +1889,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             Assert.AreEqual(typeof(DsfSwitch).Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
             var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
@@ -1929,7 +1930,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             Assert.AreEqual(assignActivity.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
             Assert.AreEqual(3, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
             var serviceTestOutput1 = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
