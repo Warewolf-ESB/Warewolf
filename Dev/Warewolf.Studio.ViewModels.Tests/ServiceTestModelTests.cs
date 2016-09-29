@@ -1032,7 +1032,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(uniqueID,testStep.UniqueId.ToString());
             Assert.AreEqual(activityTypeName,testStep.ActivityType);
             Assert.AreEqual(outputs,testStep.StepOutputs);
-            Assert.AreEqual(StepType.Mock,testStep.Type);
+            Assert.AreEqual(StepType.Assert,testStep.Type);
         }        
     }
 }
