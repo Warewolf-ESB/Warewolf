@@ -27,5 +27,6 @@ namespace Dev2.Common.Interfaces
         AuthenticationType AuthenticationType { get; set; }
         Guid ResourceId { get; set; }
         List<IServiceTestStep> TestSteps { get; set; }
+        string FailureMessage { get; set; }
     }
 }

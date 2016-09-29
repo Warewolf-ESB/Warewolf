@@ -34,6 +34,7 @@ namespace Dev2.Studio.Core.Interfaces
         string ErrorMessage { get; set; }
         IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
         ICommand DeleteTestStepCommand { get; set; }
+        Guid ResourceID { get; }
 
         void Save();
 
