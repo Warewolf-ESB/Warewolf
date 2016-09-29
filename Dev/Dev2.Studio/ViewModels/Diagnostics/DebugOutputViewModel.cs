@@ -99,14 +99,17 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             _environmentRepository = environmentRepository;
             _debugOutputFilterStrategy = debugOutputFilterStrategy;
             if (contextualResourceModel != null)
+            {
                 _contextualResourceModel = contextualResourceModel;
+                ResourceID = _contextualResourceModel.ID;
+            }
 
             _contentItems = new List<IDebugState>();
             _contentItemMap = new Dictionary<Guid, IDebugTreeViewItemViewModel>();
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(serverEventPublisher);
             _debugWriterSubscriptionService.Subscribe(msg =>
             {
-                Append(msg.DebugState);
+                Append(msg.DebugState);                
             });
 
             SessionID = Guid.NewGuid();
@@ -120,17 +123,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var newTestFromDebugMessage = new NewTestFromDebugMessage
             {
+                ResourceID = ResourceID,
                 ResourceModel = _contextualResourceModel,
-                RootItems = RootItems.ToList(),
-                DebugStates = _contentItems
-
+                RootItems = RootItems.ToList()
             };
             eventPublisher.Publish(newTestFromDebugMessage);
         }
 
+        public Guid ResourceID { get; set; }
+
         private bool CanAddNewTest()
         {
-            return _contextualResourceModel != null;
+            return RootItems!=null && RootItems.Count>0;
         }
 
         public int PendingItemCount => _pendingItems.Count;
@@ -451,6 +455,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             if (_outputViewModelUtil.QueuePending(content, _pendingItems, IsProcessing))
                 return;
             AddItemToTree(content);
+            ViewModelUtils.RaiseCanExecuteChanged(AddNewTestCommand);
         }
 
         private void IsDebugStateLastStep(IDebugState content)
