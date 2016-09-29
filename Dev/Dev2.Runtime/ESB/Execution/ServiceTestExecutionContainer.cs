@@ -5,12 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
+using Dev2.Data.Decisions.Operations;
 using Dev2.Data.Util;
+using Dev2.DataList;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
@@ -195,7 +199,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             Guid result = new Guid();
             var wfappUtils = new WfApplicationUtils();
-            ErrorResultTO invokeErrors;
+            ErrorResultTO invokeErrors = new ErrorResultTO();
             var resourceID = DataObject.ResourceID;
             if (test?.Inputs != null)
             {
@@ -226,14 +230,24 @@ namespace Dev2.Runtime.ESB.Execution
 
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true, false, false);
+                    var debugState = wfappUtils.GetDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DateTime.Now, true, false, false);
+                    wfappUtils.WriteDebug(DataObject, debugState);
                 }
 
                 var testRunResult = Eval(resourceID, DataObject, test);
 
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
+                    var debugState = wfappUtils.GetDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DateTime.Now, true, false, false);
+                    DebugItem itemToAdd = new DebugItem();
+                    var msg = test.FailureMessage;
+                    if (test.TestPassed)
+                    {
+                        msg = "Passed";
+                    }
+                    itemToAdd.AddRange(new DebugItemStaticDataParams(msg, "Assert Result:").GetDebugItemResult());
+                    debugState.Outputs.Add(itemToAdd);
+                    wfappUtils.WriteDebug(DataObject, debugState);
                 }
                 if (testRunResult != null)
                 {
@@ -339,25 +353,11 @@ namespace Dev2.Runtime.ESB.Execution
                         {
                             if (test.Outputs != null)
                             {
-                                foreach (var output in test.Outputs)
-                                {
-                                    var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
-                                    var value = output.Value;
-
-                                    var result = dataObject.Environment.Eval(variable, 0);
-                                    if (result.IsWarewolfAtomResult)
-                                    {
-                                        var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
-                                        // ReSharper disable once PossibleNullReferenceException
-                                        var actualValue = x.ToString();
-                                        if (!string.Equals(actualValue, value))
-                                        {
-                                            testPassed = false;
-                                            failureMessage.AppendLine(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, value, variable, actualValue));
-                                        }
-                                    }
-                                }
-
+                                var dev2DecisionFactory = Dev2DecisionFactory.Instance();
+                                var res = test.Outputs.SelectMany(output => GetTestRunResults(dataObject, output, dev2DecisionFactory));
+                                var testRunResults = res as IList<TestRunResult> ?? res.ToList();
+                                testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed);
+                                test.FailureMessage = string.Join("", testRunResults.Select(result => result.Message));                                
                             }
                         }
                     }
@@ -407,6 +407,76 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
 
+        private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
+        {
+            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
+            var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
+
+            if (decisionType == enDecisionType.IsError)
+            {
+                var hasErrors = dataObject.Environment.AllErrors.Count > 0;
+                var testResult = new TestRunResult();
+                if (hasErrors)
+                {
+                    testResult.Result = RunResult.TestPassed;
+                }
+                else
+                {
+                    testResult.Result = RunResult.TestFailed;
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                }               
+                return new[] { testResult };
+            }
+            if (decisionType == enDecisionType.IsNotError)
+            {
+                var noErrors = dataObject.Environment.AllErrors.Count == 0;
+                var testResult = new TestRunResult();
+                if (noErrors)
+                {
+                    testResult.Result = RunResult.TestPassed;
+                }
+                else
+                {
+                    testResult.Result = RunResult.TestFailed;
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                }                
+                return new[] { testResult };
+            }
+            var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };
+            var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.From) };
+            var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.To) };
+
+            IList<TestRunResult> ret = new List<TestRunResult>();
+            var iter = new WarewolfListIterator();
+            var cols1 = dataObject.Environment.EvalAsList(DataListUtil.AddBracketsToValueIfNotExist(output.Variable), 0);
+            var c1 = new WarewolfAtomIterator(cols1);
+            var c2 = new WarewolfAtomIterator(value);
+            var c3 = new WarewolfAtomIterator(@from);
+            if (opt.ArgumentCount > 2)
+            {
+                c2 = new WarewolfAtomIterator(to);
+            }
+            iter.AddVariableToIterateOn(c1);
+            iter.AddVariableToIterateOn(c2);
+            iter.AddVariableToIterateOn(c3);
+            while (iter.HasMoreData())
+            {
+                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) });
+                var testResult = new TestRunResult();
+                if (assertResult)
+                {
+                    testResult.Result = RunResult.TestPassed;
+                }
+                else
+                {
+                    testResult.Result = RunResult.TestFailed;
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                }
+                ret.Add(testResult);
+            }
+            return ret;
+        }
+
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
         {
             return null;
@@ -419,7 +489,7 @@ namespace Dev2.Runtime.ESB.Execution
                 throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
             }
             WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
-            resource = NextActivity(resource, testSteps, dsfDataObject);
+            resource = NextActivity(resource, testSteps);
             var next = resource.Execute(dsfDataObject, update);
             while (next != null)
             {
@@ -443,7 +513,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        private static IDev2Activity NextActivity(IDev2Activity resource, List<IServiceTestStep> testSteps, IDSFDataObject dataObj = null)
+        private static IDev2Activity NextActivity(IDev2Activity resource, List<IServiceTestStep> testSteps)
         {
             var foundTestStep = testSteps.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
             if (foundTestStep != null)

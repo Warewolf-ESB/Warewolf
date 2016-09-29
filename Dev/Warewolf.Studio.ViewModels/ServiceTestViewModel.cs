@@ -888,6 +888,14 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetStepIcon(Type type, ServiceTestStep serviceTestStep)
         {
+            if (type.Name == "DsfDecision" || type.Name == "FlowDecision")
+            {
+                type = typeof(DsfFlowDecisionActivity);
+            }
+            if (type.Name == "DsfSwitch")
+            {
+                type = typeof(DsfFlowSwitchActivity);
+            }
             if (type.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
             {
                 var desc = GetDescriptorFromAttribute(type);
@@ -898,6 +906,14 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetStepIcon(string typeName, ServiceTestStep serviceTestStep)
         {
+            if (typeName == "DsfDecision" || typeName == "FlowDecision")
+            {
+                typeName = "DsfFlowDecisionActivity";
+            }
+            if (typeName == "DsfSwitch")
+            {
+                typeName = "DsfFlowSwitchActivity";
+            }
             Type type = Types.FirstOrDefault(x => x.Name == typeName);
 
             if (type.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
