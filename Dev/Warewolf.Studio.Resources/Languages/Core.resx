@@ -2843,6 +2843,18 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="ServiceTestInputsValueHelpText" xml:space="preserve">
     <value>The input value for the service. This is the input to the service for the test you want to run.</value>
   </data>
+  <data name="ServiceTestStepAssertVariableTooltip" xml:space="preserve">
+    <value>ServiceTestStepAssertVariableTooltip</value>
+  </data>
+  <data name="ServiceTestStepAssertVariableHelpText" xml:space="preserve">
+    <value>ServiceTestStepAssertVariableHelpText</value>
+  </data>
+  <data name="ServiceTestOutputVariableTooltip" xml:space="preserve">
+    <value>ServiceTestOutputVariableTooltip</value>
+  </data>
+  <data name="ServiceTestOutputVariableHelpText" xml:space="preserve">
+    <value>ServiceTestOutputVariableHelpText</value>
+  </data>
   <data name="ServiceTestOutputValueTooltip" xml:space="preserve">
     <value>Output value to test against</value>
   </data>
