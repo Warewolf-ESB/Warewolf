@@ -486,6 +486,25 @@ namespace Warewolf.UITests
             }
         }
 
+        public void TryCloseWorkflowTestingTab()
+        {
+            try
+            {
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton))
+                {
+                    Click_Close_Workflow_Tab_Button();
+                }
+                if (ControlExistsNow(MessageBoxWindow.NoButton))
+                {
+                    Click_MessageBox_No();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("TryClose method failed to close Workflow tab.\n" + e.Message);
+            }
+        }
+
         [When(@"I Try Close Settings Tab")]
         public void TryCloseSettingsTab()
         {
@@ -571,6 +590,7 @@ namespace Warewolf.UITests
             WaitForControlNotVisible(control, searchTimeout);
         }
 
+        [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false, SaveOrDuplicate saveOrDuplicate = SaveOrDuplicate.Save)
         {
 
@@ -731,6 +751,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
         }
 
+        [When(@"I Click SaveDialog Save Button")]
         public void Click_SaveDialog_Save_Button()
         {
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
@@ -1287,6 +1308,7 @@ namespace Warewolf.UITests
             Assert.IsFalse(public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Contribute.");
         }
 
+        [When(@"I Update Test Name To ""(.*)""")]
         public void Update_Test_Name(string overrideName = null)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit, new Point(59, 16));
@@ -1830,6 +1852,44 @@ namespace Warewolf.UITests
         public void Click_First_Test_Run_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.RunButton, new Point(10, 10));
+        }
+
+        [When("I Click First Test Delete Button")]
+        public void Click_First_Test_Delete_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton, new Point(10, 10));
+        }
+
+        [When("I Click Run All Button")]
+        public void Click_Workflow_Testing_Tab_Run_All_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton, new Point(35, 10));
+        }
+        
+        [Given(@"That The First Test ""(.*)"" Passing")]
+        [Then(@"The First Test ""(.*)"" Passing")]
+        public void Assert_Workflow_Testing_Tab_First_Test_Is_Passing(string IsIsNot)
+        {
+            Assert_Workflow_Testing_Tab_First_Test_Is_Passing(IsIsNot == "Is");
+        }
+
+        public void Assert_Workflow_Testing_Tab_First_Test_Is_Passing(bool passing = true)
+        {
+            Point point;
+            Assert.AreEqual(passing, MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), (passing?"First test is not passing.":"First test is passing."));
+        }
+
+        [Given(@"That The First Test ""(.*)"" Invalid")]
+        [Then(@"The First Test ""(.*)"" Invalid")]
+        public void Assert_Workflow_Testing_Tab_First_Test_Is_Invalid(string IsIsNot)
+        {
+            Assert_Workflow_Testing_Tab_First_Test_Is_Invalid(IsIsNot == "Is");
+        }
+
+        public void Assert_Workflow_Testing_Tab_First_Test_Is_Invalid(bool invalid = true)
+        {
+            Point point;
+            Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
         }
     }
 }
