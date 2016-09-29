@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Common;
@@ -315,6 +316,7 @@ namespace Dev2.Activities
 
         #endregion
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug

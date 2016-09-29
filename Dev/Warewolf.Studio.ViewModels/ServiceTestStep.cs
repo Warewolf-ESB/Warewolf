@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
@@ -201,12 +202,21 @@ namespace Warewolf.Studio.ViewModels
                         intIndex++;
                         var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);
                         var indexedName = DataListUtil.ReplaceRecordsetBlankWithIndex(blankName, intIndex);
-                        StepOutputs.Add(new ServiceTestOutput(indexedName, "", "", ""));
+                        var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
+                        if (StepOutputs.FirstOrDefault(output=>output.Variable.Equals(indexedName,StringComparison.InvariantCultureIgnoreCase))==null)
+                        {
+                            StepOutputs.Add(serviceTestOutput);
+                        }
                     }
                 }
                 else
                 {
-                    StepOutputs.Add(new ServiceTestOutput(varName,"","",""));
+                    var serviceTestOutput = new ServiceTestOutput(varName,"","","");
+                    serviceTestOutput.AddNewAction = ()=>AddNewOutput(varName);
+                    //if (StepOutputs.FirstOrDefault(output => output.Variable.Equals(varName, StringComparison.InvariantCultureIgnoreCase)) == null)
+                    {
+                        StepOutputs.Add(serviceTestOutput);
+                    }
                 }
             }
         }
