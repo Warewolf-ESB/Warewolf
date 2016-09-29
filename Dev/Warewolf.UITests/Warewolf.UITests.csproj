@@ -61,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
-    <Compile Include="DebugOutputWindow\CodedUITest1.cs" />
+    <Compile Include="DebugOutputWindow\DebugOutputWindowTests.cs" />
     <Compile Include="SaveDialogWindow\SaveDialogWindowTets.cs" />
     <Compile Include="Deploy\DeployViewOnlyServiceUITest.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
