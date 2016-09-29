@@ -742,7 +742,11 @@ namespace Warewolf.Studio.ViewModels
                         var child = parent;
                         if (child.Parent == null)
                         {
-                            SelectedServiceTest.TestSteps.Add(child);
+                            var exists = FindExistingStep(step.UniqueId.ToString());
+                            if (exists == null)
+                            {
+                                SelectedServiceTest.TestSteps.Add(child);
+                            }
                         }
                         parent = child.Parent;
                     }
