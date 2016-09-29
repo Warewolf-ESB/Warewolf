@@ -202,9 +202,9 @@ namespace Warewolf.Studio.ViewModels
                         intIndex++;
                         var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);
                         var indexedName = DataListUtil.ReplaceRecordsetBlankWithIndex(blankName, intIndex);
-                        var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
                         if (StepOutputs.FirstOrDefault(output=>output.Variable.Equals(indexedName,StringComparison.InvariantCultureIgnoreCase))==null)
                         {
+                            var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
                             StepOutputs.Add(serviceTestOutput);
                         }
                     }
