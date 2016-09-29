@@ -47,7 +47,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var readAllText = File.ReadAllText("DebugStates.json");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
-            newTestFromDebugMessage.DebugStates = debugStates;
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
             var repo = new Mock<IEnvironmentRepository>();
@@ -120,7 +119,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
-            newTestFromDebugMessage.DebugStates = debugStates;
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
             var repo = new Mock<IEnvironmentRepository>();

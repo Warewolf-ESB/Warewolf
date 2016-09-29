@@ -653,25 +653,67 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var stepToBeAsserted = dataObject.ServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(UniqueID));
                     if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
                     {
-                        foreach(var serviceTestOutput in stepToBeAsserted.StepOutputs)
+                        if (stepToBeAsserted.ActivityType == typeof(DsfDecision).Name)
                         {
-                            var actualValue = dataObject.Environment.EvalAsList(serviceTestOutput.Variable, 0);
-                            var value = DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.Value);
-                            var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.From) };
-                            var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.To) };
-                            var assertFunc = CreateFuncFromOperator(serviceTestOutput.AssertOp, actualValue, @from, to);
-                            var assertPassed = assertFunc.Invoke(value);
-                            dataObject.ServiceTest.TestPassed = assertPassed;
-                            dataObject.ServiceTest.TestFailing = !assertPassed;
-                            if (dataObject.IsDebugMode())
+                            var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
+                            var dsfDecision = this as DsfDecision;
+                            if (dsfDecision != null)
                             {
-                                AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                                var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
+                                dataObject.ServiceTest.TestPassed = assertPassed;
+                                dataObject.ServiceTest.TestFailing = !assertPassed;
+                                if(dataObject.IsDebugMode())
+                                {
+                                    AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                                }
+                                else
+                                {
+                                    dataObject.Environment.AddError("Assert Failed");
+                                }
                             }
-                            else
+                        }
+                        else if(stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
+                        {
+                            var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
+                            var dsfDecision = this as DsfSwitch;
+                            if (dsfDecision != null)
                             {
-                                dataObject.Environment.AddError("Assert Failed");
+                                var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
+                                dataObject.ServiceTest.TestPassed = assertPassed;
+                                dataObject.ServiceTest.TestFailing = !assertPassed;
+                                if (dataObject.IsDebugMode())
+                                {
+                                    AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                                }
+                                else
+                                {
+                                    dataObject.Environment.AddError("Assert Failed");
+                                }
                             }
-                            dataObject.StopExecution = !assertPassed;
+
+                        }
+                        else
+                        {
+                            foreach (var serviceTestOutput in stepToBeAsserted.StepOutputs)
+                            {
+                                var actualValue = dataObject.Environment.EvalAsList(serviceTestOutput.Variable, 0);
+                                var value = DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.Value);
+                                var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.From) };
+                                var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutput.To) };
+                                var assertFunc = CreateFuncFromOperator(serviceTestOutput.AssertOp, actualValue, @from, to);
+                                var assertPassed = assertFunc.Invoke(value);
+                                dataObject.ServiceTest.TestPassed = assertPassed;
+                                dataObject.ServiceTest.TestFailing = !assertPassed;
+                                if (dataObject.IsDebugMode())
+                                {
+                                    AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                                }
+                                else
+                                {
+                                    dataObject.Environment.AddError("Assert Failed");
+                                }
+                                dataObject.StopExecution = !assertPassed;
+                            }
                         }
                     }
                 }
