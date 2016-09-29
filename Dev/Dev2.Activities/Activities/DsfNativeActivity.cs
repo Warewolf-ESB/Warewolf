@@ -695,105 +695,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else
                     {
                         var factory = Dev2DecisionFactory.Instance();
-                        var res = stepToBeAsserted.StepOutputs.SelectMany(output =>
-                        {
-                            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
-                            var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
-
-                            if (decisionType == enDecisionType.IsError)
-                            {
-                                var hasErrors = dataObject.Environment.AllErrors.Count > 0;
-                                var testResult = new TestRunResult();
-                                if(hasErrors)
-                                {
-                                    testResult.Result = RunResult.TestPassed;
-                                }
-                                else
-                                {
-                                    testResult.Result = RunResult.TestFailed;
-                                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
-                                }
-                                if(dataObject.IsDebugMode())
-                                {
-                                    var msg = testResult.Message;
-                                    if(testResult.Result == RunResult.TestPassed)
-                                    {
-                                        msg = "Passed";
-                                    }
-                                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
-                                }
-                                return new[] { testResult };
-                            }
-                            if (decisionType == enDecisionType.IsNotError)
-                            {
-                                var noErrors = dataObject.Environment.AllErrors.Count == 0;
-                                var testResult = new TestRunResult();
-                                if (noErrors)
-                                {
-                                    testResult.Result = RunResult.TestPassed;
-                                }
-                                else
-                                {
-                                    testResult.Result = RunResult.TestFailed;
-                                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
-                                }
-                                if (dataObject.IsDebugMode())
-                                {
-                                    var msg = testResult.Message;
-                                    if (testResult.Result == RunResult.TestPassed)
-                                    {
-                                        msg = "Passed";
-                                    }
-                                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
-                                }
-                                return new[] { testResult };
-
-                            }
-                            var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };
-                            var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.From) };
-                            var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.To) };
-
-                            IList<TestRunResult> ret = new List<TestRunResult>();
-                            var iter = new WarewolfListIterator();
-                            var cols1 = dataObject.Environment.EvalAsList(DataListUtil.AddBracketsToValueIfNotExist(output.Variable), 0);
-                            var c1 = new WarewolfAtomIterator(cols1);
-                            var c2 = new WarewolfAtomIterator(value);
-                            var c3 = new WarewolfAtomIterator(from);
-                            if (opt.ArgumentCount > 2)
-                            {
-                                c2 = new WarewolfAtomIterator(to);
-
-                            }
-                            iter.AddVariableToIterateOn(c1);
-                            iter.AddVariableToIterateOn(c2);
-                            iter.AddVariableToIterateOn(c3);
-                            while (iter.HasMoreData())
-                            {
-                                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) });
-                                var testResult = new TestRunResult();
-                                if (assertResult)
-                                {
-                                    testResult.Result = RunResult.TestPassed;
-
-                                }
-                                else
-                                {
-                                    testResult.Result = RunResult.TestFailed;
-                                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
-                                }
-                                if (dataObject.IsDebugMode())
-                                {
-                                    var msg = testResult.Message;
-                                    if (testResult.Result == RunResult.TestPassed)
-                                    {
-                                        msg = "Passed";
-                                    }
-                                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
-                                }
-                                ret.Add(testResult);
-                            }
-                            return ret;
-                        });
+                        var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory));
                         var testRunResults = res as IList<TestRunResult> ?? res.ToList();
                         var testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed);
                         dataObject.ServiceTest.TestFailing = !testPassed;
@@ -803,6 +705,103 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
             }
+        }
+
+        private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
+        {
+            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
+            var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
+
+            if(decisionType == enDecisionType.IsError)
+            {
+                var hasErrors = dataObject.Environment.AllErrors.Count > 0;
+                var testResult = new TestRunResult();
+                if(hasErrors)
+                {
+                    testResult.Result = RunResult.TestPassed;
+                }
+                else
+                {
+                    testResult.Result = RunResult.TestFailed;
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                }
+                if(dataObject.IsDebugMode())
+                {
+                    var msg = testResult.Message;
+                    if(testResult.Result == RunResult.TestPassed)
+                    {
+                        msg = "Passed";
+                    }
+                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                }
+                return new[] { testResult };
+            }
+            if(decisionType == enDecisionType.IsNotError)
+            {
+                var noErrors = dataObject.Environment.AllErrors.Count == 0;
+                var testResult = new TestRunResult();
+                if(noErrors)
+                {
+                    testResult.Result = RunResult.TestPassed;
+                }
+                else
+                {
+                    testResult.Result = RunResult.TestFailed;
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                }
+                if(dataObject.IsDebugMode())
+                {
+                    var msg = testResult.Message;
+                    if(testResult.Result == RunResult.TestPassed)
+                    {
+                        msg = "Passed";
+                    }
+                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                }
+                return new[] { testResult };
+            }
+            var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };
+            var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.From) };
+            var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.To) };
+
+            IList<TestRunResult> ret = new List<TestRunResult>();
+            var iter = new WarewolfListIterator();
+            var cols1 = dataObject.Environment.EvalAsList(DataListUtil.AddBracketsToValueIfNotExist(output.Variable), 0);
+            var c1 = new WarewolfAtomIterator(cols1);
+            var c2 = new WarewolfAtomIterator(value);
+            var c3 = new WarewolfAtomIterator(@from);
+            if(opt.ArgumentCount > 2)
+            {
+                c2 = new WarewolfAtomIterator(to);
+            }
+            iter.AddVariableToIterateOn(c1);
+            iter.AddVariableToIterateOn(c2);
+            iter.AddVariableToIterateOn(c3);
+            while(iter.HasMoreData())
+            {
+                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) });
+                var testResult = new TestRunResult();
+                if(assertResult)
+                {
+                    testResult.Result = RunResult.TestPassed;
+                }
+                else
+                {
+                    testResult.Result = RunResult.TestFailed;
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                }
+                if(dataObject.IsDebugMode())
+                {
+                    var msg = testResult.Message;
+                    if(testResult.Result == RunResult.TestPassed)
+                    {
+                        msg = "Passed";
+                    }
+                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                }
+                ret.Add(testResult);
+            }
+            return ret;
         }
 
         void AddErrorToDataList(Exception err, IDSFDataObject dataObject)
