@@ -30,7 +30,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ServiceTestOutput(string variable, string value, string from, string to)
         {
-            if(variable == null)
+            if (variable == null)
                 throw new ArgumentNullException(nameof(variable));
             Variable = variable;
             Value = value;
@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ServiceTestOutput()
         {
-            
+
         }
 
         public string Variable
@@ -57,7 +57,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _variable = value;
-                OnPropertyChanged(()=>Variable);
+                OnPropertyChanged(() => Variable);
             }
         }
         public string Value
@@ -136,7 +136,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _assertOp; }
             set
             {
-                _assertOp = value; 
+                _assertOp = value;
                 OnPropertyChanged(() => AssertOp);
                 OnSearchTypeChanged();
             }
@@ -147,7 +147,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _hasOptionsForValue; }
             set
             {
-                _hasOptionsForValue = value; 
+                _hasOptionsForValue = value;
                 OnPropertyChanged(() => HasOptionsForValue);
             }
         }
@@ -208,7 +208,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _optionsForValue; }
             set
             {
-                _optionsForValue = value; 
+                _optionsForValue = value;
                 OnPropertyChanged(() => OptionsForValue);
             }
         }
@@ -224,7 +224,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void UpdateMatchVisibility( string value, IList<IFindRecsetOptions> whereOptions)
+        public void UpdateMatchVisibility(string value, IList<IFindRecsetOptions> whereOptions)
         {
 
             var opt = whereOptions.FirstOrDefault(a => value != null && value.ToLower().StartsWith(a.HandlesType().ToLower()));
@@ -257,7 +257,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _assertOps; }
             set
             {
-                _assertOps = value; 
+                _assertOps = value;
                 OnPropertyChanged(() => AssertOps);
             }
         }
@@ -276,9 +276,21 @@ namespace Warewolf.Studio.ViewModels
         /// </returns>
         public object Clone()
         {
-            var serializer = new Dev2JsonSerializer();
-            var serialize = serializer.Serialize(this);
-            return serializer.Deserialize(serialize, GetType());
+            var memberwiseClone = (ServiceTestOutput)MemberwiseClone();
+            var assertOps = new ObservableCollection<string>();
+            foreach (var assertOp in memberwiseClone.AssertOps)
+            {
+
+                assertOps.Add(string.Copy(assertOp));
+            }
+            memberwiseClone.AssertOps = new ObservableCollection<string>();
+            memberwiseClone.AssertOps = assertOps;
+            var optionsForValue = new ObservableCollection<string>();
+            foreach (var value in memberwiseClone.OptionsForValue)
+            {
+                optionsForValue.Add(string.Copy(value));
+            }
+            return memberwiseClone;
         }
 
         #endregion
