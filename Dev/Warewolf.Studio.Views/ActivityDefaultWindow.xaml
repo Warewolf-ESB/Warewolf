@@ -33,7 +33,7 @@
                     Orientation="Horizontal" 
                     HorizontalAlignment="Right" 
                     Margin="0,3,5,5">
-            <Button x:Name="DoneButton" Content="Done" Width="Auto" Click="DoneButton_OnClick"  Margin="{StaticResource ControlBorderRight}"></Button>
+            <Button x:Name="DoneButton" Content="Done" Width="Auto" Click="DoneButton_OnClick" ToolTipService.ShowOnDisabled="true" Margin="{StaticResource ControlBorderRight}"></Button>
             <Button x:Name="CancelButton" Content="Cancel" Width="Auto" Click="CancelButton_OnClick"></Button>
         </StackPanel>
     </Grid>
