@@ -856,8 +856,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 if(dataObject.IsDebugMode())
-                {
-                    UpdateDebugStateWithAssertions(dataObject, dataObject.ServiceTest?.TestSteps.FirstOrDefault(step => step.UniqueId.ToString()==UniqueID).Children.ToList());
+                {                    
                     _debugOutputs = new List<DebugItem>();
                     _debugOutputs = new List<DebugItem>();
                     DispatchDebugState(dataObject, StateType.Duration, 0);
@@ -876,6 +875,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         RestoreHandlerFn();
                     }
+                }
+                if (dataObject.IsDebugMode())
+                {
+                    var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == WorkSurfaceMappingId);
+                    var serviceTestSteps = serviceTestStep?.Children;
+                    UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList());
                 }
                 dataObject.ParentInstanceID = _previousParentId;
                 dataObject.ForEachNestingLevel--;
@@ -903,7 +908,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
         {
-            if (dataObject.IsServiceTestExecution)
+            if (dataObject.IsServiceTestExecution && serviceTestTestSteps!=null)
             {
                 var stepToBeAsserted = serviceTestTestSteps.FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(_childUniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name);
                 if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
@@ -914,7 +919,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }                    
                     else
                     {
-                        var debugStates = TestDebugMessageRepo.Instance.GetDebugItems(stepToBeAsserted.UniqueId, dataObject.TestName).LastOrDefault();
+                        var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                        debugItems = debugItems.Where(state => state.ID == stepToBeAsserted.UniqueId).ToList();
+                        var debugStates = debugItems?.LastOrDefault();
                         var factory = Dev2DecisionFactory.Instance();
                         var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
                         var testRunResults = res as IList<TestRunResult> ?? res.ToList();
@@ -950,7 +957,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory, IDebugState debugState)
         {
-            output.Result.Result = RunResult.TestInvalid;
+            if (output.Result != null)
+            {
+                output.Result.Result = RunResult.TestInvalid;
+            }
             IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
             var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);            
             var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };
