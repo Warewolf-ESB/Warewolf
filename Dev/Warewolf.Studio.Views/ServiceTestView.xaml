@@ -384,11 +384,11 @@
                         <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*" MaxHeight="144"/>
+                                <RowDefinition Height="Auto" MinHeight="50" MaxHeight="144"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*" MaxHeight="144"/>
+                                <RowDefinition Height="Auto" MinHeight="50" MaxHeight="144"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
