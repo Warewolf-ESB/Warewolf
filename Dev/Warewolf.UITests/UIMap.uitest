@@ -2205,6 +2205,19 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.WarewolfStudioViewMoExpander.SmallDataGridTable.Headers.UIItemColumnHeader.MockRadioButton">
+      <ParameterName />
+      <State>Checked</State>
+    </SetStateAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_TestMock_Radio_Button">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -23216,7 +23229,7 @@
                                             </UIObject>
                                           </Descendants>
                                         </UIObject>
-                                        <UIObject ControlType="Header" Id="ColumnHeaders" FriendlyName="PART_ColumnHeadersPresenter" SpecialControlType="None">
+                                        <UIObject ControlType="Header" Id="Headers" FriendlyName="PART_ColumnHeadersPresenter" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
