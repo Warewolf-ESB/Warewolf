@@ -49,6 +49,7 @@ namespace Dev2.Common
             };
         }
 
+        public const string ArmResultText = "Flow Arm";
         // ReSharper disable InconsistentNaming
         //Default TimeoutValue
         // ReSharper disable UnusedMember.Global

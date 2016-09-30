@@ -1312,13 +1312,14 @@ namespace Dev2.Activities.Specs.TestFramework
                                     Dev2JsonSerializer ser = new Dev2JsonSerializer();
                                     var dds = ser.Deserialize<Dev2DecisionStack>(eval);
                                     var armToUse = tableRow["Output Value"];
+                                    
                                     if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText, "", "") };
+                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(GlobalConstants.ArmResultText, dds.FalseArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText, "", "") };
+                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(GlobalConstants.ArmResultText, dds.TrueArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }
                                 }
@@ -1395,12 +1396,12 @@ namespace Dev2.Activities.Specs.TestFramework
                                     var armToUse = tableRow["Output Value"];
                                     if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText, "", "") };
+                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(GlobalConstants.ArmResultText, dds.FalseArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Assert);
                                     }
                                     else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText, "", "") };
+                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(GlobalConstants.ArmResultText, dds.TrueArmText, "", "") };
                                         test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Assert);
                                     }
                                 }

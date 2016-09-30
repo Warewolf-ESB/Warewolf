@@ -1682,7 +1682,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
             Assert.AreEqual("True Path", serviceTestOutput.OptionsForValue[0]);
             Assert.AreEqual("False Path", serviceTestOutput.OptionsForValue[1]);
-            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
+            Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
         }
 
        
@@ -1730,7 +1730,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
             Assert.AreEqual("True Path", serviceTestOutput.OptionsForValue[0]);
             Assert.AreEqual("False Path", serviceTestOutput.OptionsForValue[1]);
-            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
+            Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
         }
 
         [TestMethod]
@@ -1772,7 +1772,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
             Assert.AreEqual("Name Input", serviceTestOutput.OptionsForValue[0]);
             Assert.AreEqual("Blank Input", serviceTestOutput.OptionsForValue[1]);
-            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
+            Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
         }
 
         [TestMethod]
@@ -1812,7 +1812,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Case1", serviceTestOutput.OptionsForValue[0]);
             Assert.AreEqual("Case2", serviceTestOutput.OptionsForValue[1]);
             Assert.AreEqual("Case3", serviceTestOutput.OptionsForValue[2]);
-            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
+            Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
         }
 
         [TestMethod]
@@ -1854,7 +1854,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Case1", serviceTestOutput.OptionsForValue[1]);
             Assert.AreEqual("Case2", serviceTestOutput.OptionsForValue[2]);
             Assert.AreEqual("Case3", serviceTestOutput.OptionsForValue[3]);
-            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
+            Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
         }
 
         [TestMethod]
@@ -1899,7 +1899,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Case1", serviceTestOutput.OptionsForValue[1]);
             Assert.AreEqual("Case2", serviceTestOutput.OptionsForValue[2]);
             Assert.AreEqual("Case3", serviceTestOutput.OptionsForValue[3]);
-            Assert.AreEqual("Condition Result", serviceTestOutput.Variable);
+            Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
         }
         
         [TestMethod]
