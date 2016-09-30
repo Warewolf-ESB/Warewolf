@@ -94,7 +94,6 @@ namespace Dev2.Runtime.ESB.Execution
 
             errors = new ErrorResultTO();
 
-            // get data in a format we can send ;)
             Dev2Logger.Debug("Creating DataList fragment for remote execute");
             var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.RemoteInvokeResultShape.ToString(), update);
 
@@ -109,7 +108,6 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
-                // Invoke Remote WF Here ;)
                 result = ExecutePostRequest(connection, serviceName, dataListFragment);
                 IList<IDebugState> msg = DataObject.IsDebug ? FetchRemoteDebugItems(connection) : new List<IDebugState>();
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
