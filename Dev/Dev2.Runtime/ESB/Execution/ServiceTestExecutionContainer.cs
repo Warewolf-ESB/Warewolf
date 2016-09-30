@@ -246,8 +246,8 @@ namespace Dev2.Runtime.ESB.Execution
                     {
                         msg = "Passed";
                     }
-                    itemToAdd.AddRange(new DebugItemStaticDataParams(msg, "Assert Result:").GetDebugItemResult());
-                    debugState.Outputs.Add(itemToAdd);
+                    itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg).GetDebugItemResult());
+                    debugState.AssertResultList.Add(itemToAdd);
                     wfappUtils.WriteDebug(DataObject, debugState);
                 }
                 if (testRunResult != null)
@@ -357,7 +357,7 @@ namespace Dev2.Runtime.ESB.Execution
                                 var dev2DecisionFactory = Dev2DecisionFactory.Instance();
                                 var res = test.Outputs.SelectMany(output => GetTestRunResults(dataObject, output, dev2DecisionFactory));
                                 var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-                                testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed);
+                                testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed) && test.TestSteps.All(step => step.Result.Result==RunResult.TestPassed);
                                 test.FailureMessage = string.Join("", testRunResults.Select(result => result.Message));                                
                             }
                         }
@@ -424,7 +424,7 @@ namespace Dev2.Runtime.ESB.Execution
                 else
                 {
                     testResult.Result = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
                 }               
                 return new[] { testResult };
             }
@@ -439,7 +439,7 @@ namespace Dev2.Runtime.ESB.Execution
                 else
                 {
                     testResult.Result = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
                 }                
                 return new[] { testResult };
             }
@@ -471,7 +471,7 @@ namespace Dev2.Runtime.ESB.Execution
                 else
                 {
                     testResult.Result = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
                 }
                 ret.Add(testResult);
             }

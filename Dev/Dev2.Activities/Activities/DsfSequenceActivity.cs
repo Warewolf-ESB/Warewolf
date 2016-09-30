@@ -13,9 +13,20 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using Dev2.Activities.Debug;
+using Dev2.Activities.SelectAndApply;
+using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Data.Decisions.Operations;
+using Dev2.Data.Util;
+using Dev2.DataList;
+using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
@@ -182,6 +193,12 @@ namespace Dev2.Activities
                 if (act != null)
                 {
                     act.Execute(dataObject, update);
+                    if (dataObject.IsDebugMode())
+                    {
+                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == WorkSurfaceMappingId);
+                        var serviceTestSteps = serviceTestStep?.Children;
+                        UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList(),act.ActivityId);
+                    }
                 }
             }
            if (dataObject.IsDebugMode())
@@ -206,5 +223,108 @@ namespace Dev2.Activities
         }
 
         #endregion
+
+        private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps, Guid childId)
+        {
+            if (dataObject.IsServiceTestExecution && serviceTestTestSteps != null)
+            {
+                var stepToBeAsserted = serviceTestTestSteps.FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == childId && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name);
+                if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
+                {
+                    if (stepToBeAsserted.Result != null)
+                    {
+                        stepToBeAsserted.Result.Result = RunResult.TestInvalid;
+                    }
+                    else
+                    {
+                        var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                        debugItems = debugItems.Where(state => state.ID == stepToBeAsserted.UniqueId).ToList();
+                        var debugStates = debugItems?.LastOrDefault();
+                        var factory = Dev2DecisionFactory.Instance();
+                        var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
+                        var testRunResults = res as IList<TestRunResult> ?? res.ToList();
+                        var testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed);
+                        var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
+
+                        var finalResult = new TestRunResult();
+                        if (testPassed)
+                        {
+                            finalResult.Result = RunResult.TestPassed;
+                        }
+                        if (testRunResults.Any(result => result.Result == RunResult.TestFailed))
+                        {
+                            finalResult.Result = RunResult.TestFailed;
+                            finalResult.Message = serviceTestFailureMessage;
+                        }
+                        if (testRunResults.Any(result => result.Result == RunResult.TestInvalid))
+                        {
+                            finalResult.Result = RunResult.TestInvalid;
+                            finalResult.Message = serviceTestFailureMessage;
+                        }
+                        dataObject.ServiceTest.Result = finalResult;
+                        dataObject.ServiceTest.TestFailing = !testPassed;
+                        dataObject.ServiceTest.FailureMessage = serviceTestFailureMessage;
+                        dataObject.ServiceTest.TestPassed = testPassed;
+                        dataObject.StopExecution = !testPassed;
+                    }
+                }
+            }
+        }
+
+        private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory, IDebugState debugState)
+        {
+            if (output.Result != null)
+            {
+                output.Result.Result = RunResult.TestInvalid;
+            }
+            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
+            var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
+            var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };
+            var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.From) };
+            var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.To) };
+
+            IList<TestRunResult> ret = new List<TestRunResult>();
+            var iter = new WarewolfListIterator();
+            var cols1 = dataObject.Environment.EvalAsList(DataListUtil.AddBracketsToValueIfNotExist(output.Variable), 0);
+            var c1 = new WarewolfAtomIterator(cols1);
+            var c2 = new WarewolfAtomIterator(value);
+            var c3 = new WarewolfAtomIterator(@from);
+            if (opt.ArgumentCount > 2)
+            {
+                c2 = new WarewolfAtomIterator(to);
+            }
+            iter.AddVariableToIterateOn(c1);
+            iter.AddVariableToIterateOn(c2);
+            iter.AddVariableToIterateOn(c3);
+            while (iter.HasMoreData())
+            {
+                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) });
+                var testResult = new TestRunResult();
+                if (assertResult)
+                {
+                    testResult.Result = RunResult.TestPassed;
+                }
+                else
+                {
+                    testResult.Result = RunResult.TestFailed;
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                }
+                if (dataObject.IsDebugMode())
+                {
+                    var msg = testResult.Message;
+                    if (testResult.Result == RunResult.TestPassed)
+                    {
+                        msg = "Passed";
+                    }
+                    var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(msg);
+                    DebugItem itemToAdd = new DebugItem();
+                    itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
+                    debugState.AssertResultList.Add(itemToAdd);
+                }
+                output.Result = testResult;
+                ret.Add(testResult);
+            }
+            return ret;
+        }
     }
 }

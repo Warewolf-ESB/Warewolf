@@ -1369,7 +1369,7 @@ namespace Warewolf.Studio.ViewModels
                 ErrorExpected = model.ErrorExpected,
                 NoErrorExpected = model.NoErrorExpected,
                 ErrorContainsText = model.ErrorContainsText,
-                TestSteps = model.TestSteps.Select(CreateServiceTestStepTO).ToList(),
+                TestSteps = model.TestSteps.Select(step => CreateServiceTestStepTO(step,null)).ToList(),
                 Inputs = model.Inputs.Select(CreateServiceTestInputsTO).ToList(),
                 Outputs = model.Outputs.Select(CreateServiceTestOutputTO).ToList(),
                 LastRunDate = model.LastRunDate,
@@ -1408,19 +1408,19 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        private static IServiceTestStep CreateServiceTestStepTO(IServiceTestStep step)
+        private static IServiceTestStep CreateServiceTestStepTO(IServiceTestStep step, IServiceTestStep parent)
         {
             var serviceTestStepTO = new ServiceTestStepTO(step.UniqueId, step.ActivityType, step.StepOutputs.Select(CreateServiceTestStepOutputsTO).ToObservableCollection(), step.Type)
             {
                 Children = new ObservableCollection<IServiceTestStep>(),
-                Parent = step.Parent,
+                Parent = parent,
                 StepDescription = step.StepDescription
             };
             if (step.Children != null)
             {
                 foreach (var serviceTestStep in step.Children)
                 {
-                    serviceTestStepTO.Children.Add(CreateServiceTestStepTO(serviceTestStep));
+                    serviceTestStepTO.Children.Add(CreateServiceTestStepTO(serviceTestStep, serviceTestStepTO));
                 }
             }
             return serviceTestStepTO;

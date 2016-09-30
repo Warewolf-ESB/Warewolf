@@ -80,6 +80,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         bool _showDuration = true;
         bool _showInputs = true;
         bool _showOutputs = true;
+        bool _showAssertResult = true;
         bool _showServer = true;
         bool _showTime = true;
         bool _showType = true;
@@ -376,6 +377,21 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
+        /// <summary>
+        ///     Gets a value indicating whether [show assertResult].
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [show assertResult]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ShowAssertResult
+        {
+            get { return _showAssertResult; }
+            set
+            {
+                _showAssertResult = value;
+                NotifyOfPropertyChange(() => ShowAssertResult);
+            }
+        }
 
         /// <summary>
         ///     Gets a value indicating whether [highligh error].

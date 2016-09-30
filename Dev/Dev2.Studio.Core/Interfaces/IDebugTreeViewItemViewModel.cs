@@ -11,6 +11,7 @@ namespace Dev2.Studio.Core.Interfaces
         ObservableCollection<IDebugTreeViewItemViewModel> Children { get; }
         IDebugTreeViewItemViewModel Parent { get; set; }
         bool? HasError { get; set; }
+        bool? HasNoError { get; set; }
         string ActivityTypeName { get; set; }
         void VerifyErrorState();
     }
