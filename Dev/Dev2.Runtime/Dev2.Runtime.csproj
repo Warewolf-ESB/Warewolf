@@ -131,7 +131,6 @@
     <Compile Include="ESB\Execution\RemoteWorkflowExecutionContainer.cs" />
     <Compile Include="ESB\Execution\ServiceTestExecutionContainer.cs" />
     <Compile Include="ESB\Execution\TestAssertStep.cs" />
-    <Compile Include="ESB\Execution\TestMockStep.cs" />
     <Compile Include="ESB\Execution\WebServiceContainer.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
     <Compile Include="ESB\WF\WFApplicationUtils.cs" />

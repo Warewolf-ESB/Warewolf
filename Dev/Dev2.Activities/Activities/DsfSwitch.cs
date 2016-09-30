@@ -86,12 +86,16 @@ namespace Dev2.Activities
                     if (Switches.ContainsKey(a))
                     {
                         Result = a;
+                        AddDebugOutputItem(new DebugItemStaticDataParams(Result,"Flow Arm:"));
+                        DispatchDebugState(dataObject, StateType.After, 0);
                         return Switches[a];
                     }
                     if (Default != null)
                     {
                         Result = "Default";
                         var activity = Default.FirstOrDefault();
+                        AddDebugOutputItem(new DebugItemStaticDataParams(Result, "Flow Arm:"));
+                        DispatchDebugState(dataObject, StateType.After, 0);
                         return activity;
                     }
                 }
@@ -125,7 +129,7 @@ namespace Dev2.Activities
                 result.Add(itemToAdd);
                 _debugInputs = result;
                 DispatchDebugState(dataObject, StateType.Before, 0);
-                DispatchDebugState(dataObject, StateType.After, 0);
+                
                 if(Inner != null)
                 {
                     Inner.SetDebugInputs(_debugInputs);
@@ -198,27 +202,23 @@ namespace Dev2.Activities
             var dsfSwitchSwitches = _dsfSwitch.Switches;
             bool hasResult = false;
             InitializeDebug(dataObject);
-            DebugItem itemToAdd = new DebugItem();
-            var result = new List<DebugItem>();
             if (dsfSwitchSwitches.ContainsKey(ConditionToUse))
             {
                 NextNodes = new List<IDev2Activity> { dsfSwitchSwitches[ConditionToUse] };
-                itemToAdd.AddRange(new DebugItemStaticDataParams(ConditionToUse, "").GetDebugItemResult());
-                result.Add(itemToAdd);
+                AddDebugOutputItem(new DebugItemStaticDataParams(ConditionToUse, "Flow Arm:"));
                 hasResult = true;
             }
             if (_dsfSwitch.Default != null)
             {
                 var activity = _dsfSwitch.Default;
                 NextNodes = activity;
-                itemToAdd.AddRange(new DebugItemStaticDataParams("Default", "").GetDebugItemResult());
-                result.Add(itemToAdd);
+                AddDebugOutputItem(new DebugItemStaticDataParams("Default", "Flow Arm:"));
                 hasResult = true;
             }
 
             if (dataObject.IsDebugMode() && hasResult)
             {
-                _debugOutputs = result;
+               
                 DispatchDebugState(dataObject, StateType.After, update);
                 DispatchDebugState(dataObject, StateType.Duration, update);
             }

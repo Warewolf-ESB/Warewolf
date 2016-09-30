@@ -205,6 +205,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => OptionsForValue);
             }
         }
+        public TestRunResult Result { get; set; }
 
         public void OnSearchTypeChanged()
         {

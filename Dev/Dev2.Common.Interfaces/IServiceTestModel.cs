@@ -64,5 +64,6 @@ namespace Dev2.Common.Interfaces
         string AssertOp { get; set; }
         bool HasOptionsForValue { get; set; }
         List<string> OptionsForValue { get; set; }
+        TestRunResult Result { get; set; }
     }
 }
