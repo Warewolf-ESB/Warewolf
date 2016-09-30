@@ -133,7 +133,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 if(debugItemContent.Outputs != null && debugItemContent.Outputs.Count > 0)
                 {
-                    processFlowDecision.StepOutputs[0].Value = debugItemContent.Outputs[0].ResultsList[0].Value;
+                    if (debugItemContent.Outputs[0].ResultsList.Count > 0)
+                    {
+                        processFlowDecision.StepOutputs[0].Value = debugItemContent.Outputs[0].ResultsList[0].Value;
+                    }
                 }
             }
         }
