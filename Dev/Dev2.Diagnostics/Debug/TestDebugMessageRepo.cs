@@ -66,5 +66,22 @@ namespace Dev2.Diagnostics.Debug
 
             return null;
         }
+
+        public IList<IDebugState> GetDebugItems(Guid resourceId, string testName)
+        {
+
+            lock (Lock)
+            {
+                var key = new Tuple<Guid, string>(resourceId, testName);
+                IList<IDebugState> list;
+                if (_data.TryGetValue(key, out list))
+                {
+                    return list;
+                }
+            }
+
+            return null;
+        }
+
     }
 }
