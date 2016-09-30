@@ -125,7 +125,6 @@ namespace Warewolf.UITests
 #endif
                 }
             }
-            Playback.Wait(Playback.PlaybackSettings.SearchTimeout);
         }
 
         void UITestControlNotAvailableExceptionHandler(string type, string message, UITestControlNotAvailableException e)
@@ -142,7 +141,6 @@ namespace Warewolf.UITests
                 return;
 #endif
             }
-            Playback.Wait(Playback.PlaybackSettings.SearchTimeout);
         }
 
         void FailedToPerformActionOnBlockedControlExceptionHandler(string type, string message, FailedToPerformActionOnBlockedControlException e)
@@ -159,7 +157,6 @@ namespace Warewolf.UITests
                 return;
 #endif
             }
-            Playback.Wait(Playback.PlaybackSettings.SearchTimeout);
         }
 
         public bool ControlExistsNow(UITestControl thisControl)
