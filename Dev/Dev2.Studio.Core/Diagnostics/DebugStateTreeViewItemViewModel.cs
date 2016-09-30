@@ -16,6 +16,7 @@ namespace Dev2.Studio.Core
         readonly IEnvironmentRepository _environmentRepository;
         readonly ObservableCollection<object> _inputs;
         readonly ObservableCollection<object> _outputs;
+        readonly ObservableCollection<object> _assertResultList;
 
         public DebugStateTreeViewItemViewModel(IEnvironmentRepository environmentRepository)
         {
@@ -23,6 +24,7 @@ namespace Dev2.Studio.Core
             _environmentRepository = environmentRepository;
             _inputs = new ObservableCollection<object>();
             _outputs = new ObservableCollection<object>();
+            _assertResultList = new ObservableCollection<object>();
         }
 
         public ActivitySelectionType SelectionType { get; set; }
@@ -30,6 +32,8 @@ namespace Dev2.Studio.Core
         public ObservableCollection<object> Inputs => _inputs;
 
         public ObservableCollection<object> Outputs => _outputs;
+
+        public ObservableCollection<object> AssertResultList => _assertResultList;
 
         public void AppendError(string errorMessage)
         {
@@ -56,6 +60,7 @@ namespace Dev2.Studio.Core
         {
             _inputs.Clear();
             _outputs.Clear();
+            _assertResultList.Clear();
 
             if(content == null)
             {
@@ -103,10 +108,21 @@ namespace Dev2.Studio.Core
             }
             BuildBindableListFromDebugItems(content.Inputs, _inputs);
             BuildBindableListFromDebugItems(content.Outputs, _outputs);
+            BuildBindableListFromDebugItems(content.AssertResultList, _assertResultList);
 
             if(content.HasError)
             {
                 HasError = true;
+            }
+            foreach (var debugItem in content.AssertResultList)
+            {
+                foreach (var debugItemResult in debugItem.ResultsList)
+                {
+                    if (debugItemResult.Value.Contains("Failed"))
+                    {
+                        HasError = true;
+                    }
+                }
             }
         }
 
