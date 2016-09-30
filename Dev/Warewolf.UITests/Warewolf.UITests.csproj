@@ -68,7 +68,6 @@
     <Compile Include="ConfigureSettings\ConfigureSettingsLoggingTests.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Explorer\ItemDragAndDrop.cs" />
-    <Compile Include="Explorer\ContextMenuItemsTest.cs" />
     <Compile Include="Sharepoint\SharepointCopyFileUITest.cs" />
     <Compile Include="Sharepoint\SharepointReadUITest.cs" />
     <Compile Include="Sharepoint\SharepointDownLoadUITest.cs" />

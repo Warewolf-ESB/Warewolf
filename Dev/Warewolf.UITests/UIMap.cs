@@ -26,7 +26,7 @@ namespace Warewolf.UITests
         const int _lenientMaximumRetryCount = 3;
         const int _strictSearchTimeout = 3000;
         const int _strictMaximumRetryCount = 1;
-        
+
         public void SetPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
@@ -567,7 +567,8 @@ namespace Warewolf.UITests
         public void WaitForSpinner(String control)
         {
             var SpinnerTokens = control.Split(new char[] { '.' });
-            if (SpinnerTokens.Length > 1) {
+            if (SpinnerTokens.Length > 1)
+            {
                 switch (SpinnerTokens[0])
                 {
                     case "ExplorerTree":
@@ -1933,9 +1934,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton, new Point(10, 10));
         }
-
-        private Click_Duplicate_From_ExplorerContextMenuParams mClick_Duplicate_From_ExplorerContextMenuParams;
-
+        
         public void Click_Sharepoint_RefreshButton_From_SharepointDelete()
         {
             var refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete.RefreshButton;
@@ -1957,21 +1956,14 @@ namespace Warewolf.UITests
         {
             var refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead.RefreshButton;
             Mouse.Click(refreshButton);
-        }
-    }
-
-    /// <summary>
-    /// Parameters to be passed into 'Click_Duplicate_From_ExplorerContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Duplicate_From_ExplorerContextMenuParams
-    {
+        }    
+    
         [When("I Click Run All Button")]
         public void Click_Workflow_Testing_Tab_Run_All_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton, new Point(35, 10));
         }
-        
+
         [Given(@"That The First Test ""(.*)"" Passing")]
         [Then(@"The First Test ""(.*)"" Passing")]
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Passing(string IsIsNot)
@@ -1982,7 +1974,7 @@ namespace Warewolf.UITests
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Passing(bool passing = true)
         {
             Point point;
-            Assert.AreEqual(passing, MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), (passing?"First test is not passing.":"First test is passing."));
+            Assert.AreEqual(passing, MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), (passing ? "First test is not passing." : "First test is passing."));
         }
 
         [Given(@"That The First Test ""(.*)"" Invalid")]
