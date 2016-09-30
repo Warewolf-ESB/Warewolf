@@ -195,9 +195,8 @@ namespace Warewolf.UITests
             // Click 'Done' button
             Mouse.Click(doneButton, new Point(36, 11));
 
-            // Verify that the 'Text' property of 'UI__Row1_FromExpressiontxt_AutoID' text box equals '[[SomeVariable]]'
-            Assert.AreEqual(this.Click_Base_Convert_Large_View_Done_ButtonParams.ValueTextboxText, valueTextbox.Text, "Base convert small view row1 variable textbox does not contain text somevariable." +
-                    "");
+            // Verify that the 'Text' property of 'UI__Row1_FromExpressiontxt_AutoID' text box equals 'SomeData'
+            Assert.AreEqual(this.Click_Base_Convert_Large_View_Done_ButtonParams.ValueTextboxText, valueTextbox.Text, "Base convert small view row1 variable textbox does not contain text SomeData.");
 
             // Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
             Assert.AreEqual(this.Click_Base_Convert_Large_View_Done_ButtonParams.NameTextboxText, nameTextbox.Text, "Variable list scalar row 1 textbox text does not equal somevariable");
@@ -10239,9 +10238,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Text' property of 'UI__Row1_FromExpressiontxt_AutoID' text box equals '[[SomeVariable]]'
+        /// Verify that the 'Text' property of 'UI__Row1_FromExpressiontxt_AutoID' text box equals 'SomeData'
         /// </summary>
-        public string ValueTextboxText = "[[SomeVariable]]";
+        public string ValueTextboxText = "SomeData";
         
         /// <summary>
         /// Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'

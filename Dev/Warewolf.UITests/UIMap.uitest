@@ -265,8 +265,8 @@
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Row1.Cell.Listbox.ValueTextbox">
       <ParameterName />
       <PropertyName>Text</PropertyName>
-      <ExpectedValue>[[SomeVariable]]</ExpectedValue>
-      <MessageOnValidationFailure>Base convert small view row1 variable textbox does not contain text somevariable.</MessageOnValidationFailure>
+      <ExpectedValue>SomeData</ExpectedValue>
+      <MessageOnValidationFailure>Base convert small view row1 variable textbox does not contain text SomeData.</MessageOnValidationFailure>
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
