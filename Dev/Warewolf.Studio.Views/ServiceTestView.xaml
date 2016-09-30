@@ -35,6 +35,9 @@
             <views:ServiceTestWidthConverter x:Key="ServiceTestWidthConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding RunSelectedTestCommand}" Key="F5" />
+    </UserControl.InputBindings>
     <Grid Margin="{StaticResource ElementBorder}" x:Name="MainGrid" MouseLeftButtonUp="MainGrid_OnMouseLeftButtonUp">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
