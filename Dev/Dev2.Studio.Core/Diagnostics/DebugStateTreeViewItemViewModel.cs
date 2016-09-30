@@ -114,19 +114,22 @@ namespace Dev2.Studio.Core
             {
                 HasError = true;
             }
-            foreach (var debugItem in content.AssertResultList)
+            if(content.AssertResultList != null)
             {
-                foreach (var debugItemResult in debugItem.ResultsList)
+                foreach (var debugItem in content.AssertResultList)
                 {
-                    if (debugItemResult.Value.Contains("Failed"))
+                    foreach (var debugItemResult in debugItem.ResultsList)
                     {
-                        HasError = true;
-                        HasNoError = false;
-                    }
-                    else if (debugItemResult.Value.Contains("Passed"))
-                    {
-                        HasError = false;
-                        HasNoError = true;
+                        if (debugItemResult.Value.Contains("Failed"))
+                        {
+                            HasError = true;
+                            HasNoError = false;
+                        }
+                        else if (debugItemResult.Value.Contains("Passed"))
+                        {
+                            HasError = false;
+                            HasNoError = true;
+                        }
                     }
                 }
             }
