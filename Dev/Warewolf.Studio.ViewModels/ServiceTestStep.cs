@@ -84,6 +84,18 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _stepOutputs = value;
+                if (value != null)
+                {
+                    if (ActivityType == "DsfDecision" || ActivityType == "DsfSwitch")
+                    {
+                        foreach (var serviceTestOutput in value)
+                        {
+                            var testOutput = serviceTestOutput as ServiceTestOutput;
+                            if (testOutput != null)
+                                testOutput.AssertOps = new ObservableCollection<string> {"="};
+                        }
+                    }
+                }
                 OnPropertyChanged(() => StepOutputs);
                 IsTestStepExpanded = StepOutputs?.Count > 0;
                 IsTestStepExpanderEnabled = StepOutputs?.Count > 0;

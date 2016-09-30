@@ -35,6 +35,9 @@
             <views:ServiceTestWidthConverter x:Key="ServiceTestWidthConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding RunSelectedTestCommand}" Key="F5" />
+    </UserControl.InputBindings>
     <Grid Margin="{StaticResource ElementBorder}" x:Name="MainGrid" MouseLeftButtonUp="MainGrid_OnMouseLeftButtonUp">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -139,7 +142,7 @@
                                     <TextBlock Grid.Column="2" 
                                                Grid.Row="0" 
                                                Text="{Binding NameForDisplay}" 
-                                               ToolTip="{Binding NameForDisplay}" 
+                                               ToolTip="Test Name"
                                                TextTrimming="CharacterEllipsis"
                                                FontSize="12" 
                                                Margin="0,0,0,-4" 
@@ -381,11 +384,11 @@
                         <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*" MaxHeight="144"/>
+                                <RowDefinition Height="Auto" MinHeight="50" MaxHeight="144"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*" MaxHeight="144"/>
+                                <RowDefinition Height="Auto" MinHeight="50" MaxHeight="144"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
