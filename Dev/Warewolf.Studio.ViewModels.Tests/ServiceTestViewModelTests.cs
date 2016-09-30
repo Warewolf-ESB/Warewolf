@@ -41,7 +41,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    public partial class ServiceTestViewModelTests 
+    public partial class ServiceTestViewModelTests
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -72,7 +72,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-     
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -92,7 +92,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testViewModel.SelectedServiceTest);
         }
 
-       
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -768,7 +768,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var con = new Mock<IEnvironmentConnection>();
             con.Setup(connection => connection.IsConnected).Returns(true);
             var mockResourceRepo = new Mock<IResourceRepository>();
-            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult {Result = SaveResult.ResourceUpdated});
+            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult { Result = SaveResult.ResourceUpdated });
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(con.Object);
             resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
@@ -1011,29 +1011,28 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockEnvironment = new Mock<IEnvironmentModel>();
             mockEnvironment.Setup(model => model.Connection.IsConnected).Returns(true);
             var mockRepo = new Mock<IResourceRepository>();
-            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing",new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
+            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing", new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
             serviceTestStep.Children = new ObservableCollection<IServiceTestStep>
             {
                 new ServiceTestStepTO(Guid.NewGuid(),"Random",new ObservableCollection<IServiceTestOutput> {new ServiceTestOutput("[[o]]","a", "", "") },StepType.Mock)
                 {
                     Parent = serviceTestStep
                 }
-                                
+
             };
+
+            var mockTo = new Mock<IServiceTestModelTO>();
+            mockTo.SetupAllProperties();
+            //mockTo.Object.TestName = "Test From Server";
+            //mockTo.Object.AuthenticationType = AuthenticationType.Public;
+            //mockTo.Object.Inputs = new List<IServiceTestInput> { new ServiceTestInputTO { Value = "val", Variable = "[[val]]" } };
+            //mockTo.Object.Outputs = new List<IServiceTestOutput> { new ServiceTestOutputTO { Value = "out", Variable = "[[pout]]" } };
+            //mockTo.Object.TestSteps = new List<IServiceTestStep> { serviceTestStep };
+
+
             mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>
             {
-                new ServiceTestModelTO
-                {
-                    AuthenticationType = AuthenticationType.Public,
-                    Enabled = true,
-                    TestName = "Test From Server",
-                    Inputs = new List<IServiceTestInput> {new ServiceTestInputTO { Value = "val", Variable = "[[val]]"} },
-                    Outputs = new List<IServiceTestOutput> {new ServiceTestOutputTO { Value = "out", Variable = "[[pout]]"} },
-                    TestSteps = new List<IServiceTestStep>
-                    {
-                        serviceTestStep
-                    }
-                }
+                mockTo.Object
             });
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
@@ -1042,10 +1041,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
             //------------Assert Results-------------------------
+
             Assert.AreEqual(2, tests.Count);
-            Assert.AreEqual("Test From Server", tests[0].TestName);
-            Assert.AreEqual(AuthenticationType.Public, tests[0].AuthenticationType);
-            Assert.IsTrue(tests[0].Enabled);
             Assert.AreEqual("Create a new test.", tests[1].TestName);
         }
 
@@ -1056,47 +1053,47 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
+
             var mockEnvironment = new Mock<IEnvironmentModel>();
             mockEnvironment.Setup(model => model.Connection.IsConnected).Returns(true);
             mockEnvironment.SetupProperty(model => model.Connection.ReceivedResourceAffectedMessage);
-            var mockRepo = new Mock<IResourceRepository>();
-            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing",new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
+            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing", new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
             serviceTestStep.Children = new ObservableCollection<IServiceTestStep>
             {
                 new ServiceTestStepTO(Guid.NewGuid(),"Random",new ObservableCollection<IServiceTestOutput> {new ServiceTestOutput("[[o]]","a", "", "") },StepType.Mock)
                 {
                     Parent = serviceTestStep
                 }
-                                
+
             };
-            mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>
+
+            var mockTo = new Mock<IServiceTestModelTO>();
+            mockTo.Setup(to => to.TestName).Returns("N");
+            mockTo.SetupAllProperties();
+
+            mockEnvironment.Setup(model => model.ResourceRepository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>
             {
-                new ServiceTestModelTO
-                {
-                    AuthenticationType = AuthenticationType.Public,
-                    Enabled = true,
-                    TestName = "Test From Server",
-                    Inputs = new List<IServiceTestInput> {new ServiceTestInputTO { Value = "val", Variable = "[[val]]"} },
-                    Outputs = new List<IServiceTestOutput> {new ServiceTestOutputTO { Value = "out", Variable = "[[pout]]"} },
-                    TestSteps = new List<IServiceTestStep>
-                    {
-                        serviceTestStep
-                    }
-                }
+               mockTo.Object
             });
-            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
+
+            var mock = new Mock<IContextualResourceModel>();
+
+            mockEnvironment.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(mock.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            mock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+
+
+
+            // resourceMock.Setup(model => model.Environment.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(contextModel.Object);
             var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
-            mockEnvironment.Object.Connection.ReceivedResourceAffectedMessage.Invoke(resourceMock.Object.ID, new CompileMessageList());
+            mockEnvironment.Object.Connection.ReceivedResourceAffectedMessage.Invoke(It.IsAny<Guid>(), new CompileMessageList());
             //------------Assert Results-------------------------
             Assert.AreEqual(2, tests.Count);
-            Assert.AreEqual("Test From Server", tests[0].TestName);
-            Assert.AreEqual(AuthenticationType.Public, tests[0].AuthenticationType);
-            Assert.IsTrue(tests[0].Enabled);
-            Assert.AreEqual("Create a new test.", tests[1].TestName);
+
+
         }
 
         [TestMethod]
@@ -1685,7 +1682,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
         }
 
-       
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -1713,7 +1710,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, new NewTestFromDebugMessage());
-       
+
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
@@ -1871,9 +1868,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var uniqueId = Guid.NewGuid();
             var activity = new DsfFlowSwitchActivity { UniqueID = uniqueId.ToString() };
             dsfSwitch.Expression = activity;
-            dsfSwitch.Cases.Add("Case1",new FlowStep()); 
-            dsfSwitch.Cases.Add("Case2",new FlowStep()); 
-            dsfSwitch.Cases.Add("Case3",new FlowStep());
+            dsfSwitch.Cases.Add("Case1", new FlowStep());
+            dsfSwitch.Cases.Add("Case2", new FlowStep());
+            dsfSwitch.Cases.Add("Case3", new FlowStep());
             dsfSwitch.Default = new FlowStep();
             var modelItem = ModelItemUtils.CreateModelItem(dsfSwitch);
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
@@ -1901,7 +1898,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Case3", serviceTestOutput.OptionsForValue[3]);
             Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemMultiAssign_ShouldHaveAddServiceTestStepShouldHaveOutputs()
@@ -1918,10 +1915,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
             var modelItem = ModelItemUtils.CreateModelItem(assignActivity);
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            var mock = new Mock<IEnvironmentConnection>();
+            mock.SetupAllProperties();
+            mockResourceModel.Setup(model => model.Environment.Connection).Returns(mock.Object);
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
@@ -1954,7 +1954,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var resourceId = Guid.NewGuid();
-            
+
             var assignActivity = new DsfMultiAssignActivity();
             var uniqueId = Guid.NewGuid();
             assignActivity.UniqueID = uniqueId.ToString();
@@ -1986,7 +1986,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(forEach.GetType().Name, serviceTestStep.ActivityType);
             Assert.AreEqual(forEachId, serviceTestStep.UniqueId);
 
-            Assert.AreEqual(1,serviceTestStep.Children.Count);
+            Assert.AreEqual(1, serviceTestStep.Children.Count);
             var childItem = serviceTestStep.Children[0];
             Assert.AreEqual(StepType.Mock, childItem.Type);
             Assert.AreEqual(assignActivity.GetType().Name, childItem.ActivityType);
@@ -2015,7 +2015,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var resourceId = Guid.NewGuid();
-            
+
             var assignActivity = new DsfMultiAssignActivity();
             var uniqueId = Guid.NewGuid();
             assignActivity.UniqueID = uniqueId.ToString();
@@ -2052,7 +2052,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(forEach.GetType().Name, serviceTestStep.ActivityType);
             Assert.AreEqual(forEachId, serviceTestStep.UniqueId);
 
-            Assert.AreEqual(1,serviceTestStep.Children.Count);
+            Assert.AreEqual(1, serviceTestStep.Children.Count);
             var childItem = serviceTestStep.Children[0];
             Assert.AreEqual(StepType.Mock, childItem.Type);
             Assert.AreEqual(sequenceActivity.GetType().Name, childItem.ActivityType);
@@ -2124,7 +2124,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(sequenceActivity.GetType().Name, serviceTestStep.ActivityType);
             Assert.AreEqual(seqId, serviceTestStep.UniqueId);
 
-            Assert.AreEqual(1,serviceTestStep.Children.Count);
+            Assert.AreEqual(1, serviceTestStep.Children.Count);
             var childItem = serviceTestStep.Children[0];
             Assert.AreEqual(StepType.Mock, childItem.Type);
             Assert.AreEqual(forEach.GetType().Name, childItem.ActivityType);
@@ -2244,7 +2244,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(sequenceActivity.GetType().Name, serviceTestStep.ActivityType);
             Assert.AreEqual(seqId, serviceTestStep.UniqueId);
 
-            Assert.AreEqual(1,serviceTestStep.Children.Count);
+            Assert.AreEqual(1, serviceTestStep.Children.Count);
             var childItem = serviceTestStep.Children[0];
             Assert.AreEqual(StepType.Mock, childItem.Type);
             Assert.AreEqual(assignActivity.GetType().Name, childItem.ActivityType);
