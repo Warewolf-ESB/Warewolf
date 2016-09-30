@@ -728,7 +728,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { serviceTestOutput.Result }, "");
                 if (dataObject.IsDebugMode())
                 {
-                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(assertPassed.ToString()));
+                    var msg = "Failed";
+                    if (assertPassed)
+                    {
+                        msg = "Passed";
+                    }
+                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
                 }
                 else
                 {
@@ -754,7 +759,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { serviceTestOutput.Result }, "");
                 if (dataObject.IsDebugMode())
                 {
-                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(assertPassed.ToString()));
+                    var msg = "Failed";
+                    if (assertPassed)
+                    {
+                        msg = "Passed";
+                    }
+                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
                 }
                 else
                 {
