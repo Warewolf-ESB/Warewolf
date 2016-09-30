@@ -71,8 +71,10 @@ namespace Warewolf.UITests
             }
         }
 
+        bool OnErrorHandlerDisabled = false;
         public void OnError(object sender, PlaybackErrorEventArgs e)
         {
+            if (OnErrorHandlerDisabled) return;
             e.Result = PlaybackErrorOptions.Retry;
             var type = e.Error.GetType().ToString();
             var message = e.Error.Message;
@@ -164,6 +166,7 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackError -= OnError;
+            OnErrorHandlerDisabled = true;
             bool controlExists = false;
             try
             {
@@ -171,6 +174,7 @@ namespace Warewolf.UITests
             }
             finally
             {
+                OnErrorHandlerDisabled = false;
                 Playback.PlaybackError += OnError;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
