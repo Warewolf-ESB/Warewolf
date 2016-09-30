@@ -1822,6 +1822,11 @@ namespace Warewolf.UITests
             var refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.RefreshButton;
             Mouse.Click(refreshButton);
         }
+        public void Click_Sharepoint_RefreshButton_From_SharepointRead()
+        {
+            var refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead.RefreshButton;
+            Mouse.Click(refreshButton);
+        }
     }
 
     /// <summary>

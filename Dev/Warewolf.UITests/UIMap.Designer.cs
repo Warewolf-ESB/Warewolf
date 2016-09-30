@@ -867,6 +867,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_EditSharepointSource_Button_From_SharePointUpdate
+        /// </summary>
+        [When(@"I Click EditSharepointSource Button From SharePointUpdate")]
+        public void Click_EditSharepointSource_Button_From_SharePointUpdate()
+        {
+            #region Variable Declarations
+            WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate.EditSourceButton;
+            #endregion
+
+            // Click '...' button
+            Mouse.Click(editSourceButton, new Point(98, 12));
+        }
+        
+        /// <summary>
         /// Click_EditSharepointSource_Button_FromSharePointDelete
         /// </summary>
         [When(@"I Click EditSharepointSource Button FromSharePointDelete")]
@@ -881,13 +895,13 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_EditSharepointSource_Button_From_SharePointUpdate
+        /// Click_EditSharepointSource_Button_FromSharePointRead
         /// </summary>
-        [When(@"I Click EditSharepointSource Button From SharePointUpdate")]
-        public void Click_EditSharepointSource_Button_From_SharePointUpdate()
+        [When(@"I Click EditSharepointSource Button FromSharePointRead")]
+        public void Click_EditSharepointSource_Button_FromSharePointRead()
         {
             #region Variable Declarations
-            WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate.EditSourceButton;
+            WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead.EditSourceButton;
             #endregion
 
             // Click '...' button
@@ -1997,6 +2011,20 @@ namespace Warewolf.UITests
 
             // Select 'Update duplicated relationships?' check box
             updateDuplicatedRelat.Checked = this.Click_UpdateDuplicateRelationshipsParams.UpdateDuplicatedRelatChecked;
+        }
+        
+        /// <summary>
+        /// Click_UserButton_OnSharepointSource - Use 'Click_UserButton_OnSharepointSourceParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Click UserButton OnSharepointSource")]
+        public void Click_UserButton_OnSharepointSource()
+        {
+            #region Variable Declarations
+            WpfRadioButton userRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserRadioButton;
+            #endregion
+
+            // Select 'User' radio button
+            userRadioButton.Selected = this.Click_UserButton_OnSharepointSourceParams.UserRadioButtonSelected;
         }
         
         /// <summary>
@@ -3445,6 +3473,35 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Drag Toolbox Sharepoint CopyFile Onto DesignSurface")]
+        public void Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem copyFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CopyFile;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.Server;
+            #endregion
+
+            // Type 'Copy File' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(311, 128));
+            Mouse.StartDragging(copyFile, new Point(10, 16));
+            Mouse.StopDragging(flowchart, new Point(311, 128));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'UI__Database_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams.ServerExists, server.Exists, "server lookup does not exist on the sharepoin smal view");
+        }
+        
+        /// <summary>
         /// Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Drag Toolbox Sharepoint Create Onto DesignSurface")]
@@ -3499,6 +3556,64 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Drag_Toolbox_Sharepoint_Download_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Drag Toolbox Sharepoint Download Onto DesignSurface")]
+        public void Drag_Toolbox_Sharepoint_Download_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem downloadFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.DownloadFile;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownload.Server;
+            #endregion
+
+            // Type 'Download' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(311, 128));
+            Mouse.StartDragging(downloadFile, new Point(10, 16));
+            Mouse.StopDragging(flowchart, new Point(311, 128));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'UI__Database_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams.ServerExists, server.Exists, "server lookup does not exist on the sharepoin smal view");
+        }
+        
+        /// <summary>
+        /// Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Drag Toolbox Sharepoint MoveFile Onto DesignSurface")]
+        public void Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem moveFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.MoveFile;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.Server;
+            #endregion
+
+            // Type 'Move' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(311, 128));
+            Mouse.StartDragging(moveFile, new Point(10, 16));
+            Mouse.StopDragging(flowchart, new Point(311, 128));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'UI__Database_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams.ServerExists, server.Exists, "server lookup does not exist on the sharepoin smal view");
+        }
+        
+        /// <summary>
         /// Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Drag Toolbox Sharepoint Read Onto DesignSurface")]
@@ -3546,6 +3661,35 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+        }
+        
+        /// <summary>
+        /// Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Drag Toolbox Sharepoint UploadFile Onto DesignSurface")]
+        public void Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem uploadFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.UploadFile;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpload.Server;
+            #endregion
+
+            // Type 'Upload' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(311, 128));
+            Mouse.StartDragging(uploadFile, new Point(10, 16));
+            Mouse.StopDragging(flowchart, new Point(311, 128));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'UI__Database_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams.ServerExists, server.Exists, "server lookup does not exist on the sharepoin smal view");
         }
         
         /// <summary>
@@ -4012,6 +4156,153 @@ namespace Warewolf.UITests
 
             // Type '********' in 'PasswordTextBox' text box
             Keyboard.SendKeys(passwordTextBoxEdit, this.Enter_RunAsUser_Username_And_PasswordParams.PasswordTextBoxEditSendKeys, true);
+        }
+        
+        /// <summary>
+        /// Enter_Sharepoint_Server_Path_From_OnCopyFile_Tool - Use 'Enter_Sharepoint_Server_Path_From_OnCopyFile_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Enter Sharepoint Server Path From OnCopyFile Tool")]
+        public void Enter_Sharepoint_Server_Path_From_OnCopyFile_Tool()
+        {
+            #region Variable Declarations
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.FromDirectoryComboBox.TextEdit;
+            #endregion
+
+            // Type 'clocks.dat' in 'Text' text box
+            textEdit.Text = this.Enter_Sharepoint_Server_Path_From_OnCopyFile_ToolParams.TextEditText;
+        }
+        
+        /// <summary>
+        /// Enter_Sharepoint_Server_Path_From_OnDownload_Tool - Use 'Enter_Sharepoint_Server_Path_From_OnDownload_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Enter Sharepoint Server Path From OnDownload Tool")]
+        public void Enter_Sharepoint_Server_Path_From_OnDownload_Tool()
+        {
+            #region Variable Declarations
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownload.FromDirectoryComboBox.TextEdit;
+            #endregion
+
+            // Type 'clocks.dat' in 'Text' text box
+            textEdit.Text = this.Enter_Sharepoint_Server_Path_From_OnDownload_ToolParams.TextEditText;
+        }
+        
+        /// <summary>
+        /// Enter_Sharepoint_Server_Path_From_OnMoveFile_Tool - Use 'Enter_Sharepoint_Server_Path_From_OnMoveFile_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Enter Sharepoint Server Path From OnMoveFile Tool")]
+        public void Enter_Sharepoint_Server_Path_From_OnMoveFile_Tool()
+        {
+            #region Variable Declarations
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.FromDirectoryComboBox.TextEdit;
+            #endregion
+
+            // Type 'clocks.dat' in 'Text' text box
+            textEdit.Text = this.Enter_Sharepoint_Server_Path_From_OnMoveFile_ToolParams.TextEditText;
+        }
+        
+        /// <summary>
+        /// Enter_Sharepoint_Server_Path_From_OnUpload_Tool - Use 'Enter_Sharepoint_Server_Path_From_OnUpload_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Enter Sharepoint Server Path From OnUpload Tool")]
+        public void Enter_Sharepoint_Server_Path_From_OnUpload_Tool()
+        {
+            #region Variable Declarations
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpload.FromDirectoryComboBox.TextEdit;
+            #endregion
+
+            // Type 'clocks.dat' in 'Text' text box
+            textEdit.Text = this.Enter_Sharepoint_Server_Path_From_OnUpload_ToolParams.TextEditText;
+        }
+        
+        /// <summary>
+        /// Enter_Sharepoint_Server_Path_To_OnCopyFile_Tool - Use 'Enter_Sharepoint_Server_Path_To_OnCopyFile_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Enter Sharepoint Server Path To OnCopyFile Tool")]
+        public void Enter_Sharepoint_Server_Path_To_OnCopyFile_Tool()
+        {
+            #region Variable Declarations
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.PathDirectoryComboBox.TextEdit;
+            #endregion
+
+            // Type 'TestFolder/clocks.dat' in 'Text' text box
+            textEdit.Text = this.Enter_Sharepoint_Server_Path_To_OnCopyFile_ToolParams.TextEditText;
+        }
+        
+        /// <summary>
+        /// Enter_Sharepoint_Server_Path_To_OnDownload_Tool - Use 'Enter_Sharepoint_Server_Path_To_OnDownload_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Enter Sharepoint Server Path To OnDownload Tool")]
+        public void Enter_Sharepoint_Server_Path_To_OnDownload_Tool()
+        {
+            #region Variable Declarations
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownload.PathDirectoryComboBox.TextEdit;
+            #endregion
+
+            // Type 'TestFolder/clocks.dat' in 'Text' text box
+            textEdit.Text = this.Enter_Sharepoint_Server_Path_To_OnDownload_ToolParams.TextEditText;
+        }
+        
+        /// <summary>
+        /// Enter_Sharepoint_Server_Path_To_OnMoveFile_Tool - Use 'Enter_Sharepoint_Server_Path_To_OnMoveFile_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Enter Sharepoint Server Path To OnMoveFile Tool")]
+        public void Enter_Sharepoint_Server_Path_To_OnMoveFile_Tool()
+        {
+            #region Variable Declarations
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.PathDirectoryComboBox.TextEdit;
+            #endregion
+
+            // Type 'TestFolder/clocks.dat' in 'Text' text box
+            textEdit.Text = this.Enter_Sharepoint_Server_Path_To_OnMoveFile_ToolParams.TextEditText;
+        }
+        
+        /// <summary>
+        /// Enter_Sharepoint_Server_Path_To_OnUpload_Tool - Use 'Enter_Sharepoint_Server_Path_To_OnUpload_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Enter Sharepoint Server Path To OnUpload Tool")]
+        public void Enter_Sharepoint_Server_Path_To_OnUpload_Tool()
+        {
+            #region Variable Declarations
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpload.PathDirectoryComboBox.TextEdit;
+            #endregion
+
+            // Type 'TestFolder/clocks.dat' in 'Text' text box
+            textEdit.Text = this.Enter_Sharepoint_Server_Path_To_OnUpload_ToolParams.TextEditText;
+        }
+        
+        /// <summary>
+        /// Enter_Sharepoint_ServerSource_ServerName - Use 'Enter_Sharepoint_ServerSource_ServerNameParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Enter Sharepoint ServerSource ServerName")]
+        public void Enter_Sharepoint_ServerSource_ServerName()
+        {
+            #region Variable Declarations
+            WpfEdit serverNameEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit;
+            #endregion
+
+            // Type 'http://rsaklfsvrsharep/' in 'ServerName' text box
+            serverNameEdit.Text = this.Enter_Sharepoint_ServerSource_ServerNameParams.ServerNameEditText;
+        }
+        
+        /// <summary>
+        /// Enter_Sharepoint_ServerSource_User_Credentials - Use 'Enter_Sharepoint_ServerSource_User_CredentialsParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Enter Sharepoint ServerSource User Credentials")]
+        public void Enter_Sharepoint_ServerSource_User_Credentials()
+        {
+            #region Variable Declarations
+            WpfEdit userNameTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox;
+            WpfEdit passwordTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox;
+            #endregion
+
+            // Type 'Bernartdt@dvtdev.onmicrosoft.com' in 'UserNameTextBox' text box
+            userNameTextBox.Text = this.Enter_Sharepoint_ServerSource_User_CredentialsParams.UserNameTextBoxText;
+
+            // Click 'PasswordTextBox' text box
+            Mouse.Click(passwordTextBox, new Point(89, 1));
+
+            // Type '********' in 'PasswordTextBox' text box
+            Keyboard.SendKeys(passwordTextBox, this.Enter_Sharepoint_ServerSource_User_CredentialsParams.PasswordTextBoxSendKeys, true);
         }
         
         /// <summary>
@@ -4881,6 +5172,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_Sharepoint_Copy_Tool_Large_View
+        /// </summary>
+        [When(@"I Open Sharepoint Copy Tool Large View")]
+        public void Open_Sharepoint_Copy_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointCopyFile = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile;
+            #endregion
+
+            // Double-Click 'SharepointCopyFileActivity' custom control
+            Mouse.DoubleClick(sharepointCopyFile, new Point(230, 11));
+        }
+        
+        /// <summary>
         /// Open_Sharepoint_Create_Tool_Large_View
         /// </summary>
         [When(@"I Open Sharepoint Create Tool Large View")]
@@ -4909,6 +5214,34 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_Sharepoint_Download_Tool_Large_View
+        /// </summary>
+        [When(@"I Open Sharepoint Download Tool Large View")]
+        public void Open_Sharepoint_Download_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointDownload = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownload;
+            #endregion
+
+            // Double-Click 'SharePointDownLoadActivity' custom control
+            Mouse.DoubleClick(sharepointDownload, new Point(230, 11));
+        }
+        
+        /// <summary>
+        /// Open_Sharepoint_MoveFile_Tool_Large_View
+        /// </summary>
+        [When(@"I Open Sharepoint MoveFile Tool Large View")]
+        public void Open_Sharepoint_MoveFile_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointMoveFile = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile;
+            #endregion
+
+            // Double-Click 'SharePointMoveFileActivity' custom control
+            Mouse.DoubleClick(sharepointMoveFile, new Point(230, 11));
+        }
+        
+        /// <summary>
         /// Open_Sharepoint_Read_Tool_Large_View
         /// </summary>
         [When(@"I Open Sharepoint Read Tool Large View")]
@@ -4934,6 +5267,20 @@ namespace Warewolf.UITests
 
             // Double-Click 'SharepointUpdateListItemActivity' custom control
             Mouse.DoubleClick(sharepointUpdate, new Point(230, 11));
+        }
+        
+        /// <summary>
+        /// Open_Sharepoint_Upload_Tool_Large_View
+        /// </summary>
+        [When(@"I Open Sharepoint Upload Tool Large View")]
+        public void Open_Sharepoint_Upload_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointUpload = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpload;
+            #endregion
+
+            // Double-Click 'SharePointUploadActivity' custom control
+            Mouse.DoubleClick(sharepointUpload, new Point(230, 11));
         }
         
         /// <summary>
@@ -6105,6 +6452,24 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_AppData_From_MethodList_From_ReadTool
+        /// </summary>
+        [When(@"I Select AppData From MethodList From ReadTool")]
+        public void Select_AppData_From_MethodList_From_ReadTool()
+        {
+            #region Variable Declarations
+            WpfComboBox methodList = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead.MethodList;
+            WpfListItem uIAppdataListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead.MethodList.UIAppdataListItem;
+            #endregion
+
+            // Click 'UI__TableName_AutoID' combo box
+            Mouse.Click(methodList, new Point(174, 7));
+
+            // Click 'appdata' list item
+            Mouse.Click(uIAppdataListItem, new Point(43, 15));
+        }
+        
+        /// <summary>
         /// Select_Copy_FromContextMenu
         /// </summary>
         [When(@"I Select Copy FromContextMenu")]
@@ -6484,11 +6849,15 @@ namespace Warewolf.UITests
         public void Select_NewFolder_FromExplorerContextMenu()
         {
             #region Variable Declarations
-            WpfMenuItem newFolder = this.MainStudioWindow.ExplorerContextMenu.NewFolder;
+            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            WpfMenuItem newFolderMenuItem = this.MainStudioWindow.ExplorerContextMenu.NewFolderMenuItem;
             #endregion
 
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(74, 11));
+
             // Click 'New Folder' menu item
-            Mouse.Click(newFolder, new Point(87, 14));
+            Mouse.Click(newFolderMenuItem, new Point(74, 11));
         }
         
         /// <summary>
@@ -6548,6 +6917,74 @@ namespace Warewolf.UITests
 
             // Type '{Down}{Enter}' in 'UI__Database_AutoID' combo box
             Keyboard.SendKeys(server, this.Select_NewSharepointSource_FromServer_LookupParams.ServerSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_Tool - Use 'Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select NewSharepointSource FromServer Lookup On SharepointCopyFile Tool")]
+        public void Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_Tool()
+        {
+            #region Variable Declarations
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.Server;
+            #endregion
+
+            // Click 'UI__Database_AutoID' combo box
+            Mouse.Click(server, new Point(107, 13));
+
+            // Type '{Down}{Enter}' in 'UI__Database_AutoID' combo box
+            Keyboard.SendKeys(server, this.Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams.ServerSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// Select_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_Tool - Use 'Select_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select NewSharepointSource FromServer Lookup On SharepointDownload Tool")]
+        public void Select_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_Tool()
+        {
+            #region Variable Declarations
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownload.Server;
+            #endregion
+
+            // Click 'UI__Database_AutoID' combo box
+            Mouse.Click(server, new Point(107, 13));
+
+            // Type '{Down}{Enter}' in 'UI__Database_AutoID' combo box
+            Keyboard.SendKeys(server, this.Select_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_ToolParams.ServerSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_Tool - Use 'Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select NewSharepointSource FromServer Lookup On SharepointMoveFile Tool")]
+        public void Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_Tool()
+        {
+            #region Variable Declarations
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.Server;
+            #endregion
+
+            // Click 'UI__Database_AutoID' combo box
+            Mouse.Click(server, new Point(107, 13));
+
+            // Type '{Down}{Enter}' in 'UI__Database_AutoID' combo box
+            Keyboard.SendKeys(server, this.Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams.ServerSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_Tool - Use 'Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select NewSharepointSource FromServer Lookup On SharepointUpload Tool")]
+        public void Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_Tool()
+        {
+            #region Variable Declarations
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpload.Server;
+            #endregion
+
+            // Click 'UI__Database_AutoID' combo box
+            Mouse.Click(server, new Point(107, 13));
+
+            // Type '{Down}{Enter}' in 'UI__Database_AutoID' combo box
+            Keyboard.SendKeys(server, this.Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams.ServerSendKeys, ModifierKeys.None);
         }
         
         /// <summary>
@@ -6835,6 +7272,28 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_SharepointTestServer_From_SharepointRead_Tool - Use 'Select_SharepointTestServer_From_SharepointRead_ToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select SharepointTestServer From SharepointRead Tool")]
+        public void Select_SharepointTestServer_From_SharepointRead_Tool()
+        {
+            #region Variable Declarations
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead.Server;
+            WpfListItem sharepointTestServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead.Server.SharepointTestServer;
+            WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead.EditSourceButton;
+            #endregion
+
+            // Click 'UI__Database_AutoID' combo box
+            Mouse.Click(server, new Point(98, 12));
+
+            // Click '{"Server":"http://rsaklfsvrsharep/","Authenticatio...' list item
+            Mouse.Click(sharepointTestServer, new Point(67, 13));
+
+            // Verify that the 'Enabled' property of '...' button equals 'True'
+            Assert.AreEqual(this.Select_SharepointTestServer_From_SharepointRead_ToolParams.EditSourceButtonEnabled, editSourceButton.Enabled, "edit sharepoint source is disabled after selecting a source");
+        }
+        
+        /// <summary>
         /// Select_SharepointTestServer_From_SharepointUpdate_Tool - Use 'Select_SharepointTestServer_From_SharepointUpdate_ToolParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Select SharepointTestServer From SharepointUpdate Tool")]
@@ -6854,6 +7313,28 @@ namespace Warewolf.UITests
 
             // Verify that the 'Enabled' property of '...' button equals 'True'
             Assert.AreEqual(this.Select_SharepointTestServer_From_SharepointUpdate_ToolParams.EditSourceButtonEnabled, editSourceButton.Enabled, "edit sharepoint source is disabled after selecting a source");
+        }
+        
+        /// <summary>
+        /// Select_SharepointTestServer_FromSharepointCopy - Use 'Select_SharepointTestServer_FromSharepointCopyParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select SharepointTestServer FromSharepointCopy")]
+        public void Select_SharepointTestServer_FromSharepointCopy()
+        {
+            #region Variable Declarations
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.Server;
+            WpfListItem sharepointTestServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.Server.SharepointTestServer;
+            WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.EditSourceButton;
+            #endregion
+
+            // Click 'UI__Database_AutoID' combo box
+            Mouse.Click(server, new Point(98, 12));
+
+            // Click '{"Server":"http://rsaklfsvrsharep/","Authenticatio...' list item
+            Mouse.Click(sharepointTestServer, new Point(67, 13));
+
+            // Verify that the 'Enabled' property of '...' button equals 'True'
+            Assert.AreEqual(this.Select_SharepointTestServer_FromSharepointCopyParams.EditSourceButtonEnabled, editSourceButton.Enabled, "edit sharepoint source is disabled after selecting a source");
         }
         
         /// <summary>
@@ -7094,48 +7575,6 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
-        }
-        
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethod1")]
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfComboBox fieldComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete.LargeViewContent.DataGridTable.ItemRow1.FileNameCell.FieldComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI__Row1_SearchType_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.FieldComboBoxExists, fieldComboBox.Exists, "Field name combobox does not exist");
-        }
-        
-        /// <summary>
-        /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethod2")]
-        public void AssertMethod2()
-        {
-            #region Variable Declarations
-            WpfComboBox matchTypeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete.LargeViewContent.DataGridTable.ItemRow1.MatchTypeCell.MatchTypeComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI__Row1_SearchType_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.MatchTypeComboBoxExists, matchTypeComboBox.Exists, "match type does not exist");
-        }
-        
-        /// <summary>
-        /// AssertMethod3 - Use 'AssertMethod3ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethod3")]
-        public void AssertMethod3()
-        {
-            #region Variable Declarations
-            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete.LargeViewContent.DataGridTable.ItemRow1.ValueCell.ValueComboBox.TextEdit;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Text' text box equals 'True'
-            Assert.AreEqual(this.AssertMethod3ExpectedValues.TextEditExists, textEdit.Exists, "exist textbox does not exist");
         }
         
         #region Properties
@@ -7775,6 +8214,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_UserButton_OnSharepointSourceParams Click_UserButton_OnSharepointSourceParams
+        {
+            get
+            {
+                if ((this.mClick_UserButton_OnSharepointSourceParams == null))
+                {
+                    this.mClick_UserButton_OnSharepointSourceParams = new Click_UserButton_OnSharepointSourceParams();
+                }
+                return this.mClick_UserButton_OnSharepointSourceParams;
+            }
+        }
+        
         public virtual Click_Variable_IsInputParams Click_Variable_IsInputParams
         {
             get
@@ -8375,6 +8826,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams;
+            }
+        }
+        
         public virtual Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams
         {
             get
@@ -8399,6 +8862,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Drag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams;
+            }
+        }
+        
         public virtual Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams
         {
             get
@@ -8420,6 +8907,18 @@ namespace Warewolf.UITests
                     this.mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams();
                 }
                 return this.mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams;
             }
         }
         
@@ -8648,6 +9147,126 @@ namespace Warewolf.UITests
                     this.mEnter_RunAsUser_Username_And_PasswordParams = new Enter_RunAsUser_Username_And_PasswordParams();
                 }
                 return this.mEnter_RunAsUser_Username_And_PasswordParams;
+            }
+        }
+        
+        public virtual Enter_Sharepoint_Server_Path_From_OnCopyFile_ToolParams Enter_Sharepoint_Server_Path_From_OnCopyFile_ToolParams
+        {
+            get
+            {
+                if ((this.mEnter_Sharepoint_Server_Path_From_OnCopyFile_ToolParams == null))
+                {
+                    this.mEnter_Sharepoint_Server_Path_From_OnCopyFile_ToolParams = new Enter_Sharepoint_Server_Path_From_OnCopyFile_ToolParams();
+                }
+                return this.mEnter_Sharepoint_Server_Path_From_OnCopyFile_ToolParams;
+            }
+        }
+        
+        public virtual Enter_Sharepoint_Server_Path_From_OnDownload_ToolParams Enter_Sharepoint_Server_Path_From_OnDownload_ToolParams
+        {
+            get
+            {
+                if ((this.mEnter_Sharepoint_Server_Path_From_OnDownload_ToolParams == null))
+                {
+                    this.mEnter_Sharepoint_Server_Path_From_OnDownload_ToolParams = new Enter_Sharepoint_Server_Path_From_OnDownload_ToolParams();
+                }
+                return this.mEnter_Sharepoint_Server_Path_From_OnDownload_ToolParams;
+            }
+        }
+        
+        public virtual Enter_Sharepoint_Server_Path_From_OnMoveFile_ToolParams Enter_Sharepoint_Server_Path_From_OnMoveFile_ToolParams
+        {
+            get
+            {
+                if ((this.mEnter_Sharepoint_Server_Path_From_OnMoveFile_ToolParams == null))
+                {
+                    this.mEnter_Sharepoint_Server_Path_From_OnMoveFile_ToolParams = new Enter_Sharepoint_Server_Path_From_OnMoveFile_ToolParams();
+                }
+                return this.mEnter_Sharepoint_Server_Path_From_OnMoveFile_ToolParams;
+            }
+        }
+        
+        public virtual Enter_Sharepoint_Server_Path_From_OnUpload_ToolParams Enter_Sharepoint_Server_Path_From_OnUpload_ToolParams
+        {
+            get
+            {
+                if ((this.mEnter_Sharepoint_Server_Path_From_OnUpload_ToolParams == null))
+                {
+                    this.mEnter_Sharepoint_Server_Path_From_OnUpload_ToolParams = new Enter_Sharepoint_Server_Path_From_OnUpload_ToolParams();
+                }
+                return this.mEnter_Sharepoint_Server_Path_From_OnUpload_ToolParams;
+            }
+        }
+        
+        public virtual Enter_Sharepoint_Server_Path_To_OnCopyFile_ToolParams Enter_Sharepoint_Server_Path_To_OnCopyFile_ToolParams
+        {
+            get
+            {
+                if ((this.mEnter_Sharepoint_Server_Path_To_OnCopyFile_ToolParams == null))
+                {
+                    this.mEnter_Sharepoint_Server_Path_To_OnCopyFile_ToolParams = new Enter_Sharepoint_Server_Path_To_OnCopyFile_ToolParams();
+                }
+                return this.mEnter_Sharepoint_Server_Path_To_OnCopyFile_ToolParams;
+            }
+        }
+        
+        public virtual Enter_Sharepoint_Server_Path_To_OnDownload_ToolParams Enter_Sharepoint_Server_Path_To_OnDownload_ToolParams
+        {
+            get
+            {
+                if ((this.mEnter_Sharepoint_Server_Path_To_OnDownload_ToolParams == null))
+                {
+                    this.mEnter_Sharepoint_Server_Path_To_OnDownload_ToolParams = new Enter_Sharepoint_Server_Path_To_OnDownload_ToolParams();
+                }
+                return this.mEnter_Sharepoint_Server_Path_To_OnDownload_ToolParams;
+            }
+        }
+        
+        public virtual Enter_Sharepoint_Server_Path_To_OnMoveFile_ToolParams Enter_Sharepoint_Server_Path_To_OnMoveFile_ToolParams
+        {
+            get
+            {
+                if ((this.mEnter_Sharepoint_Server_Path_To_OnMoveFile_ToolParams == null))
+                {
+                    this.mEnter_Sharepoint_Server_Path_To_OnMoveFile_ToolParams = new Enter_Sharepoint_Server_Path_To_OnMoveFile_ToolParams();
+                }
+                return this.mEnter_Sharepoint_Server_Path_To_OnMoveFile_ToolParams;
+            }
+        }
+        
+        public virtual Enter_Sharepoint_Server_Path_To_OnUpload_ToolParams Enter_Sharepoint_Server_Path_To_OnUpload_ToolParams
+        {
+            get
+            {
+                if ((this.mEnter_Sharepoint_Server_Path_To_OnUpload_ToolParams == null))
+                {
+                    this.mEnter_Sharepoint_Server_Path_To_OnUpload_ToolParams = new Enter_Sharepoint_Server_Path_To_OnUpload_ToolParams();
+                }
+                return this.mEnter_Sharepoint_Server_Path_To_OnUpload_ToolParams;
+            }
+        }
+        
+        public virtual Enter_Sharepoint_ServerSource_ServerNameParams Enter_Sharepoint_ServerSource_ServerNameParams
+        {
+            get
+            {
+                if ((this.mEnter_Sharepoint_ServerSource_ServerNameParams == null))
+                {
+                    this.mEnter_Sharepoint_ServerSource_ServerNameParams = new Enter_Sharepoint_ServerSource_ServerNameParams();
+                }
+                return this.mEnter_Sharepoint_ServerSource_ServerNameParams;
+            }
+        }
+        
+        public virtual Enter_Sharepoint_ServerSource_User_CredentialsParams Enter_Sharepoint_ServerSource_User_CredentialsParams
+        {
+            get
+            {
+                if ((this.mEnter_Sharepoint_ServerSource_User_CredentialsParams == null))
+                {
+                    this.mEnter_Sharepoint_ServerSource_User_CredentialsParams = new Enter_Sharepoint_ServerSource_User_CredentialsParams();
+                }
+                return this.mEnter_Sharepoint_ServerSource_User_CredentialsParams;
             }
         }
         
@@ -9431,6 +10050,54 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams
+        {
+            get
+            {
+                if ((this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams == null))
+                {
+                    this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams = new Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams();
+                }
+                return this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams;
+            }
+        }
+        
+        public virtual Select_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_ToolParams Select_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_ToolParams
+        {
+            get
+            {
+                if ((this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_ToolParams == null))
+                {
+                    this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_ToolParams = new Select_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_ToolParams();
+                }
+                return this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_ToolParams;
+            }
+        }
+        
+        public virtual Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams
+        {
+            get
+            {
+                if ((this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams == null))
+                {
+                    this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams = new Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams();
+                }
+                return this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams;
+            }
+        }
+        
+        public virtual Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams
+        {
+            get
+            {
+                if ((this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams == null))
+                {
+                    this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams = new Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams();
+                }
+                return this.mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams;
+            }
+        }
+        
         public virtual Select_NewWorkFlowService_From_ContextMenuParams Select_NewWorkFlowService_From_ContextMenuParams
         {
             get
@@ -9515,6 +10182,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_SharepointTestServer_From_SharepointRead_ToolParams Select_SharepointTestServer_From_SharepointRead_ToolParams
+        {
+            get
+            {
+                if ((this.mSelect_SharepointTestServer_From_SharepointRead_ToolParams == null))
+                {
+                    this.mSelect_SharepointTestServer_From_SharepointRead_ToolParams = new Select_SharepointTestServer_From_SharepointRead_ToolParams();
+                }
+                return this.mSelect_SharepointTestServer_From_SharepointRead_ToolParams;
+            }
+        }
+        
         public virtual Select_SharepointTestServer_From_SharepointUpdate_ToolParams Select_SharepointTestServer_From_SharepointUpdate_ToolParams
         {
             get
@@ -9524,6 +10203,18 @@ namespace Warewolf.UITests
                     this.mSelect_SharepointTestServer_From_SharepointUpdate_ToolParams = new Select_SharepointTestServer_From_SharepointUpdate_ToolParams();
                 }
                 return this.mSelect_SharepointTestServer_From_SharepointUpdate_ToolParams;
+            }
+        }
+        
+        public virtual Select_SharepointTestServer_FromSharepointCopyParams Select_SharepointTestServer_FromSharepointCopyParams
+        {
+            get
+            {
+                if ((this.mSelect_SharepointTestServer_FromSharepointCopyParams == null))
+                {
+                    this.mSelect_SharepointTestServer_FromSharepointCopyParams = new Select_SharepointTestServer_FromSharepointCopyParams();
+                }
+                return this.mSelect_SharepointTestServer_FromSharepointCopyParams;
             }
         }
         
@@ -9656,42 +10347,6 @@ namespace Warewolf.UITests
                     this.mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams = new Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams();
                 }
                 return this.mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
-            }
-        }
-        
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod2ExpectedValues == null))
-                {
-                    this.mAssertMethod2ExpectedValues = new AssertMethod2ExpectedValues();
-                }
-                return this.mAssertMethod2ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod3ExpectedValues AssertMethod3ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod3ExpectedValues == null))
-                {
-                    this.mAssertMethod3ExpectedValues = new AssertMethod3ExpectedValues();
-                }
-                return this.mAssertMethod3ExpectedValues;
             }
         }
         
@@ -9911,6 +10566,8 @@ namespace Warewolf.UITests
         
         private Click_UpdateDuplicateRelationshipsParams mClick_UpdateDuplicateRelationshipsParams;
         
+        private Click_UserButton_OnSharepointSourceParams mClick_UserButton_OnSharepointSourceParams;
+        
         private Click_Variable_IsInputParams mClick_Variable_IsInputParams;
         
         private Click_VariableList_Recordset_Row1_IsInputCheckboxParams mClick_VariableList_Recordset_Row1_IsInputCheckboxParams;
@@ -10011,13 +10668,21 @@ namespace Warewolf.UITests
         
         private Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams mDrag_Toolbox_Service_Picker_Onto_DesignSurfaceParams;
         
+        private Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams;
+        
         private Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams;
         
+        private Drag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams;
+        
         private Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams mDrag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams;
         
@@ -10056,6 +10721,26 @@ namespace Warewolf.UITests
         private Enter_Public_As_Windows_GroupParams mEnter_Public_As_Windows_GroupParams;
         
         private Enter_RunAsUser_Username_And_PasswordParams mEnter_RunAsUser_Username_And_PasswordParams;
+        
+        private Enter_Sharepoint_Server_Path_From_OnCopyFile_ToolParams mEnter_Sharepoint_Server_Path_From_OnCopyFile_ToolParams;
+        
+        private Enter_Sharepoint_Server_Path_From_OnDownload_ToolParams mEnter_Sharepoint_Server_Path_From_OnDownload_ToolParams;
+        
+        private Enter_Sharepoint_Server_Path_From_OnMoveFile_ToolParams mEnter_Sharepoint_Server_Path_From_OnMoveFile_ToolParams;
+        
+        private Enter_Sharepoint_Server_Path_From_OnUpload_ToolParams mEnter_Sharepoint_Server_Path_From_OnUpload_ToolParams;
+        
+        private Enter_Sharepoint_Server_Path_To_OnCopyFile_ToolParams mEnter_Sharepoint_Server_Path_To_OnCopyFile_ToolParams;
+        
+        private Enter_Sharepoint_Server_Path_To_OnDownload_ToolParams mEnter_Sharepoint_Server_Path_To_OnDownload_ToolParams;
+        
+        private Enter_Sharepoint_Server_Path_To_OnMoveFile_ToolParams mEnter_Sharepoint_Server_Path_To_OnMoveFile_ToolParams;
+        
+        private Enter_Sharepoint_Server_Path_To_OnUpload_ToolParams mEnter_Sharepoint_Server_Path_To_OnUpload_ToolParams;
+        
+        private Enter_Sharepoint_ServerSource_ServerNameParams mEnter_Sharepoint_ServerSource_ServerNameParams;
+        
+        private Enter_Sharepoint_ServerSource_User_CredentialsParams mEnter_Sharepoint_ServerSource_User_CredentialsParams;
         
         private Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams mEnter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams;
         
@@ -10187,6 +10872,14 @@ namespace Warewolf.UITests
         
         private Select_NewSharepointSource_FromServer_LookupParams mSelect_NewSharepointSource_FromServer_LookupParams;
         
+        private Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams;
+        
+        private Select_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_ToolParams mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_ToolParams;
+        
+        private Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams;
+        
+        private Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams;
+        
         private Select_NewWorkFlowService_From_ContextMenuParams mSelect_NewWorkFlowService_From_ContextMenuParams;
         
         private Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
@@ -10201,7 +10894,11 @@ namespace Warewolf.UITests
         
         private Select_SharepointTestServerParams mSelect_SharepointTestServerParams;
         
+        private Select_SharepointTestServer_From_SharepointRead_ToolParams mSelect_SharepointTestServer_From_SharepointRead_ToolParams;
+        
         private Select_SharepointTestServer_From_SharepointUpdate_ToolParams mSelect_SharepointTestServer_From_SharepointUpdate_ToolParams;
+        
+        private Select_SharepointTestServer_FromSharepointCopyParams mSelect_SharepointTestServer_FromSharepointCopyParams;
         
         private Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
         
@@ -10224,12 +10921,6 @@ namespace Warewolf.UITests
         private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
-        
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
-        private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
-        
-        private AssertMethod3ExpectedValues mAssertMethod3ExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -11346,6 +12037,21 @@ namespace Warewolf.UITests
         /// Select 'Update duplicated relationships?' check box
         /// </summary>
         public bool UpdateDuplicatedRelatChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_UserButton_OnSharepointSource'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_UserButton_OnSharepointSourceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'User' radio button
+        /// </summary>
+        public bool UserRadioButtonSelected = true;
         #endregion
     }
     
@@ -12530,6 +13236,31 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Copy File' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Copy File";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Database_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ServerExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12575,6 +13306,56 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_Download_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Sharepoint_Download_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Download' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Download";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Database_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ServerExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Move' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Move";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Database_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ServerExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12611,6 +13392,31 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Upload' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Upload";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Database_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ServerExists = true;
         #endregion
     }
     
@@ -13046,6 +13852,162 @@ namespace Warewolf.UITests
         /// Type '********' in 'PasswordTextBox' text box
         /// </summary>
         public string PasswordTextBoxEditSendKeys = "a1cbgHEVu098QBN0jqs55wYP/bLfpGNMxw2YxtLIgKOALxPfITSBDjNERdIi/KEq";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Sharepoint_Server_Path_From_OnCopyFile_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Sharepoint_Server_Path_From_OnCopyFile_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'clocks.dat' in 'Text' text box
+        /// </summary>
+        public string TextEditText = "clocks.dat";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Sharepoint_Server_Path_From_OnDownload_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Sharepoint_Server_Path_From_OnDownload_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'clocks.dat' in 'Text' text box
+        /// </summary>
+        public string TextEditText = "clocks.dat";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Sharepoint_Server_Path_From_OnMoveFile_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Sharepoint_Server_Path_From_OnMoveFile_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'clocks.dat' in 'Text' text box
+        /// </summary>
+        public string TextEditText = "clocks.dat";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Sharepoint_Server_Path_From_OnUpload_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Sharepoint_Server_Path_From_OnUpload_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'clocks.dat' in 'Text' text box
+        /// </summary>
+        public string TextEditText = "clocks.dat";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Sharepoint_Server_Path_To_OnCopyFile_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Sharepoint_Server_Path_To_OnCopyFile_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'TestFolder/clocks.dat' in 'Text' text box
+        /// </summary>
+        public string TextEditText = "TestFolder/clocks.dat";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Sharepoint_Server_Path_To_OnDownload_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Sharepoint_Server_Path_To_OnDownload_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'TestFolder/clocks.dat' in 'Text' text box
+        /// </summary>
+        public string TextEditText = "TestFolder/clocks.dat";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Sharepoint_Server_Path_To_OnMoveFile_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Sharepoint_Server_Path_To_OnMoveFile_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'TestFolder/clocks.dat' in 'Text' text box
+        /// </summary>
+        public string TextEditText = "TestFolder/clocks.dat";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Sharepoint_Server_Path_To_OnUpload_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Sharepoint_Server_Path_To_OnUpload_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'TestFolder/clocks.dat' in 'Text' text box
+        /// </summary>
+        public string TextEditText = "TestFolder/clocks.dat";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Sharepoint_ServerSource_ServerName'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Sharepoint_ServerSource_ServerNameParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'http://rsaklfsvrsharep/' in 'ServerName' text box
+        /// </summary>
+        public string ServerNameEditText = "http://rsaklfsvrsharep/";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Sharepoint_ServerSource_User_Credentials'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Sharepoint_ServerSource_User_CredentialsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Bernartdt@dvtdev.onmicrosoft.com' in 'UserNameTextBox' text box
+        /// </summary>
+        public string UserNameTextBoxText = "Bernartdt@dvtdev.onmicrosoft.com";
+        
+        /// <summary>
+        /// Type '********' in 'PasswordTextBox' text box
+        /// </summary>
+        public string PasswordTextBoxSendKeys = "YN/mQM5J9PSwtnVGttwUbqV2NkA27Xtb2Cs5ppSS77kjZgxPPM79nWlqEFRqmwY4KvuSBKnsLDU6spVwV" +
+            "rcWKXwSuKb7vBXD";
         #endregion
     }
     
@@ -14260,6 +15222,66 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '{Down}{Enter}' in 'UI__Database_AutoID' combo box
+        /// </summary>
+        public string ServerSendKeys = "{Down}{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_NewSharepointSource_FromServer_Lookup_On_SharepointDownload_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '{Down}{Enter}' in 'UI__Database_AutoID' combo box
+        /// </summary>
+        public string ServerSendKeys = "{Down}{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '{Down}{Enter}' in 'UI__Database_AutoID' combo box
+        /// </summary>
+        public string ServerSendKeys = "{Down}{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '{Down}{Enter}' in 'UI__Database_AutoID' combo box
+        /// </summary>
+        public string ServerSendKeys = "{Down}{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_NewWorkFlowService_From_ContextMenu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -14395,10 +15417,40 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_SharepointTestServer_From_SharepointRead_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_SharepointTestServer_From_SharepointRead_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of '...' button equals 'True'
+        /// </summary>
+        public bool EditSourceButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_SharepointTestServer_From_SharepointUpdate_Tool'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Select_SharepointTestServer_From_SharepointUpdate_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of '...' button equals 'True'
+        /// </summary>
+        public bool EditSourceButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_SharepointTestServer_FromSharepointCopy'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_SharepointTestServer_FromSharepointCopyParams
     {
         
         #region Fields
@@ -14620,51 +15672,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_SearchType_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool FieldComboBoxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod2'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod2ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_SearchType_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool MatchTypeComboBoxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod3'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod3ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
-        /// </summary>
-        public bool TextEditExists = true;
         #endregion
     }
     
@@ -15943,22 +16950,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfMenuItem NewFolder
-        {
-            get
-            {
-                if ((this.mNewFolder == null))
-                {
-                    this.mNewFolder = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mNewFolder.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewFolderFromItem";
-                    this.mNewFolder.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewFolder;
-            }
-        }
-        
         public WpfMenuItem Rename
         {
             get
@@ -16118,6 +17109,22 @@ namespace Warewolf.UITests
                 return this.mViewSwaggerMenuItem;
             }
         }
+        
+        public WpfMenuItem NewFolderMenuItem
+        {
+            get
+            {
+                if ((this.mNewFolderMenuItem == null))
+                {
+                    this.mNewFolderMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewFolderMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewFolder";
+                    this.mNewFolderMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewFolderMenuItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -16139,8 +17146,6 @@ namespace Warewolf.UITests
         
         private WpfMenuItem mNewSharepointSource;
         
-        private WpfMenuItem mNewFolder;
-        
         private WpfMenuItem mRename;
         
         private WpfMenuItem mDelete;
@@ -16160,6 +17165,8 @@ namespace Warewolf.UITests
         private WpfMenuItem mTests;
         
         private WpfMenuItem mViewSwaggerMenuItem;
+        
+        private WpfMenuItem mNewFolderMenuItem;
         #endregion
     }
     
@@ -20788,6 +21795,70 @@ namespace Warewolf.UITests
                 return this.mUpdateListItems;
             }
         }
+        
+        public WpfListItem UploadFile
+        {
+            get
+            {
+                if ((this.mUploadFile == null))
+                {
+                    this.mUploadFile = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUploadFile.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Upload File";
+                    this.mUploadFile.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUploadFile;
+            }
+        }
+        
+        public WpfListItem MoveFile
+        {
+            get
+            {
+                if ((this.mMoveFile == null))
+                {
+                    this.mMoveFile = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mMoveFile.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Move File";
+                    this.mMoveFile.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mMoveFile;
+            }
+        }
+        
+        public WpfListItem DownloadFile
+        {
+            get
+            {
+                if ((this.mDownloadFile == null))
+                {
+                    this.mDownloadFile = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mDownloadFile.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Download File";
+                    this.mDownloadFile.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDownloadFile;
+            }
+        }
+        
+        public WpfListItem CopyFile
+        {
+            get
+            {
+                if ((this.mCopyFile == null))
+                {
+                    this.mCopyFile = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mCopyFile.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Copy File";
+                    this.mCopyFile.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCopyFile;
+            }
+        }
         #endregion
         
         #region Fields
@@ -20798,6 +21869,14 @@ namespace Warewolf.UITests
         private ReadListItems mReadListItems;
         
         private UpdateListItems mUpdateListItems;
+        
+        private WpfListItem mUploadFile;
+        
+        private WpfListItem mMoveFile;
+        
+        private WpfListItem mDownloadFile;
+        
+        private WpfListItem mCopyFile;
         #endregion
     }
     
@@ -26922,18 +28001,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom SharepointRead
+        public SharepointRead SharepointRead
         {
             get
             {
                 if ((this.mSharepointRead == null))
                 {
-                    this.mSharepointRead = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mSharepointRead.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListReadDesigner";
-                    this.mSharepointRead.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "SharepointListReadDesigner", PropertyExpressionOperator.Contains));
-                    this.mSharepointRead.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSharepointRead = new SharepointRead(this);
                 }
                 return this.mSharepointRead;
             }
@@ -27543,6 +28617,54 @@ namespace Warewolf.UITests
                 return this.mRuby;
             }
         }
+        
+        public SharepointCopyFile SharepointCopyFile
+        {
+            get
+            {
+                if ((this.mSharepointCopyFile == null))
+                {
+                    this.mSharepointCopyFile = new SharepointCopyFile(this);
+                }
+                return this.mSharepointCopyFile;
+            }
+        }
+        
+        public SharepointUpload SharepointUpload
+        {
+            get
+            {
+                if ((this.mSharepointUpload == null))
+                {
+                    this.mSharepointUpload = new SharepointUpload(this);
+                }
+                return this.mSharepointUpload;
+            }
+        }
+        
+        public SharepointMoveFile SharepointMoveFile
+        {
+            get
+            {
+                if ((this.mSharepointMoveFile == null))
+                {
+                    this.mSharepointMoveFile = new SharepointMoveFile(this);
+                }
+                return this.mSharepointMoveFile;
+            }
+        }
+        
+        public SharepointDownload SharepointDownload
+        {
+            get
+            {
+                if ((this.mSharepointDownload == null))
+                {
+                    this.mSharepointDownload = new SharepointDownload(this);
+                }
+                return this.mSharepointDownload;
+            }
+        }
         #endregion
         
         #region Fields
@@ -27598,7 +28720,7 @@ namespace Warewolf.UITests
         
         private SharepointDelete mSharepointDelete;
         
-        private WpfCustom mSharepointRead;
+        private SharepointRead mSharepointRead;
         
         private SharepointUpdate mSharepointUpdate;
         
@@ -27679,6 +28801,14 @@ namespace Warewolf.UITests
         private Python1 mPython;
         
         private Ruby1 mRuby;
+        
+        private SharepointCopyFile mSharepointCopyFile;
+        
+        private SharepointUpload mSharepointUpload;
+        
+        private SharepointMoveFile mSharepointMoveFile;
+        
+        private SharepointDownload mSharepointDownload;
         #endregion
     }
     
@@ -32478,15 +33608,15 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SharepointUpdate : WpfCustom
+    public class SharepointRead : WpfCustom
     {
         
-        public SharepointUpdate(UITestControl searchLimitContainer) : 
+        public SharepointRead(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListUpdateDesigner";
-            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "SharepointListUpdateDesigner", PropertyExpressionOperator.Contains));
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListReadDesigner";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "SharepointListReadDesigner", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -33187,6 +34317,747 @@ namespace Warewolf.UITests
     {
         
         public ValueComboBox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_SearchCriteria_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SharepointUpdate : WpfCustom
+    {
+        
+        public SharepointUpdate(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListUpdateDesigner";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "SharepointListUpdateDesigner", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public Server3 Server
+        {
+            get
+            {
+                if ((this.mServer == null))
+                {
+                    this.mServer = new Server3(this);
+                }
+                return this.mServer;
+            }
+        }
+        
+        public WpfButton EditSourceButton
+        {
+            get
+            {
+                if ((this.mEditSourceButton == null))
+                {
+                    this.mEditSourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEditSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__EditDatabaseCommand_AutoID";
+                    this.mEditSourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEditSourceButton;
+            }
+        }
+        
+        public MethodList3 MethodList
+        {
+            get
+            {
+                if ((this.mMethodList == null))
+                {
+                    this.mMethodList = new MethodList3(this);
+                }
+                return this.mMethodList;
+            }
+        }
+        
+        public WpfButton RefreshButton
+        {
+            get
+            {
+                if ((this.mRefreshButton == null))
+                {
+                    this.mRefreshButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mRefreshButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__RefreshTablesCommand_AutoID";
+                    this.mRefreshButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRefreshButton;
+            }
+        }
+        
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        
+        public LargeViewContent3 LargeViewContent
+        {
+            get
+            {
+                if ((this.mLargeViewContent == null))
+                {
+                    this.mLargeViewContent = new LargeViewContent3(this);
+                }
+                return this.mLargeViewContent;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Server3 mServer;
+        
+        private WpfButton mEditSourceButton;
+        
+        private MethodList3 mMethodList;
+        
+        private WpfButton mRefreshButton;
+        
+        private WpfCustom mSpinner;
+        
+        private LargeViewContent3 mLargeViewContent;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Server3 : WpfComboBox
+    {
+        
+        public Server3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Database_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem NewSharePointSource
+        {
+            get
+            {
+                if ((this.mNewSharePointSource == null))
+                {
+                    this.mNewSharePointSource = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":null,""AuthenticationType"":""Windows"",""UserName"":null,""Password"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""77fe880c-baa0-4f69-ad3c-94439293c611"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""New Sharepoint Server Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewSharePointSource.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewSharePointSource;
+            }
+        }
+        
+        public WpfListItem SharepointTestServer
+        {
+            get
+            {
+                if ((this.mSharepointTestServer == null))
+                {
+                    this.mSharepointTestServer = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mSharepointTestServer.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":""http://rsaklfsvrsharep/"",""AuthenticationType"":""Windows"",""UserName"":"""",""Password"":"""",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""SharePoint Test Server"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2015-07-07T09:49:43.2102319+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""VersionId"":""6d47f370-c0d3-4b96-89d7-52090a38331a""}}";
+                    this.mSharepointTestServer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSharepointTestServer;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mNewSharePointSource;
+        
+        private WpfListItem mSharepointTestServer;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class MethodList3 : WpfComboBox
+    {
+        
+        public MethodList3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__TableName_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem UIAcceptanceTesting_CrListItem
+        {
+            get
+            {
+                if ((this.mUIAcceptanceTesting_CrListItem == null))
+                {
+                    this.mUIAcceptanceTesting_CrListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUIAcceptanceTesting_CrListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "AcceptanceTesting_Create";
+                    this.mUIAcceptanceTesting_CrListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIAcceptanceTesting_CrListItem;
+            }
+        }
+        
+        public WpfListItem UIAppdataListItem
+        {
+            get
+            {
+                if ((this.mUIAppdataListItem == null))
+                {
+                    this.mUIAppdataListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUIAppdataListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "appdata";
+                    this.mUIAppdataListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIAppdataListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mUIAcceptanceTesting_CrListItem;
+        
+        private WpfListItem mUIAppdataListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LargeViewContent3 : WpfCustom
+    {
+        
+        public LargeViewContent3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public DataGridTableVariables1 DataGridTableVariables
+        {
+            get
+            {
+                if ((this.mDataGridTableVariables == null))
+                {
+                    this.mDataGridTableVariables = new DataGridTableVariables1(this);
+                }
+                return this.mDataGridTableVariables;
+            }
+        }
+        
+        public DataGridTableValues1 DataGridTableValues
+        {
+            get
+            {
+                if ((this.mDataGridTableValues == null))
+                {
+                    this.mDataGridTableValues = new DataGridTableValues1(this);
+                }
+                return this.mDataGridTableValues;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private DataGridTableVariables1 mDataGridTableVariables;
+        
+        private DataGridTableValues1 mDataGridTableValues;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DataGridTableVariables1 : WpfTable
+    {
+        
+        public DataGridTableVariables1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemRow13 ItemRow1
+        {
+            get
+            {
+                if ((this.mItemRow1 == null))
+                {
+                    this.mItemRow1 = new ItemRow13(this);
+                }
+                return this.mItemRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemRow13 mItemRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ItemRow13 : WpfRow
+    {
+        
+        public ItemRow13(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public FileNameCell3 FileNameCell
+        {
+            get
+            {
+                if ((this.mFileNameCell == null))
+                {
+                    this.mFileNameCell = new FileNameCell3(this);
+                }
+                return this.mFileNameCell;
+            }
+        }
+        
+        public MatchTypeCell3 MatchTypeCell
+        {
+            get
+            {
+                if ((this.mMatchTypeCell == null))
+                {
+                    this.mMatchTypeCell = new MatchTypeCell3(this);
+                }
+                return this.mMatchTypeCell;
+            }
+        }
+        
+        public ValueCell7 ValueCell
+        {
+            get
+            {
+                if ((this.mValueCell == null))
+                {
+                    this.mValueCell = new ValueCell7(this);
+                }
+                return this.mValueCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private FileNameCell3 mFileNameCell;
+        
+        private MatchTypeCell3 mMatchTypeCell;
+        
+        private ValueCell7 mValueCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FileNameCell3 : WpfCell
+    {
+        
+        public FileNameCell3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Field Name";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox FieldComboBox
+        {
+            get
+            {
+                if ((this.mFieldComboBox == null))
+                {
+                    this.mFieldComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mFieldComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_SearchType_AutoID";
+                    this.mFieldComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFieldComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mFieldComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class MatchTypeCell3 : WpfCell
+    {
+        
+        public MatchTypeCell3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Match Type";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox MatchTypeComboBox
+        {
+            get
+            {
+                if ((this.mMatchTypeComboBox == null))
+                {
+                    this.mMatchTypeComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mMatchTypeComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_SearchType_AutoID";
+                    this.mMatchTypeComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mMatchTypeComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mMatchTypeComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueCell7 : WpfCell
+    {
+        
+        public ValueCell7(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ValueComboBox3 ValueComboBox
+        {
+            get
+            {
+                if ((this.mValueComboBox == null))
+                {
+                    this.mValueComboBox = new ValueComboBox3(this);
+                }
+                return this.mValueComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ValueComboBox3 mValueComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueComboBox3 : WpfComboBox
+    {
+        
+        public ValueComboBox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_SearchCriteria_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DataGridTableValues1 : WpfTable
+    {
+        
+        public DataGridTableValues1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemRow14 ItemRow1
+        {
+            get
+            {
+                if ((this.mItemRow1 == null))
+                {
+                    this.mItemRow1 = new ItemRow14(this);
+                }
+                return this.mItemRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemRow14 mItemRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ItemRow14 : WpfRow
+    {
+        
+        public ItemRow14(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public FileNameCell4 FileNameCell
+        {
+            get
+            {
+                if ((this.mFileNameCell == null))
+                {
+                    this.mFileNameCell = new FileNameCell4(this);
+                }
+                return this.mFileNameCell;
+            }
+        }
+        
+        public MatchTypeCell4 MatchTypeCell
+        {
+            get
+            {
+                if ((this.mMatchTypeCell == null))
+                {
+                    this.mMatchTypeCell = new MatchTypeCell4(this);
+                }
+                return this.mMatchTypeCell;
+            }
+        }
+        
+        public ValueCell8 ValueCell
+        {
+            get
+            {
+                if ((this.mValueCell == null))
+                {
+                    this.mValueCell = new ValueCell8(this);
+                }
+                return this.mValueCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private FileNameCell4 mFileNameCell;
+        
+        private MatchTypeCell4 mMatchTypeCell;
+        
+        private ValueCell8 mValueCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FileNameCell4 : WpfCell
+    {
+        
+        public FileNameCell4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Field Name";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox FieldComboBox
+        {
+            get
+            {
+                if ((this.mFieldComboBox == null))
+                {
+                    this.mFieldComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mFieldComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_SearchType_AutoID";
+                    this.mFieldComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFieldComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mFieldComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class MatchTypeCell4 : WpfCell
+    {
+        
+        public MatchTypeCell4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Match Type";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox MatchTypeComboBox
+        {
+            get
+            {
+                if ((this.mMatchTypeComboBox == null))
+                {
+                    this.mMatchTypeComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mMatchTypeComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_SearchType_AutoID";
+                    this.mMatchTypeComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mMatchTypeComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mMatchTypeComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueCell8 : WpfCell
+    {
+        
+        public ValueCell8(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ValueComboBox4 ValueComboBox
+        {
+            get
+            {
+                if ((this.mValueComboBox == null))
+                {
+                    this.mValueComboBox = new ValueComboBox4(this);
+                }
+                return this.mValueComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ValueComboBox4 mValueComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueComboBox4 : WpfComboBox
+    {
+        
+        public ValueComboBox4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -34218,13 +36089,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ValueCell7 ValueCell
+        public ValueCell9 ValueCell
         {
             get
             {
                 if ((this.mValueCell == null))
                 {
-                    this.mValueCell = new ValueCell7(this);
+                    this.mValueCell = new ValueCell9(this);
                 }
                 return this.mValueCell;
             }
@@ -34234,7 +36105,7 @@ namespace Warewolf.UITests
         #region Fields
         private VariableCell5 mVariableCell;
         
-        private ValueCell7 mValueCell;
+        private ValueCell9 mValueCell;
         #endregion
     }
     
@@ -34308,10 +36179,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ValueCell7 : WpfCell
+    public class ValueCell9 : WpfCell
     {
         
-        public ValueCell7(UITestControl searchLimitContainer) : 
+        public ValueCell9(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -34403,13 +36274,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ValueCell8 ValueCell
+        public ValueCell10 ValueCell
         {
             get
             {
                 if ((this.mValueCell == null))
                 {
-                    this.mValueCell = new ValueCell8(this);
+                    this.mValueCell = new ValueCell10(this);
                 }
                 return this.mValueCell;
             }
@@ -34419,7 +36290,7 @@ namespace Warewolf.UITests
         #region Fields
         private VariableCell6 mVariableCell;
         
-        private ValueCell8 mValueCell;
+        private ValueCell10 mValueCell;
         #endregion
     }
     
@@ -34493,10 +36364,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ValueCell8 : WpfCell
+    public class ValueCell10 : WpfCell
     {
         
-        public ValueCell8(UITestControl searchLimitContainer) : 
+        public ValueCell10(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -34588,13 +36459,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ValueCell9 ValueCell
+        public ValueCell11 ValueCell
         {
             get
             {
                 if ((this.mValueCell == null))
                 {
-                    this.mValueCell = new ValueCell9(this);
+                    this.mValueCell = new ValueCell11(this);
                 }
                 return this.mValueCell;
             }
@@ -34604,7 +36475,7 @@ namespace Warewolf.UITests
         #region Fields
         private VariableCell7 mVariableCell;
         
-        private ValueCell9 mValueCell;
+        private ValueCell11 mValueCell;
         #endregion
     }
     
@@ -34678,10 +36549,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ValueCell9 : WpfCell
+    public class ValueCell11 : WpfCell
     {
         
-        public ValueCell9(UITestControl searchLimitContainer) : 
+        public ValueCell11(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -34773,13 +36644,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ValueCell10 ValueCell
+        public ValueCell12 ValueCell
         {
             get
             {
                 if ((this.mValueCell == null))
                 {
-                    this.mValueCell = new ValueCell10(this);
+                    this.mValueCell = new ValueCell12(this);
                 }
                 return this.mValueCell;
             }
@@ -34789,7 +36660,7 @@ namespace Warewolf.UITests
         #region Fields
         private VariableCell8 mVariableCell;
         
-        private ValueCell10 mValueCell;
+        private ValueCell12 mValueCell;
         #endregion
     }
     
@@ -34863,10 +36734,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ValueCell10 : WpfCell
+    public class ValueCell12 : WpfCell
     {
         
-        public ValueCell10(UITestControl searchLimitContainer) : 
+        public ValueCell12(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -36933,6 +38804,1030 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SharepointCopyFile : WpfCustom
+    {
+        
+        public SharepointCopyFile(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharePointCopyFileDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SharePoint Copy File(SharePointCopyFileDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton EditSourceButton
+        {
+            get
+            {
+                if ((this.mEditSourceButton == null))
+                {
+                    this.mEditSourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEditSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__EditDatabaseCommand_AutoID";
+                    this.mEditSourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEditSourceButton;
+            }
+        }
+        
+        public Server4 Server
+        {
+            get
+            {
+                if ((this.mServer == null))
+                {
+                    this.mServer = new Server4(this);
+                }
+                return this.mServer;
+            }
+        }
+        
+        public FromDirectoryComboBox FromDirectoryComboBox
+        {
+            get
+            {
+                if ((this.mFromDirectoryComboBox == null))
+                {
+                    this.mFromDirectoryComboBox = new FromDirectoryComboBox(this);
+                }
+                return this.mFromDirectoryComboBox;
+            }
+        }
+        
+        public PathDirectoryComboBox PathDirectoryComboBox
+        {
+            get
+            {
+                if ((this.mPathDirectoryComboBox == null))
+                {
+                    this.mPathDirectoryComboBox = new PathDirectoryComboBox(this);
+                }
+                return this.mPathDirectoryComboBox;
+            }
+        }
+        
+        public ResultComboBox ResultComboBox
+        {
+            get
+            {
+                if ((this.mResultComboBox == null))
+                {
+                    this.mResultComboBox = new ResultComboBox(this);
+                }
+                return this.mResultComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mEditSourceButton;
+        
+        private Server4 mServer;
+        
+        private FromDirectoryComboBox mFromDirectoryComboBox;
+        
+        private PathDirectoryComboBox mPathDirectoryComboBox;
+        
+        private ResultComboBox mResultComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Server4 : WpfComboBox
+    {
+        
+        public Server4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Database_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem NewSharePointSource
+        {
+            get
+            {
+                if ((this.mNewSharePointSource == null))
+                {
+                    this.mNewSharePointSource = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":null,""AuthenticationType"":""Windows"",""UserName"":null,""Password"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""77fe880c-baa0-4f69-ad3c-94439293c611"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""New Sharepoint Server Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewSharePointSource.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewSharePointSource;
+            }
+        }
+        
+        public WpfListItem SharepointTestServer
+        {
+            get
+            {
+                if ((this.mSharepointTestServer == null))
+                {
+                    this.mSharepointTestServer = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mSharepointTestServer.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":""http://rsaklfsvrsharep/"",""AuthenticationType"":""Windows"",""UserName"":"""",""Password"":"""",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""SharePoint Test Server"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2015-07-07T09:49:43.2102319+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""VersionId"":""6d47f370-c0d3-4b96-89d7-52090a38331a""}}";
+                    this.mSharepointTestServer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSharepointTestServer;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mNewSharePointSource;
+        
+        private WpfListItem mSharepointTestServer;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FromDirectoryComboBox : WpfComboBox
+    {
+        
+        public FromDirectoryComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Directorytxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PathDirectoryComboBox : WpfComboBox
+    {
+        
+        public PathDirectoryComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Directorytxt_AutoID";
+            this.SearchProperties[WpfComboBox.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResultComboBox : WpfComboBox
+    {
+        
+        public ResultComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SharepointUpload : WpfCustom
+    {
+        
+        public SharepointUpload(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharePointUploadDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SharePoint Copy File(SharePointUploadDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton EditSourceButton
+        {
+            get
+            {
+                if ((this.mEditSourceButton == null))
+                {
+                    this.mEditSourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEditSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__EditDatabaseCommand_AutoID";
+                    this.mEditSourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEditSourceButton;
+            }
+        }
+        
+        public Server5 Server
+        {
+            get
+            {
+                if ((this.mServer == null))
+                {
+                    this.mServer = new Server5(this);
+                }
+                return this.mServer;
+            }
+        }
+        
+        public FromDirectoryComboBox1 FromDirectoryComboBox
+        {
+            get
+            {
+                if ((this.mFromDirectoryComboBox == null))
+                {
+                    this.mFromDirectoryComboBox = new FromDirectoryComboBox1(this);
+                }
+                return this.mFromDirectoryComboBox;
+            }
+        }
+        
+        public PathDirectoryComboBox1 PathDirectoryComboBox
+        {
+            get
+            {
+                if ((this.mPathDirectoryComboBox == null))
+                {
+                    this.mPathDirectoryComboBox = new PathDirectoryComboBox1(this);
+                }
+                return this.mPathDirectoryComboBox;
+            }
+        }
+        
+        public ResultComboBox1 ResultComboBox
+        {
+            get
+            {
+                if ((this.mResultComboBox == null))
+                {
+                    this.mResultComboBox = new ResultComboBox1(this);
+                }
+                return this.mResultComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mEditSourceButton;
+        
+        private Server5 mServer;
+        
+        private FromDirectoryComboBox1 mFromDirectoryComboBox;
+        
+        private PathDirectoryComboBox1 mPathDirectoryComboBox;
+        
+        private ResultComboBox1 mResultComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Server5 : WpfComboBox
+    {
+        
+        public Server5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Database_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem NewSharePointSource
+        {
+            get
+            {
+                if ((this.mNewSharePointSource == null))
+                {
+                    this.mNewSharePointSource = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":null,""AuthenticationType"":""Windows"",""UserName"":null,""Password"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""77fe880c-baa0-4f69-ad3c-94439293c611"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""New Sharepoint Server Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewSharePointSource.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewSharePointSource;
+            }
+        }
+        
+        public WpfListItem SharepointTestServer
+        {
+            get
+            {
+                if ((this.mSharepointTestServer == null))
+                {
+                    this.mSharepointTestServer = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mSharepointTestServer.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":""http://rsaklfsvrsharep/"",""AuthenticationType"":""Windows"",""UserName"":"""",""Password"":"""",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""SharePoint Test Server"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2015-07-07T09:49:43.2102319+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""VersionId"":""6d47f370-c0d3-4b96-89d7-52090a38331a""}}";
+                    this.mSharepointTestServer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSharepointTestServer;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mNewSharePointSource;
+        
+        private WpfListItem mSharepointTestServer;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FromDirectoryComboBox1 : WpfComboBox
+    {
+        
+        public FromDirectoryComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Directorytxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PathDirectoryComboBox1 : WpfComboBox
+    {
+        
+        public PathDirectoryComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Directorytxt_AutoID";
+            this.SearchProperties[WpfComboBox.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResultComboBox1 : WpfComboBox
+    {
+        
+        public ResultComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SharepointMoveFile : WpfCustom
+    {
+        
+        public SharepointMoveFile(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharePointMoveFileDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SharePoint Copy File(SharePointMoveFileDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton EditSourceButton
+        {
+            get
+            {
+                if ((this.mEditSourceButton == null))
+                {
+                    this.mEditSourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEditSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__EditDatabaseCommand_AutoID";
+                    this.mEditSourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEditSourceButton;
+            }
+        }
+        
+        public Server6 Server
+        {
+            get
+            {
+                if ((this.mServer == null))
+                {
+                    this.mServer = new Server6(this);
+                }
+                return this.mServer;
+            }
+        }
+        
+        public FromDirectoryComboBox2 FromDirectoryComboBox
+        {
+            get
+            {
+                if ((this.mFromDirectoryComboBox == null))
+                {
+                    this.mFromDirectoryComboBox = new FromDirectoryComboBox2(this);
+                }
+                return this.mFromDirectoryComboBox;
+            }
+        }
+        
+        public PathDirectoryComboBox2 PathDirectoryComboBox
+        {
+            get
+            {
+                if ((this.mPathDirectoryComboBox == null))
+                {
+                    this.mPathDirectoryComboBox = new PathDirectoryComboBox2(this);
+                }
+                return this.mPathDirectoryComboBox;
+            }
+        }
+        
+        public ResultComboBox2 ResultComboBox
+        {
+            get
+            {
+                if ((this.mResultComboBox == null))
+                {
+                    this.mResultComboBox = new ResultComboBox2(this);
+                }
+                return this.mResultComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mEditSourceButton;
+        
+        private Server6 mServer;
+        
+        private FromDirectoryComboBox2 mFromDirectoryComboBox;
+        
+        private PathDirectoryComboBox2 mPathDirectoryComboBox;
+        
+        private ResultComboBox2 mResultComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Server6 : WpfComboBox
+    {
+        
+        public Server6(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Database_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem NewSharePointSource
+        {
+            get
+            {
+                if ((this.mNewSharePointSource == null))
+                {
+                    this.mNewSharePointSource = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":null,""AuthenticationType"":""Windows"",""UserName"":null,""Password"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""77fe880c-baa0-4f69-ad3c-94439293c611"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""New Sharepoint Server Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewSharePointSource.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewSharePointSource;
+            }
+        }
+        
+        public WpfListItem SharepointTestServer
+        {
+            get
+            {
+                if ((this.mSharepointTestServer == null))
+                {
+                    this.mSharepointTestServer = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mSharepointTestServer.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":""http://rsaklfsvrsharep/"",""AuthenticationType"":""Windows"",""UserName"":"""",""Password"":"""",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""SharePoint Test Server"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2015-07-07T09:49:43.2102319+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""VersionId"":""6d47f370-c0d3-4b96-89d7-52090a38331a""}}";
+                    this.mSharepointTestServer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSharepointTestServer;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mNewSharePointSource;
+        
+        private WpfListItem mSharepointTestServer;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FromDirectoryComboBox2 : WpfComboBox
+    {
+        
+        public FromDirectoryComboBox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Directorytxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PathDirectoryComboBox2 : WpfComboBox
+    {
+        
+        public PathDirectoryComboBox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Directorytxt_AutoID";
+            this.SearchProperties[WpfComboBox.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResultComboBox2 : WpfComboBox
+    {
+        
+        public ResultComboBox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SharepointDownload : WpfCustom
+    {
+        
+        public SharepointDownload(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharePointDownLoadDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SharePoint Copy File(SharePointDownLoadDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton EditSourceButton
+        {
+            get
+            {
+                if ((this.mEditSourceButton == null))
+                {
+                    this.mEditSourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEditSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__EditDatabaseCommand_AutoID";
+                    this.mEditSourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEditSourceButton;
+            }
+        }
+        
+        public Server7 Server
+        {
+            get
+            {
+                if ((this.mServer == null))
+                {
+                    this.mServer = new Server7(this);
+                }
+                return this.mServer;
+            }
+        }
+        
+        public FromDirectoryComboBox3 FromDirectoryComboBox
+        {
+            get
+            {
+                if ((this.mFromDirectoryComboBox == null))
+                {
+                    this.mFromDirectoryComboBox = new FromDirectoryComboBox3(this);
+                }
+                return this.mFromDirectoryComboBox;
+            }
+        }
+        
+        public PathDirectoryComboBox3 PathDirectoryComboBox
+        {
+            get
+            {
+                if ((this.mPathDirectoryComboBox == null))
+                {
+                    this.mPathDirectoryComboBox = new PathDirectoryComboBox3(this);
+                }
+                return this.mPathDirectoryComboBox;
+            }
+        }
+        
+        public ResultComboBox3 ResultComboBox
+        {
+            get
+            {
+                if ((this.mResultComboBox == null))
+                {
+                    this.mResultComboBox = new ResultComboBox3(this);
+                }
+                return this.mResultComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mEditSourceButton;
+        
+        private Server7 mServer;
+        
+        private FromDirectoryComboBox3 mFromDirectoryComboBox;
+        
+        private PathDirectoryComboBox3 mPathDirectoryComboBox;
+        
+        private ResultComboBox3 mResultComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Server7 : WpfComboBox
+    {
+        
+        public Server7(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Database_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem NewSharePointSource
+        {
+            get
+            {
+                if ((this.mNewSharePointSource == null))
+                {
+                    this.mNewSharePointSource = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":null,""AuthenticationType"":""Windows"",""UserName"":null,""Password"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""77fe880c-baa0-4f69-ad3c-94439293c611"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""New Sharepoint Server Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewSharePointSource.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewSharePointSource;
+            }
+        }
+        
+        public WpfListItem SharepointTestServer
+        {
+            get
+            {
+                if ((this.mSharepointTestServer == null))
+                {
+                    this.mSharepointTestServer = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mSharepointTestServer.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":""http://rsaklfsvrsharep/"",""AuthenticationType"":""Windows"",""UserName"":"""",""Password"":"""",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""SharePoint Test Server"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2015-07-07T09:49:43.2102319+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""VersionId"":""6d47f370-c0d3-4b96-89d7-52090a38331a""}}";
+                    this.mSharepointTestServer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSharepointTestServer;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mNewSharePointSource;
+        
+        private WpfListItem mSharepointTestServer;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FromDirectoryComboBox3 : WpfComboBox
+    {
+        
+        public FromDirectoryComboBox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Directorytxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PathDirectoryComboBox3 : WpfComboBox
+    {
+        
+        public PathDirectoryComboBox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Directorytxt_AutoID";
+            this.SearchProperties[WpfComboBox.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResultComboBox3 : WpfComboBox
+    {
+        
+        public ResultComboBox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
         #endregion
     }
     
@@ -40909,10 +43804,82 @@ namespace Warewolf.UITests
                 return this.mTestConnectionButton;
             }
         }
+        
+        public WpfRadioButton UserRadioButton
+        {
+            get
+            {
+                if ((this.mUserRadioButton == null))
+                {
+                    this.mUserRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mUserRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UserRadioButton";
+                    this.mUserRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUserRadioButton;
+            }
+        }
+        
+        public WpfEdit PasswordTextBox
+        {
+            get
+            {
+                if ((this.mPasswordTextBox == null))
+                {
+                    this.mPasswordTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mPasswordTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "PasswordTextBox";
+                    this.mPasswordTextBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPasswordTextBox;
+            }
+        }
+        
+        public WpfEdit ServerNameEdit
+        {
+            get
+            {
+                if ((this.mServerNameEdit == null))
+                {
+                    this.mServerNameEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mServerNameEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "ServerName";
+                    this.mServerNameEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mServerNameEdit;
+            }
+        }
+        
+        public WpfEdit UserNameTextBox
+        {
+            get
+            {
+                if ((this.mUserNameTextBox == null))
+                {
+                    this.mUserNameTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUserNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UserNameTextBox";
+                    this.mUserNameTextBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUserNameTextBox;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mTestConnectionButton;
+        
+        private WpfRadioButton mUserRadioButton;
+        
+        private WpfEdit mPasswordTextBox;
+        
+        private WpfEdit mServerNameEdit;
+        
+        private WpfEdit mUserNameTextBox;
         #endregion
     }
     
@@ -46829,6 +49796,18 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public UISmallViewContentCustom UISmallViewContentCustom
+        {
+            get
+            {
+                if ((this.mUISmallViewContentCustom == null))
+                {
+                    this.mUISmallViewContentCustom = new UISmallViewContentCustom(this);
+                }
+                return this.mUISmallViewContentCustom;
+            }
+        }
+        
         public UILargeViewContentCustom UILargeViewContentCustom
         {
             get
@@ -46841,23 +49820,108 @@ namespace Warewolf.UITests
             }
         }
         
-        public UISharepointDeleteListCustom UISharepointDeleteListCustom
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
         {
             get
             {
-                if ((this.mUISharepointDeleteListCustom == null))
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
                 {
-                    this.mUISharepointDeleteListCustom = new UISharepointDeleteListCustom(this);
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
                 }
-                return this.mUISharepointDeleteListCustom;
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        
+        public UIUI_ToolboxControl_AuCustom UIUI_ToolboxControl_AuCustom
+        {
+            get
+            {
+                if ((this.mUIUI_ToolboxControl_AuCustom == null))
+                {
+                    this.mUIUI_ToolboxControl_AuCustom = new UIUI_ToolboxControl_AuCustom(this);
+                }
+                return this.mUIUI_ToolboxControl_AuCustom;
+            }
+        }
+        
+        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ExplorerControl_ACustom == null))
+                {
+                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
+                }
+                return this.mUIUI_ExplorerControl_ACustom;
+            }
+        }
+        
+        public WpfMenu UIExplorerEnvironmentMMenu
+        {
+            get
+            {
+                if ((this.mUIExplorerEnvironmentMMenu == null))
+                {
+                    this.mUIExplorerEnvironmentMMenu = new WpfMenu(this);
+                    #region Search Criteria
+                    this.mUIExplorerEnvironmentMMenu.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerEnvironmentMenu";
+                    this.mUIExplorerEnvironmentMMenu.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIExplorerEnvironmentMMenu;
             }
         }
         #endregion
         
         #region Fields
+        private UISmallViewContentCustom mUISmallViewContentCustom;
+        
         private UILargeViewContentCustom mUILargeViewContentCustom;
         
-        private UISharepointDeleteListCustom mUISharepointDeleteListCustom;
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        
+        private UIUI_ToolboxControl_AuCustom mUIUI_ToolboxControl_AuCustom;
+        
+        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
+        
+        private WpfMenu mUIExplorerEnvironmentMMenu;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISmallViewContentCustom : WpfCustom
+    {
+        
+        public UISmallViewContentCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox UIUI__Directorytxt_AutComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Directorytxt_AutComboBox == null))
+                {
+                    this.mUIUI__Directorytxt_AutComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mUIUI__Directorytxt_AutComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Directorytxt_AutoID";
+                    this.mUIUI__Directorytxt_AutComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIUI__Directorytxt_AutComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mUIUI__Directorytxt_AutComboBox;
         #endregion
     }
     
@@ -46876,113 +49940,267 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfTable UISmallDataGridTable
+        public WpfComboBox UIUI__Directorytxt_AutComboBox
         {
             get
             {
-                if ((this.mUISmallDataGridTable == null))
+                if ((this.mUIUI__Directorytxt_AutComboBox == null))
                 {
-                    this.mUISmallDataGridTable = new WpfTable(this);
+                    this.mUIUI__Directorytxt_AutComboBox = new WpfComboBox(this);
                     #region Search Criteria
-                    this.mUISmallDataGridTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
-                    this.mUISmallDataGridTable.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mUIUI__Directorytxt_AutComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Directorytxt_AutoID";
+                    this.mUIUI__Directorytxt_AutComboBox.SearchProperties[WpfComboBox.PropertyNames.Instance] = "2";
+                    this.mUIUI__Directorytxt_AutComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mUISmallDataGridTable;
-            }
-        }
-        
-        public UILargeDataGridTable UILargeDataGridTable
-        {
-            get
-            {
-                if ((this.mUILargeDataGridTable == null))
-                {
-                    this.mUILargeDataGridTable = new UILargeDataGridTable(this);
-                }
-                return this.mUILargeDataGridTable;
+                return this.mUIUI__Directorytxt_AutComboBox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfTable mUISmallDataGridTable;
-        
-        private UILargeDataGridTable mUILargeDataGridTable;
+        private WpfComboBox mUIUI__Directorytxt_AutComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UILargeDataGridTable : WpfTable
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
     {
         
-        public UILargeDataGridTable(UITestControl searchLimitContainer) : 
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public WpfRow UIItemRow
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
         {
             get
             {
-                if ((this.mUIItemRow == null))
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
                 {
-                    this.mUIItemRow = new WpfRow(this);
-                    #region Search Criteria
-                    this.mUIItemRow.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-                    this.mUIItemRow.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
                 }
-                return this.mUIItemRow;
+                return this.mUIUI_TabManager_AutoIDTabList;
             }
         }
         #endregion
         
         #region Fields
-        private WpfRow mUIItemRow;
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISharepointDeleteListCustom : WpfCustom
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
     {
         
-        public UISharepointDeleteListCustom(UITestControl searchLimitContainer) : 
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListDeleteDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Delete List Item (1)(SharepointListDeleteDesigner)";
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public WpfCustom UILargeViewContentCustom
+        public UIDev2ViewModelsSourceTabPage UIDev2ViewModelsSourceTabPage
         {
             get
             {
-                if ((this.mUILargeViewContentCustom == null))
+                if ((this.mUIDev2ViewModelsSourceTabPage == null))
                 {
-                    this.mUILargeViewContentCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-                    this.mUILargeViewContentCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mUIDev2ViewModelsSourceTabPage = new UIDev2ViewModelsSourceTabPage(this);
                 }
-                return this.mUILargeViewContentCustom;
+                return this.mUIDev2ViewModelsSourceTabPage;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCustom mUILargeViewContentCustom;
+        private UIDev2ViewModelsSourceTabPage mUIDev2ViewModelsSourceTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2ViewModelsSourceTabPage : WpfTabPage
+    {
+        
+        public UIDev2ViewModelsSourceTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.ISharepointServerSource]" +
+                "";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIDev2StudioViewModelsCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+                    this.mUIDev2StudioViewModelsCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+                    this.mUIDev2StudioViewModelsCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIDev2StudioViewModelsCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_ToolboxControl_AuCustom : WpfCustom
+    {
+        
+        public UIUI_ToolboxControl_AuCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolboxView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ToolboxControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIToolListBoxList UIToolListBoxList
+        {
+            get
+            {
+                if ((this.mUIToolListBoxList == null))
+                {
+                    this.mUIToolListBoxList = new UIToolListBoxList(this);
+                }
+                return this.mUIToolListBoxList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIToolListBoxList mUIToolListBoxList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIToolListBoxList : WpfList
+    {
+        
+        public UIToolListBoxList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "ToolListBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfGroup UISharepointGroup
+        {
+            get
+            {
+                if ((this.mUISharepointGroup == null))
+                {
+                    this.mUISharepointGroup = new WpfGroup(this);
+                    #region Search Criteria
+                    this.mUISharepointGroup.SearchProperties[WpfGroup.PropertyNames.Name] = "Sharepoint";
+                    this.mUISharepointGroup.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUISharepointGroup;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfGroup mUISharepointGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_ExplorerControl_ACustom : WpfCustom
+    {
+        
+        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIExplorerTreeTree UIExplorerTreeTree
+        {
+            get
+            {
+                if ((this.mUIExplorerTreeTree == null))
+                {
+                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
+                }
+                return this.mUIExplorerTreeTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIExplorerTreeTree mUIExplorerTreeTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIExplorerTreeTree : WpfTree
+    {
+        
+        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem UIInfragisticsControlsTreeItem
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIInfragisticsControlsTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mUIInfragisticsControlsTreeItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIInfragisticsControlsTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mUIInfragisticsControlsTreeItem;
         #endregion
     }
 }

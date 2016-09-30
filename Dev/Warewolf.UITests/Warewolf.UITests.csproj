@@ -75,7 +75,6 @@
     <Compile Include="Sharepoint\SharepointMoveFileUITest.cs" />
     <Compile Include="Sharepoint\SharepointUpdateUITest.cs" />
     <Compile Include="Sharepoint\SharepointUploadUITest.cs" />
-    <Compile Include="Sharepoint\SharepointReadFolderUITest.cs" />
     <Compile Include="Sharepoint\SharepointDeleteUITest.cs" />
     <Compile Include="Sharepoint\SharepointCreateUITest.cs" />
     <Compile Include="Tools\Scripting\Ruby.cs" />
