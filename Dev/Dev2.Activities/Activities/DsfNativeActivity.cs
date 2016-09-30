@@ -666,81 +666,109 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     if (stepToBeAsserted.ActivityType == typeof(DsfDecision).Name)
                     {
-                        var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
-
-                        if (serviceTestOutput.Result != null)
-                        {
-                            serviceTestOutput.Result.Result = RunResult.TestInvalid;
-                        }
-                        var dsfDecision = this as DsfDecision;
-                        if (dsfDecision != null)
-                        {
-                            var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
-                            dataObject.ServiceTest.TestPassed = assertPassed;
-                            dataObject.ServiceTest.TestFailing = !assertPassed;
-                            if (dataObject.IsDebugMode())
-                            {
-                                AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(assertPassed.ToString()));
-                            }
-                            else
-                            {
-                                dataObject.Environment.AddError("Failed");
-                            }
-                        }
+                        DecisionAssertion(dataObject, stepToBeAsserted);
                     }
                     else if (stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
                     {                        
-                        var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
-                        if (serviceTestOutput.Result != null)
-                        {
-                            serviceTestOutput.Result.Result = RunResult.TestInvalid;
-                        }
-                        var dsfDecision = this as DsfSwitch;
-                        if (dsfDecision != null)
-                        {
-                            var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
-                            dataObject.ServiceTest.TestPassed = assertPassed;
-                            dataObject.ServiceTest.TestFailing = !assertPassed;
-                            if (dataObject.IsDebugMode())
-                            {
-                                AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(assertPassed.ToString()));
-                            }
-                            else
-                            {
-                                dataObject.Environment.AddError("Failed");
-                            }
-                        }
-
+                        SwitchAssertion(dataObject, stepToBeAsserted);
                     }
                     else
                     {
-                        var factory = Dev2DecisionFactory.Instance();
-                        var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory));
-                        var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-                        var testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed);
-                        var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
-
-                        var finalResult = new TestRunResult();
-                        if (testPassed)
-                        {
-                            finalResult.Result = RunResult.TestPassed;
-                        }
-                        if(testRunResults.Any(result => result.Result == RunResult.TestFailed))
-                        {
-                            finalResult.Result = RunResult.TestFailed;
-                            finalResult.Message = serviceTestFailureMessage;
-                        }
-                        if(testRunResults.Any(result => result.Result == RunResult.TestInvalid))
-                        {
-                            finalResult.Result = RunResult.TestInvalid;
-                            finalResult.Message = serviceTestFailureMessage;
-                        }
-                        dataObject.ServiceTest.Result = finalResult;
-                        dataObject.ServiceTest.TestFailing = !testPassed;
-                        dataObject.ServiceTest.FailureMessage = serviceTestFailureMessage;
-                        dataObject.ServiceTest.TestPassed = testPassed;
-                        dataObject.StopExecution = !testPassed;                            
+                        RegularActivityAssertion(dataObject, stepToBeAsserted);
                     }
+                }
+            }
+        }
+
+        private void RegularActivityAssertion(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        {
+            var factory = Dev2DecisionFactory.Instance();
+            var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory));
+            var testRunResults = res as IList<TestRunResult> ?? res.ToList();
+            var testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed);
+            var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
+
+            UpdateStepWithFinalResult(dataObject, stepToBeAsserted, testPassed, testRunResults, serviceTestFailureMessage);
+        }
+
+        private static void UpdateStepWithFinalResult(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted, bool testPassed, IList<TestRunResult> testRunResults, string serviceTestFailureMessage)
+        {
+            var finalResult = new TestRunResult();
+            if(testPassed)
+            {
+                finalResult.Result = RunResult.TestPassed;
+            }
+            if(testRunResults.Any(result => result.Result == RunResult.TestFailed))
+            {
+                finalResult.Result = RunResult.TestFailed;
+                finalResult.Message = serviceTestFailureMessage;
+            }
+            if(testRunResults.Any(result => result.Result == RunResult.TestInvalid))
+            {
+                finalResult.Result = RunResult.TestInvalid;
+                finalResult.Message = serviceTestFailureMessage;
+            }
+            stepToBeAsserted.Result = finalResult;
+            dataObject.StopExecution = !testPassed;
+        }
+
+        private void SwitchAssertion(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        {
+            var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
+            if(serviceTestOutput.Result == null)
+            {
+                serviceTestOutput.Result = new TestRunResult();
+            }
+            serviceTestOutput.Result.Result = RunResult.TestInvalid;
+            var dsfSwitch = this as DsfSwitch;
+            if(dsfSwitch != null)
+            {
+                var assertPassed = dsfSwitch.Result == serviceTestOutput.Value;
+                serviceTestOutput.Result.Result = assertPassed ? RunResult.TestPassed : RunResult.TestFailed;
+                UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { serviceTestOutput.Result }, "");
+                if (dataObject.IsDebugMode())
+                {
+                    var msg = "Failed";
+                    if (assertPassed)
+                    {
+                        msg = "Passed";
+                    }
+                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
+                }
+                else
+                {
+                    dataObject.Environment.AddError("Failed");
+                }
+            }
+        }
+
+        private void DecisionAssertion(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        {
+            var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
+
+            if(serviceTestOutput.Result == null)
+            {
+                serviceTestOutput.Result = new TestRunResult();
+            }
+            serviceTestOutput.Result.Result = RunResult.TestInvalid;
+            var dsfDecision = this as DsfDecision;
+            if(dsfDecision != null)
+            {
+                var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
+                serviceTestOutput.Result.Result = assertPassed ? RunResult.TestPassed : RunResult.TestFailed;
+                UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { serviceTestOutput.Result }, "");
+                if (dataObject.IsDebugMode())
+                {
+                    var msg = "Failed";
+                    if (assertPassed)
+                    {
+                        msg = "Passed";
+                    }
+                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
+                }
+                else
+                {
+                    dataObject.Environment.AddError("Failed");
                 }
             }
         }
@@ -824,58 +852,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
         {
-            output.Result.Result = RunResult.TestInvalid;
+            if (output.Result != null)
+            {
+                output.Result.Result = RunResult.TestInvalid;
+            }
             IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
             var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
-
-            if(decisionType == enDecisionType.IsError)
-            {
-                var hasErrors = dataObject.Environment.AllErrors.Count > 0;
-                var testResult = new TestRunResult();
-                if(hasErrors)
-                {
-                    testResult.Result = RunResult.TestPassed;
-                }
-                else
-                {
-                    testResult.Result = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
-                }
-                if(dataObject.IsDebugMode())
-                {
-                    var msg = testResult.Message;
-                    if(testResult.Result == RunResult.TestPassed)
-                    {
-                        msg = "Passed";
-                    }
-                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
-                }
-                return new[] { testResult };
-            }
-            if(decisionType == enDecisionType.IsNotError)
-            {
-                var noErrors = dataObject.Environment.AllErrors.Count == 0;
-                var testResult = new TestRunResult();
-                if(noErrors)
-                {
-                    testResult.Result = RunResult.TestPassed;
-                }
-                else
-                {
-                    testResult.Result = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
-                }
-                if(dataObject.IsDebugMode())
-                {
-                    var msg = testResult.Message;
-                    if(testResult.Result == RunResult.TestPassed)
-                    {
-                        msg = "Passed";
-                    }
-                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
-                }
-                return new[] { testResult };
-            }
+           
             var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };
             var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.From) };
             var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.To) };

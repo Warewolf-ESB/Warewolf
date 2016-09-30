@@ -820,6 +820,7 @@ namespace Warewolf.Studio.ViewModels
         {
             var computedValue = modelItem.GetCurrentValue();
             var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
+
             var type = computedValue.GetType();
             var outputs = dsfActivityAbstract?.GetOutputs();
             var item = modelItem.Parent;
