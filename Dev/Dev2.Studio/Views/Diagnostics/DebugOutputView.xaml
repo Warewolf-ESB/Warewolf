@@ -276,6 +276,28 @@
                     </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
+
+            <Style x:Key="NoErrorBorderStyle" TargetType="Border">
+                <Style.Setters>
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Width" Value="4" />
+                    <Setter Property="Margin" Value="0,3,10,0" />
+                    <Setter Property="CornerRadius" Value="2" />
+                </Style.Setters>
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding HasNoError, Converter={StaticResource NullableBoolToBoolConverter}}" Value="true" />
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="Background" Value="Green" />
+                            <Setter Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
         </Grid.Resources>
 
         <Grid.RowDefinitions>
@@ -573,7 +595,10 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
 
-                                <Border Grid.RowSpan="10" Style="{StaticResource ErrorBorderStyle}" />
+
+                                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource ErrorBorderStyle}" />
+                                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource NoErrorBorderStyle}" />
+                                
 
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Content.ActivityType, Converter={StaticResource EnumToStringConverter}}" Margin="-4,0,0,0"/>
                                 <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">

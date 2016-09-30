@@ -21,6 +21,7 @@ namespace Dev2.Studio.Core
         readonly ObservableCollection<IDebugTreeViewItemViewModel> _children;
 
         bool? _hasError = false;
+        bool? _hasNoError = false;
         bool _isExpanded;
         bool _isSelected;
         TContent _content;
@@ -80,6 +81,18 @@ namespace Dev2.Studio.Core
                 _hasError = value;
                 _parent?.VerifyErrorState();
                 OnPropertyChanged("HasError");
+            }
+        }
+        public bool? HasNoError
+        {
+            get
+            {
+                return _hasNoError;
+            }
+            set
+            {
+                _hasNoError = value;
+                OnPropertyChanged("HasNoError");
             }
         }
         public string ActivityTypeName { get; set; }
