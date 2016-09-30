@@ -357,7 +357,7 @@ namespace Dev2.Runtime.ESB.Execution
                                 var dev2DecisionFactory = Dev2DecisionFactory.Instance();
                                 var res = test.Outputs.SelectMany(output => GetTestRunResults(dataObject, output, dev2DecisionFactory));
                                 var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-                                testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed) && test.TestSteps.All(step => step.Result.Result==RunResult.TestPassed);
+                                testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed) && test.TestSteps.All(step => step.Result?.Result==RunResult.TestPassed);
                                 test.FailureMessage = string.Join("", testRunResults.Select(result => result.Message));                                
                             }
                         }
