@@ -357,8 +357,7 @@ namespace Dev2.Runtime.ESB.Execution
                                 var dev2DecisionFactory = Dev2DecisionFactory.Instance();
                                 var res = test.Outputs.SelectMany(output => GetTestRunResults(dataObject, output, dev2DecisionFactory));
                                 var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-                                testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed) && test.TestSteps.All(step => step.Result?.Result==RunResult.TestPassed);
-                                test.FailureMessage = string.Join("", testRunResults.Select(result => result.Message));                                
+                                testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed);
                             }
                         }
                     }
@@ -382,26 +381,31 @@ namespace Dev2.Runtime.ESB.Execution
                         failureMessage.AppendLine(fetchErrors);
                     }
                 }
-
+                testPassed = testPassed && test.TestSteps.All(step => step.Result?.Result == RunResult.TestPassed);
+                test.FailureMessage = failureMessage.AppendLine(string.Join("", test.TestSteps.Select(step => step.Result.Message))).ToString();               
                 test.TestFailing = !testPassed;
                 test.TestPassed = testPassed;
                 test.TestPending = false;
-                test.TestInvalid = false;
+                test.TestInvalid = test.TestSteps.Any(step => step.Result?.Result == RunResult.TestInvalid);
                 test.LastRunDate = DateTime.Now;
-
-
-                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceID, test); });
 
                 var testRunResult = new TestRunResult { TestName = test.TestName };
                 if (test.TestFailing)
                 {
                     testRunResult.Result = RunResult.TestFailed;
-                    testRunResult.Message = failureMessage.ToString();
+                    testRunResult.Message = test.FailureMessage;
                 }
                 if (test.TestPassed)
                 {
                     testRunResult.Result = RunResult.TestPassed;
                 }
+                if (test.TestInvalid)
+                {
+                    testRunResult.Result = RunResult.TestInvalid;
+                }
+                test.Result = testRunResult;
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceID, test); });
+
                 return testRunResult;
             }
             throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceID}");
