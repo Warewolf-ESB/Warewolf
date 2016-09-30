@@ -30,14 +30,16 @@ namespace Warewolf.UITests.DebugOutputWindow
             Uimap.WaitForControlVisible(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart);
             Uimap.Press_F6();
             Uimap.Click_AddNewTestFromDebug();
-            Uimap.WaitForControlVisible(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList);            
+            //Uimap.WaitForControlVisible(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList);
             //Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay.DisplayText.Contains("*"));            
             //Uimap.Click_Run_Test_Button(TestResultEnum.Pass);
             //Uimap.Click_AddNewTestFromDebug();
             //Assert.IsTrue(Uimap.GetCurrentTest(2).DisplayText.Contains("*"));
-
+            //Uimap.Click_TestMock_Radio_Button();
 
         }
+
+       
 
         #region Additional test attributes
 
