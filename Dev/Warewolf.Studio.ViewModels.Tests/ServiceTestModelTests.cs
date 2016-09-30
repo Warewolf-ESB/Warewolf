@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+
 // ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels.Tests
@@ -201,6 +204,50 @@ namespace Warewolf.Studio.ViewModels.Tests
             testModel.OldTestName = "Old Test Name";
             //------------Assert Results-------------------------
             Assert.AreEqual("Old Test Name", testModel.OldTestName);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("TestModel_OldTestName")]
+        public void TestModel_DebugForTest_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "DebugForTest")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            var debugForTest = new List<IDebugState>();
+            testModel.DebugForTest = debugForTest;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(ReferenceEquals(debugForTest,testModel.DebugForTest));
+            Assert.IsTrue(_wasCalled);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("TestModel_OldTestName")]
+        public void TestModel_DuplicateTestTooltip_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "DuplicateTestTooltip")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.DuplicateTestTooltip = "jjj";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("jjj", testModel.DuplicateTestTooltip);
             Assert.IsTrue(_wasCalled);
         }
 
@@ -651,6 +698,28 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("TestModel_NewTest")]
+        public void TestModel_SelectedTestStep_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "SelectedTestStep")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.SelectedTestStep = new Mock<IServiceTestStep>().Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testModel.SelectedTestStep);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestModel_AddRow")]
         public void ServiceTestModel_AddRow_WhenRecordsetValueUpdated_ShouldAddNewRow()
@@ -695,6 +764,49 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ServiceTestModel_AddRow")]
+        public void ServiceTestModel_AddRow_WhenRecordsetValueUpdated_ShouldAddNewOutPutRow()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val","","");
+            serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
+            {
+                serviceTestInput
+            };
+            //------------Execute Test---------------------------
+            var dataListModel = new DataListModel();
+            var shapeRecordSets = new List<IRecordSet>();
+            var recordSet = new RecordSet
+            {
+                IODirection = enDev2ColumnArgumentDirection.Output,
+                Name = "rec"
+            };
+            var recordSetColumns = new Dictionary<int, List<IScalar>>
+            {
+                {
+                    1, new List<IScalar>
+                    {
+                        new Scalar
+                        {
+                            Name = "a",
+                            IODirection = enDev2ColumnArgumentDirection.Output
+                        }
+                    }
+                }
+            };
+            recordSet.Columns = recordSetColumns;
+            shapeRecordSets.Add(recordSet);
+            dataListModel.ShapeRecordSets = shapeRecordSets;
+            serviceTestModel.AddRow(serviceTestInput, dataListModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, serviceTestModel.Outputs.Count);
+            Assert.AreEqual("rec(2).a", serviceTestModel.Outputs[1].Variable);
+            Assert.AreEqual("", serviceTestModel.Outputs[1].Value);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void IsDirty_GivenNameChanged_ShouldReurnTrue()
         {
             //---------------Set up test pack-------------------
@@ -703,6 +815,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
             {
                 serviceTestInput
+            };
+            serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>()
+            {
+                new ServiceTestOutput("name","vale","","")
+            };
+            serviceTestModel.TestSteps = new ObservableCollection<IServiceTestStep>()
+            {
+                new ServiceTestStep(Guid.NewGuid(), "Switch", new ObservableCollection<IServiceTestOutput>(), StepType.Mock )
+                {
+                    StepOutputs = new ObservableCollection<IServiceTestOutput>()
+                    {
+                        new ServiceTestOutput("j","Jvalue","","")
+                    }
+                }
             };
             var dataListModel = new DataListModel();
             var shapeRecordSets = new List<IRecordSet>();
@@ -729,7 +855,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             dataListModel.ShapeRecordSets = shapeRecordSets;
             serviceTestModel.AddRow(serviceTestInput, dataListModel);
 
-            var serviceTestModelClone = new ServiceTestModel(Guid.NewGuid()) { Inputs = serviceTestModel.Inputs, TestName = "NewTestName" };
+            var serviceTestModelClone = new ServiceTestModel(Guid.NewGuid()) { Inputs = serviceTestModel.Inputs, TestName = "NewTestName", Outputs = serviceTestModel.Outputs, TestSteps = serviceTestModel.TestSteps};
             serviceTestModelClone.AddRow(serviceTestInput, dataListModel);
 
             serviceTestModel.SetItem(serviceTestModelClone);
@@ -849,9 +975,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
             var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            
             serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
             {
                 serviceTestInput
+            };
+            serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>()
+            {
+                new ServiceTestOutput("name","value","from","to"),
+                new ServiceTestOutput("name2","value","from","to"),
+                
+            };
+            serviceTestModel.TestSteps = new ObservableCollection<IServiceTestStep>()
+            {
+                new ServiceTestStep(Guid.NewGuid(), "DsfDecision", new ObservableCollection<IServiceTestOutput>(), StepType.Mock )
             };
             var dataListModel = new DataListModel();
             var shapeRecordSets = new List<IRecordSet>();
