@@ -520,12 +520,12 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 if (foundTestStep.ActivityType == typeof(DsfDecision).Name && foundTestStep.Type == StepType.Mock)
                 {
-                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
+                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == GlobalConstants.ArmResultText);
                     resource = new TestMockDecisionStep(resource as DsfDecision) { NameOfArmToReturn = serviceTestOutput.Value };
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfSwitch).Name && foundTestStep.Type == StepType.Mock)
                 {
-                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
+                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == GlobalConstants.ArmResultText);
                     resource = new TestMockSwitchStep(resource as DsfSwitch) { ConditionToUse = serviceTestOutput.Value };
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfSequenceActivity).Name)
