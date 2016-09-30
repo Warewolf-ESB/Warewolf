@@ -369,6 +369,7 @@
     <Compile Include="Interfaces\IFindMissingStrategy.cs" />
     <Compile Include="Interfaces\IOutputTOConvert.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestMockStep.cs" />
     <Compile Include="TO\AssignObjectDTO.cs" />
     <Compile Include="TO\ActivityDTO.cs" />
     <Compile Include="Activities\DsfActivity.cs" />

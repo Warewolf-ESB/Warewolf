@@ -379,6 +379,7 @@
     <Compile Include="Studio\IDialogueViewModel.cs" />
     <Compile Include="Studio\IdialogViewModelFactory.cs" />
     <Compile Include="Studio\IMenuViewModel.cs" />
+    <Compile Include="TestSaveResult.cs" />
     <Compile Include="Threading\IAsyncWorker.cs" />
     <Compile Include="ToolBase\Database\IDatabaseServiceViewModel.cs" />
     <Compile Include="ToolBase\DotNet\IDotNetViewModel.cs" />

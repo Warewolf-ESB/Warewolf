@@ -131,6 +131,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => StepDescription);
             }
         }
+        public TestRunResult Result { get; set; }
 
         public bool IsTestStepExpanded
         {
