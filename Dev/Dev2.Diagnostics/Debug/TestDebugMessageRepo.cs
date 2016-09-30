@@ -30,16 +30,19 @@ namespace Dev2.Diagnostics.Debug
                     var key = new Tuple<Guid, string>(resourceID,testName);
                     if(_data.TryGetValue(key, out list))
                     {
-                        if(list.Contains(ds))
+                        //                        if(list.Contains(ds))
+                        //                        {
+                        //                            var existingItem = list.FirstOrDefault(state => state.Equals(ds));
+                        //                            if(existingItem != null && existingItem.StateType != ds.StateType && ds.StateType!=StateType.Duration)
+                        //                            {
+                        //                                list.Add(ds);
+                        //                            }
+                        //                            return;
+                        //                        }
+                        if (ds.StateType != StateType.Duration)
                         {
-                            var existingItem = list.FirstOrDefault(state => state.Equals(ds));
-                            if(existingItem != null && existingItem.StateType != ds.StateType && ds.StateType!=StateType.Duration)
-                            {
-                                list.Add(ds);
-                            }
-                            return;
+                            list.Add(ds);
                         }
-                        list.Add(ds);
                     }
                     else
                     {
