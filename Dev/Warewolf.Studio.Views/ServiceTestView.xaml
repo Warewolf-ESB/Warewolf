@@ -384,16 +384,16 @@
                         <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto" MinHeight="50" MaxHeight="144"/>
+                                <RowDefinition Height="Auto" MinHeight="50" MaxHeight="136"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto" MinHeight="50" MaxHeight="144"/>
+                                <RowDefinition Height="Auto" MinHeight="50" MaxHeight="136"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" Text="Test Inputs" FontWeight="Bold"/>
-                            <Border Grid.Row="1" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1" MaxHeight="150">
+                            <Border Grid.Row="1" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1" MaxHeight="136">
                                 <controls:Dev2DataGrid ItemsSource="{Binding SelectedServiceTest.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                        AutoGenerateColumns="False"
                                                        BorderThickness="0"
@@ -696,8 +696,8 @@
                                 </ig:XamDataTree.GlobalNodeLayouts>
                             </ig:XamDataTree>
 
-                            <TextBlock Grid.Row="4" Text="Outputs" FontWeight="Bold"/>
-                            <Border Grid.Row="5" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1" MaxHeight="150">
+                            <TextBlock Grid.Row="4" Text="Assert Outputs" FontWeight="Bold"/>
+                            <Border Grid.Row="5" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1" MaxHeight="136">
                                 <controls:Dev2DataGrid ItemsSource="{Binding SelectedServiceTest.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                        AutoGenerateColumns="False"
                                                        BorderThickness="0"      
