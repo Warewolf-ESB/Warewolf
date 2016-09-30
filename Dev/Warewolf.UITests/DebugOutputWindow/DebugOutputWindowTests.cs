@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Common;
+
 // ReSharper disable InconsistentNaming
 
 namespace Warewolf.UITests.DebugOutputWindow
@@ -25,10 +27,15 @@ namespace Warewolf.UITests.DebugOutputWindow
         {
 
             Uimap.Open_Service_From_Explorer("Hello World");
+            Uimap.WaitForControlVisible(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart);
             Uimap.Press_F6();
             Uimap.Click_AddNewTestFromDebug();
-            Assert.IsTrue(Uimap.GetCurrentTest(1).DisplayText.Contains("*"));
-            
+            Uimap.WaitForControlVisible(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList);            
+            //Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay.DisplayText.Contains("*"));            
+            //Uimap.Click_Run_Test_Button(TestResultEnum.Pass);
+            //Uimap.Click_AddNewTestFromDebug();
+            //Assert.IsTrue(Uimap.GetCurrentTest(2).DisplayText.Contains("*"));
+
 
         }
 
