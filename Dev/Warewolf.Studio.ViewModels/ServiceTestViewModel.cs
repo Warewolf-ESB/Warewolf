@@ -664,7 +664,7 @@ namespace Warewolf.Studio.ViewModels
                         switchOptions?.Insert(0, "Default");
                     }
                     var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
-                    var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
+                    var serviceTestOutput = new ServiceTestOutput(GlobalConstants.ArmResultText, "", "", "")
                     {
                         HasOptionsForValue = true,
                         OptionsForValue = switchOptions
@@ -708,7 +708,7 @@ namespace Warewolf.Studio.ViewModels
                                 switchOptions?.Insert(0, "Default");
                             }
                             var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
-                            var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
+                            var serviceTestOutput = new ServiceTestOutput(GlobalConstants.ArmResultText, "", "", "")
                             {
                                 HasOptionsForValue = true,
                                 OptionsForValue = switchOptions
@@ -964,7 +964,7 @@ namespace Warewolf.Studio.ViewModels
                         var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
                         if(dds != null)
                         {
-                            var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
+                            var serviceTestOutput = new ServiceTestOutput(GlobalConstants.ArmResultText, "", "", "")
                             {
                                 HasOptionsForValue = true,
                                 OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }
@@ -1013,7 +1013,7 @@ namespace Warewolf.Studio.ViewModels
                             if (SelectedServiceTest != null)
                             {
                                 var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
-                                var serviceTestOutput = new ServiceTestOutput("Condition Result", "", "", "")
+                                var serviceTestOutput = new ServiceTestOutput(GlobalConstants.ArmResultText, "", "", "")
                                 {
                                     HasOptionsForValue = true,
                                     OptionsForValue = new List<string> { dds.TrueArmText, dds.FalseArmText }

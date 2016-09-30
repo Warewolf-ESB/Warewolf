@@ -152,7 +152,7 @@ namespace Dev2.Studio.Controller
             {
                 contentPresenter.Content = large;
             }
-            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(modelItem.Parent.View);
+            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(modelItem?.Parent?.View);
             var dataContext1 = parentContentPane?.DataContext;
             if (dataContext1 != null)
             {
@@ -284,7 +284,7 @@ namespace Dev2.Studio.Controller
             }
 
             window.SetEnableDoneButtonState(true);
-            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(mi.Parent.View);
+            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(mi?.Parent?.View);
             var dataContext1 = parentContentPane?.DataContext;
             if (dataContext1 != null)
             {
