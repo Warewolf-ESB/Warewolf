@@ -788,119 +788,100 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
+            _previousParentId = dataObject.ParentInstanceID;
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
 
-            lock (_forEachExecutionObject)
+            dataObject.ForEachNestingLevel++;
+            ErrorResultTO allErrors = new ErrorResultTO();
+            IIndexIterator itr = null;
+            InitializeDebug(dataObject);
+            try
             {
-                _previousParentId = dataObject.ParentInstanceID;
-                _debugInputs = new List<DebugItem>();
-                _debugOutputs = new List<DebugItem>();
+                ErrorResultTO errors;
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, update);
 
-
-
-                dataObject.ForEachNestingLevel++;
-                ErrorResultTO allErrors = new ErrorResultTO();
-                IIndexIterator itr = null;
-                InitializeDebug(dataObject);
-                try
+                foreach(var err in errors.FetchErrors())
                 {
-                    ErrorResultTO errors;
-                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, update);
+                    dataObject.Environment.AddError(err);
+                }
+                itr = exePayload.IndexIterator;
 
-                    foreach (var err in errors.FetchErrors())
+                string error;
+                ForEachInnerActivityTO innerA = GetInnerActivity(out error);
+                var exeAct = innerA.InnerActivity;
+                allErrors.AddError(error);
+                if(dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                }
+                dataObject.ParentInstanceID = UniqueID;
+                dataObject.IsDebugNested = true;
+                if(dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.After, update);
+                }
+                exePayload.InnerActivity = innerA;
+
+                while(itr.HasMore())
+                {
+                    operationalData = exePayload;
+                    int idx = exePayload.IndexIterator.FetchNextIndex();
+                    int innerupdate = 0;
+                    if(exePayload.ForEachType != enForEachType.NumOfExecution)
                     {
-                        dataObject.Environment.AddError(err);
+                        innerupdate = idx;
                     }
-                    itr = exePayload.IndexIterator;
 
+                    exeAct.Execute(dataObject, innerupdate);
 
-                    string error;
-                    ForEachInnerActivityTO innerA = GetInnerActivity(out error);
-                    var exeAct = innerA.InnerActivity;
-                    allErrors.AddError(error);
-                    if (dataObject.IsDebugMode())
+                    operationalData.IncIterationCount();
+                }
+                if(errors.HasErrors())
+                {
+                    allErrors.MergeErrors(errors);
+                }
+
+                if(dataObject.IsDebugMode())
+                {
+                    _debugOutputs = new List<DebugItem>();
+                    _debugOutputs = new List<DebugItem>();
+                    DispatchDebugState(dataObject, StateType.Duration, 0);
+                }
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Error("DSFForEach", e);
+                allErrors.AddError(e.Message);
+            }
+            finally
+            {
+                if(itr != null)
+                {
+                    if(ForEachType != enForEachType.NumOfExecution)
                     {
-                        DispatchDebugState(dataObject, StateType.Before, update);
-
-                    }
-                    dataObject.ParentInstanceID = UniqueID;
-                    dataObject.IsDebugNested = true;
-                    if (dataObject.IsDebugMode())
-                    {
-                        DispatchDebugState(dataObject, StateType.After, update);
-                    }
-                    exePayload.InnerActivity = innerA;
- 
-           
-                    while (itr.HasMore() )
-                        {
-
-                            operationalData = exePayload;
-                            int idx = exePayload.IndexIterator.FetchNextIndex();
-                        int innerupdate = 0;
-                        if (exePayload.ForEachType != enForEachType.NumOfExecution)
-                            {
-            
-                            innerupdate = idx;
-                            }
-
-                            exeAct.Execute(dataObject, innerupdate);
-
-            
-                            operationalData.IncIterationCount();
-                        }
-                    if (errors.HasErrors())
-                        {
-                            allErrors.MergeErrors(errors);
-                        }
-          
-
-                    if (dataObject.IsDebugMode())
-                    {
-                        _debugOutputs = new List<DebugItem>();
-                        _debugOutputs = new List<DebugItem>();
-                        DispatchDebugState(dataObject, StateType.Duration, 0);
+                        RestoreHandlerFn();
                     }
                 }
-                catch (Exception e)
+                dataObject.ParentInstanceID = _previousParentId;
+                dataObject.ForEachNestingLevel--;
+                dataObject.IsDebugNested = false;
+                // Handle Errors
+                if(allErrors.HasErrors())
                 {
-                    Dev2Logger.Error("DSFForEach", e);
-                    allErrors.AddError(e.Message);
-                }
-                finally
-                {
-                    if (itr != null)
-                    {
-                        if (ForEachType != enForEachType.NumOfExecution)
-                        {
-                            RestoreHandlerFn();
-                        }
-
-                    }
                     dataObject.ParentInstanceID = _previousParentId;
                     dataObject.ForEachNestingLevel--;
                     dataObject.IsDebugNested = false;
                     // Handle Errors
-                    if (allErrors.HasErrors())
+                    if(allErrors.HasErrors())
+                    {
+                        DisplayAndWriteError("DsfForEachActivity", allErrors);
+                        foreach(var fetchError in allErrors.FetchErrors())
                         {
-
-
-                        dataObject.ParentInstanceID = _previousParentId;
-                        dataObject.ForEachNestingLevel--;
-                        dataObject.IsDebugNested = false;
-                        // Handle Errors
-                        if (allErrors.HasErrors())
-                        {
-                            DisplayAndWriteError("DsfForEachActivity", allErrors);
-                            foreach (var fetchError in allErrors.FetchErrors())
-                            {
-                                dataObject.Environment.AddError(fetchError);
-                            }
-
-                            dataObject.ParentInstanceID = _previousParentId;
+                            dataObject.Environment.AddError(fetchError);
                         }
 
-
-
+                        dataObject.ParentInstanceID = _previousParentId;
                     }
                 }
             }

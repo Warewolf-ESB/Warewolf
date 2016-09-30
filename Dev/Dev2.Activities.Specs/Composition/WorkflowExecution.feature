@@ -2798,6 +2798,29 @@ Scenario: Workflow with Assign  Delete and testing variables that hasn"t been as
 	  |                       |
 	  | [[result1]] = Failure |
 
+Scenario: Workflow with Assign  DeleteNullHandler and testing variables that hasn"t been assigned
+	  Given I have a workflow "WorkflowWithAssignDelete12"
+	  And "WorkflowWithAssignDelete12" contains an Assign "DelRec" as
+	  | variable    | value |
+	  | [[rec().a]] | 50    |
+	  And "WorkflowWithAssignDelete12" contains NullHandlerDelete "Delet12" as
+	  | Variable   | result      |
+	  | [[Del(1)]] | [[result1]] |
+	  When "WorkflowWithAssignDelete12" is executed
+      Then the workflow execution has "NO" error
+	  And the "DelRec" in WorkFlow "WorkflowWithAssignDelete12" debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | 50        |
+	  And the "DelRec" in Workflow "WorkflowWithAssignDelete12" debug outputs as  
+	  | # |                   |
+	  | 1 | [[rec(1).a]] = 50 |
+	  And the "Delet12" in WorkFlow "WorkflowWithAssignDelete12" debug inputs as
+	  | Records      |
+	  | [[Del(1)]] = |
+	  And the "Delet12" in Workflow "WorkflowWithAssignDelete12" debug outputs as  
+	  |                       |
+	  | [[result1]] = Failure |
+
 
 Scenario: Workflow with Assign Sort and testing variables that hasn"t been assigned
       Given I have a workflow "workflowithAssignandsortingrec12"

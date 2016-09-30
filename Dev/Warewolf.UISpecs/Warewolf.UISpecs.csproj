@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,9 +9,9 @@
     <ProjectGuid>{227596D7-ACEE-48AB-8A27-2B20AF449C97}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Warewolf.Studio.UISpecs</RootNamespace>
-    <AssemblyName>Warewolf.Studio.UISpecs</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Warewolf.UISpecs</RootNamespace>
+    <AssemblyName>Warewolf.UISpecs</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
@@ -19,13 +19,6 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>True</IsCodedUITest>
     <TestProjectType>CodedUITest</TestProjectType>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>4.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,20 +31,19 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-    <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework" />
-    <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common" />
-    <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension" />
-    <Reference Include="Microsoft.VisualStudio.TestTools.UITesting" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -66,548 +58,94 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Action Steps.cs" />
-    <Compile Include="SettingsResourcePermissionsPerRowCellActions.cs" />
-    <Compile Include="StudioUISpecs.feature.cs">
+    <Compile Include="DBConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>StudioUISpecs.feature</DependentUpon>
+      <DependentUpon>DBConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Base Conversion.feature.cs">
+    <Compile Include="PluginConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Base Conversion.feature</DependentUpon>
+      <DependentUpon>PluginConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Calculate.feature.cs">
+    <Compile Include="SetDefaultPlaybackSettings.cs" />
+    <Compile Include="Explorer.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Calculate.feature</DependentUpon>
+      <DependentUpon>Explorer.feature</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Case Conversion.feature.cs">
+    <Compile Include="WebConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Case Conversion.feature</DependentUpon>
+      <DependentUpon>WebConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Comment.feature.cs">
+    <Compile Include="WorkflowTestingTab.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Comment.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Control Flow - Decision1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Control Flow - Decision.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Control Flow - ForEach.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Control Flow - ForEach.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Control Flow - Switch1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Control Flow - Switch.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\ControlFlow - Sequence1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ControlFlow - Sequence.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Create JSON.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Create JSON.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Data - Assign1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Data - Assign.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Data - DataMerge.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Data - DataMerge.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Data - DataSplit.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Data - DataSplit.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Database\GetWebConnector1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GetWebConnector.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Database\MySqlConnector1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MySqlConnector.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Database\OracleConnector.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OracleConnector.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Database\Sql Server.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Sql Server.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Date and Time Difference.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Date and Time Difference.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Date and Time.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Date and Time.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\DotNet Dll.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DotNet Dll.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Dropbox\Download.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Download.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Dropbox\Upload.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Upload.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\FileAndFolder - Create.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FileAndFolder - Create.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\FileAndFolder - Delete.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FileAndFolder - Delete.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\FileAndFolder - Read Folder.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FileAndFolder - Read Folder.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\FileAndFolder - Read.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FileAndFolder - Read.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\FileAndFolder - Unzip.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FileAndFolder - Unzip.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\FileAndFolder - Write.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FileAndFolder - Write.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\FileAndFolder - Zip.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FileAndFolder - Zip.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\FileAndFolder - Copy.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FileAndFolder - Copy.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\FileAndFolder - Move.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FileAndFolder - Move.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\FileAndFolder - Rename.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FileAndFolder - Rename.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Find Index.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Find Index.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Format Number.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Format Number.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Length.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Length.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Random.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Random.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Recordset\Count.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Count.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Recordset\Delete.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Delete.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Recordset\FindIndex.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FindIndex.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Recordset\Sort.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Sort.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Recordset\Unique.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Unique.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Replace.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Replace.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Commandline.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Commandline.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Script.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Script.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Service Picker.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Service Picker.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Sharepoint\Create.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Create.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Sharepoint\Delete.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Delete.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Sharepoint\Read.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Read.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Sharepoint\Update.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Update.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\SQLBulkInsert.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SQLBulkInsert.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\SystemInformation.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SystemInformation.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Email\NewEmailSource1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NewEmailSource.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Email\Utility - Email1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Utility - Email.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Utility - Get Web Request.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Utility - Get Web Request.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Utility - Post Web Request.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Utility - Post Web Request.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Utility - Xpath1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Utility - Xpath.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Utility Web Request.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Utility Web Request.feature</DependentUpon>
-    </Compile>
-    <Compile Include="UIMap.cs">
-      <DependentUpon>UIMap.uitest</DependentUpon>
-    </Compile>
-    <Compile Include="UIMap.Designer.cs">
-      <DependentUpon>UIMap.uitest</DependentUpon>
+      <DependentUpon>WorkflowTestingTab.feature</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="StudioUISpecs.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StudioUISpecs.feature.cs</LastGenOutput>
-    </None>
-    <None Include="packages.config" />
-    <None Include="Tools\Base Conversion.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Base Conversion.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Calculate.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Calculate.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Case Conversion.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Case Conversion.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Comment.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Comment.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Control Flow - Decision.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Control Flow - Decision1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Control Flow - ForEach.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Control Flow - ForEach.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Control Flow - Switch.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Control Flow - Switch1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\ControlFlow - Sequence.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ControlFlow - Sequence1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Create JSON.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Create JSON.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Data - Assign.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Data - Assign1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Data - DataMerge.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Data - DataMerge.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Data - DataSplit.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Data - DataSplit.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Database\GetWebConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>GetWebConnector1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Database\OracleConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>OracleConnector.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Database\MySqlConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>MySqlConnector1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Database\Sql Server.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Sql Server.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Date and Time Difference.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Date and Time Difference.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Date and Time.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Date and Time.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\DotNet Dll.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DotNet Dll.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Dropbox\Download.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Download.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Dropbox\Upload.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Upload.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\FileAndFolder - Create.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FileAndFolder - Create.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\FileAndFolder - Delete.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FileAndFolder - Delete.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\FileAndFolder - Read Folder.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FileAndFolder - Read Folder.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\FileAndFolder - Read.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FileAndFolder - Read.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\FileAndFolder - Unzip.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FileAndFolder - Unzip.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\FileAndFolder - Write.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FileAndFolder - Write.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\FileAndFolder - Zip.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FileAndFolder - Zip.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\FileAndFolder - Copy.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FileAndFolder - Copy.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\FileAndFolder - Move.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FileAndFolder - Move.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\FileAndFolder - Rename.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FileAndFolder - Rename.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Find Index.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Find Index.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Format Number.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Format Number.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Length.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Length.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Random.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Random.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Recordset\Count.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Count.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Recordset\Delete.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Delete.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Recordset\FindIndex.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FindIndex.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Recordset\Sort.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Sort.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Recordset\Unique.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Unique.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Replace.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Replace.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Commandline.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Commandline.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Script.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Script.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Service Picker.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Service Picker.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Sharepoint\Create.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Create.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Sharepoint\Delete.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Delete.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Sharepoint\Read.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Read.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Sharepoint\Update.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Update.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\SQLBulkInsert.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SQLBulkInsert.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\SystemInformation.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SystemInformation.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Email\NewEmailSource.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>NewEmailSource1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Email\Utility - Email.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Utility - Email1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Utility - Get Web Request.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Utility - Get Web Request.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Utility - Post Web Request.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Utility - Post Web Request.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Utility - Xpath.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Utility - Xpath1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Utility Web Request.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Utility Web Request.feature.cs</LastGenOutput>
-    </None>
-    <None Include="UIMap.uitest">
+    <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="DBConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DBConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Explorer.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Explorer.feature.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="PluginConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PluginConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="WebConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WebConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="WorkflowTestingTab.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WorkflowTestingTab.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UIMapTemplate.txt" />
+    <ProjectReference Include="..\Warewolf.UITests\Warewolf.UITests.csproj">
+      <Project>{91a84d74-7d50-4046-a8fe-82e52b5dbee5}</Project>
+      <Name>Warewolf.UITests</Name>
+    </ProjectReference>
   </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' Or '$(VisualStudioVersion)' == '11.0') And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="UIAutomationTypes" />
+      </ItemGroup>
+    </When>
+  </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"
-"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)\Tools" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"
-"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)\Tools\Database" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"
-"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)\Tools\Dropbox" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"
-"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)\Tools\Recordset" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"
-"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)\Tools\Sharepoint" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"
-"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)\Tools\Email" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"</PreBuildEvent>
+    <PreBuildEvent>"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>REM IF EXIST "%25vs120comntools%25" IF NOT EXIST "%25vs120comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll" echo f | xcopy /Y /Q "$(TargetDir)Dev2.CodedUI.SpecGenerator.dll" "%25vs120comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll"

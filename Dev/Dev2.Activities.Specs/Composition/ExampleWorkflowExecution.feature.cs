@@ -2064,14 +2064,14 @@ this.FeatureBackground();
                         "Ruby",
                         "sleep(5)"});
 #line 586
-  testRunner.And("the \"Script1\" in WorkFlow \"Scripting - Script\" debug inputs as", ((string)(null)), table114, "And ");
+  testRunner.And("the \"Ruby\" in WorkFlow \"Scripting - Script\" debug inputs as", ((string)(null)), table114, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table115 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table115.AddRow(new string[] {
-                        "[[Result]] = 5"});
+                        "[[RubyResult]] = 5"});
 #line 589
-  testRunner.And("the \"Script1\" in Workflow \"Scripting - Script\" debug outputs as", ((string)(null)), table115, "And ");
+  testRunner.And("the \"Ruby\" in Workflow \"Scripting - Script\" debug outputs as", ((string)(null)), table115, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
@@ -2080,14 +2080,14 @@ this.FeatureBackground();
                         "JavaScript",
                         "String = String"});
 #line 592
-  testRunner.And("the \"Script2\" in WorkFlow \"Scripting - Script\" debug inputs as", ((string)(null)), table116, "And ");
+  testRunner.And("the \"JavaScript\" in WorkFlow \"Scripting - Script\" debug inputs as", ((string)(null)), table116, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table117.AddRow(new string[] {
-                        "[[Result]] = 7"});
+                        "[[JavaScriptResult]] = 7"});
 #line 595
-  testRunner.And("the \"Script2\" in Workflow \"Scripting - Script\" debug outputs as", ((string)(null)), table117, "And ");
+  testRunner.And("the \"JavaScript\" in Workflow \"Scripting - Script\" debug outputs as", ((string)(null)), table117, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table118 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
@@ -2096,14 +2096,152 @@ this.FeatureBackground();
                         "Python",
                         "String = String"});
 #line 598
-  testRunner.And("the \"Script3\" in WorkFlow \"Scripting - Script\" debug inputs as", ((string)(null)), table118, "And ");
+  testRunner.And("the \"Python\" in WorkFlow \"Scripting - Script\" debug inputs as", ((string)(null)), table118, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table119.AddRow(new string[] {
-                        "[[Result]] = not one or two"});
+                        "[[PythonResult]] = not one or two"});
 #line 601
-  testRunner.And("the \"Script3\" in Workflow \"Scripting - Script\" debug outputs as", ((string)(null)), table119, "And ");
+  testRunner.And("the \"Python\" in Workflow \"Scripting - Script\" debug outputs as", ((string)(null)), table119, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing Scripting - Ruby example workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExampleWorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExampleWorkflowExecution")]
+        public virtual void ExampleExecutingScripting_RubyExampleWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Scripting - Ruby example workflow", ((string[])(null)));
+#line 606
+ this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 607
+  testRunner.Given("I have a workflow \"Scripting - Ruby Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+#line 608
+  testRunner.And("\"Scripting - Ruby Test\" contains \"Scripting - Ruby\" from server \"localhost\" with " +
+                    "mapping as", ((string)(null)), table120, "And ");
+#line 610
+  testRunner.When("\"Scripting - Ruby Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 611
+  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Language",
+                        "Script"});
+            table121.AddRow(new string[] {
+                        "Ruby",
+                        "sleep(5)"});
+#line 612
+  testRunner.And("the \"Ruby\" in WorkFlow \"Scripting - Ruby\" debug inputs as", ((string)(null)), table121, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table122.AddRow(new string[] {
+                        "[[RubyResult]] = 5"});
+#line 615
+  testRunner.And("the \"Ruby\" in Workflow \"Scripting - Ruby\" debug outputs as", ((string)(null)), table122, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing Scripting - Python example workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExampleWorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExampleWorkflowExecution")]
+        public virtual void ExampleExecutingScripting_PythonExampleWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Scripting - Python example workflow", ((string[])(null)));
+#line 619
+ this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 620
+  testRunner.Given("I have a workflow \"Scripting - Python Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+#line 621
+  testRunner.And("\"Scripting - Python Test\" contains \"Scripting - Python\" from server \"localhost\" w" +
+                    "ith mapping as", ((string)(null)), table123, "And ");
+#line 623
+  testRunner.When("\"Scripting - Python Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 624
+  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Language",
+                        "Script"});
+            table124.AddRow(new string[] {
+                        "Python",
+                        "String = String"});
+#line 625
+   testRunner.And("the \"Python\" in WorkFlow \"Scripting - Python\" debug inputs as", ((string)(null)), table124, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table125.AddRow(new string[] {
+                        "[[PythonResult]] = not one or two"});
+#line 628
+  testRunner.And("the \"Python\" in Workflow \"Scripting - Python\" debug outputs as", ((string)(null)), table125, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing Scripting - Javascript example workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExampleWorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExampleWorkflowExecution")]
+        public virtual void ExampleExecutingScripting_JavascriptExampleWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Scripting - Javascript example workflow", ((string[])(null)));
+#line 632
+ this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 633
+  testRunner.Given("I have a workflow \"Scripting - JavaScript Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+#line 634
+  testRunner.And("\"Scripting - JavaScript Test\" contains \"Scripting - JavaScript\" from server \"loca" +
+                    "lhost\" with mapping as", ((string)(null)), table126, "And ");
+#line 636
+  testRunner.When("\"Scripting - JavaScript Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 637
+  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Language",
+                        "Script"});
+            table127.AddRow(new string[] {
+                        "JavaScript",
+                        "String = String"});
+#line 638
+   testRunner.And("the \"JavaScript\" in WorkFlow \"Scripting - JavaScript\" debug inputs as", ((string)(null)), table127, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table128 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table128.AddRow(new string[] {
+                        "[[JavaScriptResult]] = 7"});
+#line 641
+  testRunner.And("the \"JavaScript\" in Workflow \"Scripting - JavaScript\" debug outputs as", ((string)(null)), table128, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

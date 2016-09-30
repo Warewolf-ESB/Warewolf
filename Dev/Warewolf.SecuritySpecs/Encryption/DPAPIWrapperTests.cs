@@ -28,7 +28,7 @@ namespace Dev2.Warewolf.Security.Encryption
 
         [TestMethod]
         [Owner("Kerneels Roos")]
-        [TestCategory("EncryptDecrypt")]
+        [TestCategory("ServerPermissionsSecurity")]
         public void EncryptDecryptTest()
         {
             //------------Setup for test--------------------------
@@ -44,7 +44,7 @@ namespace Dev2.Warewolf.Security.Encryption
 
         [TestMethod]
         [Owner("Kerneels Roos")]
-        [TestCategory("EncryptDecrypt")]
+        [TestCategory("ServerPermissionsSecurity")]
         public void EncryptDecryptFailsIfAlreadyPerformedTest()
         {
             //------------Setup for test--------------------------

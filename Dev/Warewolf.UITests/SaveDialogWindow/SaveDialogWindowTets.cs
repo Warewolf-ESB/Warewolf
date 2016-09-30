@@ -27,9 +27,7 @@ namespace Warewolf.UITests.DebugInputWindow
             Uimap.Enter_Service_Name_Into_Save_Dialog(TestingWF);
             Uimap.Click_SaveDialog_Save_Button();
             Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Filter_Explorer(TestingWF);
-            Uimap.RightClick_Explorer_Localhost_First_Item();
-            Uimap.Click_Duplicate_From_ExplorerContextMenu();
+            Uimap.Click_Duplicate_From_ExplorerContextMenu(TestingWF);
             Uimap.Enter_Service_Name_Into_Save_Dialog(TestingWF, true, saveOrDuplicate: Common.SaveOrDuplicate.Duplicate);
             Uimap.Enter_Service_Name_Into_Save_Dialog(InvalidName, invalid: true, saveOrDuplicate: SaveOrDuplicate.Duplicate);
             Uimap.Enter_Service_Name_Into_Save_Dialog(NameHasWhiteSpace, nameHasWhiteSpace: true, saveOrDuplicate: SaveOrDuplicate.Duplicate);
