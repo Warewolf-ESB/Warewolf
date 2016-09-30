@@ -201,6 +201,18 @@ namespace Dev2.Activities.Specs.BaseTypes
             scenarioContext.Add(ActualSourceHolder, location);
         }
 
+        public static string AddGuidToPath(string location)
+        {
+            if (Path.HasExtension(location))
+            {
+                return location.Replace(Path.GetExtension(location), Guid.NewGuid().ToString().Substring(0, 8) + Path.GetExtension(location));
+            }
+            else
+            {
+                return location;
+            }
+        }
+
         [Given(@"use private public key for source is ""(.*)""")]
         public void GivenUsePrivatePublicKeyForSourceIs(string sourceKey)
         {
