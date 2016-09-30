@@ -795,7 +795,10 @@ namespace Warewolf.Studio.ViewModels
                                 return new ServiceTestOutput(output, "", "", "")
                                 {
                                     HasOptionsForValue = false,
-                                    AddStepOutputRow = s => serviceTestStep.AddNewOutput(s)
+                                    AddStepOutputRow = s =>
+                                    {
+                                        serviceTestStep?.AddNewOutput(s);
+                                    }
                                 };
                             }).Cast<IServiceTestOutput>().ToList();
                     var step = CreateServiceTestStep(Guid.Parse(dsfActivityAbstract.UniqueID), dsfActivityAbstract.DisplayName, type, serviceTestOutputs);
