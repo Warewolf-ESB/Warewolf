@@ -77,7 +77,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
                 {
                     Action = zip
                 };
-                // CI
+
                 scenarioContext.Add("activity", zip);
             }
             catch(Exception e)

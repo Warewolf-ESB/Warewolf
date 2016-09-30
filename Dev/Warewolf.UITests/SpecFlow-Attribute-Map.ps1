@@ -12,9 +12,14 @@ $PreviousLine = ""
             #Add SpecFlow reference
             "    using TechTalk.SpecFlow;"
         }
+        if ($_ -match "public partial class UIMap" -and $PreviousLine -ne "    [Binding]") 
+        {
+            #Add SpecFlow class attribute
+            "    [Binding]"
+        }
         if ($_ -match "        public void *" -and -not $PreviousLine.StartsWith("        [When(@`""))
         {
-            #Add SpecFlow attribute to public function
+            #Add SpecFlow step attribute
             "        [When(@`"I " + $_.Substring("        public void ".length, $_.length - "        public void ".length - "()".length).replace("_", " ") + "`")]"
         }
         $_ # send the current line to output
