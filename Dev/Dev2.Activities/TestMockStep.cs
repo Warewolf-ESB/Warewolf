@@ -83,7 +83,11 @@ namespace Dev2
                     dataObject.Environment.Assign(variable, value, 0);
                 }
                 var res = new DebugEvalResult(dataObject.Environment.ToStar(variable), "", dataObject.Environment, update);                
-                AddDebugOutputItem(res);
+                //AddDebugOutputItem(res);
+                if (dataObject.IsServiceTestExecution)
+                {
+                    AddDebugAssertResultItem(res);
+                }
             }
             if (dataObject.IsDebugMode())
             {
