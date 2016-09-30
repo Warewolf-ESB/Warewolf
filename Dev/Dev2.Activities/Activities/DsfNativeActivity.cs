@@ -680,7 +680,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ServiceTest.TestFailing = !assertPassed;
                             if (dataObject.IsDebugMode())
                             {
-                                //AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
                                 AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(assertPassed.ToString()));
                             }
                             else
@@ -704,7 +703,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ServiceTest.TestFailing = !assertPassed;
                             if (dataObject.IsDebugMode())
                             {
-                                //AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
                                 AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(assertPassed.ToString()));
                             }
                             else
@@ -773,7 +771,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         msg = "Passed";
                     }
-                    //AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
                     AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
                 }
                 return new[] { testResult };
@@ -798,7 +795,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         msg = "Passed";
                     }
-                    //AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
                     AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
                 }
                 return new[] { testResult };
@@ -840,7 +836,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         msg = "Passed";
                     }
-                    //AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
                     AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
                 }
                 output.Result = testResult;
@@ -1087,7 +1082,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             DebugItem itemToAdd = new DebugItem();
             itemToAdd.AddRange(parameters.GetDebugItemResult());
-            _assertResultList.Add(itemToAdd);
+            _debugState.AssertResultList.Add(itemToAdd);
         }
 
         protected void AddDebugItem(DebugOutputBase parameters, DebugItem debugItem)
