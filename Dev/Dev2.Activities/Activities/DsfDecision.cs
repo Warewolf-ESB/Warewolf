@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
@@ -118,7 +117,10 @@ namespace Dev2.Activities
             });
             var resultval = And ? res.Aggregate(true, (a, b) => a && b) : res.Any(a => a);
             if (dataObject.IsDebugMode())
+            {
                 _debugOutputs = GetDebugOutputs(resultval.ToString());
+                //DispatchDebugState(dataObject, StateType.After, 0);
+            }
             if (resultval)
             {
                 if (TrueArm != null)
@@ -139,56 +141,6 @@ namespace Dev2.Activities
             return null;
         }
 
-        public IDev2Activity ExecuteWithAssert(IDSFDataObject dataObject, IServiceTestStep serviceTestStep, int update)
-        {
-            ErrorResultTO allErrors = new ErrorResultTO();
-            try
-            {
-                var activity = ExecuteDecision(dataObject);
-                
-                foreach(var serviceTestOutput in serviceTestStep.StepOutputs)
-                {
-                    DebugItem itemToAdd = new DebugItem();
-                    if (true)
-                    {
-                        itemToAdd.Add(new DebugItemResult() {Value = $"{serviceTestOutput.Variable},{serviceTestOutput.AssertOp},{serviceTestOutput.Value} passed" });
-                    }
-                    //else
-                    //{
-                    //    itemToAdd.Add(new DebugItemResult() { Value = $"{serviceTestOutput.Variable},{serviceTestOutput.AssertOp},{serviceTestOutput.Value} failed" });
-                    //}
-                }
-
-                return activity;
-            }
-            catch (Exception e)
-            {
-                allErrors.AddError(e.Message);
-            }
-            finally
-            {
-                // Handle Errors
-                var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
-                {
-                    DisplayAndWriteError("DsfDecision", allErrors);
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
-
-                }
-                if (dataObject.IsDebugMode())
-                {
-
-                    DispatchDebugState(dataObject, StateType.After, update);
-                    _debugOutputs = new List<DebugItem>();
-                    _debugOutputs = new List<DebugItem>();
-                    DispatchDebugState(dataObject, StateType.Duration, update);
-                }
-
-            }
-
-            return null;
-        }
         public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
         {
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -340,7 +292,8 @@ namespace Dev2.Activities
                     resultString = dds.FalseArmText;
                 }
                 Result = resultString;
-                AddDebugOutputItem(new DebugItemStaticDataParams(resultString, ""));
+                //AddDebugOutputItem(new DebugItemStaticDataParams(resultString, ""));
+                itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
             // ReSharper disable EmptyGeneralCatchClause
