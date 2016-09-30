@@ -1311,12 +1311,12 @@ namespace Warewolf.UITests
         [When(@"I Update Test Name To ""(.*)""")]
         public void Update_Test_Name(string overrideName = null)
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit, new Point(59, 16));
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit.Text = "";
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameTextbox, new Point(59, 16));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameTextbox.Text = "";
             if (!string.IsNullOrEmpty(overrideName))
-                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit.Text = overrideName;
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameTextbox.Text = overrideName;
             else
-                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit.Text = "Dice_Test";
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameTextbox.Text = "Dice_Test";
         }
 
         public void Click_Delete_Test_Button(int testInstance = 1)
@@ -1430,7 +1430,7 @@ namespace Warewolf.UITests
             WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
             #endregion
 
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;, new Point(158, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton, new Point(158, 10));
 
             var currentTest = GetCurrentTest(testInstance);
             var testEnabledSelector = GetTestRunState(testInstance, currentTest).Checked;
@@ -1825,7 +1825,7 @@ namespace Warewolf.UITests
         [When(@"I Click The Create a New Test Button")]
         public void Click_Workflow_Testing_Tab_Create_New_Test_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;, new Point(158, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton, new Point(158, 10));
         }
 
         [Given("The First Test Exists")]

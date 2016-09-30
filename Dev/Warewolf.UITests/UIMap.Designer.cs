@@ -3830,6 +3830,32 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Duplicate_Explorer_Localhost_First_Item_With_Context_Menu - Use 'Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Duplicate Explorer Localhost First Item With Context Menu")]
+        public void Duplicate_Explorer_Localhost_First_Item_With_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem duplicate = this.MainStudioWindow.ExplorerContextMenu.Duplicate;
+            WpfWindow saveDialogWindow = this.SaveDialogWindow;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+
+            // Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+            Assert.AreEqual(this.Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams.DuplicateExists, duplicate.Exists, "Duplicate does not exist in explorer context menu.");
+
+            // Click 'Duplicate' menu item
+            Mouse.Click(duplicate, new Point(62, 10));
+
+            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+            Assert.AreEqual(this.Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Duplicate dialog does not exist after clicking duplicate in the explorer context " +
+                    "menu.");
+        }
+        
+        /// <summary>
         /// Enter_DeployViewOnly_Into_Deploy_Source_Filter - Use 'Enter_DeployViewOnly_Into_Deploy_Source_FilterParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Enter DeployViewOnly Into Deploy Source Filter")]
@@ -4585,32 +4611,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Run All' button equals 'True'
             Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.RunAllButtonExists, runAllButton.Exists, "Run all button does not exist on tests tab");
-        }
-        
-        /// <summary>
-        /// Duplicate_Explorer_Localhost_First_Item_With_Context_Menu - Use 'Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Duplicate Explorer Localhost First Item With Context Menu")]
-        public void Duplicate_Explorer_Localhost_First_Item_With_Context_Menu()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem duplicate = this.MainStudioWindow.ExplorerContextMenu.Duplicate;
-            WpfWindow saveDialogWindow = this.SaveDialogWindow;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-
-            // Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
-            Assert.AreEqual(this.Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams.DuplicateExists, duplicate.Exists, "Duplicate does not exist in explorer context menu.");
-
-            // Click 'Duplicate' menu item
-            Mouse.Click(duplicate, new Point(62, 10));
-
-            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-            Assert.AreEqual(this.Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Duplicate dialog does not exist after clicking duplicate in the explorer context " +
-                    "menu.");
         }
         
         /// <summary>
@@ -8438,6 +8438,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams
+        {
+            get
+            {
+                if ((this.mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams == null))
+                {
+                    this.mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams = new Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams();
+                }
+                return this.mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams;
+            }
+        }
+        
         public virtual Enter_DeployViewOnly_Into_Deploy_Source_FilterParams Enter_DeployViewOnly_Into_Deploy_Source_FilterParams
         {
             get
@@ -8831,18 +8843,6 @@ namespace Warewolf.UITests
                     this.mOpen_Explorer_First_Item_Tests_With_Context_MenuParams = new Open_Explorer_First_Item_Tests_With_Context_MenuParams();
                 }
                 return this.mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
-            }
-        }
-        
-        public virtual Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams
-        {
-            get
-            {
-                if ((this.mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams == null))
-                {
-                    this.mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams = new Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams();
-                }
-                return this.mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams;
             }
         }
         
@@ -9878,6 +9878,8 @@ namespace Warewolf.UITests
         
         private Drag_Toolbox_Zip_Onto_DesignSurfaceParams mDrag_Toolbox_Zip_Onto_DesignSurfaceParams;
         
+        private Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams;
+        
         private Enter_DeployViewOnly_Into_Deploy_Source_FilterParams mEnter_DeployViewOnly_Into_Deploy_Source_FilterParams;
         
         private Enter_Dice_Roll_ValuesParams mEnter_Dice_Roll_ValuesParams;
@@ -9943,8 +9945,6 @@ namespace Warewolf.UITests
         private Open_Explorer_First_Item_Dependancies_With_Context_MenuParams mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams;
         
         private Open_Explorer_First_Item_Tests_With_Context_MenuParams mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
-        
-        private Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams mDuplicate_Explorer_Localhost_First_Item_With_Context_MenuParams;
         
         private Open_Explorer_First_Item_With_Context_MenuParams mOpen_Explorer_First_Item_With_Context_MenuParams;
         
@@ -12729,6 +12729,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Duplicate_Explorer_Localhost_First_Item_With_Context_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+        /// </summary>
+        public bool DuplicateExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+        /// </summary>
+        public bool SaveDialogWindowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Enter_DeployViewOnly_Into_Deploy_Source_Filter'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13410,26 +13430,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Run All' button equals 'True'
         /// </summary>
         public bool RunAllButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Duplicate_Explorer_Localhost_First_Item_With_Context_Menu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
-        /// </summary>
-        public bool DuplicateExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-        /// </summary>
-        public bool SaveDialogWindowExists = true;
         #endregion
     }
     
@@ -36768,23 +36768,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfText PassingText
-        {
-            get
-            {
-                if ((this.mPassingText == null))
-                {
-                    this.mPassingText = new WpfText(this);
-                    #region Search Criteria
-                    this.mPassingText.SearchProperties[WpfText.PropertyNames.Name] = "Passing:";
-                    this.mPassingText.SearchProperties[WpfText.PropertyNames.Instance] = "2";
-                    this.mPassingText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mPassingText;
-            }
-        }
-        
         public WpfButton RunAllButton
         {
             get
@@ -36813,23 +36796,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfText NumberOfPassingTestsTexbox
-        {
-            get
-            {
-                if ((this.mNumberOfPassingTestsTexbox == null))
-                {
-                    this.mNumberOfPassingTestsTexbox = new WpfText(this);
-                    #region Search Criteria
-                    this.mNumberOfPassingTestsTexbox.SearchProperties[WpfText.PropertyNames.AutomationId] = "VersionImage";
-                    this.mNumberOfPassingTestsTexbox.SearchProperties[WpfText.PropertyNames.Instance] = "3";
-                    this.mNumberOfPassingTestsTexbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNumberOfPassingTestsTexbox;
-            }
-        }
-        
         public WpfButton DuplicateButton
         {
             get
@@ -36843,22 +36809,6 @@ namespace Warewolf.UITests
                     #endregion
                 }
                 return this.mDuplicateButton;
-            }
-        }
-        
-        public WpfText TestUrlText
-        {
-            get
-            {
-                if ((this.mTestUrlText == null))
-                {
-                    this.mTestUrlText = new WpfText(this);
-                    #region Search Criteria
-                    this.mTestUrlText.SearchProperties[WpfText.PropertyNames.Name] = "\\ ";
-                    this.mTestUrlText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mTestUrlText;
             }
         }
         
@@ -36878,13 +36828,17 @@ namespace Warewolf.UITests
             }
         }
         
-        public TestNameText TestNameText
+        public WpfText TestNameText
         {
             get
             {
                 if ((this.mTestNameText == null))
                 {
-                    this.mTestNameText = new TestNameText(this);
+                    this.mTestNameText = new WpfText(this);
+                    #region Search Criteria
+                    this.mTestNameText.SearchProperties[WpfText.PropertyNames.Name] = "Test Name";
+                    this.mTestNameText.WindowTitles.Add("Warewolf");
+                    #endregion
                 }
                 return this.mTestNameText;
             }
@@ -36993,26 +36947,53 @@ namespace Warewolf.UITests
                 return this.mUsernameTextBoxEdit;
             }
         }
+        
+        public WpfText TestUrlText
+        {
+            get
+            {
+                if ((this.mTestUrlText == null))
+                {
+                    this.mTestUrlText = new WpfText(this);
+                    #region Search Criteria
+                    this.mTestUrlText.SearchProperties[WpfText.PropertyNames.Instance] = "2";
+                    this.mTestUrlText.SearchProperties[WpfText.PropertyNames.Name] = " ";
+                    this.mTestUrlText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestUrlText;
+            }
+        }
+        
+        public WpfEdit TestNameTextbox
+        {
+            get
+            {
+                if ((this.mTestNameTextbox == null))
+                {
+                    this.mTestNameTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTestNameTextbox.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mTestNameTextbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestNameTextbox;
+            }
+        }
         #endregion
         
         #region Fields
         private UrlText mUrlText;
         
-        private WpfText mPassingText;
-        
         private WpfButton mRunAllButton;
         
         private TestsListboxList mTestsListboxList;
         
-        private WpfText mNumberOfPassingTestsTexbox;
-        
         private WpfButton mDuplicateButton;
-        
-        private WpfText mTestUrlText;
         
         private WpfRadioButton mWindowsRadioButton;
         
-        private TestNameText mTestNameText;
+        private WpfText mTestNameText;
         
         private TestInputsTable1 mTestInputsTable;
         
@@ -37027,6 +37008,10 @@ namespace Warewolf.UITests
         private WpfEdit mPasswordTextBoxEdit;
         
         private WpfEdit mUsernameTextBoxEdit;
+        
+        private WpfText mTestUrlText;
+        
+        private WpfEdit mTestNameTextbox;
         #endregion
     }
     
@@ -37039,6 +37024,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfText.PropertyNames.Instance] = "1";
+            this.SearchProperties[WpfText.PropertyNames.Name] = " ";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -37231,7 +37217,6 @@ namespace Warewolf.UITests
                 {
                     this.mStopButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mStopButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mStopButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Stop this test";
                     this.mStopButton.WindowTitles.Add("Warewolf");
                     #endregion
@@ -37253,6 +37238,22 @@ namespace Warewolf.UITests
                     #endregion
                 }
                 return this.mDeleteButton;
+            }
+        }
+        
+        public WpfButton DisabledDeleteButton
+        {
+            get
+            {
+                if ((this.mDisabledDeleteButton == null))
+                {
+                    this.mDisabledDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDisabledDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Cannot delete an enabled test";
+                    this.mDisabledDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDisabledDeleteButton;
             }
         }
         
@@ -37375,6 +37376,8 @@ namespace Warewolf.UITests
         private WpfButton mStopButton;
         
         private WpfButton mDeleteButton;
+        
+        private WpfButton mDisabledDeleteButton;
         
         private WpfText mTestNameDisplay;
         
@@ -37471,6 +37474,22 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfButton DisabledDeleteButton
+        {
+            get
+            {
+                if ((this.mDisabledDeleteButton == null))
+                {
+                    this.mDisabledDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDisabledDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Cannot delete an enabled test";
+                    this.mDisabledDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDisabledDeleteButton;
+            }
+        }
+        
         public WpfText TestNameDisplay
         {
             get
@@ -37590,6 +37609,8 @@ namespace Warewolf.UITests
         private WpfButton mStopButton;
         
         private WpfButton mDeleteButton;
+        
+        private WpfButton mDisabledDeleteButton;
         
         private WpfText mTestNameDisplay;
         
@@ -37663,7 +37684,6 @@ namespace Warewolf.UITests
                 {
                     this.mStopButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mStopButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mStopButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Stop this test";
                     this.mStopButton.WindowTitles.Add("Warewolf");
                     #endregion
@@ -37685,6 +37705,22 @@ namespace Warewolf.UITests
                     #endregion
                 }
                 return this.mDeleteButton;
+            }
+        }
+        
+        public WpfButton DisabledDeleteButton
+        {
+            get
+            {
+                if ((this.mDisabledDeleteButton == null))
+                {
+                    this.mDisabledDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDisabledDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Cannot delete an enabled test";
+                    this.mDisabledDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDisabledDeleteButton;
             }
         }
         
@@ -37808,6 +37844,8 @@ namespace Warewolf.UITests
         
         private WpfButton mDeleteButton;
         
+        private WpfButton mDisabledDeleteButton;
+        
         private WpfText mTestNameDisplay;
         
         private WpfText mPending;
@@ -37821,42 +37859,6 @@ namespace Warewolf.UITests
         private WpfText mNeverRunDisplay;
         
         private WpfText mRunTimeDisplay;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TestNameText : WpfText
-    {
-        
-        public TestNameText(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = "Test Name";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit UIItemEdit
-        {
-            get
-            {
-                if ((this.mUIItemEdit == null))
-                {
-                    this.mUIItemEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUIItemEdit.SearchConfigurations.Add(SearchConfiguration.NextSibling);
-                    this.mUIItemEdit.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mUIItemEdit;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mUIItemEdit;
         #endregion
     }
     
