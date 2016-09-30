@@ -1000,10 +1000,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         msg = "Passed";
                     }
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams(msg, "Assert Result:");
+                    var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(msg);
                     DebugItem itemToAdd = new DebugItem();
                     itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
-                    debugState.Outputs.Add(itemToAdd);
+                    debugState.AssertResultList.Add(itemToAdd);
                 }
                 output.Result = testResult;
                 ret.Add(testResult);
