@@ -340,7 +340,7 @@ namespace Dev2.Activities
                     resultString = dds.FalseArmText;
                 }
                 Result = resultString;
-                itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
+                AddDebugOutputItem(new DebugItemStaticDataParams(resultString, ""));
                 result.Add(itemToAdd);
             }
             // ReSharper disable EmptyGeneralCatchClause
@@ -465,27 +465,22 @@ namespace Dev2.Activities
         {
             var trueArmText = _dsfDecision.Conditions.TrueArmText;
             var falseArmText = _dsfDecision.Conditions.FalseArmText;
-            InitializeDebug(dataObject);
-            DebugItem itemToAdd = new DebugItem();
-            var result = new List<DebugItem>();
+            InitializeDebug(dataObject);            
             bool hasResult = false;
             if (NameOfArmToReturn == falseArmText)
             {
                 NextNodes = _dsfDecision.FalseArm;
-                itemToAdd.AddRange(new DebugItemStaticDataParams(falseArmText, "").GetDebugItemResult());
-                result.Add(itemToAdd);
+                AddDebugOutputItem(new DebugItemStaticDataParams(falseArmText, ""));
                 hasResult = true;
             }
             if (NameOfArmToReturn == trueArmText)
             {
                 NextNodes = _dsfDecision.TrueArm;
-                itemToAdd.AddRange(new DebugItemStaticDataParams(falseArmText, "").GetDebugItemResult());
-                result.Add(itemToAdd);
+                AddDebugOutputItem(new DebugItemStaticDataParams(trueArmText, ""));
                 hasResult = true;
             }
             if (dataObject.IsDebugMode() && hasResult)
             {
-                _debugOutputs = result;
                 DispatchDebugState(dataObject, StateType.After, update);
                 DispatchDebugState(dataObject, StateType.Duration, update);
             }

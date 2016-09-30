@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common.Interfaces;
-using Dev2.Communication;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
-using Newtonsoft.Json;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -41,11 +39,6 @@ namespace Warewolf.Studio.ViewModels
             AssertOps = new ObservableCollection<string>(collection);
             AssertOp = "=";
             IsSinglematchCriteriaVisible = true;
-        }
-
-        public ServiceTestOutput()
-        {
-
         }
 
         public string Variable
@@ -261,9 +254,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => AssertOps);
             }
         }
-        [JsonIgnore]
         public Action AddNewAction { get; set; }
-        [JsonIgnore]
         public Action<string> AddStepOutputRow { get; set; }
 
         #region Implementation of ICloneable
@@ -286,9 +277,12 @@ namespace Warewolf.Studio.ViewModels
             memberwiseClone.AssertOps = new ObservableCollection<string>();
             memberwiseClone.AssertOps = assertOps;
             var optionsForValue = new ObservableCollection<string>();
-            foreach (var value in memberwiseClone.OptionsForValue)
+            if(memberwiseClone.OptionsForValue != null)
             {
-                optionsForValue.Add(string.Copy(value));
+                foreach (var value in memberwiseClone.OptionsForValue)
+                {
+                    optionsForValue.Add(string.Copy(value));
+                }
             }
             return memberwiseClone;
         }
