@@ -17,15 +17,21 @@ namespace Dev2.Activities.Designers2.Core
     {
         public static T FindParent<T>(DependencyObject child) where T : DependencyObject
         {
+           
+            if(child == null)
+            {
+                return null;
+            }
             //get parent item
             DependencyObject parentObject = VisualTreeHelper.GetParent(child);
 
             //we've reached the end of the tree
-            if (parentObject == null) return null;
+            if(parentObject == null)
+                return null;
 
             //check if the parent matches the type we're looking for
             T parent = parentObject as T;
-            if (parent != null)
+            if(parent != null)
                 return parent;
             return FindParent<T>(parentObject);
         }
