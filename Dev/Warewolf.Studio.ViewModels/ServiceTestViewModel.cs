@@ -93,7 +93,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             ProcessInputsAndOutputs(debugItemContent);
                         }
-                        else if(debugItemContent.ActivityType != ActivityType.Workflow)
+                        else if(debugItemContent.ActivityType != ActivityType.Workflow && debugItemContent.ActualType!=typeof(TestMockDecisionStep).Name && debugItemContent.ActualType != typeof(TestMockSwitchStep).Name && debugItemContent.ActualType != typeof(TestMockStep).Name)
                         {
                             var actualType = debugItemContent.ActualType;
                             if(actualType == typeof(DsfDecision).Name)
