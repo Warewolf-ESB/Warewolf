@@ -117,6 +117,11 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         ///     Gets the outputs.
         /// </summary>
         List<IDebugItem> Outputs { get; }
+        
+        /// <summary>
+        ///     Gets the outputs.
+        /// </summary>
+        List<IDebugItem> AssertResultList { get; }
 
         /// <summary>
         ///     Gets or sets the start time.

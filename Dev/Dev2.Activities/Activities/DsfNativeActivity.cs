@@ -96,6 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected Variable<Guid> DataListExecutionID = new Variable<Guid>();
         protected List<DebugItem> _debugInputs = new List<DebugItem>(10000);
         protected List<DebugItem> _debugOutputs = new List<DebugItem>(10000);
+        protected List<DebugItem> _assertResultList = new List<DebugItem>(10000);
 
         readonly IDebugDispatcher _debugDispatcher;
         readonly bool _isExecuteAsync;
@@ -679,11 +680,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ServiceTest.TestFailing = !assertPassed;
                             if (dataObject.IsDebugMode())
                             {
-                                AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                                //AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                                AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(assertPassed.ToString()));
                             }
                             else
                             {
-                                dataObject.Environment.AddError("Assert Failed");
+                                dataObject.Environment.AddError("Failed");
                             }
                         }
                     }
@@ -702,11 +704,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ServiceTest.TestFailing = !assertPassed;
                             if (dataObject.IsDebugMode())
                             {
-                                AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                                //AddDebugOutputItem(new DebugItemStaticDataParams(assertPassed.ToString(), "Assert Result:"));
+                                AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(assertPassed.ToString()));
                             }
                             else
                             {
-                                dataObject.Environment.AddError("Assert Failed");
+                                dataObject.Environment.AddError("Failed");
                             }
                         }
 
@@ -761,7 +764,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
                     testResult.Result = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -770,7 +773,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         msg = "Passed";
                     }
-                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                    //AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
                 }
                 return new[] { testResult };
             }
@@ -785,7 +789,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
                     testResult.Result = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -794,7 +798,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         msg = "Passed";
                     }
-                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                    //AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
                 }
                 return new[] { testResult };
             }
@@ -826,7 +831,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
                     testResult.Result = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -835,7 +840,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         msg = "Passed";
                     }
-                    AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                    //AddDebugOutputItem(new DebugItemStaticDataParams(msg, "Assert Result:"));
+                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
                 }
                 output.Result = testResult;
                 ret.Add(testResult);
@@ -1021,6 +1027,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className);
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
+                _assertResultList = new List<DebugItem>();
                 ExecuteTool(data, update);
                 if (!data.IsDebugMode())
                 {
@@ -1074,6 +1081,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DebugItem itemToAdd = new DebugItem();
             itemToAdd.AddRange(parameters.GetDebugItemResult());
             _debugOutputs.Add(itemToAdd);
+        }
+
+        protected void AddDebugAssertResultItem(DebugOutputBase parameters)
+        {
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.AddRange(parameters.GetDebugItemResult());
+            _assertResultList.Add(itemToAdd);
         }
 
         protected void AddDebugItem(DebugOutputBase parameters, DebugItem debugItem)
