@@ -121,6 +121,12 @@ namespace Dev2.Studio.Core
                     if (debugItemResult.Value.Contains("Failed"))
                     {
                         HasError = true;
+                        HasNoError = false;
+                    }
+                    else if (debugItemResult.Value.Contains("Passed"))
+                    {
+                        HasError = false;
+                        HasNoError = true;
                     }
                 }
             }
