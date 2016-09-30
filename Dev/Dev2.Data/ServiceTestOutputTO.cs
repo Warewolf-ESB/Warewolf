@@ -14,6 +14,7 @@ namespace Dev2.Data
         public string AssertOp { get; set; }
         public bool HasOptionsForValue { get; set; }
         public List<string> OptionsForValue { get; set; }
+        public TestRunResult Result { get; set; }
 
         #region Implementation of ICloneable
 

@@ -18,6 +18,7 @@ namespace Dev2.Data
         public bool NoErrorExpected { get; set; }
         public bool ErrorExpected { get; set; }
         public string ErrorContainsText { get; set; }
+        public TestRunResult Result { get; set; }
         public bool TestPassed
         {
             get

@@ -689,7 +689,107 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <Style x:Key="ServiceTestExpansionIndicatorTopStyle" TargetType="igPrimDt:ExpansionIndicator">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="igPrimDt:ExpansionIndicator">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpansionIndicatorCollapsed" Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ExpansionIndicatorGlyphHoverBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpansionIndicatorExpanded" Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ExpansionIndicatorGlyphHoverBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Selected" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="ExpansionIndicator"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="0.35"
+                                                         d:IsOptimized="True" />
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="contentPresenter"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="0.35"
+                                                         d:IsOptimized="True" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ExpansionStates">
+                                <VisualState x:Name="Expanded">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpansionIndicatorExpanded" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpansionIndicatorCollapsed" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Collapsed</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Collapsed" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid x:Name="ExpansionIndicator"
+                              Grid.RowSpan="2"
+                              Grid.ColumnSpan="2"
+                              Background="{StaticResource TransparentBrush}">
+                            <Rectangle Margin="-3,0" Fill="{StaticResource TransparentBrush}" />
+                            <Path x:Name="ExpansionIndicatorCollapsed"
+                                  Width="6"
+                                  Margin="0,1,-5,2"
+                                  Height="10"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Top"
+                                  Data="M0,0 L6,5 L0,10 z"
+                                  Fill="{StaticResource ExpansionIndicatorGlyphBackgroundBrush}"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  Stretch="Fill"
+                                  UseLayoutRounding="False" />
+                            <Path x:Name="ExpansionIndicatorExpanded"
+                                  Width="10"
+                                  Height="6"
+                                  Margin="0,1,-5,2"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Top"
+                                  Data="M0,0 L10,0 L5,6 z"
+                                  Fill="{StaticResource ExpansionIndicatorGlyphExpandedBackgroundBrush}"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  Stretch="Fill"
+                                  UseLayoutRounding="False"
+                                  Visibility="Collapsed" />
+                        </Grid>
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Grid.Column="2"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Top" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="ServiceTestActiveNodeIndicatorStyle" TargetType="igPrimDt:ActiveNodeIndicator">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="{StaticResource BrushMouseOver}" />
@@ -868,7 +968,7 @@
                         <Grid x:Name="main">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="28" />
+                                <ColumnDefinition Width="20" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
@@ -896,7 +996,7 @@
                                                                               Mode=TwoWay,
                                                                               RelativeSource={RelativeSource TemplatedParent}}"
                                                          IsTabStop="False"
-                                                         Style="{StaticResource ExpansionIndicatorTopStyle}"
+                                                         Style="{StaticResource ServiceTestExpansionIndicatorTopStyle}"
                                                          Visibility="{Binding Node.Data.IsExpanderVisible,
                                                                               Converter={StaticResource BoolToVis},
                                                                               RelativeSource={RelativeSource TemplatedParent}}" />
@@ -951,6 +1051,12 @@
                             </ContentControl>
                         </Grid>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger SourceName="ExpansionIndicator" Property="Visibility" Value="Collapsed">
+                            <Setter Property="Visibility" TargetName="LineTerminator" Value="Collapsed" />
+                            <Setter Property="Width" TargetName="LineTerminator" Value="0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -12,5 +12,6 @@ namespace Dev2.Common.Interfaces
         IServiceTestStep Parent { get; set; }
         ObservableCollection<IServiceTestStep> Children { get; set; }
         string StepDescription { get; set; }
+        TestRunResult Result { get; set; }
     }
 }

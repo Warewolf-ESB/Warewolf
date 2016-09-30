@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Activities.SelectAndApply;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -554,6 +555,18 @@ namespace Dev2.Runtime.ESB.Execution
                         {
                             var replacement = NextActivity(forEach.DataFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
                             forEach.DataFunc.Handler = replacement;
+                        }
+                    }
+                }
+                else if (foundTestStep.ActivityType == typeof(DsfSelectAndApplyActivity).Name)
+                {
+                    var forEach = resource as DsfSelectAndApplyActivity;
+                    if (forEach != null)
+                    {
+                        if (foundTestStep.Children != null)
+                        {
+                            var replacement = NextActivity(forEach.ApplyActivityFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                            forEach.ApplyActivityFunc.Handler = replacement;
                         }
                     }
                 }

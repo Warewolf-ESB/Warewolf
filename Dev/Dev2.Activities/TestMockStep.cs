@@ -7,12 +7,13 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
-namespace Dev2.Runtime.ESB.Execution
+// ReSharper disable UnusedMember.Global
+
+namespace Dev2
 {
     public class TestMockStep : DsfActivityAbstract<string>
     {
@@ -68,15 +69,14 @@ namespace Dev2.Runtime.ESB.Execution
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             InitializeDebug(dataObject);
-            AddRecordsetsInputs(_outputs.Where(output => DataListUtil.IsValueRecordset(output.Variable) && !output.Variable.Contains("@")), dataObject.Environment);
+            AddRecordsetsOutputs(_outputs.Where(output => DataListUtil.IsValueRecordset(output.Variable) && !output.Variable.Contains("@")), dataObject.Environment);
             foreach (var output in _outputs)
             {
                 var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
                 var value = output.Value;
                 if (variable.StartsWith("[[@"))
                 {
-                    var jContainer = JsonConvert.DeserializeObject(value) as JObject;
-                    dataObject.Environment.AddToJsonObjects(variable, jContainer);
+                    dataObject.Environment.AssignJson(new AssignValue(variable,value),update);
                 }
                 else if (!DataListUtil.IsValueRecordset(output.Variable))
                 {
@@ -87,14 +87,13 @@ namespace Dev2.Runtime.ESB.Execution
             }
             if (dataObject.IsDebugMode())
             {
-                DispatchDebugState(dataObject, StateType.Before, update);
                 DispatchDebugState(dataObject, StateType.After, update);
             }
             NextNodes = _originalActivity.NextNodes;
         }
 
 
-        private static void AddRecordsetsInputs(IEnumerable<IServiceTestOutput> recSets, IExecutionEnvironment environment)
+        private static void AddRecordsetsOutputs(IEnumerable<IServiceTestOutput> recSets, IExecutionEnvironment environment)
         {
             if(recSets != null)
             {
