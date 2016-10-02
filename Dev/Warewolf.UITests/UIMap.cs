@@ -730,16 +730,22 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhost, new Point(94, 10));
         }
 
-        [When(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
-        public void Save_With_Ribbon_Button_And_Dialog(string Name)
+        [When(@"I Save With Ribbon Button and Dialog As ""(.*)"" and Append Unique Guid")]
+        public void WhenISaveWithRibbonButtonAndDialogAsAndAppendUniqueGuid(string p0)
         {
-            Save_With_Ribbon_Button_And_Dialog(Name, false);
+            Save_With_Ribbon_Button_And_Dialog(p0 + Guid.NewGuid().ToString().Substring(0, 8));
+        }
+
+        [When(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
+        public void WhenISaveWithRibbonButtonAndDialogAs(string Name)
+        {
+            Save_With_Ribbon_Button_And_Dialog(Name);
         }
 
         [When(@"I Save With Ribbon Button And Dialog As ""(.*)"" without filtering the explorer")]
-        public void Save_With_Ribbon_Button_And_Dialog_Without_Filtering(string Name)
+        public void Save_With_Ribbon_Button_And_Dialog_Without_Filtering(string name)
         {
-            Save_With_Ribbon_Button_And_Dialog(Name, true);
+            Save_With_Ribbon_Button_And_Dialog(name, true);
         }
 
         public void Save_With_Ribbon_Button_And_Dialog(string Name, bool skipExplorerFilter = false)
