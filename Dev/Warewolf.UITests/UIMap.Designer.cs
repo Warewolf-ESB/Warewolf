@@ -37199,7 +37199,6 @@ namespace Warewolf.UITests
                 {
                     this.mRunButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
                     this.mRunButton.WindowTitles.Add("Warewolf");
                     #endregion
@@ -37666,7 +37665,6 @@ namespace Warewolf.UITests
                 {
                     this.mRunButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
                     this.mRunButton.WindowTitles.Add("Warewolf");
                     #endregion
