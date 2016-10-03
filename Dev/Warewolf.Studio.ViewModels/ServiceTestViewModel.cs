@@ -166,11 +166,15 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 var outputs = debugItemContent.Outputs;
-                var serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
-                AddOutputs(outputs, serviceTestStep);
-                if (serviceTestStep != null)
+                var exists = FindExistingStep(debugItemContent.ID.ToString());
+                if (exists == null)
                 {
-                    SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
+                    var serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
+                    AddOutputs(outputs, serviceTestStep);
+                    if (serviceTestStep != null)
+                    {
+                        SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
+                    }
                 }
             }
         }
@@ -179,30 +183,32 @@ namespace Warewolf.Studio.ViewModels
         {
             if (parent == null)
             {
-                var testStep = new ServiceTestStep(debugItemContent.ID, "", new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+                var testStep = new ServiceTestStep(debugItemContent.ID, "",
+                    new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
                 {
                     StepDescription = debugItemContent.DisplayName,
                     Parent = null
                 };
 
-                var seqTypeName = typeof(DsfSequenceActivity).Name;
-                var forEachTypeName = typeof(DsfForEachActivity).Name;
-                var selectApplyTypeName = typeof(DsfSelectAndApplyActivity).Name;
+                var seqTypeName = typeof (DsfSequenceActivity).Name;
+                var forEachTypeName = typeof (DsfForEachActivity).Name;
+                var selectApplyTypeName = typeof (DsfSelectAndApplyActivity).Name;
                 if (debugItemContent.ActualType == seqTypeName)
                 {
-                    SetStepIcon(typeof(DsfSequenceActivity),testStep);
+                    SetStepIcon(typeof (DsfSequenceActivity), testStep);
                     testStep.ActivityType = seqTypeName;
                     parent = testStep;
                 }
 
                 else if (debugItemContent.ActualType == forEachTypeName)
                 {
-                    SetStepIcon(typeof(DsfForEachActivity), testStep);
+                    SetStepIcon(typeof (DsfForEachActivity), testStep);
                     testStep.ActivityType = forEachTypeName;
                     parent = testStep;
-                }else if(debugItemContent.ActualType == selectApplyTypeName)
+                }
+                else if (debugItemContent.ActualType == selectApplyTypeName)
                 {
-                    SetStepIcon(typeof(DsfSelectAndApplyActivity), testStep);
+                    SetStepIcon(typeof (DsfSelectAndApplyActivity), testStep);
                     testStep.ActivityType = selectApplyTypeName;
                     parent = testStep;
                 }
@@ -211,38 +217,88 @@ namespace Warewolf.Studio.ViewModels
                     return;
                 }
             }
-            foreach (var debugTreeViewItemViewModel in debugState.Children)
+
+            if (parent.ActivityType == typeof (DsfForEachActivity).Name)
             {
-                var childItem = debugTreeViewItemViewModel as DebugStateTreeViewItemViewModel;
-                var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
-                if(childItem != null)
+                var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
+                var forEach = model.GetCurrentValue() as DsfForEachActivity;
+                if (forEach != null)
                 {
-                    var childItemContent = childItem.Content;
-                    var outputs = childItemContent.Outputs;
-                    
-                    var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
-                    if (exists==null)
+                    var act = forEach.DataFunc.Handler as IDev2Activity;
+                    var childItem = debugState.Children.LastOrDefault() as DebugStateTreeViewItemViewModel;
+                    if (childItem != null)
                     {
-                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
+                        if (act != null)
+                            childItem.Content.ID = Guid.Parse(act.UniqueID);
+                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+
+                        var childItemContent = childItem.Content;
+                        var outputs = childItemContent.Outputs;
+
+                        var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
+                        if (exists == null)
                         {
-                            StepDescription = childItemContent.DisplayName,
-                            Parent = parent,
-                            Type = StepType.Assert
-                        };
-                        AddOutputs(outputs, childStep);
-                        SetStepIcon(childStep.ActivityType, childStep);
-                        parent.Children.Add(childStep);
-                        if (childItem.Children != null && childItem.Children.Count > 0)
-                        {
-                            AddChildDebugItems(childItemContent, childItem, parent.Children, parent);
+                            var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
+                            {
+                                StepDescription = childItemContent.DisplayName,
+                                Parent = parent,
+                                Type = StepType.Assert
+                            };
+                            AddOutputs(outputs, childStep);
+                            SetStepIcon(childStep.ActivityType, childStep);
+                            parent.Children.Add(childStep);
+                            if (childItem.Children != null && childItem.Children.Count > 0)
+                            {
+                                AddChildDebugItems(childItemContent, childItem, parent.Children, childStep);
+                            }
                         }
                     }
                 }
             }
-            var parentExists = testSteps.FirstOrDefault(a => a.UniqueId == parent.UniqueId);
-            if (parentExists == null)
+            else
             {
-                testSteps.Add(parent);
+                foreach (var debugTreeViewItemViewModel in debugState.Children)
+                {
+                    var childItem = debugTreeViewItemViewModel as DebugStateTreeViewItemViewModel;
+                    var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+                    if (childItem != null)
+                    {
+                        var childItemContent = childItem.Content;
+                        var outputs = childItemContent.Outputs;
+
+                        var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
+                        if (exists == null)
+                        {
+                            var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType,
+                                serviceTestOutputs, StepType.Assert)
+                            {
+                                StepDescription = childItemContent.DisplayName,
+                                Parent = parent,
+                                Type = StepType.Assert
+                            };
+                            AddOutputs(outputs, childStep);
+                            SetStepIcon(childStep.ActivityType, childStep);
+                            parent.Children.Add(childStep);
+                            if (childItem.Children != null && childItem.Children.Count > 0)
+                            {
+                                AddChildDebugItems(childItemContent, childItem, parent.Children, childStep);
+                            }
+                        }
+                    }
+                }
+            }
+            while (parent != null)
+            {
+                var child = parent;
+                if (child.Parent == null)
+                {
+                    var exists = FindExistingStep(child.UniqueId.ToString());
+                    if (exists == null)
+                    {
+                        SelectedServiceTest.TestSteps.Add(child);
+                    }
+                }
+                parent = child.Parent;
             }
         }
 
