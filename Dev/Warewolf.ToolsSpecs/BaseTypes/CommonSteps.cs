@@ -201,16 +201,27 @@ namespace Dev2.Activities.Specs.BaseTypes
             scenarioContext.Add(ActualSourceHolder, location);
         }
 
-        public static string AddGuidToPath(string location)
+        public static string GetGuid()
         {
-            if (Path.HasExtension(location))
+            return Guid.NewGuid().ToString().Substring(0, 8);
+        }
+
+        public static string AddGuidToPath(string location, string GetGuid)
+        {
+            string getExtention;
+            try
             {
-                return location.Replace(Path.GetExtension(location), Guid.NewGuid().ToString().Substring(0, 8) + Path.GetExtension(location));
+                getExtention = Path.GetExtension(location);
             }
-            else
+            catch (ArgumentException)
             {
-                return location;
+                getExtention = null;
             }
+            if (!string.IsNullOrEmpty(getExtention))
+            {
+                return location.Replace(getExtention, GetGuid + getExtention);
+            }
+            return location;
         }
 
         [Given(@"use private public key for source is ""(.*)""")]
