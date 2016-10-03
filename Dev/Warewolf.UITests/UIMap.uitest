@@ -22317,7 +22317,7 @@
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
                                         </UIObject>
-                                        <UIObject ControlType="Button" Id="RunButton" FriendlyName="RunButton" SpecialControlType="None">
+                                        <UIObject ControlType="Button" Id="RunButton" FriendlyName="Run this test" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf</WindowTitle>
@@ -22325,7 +22325,6 @@
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="Name"></PropertyCondition>
                                             <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
@@ -22658,7 +22657,7 @@
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
                                         </UIObject>
-                                        <UIObject ControlType="Button" Id="RunButton" FriendlyName="" SpecialControlType="None">
+                                        <UIObject ControlType="Button" Id="RunButton" FriendlyName="Run this test" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf</WindowTitle>
@@ -22666,7 +22665,6 @@
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="Name"></PropertyCondition>
                                             <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
