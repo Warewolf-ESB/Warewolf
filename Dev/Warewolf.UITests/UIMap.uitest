@@ -10520,6 +10520,24 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem" Comment="System parameter 'Show window contents while dragging' is not set.This could lead to incorrect recording of drag actions.">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <TargetElementName>UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem</TargetElementName>
+      <MouseButton>Left</MouseButton>
+      <StartLocation X="94" Y="11" />
+      <StopLocation X="10" Y="10" />
+    </DragDropAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Move_AcceptanceTestd_To_AcceptanceTestingResopurces">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
   <OnErrorActions />
@@ -30490,7 +30508,25 @@ Error while saving: This task requires that the user account specified has 'Log 
                         <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
-                      <Descendants />
+                      <Descendants>
+                        <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem1" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                          </WindowTitles>
+                          <SearchConfigurations>
+                            <SearchConfiguration>Expand</SearchConfiguration>
+                          </SearchConfigurations>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                            <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                            <PropertyCondition Name="Instance">2</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
+                      </Descendants>
                     </UIObject>
                   </Descendants>
                 </UIObject>
@@ -30508,6 +30544,19 @@ Error while saving: This task requires that the user account specified has 'Log 
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Menu</PropertyCondition>
                 <PropertyCondition Name="AutomationId">ExplorerEnvironmentMenu</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="Window" Id="UIWpfWindow" FriendlyName="Wpf" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">Window</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
