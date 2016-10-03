@@ -765,8 +765,21 @@ namespace Warewolf.Studio.ViewModels
             var computedValue = modelItem.GetCurrentValue();
             var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
 
-            var type = computedValue.GetType();
+            var activityUniqueID = dsfActivityAbstract?.UniqueID;
+            var activityDisplayName = dsfActivityAbstract?.DisplayName;
             var outputs = dsfActivityAbstract?.GetOutputs();
+
+            if (dsfActivityAbstract == null)
+            {
+                var boolAct = computedValue as DsfActivityAbstract<bool>;
+
+                activityUniqueID = boolAct?.UniqueID;
+                activityDisplayName = boolAct?.DisplayName;
+                outputs = boolAct?.GetOutputs();
+
+            }
+
+            var type = computedValue.GetType();
             var item = modelItem.Parent;
             
             if (item != null && (item.ItemType != typeof (Flowchart) || item.ItemType == typeof (ActivityBuilder)))
@@ -775,7 +788,7 @@ namespace Warewolf.Studio.ViewModels
 
                 {
                     IServiceTestStep serviceTestStep;
-                    if (ServiceTestStepWithOutputs(dsfActivityAbstract, outputs, type, item, out serviceTestStep))
+                    if (ServiceTestStepWithOutputs(activityUniqueID, activityDisplayName, outputs, type, item, out serviceTestStep))
                     {
                         return serviceTestStep;
                     }
@@ -792,7 +805,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (outputs != null && outputs.Count > 0)
                 {
-                    var serviceTestStep = SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, dsfActivityAbstract.DisplayName, type.Name, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
+                    
+                    var serviceTestStep = SelectedServiceTest.AddTestStep(activityUniqueID, activityDisplayName, type.Name, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
 
                     var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output =>
                             {
@@ -805,19 +819,19 @@ namespace Warewolf.Studio.ViewModels
                                     }
                                 };
                             }).Cast<IServiceTestOutput>().ToList();
-                    var step = CreateServiceTestStep(Guid.Parse(dsfActivityAbstract.UniqueID), dsfActivityAbstract.DisplayName, type, serviceTestOutputs);
+                    var step = CreateServiceTestStep(Guid.Parse(activityUniqueID), activityDisplayName, type, serviceTestOutputs);
                     return step;
                 }
             }
             return null;
         }
 
-        private bool ServiceTestStepWithOutputs(DsfActivityAbstract<string> dsfActivityAbstract, List<string> outputs, Type type, ModelItem item, out IServiceTestStep serviceTestStep)
+        private bool ServiceTestStepWithOutputs(string uniqueID, string displayName, List<string> outputs, Type type, ModelItem item, out IServiceTestStep serviceTestStep)
         {
-            var exists = FindExistingStep(dsfActivityAbstract.UniqueID);
+            var exists = FindExistingStep(uniqueID);
             if (exists == null)
             {
-                var step = CreateServiceTestStep(Guid.Parse(dsfActivityAbstract.UniqueID), dsfActivityAbstract.DisplayName, type, new List<IServiceTestOutput>());
+                var step = CreateServiceTestStep(Guid.Parse(uniqueID), displayName, type, new List<IServiceTestOutput>());
                 var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "", "", "")
                 {
                     HasOptionsForValue = false,
