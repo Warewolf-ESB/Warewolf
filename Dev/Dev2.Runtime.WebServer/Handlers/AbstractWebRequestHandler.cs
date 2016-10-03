@@ -403,16 +403,16 @@ namespace Dev2.Runtime.WebServer.Handlers
         private static JObject BuildTestResultForWebRequest(TestRunResult result)
         {
             var resObj = new JObject { { "Test Name", result.TestName } };
-            if(result.Result == RunResult.TestPassed)
+            if(result.RunTestResult == RunResult.TestPassed)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_PassedResult);
             }
-            else if(result.Result == RunResult.TestFailed)
+            else if(result.RunTestResult == RunResult.TestFailed)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_FailureResult);
                 resObj.Add("Message", result.Message);
             }
-            else if (result.Result == RunResult.TestInvalid)
+            else if (result.RunTestResult == RunResult.TestInvalid)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_InvalidResult);
                 resObj.Add("Message", result.Message);

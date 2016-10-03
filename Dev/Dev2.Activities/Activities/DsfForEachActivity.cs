@@ -915,7 +915,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (stepToBeAsserted.Result != null)
                     {
-                        stepToBeAsserted.Result.Result = RunResult.TestInvalid;
+                        stepToBeAsserted.Result.RunTestResult = RunResult.TestInvalid;
                     }                    
                     else
                     {
@@ -925,22 +925,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var factory = Dev2DecisionFactory.Instance();
                         var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
                         var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-                        var testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed);
+                        var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
                         var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
 
                         var finalResult = new TestRunResult();
                         if (testPassed)
                         {
-                            finalResult.Result = RunResult.TestPassed;
+                            finalResult.RunTestResult = RunResult.TestPassed;
                         }
-                        if (testRunResults.Any(result => result.Result == RunResult.TestFailed))
+                        if (testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
                         {
-                            finalResult.Result = RunResult.TestFailed;
+                            finalResult.RunTestResult = RunResult.TestFailed;
                             finalResult.Message = serviceTestFailureMessage;
                         }
-                        if (testRunResults.Any(result => result.Result == RunResult.TestInvalid))
+                        if (testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
                         {
-                            finalResult.Result = RunResult.TestInvalid;
+                            finalResult.RunTestResult = RunResult.TestInvalid;
                             finalResult.Message = serviceTestFailureMessage;
                         }
                         dataObject.ServiceTest.Result = finalResult;
@@ -957,7 +957,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (output.Result != null)
             {
-                output.Result.Result = RunResult.TestInvalid;
+                output.Result.RunTestResult = RunResult.TestInvalid;
             }
             IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
             var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);            
@@ -984,17 +984,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var testResult = new TestRunResult();
                 if (assertResult)
                 {
-                    testResult.Result = RunResult.TestPassed;
+                    testResult.RunTestResult = RunResult.TestPassed;
                 }
                 else
                 {
-                    testResult.Result = RunResult.TestFailed;
+                    testResult.RunTestResult = RunResult.TestFailed;
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
                 }
                 if (dataObject.IsDebugMode())
                 {
                     var msg = testResult.Message;
-                    if (testResult.Result == RunResult.TestPassed)
+                    if (testResult.RunTestResult == RunResult.TestPassed)
                     {
                         msg = "Passed";
                     }
