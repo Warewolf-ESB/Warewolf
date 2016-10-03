@@ -187,6 +187,7 @@
     <Compile Include="DynamicProxy\DynamicProxyFactoryOptions.cs" />
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\ComDllLoaderHandler.cs" />
+    <Compile Include="ESB\Management\Services\DeleteAllTests.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
     <Compile Include="ESB\Management\Services\DeleteTest.cs" />
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="ESB\Management\Services\LoggingSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\LoggingSettingsWrite.cs" />
     <Compile Include="ESB\Management\Services\MoveItemService.cs" />
+    <Compile Include="ESB\Management\Services\ReloadTests.cs" />
     <Compile Include="ESB\Management\Services\RenameFolderService.cs" />
     <Compile Include="ESB\Management\Services\RenameItemService.cs" />
     <Compile Include="ESB\Management\Services\ResetPerformanceCounters.cs" />

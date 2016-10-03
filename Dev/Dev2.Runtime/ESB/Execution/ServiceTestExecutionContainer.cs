@@ -98,9 +98,14 @@ namespace Dev2.Runtime.ESB.Execution
 
             ErrorResultTO to = errors;
             var serviceTestModelTO = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
-            
+            if(serviceTestModelTO == null)
+            {
+                TestCatalog.Instance.Load();
+                serviceTestModelTO = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
+            }
             if (serviceTestModelTO == null)
             {
+               
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 var testRunResult = new TestRunResult
                 {

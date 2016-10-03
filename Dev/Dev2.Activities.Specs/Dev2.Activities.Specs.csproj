@@ -406,6 +406,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Composition\DBSource\testingDBSrc.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Hello World.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
