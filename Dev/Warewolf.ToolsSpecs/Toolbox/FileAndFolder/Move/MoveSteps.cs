@@ -41,6 +41,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Move
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
+            var PrivateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile);
+            var DestinationPrivateKeyFile = scenarioContext.Get<string>(CommonSteps.DestinationPrivateKeyFile);
 
             var move = new DsfPathMove
             {
