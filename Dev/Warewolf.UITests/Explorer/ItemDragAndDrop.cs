@@ -7,8 +7,7 @@ namespace Warewolf.UITests
 {
     [CodedUITest]
     public class ItemDragAndDropTest
-    {
-        const string Dice = "Dice";
+    {        
         [TestMethod]
         public void ItemDragAndDropUITest()
         {            
@@ -16,6 +15,17 @@ namespace Warewolf.UITests
             Assert.IsFalse(Directory.Exists(resourcesFolder));
             Uimap.Move_AcceptanceTestd_To_AcceptanceTestingResopurces();
             Assert.IsTrue(Directory.Exists(resourcesFolder));
+        }
+
+        [TestMethod]
+        public void ShowDependenciesUITest()
+        {            
+            Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
+            Uimap.Click_Close_Dependecy_Tab();
+            Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu("SharepointPlugin");
+            Uimap.Click_Close_Dependecy_Tab();
+            Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu("MySQLDATA");
+            Uimap.Click_Close_Dependecy_Tab();
         }
 
         #region Additional test attributes

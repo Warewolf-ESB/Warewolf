@@ -1174,13 +1174,18 @@ namespace Warewolf.UITests
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox;
             WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
             WpfText text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             #endregion
+
+            Filter_Explorer(ServiceName);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
 
             Mouse.Click(showDependencies, new Point(50, 15));
             Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
             Assert.IsTrue(textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
-            Assert.IsTrue(refreshButton.Exists, "Refresh button does not exist on dependency graph");
-            Assert.AreEqual(ServiceName, text.DisplayText, "Dependant workflow not shown in dependency diagram");
+            Assert.IsTrue(refreshButton.Exists, "Refresh button does not exist on dependency graph");            
             Assert.IsTrue(showwhatdependsonthisRadioButton.Exists, "Show what depends on workflow does not exist after Show Dependencies is selected");
             Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Show what depends on workflow radio button is not selected after Show dependecies" +
                     " is selected");
