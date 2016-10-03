@@ -3,7 +3,7 @@ if ([string]::IsNullOrEmpty($PSScriptRoot) -and -not [string]::IsNullOrEmpty($My
 }
 $FileAndFolderSpecsDir = (Get-Item $PSScriptRoot ).FullName
 
-"$FileAndFolderSpecsDir\Copy\*.feature.cs", "$FileAndFolderSpecsDir\Move\*.feature.cs", "$FileAndFolderSpecsDir\Unzip\*.feature.cs", "$FileAndFolderSpecsDir\Zip\*.feature.cs", "$FileAndFolderSpecsDir\Rename\*.feature.cs" |
+"$FileAndFolderSpecsDir\Copy\*.feature.cs", "$FileAndFolderSpecsDir\Move\*.feature.cs", "$FileAndFolderSpecsDir\Zip\*.feature.cs" |
     Foreach-Object {
         $PreviousLine = ""
         (Get-Content $_) | 

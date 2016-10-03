@@ -89,7 +89,7 @@ this.ScenarioSetup(scenarioInfo);
    testRunner.And("\"ScheduleWithHistory\" has a username of \"LocalSchedulerAdmin\" and a Password of \"" +
                     "987Sched#@!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table818 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
                         "Interval",
                         "StartDate",
@@ -102,7 +102,7 @@ this.ScenarioSetup(scenarioInfo);
                         "RepeatInterval",
                         "ExpireDate",
                         "ExpireTime"});
-            table1.AddRow(new string[] {
+            table818.AddRow(new string[] {
                         "On a schedule",
                         "Daily",
                         "2014/01/01",
@@ -116,7 +116,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/02",
                         "15:40:15"});
 #line 13
-   testRunner.And("\"ScheduleWithHistory\" has a Schedule of", ((string)(null)), table1, "And ");
+   testRunner.And("\"ScheduleWithHistory\" has a Schedule of", ((string)(null)), table818, "And ");
 #line 16
    testRunner.When("the \"ScheduleWithHistory\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 17
@@ -126,14 +126,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
    testRunner.And("\"ScheduleWithHistory\" has \"2\" row of history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table819 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2.AddRow(new string[] {
+            table819.AddRow(new string[] {
                         "1",
                         "[[Message]] = String"});
 #line 20
-   testRunner.And("the history debug output for \"ScheduleWithHistory\" for row \"1\" is", ((string)(null)), table2, "And ");
+   testRunner.And("the history debug output for \"ScheduleWithHistory\" for row \"1\" is", ((string)(null)), table819, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -159,7 +159,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 30
    testRunner.And("\"Diceroll00\" has a username of \"IntegrationTester\" and a Password of \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table820 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
                         "Interval",
                         "StartDate",
@@ -172,7 +172,7 @@ this.ScenarioSetup(scenarioInfo);
                         "RepeatInterval",
                         "ExpireDate",
                         "ExpireTime"});
-            table3.AddRow(new string[] {
+            table820.AddRow(new string[] {
                         "On a schedule",
                         "\"Daily\"",
                         "2014/01/01",
@@ -186,7 +186,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/02",
                         "15:40:15"});
 #line 31
-   testRunner.And("\"Diceroll00\" has a Schedule of", ((string)(null)), table3, "And ");
+   testRunner.And("\"Diceroll00\" has a Schedule of", ((string)(null)), table820, "And ");
 #line 34
    testRunner.When("the \"Diceroll00\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 35
@@ -219,7 +219,7 @@ this.ScenarioSetup(scenarioInfo);
    testRunner.And("\"Diceroll1\" has a username of \"LocalSchedulerAdmin\" and a Password of \"987Sched#@" +
                     "!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table821 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
                         "Delay",
                         "DelayInterval",
@@ -227,7 +227,7 @@ this.ScenarioSetup(scenarioInfo);
                         "RepeatInterval",
                         "ExpireDate",
                         "ExpireTime"});
-            table4.AddRow(new string[] {
+            table821.AddRow(new string[] {
                         "At log on",
                         "1",
                         "hour",
@@ -236,7 +236,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/02",
                         "15:40:15"});
 #line 45
-   testRunner.And("\"Diceroll1\" has a Schedule of", ((string)(null)), table4, "And ");
+   testRunner.And("\"Diceroll1\" has a Schedule of", ((string)(null)), table821, "And ");
 #line 48
    testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 49
@@ -246,14 +246,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 51
    testRunner.And("\"Diceroll1\" has \"2\" row of history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table822 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table5.AddRow(new string[] {
+            table822.AddRow(new string[] {
                         "1",
                         "[[Message]] = String"});
 #line 52
-   testRunner.And("the history debug output for \"ScheduleWithHistory\" for row \"1\" is", ((string)(null)), table5, "And ");
+   testRunner.And("the history debug output for \"ScheduleWithHistory\" for row \"1\" is", ((string)(null)), table822, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -279,7 +279,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 62
    testRunner.And("\"Diceroll1\" has a username of \"bobthebuilder\" and a Password of \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table823 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
                         "Delay",
                         "DelayInterval",
@@ -287,7 +287,7 @@ this.ScenarioSetup(scenarioInfo);
                         "RepeatInterval",
                         "ExpireDate",
                         "ExpireTime"});
-            table6.AddRow(new string[] {
+            table823.AddRow(new string[] {
                         "At log on",
                         "1",
                         "hour",
@@ -296,7 +296,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/02",
                         "15:40:15"});
 #line 63
-   testRunner.And("\"Diceroll1\" has a Schedule of", ((string)(null)), table6, "And ");
+   testRunner.And("\"Diceroll1\" has a Schedule of", ((string)(null)), table823, "And ");
 #line 66
    testRunner.Then("the Schedule task has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -325,7 +325,7 @@ this.ScenarioSetup(scenarioInfo);
    testRunner.And("\"LocalUserSchedule\" has a username of \"LocalSchedulerAdmin\" and a Password of \"98" +
                     "7Sched#@!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table824 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
                         "Interval",
                         "StartDate",
@@ -338,7 +338,7 @@ this.ScenarioSetup(scenarioInfo);
                         "RepeatInterval",
                         "ExpireDate",
                         "ExpireTime"});
-            table7.AddRow(new string[] {
+            table824.AddRow(new string[] {
                         "On a schedule",
                         "Daily",
                         "2014/01/01",
@@ -352,7 +352,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/02",
                         "15:40:15"});
 #line 75
-   testRunner.And("\"LocalUserSchedule\" has a Schedule of", ((string)(null)), table7, "And ");
+   testRunner.And("\"LocalUserSchedule\" has a Schedule of", ((string)(null)), table824, "And ");
 #line 78
    testRunner.When("the \"LocalUserSchedule\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 79
@@ -362,14 +362,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 81
    testRunner.And("\"LocalUserSchedule\" has \"2\" row of history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table825 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table8.AddRow(new string[] {
+            table825.AddRow(new string[] {
                         "1",
                         "[[Message]] = String"});
 #line 82
-   testRunner.And("the history debug output for \"LocalUserSchedule\" for row \"1\" is", ((string)(null)), table8, "And ");
+   testRunner.And("the history debug output for \"LocalUserSchedule\" for row \"1\" is", ((string)(null)), table825, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -396,7 +396,7 @@ this.ScenarioSetup(scenarioInfo);
    testRunner.And("\"ScheduleWithError\" has a username of \"dev2\\IntegrationTester\" and a Password of " +
                     "\"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table826 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
                         "Interval",
                         "StartDate",
@@ -409,7 +409,7 @@ this.ScenarioSetup(scenarioInfo);
                         "RepeatInterval",
                         "ExpireDate",
                         "ExpireTime"});
-            table9.AddRow(new string[] {
+            table826.AddRow(new string[] {
                         "On a schedule",
                         "Daily",
                         "2014/01/01",
@@ -423,7 +423,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/02",
                         "15:40:15"});
 #line 93
-   testRunner.And("\"ScheduleWithError\" has a Schedule of", ((string)(null)), table9, "And ");
+   testRunner.And("\"ScheduleWithError\" has a Schedule of", ((string)(null)), table826, "And ");
 #line 96
    testRunner.When("the \"ScheduleWithError\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 97
