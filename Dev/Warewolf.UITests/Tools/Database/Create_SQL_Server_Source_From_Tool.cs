@@ -17,7 +17,6 @@ namespace Warewolf.UITests.Tools
             Uimap.Change_Selected_Database_ToPostgreSql_DataBase();
             Uimap.Change_Selected_Database_ToOracle_DataBase();
             Uimap.Change_Selected_Database_ToODBC_DataBase();
-
             Uimap.Click_DB_Source_Wizard_Test_Connection_Button();
         }
 

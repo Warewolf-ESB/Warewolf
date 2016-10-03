@@ -1745,7 +1745,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfTreeItem folder1 = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem newWorkflow = this.MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow;
+            WpfMenuItem newWorkflow = this.MainStudioWindow.ExplorerContextMenu.NewWorkflow;
             #endregion
 
             // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item

@@ -2148,6 +2148,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfTreeItem secondItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem;
             WpfMenuItem newFolderMenuItem = this.MainStudioWindow.ExplorerContextMenu.NewFolderMenuItem;
+            WpfEdit itemEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem.ItemEdit;
             WpfTreeItem firstSubItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem;
             #endregion
 
@@ -2157,8 +2158,8 @@ namespace Warewolf.UITests
             // Click 'New Folder' menu item
             Mouse.Click(newFolderMenuItem, new Point(78, 15));
 
-            // Type 'Acceptance Testing Resources' in 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            firstSubItem.SetProperty(null, this.Create_SubFolder_In_Folder1Params.FirstSubItem);
+            // Type 'Acceptance Testing Resources' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            itemEdit.Text = this.Create_SubFolder_In_Folder1Params.ItemEditText;
 
             // Type '{Enter}' in 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
             Keyboard.SendKeys(firstSubItem, this.Create_SubFolder_In_Folder1Params.FirstSubItemSendKeys, ModifierKeys.None);
@@ -6817,8 +6818,12 @@ namespace Warewolf.UITests
         public void Select_Localhost_From_Explorer()
         {
             #region Variable Declarations
+            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
             WpfText selectedItemAsLocalhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsLocalhost;
             #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(serverListComboBox, new Point(174, 8));
 
             // Click 'localhost' label
             Mouse.Click(selectedItemAsLocalhost, new Point(81, 6));
@@ -10607,18 +10612,6 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -11103,8 +11096,6 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -12305,9 +12296,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Type 'Acceptance Testing Resources' in 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+        /// Type 'Acceptance Testing Resources' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
         /// </summary>
-        public string FirstSubItem = "Acceptance Testing Resources";
+        public string ItemEditText = "Acceptance Testing Resources";
         
         /// <summary>
         /// Type '{Enter}' in 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -17324,7 +17315,7 @@ namespace Warewolf.UITests
                 {
                     this.mNewFolderMenuItem = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mNewFolderMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewFolder";
+                    this.mNewFolderMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewFolderFromItem";
                     this.mNewFolderMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -40309,10 +40300,11 @@ namespace Warewolf.UITests
                     this.mWindowsRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
+
                 return this.mWindowsRadioButton;
             }
         }
-        
+
         public WpfButton CancelTestButton
         {
             get
@@ -40328,7 +40320,7 @@ namespace Warewolf.UITests
                 return this.mCancelTestButton;
             }
         }
-        
+
         public WpfImage ConnectionPassedImage
         {
             get
@@ -40344,7 +40336,7 @@ namespace Warewolf.UITests
                 return this.mConnectionPassedImage;
             }
         }
-        
+
         public WpfCustom Spinner
         {
             get
@@ -40362,35 +40354,35 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ManageDatabaseSourceControl mManageDatabaseSourceControl;
-        
+
         private WpfButton mTestConnectionButton;
-        
+
         private ErrorText1 mErrorText;
-        
+
         private WpfEdit mPasswordTextBox;
-        
+
         private WpfEdit mUserNameTextBox;
-        
+
         private WpfRadioButton mUserRadioButton;
-        
+
         private WpfRadioButton mWindowsRadioButton;
-        
+
         private WpfButton mCancelTestButton;
-        
+
         private WpfImage mConnectionPassedImage;
-        
+
         private WpfCustom mSpinner;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ManageDatabaseSourceControl : WpfCustom
     {
-        
-        public ManageDatabaseSourceControl(UITestControl searchLimitContainer) : 
+
+        public ManageDatabaseSourceControl(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40398,7 +40390,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ServerTypeComboBox ServerTypeComboBox
         {
@@ -40411,7 +40403,7 @@ namespace Warewolf.UITests
                 return this.mServerTypeComboBox;
             }
         }
-        
+
         public ServerComboBox1 ServerComboBox
         {
             get
@@ -40423,7 +40415,7 @@ namespace Warewolf.UITests
                 return this.mServerComboBox;
             }
         }
-        
+
         public UIDatabaseComboxBoxCustom UIDatabaseComboxBoxCustom
         {
             get
@@ -40435,7 +40427,7 @@ namespace Warewolf.UITests
                 return this.mUIDatabaseComboxBoxCustom;
             }
         }
-        
+
         public WpfButton TestConnectionButton
         {
             get
@@ -40451,7 +40443,7 @@ namespace Warewolf.UITests
                 return this.mTestConnectionButton;
             }
         }
-        
+
         public DatabaseCombobox DatabaseCombobox
         {
             get
@@ -40464,25 +40456,25 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ServerTypeComboBox mServerTypeComboBox;
-        
+
         private ServerComboBox1 mServerComboBox;
-        
+
         private UIDatabaseComboxBoxCustom mUIDatabaseComboxBoxCustom;
-        
+
         private WpfButton mTestConnectionButton;
-        
+
         private DatabaseCombobox mDatabaseCombobox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerTypeComboBox : WpfCustom
     {
-        
-        public ServerTypeComboBox(UITestControl searchLimitContainer) : 
+
+        public ServerTypeComboBox(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40491,7 +40483,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton ToggleButton
         {
@@ -40508,7 +40500,7 @@ namespace Warewolf.UITests
                 return this.mToggleButton;
             }
         }
-        
+
         public WpfText MicrosoftSQLServer
         {
             get
@@ -40524,7 +40516,7 @@ namespace Warewolf.UITests
                 return this.mMicrosoftSQLServer;
             }
         }
-        
+
         public WpfText OracleDatabase
         {
             get
@@ -40540,7 +40532,7 @@ namespace Warewolf.UITests
                 return this.mOracleDatabase;
             }
         }
-        
+
         public WpfText ODBCDatabase
         {
             get
@@ -40556,7 +40548,7 @@ namespace Warewolf.UITests
                 return this.mODBCDatabase;
             }
         }
-        
+
         public WpfText MySqlDatabase
         {
             get
@@ -40572,7 +40564,7 @@ namespace Warewolf.UITests
                 return this.mMySqlDatabase;
             }
         }
-        
+
         public WpfText PostgreSQLDatabaseText
         {
             get
@@ -40589,27 +40581,27 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mToggleButton;
-        
+
         private WpfText mMicrosoftSQLServer;
-        
+
         private WpfText mOracleDatabase;
-        
+
         private WpfText mODBCDatabase;
-        
+
         private WpfText mMySqlDatabase;
-        
+
         private WpfText mPostgreSQLDatabaseText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerComboBox1 : WpfComboBox
     {
-        
-        public ServerComboBox1(UITestControl searchLimitContainer) : 
+
+        public ServerComboBox1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40617,7 +40609,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfListItem RSAKLFSVRGENDEV
         {
@@ -40634,7 +40626,7 @@ namespace Warewolf.UITests
                 return this.mRSAKLFSVRGENDEV;
             }
         }
-        
+
         public WpfEdit Textbox
         {
             get
@@ -40651,19 +40643,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfListItem mRSAKLFSVRGENDEV;
-        
+
         private WpfEdit mTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIDatabaseComboxBoxCustom : WpfCustom
     {
-        
-        public UIDatabaseComboxBoxCustom(UITestControl searchLimitContainer) : 
+
+        public UIDatabaseComboxBoxCustom(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40672,7 +40664,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText UIDev2TestingDBText
         {
@@ -40690,17 +40682,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mUIDev2TestingDBText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DatabaseCombobox : WpfCustom
     {
-        
-        public DatabaseCombobox(UITestControl searchLimitContainer) : 
+
+        public DatabaseCombobox(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40709,7 +40701,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfCustom DatabaseComboxBoxMsAccess
         {
@@ -40727,7 +40719,7 @@ namespace Warewolf.UITests
                 return this.mDatabaseComboxBoxMsAccess;
             }
         }
-        
+
         public WpfText MSAccessDatabaseText
         {
             get
@@ -40744,19 +40736,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCustom mDatabaseComboxBoxMsAccess;
-        
+
         private WpfText mMSAccessDatabaseText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorText1 : WpfText
     {
-        
-        public ErrorText1(UITestControl searchLimitContainer) : 
+
+        public ErrorText1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40764,7 +40756,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfCustom Spinner
         {
@@ -40783,17 +40775,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCustom mSpinner;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FilesMenu : WpfMenu
     {
-        
-        public FilesMenu(UITestControl searchLimitContainer) : 
+
+        public FilesMenu(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40801,7 +40793,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfMenuItem PositionButton
         {
@@ -40819,17 +40811,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfMenuItem mPositionButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DependencyGraphTab : WpfTabPage
     {
-        
-        public DependencyGraphTab(UITestControl searchLimitContainer) : 
+
+        public DependencyGraphTab(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40837,7 +40829,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WorksurfaceContext6 WorksurfaceContext
         {
@@ -40850,7 +40842,7 @@ namespace Warewolf.UITests
                 return this.mWorksurfaceContext;
             }
         }
-        
+
         public WpfButton CloseButton
         {
             get
@@ -40867,19 +40859,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WorksurfaceContext6 mWorksurfaceContext;
-        
+
         private WpfButton mCloseButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorksurfaceContext6 : WpfCustom
     {
-        
-        public WorksurfaceContext6(UITestControl searchLimitContainer) : 
+
+        public WorksurfaceContext6(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40888,7 +40880,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public DependencyView DependencyView
         {
@@ -40902,17 +40894,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private DependencyView mDependencyView;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DependencyView : WpfCustom
     {
-        
-        public DependencyView(UITestControl searchLimitContainer) : 
+
+        public DependencyView(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40921,7 +40913,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewer ScrollViewer
         {
@@ -40935,17 +40927,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewer mScrollViewer;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewer : WpfPane
     {
-        
-        public ScrollViewer(UITestControl searchLimitContainer) : 
+
+        public ScrollViewer(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40954,7 +40946,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton RefreshButton
         {
@@ -40971,7 +40963,7 @@ namespace Warewolf.UITests
                 return this.mRefreshButton;
             }
         }
-        
+
         public WpfRadioButton ShowwhatdependsonthisRadioButton
         {
             get
@@ -40987,7 +40979,7 @@ namespace Warewolf.UITests
                 return this.mShowwhatdependsonthisRadioButton;
             }
         }
-        
+
         public WpfRadioButton ShowwhatthisdependsonRadioButton
         {
             get
@@ -41003,7 +40995,7 @@ namespace Warewolf.UITests
                 return this.mShowwhatthisdependsonRadioButton;
             }
         }
-        
+
         public NestingLevelsText NestingLevelsText
         {
             get
@@ -41015,7 +41007,7 @@ namespace Warewolf.UITests
                 return this.mNestingLevelsText;
             }
         }
-        
+
         public Node1 Node1
         {
             get
@@ -41027,7 +41019,7 @@ namespace Warewolf.UITests
                 return this.mNode1;
             }
         }
-        
+
         public Node2 Node2
         {
             get
@@ -41039,7 +41031,7 @@ namespace Warewolf.UITests
                 return this.mNode2;
             }
         }
-        
+
         public Node3 Node3
         {
             get
@@ -41051,7 +41043,7 @@ namespace Warewolf.UITests
                 return this.mNode3;
             }
         }
-        
+
         public Node4 Node4
         {
             get
@@ -41063,7 +41055,7 @@ namespace Warewolf.UITests
                 return this.mNode4;
             }
         }
-        
+
         public Node5 Node5
         {
             get
@@ -41076,33 +41068,33 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mRefreshButton;
-        
+
         private WpfRadioButton mShowwhatdependsonthisRadioButton;
-        
+
         private WpfRadioButton mShowwhatthisdependsonRadioButton;
-        
+
         private NestingLevelsText mNestingLevelsText;
-        
+
         private Node1 mNode1;
-        
+
         private Node2 mNode2;
-        
+
         private Node3 mNode3;
-        
+
         private Node4 mNode4;
-        
+
         private Node5 mNode5;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NestingLevelsText : WpfText
     {
-        
-        public NestingLevelsText(UITestControl searchLimitContainer) : 
+
+        public NestingLevelsText(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41110,7 +41102,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit Textbox
         {
@@ -41128,17 +41120,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Node1 : WpfCustom
     {
-        
-        public Node1(UITestControl searchLimitContainer) : 
+
+        public Node1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41148,7 +41140,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Text
         {
@@ -41165,17 +41157,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Node2 : WpfCustom
     {
-        
-        public Node2(UITestControl searchLimitContainer) : 
+
+        public Node2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41185,7 +41177,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Text
         {
@@ -41202,17 +41194,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Node3 : WpfCustom
     {
-        
-        public Node3(UITestControl searchLimitContainer) : 
+
+        public Node3(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41222,7 +41214,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Text
         {
@@ -41239,17 +41231,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Node4 : WpfCustom
     {
-        
-        public Node4(UITestControl searchLimitContainer) : 
+
+        public Node4(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41259,7 +41251,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Text
         {
@@ -41276,17 +41268,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Node5 : WpfCustom
     {
-        
-        public Node5(UITestControl searchLimitContainer) : 
+
+        public Node5(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41296,7 +41288,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Text
         {
@@ -41313,17 +41305,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PluginSourceWizardTab : WpfTabPage
     {
-        
-        public PluginSourceWizardTab(UITestControl searchLimitContainer) : 
+
+        public PluginSourceWizardTab(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41331,7 +41323,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WorkSurfaceContext7 WorkSurfaceContext
         {
@@ -41344,7 +41336,7 @@ namespace Warewolf.UITests
                 return this.mWorkSurfaceContext;
             }
         }
-        
+
         public WpfButton CloseButton
         {
             get
@@ -41361,19 +41353,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WorkSurfaceContext7 mWorkSurfaceContext;
-        
+
         private WpfButton mCloseButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext7 : WpfCustom
     {
-        
-        public WorkSurfaceContext7(UITestControl searchLimitContainer) : 
+
+        public WorkSurfaceContext7(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41382,7 +41374,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NewPluginSourceWizard NewPluginSourceWizard
         {
@@ -41395,7 +41387,7 @@ namespace Warewolf.UITests
                 return this.mNewPluginSourceWizard;
             }
         }
-        
+
         public WpfEdit AssemblyNameTextbox
         {
             get
@@ -41412,19 +41404,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NewPluginSourceWizard mNewPluginSourceWizard;
-        
+
         private WpfEdit mAssemblyNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NewPluginSourceWizard : WpfCustom
     {
-        
-        public NewPluginSourceWizard(UITestControl searchLimitContainer) : 
+
+        public NewPluginSourceWizard(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41432,7 +41424,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewer1 ScrollViewer
         {
@@ -41446,17 +41438,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewer1 mScrollViewer;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewer1 : WpfPane
     {
-        
-        public ScrollViewer1(UITestControl searchLimitContainer) : 
+
+        public ScrollViewer1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41464,7 +41456,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public Tree Tree
         {
@@ -41478,17 +41470,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private Tree mTree;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Tree : WpfTree
     {
-        
-        public Tree(UITestControl searchLimitContainer) : 
+
+        public Tree(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41496,7 +41488,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfTreeItem FileSystemTreeItem
         {
@@ -41514,17 +41506,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfTreeItem mFileSystemTreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebSourceWizardTab : WpfTabPage
     {
-        
-        public WebSourceWizardTab(UITestControl searchLimitContainer) : 
+
+        public WebSourceWizardTab(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41533,7 +41525,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WorkSurfaceContext8 WorkSurfaceContext
         {
@@ -41546,7 +41538,7 @@ namespace Warewolf.UITests
                 return this.mWorkSurfaceContext;
             }
         }
-        
+
         public WpfButton CloseButton
         {
             get
@@ -41563,19 +41555,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WorkSurfaceContext8 mWorkSurfaceContext;
-        
+
         private WpfButton mCloseButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext8 : WpfCustom
     {
-        
-        public WorkSurfaceContext8(UITestControl searchLimitContainer) : 
+
+        public WorkSurfaceContext8(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41584,7 +41576,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit AddressTextbox
         {
@@ -41601,7 +41593,7 @@ namespace Warewolf.UITests
                 return this.mAddressTextbox;
             }
         }
-        
+
         public WpfButton TestConnectionButton
         {
             get
@@ -41617,7 +41609,7 @@ namespace Warewolf.UITests
                 return this.mTestConnectionButton;
             }
         }
-        
+
         public WpfCustom Spinner
         {
             get
@@ -41635,21 +41627,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mAddressTextbox;
-        
+
         private WpfButton mTestConnectionButton;
-        
+
         private WpfCustom mSpinner;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestsTabPage : WpfTabPage
     {
-        
-        public TestsTabPage(UITestControl searchLimitContainer) : 
+
+        public TestsTabPage(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41657,7 +41649,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText TabDescription
         {
@@ -41673,7 +41665,7 @@ namespace Warewolf.UITests
                 return this.mTabDescription;
             }
         }
-        
+
         public ServiceTestView ServiceTestView
         {
             get
@@ -41685,7 +41677,7 @@ namespace Warewolf.UITests
                 return this.mServiceTestView;
             }
         }
-        
+
         public WpfButton CloseTestTabButton
         {
             get
@@ -41702,21 +41694,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mTabDescription;
-        
+
         private ServiceTestView mServiceTestView;
-        
+
         private WpfButton mCloseTestTabButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServiceTestView : WpfCustom
     {
-        
-        public ServiceTestView(UITestControl searchLimitContainer) : 
+
+        public ServiceTestView(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41725,7 +41717,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UrlText UrlText
         {
@@ -41738,7 +41730,7 @@ namespace Warewolf.UITests
                 return this.mUrlText;
             }
         }
-        
+
         public WpfButton RunAllButton
         {
             get
@@ -41754,7 +41746,7 @@ namespace Warewolf.UITests
                 return this.mRunAllButton;
             }
         }
-        
+
         public TestsListboxList TestsListboxList
         {
             get
@@ -41766,7 +41758,7 @@ namespace Warewolf.UITests
                 return this.mTestsListboxList;
             }
         }
-        
+
         public WpfButton DuplicateButton
         {
             get
@@ -41782,7 +41774,7 @@ namespace Warewolf.UITests
                 return this.mDuplicateButton;
             }
         }
-        
+
         public WpfRadioButton WindowsRadioButton
         {
             get
@@ -41798,7 +41790,7 @@ namespace Warewolf.UITests
                 return this.mWindowsRadioButton;
             }
         }
-        
+
         public WpfText TestNameText
         {
             get
@@ -41814,7 +41806,7 @@ namespace Warewolf.UITests
                 return this.mTestNameText;
             }
         }
-        
+
         public TestInputsTable1 TestInputsTable
         {
             get
@@ -41826,7 +41818,7 @@ namespace Warewolf.UITests
                 return this.mTestInputsTable;
             }
         }
-        
+
         public TestOutputsTable TestOutputsTable
         {
             get
@@ -41838,7 +41830,7 @@ namespace Warewolf.UITests
                 return this.mTestOutputsTable;
             }
         }
-        
+
         public WpfRadioButton ErrorRadioButton
         {
             get
@@ -41854,7 +41846,7 @@ namespace Warewolf.UITests
                 return this.mErrorRadioButton;
             }
         }
-        
+
         public WpfRadioButton NoErrorRadioButton
         {
             get
@@ -41870,7 +41862,7 @@ namespace Warewolf.UITests
                 return this.mNoErrorRadioButton;
             }
         }
-        
+
         public WpfRadioButton UserRadioButton
         {
             get
@@ -41886,7 +41878,7 @@ namespace Warewolf.UITests
                 return this.mUserRadioButton;
             }
         }
-        
+
         public WpfEdit PasswordTextBoxEdit
         {
             get
@@ -41902,7 +41894,7 @@ namespace Warewolf.UITests
                 return this.mPasswordTextBoxEdit;
             }
         }
-        
+
         public WpfEdit UsernameTextBoxEdit
         {
             get
@@ -41918,7 +41910,7 @@ namespace Warewolf.UITests
                 return this.mUsernameTextBoxEdit;
             }
         }
-        
+
         public WpfText TestUrlText
         {
             get
@@ -41935,7 +41927,7 @@ namespace Warewolf.UITests
                 return this.mTestUrlText;
             }
         }
-        
+
         public WpfEdit TestNameTextbox
         {
             get
@@ -41952,45 +41944,45 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private UrlText mUrlText;
-        
+
         private WpfButton mRunAllButton;
-        
+
         private TestsListboxList mTestsListboxList;
-        
+
         private WpfButton mDuplicateButton;
-        
+
         private WpfRadioButton mWindowsRadioButton;
-        
+
         private WpfText mTestNameText;
-        
+
         private TestInputsTable1 mTestInputsTable;
-        
+
         private TestOutputsTable mTestOutputsTable;
-        
+
         private WpfRadioButton mErrorRadioButton;
-        
+
         private WpfRadioButton mNoErrorRadioButton;
-        
+
         private WpfRadioButton mUserRadioButton;
-        
+
         private WpfEdit mPasswordTextBoxEdit;
-        
+
         private WpfEdit mUsernameTextBoxEdit;
-        
+
         private WpfText mTestUrlText;
-        
+
         private WpfEdit mTestNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UrlText : WpfText
     {
-        
-        public UrlText(UITestControl searchLimitContainer) : 
+
+        public UrlText(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -41999,7 +41991,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfHyperlink UrlHyperlink
         {
@@ -42017,17 +42009,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfHyperlink mUrlHyperlink;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestsListboxList : WpfList
     {
-        
-        public TestsListboxList(UITestControl searchLimitContainer) : 
+
+        public TestsListboxList(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42035,7 +42027,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public CreateTest CreateTest
         {
@@ -42048,7 +42040,7 @@ namespace Warewolf.UITests
                 return this.mCreateTest;
             }
         }
-        
+
         public Test1 Test1
         {
             get
@@ -42060,7 +42052,7 @@ namespace Warewolf.UITests
                 return this.mTest1;
             }
         }
-        
+
         public Test2 Test2
         {
             get
@@ -42072,7 +42064,7 @@ namespace Warewolf.UITests
                 return this.mTest2;
             }
         }
-        
+
         public Test3 Test3
         {
             get
@@ -42085,23 +42077,23 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private CreateTest mCreateTest;
-        
+
         private Test1 mTest1;
-        
+
         private Test2 mTest2;
-        
+
         private Test3 mTest3;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CreateTest : WpfListItem
     {
-        
-        public CreateTest(UITestControl searchLimitContainer) : 
+
+        public CreateTest(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42109,7 +42101,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton CreateTestButton
         {
@@ -42127,17 +42119,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mCreateTestButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test1 : WpfListItem
     {
-        
-        public Test1(UITestControl searchLimitContainer) : 
+
+        public Test1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42145,7 +42137,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfCheckBox TestEnabledSelector
         {
@@ -42162,7 +42154,7 @@ namespace Warewolf.UITests
                 return this.mTestEnabledSelector;
             }
         }
-        
+
         public WpfButton RunButton
         {
             get
@@ -42179,7 +42171,7 @@ namespace Warewolf.UITests
                 return this.mRunButton;
             }
         }
-        
+
         public WpfButton StopButton
         {
             get
@@ -42195,7 +42187,7 @@ namespace Warewolf.UITests
                 return this.mStopButton;
             }
         }
-        
+
         public WpfButton DeleteButton
         {
             get
@@ -42211,7 +42203,7 @@ namespace Warewolf.UITests
                 return this.mDeleteButton;
             }
         }
-        
+
         public WpfButton DisabledDeleteButton
         {
             get
@@ -42227,7 +42219,7 @@ namespace Warewolf.UITests
                 return this.mDisabledDeleteButton;
             }
         }
-        
+
         public WpfText TestNameDisplay
         {
             get
@@ -42243,7 +42235,7 @@ namespace Warewolf.UITests
                 return this.mTestNameDisplay;
             }
         }
-        
+
         public WpfText Pending
         {
             get
@@ -42259,7 +42251,7 @@ namespace Warewolf.UITests
                 return this.mPending;
             }
         }
-        
+
         public WpfText Passing
         {
             get
@@ -42275,7 +42267,7 @@ namespace Warewolf.UITests
                 return this.mPassing;
             }
         }
-        
+
         public WpfText Failing
         {
             get
@@ -42291,7 +42283,7 @@ namespace Warewolf.UITests
                 return this.mFailing;
             }
         }
-        
+
         public WpfText Invalid
         {
             get
@@ -42306,7 +42298,7 @@ namespace Warewolf.UITests
                 return this.mInvalid;
             }
         }
-        
+
         public WpfText NeverRunDisplay
         {
             get
@@ -42322,7 +42314,7 @@ namespace Warewolf.UITests
                 return this.mNeverRunDisplay;
             }
         }
-        
+
         public WpfText RunTimeDisplay
         {
             get
@@ -42338,39 +42330,39 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCheckBox mTestEnabledSelector;
-        
+
         private WpfButton mRunButton;
-        
+
         private WpfButton mStopButton;
-        
+
         private WpfButton mDeleteButton;
-        
+
         private WpfButton mDisabledDeleteButton;
-        
+
         private WpfText mTestNameDisplay;
-        
+
         private WpfText mPending;
-        
+
         private WpfText mPassing;
-        
+
         private WpfText mFailing;
-        
+
         private WpfText mInvalid;
-        
+
         private WpfText mNeverRunDisplay;
-        
+
         private WpfText mRunTimeDisplay;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test2 : WpfListItem
     {
-        
-        public Test2(UITestControl searchLimitContainer) : 
+
+        public Test2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42379,7 +42371,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfCheckBox TestEnabledSelector
         {
@@ -42396,7 +42388,7 @@ namespace Warewolf.UITests
                 return this.mTestEnabledSelector;
             }
         }
-        
+
         public WpfButton RunButton
         {
             get
@@ -42412,7 +42404,7 @@ namespace Warewolf.UITests
                 return this.mRunButton;
             }
         }
-        
+
         public WpfButton StopButton
         {
             get
@@ -42428,7 +42420,7 @@ namespace Warewolf.UITests
                 return this.mStopButton;
             }
         }
-        
+
         public WpfButton DeleteButton
         {
             get
@@ -42444,7 +42436,7 @@ namespace Warewolf.UITests
                 return this.mDeleteButton;
             }
         }
-        
+
         public WpfButton DisabledDeleteButton
         {
             get
@@ -42460,7 +42452,7 @@ namespace Warewolf.UITests
                 return this.mDisabledDeleteButton;
             }
         }
-        
+
         public WpfText TestNameDisplay
         {
             get
@@ -42476,7 +42468,7 @@ namespace Warewolf.UITests
                 return this.mTestNameDisplay;
             }
         }
-        
+
         public WpfText Pending
         {
             get
@@ -42492,7 +42484,7 @@ namespace Warewolf.UITests
                 return this.mPending;
             }
         }
-        
+
         public WpfText Passing
         {
             get
@@ -42508,7 +42500,7 @@ namespace Warewolf.UITests
                 return this.mPassing;
             }
         }
-        
+
         public WpfText Failing
         {
             get
@@ -42524,7 +42516,7 @@ namespace Warewolf.UITests
                 return this.mFailing;
             }
         }
-        
+
         public WpfText Invalid
         {
             get
@@ -42539,7 +42531,7 @@ namespace Warewolf.UITests
                 return this.mInvalid;
             }
         }
-        
+
         public WpfText NeverRunDisplay
         {
             get
@@ -42555,7 +42547,7 @@ namespace Warewolf.UITests
                 return this.mNeverRunDisplay;
             }
         }
-        
+
         public WpfText RunTimeDisplay
         {
             get
@@ -42571,39 +42563,39 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCheckBox mTestEnabledSelector;
-        
+
         private WpfButton mRunButton;
-        
+
         private WpfButton mStopButton;
-        
+
         private WpfButton mDeleteButton;
-        
+
         private WpfButton mDisabledDeleteButton;
-        
+
         private WpfText mTestNameDisplay;
-        
+
         private WpfText mPending;
-        
+
         private WpfText mPassing;
-        
+
         private WpfText mFailing;
-        
+
         private WpfText mInvalid;
-        
+
         private WpfText mNeverRunDisplay;
-        
+
         private WpfText mRunTimeDisplay;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test3 : WpfListItem
     {
-        
-        public Test3(UITestControl searchLimitContainer) : 
+
+        public Test3(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42612,7 +42604,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfCheckBox TestEnabledSelector
         {
@@ -42629,7 +42621,7 @@ namespace Warewolf.UITests
                 return this.mTestEnabledSelector;
             }
         }
-        
+
         public WpfButton RunButton
         {
             get
@@ -42646,7 +42638,7 @@ namespace Warewolf.UITests
                 return this.mRunButton;
             }
         }
-        
+
         public WpfButton StopButton
         {
             get
@@ -42662,7 +42654,7 @@ namespace Warewolf.UITests
                 return this.mStopButton;
             }
         }
-        
+
         public WpfButton DeleteButton
         {
             get
@@ -42678,7 +42670,7 @@ namespace Warewolf.UITests
                 return this.mDeleteButton;
             }
         }
-        
+
         public WpfButton DisabledDeleteButton
         {
             get
@@ -42694,7 +42686,7 @@ namespace Warewolf.UITests
                 return this.mDisabledDeleteButton;
             }
         }
-        
+
         public WpfText TestNameDisplay
         {
             get
@@ -42710,7 +42702,7 @@ namespace Warewolf.UITests
                 return this.mTestNameDisplay;
             }
         }
-        
+
         public WpfText Pending
         {
             get
@@ -42726,7 +42718,7 @@ namespace Warewolf.UITests
                 return this.mPending;
             }
         }
-        
+
         public WpfText Passing
         {
             get
@@ -42742,7 +42734,7 @@ namespace Warewolf.UITests
                 return this.mPassing;
             }
         }
-        
+
         public WpfText Failing
         {
             get
@@ -42758,7 +42750,7 @@ namespace Warewolf.UITests
                 return this.mFailing;
             }
         }
-        
+
         public WpfText Invalid
         {
             get
@@ -42773,7 +42765,7 @@ namespace Warewolf.UITests
                 return this.mInvalid;
             }
         }
-        
+
         public WpfText NeverRunDisplay
         {
             get
@@ -42789,7 +42781,7 @@ namespace Warewolf.UITests
                 return this.mNeverRunDisplay;
             }
         }
-        
+
         public WpfText RunTimeDisplay
         {
             get
@@ -42805,39 +42797,39 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCheckBox mTestEnabledSelector;
-        
+
         private WpfButton mRunButton;
-        
+
         private WpfButton mStopButton;
-        
+
         private WpfButton mDeleteButton;
-        
+
         private WpfButton mDisabledDeleteButton;
-        
+
         private WpfText mTestNameDisplay;
-        
+
         private WpfText mPending;
-        
+
         private WpfText mPassing;
-        
+
         private WpfText mFailing;
-        
+
         private WpfText mInvalid;
-        
+
         private WpfText mNeverRunDisplay;
-        
+
         private WpfText mRunTimeDisplay;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestInputsTable1 : WpfTable
     {
-        
-        public TestInputsTable1(UITestControl searchLimitContainer) : 
+
+        public TestInputsTable1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42845,7 +42837,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public Row110 Row1
         {
@@ -42859,17 +42851,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private Row110 mRow1;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row110 : WpfRow
     {
-        
-        public Row110(UITestControl searchLimitContainer) : 
+
+        public Row110(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42878,7 +42870,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public Cell2 Cell
         {
@@ -42892,17 +42884,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private Cell2 mCell;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Cell2 : WpfCell
     {
-        
-        public Cell2(UITestControl searchLimitContainer) : 
+
+        public Cell2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42911,7 +42903,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public IntellisenseComboBox IntellisenseComboBox
         {
@@ -42925,17 +42917,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private IntellisenseComboBox mIntellisenseComboBox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseComboBox : WpfComboBox
     {
-        
-        public IntellisenseComboBox(UITestControl searchLimitContainer) : 
+
+        public IntellisenseComboBox(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42943,7 +42935,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit Textbox
         {
@@ -42961,17 +42953,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestOutputsTable : WpfTable
     {
-        
-        public TestOutputsTable(UITestControl searchLimitContainer) : 
+
+        public TestOutputsTable(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42979,7 +42971,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public Row111 Row1
         {
@@ -42993,17 +42985,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private Row111 mRow1;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row111 : WpfRow
     {
-        
-        public Row111(UITestControl searchLimitContainer) : 
+
+        public Row111(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43012,7 +43004,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public Cell3 Cell
         {
@@ -43026,17 +43018,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private Cell3 mCell;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Cell3 : WpfCell
     {
-        
-        public Cell3(UITestControl searchLimitContainer) : 
+
+        public Cell3(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43045,7 +43037,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public IntellisenseComboBox1 IntellisenseComboBox
         {
@@ -43059,17 +43051,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private IntellisenseComboBox1 mIntellisenseComboBox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseComboBox1 : WpfComboBox
     {
-        
-        public IntellisenseComboBox1(UITestControl searchLimitContainer) : 
+
+        public IntellisenseComboBox1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43077,7 +43069,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit Textbox
         {
@@ -43095,17 +43087,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SchedulerTab : WpfTabPage
     {
-        
-        public SchedulerTab(UITestControl searchLimitContainer) : 
+
+        public SchedulerTab(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43113,7 +43105,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
-        
+
         #region Properties
         public WorkSurfaceContext9 WorkSurfaceContext
         {
@@ -43127,17 +43119,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WorkSurfaceContext9 mWorkSurfaceContext;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext9 : WpfCustom
     {
-        
-        public WorkSurfaceContext9(UITestControl searchLimitContainer) : 
+
+        public WorkSurfaceContext9(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43146,7 +43138,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public SchedulerView SchedulerView
         {
@@ -43160,17 +43152,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private SchedulerView mSchedulerView;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SchedulerView : WpfCustom
     {
-        
-        public SchedulerView(UITestControl searchLimitContainer) : 
+
+        public SchedulerView(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43179,7 +43171,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
-        
+
         #region Properties
         public WpfCheckBox RunTaskCheckBox
         {
@@ -43196,7 +43188,7 @@ namespace Warewolf.UITests
                 return this.mRunTaskCheckBox;
             }
         }
-        
+
         public WpfText RunasthefollowinguseText
         {
             get
@@ -43212,7 +43204,7 @@ namespace Warewolf.UITests
                 return this.mRunasthefollowinguseText;
             }
         }
-        
+
         public WpfButton ResourcePickerButton
         {
             get
@@ -43228,7 +43220,7 @@ namespace Warewolf.UITests
                 return this.mResourcePickerButton;
             }
         }
-        
+
         public WpfEdit PasswordTextbox
         {
             get
@@ -43244,7 +43236,7 @@ namespace Warewolf.UITests
                 return this.mPasswordTextbox;
             }
         }
-        
+
         public WpfText PasswordText
         {
             get
@@ -43260,7 +43252,7 @@ namespace Warewolf.UITests
                 return this.mPasswordText;
             }
         }
-        
+
         public WpfEdit NumOfHistoryTextBoxEdit
         {
             get
@@ -43276,7 +43268,7 @@ namespace Warewolf.UITests
                 return this.mNumOfHistoryTextBoxEdit;
             }
         }
-        
+
         public WpfText NumberofHistoryText
         {
             get
@@ -43292,7 +43284,7 @@ namespace Warewolf.UITests
                 return this.mNumberofHistoryText;
             }
         }
-        
+
         public WpfEdit NameTextbox
         {
             get
@@ -43308,7 +43300,7 @@ namespace Warewolf.UITests
                 return this.mNameTextbox;
             }
         }
-        
+
         public WpfText NameText
         {
             get
@@ -43324,7 +43316,7 @@ namespace Warewolf.UITests
                 return this.mNameText;
             }
         }
-        
+
         public WpfTable HistoryTable
         {
             get
@@ -43339,7 +43331,7 @@ namespace Warewolf.UITests
                 return this.mHistoryTable;
             }
         }
-        
+
         public WpfText ErrorMessageText
         {
             get
@@ -43355,7 +43347,7 @@ namespace Warewolf.UITests
                 return this.mErrorMessageText;
             }
         }
-        
+
         public WpfRadioButton EnabledRadioButton
         {
             get
@@ -43371,7 +43363,7 @@ namespace Warewolf.UITests
                 return this.mEnabledRadioButton;
             }
         }
-        
+
         public WpfButton EditTriggerButton
         {
             get
@@ -43387,7 +43379,7 @@ namespace Warewolf.UITests
                 return this.mEditTriggerButton;
             }
         }
-        
+
         public ConnectControl1 ConnectControl
         {
             get
@@ -43399,7 +43391,7 @@ namespace Warewolf.UITests
                 return this.mConnectControl;
             }
         }
-        
+
         public SchedulesList SchedulesList
         {
             get
@@ -43411,7 +43403,7 @@ namespace Warewolf.UITests
                 return this.mSchedulesList;
             }
         }
-        
+
         public WpfText StatusText
         {
             get
@@ -43427,7 +43419,7 @@ namespace Warewolf.UITests
                 return this.mStatusText;
             }
         }
-        
+
         public WpfText TriggerText
         {
             get
@@ -43443,7 +43435,7 @@ namespace Warewolf.UITests
                 return this.mTriggerText;
             }
         }
-        
+
         public WpfText TriggerValueText
         {
             get
@@ -43459,7 +43451,7 @@ namespace Warewolf.UITests
                 return this.mTriggerValueText;
             }
         }
-        
+
         public WpfText UsernameText
         {
             get
@@ -43475,7 +43467,7 @@ namespace Warewolf.UITests
                 return this.mUsernameText;
             }
         }
-        
+
         public WpfEdit UserNameTextBoxEdit
         {
             get
@@ -43491,7 +43483,7 @@ namespace Warewolf.UITests
                 return this.mUserNameTextBoxEdit;
             }
         }
-        
+
         public WpfEdit WorkflowNameTextBox
         {
             get
@@ -43507,7 +43499,7 @@ namespace Warewolf.UITests
                 return this.mWorkflowNameTextBox;
             }
         }
-        
+
         public WpfText WorkflowText
         {
             get
@@ -43523,7 +43515,7 @@ namespace Warewolf.UITests
                 return this.mWorkflowText;
             }
         }
-        
+
         public WpfRadioButton DisabledRadioButton
         {
             get
@@ -43540,61 +43532,61 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCheckBox mRunTaskCheckBox;
-        
+
         private WpfText mRunasthefollowinguseText;
-        
+
         private WpfButton mResourcePickerButton;
-        
+
         private WpfEdit mPasswordTextbox;
-        
+
         private WpfText mPasswordText;
-        
+
         private WpfEdit mNumOfHistoryTextBoxEdit;
-        
+
         private WpfText mNumberofHistoryText;
-        
+
         private WpfEdit mNameTextbox;
-        
+
         private WpfText mNameText;
-        
+
         private WpfTable mHistoryTable;
-        
+
         private WpfText mErrorMessageText;
-        
+
         private WpfRadioButton mEnabledRadioButton;
-        
+
         private WpfButton mEditTriggerButton;
-        
+
         private ConnectControl1 mConnectControl;
-        
+
         private SchedulesList mSchedulesList;
-        
+
         private WpfText mStatusText;
-        
+
         private WpfText mTriggerText;
-        
+
         private WpfText mTriggerValueText;
-        
+
         private WpfText mUsernameText;
-        
+
         private WpfEdit mUserNameTextBoxEdit;
-        
+
         private WpfEdit mWorkflowNameTextBox;
-        
+
         private WpfText mWorkflowText;
-        
+
         private WpfRadioButton mDisabledRadioButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConnectControl1 : WpfCustom
     {
-        
-        public ConnectControl1(UITestControl searchLimitContainer) : 
+
+        public ConnectControl1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43603,7 +43595,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfComboBox ServerComboBox
         {
@@ -43620,7 +43612,7 @@ namespace Warewolf.UITests
                 return this.mServerComboBox;
             }
         }
-        
+
         public WpfButton EditServerButton
         {
             get
@@ -43636,7 +43628,7 @@ namespace Warewolf.UITests
                 return this.mEditServerButton;
             }
         }
-        
+
         public WpfButton ConnectServerButton
         {
             get
@@ -43652,7 +43644,7 @@ namespace Warewolf.UITests
                 return this.mConnectServerButton;
             }
         }
-        
+
         public WpfRadioButton DisabledRadioButton
         {
             get
@@ -43669,23 +43661,23 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfComboBox mServerComboBox;
-        
+
         private WpfButton mEditServerButton;
-        
+
         private WpfButton mConnectServerButton;
-        
+
         private WpfRadioButton mDisabledRadioButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SchedulesList : WpfList
     {
-        
-        public SchedulesList(UITestControl searchLimitContainer) : 
+
+        public SchedulesList(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43693,7 +43685,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UINameworkflow1ResourcListItem UINameworkflow1ResourcListItem
         {
@@ -43706,7 +43698,7 @@ namespace Warewolf.UITests
                 return this.mUINameworkflow1ResourcListItem;
             }
         }
-        
+
         public SchedulerListItem SchedulerListItem
         {
             get
@@ -43718,7 +43710,7 @@ namespace Warewolf.UITests
                 return this.mSchedulerListItem;
             }
         }
-        
+
         public NewTask NewTask
         {
             get
@@ -43730,7 +43722,7 @@ namespace Warewolf.UITests
                 return this.mNewTask;
             }
         }
-        
+
         public WpfButton DeleteTaskButton
         {
             get
@@ -43747,23 +43739,23 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private UINameworkflow1ResourcListItem mUINameworkflow1ResourcListItem;
-        
+
         private SchedulerListItem mSchedulerListItem;
-        
+
         private NewTask mNewTask;
-        
+
         private WpfButton mDeleteTaskButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UINameworkflow1ResourcListItem : WpfListItem
     {
-        
-        public UINameworkflow1ResourcListItem(UITestControl searchLimitContainer) : 
+
+        public UINameworkflow1ResourcListItem(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43771,7 +43763,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfCheckBox StatusCheckBox
         {
@@ -43788,17 +43780,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCheckBox mStatusCheckBox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SchedulerListItem : WpfListItem
     {
-        
-        public SchedulerListItem(UITestControl searchLimitContainer) : 
+
+        public SchedulerListItem(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43806,7 +43798,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public CreateTaskButton CreateTaskButton
         {
@@ -43820,24 +43812,24 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private CreateTaskButton mCreateTaskButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CreateTaskButton : WpfButton
     {
-        
-        public CreateTaskButton(UITestControl searchLimitContainer) : 
+
+        public CreateTaskButton(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton NewTaskButton
         {
@@ -43856,17 +43848,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mNewTaskButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NewTask : WpfListItem
     {
-        
-        public NewTask(UITestControl searchLimitContainer) : 
+
+        public NewTask(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43874,7 +43866,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfCheckBox StatusCheckbox
         {
@@ -43891,17 +43883,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCheckBox mStatusCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointServerSourceTab : WpfTabPage
     {
-        
-        public SharepointServerSourceTab(UITestControl searchLimitContainer) : 
+
+        public SharepointServerSourceTab(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43910,7 +43902,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
-        
+
         #region Properties
         public SharepointServerSourceView SharepointServerSourceView
         {
@@ -43923,7 +43915,7 @@ namespace Warewolf.UITests
                 return this.mSharepointServerSourceView;
             }
         }
-        
+
         public WpfButton SharepointSourceTabCloseButton
         {
             get
@@ -43940,19 +43932,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private SharepointServerSourceView mSharepointServerSourceView;
-        
+
         private WpfButton mSharepointSourceTabCloseButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointServerSourceView : WpfCustom
     {
-        
-        public SharepointServerSourceView(UITestControl searchLimitContainer) : 
+
+        public SharepointServerSourceView(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43961,7 +43953,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
-        
+
         #region Properties
         public SharepointView SharepointView
         {
@@ -43975,17 +43967,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private SharepointView mSharepointView;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointView : WpfCustom
     {
-        
-        public SharepointView(UITestControl searchLimitContainer) : 
+
+        public SharepointView(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -43993,7 +43985,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton TestConnectionButton
         {
@@ -44010,7 +44002,7 @@ namespace Warewolf.UITests
                 return this.mTestConnectionButton;
             }
         }
-        
+
         public WpfRadioButton UserRadioButton
         {
             get
@@ -44026,7 +44018,7 @@ namespace Warewolf.UITests
                 return this.mUserRadioButton;
             }
         }
-        
+
         public WpfEdit PasswordTextBox
         {
             get
@@ -44042,7 +44034,7 @@ namespace Warewolf.UITests
                 return this.mPasswordTextBox;
             }
         }
-        
+
         public WpfEdit ServerNameEdit
         {
             get
@@ -44058,7 +44050,7 @@ namespace Warewolf.UITests
                 return this.mServerNameEdit;
             }
         }
-        
+
         public WpfEdit UserNameTextBox
         {
             get
@@ -44075,25 +44067,25 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mTestConnectionButton;
-        
+
         private WpfRadioButton mUserRadioButton;
-        
+
         private WpfEdit mPasswordTextBox;
-        
+
         private WpfEdit mServerNameEdit;
-        
+
         private WpfEdit mUserNameTextBox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitPaneRight : WpfCustom
     {
-        
-        public SplitPaneRight(UITestControl searchLimitContainer) : 
+
+        public SplitPaneRight(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44102,7 +44094,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public Variables Variables
         {
@@ -44115,7 +44107,7 @@ namespace Warewolf.UITests
                 return this.mVariables;
             }
         }
-        
+
         public DebugOutput DebugOutput
         {
             get
@@ -44128,19 +44120,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private Variables mVariables;
-        
+
         private DebugOutput mDebugOutput;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Variables : WpfCustom
     {
-        
-        public Variables(UITestControl searchLimitContainer) : 
+
+        public Variables(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44149,7 +44141,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton VariableUnpinBtn
         {
@@ -44166,7 +44158,7 @@ namespace Warewolf.UITests
                 return this.mVariableUnpinBtn;
             }
         }
-        
+
         public DatalistView DatalistView
         {
             get
@@ -44179,19 +44171,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mVariableUnpinBtn;
-        
+
         private DatalistView mDatalistView;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DatalistView : WpfCustom
     {
-        
-        public DatalistView(UITestControl searchLimitContainer) : 
+
+        public DatalistView(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44200,7 +44192,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public VariableTree VariableTree
         {
@@ -44213,7 +44205,7 @@ namespace Warewolf.UITests
                 return this.mVariableTree;
             }
         }
-        
+
         public SearchTextbox2 SearchTextbox
         {
             get
@@ -44225,7 +44217,7 @@ namespace Warewolf.UITests
                 return this.mSearchTextbox;
             }
         }
-        
+
         public WpfButton RemoveUnused
         {
             get
@@ -44241,7 +44233,7 @@ namespace Warewolf.UITests
                 return this.mRemoveUnused;
             }
         }
-        
+
         public WpfButton Sort
         {
             get
@@ -44258,23 +44250,23 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private VariableTree mVariableTree;
-        
+
         private SearchTextbox2 mSearchTextbox;
-        
+
         private WpfButton mRemoveUnused;
-        
+
         private WpfButton mSort;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableTree : WpfTree
     {
-        
-        public VariableTree(UITestControl searchLimitContainer) : 
+
+        public VariableTree(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44282,7 +44274,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public VariableTreeItem VariableTreeItem
         {
@@ -44295,7 +44287,7 @@ namespace Warewolf.UITests
                 return this.mVariableTreeItem;
             }
         }
-        
+
         public RecordsetTreeItem RecordsetTreeItem
         {
             get
@@ -44308,19 +44300,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private VariableTreeItem mVariableTreeItem;
-        
+
         private RecordsetTreeItem mRecordsetTreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableTreeItem : WpfTreeItem
     {
-        
-        public VariableTreeItem(UITestControl searchLimitContainer) : 
+
+        public VariableTreeItem(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44328,7 +44320,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public TreeItem1 TreeItem1
         {
@@ -44341,7 +44333,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem1;
             }
         }
-        
+
         public TreeItem2 TreeItem2
         {
             get
@@ -44353,7 +44345,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem2;
             }
         }
-        
+
         public TreeItem3 TreeItem3
         {
             get
@@ -44365,7 +44357,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem3;
             }
         }
-        
+
         public TreeItem4 TreeItem4
         {
             get
@@ -44377,7 +44369,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem4;
             }
         }
-        
+
         public TreeItem5 TreeItem5
         {
             get
@@ -44389,7 +44381,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem5;
             }
         }
-        
+
         public WpfButton ExpanderButton
         {
             get
@@ -44407,27 +44399,27 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private TreeItem1 mTreeItem1;
-        
+
         private TreeItem2 mTreeItem2;
-        
+
         private TreeItem3 mTreeItem3;
-        
+
         private TreeItem4 mTreeItem4;
-        
+
         private TreeItem5 mTreeItem5;
-        
+
         private WpfButton mExpanderButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem1 : WpfTreeItem
     {
-        
-        public TreeItem1(UITestControl searchLimitContainer) : 
+
+        public TreeItem1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44437,7 +44429,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane1 ScrollViewerPane
         {
@@ -44450,7 +44442,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -44467,7 +44459,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -44485,21 +44477,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane1 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane1 : WpfPane
     {
-        
-        public ScrollViewerPane1(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44509,7 +44501,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox NameTextbox
         {
@@ -44523,17 +44515,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox : WpfEdit
     {
-        
-        public NameTextbox(UITestControl searchLimitContainer) : 
+
+        public NameTextbox(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44542,7 +44534,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -44560,7 +44552,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -44577,7 +44569,7 @@ namespace Warewolf.UITests
                 return this.mDeleteDisabledImage;
             }
         }
-        
+
         public WpfButton DeleteButton
         {
             get
@@ -44595,21 +44587,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
-        
+
         private WpfButton mDeleteButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem2 : WpfTreeItem
     {
-        
-        public TreeItem2(UITestControl searchLimitContainer) : 
+
+        public TreeItem2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44619,7 +44611,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane2 ScrollViewerPane
         {
@@ -44632,7 +44624,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -44649,7 +44641,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -44667,21 +44659,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane2 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane2 : WpfPane
     {
-        
-        public ScrollViewerPane2(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44691,7 +44683,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox1 NameTextbox
         {
@@ -44705,17 +44697,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox1 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox1 : WpfEdit
     {
-        
-        public NameTextbox1(UITestControl searchLimitContainer) : 
+
+        public NameTextbox1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44724,7 +44716,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -44742,7 +44734,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -44759,7 +44751,7 @@ namespace Warewolf.UITests
                 return this.mDeleteDisabledImage;
             }
         }
-        
+
         public WpfButton DeleteButton
         {
             get
@@ -44777,21 +44769,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
-        
+
         private WpfButton mDeleteButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem3 : WpfTreeItem
     {
-        
-        public TreeItem3(UITestControl searchLimitContainer) : 
+
+        public TreeItem3(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44801,7 +44793,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane3 ScrollViewerPane
         {
@@ -44814,7 +44806,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -44831,7 +44823,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -44849,21 +44841,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane3 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane3 : WpfPane
     {
-        
-        public ScrollViewerPane3(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane3(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44873,7 +44865,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox2 NameTextbox
         {
@@ -44887,17 +44879,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox2 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox2 : WpfEdit
     {
-        
-        public NameTextbox2(UITestControl searchLimitContainer) : 
+
+        public NameTextbox2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44906,7 +44898,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -44924,7 +44916,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -44941,7 +44933,7 @@ namespace Warewolf.UITests
                 return this.mDeleteDisabledImage;
             }
         }
-        
+
         public WpfButton DeleteButton
         {
             get
@@ -44959,21 +44951,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
-        
+
         private WpfButton mDeleteButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem4 : WpfTreeItem
     {
-        
-        public TreeItem4(UITestControl searchLimitContainer) : 
+
+        public TreeItem4(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -44983,7 +44975,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane4 ScrollViewerPane
         {
@@ -44996,7 +44988,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -45013,7 +45005,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -45031,21 +45023,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane4 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane4 : WpfPane
     {
-        
-        public ScrollViewerPane4(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane4(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45055,7 +45047,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox3 NameTextbox
         {
@@ -45069,17 +45061,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox3 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox3 : WpfEdit
     {
-        
-        public NameTextbox3(UITestControl searchLimitContainer) : 
+
+        public NameTextbox3(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45088,7 +45080,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -45106,7 +45098,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -45123,7 +45115,7 @@ namespace Warewolf.UITests
                 return this.mDeleteDisabledImage;
             }
         }
-        
+
         public WpfButton DeleteButton
         {
             get
@@ -45141,21 +45133,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
-        
+
         private WpfButton mDeleteButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem5 : WpfTreeItem
     {
-        
-        public TreeItem5(UITestControl searchLimitContainer) : 
+
+        public TreeItem5(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45165,7 +45157,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane5 ScrollViewerPane
         {
@@ -45178,7 +45170,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -45195,7 +45187,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -45213,21 +45205,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane5 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane5 : WpfPane
     {
-        
-        public ScrollViewerPane5(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane5(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45237,7 +45229,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox4 NameTextbox
         {
@@ -45251,17 +45243,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox4 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox4 : WpfEdit
     {
-        
-        public NameTextbox4(UITestControl searchLimitContainer) : 
+
+        public NameTextbox4(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45270,7 +45262,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -45288,7 +45280,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -45305,7 +45297,7 @@ namespace Warewolf.UITests
                 return this.mDeleteDisabledImage;
             }
         }
-        
+
         public WpfButton DeleteButton
         {
             get
@@ -45323,21 +45315,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
-        
+
         private WpfButton mDeleteButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecordsetTreeItem : WpfTreeItem
     {
-        
-        public RecordsetTreeItem(UITestControl searchLimitContainer) : 
+
+        public RecordsetTreeItem(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45345,7 +45337,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public TreeItem11 TreeItem1
         {
@@ -45358,7 +45350,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem1;
             }
         }
-        
+
         public TreeItem21 TreeItem2
         {
             get
@@ -45370,7 +45362,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem2;
             }
         }
-        
+
         public TreeItem31 TreeItem3
         {
             get
@@ -45382,7 +45374,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem3;
             }
         }
-        
+
         public TreeItem41 TreeItem4
         {
             get
@@ -45394,7 +45386,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem4;
             }
         }
-        
+
         public TreeItem51 TreeItem5
         {
             get
@@ -45406,7 +45398,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem5;
             }
         }
-        
+
         public WpfButton ExpanderButton
         {
             get
@@ -45424,27 +45416,27 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private TreeItem11 mTreeItem1;
-        
+
         private TreeItem21 mTreeItem2;
-        
+
         private TreeItem31 mTreeItem3;
-        
+
         private TreeItem41 mTreeItem4;
-        
+
         private TreeItem51 mTreeItem5;
-        
+
         private WpfButton mExpanderButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem11 : WpfTreeItem
     {
-        
-        public TreeItem11(UITestControl searchLimitContainer) : 
+
+        public TreeItem11(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45454,7 +45446,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane6 ScrollViewerPane
         {
@@ -45467,7 +45459,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -45484,7 +45476,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -45501,7 +45493,7 @@ namespace Warewolf.UITests
                 return this.mOutputCheckbox;
             }
         }
-        
+
         public Field1 Field1
         {
             get
@@ -45513,7 +45505,7 @@ namespace Warewolf.UITests
                 return this.mField1;
             }
         }
-        
+
         public Field2 Field2
         {
             get
@@ -45525,7 +45517,7 @@ namespace Warewolf.UITests
                 return this.mField2;
             }
         }
-        
+
         public WpfButton ExpanderButton
         {
             get
@@ -45543,27 +45535,27 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane6 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
-        
+
         private Field1 mField1;
-        
+
         private Field2 mField2;
-        
+
         private WpfButton mExpanderButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane6 : WpfPane
     {
-        
-        public ScrollViewerPane6(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane6(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45573,7 +45565,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox5 NameTextbox
         {
@@ -45587,17 +45579,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox5 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox5 : WpfEdit
     {
-        
-        public NameTextbox5(UITestControl searchLimitContainer) : 
+
+        public NameTextbox5(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45606,7 +45598,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -45624,7 +45616,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -45641,7 +45633,7 @@ namespace Warewolf.UITests
                 return this.mDeleteDisabledImage;
             }
         }
-        
+
         public WpfButton DeleteButtonButton
         {
             get
@@ -45659,21 +45651,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
-        
+
         private WpfButton mDeleteButtonButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field1 : WpfTreeItem
     {
-        
-        public Field1(UITestControl searchLimitContainer) : 
+
+        public Field1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45683,7 +45675,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane7 ScrollViewerPane
         {
@@ -45696,7 +45688,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -45713,7 +45705,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -45731,21 +45723,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane7 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane7 : WpfPane
     {
-        
-        public ScrollViewerPane7(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane7(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45755,7 +45747,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox6 NameTextbox
         {
@@ -45769,17 +45761,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox6 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox6 : WpfEdit
     {
-        
-        public NameTextbox6(UITestControl searchLimitContainer) : 
+
+        public NameTextbox6(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45788,7 +45780,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -45806,7 +45798,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -45824,19 +45816,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field2 : WpfTreeItem
     {
-        
-        public Field2(UITestControl searchLimitContainer) : 
+
+        public Field2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45846,7 +45838,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane8 ScrollViewerPane
         {
@@ -45859,7 +45851,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -45876,7 +45868,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -45894,21 +45886,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane8 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane8 : WpfPane
     {
-        
-        public ScrollViewerPane8(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane8(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45918,7 +45910,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox7 NameTextbox
         {
@@ -45932,17 +45924,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox7 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox7 : WpfEdit
     {
-        
-        public NameTextbox7(UITestControl searchLimitContainer) : 
+
+        public NameTextbox7(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -45951,7 +45943,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -45969,7 +45961,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -45987,19 +45979,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem21 : WpfTreeItem
     {
-        
-        public TreeItem21(UITestControl searchLimitContainer) : 
+
+        public TreeItem21(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46009,7 +46001,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane9 ScrollViewerPane
         {
@@ -46022,7 +46014,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -46039,7 +46031,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -46056,7 +46048,7 @@ namespace Warewolf.UITests
                 return this.mOutputCheckbox;
             }
         }
-        
+
         public Field Field
         {
             get
@@ -46068,7 +46060,7 @@ namespace Warewolf.UITests
                 return this.mField;
             }
         }
-        
+
         public WpfButton ExpanderButton
         {
             get
@@ -46086,25 +46078,25 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane9 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
-        
+
         private Field mField;
-        
+
         private WpfButton mExpanderButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane9 : WpfPane
     {
-        
-        public ScrollViewerPane9(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane9(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46114,7 +46106,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox8 NameTextbox
         {
@@ -46128,17 +46120,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox8 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox8 : WpfEdit
     {
-        
-        public NameTextbox8(UITestControl searchLimitContainer) : 
+
+        public NameTextbox8(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46147,7 +46139,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -46165,7 +46157,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -46182,7 +46174,7 @@ namespace Warewolf.UITests
                 return this.mDeleteDisabledImage;
             }
         }
-        
+
         public WpfButton DeleteButtonButton
         {
             get
@@ -46200,21 +46192,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
-        
+
         private WpfButton mDeleteButtonButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field : WpfTreeItem
     {
-        
-        public Field(UITestControl searchLimitContainer) : 
+
+        public Field(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46223,7 +46215,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane10 ScrollViewerPane
         {
@@ -46236,7 +46228,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -46253,7 +46245,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -46271,21 +46263,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane10 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane10 : WpfPane
     {
-        
-        public ScrollViewerPane10(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane10(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46295,7 +46287,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox9 NameTextbox
         {
@@ -46309,17 +46301,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox9 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox9 : WpfEdit
     {
-        
-        public NameTextbox9(UITestControl searchLimitContainer) : 
+
+        public NameTextbox9(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46328,7 +46320,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -46346,7 +46338,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -46364,19 +46356,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem31 : WpfTreeItem
     {
-        
-        public TreeItem31(UITestControl searchLimitContainer) : 
+
+        public TreeItem31(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46386,7 +46378,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane11 ScrollViewerPane
         {
@@ -46399,7 +46391,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -46416,7 +46408,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -46433,7 +46425,7 @@ namespace Warewolf.UITests
                 return this.mOutputCheckbox;
             }
         }
-        
+
         public Field3 Field
         {
             get
@@ -46445,7 +46437,7 @@ namespace Warewolf.UITests
                 return this.mField;
             }
         }
-        
+
         public WpfButton ExpanderButton
         {
             get
@@ -46463,25 +46455,25 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane11 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
-        
+
         private Field3 mField;
-        
+
         private WpfButton mExpanderButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane11 : WpfPane
     {
-        
-        public ScrollViewerPane11(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane11(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46491,7 +46483,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox10 NameTextbox
         {
@@ -46505,17 +46497,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox10 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox10 : WpfEdit
     {
-        
-        public NameTextbox10(UITestControl searchLimitContainer) : 
+
+        public NameTextbox10(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46524,7 +46516,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -46542,7 +46534,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -46559,7 +46551,7 @@ namespace Warewolf.UITests
                 return this.mDeleteDisabledImage;
             }
         }
-        
+
         public WpfButton DeleteButtonButton
         {
             get
@@ -46577,21 +46569,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
-        
+
         private WpfButton mDeleteButtonButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field3 : WpfTreeItem
     {
-        
-        public Field3(UITestControl searchLimitContainer) : 
+
+        public Field3(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46600,7 +46592,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane12 ScrollViewerPane
         {
@@ -46613,7 +46605,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -46630,7 +46622,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -46648,21 +46640,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane12 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane12 : WpfPane
     {
-        
-        public ScrollViewerPane12(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane12(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46672,7 +46664,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox11 NameTextbox
         {
@@ -46686,17 +46678,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox11 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox11 : WpfEdit
     {
-        
-        public NameTextbox11(UITestControl searchLimitContainer) : 
+
+        public NameTextbox11(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46705,7 +46697,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -46723,7 +46715,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -46741,19 +46733,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem41 : WpfTreeItem
     {
-        
-        public TreeItem41(UITestControl searchLimitContainer) : 
+
+        public TreeItem41(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46763,7 +46755,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane13 ScrollViewerPane
         {
@@ -46776,7 +46768,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -46793,7 +46785,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -46810,7 +46802,7 @@ namespace Warewolf.UITests
                 return this.mOutputCheckbox;
             }
         }
-        
+
         public Field4 Field
         {
             get
@@ -46822,7 +46814,7 @@ namespace Warewolf.UITests
                 return this.mField;
             }
         }
-        
+
         public WpfButton ExpanderButton
         {
             get
@@ -46840,25 +46832,25 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane13 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
-        
+
         private Field4 mField;
-        
+
         private WpfButton mExpanderButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane13 : WpfPane
     {
-        
-        public ScrollViewerPane13(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane13(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46868,7 +46860,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox12 NameTextbox
         {
@@ -46882,17 +46874,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox12 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox12 : WpfEdit
     {
-        
-        public NameTextbox12(UITestControl searchLimitContainer) : 
+
+        public NameTextbox12(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46901,7 +46893,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -46919,7 +46911,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -46936,7 +46928,7 @@ namespace Warewolf.UITests
                 return this.mDeleteDisabledImage;
             }
         }
-        
+
         public WpfButton DeleteButtonButton
         {
             get
@@ -46954,21 +46946,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
-        
+
         private WpfButton mDeleteButtonButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field4 : WpfTreeItem
     {
-        
-        public Field4(UITestControl searchLimitContainer) : 
+
+        public Field4(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -46977,7 +46969,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane14 ScrollViewerPane
         {
@@ -46990,7 +46982,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -47007,7 +46999,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -47025,21 +47017,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane14 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane14 : WpfPane
     {
-        
-        public ScrollViewerPane14(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane14(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47049,7 +47041,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox13 NameTextbox
         {
@@ -47063,17 +47055,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox13 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox13 : WpfEdit
     {
-        
-        public NameTextbox13(UITestControl searchLimitContainer) : 
+
+        public NameTextbox13(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47082,7 +47074,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -47100,7 +47092,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -47118,19 +47110,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem51 : WpfTreeItem
     {
-        
-        public TreeItem51(UITestControl searchLimitContainer) : 
+
+        public TreeItem51(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47140,7 +47132,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane15 ScrollViewerPane
         {
@@ -47153,7 +47145,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -47170,7 +47162,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -47187,7 +47179,7 @@ namespace Warewolf.UITests
                 return this.mOutputCheckbox;
             }
         }
-        
+
         public Field5 Field
         {
             get
@@ -47199,7 +47191,7 @@ namespace Warewolf.UITests
                 return this.mField;
             }
         }
-        
+
         public WpfButton ExpanderButton
         {
             get
@@ -47217,25 +47209,25 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane15 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
-        
+
         private Field5 mField;
-        
+
         private WpfButton mExpanderButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane15 : WpfPane
     {
-        
-        public ScrollViewerPane15(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane15(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47245,7 +47237,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox14 NameTextbox
         {
@@ -47259,17 +47251,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox14 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox14 : WpfEdit
     {
-        
-        public NameTextbox14(UITestControl searchLimitContainer) : 
+
+        public NameTextbox14(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47278,7 +47270,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -47296,7 +47288,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -47313,7 +47305,7 @@ namespace Warewolf.UITests
                 return this.mDeleteDisabledImage;
             }
         }
-        
+
         public WpfButton DeleteButtonButton
         {
             get
@@ -47331,21 +47323,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
-        
+
         private WpfButton mDeleteButtonButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field5 : WpfTreeItem
     {
-        
-        public Field5(UITestControl searchLimitContainer) : 
+
+        public Field5(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47354,7 +47346,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ScrollViewerPane16 ScrollViewerPane
         {
@@ -47367,7 +47359,7 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
-        
+
         public WpfCheckBox InputCheckbox
         {
             get
@@ -47384,7 +47376,7 @@ namespace Warewolf.UITests
                 return this.mInputCheckbox;
             }
         }
-        
+
         public WpfCheckBox OutputCheckbox
         {
             get
@@ -47402,21 +47394,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ScrollViewerPane16 mScrollViewerPane;
-        
+
         private WpfCheckBox mInputCheckbox;
-        
+
         private WpfCheckBox mOutputCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane16 : WpfPane
     {
-        
-        public ScrollViewerPane16(UITestControl searchLimitContainer) : 
+
+        public ScrollViewerPane16(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47426,7 +47418,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public NameTextbox15 NameTextbox
         {
@@ -47440,17 +47432,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private NameTextbox15 mNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox15 : WpfEdit
     {
-        
-        public NameTextbox15(UITestControl searchLimitContainer) : 
+
+        public NameTextbox15(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47459,7 +47451,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText Label
         {
@@ -47477,7 +47469,7 @@ namespace Warewolf.UITests
                 return this.mLabel;
             }
         }
-        
+
         public WpfImage DeleteDisabledImage
         {
             get
@@ -47495,19 +47487,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mLabel;
-        
+
         private WpfImage mDeleteDisabledImage;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchTextbox2 : WpfEdit
     {
-        
-        public SearchTextbox2(UITestControl searchLimitContainer) : 
+
+        public SearchTextbox2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47515,7 +47507,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText FilterText
         {
@@ -47532,7 +47524,7 @@ namespace Warewolf.UITests
                 return this.mFilterText;
             }
         }
-        
+
         public WpfImage ClearSearchDisabled
         {
             get
@@ -47548,7 +47540,7 @@ namespace Warewolf.UITests
                 return this.mClearSearchDisabled;
             }
         }
-        
+
         public WpfButton ClearSearchButton
         {
             get
@@ -47565,21 +47557,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mFilterText;
-        
+
         private WpfImage mClearSearchDisabled;
-        
+
         private WpfButton mClearSearchButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DebugOutput : WpfCustom
     {
-        
-        public DebugOutput(UITestControl searchLimitContainer) : 
+
+        public DebugOutput(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47588,7 +47580,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton DebugOutputUnpinBtn
         {
@@ -47605,7 +47597,7 @@ namespace Warewolf.UITests
                 return this.mDebugOutputUnpinBtn;
             }
         }
-        
+
         public WpfEdit SearchTextBox
         {
             get
@@ -47621,7 +47613,7 @@ namespace Warewolf.UITests
                 return this.mSearchTextBox;
             }
         }
-        
+
         public WpfButton SettingsButton
         {
             get
@@ -47637,7 +47629,7 @@ namespace Warewolf.UITests
                 return this.mSettingsButton;
             }
         }
-        
+
         public WpfButton ExpandCollapseButton
         {
             get
@@ -47653,7 +47645,7 @@ namespace Warewolf.UITests
                 return this.mExpandCollapseButton;
             }
         }
-        
+
         public DebugOutputTree DebugOutputTree
         {
             get
@@ -47665,7 +47657,7 @@ namespace Warewolf.UITests
                 return this.mDebugOutputTree;
             }
         }
-        
+
         public StatusBar StatusBar
         {
             get
@@ -47678,27 +47670,27 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mDebugOutputUnpinBtn;
-        
+
         private WpfEdit mSearchTextBox;
-        
+
         private WpfButton mSettingsButton;
-        
+
         private WpfButton mExpandCollapseButton;
-        
+
         private DebugOutputTree mDebugOutputTree;
-        
+
         private StatusBar mStatusBar;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DebugOutputTree : WpfTree
     {
-        
-        public DebugOutputTree(UITestControl searchLimitContainer) : 
+
+        public DebugOutputTree(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47706,7 +47698,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public Step1 Step1
         {
@@ -47719,7 +47711,7 @@ namespace Warewolf.UITests
                 return this.mStep1;
             }
         }
-        
+
         public SubWorkflow SubWorkflow
         {
             get
@@ -47731,7 +47723,7 @@ namespace Warewolf.UITests
                 return this.mSubWorkflow;
             }
         }
-        
+
         public ServiceTreeItem ServiceTreeItem
         {
             get
@@ -47744,21 +47736,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private Step1 mStep1;
-        
+
         private SubWorkflow mSubWorkflow;
-        
+
         private ServiceTreeItem mServiceTreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Step1 : WpfTreeItem
     {
-        
-        public Step1(UITestControl searchLimitContainer) : 
+
+        public Step1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47767,7 +47759,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText VariableTextbox
         {
@@ -47786,7 +47778,7 @@ namespace Warewolf.UITests
                 return this.mVariableTextbox;
             }
         }
-        
+
         public WpfButton Assign1Button
         {
             get
@@ -47803,7 +47795,7 @@ namespace Warewolf.UITests
                 return this.mAssign1Button;
             }
         }
-        
+
         public WpfButton BaseConversion1Button
         {
             get
@@ -47820,7 +47812,7 @@ namespace Warewolf.UITests
                 return this.mBaseConversion1Button;
             }
         }
-        
+
         public WpfButton CalculateButton
         {
             get
@@ -47838,23 +47830,23 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mVariableTextbox;
-        
+
         private WpfButton mAssign1Button;
-        
+
         private WpfButton mBaseConversion1Button;
-        
+
         private WpfButton mCalculateButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SubWorkflow : WpfTreeItem
     {
-        
-        public SubWorkflow(UITestControl searchLimitContainer) : 
+
+        public SubWorkflow(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47862,7 +47854,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIHelloWorldTreeItem1 UIHelloWorldTreeItem1
         {
@@ -47876,17 +47868,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIHelloWorldTreeItem1 mUIHelloWorldTreeItem1;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIHelloWorldTreeItem1 : WpfTreeItem
     {
-        
-        public UIHelloWorldTreeItem1(UITestControl searchLimitContainer) : 
+
+        public UIHelloWorldTreeItem1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47895,7 +47887,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton UIHelloWorldButton
         {
@@ -47914,17 +47906,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mUIHelloWorldButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServiceTreeItem : WpfTreeItem
     {
-        
-        public ServiceTreeItem(UITestControl searchLimitContainer) : 
+
+        public ServiceTreeItem(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47932,7 +47924,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton Workflow1Button
         {
@@ -47951,17 +47943,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mWorkflow1Button;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusBar : WpfEdit
     {
-        
-        public StatusBar(UITestControl searchLimitContainer) : 
+
+        public StatusBar(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47969,7 +47961,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfCustom Spinner
         {
@@ -47987,17 +47979,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCustom mSpinner;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DebugInputDialog : WpfWindow
     {
-        
-        public DebugInputDialog(UITestControl searchLimitContainer) : 
+
+        public DebugInputDialog(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48007,7 +47999,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public TabItemsTabList TabItemsTabList
         {
@@ -48020,7 +48012,7 @@ namespace Warewolf.UITests
                 return this.mTabItemsTabList;
             }
         }
-        
+
         public WpfCheckBox RememberDebugInputCheckBox
         {
             get
@@ -48036,7 +48028,7 @@ namespace Warewolf.UITests
                 return this.mRememberDebugInputCheckBox;
             }
         }
-        
+
         public WpfButton CancelButton
         {
             get
@@ -48052,7 +48044,7 @@ namespace Warewolf.UITests
                 return this.mCancelButton;
             }
         }
-        
+
         public WpfButton DebugF6Button
         {
             get
@@ -48068,7 +48060,7 @@ namespace Warewolf.UITests
                 return this.mDebugF6Button;
             }
         }
-        
+
         public WpfButton ViewInBrowserF7Button
         {
             get
@@ -48085,25 +48077,25 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private TabItemsTabList mTabItemsTabList;
-        
+
         private WpfCheckBox mRememberDebugInputCheckBox;
-        
+
         private WpfButton mCancelButton;
-        
+
         private WpfButton mDebugF6Button;
-        
+
         private WpfButton mViewInBrowserF7Button;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TabItemsTabList : WpfTabList
     {
-        
-        public TabItemsTabList(UITestControl searchLimitContainer) : 
+
+        public TabItemsTabList(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48111,7 +48103,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public InputDataTab InputDataTab
         {
@@ -48124,7 +48116,7 @@ namespace Warewolf.UITests
                 return this.mInputDataTab;
             }
         }
-        
+
         public XMLTab XMLTab
         {
             get
@@ -48136,7 +48128,7 @@ namespace Warewolf.UITests
                 return this.mXMLTab;
             }
         }
-        
+
         public JSONTab JSONTab
         {
             get
@@ -48149,21 +48141,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private InputDataTab mInputDataTab;
-        
+
         private XMLTab mXMLTab;
-        
+
         private JSONTab mJSONTab;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputDataTab : WpfTabPage
     {
-        
-        public InputDataTab(UITestControl searchLimitContainer) : 
+
+        public InputDataTab(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48171,7 +48163,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public InputsTable1 InputsTable
         {
@@ -48185,17 +48177,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private InputsTable1 mInputsTable;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputsTable1 : WpfTable
     {
-        
-        public InputsTable1(UITestControl searchLimitContainer) : 
+
+        public InputsTable1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48203,7 +48195,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public Row112 Row1
         {
@@ -48216,7 +48208,7 @@ namespace Warewolf.UITests
                 return this.mRow1;
             }
         }
-        
+
         public Row24 Row2
         {
             get
@@ -48229,19 +48221,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private Row112 mRow1;
-        
+
         private Row24 mRow2;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row112 : WpfPane
     {
-        
-        public Row112(UITestControl searchLimitContainer) : 
+
+        public Row112(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48251,7 +48243,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public InputValueCell InputValueCell
         {
@@ -48265,17 +48257,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private InputValueCell mInputValueCell;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputValueCell : WpfCell
     {
-        
-        public InputValueCell(UITestControl searchLimitContainer) : 
+
+        public InputValueCell(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48284,7 +48276,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public InputValueComboboxl InputValueComboboxl
         {
@@ -48298,17 +48290,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private InputValueComboboxl mInputValueComboboxl;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputValueComboboxl : WpfComboBox
     {
-        
-        public InputValueComboboxl(UITestControl searchLimitContainer) : 
+
+        public InputValueComboboxl(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48316,7 +48308,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit InputValueText
         {
@@ -48334,17 +48326,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mInputValueText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row24 : WpfPane
     {
-        
-        public Row24(UITestControl searchLimitContainer) : 
+
+        public Row24(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48354,7 +48346,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public InputValueCell1 InputValueCell
         {
@@ -48368,17 +48360,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private InputValueCell1 mInputValueCell;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputValueCell1 : WpfCell
     {
-        
-        public InputValueCell1(UITestControl searchLimitContainer) : 
+
+        public InputValueCell1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48387,7 +48379,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public InputValueComboboxl1 InputValueComboboxl
         {
@@ -48401,17 +48393,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private InputValueComboboxl1 mInputValueComboboxl;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputValueComboboxl1 : WpfComboBox
     {
-        
-        public InputValueComboboxl1(UITestControl searchLimitContainer) : 
+
+        public InputValueComboboxl1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48419,7 +48411,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit InputValueText
         {
@@ -48437,17 +48429,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mInputValueText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class XMLTab : WpfTabPage
     {
-        
-        public XMLTab(UITestControl searchLimitContainer) : 
+
+        public XMLTab(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48455,7 +48447,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfCustom XMLWindow
         {
@@ -48474,17 +48466,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCustom mXMLWindow;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class JSONTab : WpfTabPage
     {
-        
-        public JSONTab(UITestControl searchLimitContainer) : 
+
+        public JSONTab(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48493,7 +48485,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfCustom JSONWindow
         {
@@ -48512,17 +48504,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCustom mJSONWindow;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsNewRemoteServer : WpfCustom
     {
-        
-        public ComboboxListItemAsNewRemoteServer(UITestControl searchLimitContainer) : 
+
+        public ComboboxListItemAsNewRemoteServer(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48531,7 +48523,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText NewRemoteServerItemText
         {
@@ -48549,17 +48541,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mNewRemoteServerItemText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsMicrosoftSQLServer : WpfCustom
     {
-        
-        public ComboboxListItemAsMicrosoftSQLServer(UITestControl searchLimitContainer) : 
+
+        public ComboboxListItemAsMicrosoftSQLServer(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48568,7 +48560,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText MicrosoftSQLServerText
         {
@@ -48586,17 +48578,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mMicrosoftSQLServerText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemPostgreSqlDatabase : WpfCustom
     {
-        
-        public ComboboxListItemPostgreSqlDatabase(UITestControl searchLimitContainer) : 
+
+        public ComboboxListItemPostgreSqlDatabase(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48605,7 +48597,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText PostgreSQLDatabase
         {
@@ -48623,17 +48615,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mPostgreSQLDatabase;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemODBCDatabase : WpfCustom
     {
-        
-        public ComboboxListItemODBCDatabase(UITestControl searchLimitContainer) : 
+
+        public ComboboxListItemODBCDatabase(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48642,7 +48634,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText ODBCDatabaseText
         {
@@ -48660,17 +48652,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mODBCDatabaseText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemMySqlDatabase : WpfCustom
     {
-        
-        public ComboboxListItemMySqlDatabase(UITestControl searchLimitContainer) : 
+
+        public ComboboxListItemMySqlDatabase(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48679,7 +48671,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText MySqlDatabaseText
         {
@@ -48697,16 +48689,16 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mMySqlDatabaseText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MessageBoxWindow : WpfWindow
     {
-        
+
         public MessageBoxWindow()
         {
             #region Search Criteria
@@ -48715,7 +48707,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("WarewolfMessageBox");
             #endregion
         }
-        
+
         #region Properties
         public YesButton YesButton
         {
@@ -48728,7 +48720,7 @@ namespace Warewolf.UITests
                 return this.mYesButton;
             }
         }
-        
+
         public NoButton NoButton
         {
             get
@@ -48740,7 +48732,7 @@ namespace Warewolf.UITests
                 return this.mNoButton;
             }
         }
-        
+
         public CancelButton CancelButton
         {
             get
@@ -48752,7 +48744,7 @@ namespace Warewolf.UITests
                 return this.mCancelButton;
             }
         }
-        
+
         public WpfButton OKButton
         {
             get
@@ -48768,7 +48760,7 @@ namespace Warewolf.UITests
                 return this.mOKButton;
             }
         }
-        
+
         public WpfText UIPleasesavecurrentlyeText
         {
             get
@@ -48784,7 +48776,7 @@ namespace Warewolf.UITests
                 return this.mUIPleasesavecurrentlyeText;
             }
         }
-        
+
         public WpfText UIThefollowingerroroccText
         {
             get
@@ -48802,27 +48794,27 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private YesButton mYesButton;
-        
+
         private NoButton mNoButton;
-        
+
         private CancelButton mCancelButton;
-        
+
         private WpfButton mOKButton;
-        
+
         private WpfText mUIPleasesavecurrentlyeText;
-        
+
         private WpfText mUIThefollowingerroroccText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class YesButton : WpfButton
     {
-        
-        public YesButton(UITestControl searchLimitContainer) : 
+
+        public YesButton(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48830,7 +48822,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("WarewolfMessageBox");
             #endregion
         }
-        
+
         #region Properties
         public WpfText YesButtonText
         {
@@ -48848,17 +48840,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mYesButtonText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NoButton : WpfButton
     {
-        
-        public NoButton(UITestControl searchLimitContainer) : 
+
+        public NoButton(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48866,7 +48858,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("WarewolfMessageBox");
             #endregion
         }
-        
+
         #region Properties
         public WpfText NOButtonText
         {
@@ -48884,17 +48876,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mNOButtonText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CancelButton : WpfButton
     {
-        
-        public CancelButton(UITestControl searchLimitContainer) : 
+
+        public CancelButton(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -48902,7 +48894,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("WarewolfMessageBox");
             #endregion
         }
-        
+
         #region Properties
         public WpfText CancelButtonText
         {
@@ -48920,16 +48912,16 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mCancelButtonText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SaveDialogWindow : WpfWindow
     {
-        
+
         public SaveDialogWindow()
         {
             #region Search Criteria
@@ -48938,7 +48930,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("SaveDialogView");
             #endregion
         }
-        
+
         #region Properties
         public ExplorerView ExplorerView
         {
@@ -48951,7 +48943,7 @@ namespace Warewolf.UITests
                 return this.mExplorerView;
             }
         }
-        
+
         public WpfText NameLabel
         {
             get
@@ -48967,7 +48959,7 @@ namespace Warewolf.UITests
                 return this.mNameLabel;
             }
         }
-        
+
         public WpfEdit ServiceNameTextBox
         {
             get
@@ -48983,7 +48975,7 @@ namespace Warewolf.UITests
                 return this.mServiceNameTextBox;
             }
         }
-        
+
         public WpfText ErrorLabel
         {
             get
@@ -48999,7 +48991,7 @@ namespace Warewolf.UITests
                 return this.mErrorLabel;
             }
         }
-        
+
         public WpfButton SaveButton
         {
             get
@@ -49015,7 +49007,7 @@ namespace Warewolf.UITests
                 return this.mSaveButton;
             }
         }
-        
+
         public WpfButton CancelButton
         {
             get
@@ -49031,7 +49023,7 @@ namespace Warewolf.UITests
                 return this.mCancelButton;
             }
         }
-        
+
         public WpfButton DuplicateButton
         {
             get
@@ -49047,7 +49039,7 @@ namespace Warewolf.UITests
                 return this.mDuplicateButton;
             }
         }
-        
+
         public WpfCheckBox UpdateDuplicatedRelat
         {
             get
@@ -49064,31 +49056,31 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ExplorerView mExplorerView;
-        
+
         private WpfText mNameLabel;
-        
+
         private WpfEdit mServiceNameTextBox;
-        
+
         private WpfText mErrorLabel;
-        
+
         private WpfButton mSaveButton;
-        
+
         private WpfButton mCancelButton;
-        
+
         private WpfButton mDuplicateButton;
-        
+
         private WpfCheckBox mUpdateDuplicatedRelat;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExplorerView : WpfCustom
     {
-        
-        public ExplorerView(UITestControl searchLimitContainer) : 
+
+        public ExplorerView(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49097,7 +49089,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("SaveDialogView");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit SearchTextBox
         {
@@ -49114,7 +49106,7 @@ namespace Warewolf.UITests
                 return this.mSearchTextBox;
             }
         }
-        
+
         public WpfButton RefreshButton
         {
             get
@@ -49129,7 +49121,7 @@ namespace Warewolf.UITests
                 return this.mRefreshButton;
             }
         }
-        
+
         public ExplorerTree2 ExplorerTree
         {
             get
@@ -49142,21 +49134,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mSearchTextBox;
-        
+
         private WpfButton mRefreshButton;
-        
+
         private ExplorerTree2 mExplorerTree;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExplorerTree2 : WpfTree
     {
-        
-        public ExplorerTree2(UITestControl searchLimitContainer) : 
+
+        public ExplorerTree2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49164,7 +49156,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("SaveDialogView");
             #endregion
         }
-        
+
         #region Properties
         public localhost1 localhost
         {
@@ -49178,17 +49170,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private localhost1 mlocalhost;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class localhost1 : WpfTreeItem
     {
-        
-        public localhost1(UITestControl searchLimitContainer) : 
+
+        public localhost1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49197,7 +49189,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public Checkbox2 Checkbox
         {
@@ -49210,7 +49202,7 @@ namespace Warewolf.UITests
                 return this.mCheckbox;
             }
         }
-        
+
         public FirstItem1 FirstItem
         {
             get
@@ -49222,7 +49214,7 @@ namespace Warewolf.UITests
                 return this.mFirstItem;
             }
         }
-        
+
         public WpfTreeItem SecondItem
         {
             get
@@ -49243,21 +49235,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private Checkbox2 mCheckbox;
-        
+
         private FirstItem1 mFirstItem;
-        
+
         private WpfTreeItem mSecondItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Checkbox2 : WpfCheckBox
     {
-        
-        public Checkbox2(UITestControl searchLimitContainer) : 
+
+        public Checkbox2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49266,7 +49258,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton IconButton
         {
@@ -49284,7 +49276,7 @@ namespace Warewolf.UITests
                 return this.mIconButton;
             }
         }
-        
+
         public WpfCustom Spinner
         {
             get
@@ -49303,19 +49295,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mIconButton;
-        
+
         private WpfCustom mSpinner;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FirstItem1 : WpfTreeItem
     {
-        
-        public FirstItem1(UITestControl searchLimitContainer) : 
+
+        public FirstItem1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49327,7 +49319,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public ResourceImageImage2 ResourceImageImage
         {
@@ -49341,17 +49333,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ResourceImageImage2 mResourceImageImage;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceImageImage2 : WpfImage
     {
-        
-        public ResourceImageImage2(UITestControl searchLimitContainer) : 
+
+        public ResourceImageImage2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49360,7 +49352,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit ItemEdit
         {
@@ -49379,16 +49371,16 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mItemEdit;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplashPageWindow : WpfWindow
     {
-        
+
         public SplashPageWindow()
         {
             #region Search Criteria
@@ -49398,11 +49390,11 @@ namespace Warewolf.UITests
             #endregion
         }
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DecisionOrSwitchDialog : WpfWindow
     {
-        
+
         public DecisionOrSwitchDialog()
         {
             #region Search Criteria
@@ -49410,7 +49402,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfWindow.PropertyNames.Name] = "ActivityDefaultWindow";
             #endregion
         }
-        
+
         #region Properties
         public WpfButton DoneButton
         {
@@ -49427,16 +49419,16 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mDoneButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SelectWindowsGroupDialog : WinWindow
     {
-        
+
         public SelectWindowsGroupDialog()
         {
             #region Search Criteria
@@ -49444,7 +49436,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Select Group");
             #endregion
         }
-        
+
         #region Properties
         public ItemPanel ItemPanel
         {
@@ -49457,7 +49449,7 @@ namespace Warewolf.UITests
                 return this.mItemPanel;
             }
         }
-        
+
         public OKPanel OKPanel
         {
             get
@@ -49469,7 +49461,7 @@ namespace Warewolf.UITests
                 return this.mOKPanel;
             }
         }
-        
+
         public CancelPanel CancelPanel
         {
             get
@@ -49482,21 +49474,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private ItemPanel mItemPanel;
-        
+
         private OKPanel mOKPanel;
-        
+
         private CancelPanel mCancelPanel;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemPanel : WinWindow
     {
-        
-        public ItemPanel(UITestControl searchLimitContainer) : 
+
+        public ItemPanel(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49504,7 +49496,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Select Group");
             #endregion
         }
-        
+
         #region Properties
         public WinEdit ObjectNameTextbox
         {
@@ -49522,17 +49514,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WinEdit mObjectNameTextbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OKPanel : WinWindow
     {
-        
-        public OKPanel(UITestControl searchLimitContainer) : 
+
+        public OKPanel(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49540,7 +49532,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Select Group");
             #endregion
         }
-        
+
         #region Properties
         public WinButton OK
         {
@@ -49558,17 +49550,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WinButton mOK;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CancelPanel : WinWindow
     {
-        
-        public CancelPanel(UITestControl searchLimitContainer) : 
+
+        public CancelPanel(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49576,7 +49568,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Select Group");
             #endregion
         }
-        
+
         #region Properties
         public WinButton Cancel
         {
@@ -49594,16 +49586,16 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WinButton mCancel;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServicePickerDialog : WpfWindow
     {
-        
+
         public ServicePickerDialog()
         {
             #region Search Criteria
@@ -49613,7 +49605,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public Explorer1 Explorer
         {
@@ -49626,7 +49618,7 @@ namespace Warewolf.UITests
                 return this.mExplorer;
             }
         }
-        
+
         public WpfButton OK
         {
             get
@@ -49642,7 +49634,7 @@ namespace Warewolf.UITests
                 return this.mOK;
             }
         }
-        
+
         public WpfButton Cancel
         {
             get
@@ -49659,21 +49651,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private Explorer1 mExplorer;
-        
+
         private WpfButton mOK;
-        
+
         private WpfButton mCancel;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Explorer1 : WpfCustom
     {
-        
-        public Explorer1(UITestControl searchLimitContainer) : 
+
+        public Explorer1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49682,7 +49674,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit FilterTextbox
         {
@@ -49699,7 +49691,7 @@ namespace Warewolf.UITests
                 return this.mFilterTextbox;
             }
         }
-        
+
         public WpfButton Refresh
         {
             get
@@ -49714,7 +49706,7 @@ namespace Warewolf.UITests
                 return this.mRefresh;
             }
         }
-        
+
         public ExplorerTree3 ExplorerTree
         {
             get
@@ -49727,21 +49719,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mFilterTextbox;
-        
+
         private WpfButton mRefresh;
-        
+
         private ExplorerTree3 mExplorerTree;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExplorerTree3 : WpfTree
     {
-        
-        public ExplorerTree3(UITestControl searchLimitContainer) : 
+
+        public ExplorerTree3(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49749,7 +49741,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public Localhost2 Localhost
         {
@@ -49763,17 +49755,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private Localhost2 mLocalhost;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Localhost2 : WpfTreeItem
     {
-        
-        public Localhost2(UITestControl searchLimitContainer) : 
+
+        public Localhost2(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49781,7 +49773,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public TreeItem12 TreeItem1
         {
@@ -49794,7 +49786,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem1;
             }
         }
-        
+
         public TreeItem22 TreeItem2
         {
             get
@@ -49806,7 +49798,7 @@ namespace Warewolf.UITests
                 return this.mTreeItem2;
             }
         }
-        
+
         public Checkbox3 Checkbox
         {
             get
@@ -49819,21 +49811,21 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private TreeItem12 mTreeItem1;
-        
+
         private TreeItem22 mTreeItem2;
-        
+
         private Checkbox3 mCheckbox;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem12 : WpfTreeItem
     {
-        
-        public TreeItem12(UITestControl searchLimitContainer) : 
+
+        public TreeItem12(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49844,7 +49836,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfTreeItem TreeItem11
         {
@@ -49864,17 +49856,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfTreeItem mTreeItem11;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem22 : WpfTreeItem
     {
-        
-        public TreeItem22(UITestControl searchLimitContainer) : 
+
+        public TreeItem22(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49885,7 +49877,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfTreeItem TreeItem1
         {
@@ -49905,17 +49897,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfTreeItem mTreeItem1;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Checkbox3 : WpfCheckBox
     {
-        
-        public Checkbox3(UITestControl searchLimitContainer) : 
+
+        public Checkbox3(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49924,7 +49916,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
-        
+
         #region Properties
         public WpfCustom Spinner
         {
@@ -49944,16 +49936,16 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfCustom mSpinner;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SwitchCaseDialog : WpfWindow
     {
-        
+
         public SwitchCaseDialog()
         {
             #region Search Criteria
@@ -49962,7 +49954,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("ActivityDefaultWindow");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton DoneButton
         {
@@ -49980,16 +49972,16 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mDoneButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
     {
-        
+
         public UIWarewolfDEV2SANELEMTWindow()
         {
             #region Search Criteria
@@ -49998,7 +49990,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
-        
+
         #region Properties
         public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
         {
@@ -50012,17 +50004,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIUI_ExplorerControl_ACustom : WpfCustom
     {
-        
-        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
+
+        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -50031,7 +50023,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
-        
+
         #region Properties
         public UIExplorerTreeTree UIExplorerTreeTree
         {
@@ -50045,17 +50037,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIExplorerTreeTree mUIExplorerTreeTree;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIExplorerTreeTree : WpfTree
     {
-        
-        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
+
+        public UIExplorerTreeTree(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -50063,7 +50055,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
-        
+
         #region Properties
         public UIInfragisticsControlsTreeItem UIInfragisticsControlsTreeItem
         {
@@ -50077,17 +50069,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIInfragisticsControlsTreeItem mUIInfragisticsControlsTreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIInfragisticsControlsTreeItem : WpfTreeItem
     {
-        
-        public UIInfragisticsControlsTreeItem(UITestControl searchLimitContainer) : 
+
+        public UIInfragisticsControlsTreeItem(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -50095,7 +50087,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
-        
+
         #region Properties
         public UIInfragisticsControlsTreeItem1 UIInfragisticsControlsTreeItem1
         {
@@ -50108,7 +50100,7 @@ namespace Warewolf.UITests
                 return this.mUIInfragisticsControlsTreeItem1;
             }
         }
-        
+
         public UIInfragisticsControlsTreeItem11 UIInfragisticsControlsTreeItem11
         {
             get
@@ -50121,19 +50113,19 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIInfragisticsControlsTreeItem1 mUIInfragisticsControlsTreeItem1;
-        
+
         private UIInfragisticsControlsTreeItem11 mUIInfragisticsControlsTreeItem11;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIInfragisticsControlsTreeItem1 : WpfTreeItem
     {
-        
-        public UIInfragisticsControlsTreeItem1(UITestControl searchLimitContainer) : 
+
+        public UIInfragisticsControlsTreeItem1(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -50143,7 +50135,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
-        
+
         #region Properties
         public UIItem0TreeItem UIItem0TreeItem
         {
@@ -50157,17 +50149,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIItem0TreeItem mUIItem0TreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIItem0TreeItem : WpfTreeItem
     {
-        
-        public UIItem0TreeItem(UITestControl searchLimitContainer) : 
+
+        public UIItem0TreeItem(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -50176,7 +50168,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
-        
+
         #region Properties
         public UIResourceImageImage UIResourceImageImage
         {
@@ -50190,17 +50182,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIResourceImageImage mUIResourceImageImage;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIResourceImageImage : WpfImage
     {
-        
-        public UIResourceImageImage(UITestControl searchLimitContainer) : 
+
+        public UIResourceImageImage(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -50209,7 +50201,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit UIItemEdit
         {
@@ -50228,17 +50220,17 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mUIItemEdit;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIInfragisticsControlsTreeItem11 : WpfTreeItem
     {
-        
-        public UIInfragisticsControlsTreeItem11(UITestControl searchLimitContainer) : 
+
+        public UIInfragisticsControlsTreeItem11(UITestControl searchLimitContainer) :
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -50248,7 +50240,7 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton UIExecuteButtonButton
         {
@@ -50266,7 +50258,7 @@ namespace Warewolf.UITests
                 return this.mUIExecuteButtonButton;
             }
         }
-        
+
         public WpfTreeItem UIInfragisticsControlsTreeItem
         {
             get
@@ -50285,10 +50277,10 @@ namespace Warewolf.UITests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mUIExecuteButtonButton;
-        
+
         private WpfTreeItem mUIInfragisticsControlsTreeItem;
         #endregion
     }
