@@ -64,6 +64,22 @@ namespace Dev2.Activities.Specs.Scheduler
             _scenarioContext.Add("WorkFlow", workFlow);
         }
 
+        [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)"" and group ""(.*)""")]
+        public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password, string groupName)
+        {
+            if (AccountExists("LocalSchedulerAdmin"))
+            {
+                DirectoryEntry localDirectory = new DirectoryEntry("WinNT://" + Environment.MachineName);
+                DirectoryEntries users = localDirectory.Children;
+                DirectoryEntry user = users.Find("LocalSchedulerAdmin");
+                users.Remove(user);
+
+            }
+            CreateLocalWindowsAccount("LocalSchedulerAdmin", "987Sched#@!", groupName);
+            _scenarioContext.Add("UserName", userName);
+            _scenarioContext.Add("Password", password);
+        }
+
         [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)""")]
         public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password)
         {
@@ -319,7 +335,7 @@ namespace Dev2.Activities.Specs.Scheduler
             SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));            
             return id;
         }
-
+        
         public static bool CreateLocalWindowsAccount(string username, string password, string groupName)
         {
             try
