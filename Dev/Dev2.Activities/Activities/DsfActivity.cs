@@ -594,6 +594,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<string> GetOutputs()
         {
+            if (Outputs == null)
+            {
+                if (IsObject)
+                {
+                    return new List<string> {ObjectName};
+                }
+                IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
+                IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
+                return outputs.Select(definition => definition.MapsTo).ToList();
+            }
             return Outputs.Select(mapping => mapping.MappedTo).ToList();
         }
 
