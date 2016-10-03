@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -571,25 +572,25 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
 
-        public TestRunResult ExecuteTest(IContextualResourceModel resourceModel, string testName)
+        public IServiceTestModelTO ExecuteTest(IContextualResourceModel resourceModel, string testName)
         {
             if (resourceModel?.Environment == null || !resourceModel.Environment.IsConnected)
             {
-                var testRunReuslt = new TestRunResult { Result = RunResult.TestFailed };
+                var testRunReuslt = new ServiceTestModelTO { TestFailing = true };
                 return testRunReuslt;
             }
 
             var clientContext = resourceModel.Environment.Connection;
             if (clientContext == null)
             {
-                var testRunReuslt = new TestRunResult { Result = RunResult.TestFailed };
+                var testRunReuslt = new ServiceTestModelTO { TestFailing = true };
                 return testRunReuslt;
             }
             var controller = new CommunicationController { ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category };
             controller.AddPayloadArgument("ResourceID", resourceModel.ID.ToString());
             controller.AddPayloadArgument("IsDebug", true.ToString());
             controller.ServicePayload.TestName = testName;
-            var res = controller.ExecuteCommand<TestRunResult>(clientContext, clientContext.WorkspaceID);
+            var res = controller.ExecuteCommand<IServiceTestModelTO>(clientContext, clientContext.WorkspaceID);
             return res;
 
         }

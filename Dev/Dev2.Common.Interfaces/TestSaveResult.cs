@@ -6,7 +6,7 @@ namespace Dev2.Common.Interfaces
     public class TestRunResult
     {
         public string TestName { get; set; }
-        public RunResult Result { get; set; }
+        public RunResult RunTestResult { get; set; }
         public string Message { get; set; }
         public IList<IDebugState> DebugForTest { get; set; }
     }

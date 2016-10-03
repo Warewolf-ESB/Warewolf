@@ -1808,7 +1808,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 Children = new ObservableCollection<IServiceTestStep>(),
                 Parent = step.Parent,
-                StepDescription = step.StepDescription
+                StepDescription = step.StepDescription,
+                Result = step.Result
             };
             testStep.StepOutputs =  CreateServiceTestOutputFromStep(step.StepOutputs, testStep);
             SetStepIcon(testStep.ActivityType, testStep);
@@ -1832,7 +1833,8 @@ namespace Warewolf.Studio.ViewModels
                     AddStepOutputRow = testStep.AddNewOutput,
                     AssertOp = serviceTestOutput.AssertOp,
                     HasOptionsForValue = serviceTestOutput.HasOptionsForValue,
-                    OptionsForValue = serviceTestOutput.OptionsForValue
+                    OptionsForValue = serviceTestOutput.OptionsForValue,
+                    Result = serviceTestOutput.Result
                 };
 
                 stepOutputs.Add(testOutput);

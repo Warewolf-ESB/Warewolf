@@ -116,35 +116,40 @@ namespace Warewolf.Studio.ViewModels
             selectedServiceTest.IsTestRunning = true;
             asyncWorker.Start(() => resourceModel.Environment.ResourceRepository.ExecuteTest(resourceModel, selectedServiceTest.TestName), res =>
             {
-                if (res != null)
+                if (res?.Result != null)
                 {
-                    switch(res.Result)
+                    selectedServiceTest.TestFailing = res.Result.RunTestResult == RunResult.TestFailed;
+                    selectedServiceTest.TestPassed = res.Result.RunTestResult == RunResult.TestPassed;
+                    selectedServiceTest.TestInvalid = res.Result.RunTestResult == RunResult.TestInvalid;
+                    selectedServiceTest.TestPending = res.Result.RunTestResult != RunResult.TestFailed &&
+                                                      res.Result.RunTestResult != RunResult.TestPassed &&
+                                                      res.Result.RunTestResult != RunResult.TestInvalid &&
+                                                      res.Result.RunTestResult != RunResult.TestResourceDeleted &&
+                                                      res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
+
+                    foreach (var serviceTestStep in selectedServiceTest.TestSteps)
                     {
-                        case RunResult.TestFailed:
-                            selectedServiceTest.TestFailing = true;
-                            selectedServiceTest.TestPassed = false;
-                            selectedServiceTest.TestInvalid = false;
-                            break;
-                        case RunResult.TestPassed:
-                            selectedServiceTest.TestFailing = false;
-                            selectedServiceTest.TestPassed = true;
-                            selectedServiceTest.TestInvalid = false;
-                            break;
-                        case RunResult.TestInvalid:
-                            selectedServiceTest.TestFailing = false;
-                            selectedServiceTest.TestPassed = false;
-                            selectedServiceTest.TestInvalid = true;
-                            break;
-                        case RunResult.TestResourceDeleted:
-                            var popupController = CustomContainer.Get<IPopupController>();
-                            popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
-                            var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                            shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.ID);
-                            break;
+                        foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == serviceTestStep.UniqueId))
+                        {
+                            serviceTestStep.Result = testStep.Result;
+
+                            foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                            {
+                                serviceTestOutput.Result = testStep.StepOutputs[0].Result;
+                            }
+                        }
+                    }
+
+                    if (res.Result.RunTestResult == RunResult.TestResourceDeleted)
+                    {
+                        var popupController = CustomContainer.Get<IPopupController>();
+                        popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                        var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                        shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.ID);
                     }
                     if (selectedServiceTest.Enabled)
                     {
-                        selectedServiceTest.DebugForTest = res.DebugForTest;
+                        selectedServiceTest.DebugForTest = res.Result.DebugForTest;
                     }
                     selectedServiceTest.LastRunDate = DateTime.Now;
                     selectedServiceTest.LastRunDateVisibility = true;

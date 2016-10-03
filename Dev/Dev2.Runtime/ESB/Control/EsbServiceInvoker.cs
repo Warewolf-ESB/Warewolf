@@ -133,7 +133,7 @@ namespace Dev2.Runtime.ESB
                                     var testResult = new TestRunResult
                                     {
                                         Message = "Resource has been deleted",
-                                        Result = RunResult.TestResourceDeleted,
+                                        RunTestResult = RunResult.TestResourceDeleted,
                                         TestName = dataObject.TestName,
                                         DebugForTest = new List<IDebugState>()
                                     };

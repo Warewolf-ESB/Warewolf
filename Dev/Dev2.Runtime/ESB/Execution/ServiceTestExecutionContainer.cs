@@ -105,7 +105,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var testRunResult = new TestRunResult
                 {
                     TestName = DataObject.TestName,
-                    Result = RunResult.TestInvalid
+                    RunTestResult = RunResult.TestInvalid
                 };
                 Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}");
                 testRunResult.Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}";
@@ -253,7 +253,7 @@ namespace Dev2.Runtime.ESB.Execution
                 if (testRunResult != null)
                 {
                     if (test != null)
-                        testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
+                        test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
                     _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                 }
                 result = DataObject.DataListID;
@@ -282,7 +282,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var testRunResult = new TestRunResult { TestName = test.TestName };
                 if (test.TestInvalid)
                 {
-                    testRunResult.Result = RunResult.TestInvalid;
+                    testRunResult.RunTestResult = RunResult.TestInvalid;
                     testRunResult.Message = failureMessage;
                     Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in exception for no start node");
                 }
@@ -309,7 +309,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var testRunResult = new TestRunResult { TestName = test.TestName };
                 if (test.TestInvalid)
                 {
-                    testRunResult.Result = RunResult.TestInvalid;
+                    testRunResult.RunTestResult = RunResult.TestInvalid;
                     testRunResult.Message = ex.Message;
                     Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in general exception");
                 }
@@ -319,7 +319,7 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        private TestRunResult Eval(Guid resourceID, IDSFDataObject dataObject, IServiceTestModelTO test)
+        private IServiceTestModelTO Eval(Guid resourceID, IDSFDataObject dataObject, IServiceTestModelTO test)
         {
             Dev2Logger.Debug("Getting Resource to Execute");
             IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
@@ -357,7 +357,7 @@ namespace Dev2.Runtime.ESB.Execution
                                 var dev2DecisionFactory = Dev2DecisionFactory.Instance();
                                 var res = test.Outputs.SelectMany(output => GetTestRunResults(dataObject, output, dev2DecisionFactory));
                                 var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-                                testPassed = testRunResults.All(result => result.Result == RunResult.TestPassed);
+                                testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
                             }
                         }
                     }
@@ -381,32 +381,32 @@ namespace Dev2.Runtime.ESB.Execution
                         failureMessage.AppendLine(fetchErrors);
                     }
                 }
-                testPassed = testPassed && test.TestSteps.All(step => step.Result?.Result == RunResult.TestPassed);
-                test.FailureMessage = failureMessage.AppendLine(string.Join("", test.TestSteps.Select(step => step.Result.Message))).ToString();               
+                testPassed = testPassed && test.TestSteps.All(step => step.Result?.RunTestResult == RunResult.TestPassed);
+                test.FailureMessage = failureMessage.AppendLine(string.Join("", test.TestSteps.Select(step => step.Result?.Message))).ToString();               
                 test.TestFailing = !testPassed;
                 test.TestPassed = testPassed;
                 test.TestPending = false;
-                test.TestInvalid = test.TestSteps.Any(step => step.Result?.Result == RunResult.TestInvalid);
+                test.TestInvalid = test.TestSteps.Any(step => step.Result?.RunTestResult == RunResult.TestInvalid);
                 test.LastRunDate = DateTime.Now;
 
                 var testRunResult = new TestRunResult { TestName = test.TestName };
                 if (test.TestFailing)
                 {
-                    testRunResult.Result = RunResult.TestFailed;
+                    testRunResult.RunTestResult = RunResult.TestFailed;
                     testRunResult.Message = test.FailureMessage;
                 }
                 if (test.TestPassed)
                 {
-                    testRunResult.Result = RunResult.TestPassed;
+                    testRunResult.RunTestResult = RunResult.TestPassed;
                 }
                 if (test.TestInvalid)
                 {
-                    testRunResult.Result = RunResult.TestInvalid;
+                    testRunResult.RunTestResult = RunResult.TestInvalid;
                 }
                 test.Result = testRunResult;
                 Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceID, test); });
 
-                return testRunResult;
+                return test;
             }
             throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceID}");
         }
@@ -423,11 +423,11 @@ namespace Dev2.Runtime.ESB.Execution
                 var testResult = new TestRunResult();
                 if (hasErrors)
                 {
-                    testResult.Result = RunResult.TestPassed;
+                    testResult.RunTestResult = RunResult.TestPassed;
                 }
                 else
                 {
-                    testResult.Result = RunResult.TestFailed;
+                    testResult.RunTestResult = RunResult.TestFailed;
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
                 }               
                 return new[] { testResult };
@@ -438,11 +438,11 @@ namespace Dev2.Runtime.ESB.Execution
                 var testResult = new TestRunResult();
                 if (noErrors)
                 {
-                    testResult.Result = RunResult.TestPassed;
+                    testResult.RunTestResult = RunResult.TestPassed;
                 }
                 else
                 {
-                    testResult.Result = RunResult.TestFailed;
+                    testResult.RunTestResult = RunResult.TestFailed;
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
                 }                
                 return new[] { testResult };
@@ -470,11 +470,11 @@ namespace Dev2.Runtime.ESB.Execution
                 var testResult = new TestRunResult();
                 if (assertResult)
                 {
-                    testResult.Result = RunResult.TestPassed;
+                    testResult.RunTestResult = RunResult.TestPassed;
                 }
                 else
                 {
-                    testResult.Result = RunResult.TestFailed;
+                    testResult.RunTestResult = RunResult.TestFailed;
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
                 }
                 ret.Add(testResult);

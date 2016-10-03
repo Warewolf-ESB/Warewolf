@@ -220,9 +220,14 @@ namespace Warewolf.Studio.ViewModels
 
                 if (_result != null)
                 {
-                    TestPassed = _result.Result == RunResult.TestPassed;
-                    TestFailing = _result.Result == RunResult.TestFailed;
-                    TestInvalid = _result.Result == RunResult.TestInvalid || _result.Result == RunResult.TestResourceDeleted || _result.Result == RunResult.TestResourcePathUpdated;
+                    TestPassed = _result.RunTestResult == RunResult.TestPassed;
+                    TestFailing = _result.RunTestResult == RunResult.TestFailed;
+                    TestInvalid = _result.RunTestResult == RunResult.TestInvalid || _result.RunTestResult == RunResult.TestResourceDeleted || _result.RunTestResult == RunResult.TestResourcePathUpdated;
+                    TestPending = _result.RunTestResult != RunResult.TestFailed &&
+                                  _result.RunTestResult != RunResult.TestPassed &&
+                                  _result.RunTestResult != RunResult.TestInvalid &&
+                                  _result.RunTestResult != RunResult.TestResourceDeleted &&
+                                  _result.RunTestResult != RunResult.TestResourcePathUpdated;
                 }
 
                 OnPropertyChanged(() => Result);
