@@ -156,7 +156,15 @@ namespace Dev2.Studio.ViewModels
                 if (vm != null)
                 {
                     var studioTestViewModel = vm as StudioTestViewModel;
-                    studioTestViewModel?.ViewModel?.AddDuplicateTestUsingDebug(message);
+                    var serviceTestViewModel = studioTestViewModel?.ViewModel;
+                    if (serviceTestViewModel?.SelectedServiceTest != null)
+                    {
+                        serviceTestViewModel.AddDuplicateTestUsingDebug(message);
+                    }
+                    else
+                    {
+                        serviceTestViewModel?.CreateTestCommand.Execute(message);
+                    }
                 }
                 AddAndActivateWorkSurface(found);
             }

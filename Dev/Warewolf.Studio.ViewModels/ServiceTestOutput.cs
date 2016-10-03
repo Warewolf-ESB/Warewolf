@@ -25,6 +25,11 @@ namespace Warewolf.Studio.ViewModels
         private string _to;
         private readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
         private readonly IList<IFindRecsetOptions> _findRecsetOptions;
+        private bool _testPassed;
+        private bool _testPending;
+        private bool _testInvalid;
+        private bool _testFailing;
+        private TestRunResult _result;
 
         public ServiceTestOutput(string variable, string value, string from, string to)
         {
@@ -39,6 +44,7 @@ namespace Warewolf.Studio.ViewModels
             AssertOps = new ObservableCollection<string>(collection);
             AssertOp = "=";
             IsSinglematchCriteriaVisible = true;
+            TestPending = true;
         }
 
         public string Variable
@@ -205,7 +211,63 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => OptionsForValue);
             }
         }
-        public TestRunResult Result { get; set; }
+        public TestRunResult Result
+        {
+            get { return _result; }
+            set
+            {
+                _result = value;
+
+                if (_result != null)
+                {
+                    TestPassed = _result.Result == RunResult.TestPassed;
+                    TestFailing = _result.Result == RunResult.TestFailed;
+                    TestInvalid = _result.Result == RunResult.TestInvalid || _result.Result == RunResult.TestResourceDeleted || _result.Result == RunResult.TestResourcePathUpdated;
+                }
+
+                OnPropertyChanged(() => Result);
+            }
+        }
+
+        public bool TestPassed
+        {
+            get { return _testPassed; }
+            set
+            {
+                _testPassed = value;
+                OnPropertyChanged(() => TestPassed);
+            }
+        }
+
+        public bool TestFailing
+        {
+            get { return _testFailing; }
+            set
+            {
+                _testFailing = value;
+                OnPropertyChanged(() => TestFailing);
+            }
+        }
+
+        public bool TestInvalid
+        {
+            get { return _testInvalid; }
+            set
+            {
+                _testInvalid = value;
+                OnPropertyChanged(() => TestInvalid);
+            }
+        }
+
+        public bool TestPending
+        {
+            get { return _testPending; }
+            set
+            {
+                _testPending = value;
+                OnPropertyChanged(() => TestPending);
+            }
+        }
 
         public void OnSearchTypeChanged()
         {
