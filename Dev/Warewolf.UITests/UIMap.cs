@@ -730,7 +730,7 @@ namespace Warewolf.UITests
         public void Save_With_Ribbon_Button_And_Dialog(string Name)
         {
             Save_With_Ribbon_Button_And_Dialog(Name, false);
-        }
+        }        
 
         [When(@"I Save With Ribbon Button And Dialog As ""(.*)"" without filtering the explorer")]
         public void Save_With_Ribbon_Button_And_Dialog_Without_Filtering(string Name)
@@ -752,6 +752,7 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
         }
+
 
         [When(@"I Click SaveDialog Save Button")]
         public void Click_SaveDialog_Save_Button()
@@ -1738,6 +1739,23 @@ namespace Warewolf.UITests
             Assert.IsTrue(MessageBoxWindow.Exists, "Did you know popup does not exis");
             Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Ok button does not exist on the DidYouKnow button");
             Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
+        }
+        
+        public void Create_Resource_In_Folder1()
+        {
+            #region Variable Declarations
+            WpfTreeItem folder1 = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem newWorkflow = this.MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(folder1, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
+
+            // Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
+            Assert.AreEqual(this.Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowEnabled, newWorkflow.Enabled, "NewWorkFlowService button is disabled.");
+            
+            // Click 'New Workflow Service' menu item
+            Mouse.Click(newWorkflow, new Point(79, 13));
         }
 
         public void Click_Assign_Tool_Remove_Variable_From_Tool()
