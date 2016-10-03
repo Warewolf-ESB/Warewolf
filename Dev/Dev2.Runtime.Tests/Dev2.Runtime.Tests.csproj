@@ -295,6 +295,7 @@
     <Compile Include="Services\HostSecureConfigTests.cs" />
     <Compile Include="Services\MockServiceExecutionAbstract.cs" />
     <Compile Include="Services\MoveItemsServiceTest.cs" />
+    <Compile Include="Services\ReloadTestsTests.cs" />
     <Compile Include="Services\RenameCategoryResourceTests.cs" />
     <Compile Include="Services\RenameItemsTest.cs" />
     <Compile Include="Services\RollBackToTest.cs" />

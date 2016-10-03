@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Hosting;
@@ -20,6 +19,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
@@ -51,11 +51,31 @@ namespace Dev2.Activities.Specs.TestFramework
         ScenarioContext ScenarioContext { get; }
 
         [Given(@"test folder is cleaned")]
+        [When(@"test folder is cleaned")]
         public void GivenTestFolderIsCleaned()
         {
-            DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
+            //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests();
         }
 
+        [Then(@"test folder is cleaned")]
+        public void ThenTestFolderIsCleaned()
+        {
+            //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests();
+        }
+
+        //[BeforeScenario("@s1", "@s2", "@s3", "@s4", "@s5")]
+        //public static void ScenarioCleaning()
+        //{
+        //    var environmentModel = EnvironmentRepository.Instance.Source;
+        //    environmentModel.Connect();
+        //    ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests();
+        //}
 
         [Given(@"I have ""(.*)"" with inputs as")]
         public void GivenIHaveWithInputsAs(string workflowName, Table inputVariables)
@@ -306,7 +326,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenDebugWindowIsVisible()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            var count = serviceTest.SelectedServiceTest.DebugForTest.All(state => state.DisplayName== "WorkflowWithTests");
+            var count = serviceTest.SelectedServiceTest.DebugForTest.All(state => state.DisplayName == "WorkflowWithTests");
             Assert.IsTrue(count);
         }
 
@@ -339,7 +359,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 Assert.Fail($"Resource Model for {workflowName} not found");
             }
         }
-        
+
 
 
         [Given(@"the test builder is open with ""(.*)""")]
@@ -350,7 +370,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
-                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object,new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework", testFramework);
@@ -424,6 +444,16 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsTrue(test.TestPassed);
             Assert.IsFalse(test.TestFailing);
         }
+
+        [Then(@"test result is invalid")]
+        public void ThenTestResultIsInvalid()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var test = serviceTest.SelectedServiceTest;
+            Assert.IsNotNull(test);
+            Assert.IsTrue(test.TestInvalid);
+        }
+
 
         [Then(@"test result is Failed")]
         public void ThenTestResultIsFailed()
@@ -572,7 +602,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"""(.*)"" is selected")]
         public void ThenIsSelected(string testName)
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var serviceTest = GetTestFrameworkFromContext();
             if (testName == "Dummy Test")
             {
                 Assert.IsNull(serviceTest.SelectedServiceTest);
@@ -1144,7 +1174,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 DisplayName = resourceName,
                 DataList = "",
                 ID = resourceId,
-                Category = path+"\\"+resourceName
+                Category = path + "\\" + resourceName
             };
             var workflowHelper = new WorkflowHelper();
             var builder = workflowHelper.CreateWorkflow(resourceName);
@@ -1161,7 +1191,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var environmentModel = EnvironmentRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             environmentModel.ResourceRepository.ForceLoad();
-            var savedSource = environmentModel.ResourceRepository.All().Single(model => model.Category.Equals(path + "\\" + rName, StringComparison.InvariantCultureIgnoreCase));
+            var savedSource = environmentModel.ResourceRepository.All().First(model => model.Category.Equals(path + "\\" + rName, StringComparison.InvariantCultureIgnoreCase));
             ScenarioContext[rName + "id"] = savedSource.ID;
             var resourceID = ScenarioContext.Get<Guid>(rName + "id");
             lock (_syncRoot)
@@ -1207,6 +1237,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
         }
 
+        private static Guid helloGuid;
         [Given(@"the test builder is open with existing service ""(.*)""")]
         public void GivenTheTestBuilderIsOpenWithExistingService(string workflowName)
         {
@@ -1214,7 +1245,8 @@ namespace Dev2.Activities.Specs.TestFramework
             env.ForceLoadResources();
             var res = env.ResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
             var contextualResource = env.ResourceRepository.LoadContextualResourceModel(res.ID);
-            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            helloGuid = res.ID;
+            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
             Assert.IsNotNull(serviceTestVm);
             Assert.IsNotNull(serviceTestVm.ResourceModel);
             ScenarioContext.Add("testFramework", serviceTestVm);
@@ -1230,7 +1262,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsNotNull(test.DebugForTest);
             var debugStates = test.DebugForTest;
             var serviceStartDebug = debugStates[0];
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
                 var variableName = tableRow["Variable"];
                 var variableValue = tableRow["Value"];
@@ -1242,7 +1274,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 });
                 Assert.IsNotNull(debugItem);
                 Assert.IsNotNull(debugItemResult);
-                Assert.AreEqual(variableValue,debugItemResult.Value);
+                Assert.AreEqual(variableValue, debugItemResult.Value);
             }
         }
 
@@ -1254,7 +1286,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsNotNull(test);
             Assert.IsNotNull(test.DebugForTest);
             var debugStates = test.DebugForTest;
-            var serviceEndDebug = debugStates[debugStates.Count-1];
+            var serviceEndDebug = debugStates[debugStates.Count - 1];
             foreach (var tableRow in table.Rows)
             {
                 var variableName = tableRow["Variable"];
@@ -1276,11 +1308,11 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             var test = serviceTest.SelectedServiceTest;
-            WorkflowHelper helper =new WorkflowHelper();
+            WorkflowHelper helper = new WorkflowHelper();
             var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
             Assert.IsNotNull(builder);
             var act = (Flowchart)builder.Implementation;
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
                 var actNameToFind = tableRow["Step Name"];
                 var actType = tableRow["Activity Type"];
@@ -1312,18 +1344,19 @@ namespace Dev2.Activities.Specs.TestFramework
                                     Dev2JsonSerializer ser = new Dev2JsonSerializer();
                                     var dds = ser.Deserialize<Dev2DecisionStack>(eval);
                                     var armToUse = tableRow["Output Value"];
-                                    
+
                                     if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(GlobalConstants.ArmResultText, dds.FalseArmText, "", "") };
-                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
-                                    }else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
+                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Mock);
+                                    }
+                                    else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(GlobalConstants.ArmResultText, dds.TrueArmText, "", "") };
-                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
+                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Mock);
                                     }
                                 }
-                            }                            
+                            }
 
                         }
                     }
@@ -1394,16 +1427,17 @@ namespace Dev2.Activities.Specs.TestFramework
                                     Dev2JsonSerializer ser = new Dev2JsonSerializer();
                                     var dds = ser.Deserialize<Dev2DecisionStack>(eval);
                                     var armToUse = tableRow["Output Value"];
-                                    if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
+                                    test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>() { new ServiceTestOutput(GlobalConstants.ArmResultText, armToUse, "", "") });
+                                  /*  if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(GlobalConstants.ArmResultText, dds.FalseArmText, "", "") };
-                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Assert);
+                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }
                                     else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(GlobalConstants.ArmResultText, dds.TrueArmText, "", "") };
-                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs, StepType.Assert);
-                                    }
+                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
+                                    }*/
                                 }
                             }
 
@@ -1454,6 +1488,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.Fail("Test Framework ViewModel not found");
             return null;
         }
+
 
     }
 }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Wrappers;
@@ -41,7 +42,7 @@ namespace Dev2.Runtime
 
         }
 
-        public ConcurrentDictionary<Guid, List<IServiceTestModelTO>> Tests { get; }
+        public ConcurrentDictionary<Guid, List<IServiceTestModelTO>> Tests { get; private set; }
 
         public void SaveTests(Guid resourceId, List<IServiceTestModelTO> serviceTestModelTos)
         {
@@ -274,6 +275,7 @@ namespace Dev2.Runtime
 
         public void Load()
         {
+            Tests = new ConcurrentDictionary<Guid, List<IServiceTestModelTO>>();
             var resourceTestDirectories = _directoryWrapper.GetDirectories(EnvironmentVariables.TestPath);
             foreach(var resourceTestDirectory in resourceTestDirectories)
             {
@@ -339,6 +341,20 @@ namespace Dev2.Runtime
             }
         }
 
+        public void DeleteAllTests()
+        {
+            DirectoryInfo info = new DirectoryInfo(EnvironmentVariables.TestPath);
+            if (info.Exists)
+            {
+                var fileInfos = info.GetDirectories();
+                foreach (var fileInfo in fileInfos)
+                {
+                    DirectoryHelper.CleanUp(fileInfo.FullName);
+                }
+                Load();
+            }
+            
+        }
         private static string GetTestPathForResourceId(Guid resourceId)
         {
             var testPath = EnvironmentVariables.TestPath;
