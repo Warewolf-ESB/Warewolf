@@ -14,6 +14,7 @@ namespace Warewolf.UITests
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests\Acceptance Testing Resources";
             Assert.IsFalse(Directory.Exists(resourcesFolder));
             Uimap.Move_AcceptanceTestd_To_AcceptanceTestingResopurces();
+            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Assert.IsTrue(Directory.Exists(resourcesFolder));
         }
 
@@ -35,19 +36,21 @@ namespace Warewolf.UITests
             Mouse.Hover(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
             Uimap.Debug_Using_Play_Icon();
             Uimap.Click_DebugInput_Debug_Button();
+            Uimap.Click_Close_Workflow_Tab_Button();
         }
 
         [TestMethod]
         public void DeleteResourcesWithSameNameInDifferentLocationsUITest()
         {
-            Uimap.Create_Resource_In_Folder1();            
+            Uimap.Filter_Explorer("Acceptance Tests");
+            Uimap.Create_Resource_In_Folder1();
             Uimap.Save_With_Ribbon_Button_And_Dialog("Hello World");
-            Uimap.Click_SaveDialog_Save_Button();
+            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Filter_Explorer("Hello World");
             Uimap.Delete_Nested_Hello_World();
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
             Assert.IsTrue(File.Exists(resourcesFolder + @"\" + "Hello World" + ".xml"));
+            Uimap.Click_Explorer_Filter_Clear_Button();
         }
 
         [TestMethod]
@@ -56,10 +59,10 @@ namespace Warewolf.UITests
             Uimap.Select_RemoteConnectionIntegration_From_Explorer();
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
             Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists);
+            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
             Uimap.Click_MessageBox_OK();
             Uimap.Select_Localhost_From_Explorer();
-
         }
     
         [TestMethod]
@@ -85,23 +88,23 @@ namespace Warewolf.UITests
         }
 
 
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            var destinationDirectory = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
-            var sourceDirectory = destinationDirectory + @"\Acceptance Tests\Acceptance Testing Resources";
-            if (Directory.Exists(destinationDirectory))
-            {
-                try
-                {
-                    Directory.Move(sourceDirectory, destinationDirectory);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-        }
+        //[TestCleanup()]
+        //public void MyTestCleanup()
+        //{            
+        //    var destinationDirectory = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
+        //    var sourceDirectory = destinationDirectory + @"\Acceptance Tests\Acceptance Testing Resources";
+        //    if (Directory.Exists(sourceDirectory))
+        //    {
+        //        try
+        //        {
+        //            Directory.Move(sourceDirectory, destinationDirectory);
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine(e.Message);
+        //        }
+        //    }
+        //}
 UIMap Uimap
         {
             get
