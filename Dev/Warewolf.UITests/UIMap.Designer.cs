@@ -2140,6 +2140,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Debug_Using_Play_Icon
+        /// </summary>
+        [When(@"I Debug Using Play Icon")]
+        public void Debug_Using_Play_Icon()
+        {
+            #region Variable Declarations
+            WpfButton executeIcon = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon;
+            #endregion
+
+            // Click 'ExecuteButton' button
+            Mouse.Click(executeIcon, new Point(11, 13));
+        }
+        
+        /// <summary>
         /// DoubleClick_Explorer_First_Remote_Server_First_Item
         /// </summary>
         [When(@"I DoubleClick Explorer First Remote Server First Item")]
@@ -4493,6 +4507,24 @@ namespace Warewolf.UITests
 
             // Type 'Other' in 'SearchTextBox' text box
             searchTextbox.Text = this.Filter_variablesParams.SearchTextboxText;
+        }
+        
+        /// <summary>
+        /// Move_AcceptanceTestd_To_AcceptanceTestingResopurces
+        /// </summary>
+        [When(@"I Move AcceptanceTestd To AcceptanceTestingResopurces")]
+        public void Move_AcceptanceTestd_To_AcceptanceTestingResopurces()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfTreeItem secondItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem;
+            #endregion
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            //System parameter 'Show window contents while dragging' is not set.This could lead to incorrect recording of drag actions.
+            secondItem.EnsureClickable(new Point(10, 10));
+            Mouse.StartDragging(firstItem, new Point(94, 11));
+            Mouse.StopDragging(secondItem, new Point(10, 10));
         }
         
         /// <summary>
@@ -7602,24 +7634,6 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
-        }
-        
-        /// <summary>
-        /// Move_AcceptanceTestd_To_AcceptanceTestingResopurces
-        /// </summary>
-        [When(@"I Move AcceptanceTestd To AcceptanceTestingResopurces")]
-        public void Move_AcceptanceTestd_To_AcceptanceTestingResopurces()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfTreeItem secondItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem;
-            #endregion
-
-            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            //System parameter 'Show window contents while dragging' is not set.This could lead to incorrect recording of drag actions.
-            secondItem.EnsureClickable(new Point(10, 10));
-            Mouse.StartDragging(firstItem, new Point(94, 11));
-            Mouse.StopDragging(secondItem, new Point(10, 10));
         }
         
         #region Properties
@@ -18531,15 +18545,54 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ResourceImageImage ResourceImageImage
+        public WpfImage ResourceImageImage
         {
             get
             {
                 if ((this.mResourceImageImage == null))
                 {
-                    this.mResourceImageImage = new ResourceImageImage(this);
+                    this.mResourceImageImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mResourceImageImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ResourceImage";
+                    this.mResourceImageImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mResourceImageImage.WindowTitles.Add("Warewolf");
+                    #endregion
                 }
                 return this.mResourceImageImage;
+            }
+        }
+        
+        public WpfButton ViewIcon
+        {
+            get
+            {
+                if ((this.mViewIcon == null))
+                {
+                    this.mViewIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mViewIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "EditButton";
+                    this.mViewIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mViewIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mViewIcon;
+            }
+        }
+        
+        public WpfButton ExecuteIcon
+        {
+            get
+            {
+                if ((this.mExecuteIcon == null))
+                {
+                    this.mExecuteIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExecuteIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ExecuteButton";
+                    this.mExecuteIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExecuteIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExecuteIcon;
             }
         }
         
@@ -18574,68 +18627,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ResourceImageImage mResourceImageImage;
+        private WpfImage mResourceImageImage;
+        
+        private WpfButton mViewIcon;
+        
+        private WpfButton mExecuteIcon;
         
         private WpfEdit mItemEdit;
         
         private FirstSubItem mFirstSubItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ResourceImageImage : WpfImage
-    {
-        
-        public ResourceImageImage(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ResourceImage";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton ViewIcon
-        {
-            get
-            {
-                if ((this.mViewIcon == null))
-                {
-                    this.mViewIcon = new WpfButton(this);
-                    #region Search Criteria
-                    this.mViewIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "EditButton";
-                    this.mViewIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mViewIcon.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mViewIcon;
-            }
-        }
-        
-        public WpfButton ExecuteIcon
-        {
-            get
-            {
-                if ((this.mExecuteIcon == null))
-                {
-                    this.mExecuteIcon = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExecuteIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ExecuteButton";
-                    this.mExecuteIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExecuteIcon.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mExecuteIcon;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mViewIcon;
-        
-        private WpfButton mExecuteIcon;
         #endregion
     }
     
@@ -18656,13 +18656,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ResourceImageImage1 ResourceImageImage
+        public ResourceImageImage ResourceImageImage
         {
             get
             {
                 if ((this.mResourceImageImage == null))
                 {
-                    this.mResourceImageImage = new ResourceImageImage1(this);
+                    this.mResourceImageImage = new ResourceImageImage(this);
                 }
                 return this.mResourceImageImage;
             }
@@ -18687,17 +18687,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ResourceImageImage1 mResourceImageImage;
+        private ResourceImageImage mResourceImageImage;
         
         private WpfEdit mItemEdit;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ResourceImageImage1 : WpfImage
+    public class ResourceImageImage : WpfImage
     {
         
-        public ResourceImageImage1(UITestControl searchLimitContainer) : 
+        public ResourceImageImage(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -18802,13 +18802,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ResourceImageImage2 ResourceImageImage
+        public ResourceImageImage1 ResourceImageImage
         {
             get
             {
                 if ((this.mResourceImageImage == null))
                 {
-                    this.mResourceImageImage = new ResourceImageImage2(this);
+                    this.mResourceImageImage = new ResourceImageImage1(this);
                 }
                 return this.mResourceImageImage;
             }
@@ -18833,17 +18833,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ResourceImageImage2 mResourceImageImage;
+        private ResourceImageImage1 mResourceImageImage;
         
         private WpfEdit mItemEdit;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ResourceImageImage2 : WpfImage
+    public class ResourceImageImage1 : WpfImage
     {
         
-        public ResourceImageImage2(UITestControl searchLimitContainer) : 
+        public ResourceImageImage1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -49198,13 +49198,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ResourceImageImage3 ResourceImageImage
+        public ResourceImageImage2 ResourceImageImage
         {
             get
             {
                 if ((this.mResourceImageImage == null))
                 {
-                    this.mResourceImageImage = new ResourceImageImage3(this);
+                    this.mResourceImageImage = new ResourceImageImage2(this);
                 }
                 return this.mResourceImageImage;
             }
@@ -49212,15 +49212,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ResourceImageImage3 mResourceImageImage;
+        private ResourceImageImage2 mResourceImageImage;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ResourceImageImage3 : WpfImage
+    public class ResourceImageImage2 : WpfImage
     {
         
-        public ResourceImageImage3(UITestControl searchLimitContainer) : 
+        public ResourceImageImage2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -50322,10 +50322,63 @@ namespace Warewolf.UITests
                 return this.mUIInfragisticsControlsTreeItem1;
             }
         }
+        
+        public UIInfragisticsControlsTreeItem11 UIInfragisticsControlsTreeItem11
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem11 == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem11 = new UIInfragisticsControlsTreeItem11(this);
+                }
+                return this.mUIInfragisticsControlsTreeItem11;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfTreeItem mUIInfragisticsControlsTreeItem1;
+        
+        private UIInfragisticsControlsTreeItem11 mUIInfragisticsControlsTreeItem11;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIInfragisticsControlsTreeItem11 : WpfTreeItem
+    {
+        
+        public UIInfragisticsControlsTreeItem11(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton UIExecuteButtonButton
+        {
+            get
+            {
+                if ((this.mUIExecuteButtonButton == null))
+                {
+                    this.mUIExecuteButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIExecuteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ExecuteButton";
+                    this.mUIExecuteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIExecuteButtonButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIExecuteButtonButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mUIExecuteButtonButton;
         #endregion
     }
 }

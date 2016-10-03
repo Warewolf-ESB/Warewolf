@@ -18,6 +18,21 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        public void DebugUsingPlayIconRemoteServerUITest()
+        {
+            Uimap.Filter_Explorer("Hello World");
+            Mouse.Hover(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+            Uimap.Debug_Using_Play_Icon();
+            Uimap.Click_DebugInput_Debug_Button();
+        }
+
+        [TestMethod]
+        public void DisconnectedRemoteServerUITest()
+        {
+
+        }
+    
+        [TestMethod]
         public void ShowDependenciesUITest()
         {            
             Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
