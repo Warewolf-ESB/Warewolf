@@ -122,7 +122,7 @@ namespace Warewolf.UITests
         {
             Playback.PlaybackError -= Uimap.OnError;
             Uimap.TryRemoveTests();
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
+            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";            
             File.Delete(resourcesFolder + @"\" + Testing123 + ".xml");
         }
 
