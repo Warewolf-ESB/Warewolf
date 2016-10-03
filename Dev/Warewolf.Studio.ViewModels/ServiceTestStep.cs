@@ -23,6 +23,11 @@ namespace Warewolf.Studio.ViewModels
         private bool _assertSelected;
         private bool _mockSelected;
         private ImageSource _stepIcon;
+        private bool _testPassed;
+        private bool _testPending;
+        private bool _testInvalid;
+        private bool _testFailing;
+        private TestRunResult _result;
 
         public ServiceTestStep(Guid uniqueId, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
@@ -36,6 +41,7 @@ namespace Warewolf.Studio.ViewModels
             MockSelected = Type == StepType.Mock;
             IsTestStepExpanded = StepOutputs?.Count > 0;
             IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
+            TestPending = true;
         }
 
         public Guid UniqueId
@@ -131,7 +137,64 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => StepDescription);
             }
         }
-        public TestRunResult Result { get; set; }
+
+        public TestRunResult Result
+        {
+            get { return _result; }
+            set
+            {
+                _result = value;
+
+                if (_result != null)
+                {
+                    TestPassed = _result.Result == RunResult.TestPassed;
+                    TestFailing = _result.Result == RunResult.TestFailed;
+                    TestInvalid = _result.Result == RunResult.TestInvalid;
+                }
+
+                OnPropertyChanged(()=> Result);
+            }
+        }
+
+        public bool TestPassed
+        {
+            get { return _testPassed; }
+            set
+            {
+                _testPassed = value; 
+                OnPropertyChanged(()=> TestPassed);
+            }
+        }
+
+        public bool TestFailing
+        {
+            get { return _testFailing; }
+            set
+            {
+                _testFailing = value;
+                OnPropertyChanged(() => TestFailing);
+            }
+        }
+
+        public bool TestInvalid
+        {
+            get { return _testInvalid; }
+            set
+            {
+                _testInvalid = value;
+                OnPropertyChanged(() => TestInvalid);
+            }
+        }
+
+        public bool TestPending
+        {
+            get { return _testPending; }
+            set
+            {
+                _testPending = value;
+                OnPropertyChanged(() => TestPending);
+            }
+        }
 
         public bool IsTestStepExpanded
         {
