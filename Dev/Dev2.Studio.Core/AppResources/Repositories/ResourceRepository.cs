@@ -594,7 +594,29 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return res;
 
         }
+        public void ReloadResourceTests()
+        {
+            var comsController = GetCommunicationController("ReloadTestsService");
+            var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+            var serializer = new Dev2JsonSerializer();
+            var message = executeCommand.GetDecompressedMessage();
+            if (executeCommand.HasError)
+            {
+                var msg = serializer.Deserialize<StringBuilder>(message);
+                throw new Exception(msg.ToString());
+            }
+        }
 
+        public void DeleteAlltests()
+        {
+            var comsController = GetCommunicationController("DeleteAllTestsService");
+            var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+            var message = executeCommand.GetDecompressedMessage();
+            if (executeCommand.HasError)
+            {
+                throw new Exception(message);
+            }
+        }
         public List<IServiceTestModelTO> LoadResourceTests(Guid resourceId)
         {
             var comsController = GetCommunicationController("FetchTests");

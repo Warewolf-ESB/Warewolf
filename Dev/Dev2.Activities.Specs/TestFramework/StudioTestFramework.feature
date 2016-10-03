@@ -1,4 +1,5 @@
-﻿Feature: StudioTestFramework
+﻿@StudioTestFramework
+Feature: StudioTestFramework
 	In order to test workflows in warewolf 
 	As a user
 	I want to create, edit, delete and update tests in a test window
@@ -571,7 +572,9 @@ Scenario: Run a test with single scalar inputs and outputs
 	  | [[Message]] | Hello Bob. |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
 
+@s1
 Scenario: Run a test with single scalar inputs and outputs failure
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
@@ -605,8 +608,9 @@ Scenario: Run a test with single scalar inputs and outputs failure
 	And the service debug outputs as
 	  | Variable    | Value      |
 	  | [[Message]] | Hello Bob. |
-	When I delete "Test 1"
+		When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
 
 #Feedback specs
 Scenario: Duplicate test new test has name
@@ -666,6 +670,7 @@ Scenario: Run Selected Test Shows Stop Option
 	And save is disabled
 	When I run selected test
 
+@s2
 Scenario: Run a test with mock step
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
@@ -685,16 +690,17 @@ Scenario: Run a test with mock step
 	| If [[Name]] <> (Not Equal) |                 | Blank Input  | Decision      |
 	And I save
 	When I run the test
-	Then test result is Passed
+	Then test result is invalid
 	Then service debug inputs as
 		| Variable | Value |
 		| [[Name]] | Bob   |	
 	And the service debug outputs as
 	  | Variable    | Value      |
 	  | [[Message]] | Hello World. |
-	When I delete "Test 1"
+	When I delete "Test 1"	
 	Then The "DeleteConfirmation" popup is shown I click Ok
-
+	#And test folder is cleaned
+@s3
 Scenario: Run a test with mock step assign
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
@@ -710,8 +716,8 @@ Scenario: Run a test with mock step assign
 	| Variable Name | Value      |
 	| Message       | hello mock |
 	And I add mock steps as
-	| Step Name                   | Output Variable | Output Value | Activity Type |
-	| Set the output variable (1) | Message         | hello mock   | Assign        |
+	| Step Name                   | Output Variable | Output Value | Activity Type | Output From | Output To |
+	| Set the output variable (1) | Message         | hello mock   | Assign        |             |           |
 	And I save
 	When I run the test
 	Then test result is Passed
@@ -723,7 +729,8 @@ Scenario: Run a test with mock step assign
 	  | [[Message]] | hello mock |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok	
-
+	#And test folder is cleaned
+@s4
 Scenario: Run a test with Assert step assign
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
@@ -739,8 +746,8 @@ Scenario: Run a test with Assert step assign
 	| Variable Name | Value      |
 	| Message       | hello mock |
 	And I add Assert steps as
-	| Step Name                   | Output Variable | Output Value | Activity Type |
-	| Set the output variable (1) | Message         | hello mock   | Assign        |
+	| Step Name                   | Output Variable | Output Value | Activity Type | Output From | Output To |
+	| Set the output variable (1) | Message         | hello mock   | Assign        |             |           |
 	And I save
 	When I run the test
 	Then test result is Passed
@@ -749,10 +756,11 @@ Scenario: Run a test with Assert step assign
 		| [[Name]] | Bob   |	
 	And the service debug outputs as
 	  | Variable    | Value      |
-	  | [[Message]] | hello mock |
+	  | [[Message]] | Hello Bob. |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok	
-
+	#And test folder is cleaned
+@s5
 	Scenario: Run a test with Assert step
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
@@ -768,11 +776,11 @@ Scenario: Run a test with Assert step assign
 	| Variable Name | Value       |
 	| Message       | Hello World. |
 	And I add Assert steps as
-	| Step Name                  | Output Variable | Output Value | Activity Type |
-	| If [[Name]] <> (Not Equal) |                 | Blank Input  | Decision      |
+	| Step Name                  | Output Variable | Output Value | Activity Type | Output From | Output To |
+	| If [[Name]] <> (Not Equal) |                 | Blank Input  | Decision      |             |           |
 	And I save
 	When I run the test
-	Then test result is Passed
+	Then test result is Failed
 	Then service debug inputs as
 		| Variable | Value |
 		| [[Name]] | Bob   |	
@@ -781,6 +789,7 @@ Scenario: Run a test with Assert step assign
 	  | [[Message]] | Hello World. |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
+	#And test folder is cleaned
 	
 
 Scenario: Run a test with Error Expected
@@ -797,4 +806,5 @@ Scenario: Run a test with Error Expected
 	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
+	#And test folder is cleaned
 
