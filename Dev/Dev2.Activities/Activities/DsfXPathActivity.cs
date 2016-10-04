@@ -132,45 +132,40 @@ namespace Dev2.Activities
                                         while(xpathIterator.HasMoreData())
                                         {
                                             var xpathCol = xpathIterator.GetNextValue();
-                                            //foreach(IBinaryDataListItem xPathCol in xpathCols)
+                                            try
                                             {
-                                                try
+                                                List<string> eval = parser.ExecuteXPath(c, xpathCol).ToList();                                                
+                                                string[] openParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\[\[");
+                                                string[] closeParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\]\]");
+                                                if(openParts.Length == closeParts.Length && openParts.Length > 2 && closeParts.Length > 2)
                                                 {
-                                                    List<string> eval = parser.ExecuteXPath(c, xpathCol).ToList();
-
-                                                    //2013.06.03: Ashley Lewis for bug 9498 - handle line breaks in multi assign
-                                                    string[] openParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\[\[");
-                                                    string[] closeParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\]\]");
-                                                    if(openParts.Length == closeParts.Length && openParts.Length > 2 && closeParts.Length > 2)
+                                                    foreach(var newFieldName in openParts)
                                                     {
-                                                        foreach(var newFieldName in openParts)
+                                                        if(!string.IsNullOrEmpty(newFieldName))
                                                         {
-                                                            if(!string.IsNullOrEmpty(newFieldName))
+                                                            string cleanFieldName;
+                                                            if(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 < newFieldName.Length)
                                                             {
-                                                                string cleanFieldName;
-                                                                if(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 < newFieldName.Length)
-                                                                {
-                                                                    cleanFieldName = "[[" + newFieldName.Remove(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2);
-                                                                }
-                                                                else
-                                                                {
-                                                                    cleanFieldName = "[[" + newFieldName;
-                                                                }
-                                                                AssignResult(cleanFieldName, dataObject, eval, update);
+                                                                cleanFieldName = "[[" + newFieldName.Remove(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2);
                                                             }
+                                                            else
+                                                            {
+                                                                cleanFieldName = "[[" + newFieldName;
+                                                            }
+                                                            AssignResult(cleanFieldName, dataObject, eval, update);
                                                         }
                                                     }
-                                                    else
-                                                    {
-                                                        var variable = ResultsCollection[i].OutputVariable;
-                                                        AssignResult(variable, dataObject, eval, update);
-                                                    }
                                                 }
-                                                catch(Exception e)
+                                                else
                                                 {
-                                                    allErrors.AddError(e.Message);
-                                                    dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
+                                                    var variable = ResultsCollection[i].OutputVariable;
+                                                    AssignResult(variable, dataObject, eval, update);
                                                 }
+                                            }
+                                            catch(Exception e)
+                                            {
+                                                allErrors.AddError(e.Message);
+                                                dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
                                             }
                                         }
                                     }
@@ -246,7 +241,7 @@ namespace Dev2.Activities
             if(DataListUtil.IsValueScalar(variable))
             {
                 var values = eval as IList<string> ?? eval.ToList();
-                dataObject.Environment.Assign(variable, eval != null ? values.LastOrDefault() : "", update);
+                dataObject.Environment.Assign(variable, values.LastOrDefault(), update);
             }
             else
             {
@@ -254,7 +249,7 @@ namespace Dev2.Activities
                 foreach(var val in eval)
                 {
                     var correctedVariable = variable;
-                    if(DataListUtil.IsValueRecordset(variable) && DataListUtil.IsStarIndex(variable))
+                    if(DataListUtil.IsValueRecordset(variable) && DataListUtil.IsStarIndex(variable) && update==0)
                     {
                         correctedVariable = DataListUtil.ReplaceStarWithFixedIndex(variable, index);
                     }
