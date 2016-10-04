@@ -30,6 +30,7 @@ using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 // ReSharper disable UnusedParameter.Global
@@ -69,14 +70,27 @@ namespace Dev2.Activities.Specs.TestFramework
             ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests();
         }
 
-        //[BeforeScenario("@s1", "@s2", "@s3", "@s4", "@s5")]
-        //public static void ScenarioCleaning()
-        //{
-        //    var environmentModel = EnvironmentRepository.Instance.Source;
-        //    environmentModel.Connect();
-        //    ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests();
-        //}
+        [AfterFeature("@StudioTestFramework")]
+        public static void ScenarioCleaning()
+        {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests();
+        }
 
+        FlowNode CreateFlowNode(Guid id, string displayName)
+        {
+            return new FlowStep
+            {
+                Action = new DsfMultiAssignActivity
+                {
+                    DisplayName = displayName,
+                    UniqueID = id.ToString()
+                }
+            };
+
+
+        }
         [Given(@"I have ""(.*)"" with inputs as")]
         public void GivenIHaveWithInputsAs(string workflowName, Table inputVariables)
         {
@@ -86,6 +100,12 @@ namespace Dev2.Activities.Specs.TestFramework
             ScenarioContext.Add(workflowName + "Resourceid", resourceModel.ID);
             var workflowHelper = new WorkflowHelper();
             var builder = workflowHelper.CreateWorkflow(workflowName);
+            if (workflowName.Equals("WorkflowWithTests", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var flowNode = CreateFlowNode(resourceModel.ID, workflowName);
+                ((Flowchart)builder.Implementation).StartNode = flowNode;
+            }
+
             resourceModel.WorkflowXaml = workflowHelper.GetXamlDefinition(builder);
 
             var datalistViewModel = new DataListViewModel();
@@ -326,7 +346,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenDebugWindowIsVisible()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            var count = serviceTest.SelectedServiceTest.DebugForTest.All(state => state.DisplayName == "WorkflowWithTests");
+            var count = serviceTest.SelectedServiceTest.DebugForTest.Any(state => state.DisplayName == "Hello World");
             Assert.IsTrue(count);
         }
 
@@ -371,6 +391,14 @@ namespace Dev2.Activities.Specs.TestFramework
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
                 var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+                Assert.IsNotNull(testFramework);
+                Assert.IsNotNull(testFramework.ResourceModel);
+                ScenarioContext.Add("testFramework", testFramework);
+            }
+            if (workflowName == "Hello World")
+            {
+                var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(new Guid("acb75027-ddeb-47d7-814e-a54c37247ec1"));
+                var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework", testFramework);
@@ -1186,40 +1214,73 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"I add ""(.*)"" to ""(.*)""")]
         public void GivenIAddTo(string testNames, string rName)
         {
-
-            var path = ScenarioContext.Get<string>("folderPath");
+            string path;
+            ScenarioContext.TryGetValue("folderPath", out path);
             var environmentModel = EnvironmentRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             environmentModel.ResourceRepository.ForceLoad();
-            var savedSource = environmentModel.ResourceRepository.All().First(model => model.Category.Equals(path + "\\" + rName, StringComparison.InvariantCultureIgnoreCase));
-            ScenarioContext[rName + "id"] = savedSource.ID;
-            var resourceID = ScenarioContext.Get<Guid>(rName + "id");
-            lock (_syncRoot)
+            if (!string.IsNullOrEmpty(path))
             {
-                var testNamesNames = testNames.Split(',');
-                foreach (var resourceName in testNamesNames)
+              
+                var savedSource = environmentModel.ResourceRepository.All().First(model => model.Category.Equals(path + "\\" + rName, StringComparison.InvariantCultureIgnoreCase));
+                ScenarioContext[rName + "id"] = savedSource.ID;
+                var resourceID = ScenarioContext.Get<Guid>(rName + "id");
+                lock (_syncRoot)
                 {
-                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                    var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
-                    serviceTestModelTO.TestName = resourceName;
-                    serviceTestModelTO.ResourceId = resourceID;
-                    serviceTestModelTO.Inputs = new List<IServiceTestInput>();
-                    serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
-                    serviceTestModelTO.AuthenticationType = AuthenticationType.Windows;
+                    var testNamesNames = testNames.Split(',');
+                    foreach (var resourceName in testNamesNames)
+                    {
+                        Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                        var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
+                        serviceTestModelTO.TestName = resourceName;
+                        serviceTestModelTO.ResourceId = resourceID;
+                        serviceTestModelTO.Inputs = new List<IServiceTestInput>();
+                        serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
+                        serviceTestModelTO.AuthenticationType = AuthenticationType.Windows;
 
-                    serviceTestModelTos.Add(serviceTestModelTO);
+                        serviceTestModelTos.Add(serviceTestModelTO);
+                    }
                 }
-            }
 
-            // ReSharper disable once UnusedVariable
-            var resourceModel = new ResourceModel(environmentModel)
+                // ReSharper disable once UnusedVariable
+                var resourceModel = new ResourceModel(environmentModel)
+                {
+                    ID = savedSource.ID,
+                    Category = path + "\\" + rName,
+                    ResourceName = rName
+                };
+                var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
+                Assert.IsTrue(executeMessage.Result == SaveResult.Success || executeMessage.Result == SaveResult.ResourceUpdated);
+            }
+            else
             {
-                ID = savedSource.ID,
-                Category = path + "\\" + rName,
-                ResourceName = rName
-            };
-            var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
-            Assert.IsTrue(executeMessage.Result == SaveResult.Success || executeMessage.Result == SaveResult.ResourceUpdated);
+                var resourceId = new Guid("acb75027-ddeb-47d7-814e-a54c37247ec1");
+                lock (_syncRoot)
+                {
+                    var testNamesNames = testNames.Split(',');
+                    foreach (var resourceName in testNamesNames)
+                    {
+                        Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                        var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
+                        serviceTestModelTO.TestName = resourceName;
+                        
+                        serviceTestModelTO.ResourceId = resourceId;
+                        serviceTestModelTO.Inputs = new List<IServiceTestInput>();
+                        serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
+                        serviceTestModelTO.AuthenticationType = AuthenticationType.Windows;
+
+                        serviceTestModelTos.Add(serviceTestModelTO);
+                    }
+                }
+
+                var testFrameworkFromContext = GetTestFrameworkFromContext();
+                
+                var executeMessage = environmentModel.ResourceRepository.SaveTests(testFrameworkFromContext.ResourceModel, serviceTestModelTos);
+                Assert.IsTrue(executeMessage.Result == SaveResult.Success || executeMessage.Result == SaveResult.ResourceUpdated);
+                testFrameworkFromContext = new ServiceTestViewModel(testFrameworkFromContext.ResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+                ScenarioContext["testFramework"] = testFrameworkFromContext;
+
+            }
         }
         [When(@"I delete folder ""(.*)""")]
         public void WhenIDeleteFolder(string folderName)
@@ -1380,7 +1441,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         var to = tableRow["Output To"];
                         var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(var, value, from, to) };
                         var type = activity.GetType();
-                        test.AddTestStep(activity.UniqueID, activity.DisplayName, type.Name, serviceTestOutputs);
+                        test.AddTestStep(activity.UniqueID, activity.DisplayName, type.Name, serviceTestOutputs, StepType.Mock);
                     }
                 }
             }
@@ -1428,16 +1489,7 @@ namespace Dev2.Activities.Specs.TestFramework
                                     var dds = ser.Deserialize<Dev2DecisionStack>(eval);
                                     var armToUse = tableRow["Output Value"];
                                     test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>() { new ServiceTestOutput(GlobalConstants.ArmResultText, armToUse, "", "") });
-                                  /*  if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
-                                    {
-                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(GlobalConstants.ArmResultText, dds.FalseArmText, "", "") };
-                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
-                                    }
-                                    else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
-                                    {
-                                        var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(GlobalConstants.ArmResultText, dds.TrueArmText, "", "") };
-                                        test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, serviceTestOutputs);
-                                    }*/
+
                                 }
                             }
 
@@ -1463,7 +1515,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         var to = tableRow["Output To"];
                         var serviceTestOutputs = new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput(var, value, from, to) };
                         var type = activity.GetType();
-                        test.AddTestStep(activity.UniqueID, activity.DisplayName, type.Name, serviceTestOutputs, StepType.Assert);
+                        test.AddTestStep(activity.UniqueID, activity.DisplayName, type.Name, serviceTestOutputs);
                     }
                 }
             }

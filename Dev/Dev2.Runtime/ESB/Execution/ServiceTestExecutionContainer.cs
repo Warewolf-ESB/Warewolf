@@ -8,6 +8,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
@@ -59,7 +60,7 @@ namespace Dev2.Runtime.ESB.Execution
             errors = new ErrorResultTO();
             // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
             Guid result = GlobalConstants.NullDataListID;
-
+            var resourceId = _request.Args["ResourceID"].ToString().ToGuid();
 
             Dev2Logger.Debug("Entered Wf Container");
 
@@ -73,7 +74,7 @@ namespace Dev2.Runtime.ESB.Execution
             // Set resource ID, only if not set yet - original resource;
             if (DataObject.ResourceID == Guid.Empty && ServiceAction?.Service != null)
                 DataObject.ResourceID = ServiceAction.Service.ID;
-
+            DataObject.ResourceID = resourceId;
             // Travis : Now set Data List
             DataObject.DataList = ServiceAction.DataListSpecification;
             // Set original instance ID, only if not set yet - original resource;
@@ -386,12 +387,15 @@ namespace Dev2.Runtime.ESB.Execution
                         failureMessage.AppendLine(fetchErrors);
                     }
                 }
-                testPassed = testPassed && test.TestSteps.All(step => step.Result?.RunTestResult == RunResult.TestPassed);
-                test.FailureMessage = failureMessage.AppendLine(string.Join("", test.TestSteps.Select(step => step.Result?.Message))).ToString();               
-                test.TestFailing = !testPassed;
-                test.TestPassed = testPassed;
-                test.TestPending = false;
-                test.TestInvalid = test.TestSteps.Any(step => step.Result?.RunTestResult == RunResult.TestInvalid);
+                if(test.TestSteps != null)
+                {
+                    testPassed = testPassed && test.TestSteps.All(step => step.Result?.RunTestResult == RunResult.TestPassed);
+                    test.FailureMessage = failureMessage.AppendLine(string.Join("", test.TestSteps.Select(step => step.Result?.Message))).ToString();               
+                    test.TestFailing = !testPassed;
+                    test.TestPassed = testPassed;
+                    test.TestPending = false;
+                    test.TestInvalid = test.TestSteps.Any(step => step.Result?.RunTestResult == RunResult.TestInvalid);
+                }
                 test.LastRunDate = DateTime.Now;
 
                 var testRunResult = new TestRunResult { TestName = test.TestName };
@@ -526,7 +530,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static IDev2Activity NextActivity(IDev2Activity resource, List<IServiceTestStep> testSteps)
         {
-            var foundTestStep = testSteps.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
+            var foundTestStep = testSteps?.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
             if (foundTestStep != null)
             {
                 if (foundTestStep.ActivityType == typeof(DsfDecision).Name && foundTestStep.Type == StepType.Mock)
