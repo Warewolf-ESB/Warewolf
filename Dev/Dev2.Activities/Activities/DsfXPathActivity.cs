@@ -125,6 +125,9 @@ namespace Dev2.Activities
                 var actualIndex = i - 1;
                 var hasErrors = allErrors.HasErrors();
                 ProcessErrors(dataObject, update, hasErrors, allErrors, actualIndex);
+
+                DispatchDebugState(dataObject, StateType.Before, update);
+                DispatchDebugState(dataObject, StateType.After, update);
             }
         }
 
@@ -151,10 +154,9 @@ namespace Dev2.Activities
                     AddDebugItem(new DebugEvalResult(ResultsCollection[actualIndex].OutputVariable, "", dataObject.Environment, update), itemToAdd);
                     _debugOutputs.Add(itemToAdd);
 
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
+
         }
 
         private void DoDebug(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
