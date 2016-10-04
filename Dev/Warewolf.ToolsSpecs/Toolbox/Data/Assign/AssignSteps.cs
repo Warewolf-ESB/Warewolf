@@ -167,32 +167,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             }
         }
 
-        [Given(@"I add ""(.*)"" after the closing bracket")]
-        public void GivenIAddAfterTheClosingBracket(string p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Then(@"additional closing brackets are added to the variable ""(.*)""")]
-        public void ThenAdditionalClosingBracketsAreAddedToTheVariable(string p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [When(@"I remove ""(.*)""")]
-        public void WhenIRemove(string p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Then(@"the assign tool row index is update")]
-        public void ThenTheAssignToolRowIndexIsUpdate()
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [When(@"execution error message will be """"""(.*)""")]
-        [Then(@"execution error message will be """"""(.*)""")]
+        [When(@"execution error message will be ""(.*)""")]
+        [Then(@"execution error message will be ""(.*)""")]
         public void WhenExecutionErrorMessageWillBe(string p0)
         {
             var result = scenarioContext.Get<IDSFDataObject>("result");
