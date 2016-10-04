@@ -16,6 +16,7 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable InconsistentNaming
+// ReSharper disable UseObjectOrCollectionInitializer
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -202,7 +203,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
-            var popupController = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+            var popupController = new Mock<IPopupController>();
             CustomContainer.Register(popupController.Object);
             testFrameworkViewModel.RunAllTestsCommand(true,new ObservableCollection<IServiceTestModel>(), new Mock<IContextualResourceModel>().Object,new SynchronousAsyncWorker());
             //------------Assert Results-------------------------
@@ -223,6 +224,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testRunResult.RunTestResult = RunResult.TestPassed;
             var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
             mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
+            mockSelectedServiceTestModelTO.Setup(a => a.TestSteps).Returns(new List<IServiceTestStep>());
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             var mockEnvironment = new Mock<IEnvironmentModel>();
@@ -258,6 +260,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testRunResult.RunTestResult = RunResult.TestFailed;
             var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
             mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
+            mockSelectedServiceTestModelTO.Setup(a => a.TestSteps).Returns(new List<IServiceTestStep>());
             var mockResourceModel = new Mock<IContextualResourceModel>();
             var mockEnvironment = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
@@ -291,6 +294,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testRunResult.RunTestResult = RunResult.TestInvalid;
             var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
             mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
+            mockSelectedServiceTestModelTO.Setup(a => a.TestSteps).Returns(new List<IServiceTestStep>());
             var mockResourceModel = new Mock<IContextualResourceModel>();
             var mockEnvironment = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
@@ -410,7 +414,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
-            var popupController = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+            var popupController = new Mock<IPopupController>();
             CustomContainer.Register(popupController.Object);
             testFrameworkViewModel.RunAllTestsInBrowser(true,"Url",new Mock<IExternalProcessExecutor>().Object);
             //------------Assert Results-------------------------
