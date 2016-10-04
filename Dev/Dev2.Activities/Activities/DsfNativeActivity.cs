@@ -878,7 +878,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             iter.AddVariableToIterateOn(c3);
             while(iter.HasMoreData())
             {
-                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) });
+                var val1 = iter.FetchNextValue(c1);
+                var val2 = iter.FetchNextValue(c2);
+                var val3 = iter.FetchNextValue(c3);
+                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { val1, val2, val2 });
                 var testResult = new TestRunResult();
                 if(assertResult)
                 {
@@ -887,7 +890,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
+                    var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
+                    var actMsg = string.Format(msg, val1,val2,val3);
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
                 }
                 if(dataObject.IsDebugMode())
                 {
