@@ -1796,6 +1796,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var serviceTestOutput = new ServiceTestOutput(output.Variable, output.Value, output.From, output.To) as IServiceTestOutput;
                     serviceTestOutput.AssertOp = output.AssertOp;
+                    serviceTestOutput.Result = output.Result;
                     return serviceTestOutput;
                 }).ToObservableCollection()
             };

@@ -87,8 +87,22 @@ namespace Dev2.Runtime
 
                     UpdateInputsForTest(serviceTestModelTO, inputDefs);
                     UpdateOutputsForTest(serviceTestModelTO, outputDefs);
+                    UpdateStepOutputsForTest(serviceTestModelTO);
                 }
                 SaveTests(resourceID,testsToUpdate);
+            }
+        }
+
+        private void UpdateStepOutputsForTest(IServiceTestModelTO serviceTestModelTo)
+        {
+            var testRunResult = new TestRunResult { RunTestResult = RunResult.TestInvalid };
+            foreach (var serviceTestStep in serviceTestModelTo.TestSteps)
+            {
+                serviceTestStep.Result = testRunResult;
+                foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                {
+                    serviceTestOutput.Result = testRunResult;
+                }
             }
         }
 
@@ -139,6 +153,11 @@ namespace Dev2.Runtime
                     {
                         serviceTestModelTO.Outputs.Remove(output);
                     }
+                }
+                var testRunResult = new TestRunResult { RunTestResult = RunResult.TestInvalid };
+                foreach (var serviceTestOutput in serviceTestModelTO.Outputs)
+                {
+                    serviceTestOutput.Result = testRunResult;
                 }
                 serviceTestModelTO.Outputs.Sort((output, testOutput) => string.Compare(output.Variable,testOutput.Variable,StringComparison.InvariantCultureIgnoreCase));
             }

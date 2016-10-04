@@ -523,12 +523,12 @@
                                                             <DataTemplate>
                                                                 <DockPanel LastChildFill="False" >
                                                                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-
-                                                                        <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
-                                                                        <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
-                                                                        <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="{StaticResource ControlBorderLeft}"/>
-                                                                        <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Core.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
-                                                                        
+                                                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
+                                                                            <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                            <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                            <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="2,0,0,0"/>
+                                                                            <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Core.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                        </StackPanel>
                                                                         <Image Source="{Binding Path=StepIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
                                                                         <TextBlock Text="{Binding Path=StepDescription}" 
 																					ToolTip="{Binding Path=StepDescription}" 
