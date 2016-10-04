@@ -486,6 +486,7 @@ namespace Dev2.Runtime.ESB.Execution
                     testResult.RunTestResult = RunResult.TestFailed;
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
                 }
+                output.Result = testResult;
                 ret.Add(testResult);
             }
             return ret;

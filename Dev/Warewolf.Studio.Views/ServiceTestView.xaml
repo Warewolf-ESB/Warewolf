@@ -729,6 +729,18 @@
 
                                     <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                                     <DataGrid.Columns>
+                                        <DataGridTemplateColumn Width="20" MinWidth="20" MaxWidth="20" Header="" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
+                                                        <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                        <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                        <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="{StaticResource ControlBorderLeft}"/>
+                                                        <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Core.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
                                         <DataGridTemplateColumn Width="*"
 																MinWidth="125"
 																Header="Variable"
