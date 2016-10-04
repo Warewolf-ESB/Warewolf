@@ -37,8 +37,8 @@ namespace Warewolf.Studio.ViewModels
                 NoErrorExpected = true,
                 ErrorExpected = false,
                 ErrorContainsText = string.Empty,
-                Inputs = new ObservableCollection< IServiceTestInput >(),
-                Outputs = new ObservableCollection< IServiceTestOutput >(),
+                Inputs = new ObservableCollection<IServiceTestInput>(),
+                Outputs = new ObservableCollection<IServiceTestOutput>(),
             };
             if (!string.IsNullOrEmpty(resourceModel.DataList))
             {
@@ -69,7 +69,7 @@ namespace Warewolf.Studio.ViewModels
         {
             resourceModel.Environment.ResourceRepository.StopExecution(resourceModel);
         }
-        
+
         public void RunAllTestsCommand(bool isDirty, IEnumerable<IServiceTestModel> tests, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
             if (isDirty)
@@ -77,9 +77,9 @@ namespace Warewolf.Studio.ViewModels
                 ShowRunAllUnsavedError();
                 return;
             }
-            foreach(var serviceTestModel in tests)
+            foreach (var serviceTestModel in tests)
             {
-                RunSelectedTest(serviceTestModel,resourceModel,asyncWorker);
+                RunSelectedTest(serviceTestModel, resourceModel, asyncWorker);
             }
         }
 
@@ -103,13 +103,13 @@ namespace Warewolf.Studio.ViewModels
             clone.TestPending = true;
             clone.NewTest = true;
             clone.NameForDisplay = nameForDisplay + " *";
-           
+
             return clone;
         }
 
         public void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
-            if (selectedServiceTest==null || resourceModel==null || asyncWorker==null || selectedServiceTest.IsNewTest)
+            if (selectedServiceTest == null || resourceModel == null || asyncWorker == null || selectedServiceTest.IsNewTest)
             {
                 return;
             }
@@ -127,16 +127,22 @@ namespace Warewolf.Studio.ViewModels
                                                       res.Result.RunTestResult != RunResult.TestResourceDeleted &&
                                                       res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
 
-                    foreach (var serviceTestStep in selectedServiceTest.TestSteps)
-                    {
-                        foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == serviceTestStep.UniqueId))
-                        {
-                            serviceTestStep.Result = testStep.Result;
 
-                            foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
-                            {
-                                serviceTestOutput.Result = testStep.StepOutputs[0].Result;
-                            }
+                    selectedServiceTest.Outputs = res.Outputs?.Select(output =>
+                    {
+                        var serviceTestOutput = new ServiceTestOutput(output.Variable, output.Value, output.From, output.To) as IServiceTestOutput;
+                        serviceTestOutput.AssertOp = output.AssertOp;
+                        serviceTestOutput.Result = output.Result;
+                        return serviceTestOutput;
+                    }).ToObservableCollection();
+
+                    foreach (var resTestStep in res.TestSteps)
+                    {
+                        foreach (var serviceTestStep in selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId))
+                        {
+                            serviceTestStep.Result = resTestStep.Result;
+
+                            serviceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, serviceTestStep as ServiceTestStep);
                         }
                     }
 
@@ -161,8 +167,27 @@ namespace Warewolf.Studio.ViewModels
                     selectedServiceTest.TestInvalid = true;
                 }
                 selectedServiceTest.IsTestRunning = false;
-                
+
             });
+        }
+
+        private ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
+        {
+            var stepOutputs = new ObservableCollection<IServiceTestOutput>();
+            foreach (var serviceTestOutput in stepStepOutputs)
+            {
+                var testOutput = new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value, serviceTestOutput.From, serviceTestOutput.To)
+                {
+                    AddStepOutputRow = testStep.AddNewOutput,
+                    AssertOp = serviceTestOutput.AssertOp,
+                    HasOptionsForValue = serviceTestOutput.HasOptionsForValue,
+                    OptionsForValue = serviceTestOutput.OptionsForValue,
+                    Result = serviceTestOutput.Result
+                };
+
+                stepOutputs.Add(testOutput);
+            }
+            return stepOutputs;
         }
 
         public void RunSelectedTestInBrowser(string runSelectedTestUrl, IExternalProcessExecutor processExecutor)
