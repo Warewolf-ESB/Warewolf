@@ -723,14 +723,17 @@ namespace Warewolf.UITests
 
         public void Select_localhost_From_Explorer_Remote_Server_Dropdown_List()
         {
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhost, new Point(94, 10));
+            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
+            WpfCustom comboboxListItemAsLocalhostConnected = this.MainStudioWindow.ComboboxListItemAsLocalhostConnected;
+            Mouse.Click(serverListComboBox, new Point(174, 8));
+            Mouse.Click(comboboxListItemAsLocalhostConnected);
         }
 
         [When(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
         public void Save_With_Ribbon_Button_And_Dialog(string Name)
         {
             Save_With_Ribbon_Button_And_Dialog(Name, false);
-        }        
+        }
 
         [When(@"I Save With Ribbon Button And Dialog As ""(.*)"" without filtering the explorer")]
         public void Save_With_Ribbon_Button_And_Dialog_Without_Filtering(string Name)
@@ -1180,13 +1183,13 @@ namespace Warewolf.UITests
 
             Filter_Explorer(ServiceName);
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            
+
             Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
 
             Mouse.Click(showDependencies, new Point(50, 15));
             Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
             Assert.IsTrue(textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
-            Assert.IsTrue(refreshButton.Exists, "Refresh button does not exist on dependency graph");            
+            Assert.IsTrue(refreshButton.Exists, "Refresh button does not exist on dependency graph");
             Assert.IsTrue(showwhatdependsonthisRadioButton.Exists, "Show what depends on workflow does not exist after Show Dependencies is selected");
             Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Show what depends on workflow radio button is not selected after Show dependecies" +
                     " is selected");
@@ -1740,7 +1743,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Ok button does not exist on the DidYouKnow button");
             Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
         }
-        
+
         public void Create_Resource_In_Folder1()
         {
             #region Variable Declarations
@@ -1753,7 +1756,7 @@ namespace Warewolf.UITests
 
             // Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
             Assert.AreEqual(this.Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowEnabled, newWorkflow.Enabled, "NewWorkFlowService button is disabled.");
-            
+
             // Click 'New Workflow Service' menu item
             Mouse.Click(newWorkflow, new Point(79, 13));
         }
@@ -1957,7 +1960,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton, new Point(10, 10));
         }
-        
+
         public void Click_Sharepoint_RefreshButton_From_SharepointDelete()
         {
             var refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete.RefreshButton;
@@ -1979,8 +1982,8 @@ namespace Warewolf.UITests
         {
             var refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead.RefreshButton;
             Mouse.Click(refreshButton);
-        }    
-    
+        }
+
         [When("I Click Run All Button")]
         public void Click_Workflow_Testing_Tab_Run_All_Button()
         {
@@ -2011,6 +2014,27 @@ namespace Warewolf.UITests
         {
             Point point;
             Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
+        }
+
+        /// <summary>
+        /// Click_Explorer_RemoteServer_Edit_Button - Use 'Click_Explorer_RemoteServer_Edit_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Explorer_RemoteServer_Edit_Button()
+        {
+            #region Variable Declarations
+            WpfButton editServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton;
+            WpfTabPage serverSourceWizardTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab;
+//            WpfText uIRemoteConnectionInteText = this.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIRemoteConnectionInteText;
+            #endregion
+
+            // Click '...' button
+            Mouse.Click(editServerButton, new Point(11, 10));
+
+            // Verify that the 'Exists' property of 'Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte...' tab equals 'True'
+            Assert.IsTrue(serverSourceWizardTab.Exists, "Server Source Tab was not open.");
+
+            // Verify that the 'DisplayText' property of 'Remote Connection Integration *' label contains '*'
+            //Assert.IsFalse(uIRemoteConnectionInteText.DisplayText.Contains("*"), "Remote Connection Intergration Tab does not contain the star");
         }
     }
 }
