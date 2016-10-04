@@ -10,6 +10,7 @@
 
 namespace Warewolf.UITests
 {
+    using TechTalk.SpecFlow;
     using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
@@ -28,12 +29,14 @@ namespace Warewolf.UITests
     
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    [Binding]
     public partial class UIMap
     {
         
         /// <summary>
         /// Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1 - Use 'Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1Params' to pass parameters into this method.
         /// </summary>
+        [When(@"I Assign Value To Variable With Assign Tool large View Row 1")]
         public void Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1()
         {
             #region Variable Declarations
@@ -54,6 +57,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Check_Public_Administrator - Use 'Check_Public_AdministratorParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Check Public Administrator")]
         public void Check_Public_Administrator()
         {
             #region Variable Declarations
@@ -75,6 +79,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_AddNew_Web_Source_From_tool - Use 'Click_AddNew_Web_Source_From_toolParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click AddNew Web Source From tool")]
         public void Click_AddNew_Web_Source_From_tool()
         {
             #region Variable Declarations
@@ -91,6 +96,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Assign_Tool_CollapseAll - Use 'Click_Assign_Tool_CollapseAllParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Assign Tool CollapseAll")]
         public void Click_Assign_Tool_CollapseAll()
         {
             #region Variable Declarations
@@ -107,6 +113,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Assign_Tool_ExpandAll - Use 'Click_Assign_Tool_ExpandAllParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Assign Tool ExpandAll")]
         public void Click_Assign_Tool_ExpandAll()
         {
             #region Variable Declarations
@@ -127,6 +134,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Assign_Tool_Large_View_Done_Button - Use 'Click_Assign_Tool_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Assign Tool Large View Done Button")]
         public void Click_Assign_Tool_Large_View_Done_Button()
         {
             #region Variable Declarations
@@ -153,6 +161,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName - Use 'Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Assign Tool Large View Done Button With Row1 Variable Textbox As SomeInvalidVariableName")]
         public void Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName()
         {
             #region Variable Declarations
@@ -174,12 +183,12 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Base_Convert_Large_View_Done_Button - Use 'Click_Base_Convert_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Base Convert Large View Done Button")]
         public void Click_Base_Convert_Large_View_Done_Button()
         {
             #region Variable Declarations
             WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.DoneButton;
             WpfEdit valueTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Row1.Cell.Listbox.ValueTextbox;
-            WpfEdit nameTextbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox;
             #endregion
 
             // Click 'Done' button
@@ -187,14 +196,12 @@ namespace Warewolf.UITests
 
             // Verify that the 'Text' property of 'UI__Row1_FromExpressiontxt_AutoID' text box equals 'SomeData'
             Assert.AreEqual(this.Click_Base_Convert_Large_View_Done_ButtonParams.ValueTextboxText, valueTextbox.Text, "Base convert small view row1 variable textbox does not contain text SomeData.");
-
-            // Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
-            Assert.AreEqual(this.Click_Base_Convert_Large_View_Done_ButtonParams.NameTextboxText, nameTextbox.Text, "Variable list scalar row 1 textbox text does not equal somevariable");
         }
         
         /// <summary>
         /// Click_Calculate_Large_View_Done_Button - Use 'Click_Calculate_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Calculate Large View Done Button")]
         public void Click_Calculate_Large_View_Done_Button()
         {
             #region Variable Declarations
@@ -212,6 +219,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Cancel_DebugInput_Window - Use 'Click_Cancel_DebugInput_WindowParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Cancel DebugInput Window")]
         public void Click_Cancel_DebugInput_Window()
         {
             #region Variable Declarations
@@ -228,6 +236,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Clear_Toolbox_Filter_Clear_Button
         /// </summary>
+        [When(@"I Click Clear Toolbox Filter Clear Button")]
         public void Click_Clear_Toolbox_Filter_Clear_Button()
         {
             #region Variable Declarations
@@ -241,6 +250,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_DB_Source_Wizard_Tab_Button
         /// </summary>
+        [When(@"I Click Close DB Source Wizard Tab Button")]
         public void Click_Close_DB_Source_Wizard_Tab_Button()
         {
             #region Variable Declarations
@@ -254,6 +264,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_Dependecy_Tab
         /// </summary>
+        [When(@"I Click Close Dependecy Tab")]
         public void Click_Close_Dependecy_Tab()
         {
             #region Variable Declarations
@@ -267,6 +278,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_Deploy_Tab_Button - Use 'Click_Close_Deploy_Tab_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Close Deploy Tab Button")]
         public void Click_Close_Deploy_Tab_Button()
         {
             #region Variable Declarations
@@ -283,6 +295,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_FullScreen
         /// </summary>
+        [When(@"I Click Close FullScreen")]
         public void Click_Close_FullScreen()
         {
             #region Variable Declarations
@@ -296,6 +309,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_Plugin_Source_Wizard_Tab_Button
         /// </summary>
+        [When(@"I Click Close Plugin Source Wizard Tab Button")]
         public void Click_Close_Plugin_Source_Wizard_Tab_Button()
         {
             #region Variable Declarations
@@ -309,6 +323,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_Server_Source_Wizard_Tab_Button
         /// </summary>
+        [When(@"I Click Close Server Source Wizard Tab Button")]
         public void Click_Close_Server_Source_Wizard_Tab_Button()
         {
             #region Variable Declarations
@@ -322,6 +337,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_Settings_Tab_Button - Use 'Click_Close_Settings_Tab_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Close Settings Tab Button")]
         public void Click_Close_Settings_Tab_Button()
         {
             #region Variable Declarations
@@ -338,6 +354,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_SharepointSource_Tab_Button
         /// </summary>
+        [When(@"I Click Close SharepointSource Tab Button")]
         public void Click_Close_SharepointSource_Tab_Button()
         {
             #region Variable Declarations
@@ -351,6 +368,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_Studio_TopRibbon_Button
         /// </summary>
+        [When(@"I Click Close Studio TopRibbon Button")]
         public void Click_Close_Studio_TopRibbon_Button()
         {
             #region Variable Declarations
@@ -364,6 +382,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_Tab_Context_Menu_Button
         /// </summary>
+        [When(@"I Click Close Tab Context Menu Button")]
         public void Click_Close_Tab_Context_Menu_Button()
         {
             #region Variable Declarations
@@ -377,6 +396,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_Tests_Tab
         /// </summary>
+        [When(@"I Click Close Tests Tab")]
         public void Click_Close_Tests_Tab()
         {
             #region Variable Declarations
@@ -390,6 +410,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_Web_Source_Wizard_Tab_Button
         /// </summary>
+        [When(@"I Click Close Web Source Wizard Tab Button")]
         public void Click_Close_Web_Source_Wizard_Tab_Button()
         {
             #region Variable Declarations
@@ -403,6 +424,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Close_Workflow_Tab_Button - Use 'Click_Close_Workflow_Tab_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Close Workflow Tab Button")]
         public void Click_Close_Workflow_Tab_Button()
         {
             #region Variable Declarations
@@ -419,6 +441,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_CloseAllButThis_Tab_Context_Menu_Button
         /// </summary>
+        [When(@"I Click CloseAllButThis Tab Context Menu Button")]
         public void Click_CloseAllButThis_Tab_Context_Menu_Button()
         {
             #region Variable Declarations
@@ -432,6 +455,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_ConfigureSetting_From_Menu - Use 'Click_ConfigureSetting_From_MenuParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click ConfigureSetting From Menu")]
         public void Click_ConfigureSetting_From_Menu()
         {
             #region Variable Declarations
@@ -498,6 +522,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Connect_Control_InExplorer
         /// </summary>
+        [When(@"I Click Connect Control InExplorer")]
         public void Click_Connect_Control_InExplorer()
         {
             #region Variable Declarations
@@ -511,6 +536,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Debug_Output_Assign_Cell - Use 'Click_Debug_Output_Assign_CellParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Debug Output Assign Cell")]
         public void Click_Debug_Output_Assign_Cell()
         {
             #region Variable Declarations
@@ -532,6 +558,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Debug_Output_BaseConvert_Cell - Use 'Click_Debug_Output_BaseConvert_CellParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Debug Output BaseConvert Cell")]
         public void Click_Debug_Output_BaseConvert_Cell()
         {
             #region Variable Declarations
@@ -549,6 +576,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Debug_Output_Calculate_Cell - Use 'Click_Debug_Output_Calculate_CellParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Debug Output Calculate Cell")]
         public void Click_Debug_Output_Calculate_Cell()
         {
             #region Variable Declarations
@@ -566,6 +594,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Debug_Output_Workflow1_Name - Use 'Click_Debug_Output_Workflow1_NameParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Debug Output Workflow1 Name")]
         public void Click_Debug_Output_Workflow1_Name()
         {
             #region Variable Declarations
@@ -583,6 +612,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_DebugInput_Cancel_Button
         /// </summary>
+        [When(@"I Click DebugInput Cancel Button")]
         public void Click_DebugInput_Cancel_Button()
         {
             #region Variable Declarations
@@ -596,6 +626,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_DebugInput_Debug_Button - Use 'Click_DebugInput_Debug_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click DebugInput Debug Button")]
         public void Click_DebugInput_Debug_Button()
         {
             #region Variable Declarations
@@ -635,6 +666,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_DebugInput_ViewInBrowser_Button - Use 'Click_DebugInput_ViewInBrowser_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click DebugInput ViewInBrowser Button")]
         public void Click_DebugInput_ViewInBrowser_Button()
         {
             #region Variable Declarations
@@ -651,6 +683,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Decision_Dialog_Done_Button - Use 'Click_Decision_Dialog_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Decision Dialog Done Button")]
         public void Click_Decision_Dialog_Done_Button()
         {
             #region Variable Declarations
@@ -672,6 +705,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Deploy_Tab_Destination_Server_Combobox - Use 'Click_Deploy_Tab_Destination_Server_ComboboxParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Deploy Tab Destination Server Combobox")]
         public void Click_Deploy_Tab_Destination_Server_Combobox()
         {
             #region Variable Declarations
@@ -689,6 +723,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Deploy_Tab_Destination_Server_Connect_Button
         /// </summary>
+        [When(@"I Click Deploy Tab Destination Server Connect Button")]
         public void Click_Deploy_Tab_Destination_Server_Connect_Button()
         {
             #region Variable Declarations
@@ -702,6 +737,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Deploy_Tab_Destination_Server_New_Remote_Server_Item
         /// </summary>
+        [When(@"I Click Deploy Tab Destination Server New Remote Server Item")]
         public void Click_Deploy_Tab_Destination_Server_New_Remote_Server_Item()
         {
             #region Variable Declarations
@@ -715,6 +751,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Deploy_Tab_Source_Server_Combobox - Use 'Click_Deploy_Tab_Source_Server_ComboboxParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Deploy Tab Source Server Combobox")]
         public void Click_Deploy_Tab_Source_Server_Combobox()
         {
             #region Variable Declarations
@@ -732,6 +769,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Deploy_Tab_WarewolfStore_Item
         /// </summary>
+        [When(@"I Click Deploy Tab WarewolfStore Item")]
         public void Click_Deploy_Tab_WarewolfStore_Item()
         {
             #region Variable Declarations
@@ -745,6 +783,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_DotNet_DLL_Large_View_Done_Button - Use 'Click_DotNet_DLL_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click DotNet DLL Large View Done Button")]
         public void Click_DotNet_DLL_Large_View_Done_Button()
         {
             #region Variable Declarations
@@ -762,6 +801,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_DotNet_DLL_Large_View_Test_Inputs_Button
         /// </summary>
+        [When(@"I Click DotNet DLL Large View Test Inputs Button")]
         public void Click_DotNet_DLL_Large_View_Test_Inputs_Button()
         {
             #region Variable Declarations
@@ -775,6 +815,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_DotNet_DLL_Large_View_Test_Inputs_Done_Button
         /// </summary>
+        [When(@"I Click DotNet DLL Large View Test Inputs Done Button")]
         public void Click_DotNet_DLL_Large_View_Test_Inputs_Done_Button()
         {
             #region Variable Declarations
@@ -789,6 +830,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Duplicate_From_Duplicate_Dialog - Use 'Click_Duplicate_From_Duplicate_DialogParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Duplicate From Duplicate Dialog")]
         public void Click_Duplicate_From_Duplicate_Dialog()
         {
             #region Variable Declarations
@@ -809,6 +851,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_ExpandAndStepIn_NestedWorkflow - Use 'Click_ExpandAndStepIn_NestedWorkflowParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click ExpandAndStepIn NestedWorkflow")]
         public void Click_ExpandAndStepIn_NestedWorkflow()
         {
             #region Variable Declarations
@@ -822,6 +865,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Explorer_Filter_Clear_Button - Use 'Click_Explorer_Filter_Clear_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Explorer Filter Clear Button")]
         public void Click_Explorer_Filter_Clear_Button()
         {
             #region Variable Declarations
@@ -839,6 +883,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Explorer_Localhost_First_Item
         /// </summary>
+        [When(@"I Click Explorer Localhost First Item")]
         public void Click_Explorer_Localhost_First_Item()
         {
             #region Variable Declarations
@@ -852,6 +897,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Explorer_RemoteServer_Connect_Button - Use 'Click_Explorer_RemoteServer_Connect_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Explorer RemoteServer Connect Button")]
         public void Click_Explorer_RemoteServer_Connect_Button()
         {
             #region Variable Declarations
@@ -870,6 +916,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_First_Recordset_Input_Checkbox - Use 'Click_First_Recordset_Input_CheckboxParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click First Recordset Input Checkbox")]
         public void Click_First_Recordset_Input_Checkbox()
         {
             #region Variable Declarations
@@ -883,6 +930,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_FullScreen_TopRibbon_Button
         /// </summary>
+        [When(@"I Click FullScreen TopRibbon Button")]
         public void Click_FullScreen_TopRibbon_Button()
         {
             #region Variable Declarations
@@ -896,6 +944,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_GET_Web_Large_View_Done_Button - Use 'Click_GET_Web_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click GET Web Large View Done Button")]
         public void Click_GET_Web_Large_View_Done_Button()
         {
             #region Variable Declarations
@@ -913,6 +962,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_GET_Web_Large_View_Generate_Outputs - Use 'Click_GET_Web_Large_View_Generate_OutputsExpectedValues' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click GET Web Large View Generate Outputs")]
         public void Click_GET_Web_Large_View_Generate_Outputs()
         {
             #region Variable Declarations
@@ -935,6 +985,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_GET_Web_Large_View_Test_Inputs_Button
         /// </summary>
+        [When(@"I Click GET Web Large View Test Inputs Button")]
         public void Click_GET_Web_Large_View_Test_Inputs_Button()
         {
             #region Variable Declarations
@@ -948,6 +999,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_GET_Web_Large_View_Test_Inputs_Done_Button
         /// </summary>
+        [When(@"I Click GET Web Large View Test Inputs Done Button")]
         public void Click_GET_Web_Large_View_Test_Inputs_Done_Button()
         {
             #region Variable Declarations
@@ -961,6 +1013,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Knowledge_Ribbon_Button
         /// </summary>
+        [When(@"I Click Knowledge Ribbon Button")]
         public void Click_Knowledge_Ribbon_Button()
         {
             #region Variable Declarations
@@ -974,6 +1027,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Lock_Ribbon_Button
         /// </summary>
+        [When(@"I Click Lock Ribbon Button")]
         public void Click_Lock_Ribbon_Button()
         {
             #region Variable Declarations
@@ -987,6 +1041,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Maximize_Restore_TopRibbon_Button
         /// </summary>
+        [When(@"I Click Maximize Restore TopRibbon Button")]
         public void Click_Maximize_Restore_TopRibbon_Button()
         {
             #region Variable Declarations
@@ -1000,6 +1055,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Maximize_TopRibbon_Button
         /// </summary>
+        [When(@"I Click Maximize TopRibbon Button")]
         public void Click_Maximize_TopRibbon_Button()
         {
             #region Variable Declarations
@@ -1013,6 +1069,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_MessageBox_No
         /// </summary>
+        [When(@"I Click MessageBox No")]
         public void Click_MessageBox_No()
         {
             #region Variable Declarations
@@ -1026,6 +1083,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_MessageBox_OK
         /// </summary>
+        [When(@"I Click MessageBox OK")]
         public void Click_MessageBox_OK()
         {
             #region Variable Declarations
@@ -1039,6 +1097,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_MessageBox_Yes - Use 'Click_MessageBox_YesParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click MessageBox Yes")]
         public void Click_MessageBox_Yes()
         {
             #region Variable Declarations
@@ -1056,6 +1115,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Minimize_TopRibbon_Button
         /// </summary>
+        [When(@"I Click Minimize TopRibbon Button")]
         public void Click_Minimize_TopRibbon_Button()
         {
             #region Variable Declarations
@@ -1069,6 +1129,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Nested_Workflow_Name
         /// </summary>
+        [When(@"I Click Nested Workflow Name")]
         public void Click_Nested_Workflow_Name()
         {
             #region Variable Declarations
@@ -1082,6 +1143,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_New_Database_Source_Ribbon_Button
         /// </summary>
+        [When(@"I Click New Database Source Ribbon Button")]
         public void Click_New_Database_Source_Ribbon_Button()
         {
             #region Variable Declarations
@@ -1095,6 +1157,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_New_Workflow_Tab
         /// </summary>
+        [When(@"I Click New Workflow Tab")]
         public void Click_New_Workflow_Tab()
         {
             #region Variable Declarations
@@ -1108,6 +1171,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_NewPluginSource_Ribbon_Button - Use 'Click_NewPluginSource_Ribbon_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click NewPluginSource Ribbon Button")]
         public void Click_NewPluginSource_Ribbon_Button()
         {
             #region Variable Declarations
@@ -1130,6 +1194,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_NewVersion_button - Use 'Click_NewVersion_buttonExpectedValues' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click NewVersion button")]
         public void Click_NewVersion_button()
         {
             #region Variable Declarations
@@ -1149,6 +1214,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Output_OnRecordset_InVariableList - Use 'Click_Output_OnRecordset_InVariableListParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Output OnRecordset InVariableList")]
         public void Click_Output_OnRecordset_InVariableList()
         {
             #region Variable Declarations
@@ -1162,6 +1228,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Output_OnVariable_InVariableList - Use 'Click_Output_OnVariable_InVariableListParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Output OnVariable InVariableList")]
         public void Click_Output_OnVariable_InVariableList()
         {
             #region Variable Declarations
@@ -1175,6 +1242,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Pin_Toggle_DebugOutput
         /// </summary>
+        [When(@"I Click Pin Toggle DebugOutput")]
         public void Click_Pin_Toggle_DebugOutput()
         {
             #region Variable Declarations
@@ -1188,6 +1256,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Pin_Toggle_Documentor
         /// </summary>
+        [When(@"I Click Pin Toggle Documentor")]
         public void Click_Pin_Toggle_Documentor()
         {
             #region Variable Declarations
@@ -1201,6 +1270,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Pin_Toggle_Explorer
         /// </summary>
+        [When(@"I Click Pin Toggle Explorer")]
         public void Click_Pin_Toggle_Explorer()
         {
             #region Variable Declarations
@@ -1214,6 +1284,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Pin_Toggle_Toolbox
         /// </summary>
+        [When(@"I Click Pin Toggle Toolbox")]
         public void Click_Pin_Toggle_Toolbox()
         {
             #region Variable Declarations
@@ -1227,6 +1298,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Pin_Toggle_VariableList
         /// </summary>
+        [When(@"I Click Pin Toggle VariableList")]
         public void Click_Pin_Toggle_VariableList()
         {
             #region Variable Declarations
@@ -1240,6 +1312,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Position_Button
         /// </summary>
+        [When(@"I Click Position Button")]
         public void Click_Position_Button()
         {
             #region Variable Declarations
@@ -1253,6 +1326,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Reset_Perfomance_Counter - Use 'Click_Reset_Perfomance_CounterParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Reset Perfomance Counter")]
         public void Click_Reset_Perfomance_Counter()
         {
             #region Variable Declarations
@@ -1274,6 +1348,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_RunDebug_button - Use 'Click_RunDebug_buttonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click RunDebug button")]
         public void Click_RunDebug_button()
         {
             #region Variable Declarations
@@ -1314,6 +1389,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Save_Ribbon_Button_to_Open_Save_Dialog - Use 'Click_Save_Ribbon_Button_to_Open_Save_DialogParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Save Ribbon Button to Open Save Dialog")]
         public void Click_Save_Ribbon_Button_to_Open_Save_Dialog()
         {
             #region Variable Declarations
@@ -1377,6 +1453,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_SaveDialog_CancelButton
         /// </summary>
+        [When(@"I Click SaveDialog CancelButton")]
         public void Click_SaveDialog_CancelButton()
         {
             #region Variable Declarations
@@ -1390,6 +1467,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Scheduler_Create_New_Task_Ribbon_Button - Use 'Click_Scheduler_Create_New_Task_Ribbon_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Scheduler Create New Task Ribbon Button")]
         public void Click_Scheduler_Create_New_Task_Ribbon_Button()
         {
             #region Variable Declarations
@@ -1419,6 +1497,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Scheduler_Delete_Task
         /// </summary>
+        [When(@"I Click Scheduler Delete Task")]
         public void Click_Scheduler_Delete_Task()
         {
             #region Variable Declarations
@@ -1432,6 +1511,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Scheduler_Disable_Task_Radio_Button - Use 'Click_Scheduler_Disable_Task_Radio_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Scheduler Disable Task Radio Button")]
         public void Click_Scheduler_Disable_Task_Radio_Button()
         {
             #region Variable Declarations
@@ -1445,6 +1525,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Scheduler_EditTrigger_Button
         /// </summary>
+        [When(@"I Click Scheduler EditTrigger Button")]
         public void Click_Scheduler_EditTrigger_Button()
         {
             #region Variable Declarations
@@ -1458,6 +1539,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Scheduler_Enable_Task_Radio_Button - Use 'Click_Scheduler_Enable_Task_Radio_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Scheduler Enable Task Radio Button")]
         public void Click_Scheduler_Enable_Task_Radio_Button()
         {
             #region Variable Declarations
@@ -1471,6 +1553,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Scheduler_ResourcePicker_Button
         /// </summary>
+        [When(@"I Click Scheduler ResourcePicker Button")]
         public void Click_Scheduler_ResourcePicker_Button()
         {
             #region Variable Declarations
@@ -1484,6 +1567,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Scheduler_RunTask - Use 'Click_Scheduler_RunTaskParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Scheduler RunTask")]
         public void Click_Scheduler_RunTask()
         {
             #region Variable Declarations
@@ -1497,6 +1581,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Select_Resource_Button
         /// </summary>
+        [When(@"I Click Select Resource Button")]
         public void Click_Select_Resource_Button()
         {
             #region Variable Declarations
@@ -1510,6 +1595,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Select_Resource_Button_From_Resource_Permissions - Use 'Click_Select_Resource_Button_From_Resource_PermissionsParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Select Resource Button From Resource Permissions")]
         public void Click_Select_Resource_Button_From_Resource_Permissions()
         {
             #region Variable Declarations
@@ -1527,6 +1613,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Select_Windows_Group_Cancel_Button - Use 'Click_Select_Windows_Group_Cancel_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Select Windows Group Cancel Button")]
         public void Click_Select_Windows_Group_Cancel_Button()
         {
             #region Variable Declarations
@@ -1543,6 +1630,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Select_Windows_Group_OK_Button
         /// </summary>
+        [When(@"I Click Select Windows Group OK Button")]
         public void Click_Select_Windows_Group_OK_Button()
         {
             #region Variable Declarations
@@ -1556,6 +1644,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Server_Log_File_Button
         /// </summary>
+        [When(@"I Click Server Log File Button")]
         public void Click_Server_Log_File_Button()
         {
             #region Variable Declarations
@@ -1569,6 +1658,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Server_Source_Wizard_Address_Protocol_Dropdown - Use 'Click_Server_Source_Wizard_Address_Protocol_DropdownParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Server Source Wizard Address Protocol Dropdown")]
         public void Click_Server_Source_Wizard_Address_Protocol_Dropdown()
         {
             #region Variable Declarations
@@ -1586,6 +1676,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Server_Source_Wizard_Test_Connection_Button - Use 'Click_Server_Source_Wizard_Test_Connection_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Server Source Wizard Test Connection Button")]
         public void Click_Server_Source_Wizard_Test_Connection_Button()
         {
             #region Variable Declarations
@@ -1604,6 +1695,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Service_Picker_Dialog_First_Service_In_Explorer
         /// </summary>
+        [When(@"I Click Service Picker Dialog First Service In Explorer")]
         public void Click_Service_Picker_Dialog_First_Service_In_Explorer()
         {
             #region Variable Declarations
@@ -1617,6 +1709,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Settings_Security_Resource_Permissions_Add_Resource_Button
         /// </summary>
+        [When(@"I Click Settings Security Resource Permissions Add Resource Button")]
         public void Click_Settings_Security_Resource_Permissions_Add_Resource_Button()
         {
             #region Variable Declarations
@@ -1630,6 +1723,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Show_Dependencies_In_Explorer_Context_Menu - Use 'Click_Show_Dependencies_In_Explorer_Context_MenuParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Show Dependencies In Explorer Context Menu")]
         public void Click_Show_Dependencies_In_Explorer_Context_Menu()
         {
             #region Variable Declarations
@@ -1659,6 +1753,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Show_Server_Version_Explorer_Context_menu
         /// </summary>
+        [When(@"I Click Show Server Version Explorer Context menu")]
         public void Click_Show_Server_Version_Explorer_Context_menu()
         {
             #region Variable Declarations
@@ -1672,6 +1767,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_SQL_Server_Large_View_Done_Button - Use 'Click_SQL_Server_Large_View_Done_ButtonExpectedValues' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click SQL Server Large View Done Button")]
         public void Click_SQL_Server_Large_View_Done_Button()
         {
             #region Variable Declarations
@@ -1688,6 +1784,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_SQL_Server_Large_View_Generate_Outputs - Use 'Click_SQL_Server_Large_View_Generate_OutputsExpectedValues' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click SQL Server Large View Generate Outputs")]
         public void Click_SQL_Server_Large_View_Generate_Outputs()
         {
             #region Variable Declarations
@@ -1708,6 +1805,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_SQL_Server_Large_View_Test_Inputs_Button
         /// </summary>
+        [When(@"I Click SQL Server Large View Test Inputs Button")]
         public void Click_SQL_Server_Large_View_Test_Inputs_Button()
         {
             #region Variable Declarations
@@ -1721,6 +1819,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_SQL_Server_Large_View_Test_Inputs_Done_Button - Use 'Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click SQL Server Large View Test Inputs Done Button")]
         public void Click_SQL_Server_Large_View_Test_Inputs_Done_Button()
         {
             #region Variable Declarations
@@ -1737,6 +1836,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Start_Node
         /// </summary>
+        [When(@"I Click Start Node")]
         public void Click_Start_Node()
         {
             #region Variable Declarations
@@ -1750,6 +1850,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Studio_Log_File
         /// </summary>
+        [When(@"I Click Studio Log File")]
         public void Click_Studio_Log_File()
         {
             #region Variable Declarations
@@ -1763,6 +1864,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Switch_Dialog_Done_Button - Use 'Click_Switch_Dialog_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Switch Dialog Done Button")]
         public void Click_Switch_Dialog_Done_Button()
         {
             #region Variable Declarations
@@ -1784,6 +1886,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_UnDock_Explorer
         /// </summary>
+        [When(@"I Click UnDock Explorer")]
         public void Click_UnDock_Explorer()
         {
             #region Variable Declarations
@@ -1797,6 +1900,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Unlock_Ribbon_Button
         /// </summary>
+        [When(@"I Click Unlock Ribbon Button")]
         public void Click_Unlock_Ribbon_Button()
         {
             #region Variable Declarations
@@ -1810,6 +1914,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Unlock_TopRibbon_Button
         /// </summary>
+        [When(@"I Click Unlock TopRibbon Button")]
         public void Click_Unlock_TopRibbon_Button()
         {
             #region Variable Declarations
@@ -1823,6 +1928,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_UpdateDuplicateRelationships - Use 'Click_UpdateDuplicateRelationshipsParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click UpdateDuplicateRelationships")]
         public void Click_UpdateDuplicateRelationships()
         {
             #region Variable Declarations
@@ -1836,6 +1942,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Variable_IsInput - Use 'Click_Variable_IsInputParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Variable IsInput")]
         public void Click_Variable_IsInput()
         {
             #region Variable Declarations
@@ -1855,6 +1962,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_VariableList_Recordset_Row1_IsInputCheckbox - Use 'Click_VariableList_Recordset_Row1_IsInputCheckboxParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click VariableList Recordset Row1 IsInputCheckbox")]
         public void Click_VariableList_Recordset_Row1_IsInputCheckbox()
         {
             #region Variable Declarations
@@ -1868,6 +1976,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_VariableList_Scalar_Row1_IsInputCheckbox - Use 'Click_VariableList_Scalar_Row1_IsInputCheckboxParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click VariableList Scalar Row1 IsInputCheckbox")]
         public void Click_VariableList_Scalar_Row1_IsInputCheckbox()
         {
             #region Variable Declarations
@@ -1881,6 +1990,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_View_Api_From_Context_Menu
         /// </summary>
+        [When(@"I Click View Api From Context Menu")]
         public void Click_View_Api_From_Context_Menu()
         {
             #region Variable Declarations
@@ -1898,6 +2008,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_ViewSwagger_From_ExplorerContextMenu
         /// </summary>
+        [When(@"I Click ViewSwagger From ExplorerContextMenu")]
         public void Click_ViewSwagger_From_ExplorerContextMenu()
         {
             #region Variable Declarations
@@ -1911,6 +2022,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Workflow_CollapseAll - Use 'Click_Workflow_CollapseAllParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Click Workflow CollapseAll")]
         public void Click_Workflow_CollapseAll()
         {
             #region Variable Declarations
@@ -1927,6 +2039,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Click_Yes_On_The_Confirm_Delete
         /// </summary>
+        [When(@"I Click Yes On The Confirm Delete")]
         public void Click_Yes_On_The_Confirm_Delete()
         {
             #region Variable Declarations
@@ -1940,6 +2053,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// DoubleClick_Explorer_First_Remote_Server_First_Item
         /// </summary>
+        [When(@"I DoubleClick Explorer First Remote Server First Item")]
         public void DoubleClick_Explorer_First_Remote_Server_First_Item()
         {
             #region Variable Declarations
@@ -1953,6 +2067,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// DoubleClick_Explorer_Localhost_First_Item
         /// </summary>
+        [When(@"I DoubleClick Explorer Localhost First Item")]
         public void DoubleClick_Explorer_Localhost_First_Item()
         {
             #region Variable Declarations
@@ -1966,6 +2081,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Dice_Onto_Dice_On_The_DesignSurface - Use 'Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Dice Onto Dice On The DesignSurface")]
         public void Drag_Dice_Onto_Dice_On_The_DesignSurface()
         {
             #region Variable Declarations
@@ -1990,6 +2106,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_DotNet_DLL_Connector_Onto_DesignSurface - Use 'Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag DotNet DLL Connector Onto DesignSurface")]
         public void Drag_DotNet_DLL_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2018,6 +2135,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Explorer Localhost First Item Onto Workflow Design Surface")]
         public void Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface()
         {
             #region Variable Declarations
@@ -2044,6 +2162,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Explorer Localhost First Items First Sub Item Onto Workflow Design Surface")]
         public void Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface()
         {
             #region Variable Declarations
@@ -2070,6 +2189,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Explorer Localhost Second Items First Sub Item Onto Workflow Design Surface")]
         public void Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_Surface()
         {
             #region Variable Declarations
@@ -2096,6 +2216,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Explorer Remote workflow1 Onto Workflow Design Surface")]
         public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
         {
             #region Variable Declarations
@@ -2126,6 +2247,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_GET_Web_Connector_Onto_DesignSurface - Use 'Drag_GET_Web_Connector_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag GET Web Connector Onto DesignSurface")]
         public void Drag_GET_Web_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2151,6 +2273,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_GetWeb_RequestTool_Onto_DesignSurface - Use 'Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag GetWeb RequestTool Onto DesignSurface")]
         public void Drag_GetWeb_RequestTool_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2179,6 +2302,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_PostWeb_RequestTool_Onto_DesignSurface - Use 'Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag PostWeb RequestTool Onto DesignSurface")]
         public void Drag_PostWeb_RequestTool_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2207,6 +2331,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Base_Conversion_Onto_DesignSurface - Use 'Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Base Conversion Onto DesignSurface")]
         public void Drag_Toolbox_Base_Conversion_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2235,6 +2360,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Calculate_Onto_DesignSurface - Use 'Drag_Toolbox_Calculate_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Calculate Onto DesignSurface")]
         public void Drag_Toolbox_Calculate_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2263,6 +2389,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Case_Conversion_Onto_DesignSurface - Use 'Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Case Conversion Onto DesignSurface")]
         public void Drag_Toolbox_Case_Conversion_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2291,6 +2418,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_CMD_Line_Onto_DesignSurface - Use 'Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox CMD Line Onto DesignSurface")]
         public void Drag_Toolbox_CMD_Line_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2319,6 +2447,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Comment_Onto_DesignSurface - Use 'Drag_Toolbox_Comment_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Comment Onto DesignSurface")]
         public void Drag_Toolbox_Comment_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2347,6 +2476,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Copy_Onto_DesignSurface - Use 'Drag_Toolbox_Copy_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Copy Onto DesignSurface")]
         public void Drag_Toolbox_Copy_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2375,6 +2505,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Count_Records_Onto_DesignSurface - Use 'Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Count Records Onto DesignSurface")]
         public void Drag_Toolbox_Count_Records_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2399,6 +2530,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Create_Onto_DesignSurface - Use 'Drag_Toolbox_Create_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Create Onto DesignSurface")]
         public void Drag_Toolbox_Create_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2427,6 +2559,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Data_Merge_Onto_DesignSurface - Use 'Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Data Merge Onto DesignSurface")]
         public void Drag_Toolbox_Data_Merge_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2455,6 +2588,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Data_Split_Onto_DesignSurface - Use 'Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Data Split Onto DesignSurface")]
         public void Drag_Toolbox_Data_Split_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2483,6 +2617,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Date_And_Time_Onto_DesignSurface - Use 'Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Date And Time Onto DesignSurface")]
         public void Drag_Toolbox_Date_And_Time_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2511,6 +2646,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_DateTime_Difference_Onto_DesignSurface - Use 'Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox DateTime Difference Onto DesignSurface")]
         public void Drag_Toolbox_DateTime_Difference_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2539,6 +2675,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Decision_Onto_DesignSurface - Use 'Drag_Toolbox_Decision_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Decision Onto DesignSurface")]
         public void Drag_Toolbox_Decision_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2563,6 +2700,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Delete_Onto_DesignSurface - Use 'Drag_Toolbox_Delete_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Delete Onto DesignSurface")]
         public void Drag_Toolbox_Delete_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2591,6 +2729,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Delete_Record_Onto_DesignSurface - Use 'Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Delete Record Onto DesignSurface")]
         public void Drag_Toolbox_Delete_Record_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2615,6 +2754,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Dropbox_Download_Onto_DesignSurface - Use 'Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Dropbox Download Onto DesignSurface")]
         public void Drag_Toolbox_Dropbox_Download_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2639,6 +2779,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface - Use 'Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Dropbox Upload Onto DesignSurface")]
         public void Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2663,6 +2804,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Exchange_Email_Onto_DesignSurface - Use 'Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Exchange Email Onto DesignSurface")]
         public void Drag_Toolbox_Exchange_Email_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2687,6 +2829,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Find_Index_Onto_DesignSurface - Use 'Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Find Index Onto DesignSurface")]
         public void Drag_Toolbox_Find_Index_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2715,6 +2858,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Find_Record_Index_Onto_DesignSurface - Use 'Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Find Record Index Onto DesignSurface")]
         public void Drag_Toolbox_Find_Record_Index_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2739,6 +2883,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_For_Each_Onto_DesignSurface - Use 'Drag_Toolbox_For_Each_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox For Each Onto DesignSurface")]
         public void Drag_Toolbox_For_Each_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2781,28 +2926,9 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Drag_Toolbox_Selectandapply_Onto_DesignSurface - Use 'Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams' to pass parameters into this method.
-        /// </summary>
-        public void Drag_Toolbox_Selectandapply_Onto_DesignSurface()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem selectandapply = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.Selectandapply;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            #endregion
-
-            // Type 'Select and apply' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.SearchTextBoxText;
-
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
-            flowchart.EnsureClickable(new Point(307, 129));
-            Mouse.StartDragging(selectandapply, new Point(40, 19));
-            Mouse.StopDragging(flowchart, new Point(307, 129));
-        }
-        
-        /// <summary>
         /// Drag_Toolbox_Format_Number_Onto_DesignSurface - Use 'Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Format Number Onto DesignSurface")]
         public void Drag_Toolbox_Format_Number_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2831,6 +2957,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Javascript_Onto_DesignSurface - Use 'Drag_Toolbox_Javascript_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Javascript Onto DesignSurface")]
         public void Drag_Toolbox_Javascript_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2859,6 +2986,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_JSON_Onto_DesignSurface - Use 'Drag_Toolbox_JSON_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox JSON Onto DesignSurface")]
         public void Drag_Toolbox_JSON_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2887,6 +3015,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Length_Onto_DesignSurface - Use 'Drag_Toolbox_Length_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Length Onto DesignSurface")]
         public void Drag_Toolbox_Length_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2915,6 +3044,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Move_Onto_DesignSurface - Use 'Drag_Toolbox_Move_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Move Onto DesignSurface")]
         public void Drag_Toolbox_Move_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2943,6 +3073,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_MultiAssign_Onto_DesignSurface - Use 'Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox MultiAssign Onto DesignSurface")]
         public void Drag_Toolbox_MultiAssign_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2974,6 +3105,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_MySql_Database_Onto_DesignSurface - Use 'Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox MySql Database Onto DesignSurface")]
         public void Drag_Toolbox_MySql_Database_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -2998,6 +3130,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Python_Onto_DesignSurface - Use 'Drag_Toolbox_Python_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Python Onto DesignSurface")]
         public void Drag_Toolbox_Python_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3026,6 +3159,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Random_Onto_DesignSurface - Use 'Drag_Toolbox_Random_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Random Onto DesignSurface")]
         public void Drag_Toolbox_Random_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3054,6 +3188,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Read_File_Onto_DesignSurface - Use 'Drag_Toolbox_Read_File_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Read File Onto DesignSurface")]
         public void Drag_Toolbox_Read_File_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3082,6 +3217,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Read_Folder_Onto_DesignSurface - Use 'Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Read Folder Onto DesignSurface")]
         public void Drag_Toolbox_Read_Folder_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3110,6 +3246,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Rename_Onto_DesignSurface - Use 'Drag_Toolbox_Rename_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Rename Onto DesignSurface")]
         public void Drag_Toolbox_Rename_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3138,6 +3275,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Replace_Onto_DesignSurface - Use 'Drag_Toolbox_Replace_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Replace Onto DesignSurface")]
         public void Drag_Toolbox_Replace_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3166,6 +3304,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Ruby_Onto_DesignSurface - Use 'Drag_Toolbox_Ruby_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Ruby Onto DesignSurface")]
         public void Drag_Toolbox_Ruby_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3192,8 +3331,53 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Drag_Toolbox_Selectandapply_Onto_DesignSurface - Use 'Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Drag Toolbox Selectandapply Onto DesignSurface")]
+        public void Drag_Toolbox_Selectandapply_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem selectandapply = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.Selectandapply;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom selectAndApply1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply;
+            WpfComboBox selectFromIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.SelectFromIntellisenseTextbox;
+            WpfComboBox aliasIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.AliasIntellisenseTextbox;
+            WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.DropActivityHere;
+            #endregion
+
+            // Type 'Select and apply' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 129));
+            Mouse.StartDragging(selectandapply, new Point(40, 19));
+            Mouse.StopDragging(flowchart, new Point(307, 129));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface after dragging select and apply tool onto s" +
+                    "tart node autoconnector.");
+
+            // Verify that the 'Exists' property of 'DsfSelectAndApplyActivity' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.SelectAndApplyExists, selectAndApply1.Exists, "Select and apply does not exist on design surface after dragging from toolbox.");
+
+            // Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.SelectFromIntellisenseTextboxExists, selectFromIntellisenseTextbox.Exists, "Select and apply select from textbox does not exist after dropping tool from tool" +
+                    "box.");
+
+            // Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.AliasIntellisenseTextboxExists, aliasIntellisenseTextbox.Exists, "Select and apply alias textbox does not exist after dropping tool from toolbox.");
+
+            // Verify that the 'Exists' property of 'Drop Activity Here' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.DropActivityHereExists, dropActivityHere.Exists, "Select and apply activity drop box does not exist after dropping tool from toolbo" +
+                    "x.");
+        }
+        
+        /// <summary>
         /// Drag_Toolbox_Sequence_Onto_DesignSurface - Use 'Drag_Toolbox_Sequence_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Sequence Onto DesignSurface")]
         public void Drag_Toolbox_Sequence_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3222,6 +3406,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Service_Picker_Onto_DesignSurface - Use 'Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Service Picker Onto DesignSurface")]
         public void Drag_Toolbox_Service_Picker_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3246,6 +3431,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Sharepoint Create Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3278,6 +3464,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Sharepoint Delete Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3302,6 +3489,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Sharepoint Read Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3326,6 +3514,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Sharepoint Update Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3350,6 +3539,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_SMTP_Email_Onto_DesignSurface - Use 'Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox SMTP Email Onto DesignSurface")]
         public void Drag_Toolbox_SMTP_Email_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3378,6 +3568,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Sort_Record_Onto_DesignSurface - Use 'Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Sort Record Onto DesignSurface")]
         public void Drag_Toolbox_Sort_Record_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3402,6 +3593,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface - Use 'Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox SQL Bulk Insert Onto DesignSurface")]
         public void Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3430,6 +3622,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface - Use 'Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox SQL Server Tool Onto DesignSurface")]
         public void Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3454,6 +3647,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Switch_Onto_DesignSurface - Use 'Drag_Toolbox_Switch_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Switch Onto DesignSurface")]
         public void Drag_Toolbox_Switch_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3478,6 +3672,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_System_Information_Onto_DesignSurface - Use 'Drag_Toolbox_System_Information_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox System Information Onto DesignSurface")]
         public void Drag_Toolbox_System_Information_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3506,6 +3701,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Unique_Records_Onto_DesignSurface - Use 'Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Unique Records Onto DesignSurface")]
         public void Drag_Toolbox_Unique_Records_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3530,6 +3726,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Unzip_Onto_DesignSurface - Use 'Drag_Toolbox_Unzip_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Unzip Onto DesignSurface")]
         public void Drag_Toolbox_Unzip_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3558,6 +3755,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Web_Request_Onto_DesignSurface - Use 'Drag_Toolbox_Web_Request_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Web Request Onto DesignSurface")]
         public void Drag_Toolbox_Web_Request_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3586,6 +3784,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Write_File_Onto_DesignSurface - Use 'Drag_Toolbox_Write_File_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Write File Onto DesignSurface")]
         public void Drag_Toolbox_Write_File_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3614,6 +3813,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_XPath_Onto_DesignSurface - Use 'Drag_Toolbox_XPath_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox XPath Onto DesignSurface")]
         public void Drag_Toolbox_XPath_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3642,6 +3842,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_Zip_Onto_DesignSurface - Use 'Drag_Toolbox_Zip_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Drag Toolbox Zip Onto DesignSurface")]
         public void Drag_Toolbox_Zip_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -3670,6 +3871,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Duplicate_Explorer_Localhost_First_Item_With_Context_Menu - Use 'Duplicate_Explorer_Localhost_First_Item_With_Context_MenuParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Duplicate Explorer Localhost First Item With Context Menu")]
         public void Duplicate_Explorer_Localhost_First_Item_With_Context_Menu()
         {
             #region Variable Declarations
@@ -3695,6 +3897,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_DeployViewOnly_Into_Deploy_Source_Filter - Use 'Enter_DeployViewOnly_Into_Deploy_Source_FilterParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter DeployViewOnly Into Deploy Source Filter")]
         public void Enter_DeployViewOnly_Into_Deploy_Source_Filter()
         {
             #region Variable Declarations
@@ -3716,6 +3919,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_Dice_Roll_Values - Use 'Enter_Dice_Roll_ValuesParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter Dice Roll Values")]
         public void Enter_Dice_Roll_Values()
         {
             #region Variable Declarations
@@ -3739,6 +3943,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_Duplicate_workflow_name - Use 'Enter_Duplicate_workflow_nameParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter Duplicate workflow name")]
         public void Enter_Duplicate_workflow_name()
         {
             #region Variable Declarations
@@ -3752,6 +3957,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_InputDebug_value - Use 'Enter_InputDebug_valueParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter InputDebug value")]
         public void Enter_InputDebug_value()
         {
             #region Variable Declarations
@@ -3772,6 +3978,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab - Use 'Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_TabParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter LocalSchedulerAdmin Credentials Into Scheduler Tab")]
         public void Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab()
         {
             #region Variable Declarations
@@ -3789,6 +3996,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_Public_As_Windows_Group - Use 'Enter_Public_As_Windows_GroupParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter Public As Windows Group")]
         public void Enter_Public_As_Windows_Group()
         {
             #region Variable Declarations
@@ -3802,6 +4010,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_RunAsUser_Username_And_Password - Use 'Enter_RunAsUser_Username_And_PasswordParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter RunAsUser Username And Password")]
         public void Enter_RunAsUser_Username_And_Password()
         {
             #region Variable Declarations
@@ -3822,6 +4031,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox - Use 'Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_TextboxParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter SomeData Into Base Convert Large View Row1 Value Textbox")]
         public void Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox()
         {
             #region Variable Declarations
@@ -3835,6 +4045,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox - Use 'Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter SomeVariable Into Calculate Large View Function Textbox")]
         public void Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox()
         {
             #region Variable Declarations
@@ -3851,6 +4062,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName - Use 'Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter Text Into Assign Large View Row1 Variable Textbox As SomeInvalidVariableName")]
         public void Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName()
         {
             #region Variable Declarations
@@ -3868,6 +4080,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable - Use 'Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter Text Into Assign Large View Row1 Variable Textbox As SomeVariable")]
         public void Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable()
         {
             #region Variable Declarations
@@ -3884,6 +4097,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion - Use 'Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_SuggestionParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter Text Into Assign Small View Row1 Value Textbox As SomeVariable Using Click Intellisense Suggestion")]
         public void Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion()
         {
             #region Variable Declarations
@@ -3905,6 +4119,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense - Use 'Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter Text Into Assign Small View Row1 Value Textbox As SomeVariable UsingIntellisense")]
         public void Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense()
         {
             #region Variable Declarations
@@ -3922,6 +4137,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest - Use 'Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter Text Into Workflow Tests OutPutTable Row1 Value Textbox As CodedUITest")]
         public void Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest()
         {
             #region Variable Declarations
@@ -3939,6 +4155,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest - Use 'Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Enter Text Into Workflow Tests Row1 Value Textbox As CodedUITest")]
         public void Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest()
         {
             #region Variable Declarations
@@ -3956,6 +4173,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Filter_variables - Use 'Filter_variablesParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Filter variables")]
         public void Filter_variables()
         {
             #region Variable Declarations
@@ -3976,6 +4194,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Move_Dice_Roll_To_Localhost
         /// </summary>
+        [When(@"I Move Dice Roll To Localhost")]
         public void Move_Dice_Roll_To_Localhost()
         {
             #region Variable Declarations
@@ -3992,6 +4211,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Assign_Tool_Large_View - Use 'Open_Assign_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Assign Tool Large View")]
         public void Open_Assign_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4012,6 +4232,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Assign_Tool_Qvi_Large_View - Use 'Open_Assign_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Assign Tool Qvi Large View")]
         public void Open_Assign_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
@@ -4029,6 +4250,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Base_Conversion_Tool_Large_View - Use 'Open_Base_Conversion_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Base Conversion Tool Large View")]
         public void Open_Base_Conversion_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4046,6 +4268,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Base_Conversion_Tool_Qvi_Large_View - Use 'Open_Base_Conversion_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Base Conversion Tool Qvi Large View")]
         public void Open_Base_Conversion_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
@@ -4070,6 +4293,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Calculate_Tool_Large_View - Use 'Open_Calculate_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Calculate Tool Large View")]
         public void Open_Calculate_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4095,6 +4319,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Case_Conversion_Tool_Qvi_Large_View - Use 'Open_Case_Conversion_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Case Conversion Tool Qvi Large View")]
         public void Open_Case_Conversion_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
@@ -4116,6 +4341,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_CMD_Line_Tool_Large_View - Use 'Open_CMD_Line_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open CMD Line Tool Large View")]
         public void Open_CMD_Line_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4132,6 +4358,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Context_Menu_OnDesignSurface
         /// </summary>
+        [When(@"I Open Context Menu OnDesignSurface")]
         public void Open_Context_Menu_OnDesignSurface()
         {
             #region Variable Declarations
@@ -4145,6 +4372,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Copy_Tool_Large_View - Use 'Open_Copy_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Copy Tool Large View")]
         public void Open_Copy_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4161,6 +4389,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_CountRecords_Large_View
         /// </summary>
+        [When(@"I Open CountRecords Large View")]
         public void Open_CountRecords_Large_View()
         {
             #region Variable Declarations
@@ -4174,6 +4403,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Create_JSON_Large_View
         /// </summary>
+        [When(@"I Open Create JSON Large View")]
         public void Open_Create_JSON_Large_View()
         {
             #region Variable Declarations
@@ -4187,6 +4417,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Create_Tool_Large_View - Use 'Open_Create_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Create Tool Large View")]
         public void Open_Create_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4203,6 +4434,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Data_Merge_Large_View - Use 'Open_Data_Merge_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Data Merge Large View")]
         public void Open_Data_Merge_Large_View()
         {
             #region Variable Declarations
@@ -4219,6 +4451,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Data_Merge_Tool_Qvi_Large_View - Use 'Open_Data_Merge_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Data Merge Tool Qvi Large View")]
         public void Open_Data_Merge_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
@@ -4240,6 +4473,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Data_Split_Large_View - Use 'Open_Data_Split_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Data Split Large View")]
         public void Open_Data_Split_Large_View()
         {
             #region Variable Declarations
@@ -4256,6 +4490,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Data_Split_Tool_Qvi_Large_View - Use 'Open_Data_Split_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Data Split Tool Qvi Large View")]
         public void Open_Data_Split_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
@@ -4277,6 +4512,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Delete_Tool_Large_View - Use 'Open_Delete_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Delete Tool Large View")]
         public void Open_Delete_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4293,6 +4529,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_DotNet_DLL_Connector_Tool_Large_View - Use 'Open_DotNet_DLL_Connector_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open DotNet DLL Connector Tool Large View")]
         public void Open_DotNet_DLL_Connector_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4326,6 +4563,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_DropboxFileOperation_Large_View
         /// </summary>
+        [When(@"I Open DropboxFileOperation Large View")]
         public void Open_DropboxFileOperation_Large_View()
         {
             #region Variable Declarations
@@ -4339,6 +4577,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Exchange_Email_Tool_Large_View
         /// </summary>
+        [When(@"I Open Exchange Email Tool Large View")]
         public void Open_Exchange_Email_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4352,6 +4591,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_ExecuteCommandline_LargeView
         /// </summary>
+        [When(@"I Open ExecuteCommandline LargeView")]
         public void Open_ExecuteCommandline_LargeView()
         {
             #region Variable Declarations
@@ -4365,6 +4605,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Explorer_First_Item_Dependancies_With_Context_Menu - Use 'Open_Explorer_First_Item_Dependancies_With_Context_MenuParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Explorer First Item Dependancies With Context Menu")]
         public void Open_Explorer_First_Item_Dependancies_With_Context_Menu()
         {
             #region Variable Declarations
@@ -4389,6 +4630,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Explorer_First_Item_Tests_With_Context_Menu - Use 'Open_Explorer_First_Item_Tests_With_Context_MenuParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Explorer First Item Tests With Context Menu")]
         public void Open_Explorer_First_Item_Tests_With_Context_Menu()
         {
             #region Variable Declarations
@@ -4413,6 +4655,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Explorer_First_Item_Version_History_With_Context_Menu
         /// </summary>
+        [When(@"I Open Explorer First Item Version History With Context Menu")]
         public void Open_Explorer_First_Item_Version_History_With_Context_Menu()
         {
             #region Variable Declarations
@@ -4430,6 +4673,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Explorer_First_Item_With_Context_Menu - Use 'Open_Explorer_First_Item_With_Context_MenuParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Explorer First Item With Context Menu")]
         public void Open_Explorer_First_Item_With_Context_Menu()
         {
             #region Variable Declarations
@@ -4450,6 +4694,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Find_Record_Index_Tool_Large_View
         /// </summary>
+        [When(@"I Open Find Record Index Tool Large View")]
         public void Open_Find_Record_Index_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4463,6 +4708,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_ForEach_Large_View - Use 'Open_ForEach_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open ForEach Large View")]
         public void Open_ForEach_Large_View()
         {
             #region Variable Declarations
@@ -4503,6 +4749,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_GET_Web_Connector_Tool_Large_View - Use 'Open_GET_Web_Connector_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open GET Web Connector Tool Large View")]
         public void Open_GET_Web_Connector_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4528,6 +4775,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_GetWeb_RequestTool_small_View
         /// </summary>
+        [When(@"I Open GetWeb RequestTool small View")]
         public void Open_GetWeb_RequestTool_small_View()
         {
             #region Variable Declarations
@@ -4541,6 +4789,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Json_Tool_Large_View - Use 'Open_Json_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Json Tool Large View")]
         public void Open_Json_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4557,6 +4806,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Json_Tool_Qvi_Large_View - Use 'Open_Json_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Json Tool Qvi Large View")]
         public void Open_Json_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
@@ -4574,6 +4824,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Move_Tool_Large_View - Use 'Open_Move_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Move Tool Large View")]
         public void Open_Move_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4590,6 +4841,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_MySql_Database_Tool_Small_View
         /// </summary>
+        [When(@"I Open MySql Database Tool Small View")]
         public void Open_MySql_Database_Tool_Small_View()
         {
             #region Variable Declarations
@@ -4603,6 +4855,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_PostWeb_RequestTool_Large_View - Use 'Open_PostWeb_RequestTool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open PostWeb RequestTool Large View")]
         public void Open_PostWeb_RequestTool_Large_View()
         {
             #region Variable Declarations
@@ -4620,6 +4873,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Read_File_Tool_Large_View - Use 'Open_Read_File_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Read File Tool Large View")]
         public void Open_Read_File_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4636,6 +4890,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Read_Folder_Tool_Large_View - Use 'Open_Read_Folder_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Read Folder Tool Large View")]
         public void Open_Read_Folder_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4652,6 +4907,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Open_Rename_Tool_Large_View - Use 'Open_Rename_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Rename Tool Large View")]
         public void Open_Rename_Tool_Large_View()
         {
             #region Variable Declarations
@@ -4666,2059 +4922,9 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Open_Sharepoint_Create_Tool_Large_View
-        /// </summary>
-        public void Open_Sharepoint_Create_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom sharepointCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate;
-            #endregion
-
-            // Double-Click 'SharepointCreateListItemActivity' custom control
-            Mouse.DoubleClick(sharepointCreate, new Point(195, 11));
-        }
-        
-        /// <summary>
-        /// Open_Sharepoint_Delete_Tool_Large_View
-        /// </summary>
-        public void Open_Sharepoint_Delete_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom sharepointDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete;
-            #endregion
-
-            // Double-Click 'SharepointDeleteListItemActivity' custom control
-            Mouse.DoubleClick(sharepointDelete, new Point(218, 11));
-        }
-        
-        /// <summary>
-        /// Open_Sharepoint_Read_Tool_Large_View
-        /// </summary>
-        public void Open_Sharepoint_Read_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom sharepointRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead;
-            #endregion
-
-            // Double-Click 'SharepointReadListActivity' custom control
-            Mouse.DoubleClick(sharepointRead, new Point(195, 7));
-        }
-        
-        /// <summary>
-        /// Open_Sharepoint_Update_Tool_Large_View
-        /// </summary>
-        public void Open_Sharepoint_Update_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom sharepointUpdate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate;
-            #endregion
-
-            // Double-Click 'SharepointUpdateListItemActivity' custom control
-            Mouse.DoubleClick(sharepointUpdate, new Point(230, 11));
-        }
-        
-        /// <summary>
-        /// Open_SMTP_Email_Tool_Large_View - Use 'Open_SMTP_Email_Tool_Large_ViewParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_SMTP_Email_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeView;
-            #endregion
-
-            // Double-Click 'DsfSendEmailActivity' custom control
-            Mouse.DoubleClick(sMTPEmail, new Point(168, 11));
-
-            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
-            Assert.AreEqual(this.Open_SMTP_Email_Tool_Large_ViewParams.LargeViewExists, largeView.Exists, "Email Tool large view does not exist on the design surface");
-        }
-        
-        /// <summary>
-        /// Open_SortRecords_Large_View
-        /// </summary>
-        public void Open_SortRecords_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom sortRecords = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
-            #endregion
-
-            // Double-Click 'DsfSortRecordsActivity' custom control
-            Mouse.DoubleClick(sortRecords, new Point(114, 13));
-        }
-        
-        /// <summary>
-        /// Open_SQL_Bulk_Insert_Tool_Large_View - Use 'Open_SQL_Bulk_Insert_Tool_Large_ViewParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_SQL_Bulk_Insert_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
-            #endregion
-
-            // Double-Click 'DsfSqlBulkInsertActivity' custom control
-            Mouse.DoubleClick(sqlBulkInsert, new Point(157, 6));
-
-            // Verify that the 'Exists' property of 'DsfSqlBulkInsertActivity' custom control equals 'True'
-            Assert.AreEqual(this.Open_SQL_Bulk_Insert_Tool_Large_ViewParams.SqlBulkInsertExists, sqlBulkInsert.Exists, "Sql Bulk Insert large view on the design surface does not exist");
-        }
-        
-        /// <summary>
-        /// Open_SQL_Bulk_Insert_Tool_Qvi_Large_View - Use 'Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_SQL_Bulk_Insert_Tool_Qvi_Large_View()
-        {
-            #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.OpenQuickVariableInpToggleButton;
-            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
-            #endregion
-
-            // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
-            openQuickVariableInpToggleButton.Pressed = this.Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
-
-            // Verify that the 'Exists' property of 'DsfSqlBulkInsertActivity' custom control equals 'True'
-            Assert.AreEqual(this.Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams.SqlBulkInsertExists, sqlBulkInsert.Exists, "Sql Bulk Insert Qvi window on the design surface does not exist");
-        }
-        
-        /// <summary>
-        /// Open_SQL_Large_View_FromContextMenu - Use 'Open_SQL_Large_View_FromContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_SQL_Large_View_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
-            WpfButton newDbSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
-            #endregion
-
-            // Right-Click 'DsfSqlServerDatabaseActivity' custom control
-            Mouse.Click(sqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
-
-            // Click 'Show Large View' menu item
-            Mouse.Click(showLargeView, new Point(43, 15));
-
-            // Verify that the 'Exists' property of 'New' button equals 'True'
-            Assert.AreEqual(this.Open_SQL_Large_View_FromContextMenuParams.NewDbSourceButtonExists, newDbSourceButton.Exists, "\"New button does not exist\"");
-        }
-        
-        /// <summary>
-        /// Open_Sql_Server_Tool_Large_View - Use 'Open_Sql_Server_Tool_Large_ViewExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Open_Sql_Server_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView;
-            #endregion
-
-            // Double-Click 'DsfSqlServerDatabaseActivity' custom control
-            Mouse.DoubleClick(sqlServerDatabase, new Point(145, 5));
-
-            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
-            Assert.AreEqual(this.Open_Sql_Server_Tool_Large_ViewExpectedValues.LargeViewExists, largeView.Exists, "SQL Server tool large view does not exist on the design surface.");
-        }
-        
-        /// <summary>
-        /// Open_Sql_Server_Tool_small_View
-        /// </summary>
-        public void Open_Sql_Server_Tool_small_View()
-        {
-            #region Variable Declarations
-            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            #endregion
-
-            // Double-Click 'DsfSqlServerDatabaseActivity' custom control
-            Mouse.DoubleClick(sqlServerDatabase, new Point(253, 18));
-        }
-        
-        /// <summary>
-        /// Open_System_Information_Tool_Qvi_Large_View - Use 'Open_System_Information_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_System_Information_Tool_Qvi_Large_View()
-        {
-            #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.OpenQuickVariableInpToggleButton;
-            WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
-            #endregion
-
-            // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
-            openQuickVariableInpToggleButton.Pressed = this.Open_System_Information_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
-
-            // Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
-            Assert.AreEqual(this.Open_System_Information_Tool_Qvi_Large_ViewParams.GatherSystemInfoExists, gatherSystemInfo.Exists, "System Info QVI window does not exist on the design surface");
-        }
-        
-        /// <summary>
-        /// Open_UniqueRecords_Large_View
-        /// </summary>
-        public void Open_UniqueRecords_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom unique = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique;
-            #endregion
-
-            // Double-Click 'DsfUniqueActivity' custom control
-            Mouse.DoubleClick(unique, new Point(134, 10));
-        }
-        
-        /// <summary>
-        /// Open_Unzip_Tool_Large_View - Use 'Open_Unzip_Tool_Large_ViewParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_Unzip_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom unZip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
-            #endregion
-
-            // Double-Click 'DsfUnZip' custom control
-            Mouse.DoubleClick(unZip, new Point(102, 14));
-
-            // Verify that the 'Exists' property of 'DsfUnZip' custom control equals 'True'
-            Assert.AreEqual(this.Open_Unzip_Tool_Large_ViewParams.UnZipExists, unZip.Exists, "Unzip large view on the design surface does not exist");
-        }
-        
-        /// <summary>
-        /// Open_WebRequest_LargeView - Use 'Open_WebRequest_LargeViewParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_WebRequest_LargeView()
-        {
-            #region Variable Declarations
-            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeView;
-            #endregion
-
-            // Double-Click 'DsfWebRequestActivity' custom control
-            Mouse.DoubleClick(webRequest, new Point(126, 13));
-
-            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
-            Assert.AreEqual(this.Open_WebRequest_LargeViewParams.LargeViewExists, largeView.Exists, "Web request large view does not exist on design surface.");
-        }
-        
-        /// <summary>
-        /// Open_Write_File_Tool_Large_View - Use 'Open_Write_File_Tool_Large_ViewParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_Write_File_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
-            #endregion
-
-            // Double-Click 'DsfFileWrite' custom control
-            Mouse.DoubleClick(fileWrite, new Point(149, 13));
-
-            // Verify that the 'Exists' property of 'DsfFileWrite' custom control equals 'True'
-            Assert.AreEqual(this.Open_Write_File_Tool_Large_ViewParams.FileWriteExists, fileWrite.Exists, "Write file large view on the design surface does not exist");
-        }
-        
-        /// <summary>
-        /// Open_Xpath_Tool_Large_View - Use 'Open_Xpath_Tool_Large_ViewParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_Xpath_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
-            #endregion
-
-            // Double-Click 'DsfXPathActivity' custom control
-            Mouse.DoubleClick(xPath, new Point(113, 12));
-
-            // Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
-            Assert.AreEqual(this.Open_Xpath_Tool_Large_ViewParams.XPathExists, xPath.Exists, "Xpath large view does not exist on the design surface");
-        }
-        
-        /// <summary>
-        /// Open_Xpath_Tool_Qvi_Large_View - Use 'Open_Xpath_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_Xpath_Tool_Qvi_Large_View()
-        {
-            #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.OpenQuickVariableInpToggleButton;
-            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
-            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.QuickVariableInputContent;
-            #endregion
-
-            // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
-            openQuickVariableInpToggleButton.Pressed = this.Open_Xpath_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
-
-            // Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
-            Assert.AreEqual(this.Open_Xpath_Tool_Qvi_Large_ViewParams.XPathExists, xPath.Exists, "Xpath Qvi does not exist on the design surface");
-
-            // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
-            Assert.AreEqual(this.Open_Xpath_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on XPath is not open");
-        }
-        
-        /// <summary>
-        /// Open_Zip_Tool_Large_View - Use 'Open_Zip_Tool_Large_ViewParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_Zip_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom zip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
-            #endregion
-
-            // Double-Click 'DsfZip' custom control
-            Mouse.DoubleClick(zip, new Point(124, 12));
-
-            // Verify that the 'Exists' property of 'DsfZip' custom control equals 'True'
-            Assert.AreEqual(this.Open_Zip_Tool_Large_ViewParams.ZipExists, zip.Exists, "Zip large view on the design surface does not exist");
-        }
-        
-        /// <summary>
-        /// Press_F6 - Use 'Press_F6Params' to pass parameters into this method.
-        /// </summary>
-        public void Press_F6()
-        {
-            #region Variable Declarations
-            WpfWindow mainStudioWindow = this.MainStudioWindow;
-            #endregion
-
-            // Type '{F6}' in 'Warewolf' window
-            Keyboard.SendKeys(mainStudioWindow, this.Press_F6Params.MainStudioWindowSendKeys, ModifierKeys.None);
-        }
-        
-        /// <summary>
-        /// PressF11_EnterFullScreen - Use 'PressF11_EnterFullScreenParams' to pass parameters into this method.
-        /// </summary>
-        public void PressF11_EnterFullScreen()
-        {
-            #region Variable Declarations
-            WpfWindow mainStudioWindow = this.MainStudioWindow;
-            #endregion
-
-            // Type '{F11}' in 'Warewolf' window
-            Keyboard.SendKeys(mainStudioWindow, this.PressF11_EnterFullScreenParams.MainStudioWindowSendKeys, ModifierKeys.None);
-        }
-        
-        /// <summary>
-        /// Remove_WorkflowName_From_Save_Dialog - Use 'Remove_WorkflowName_From_Save_DialogParams' to pass parameters into this method.
-        /// </summary>
-        public void Remove_WorkflowName_From_Save_Dialog()
-        {
-            #region Variable Declarations
-            WpfEdit serviceNameTextBox = this.SaveDialogWindow.ServiceNameTextBox;
-            WpfText errorLabel = this.SaveDialogWindow.ErrorLabel;
-            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
-            #endregion
-
-            // Type '' in 'ServiceNameTextBox' text box
-            serviceNameTextBox.Text = this.Remove_WorkflowName_From_Save_DialogParams.ServiceNameTextBoxText;
-
-            // Verify that the 'DisplayText' property of ''Name' cannot be empty.' label equals 'Cannot be null'
-            Assert.AreEqual(this.Remove_WorkflowName_From_Save_DialogParams.ErrorLabelDisplayText, errorLabel.DisplayText, "Name cannot be null validation message does not appear");
-
-            // Verify that the 'Enabled' property of 'Save' button equals 'False'
-            Assert.AreEqual(this.Remove_WorkflowName_From_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save button on the Save dialog is enabled");
-        }
-        
-        /// <summary>
-        /// Rename_LocalWorkflow_To_SecodWorkFlow - Use 'Rename_LocalWorkflow_To_SecodWorkFlowParams' to pass parameters into this method.
-        /// </summary>
-        public void Rename_LocalWorkflow_To_SecodWorkFlow()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem rename = this.MainStudioWindow.ExplorerContextMenu.Rename;
-            WpfEdit itemEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
-
-            // Click 'Rename' menu item
-            Mouse.Click(rename, new Point(73, 15));
-
-            // Type 'SecondWorkflow' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            itemEdit.Text = this.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditText;
-
-            // Type '{Enter}' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Keyboard.SendKeys(itemEdit, this.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditSendKeys, ModifierKeys.None);
-        }
-        
-        /// <summary>
-        /// Right_Click_Help_Tab
-        /// </summary>
-        public void Right_Click_Help_Tab()
-        {
-            #region Variable Declarations
-            WpfTabPage helpTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.HelpTab;
-            #endregion
-
-            // Right-Click 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab
-            Mouse.Click(helpTab, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
-        }
-        
-        /// <summary>
-        /// RightClick_Assign_OnDesignSurface
-        /// </summary>
-        public void RightClick_Assign_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-            #endregion
-
-            // Right-Click 'DsfMultiAssignActivity' custom control
-            Mouse.Click(multiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_BaseConvert_OnDesignSurface
-        /// </summary>
-        public void RightClick_BaseConvert_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
-            #endregion
-
-            // Right-Click 'DsfBaseConvertActivity' custom control
-            Mouse.Click(baseConvert, MouseButtons.Right, ModifierKeys.None, new Point(148, 12));
-        }
-        
-        /// <summary>
-        /// RightClick_Calculate_OnDesignSurface
-        /// </summary>
-        public void RightClick_Calculate_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
-            #endregion
-
-            // Right-Click 'DsfCalculateActivity' custom control
-            Mouse.Click(calculate, MouseButtons.Right, ModifierKeys.None, new Point(144, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_CaseConvert_OnDesignSurface
-        /// </summary>
-        public void RightClick_CaseConvert_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom caseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
-            #endregion
-
-            // Right-Click 'DsfCaseConvertActivity' custom control
-            Mouse.Click(caseConvert, MouseButtons.Right, ModifierKeys.None, new Point(156, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_Comment_OnDesignSurface
-        /// </summary>
-        public void RightClick_Comment_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom comment = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
-            #endregion
-
-            // Right-Click 'DsfCommentActivity' custom control
-            Mouse.Click(comment, MouseButtons.Right, ModifierKeys.None, new Point(121, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_Copy_OnDesignSurface
-        /// </summary>
-        public void RightClick_Copy_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom pathCopy = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
-            #endregion
-
-            // Right-Click 'DsfPathCopy' custom control
-            Mouse.Click(pathCopy, MouseButtons.Right, ModifierKeys.None, new Point(104, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_CountRecords_OnDesignSurface
-        /// </summary>
-        public void RightClick_CountRecords_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom countRecordset = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset;
-            #endregion
-
-            // Right-Click 'DsfCountRecordsetActivity' custom control
-            Mouse.Click(countRecordset, MouseButtons.Right, ModifierKeys.None, new Point(131, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_CreateJSON_OnDesignSurface
-        /// </summary>
-        public void RightClick_CreateJSON_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
-            #endregion
-
-            // Right-Click 'DsfCreateJsonActivity' custom control
-            Mouse.Click(createJson, MouseButtons.Right, ModifierKeys.None, new Point(128, 9));
-        }
-        
-        /// <summary>
-        /// RightClick_CreateTool_OnDesignSurface
-        /// </summary>
-        public void RightClick_CreateTool_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom pathCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
-            #endregion
-
-            // Right-Click 'DsfPathCreate' custom control
-            Mouse.Click(pathCreate, MouseButtons.Right, ModifierKeys.None, new Point(108, 14));
-        }
-        
-        /// <summary>
-        /// RightClick_DataMerge_OnDesignSurface
-        /// </summary>
-        public void RightClick_DataMerge_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom dataMerge = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
-            #endregion
-
-            // Right-Click 'DsfDataMergeActivity' custom control
-            Mouse.Click(dataMerge, MouseButtons.Right, ModifierKeys.None, new Point(140, 7));
-        }
-        
-        /// <summary>
-        /// RightClick_DataSplit_OnDesignSurface
-        /// </summary>
-        public void RightClick_DataSplit_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom dataSplit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
-            #endregion
-
-            // Right-Click 'DsfDataSplitActivity' custom control
-            Mouse.Click(dataSplit, MouseButtons.Right, ModifierKeys.None, new Point(153, 6));
-        }
-        
-        /// <summary>
-        /// RightClick_DateTime_OnDesignSurface
-        /// </summary>
-        public void RightClick_DateTime_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom dateTime = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
-            #endregion
-
-            // Right-Click 'DsfDateTimeActivity' custom control
-            Mouse.Click(dateTime, MouseButtons.Right, ModifierKeys.None, new Point(145, 13));
-        }
-        
-        /// <summary>
-        /// RightClick_DateTimeDifference_OnDesignSurface
-        /// </summary>
-        public void RightClick_DateTimeDifference_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom dateTimeDifference = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
-            #endregion
-
-            // Right-Click 'DsfDateTimeDifferenceActivity' custom control
-            Mouse.Click(dateTimeDifference, MouseButtons.Right, ModifierKeys.None, new Point(174, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_Decision_OnDesignSurface
-        /// </summary>
-        public void RightClick_Decision_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom decision = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision;
-            #endregion
-
-            // Right-Click 'FlowDecision' custom control
-            Mouse.Click(decision, MouseButtons.Right, ModifierKeys.None, new Point(28, 22));
-        }
-        
-        /// <summary>
-        /// RightClick_Delete_OnDesignSurface
-        /// </summary>
-        public void RightClick_Delete_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom pathDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
-            #endregion
-
-            // Right-Click 'DsfPathDelete' custom control
-            Mouse.Click(pathDelete, MouseButtons.Right, ModifierKeys.None, new Point(100, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_DeleteRecord_OnDesignSurface
-        /// </summary>
-        public void RightClick_DeleteRecord_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom deleteRecord = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord;
-            #endregion
-
-            // Right-Click 'DsfDeleteRecordActivity' custom control
-            Mouse.Click(deleteRecord, MouseButtons.Right, ModifierKeys.None, new Point(116, 9));
-        }
-        
-        /// <summary>
-        /// RightClick_DotNetDllConnector_OnDesignSurface
-        /// </summary>
-        public void RightClick_DotNetDllConnector_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom dotNetDll = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
-            #endregion
-
-            // Right-Click 'DsfDotNetDllActivity' custom control
-            Mouse.Click(dotNetDll, MouseButtons.Right, ModifierKeys.None, new Point(164, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_DropboxFileOperation_OnDesignSurface
-        /// </summary>
-        public void RightClick_DropboxFileOperation_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom dropBox_DOWNLOAD = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD;
-            #endregion
-
-            // Right-Click 'DsfDropBoxFileActivity' custom control
-            Mouse.Click(dropBox_DOWNLOAD, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
-        }
-        
-        /// <summary>
-        /// RightClick_Email_OnDesignSurface
-        /// </summary>
-        public void RightClick_Email_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
-            #endregion
-
-            // Right-Click 'DsfSendEmailActivity' custom control
-            Mouse.Click(sMTPEmail, MouseButtons.Right, ModifierKeys.None, new Point(129, 11));
-        }
-        
-        /// <summary>
-        /// RightClick_ExecuteCommandLine_OnDesignSurface
-        /// </summary>
-        public void RightClick_ExecuteCommandLine_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
-            #endregion
-
-            // Right-Click 'DsfExecuteCommandLineActivity' custom control
-            Mouse.Click(executeCommandLine, MouseButtons.Right, ModifierKeys.None, new Point(165, 13));
-        }
-        
-        /// <summary>
-        /// RightClick_Explorer_First_Remote_Server_First_Item
-        /// </summary>
-        public void RightClick_Explorer_First_Remote_Server_First_Item()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-        }
-        
-        /// <summary>
-        /// RightClick_Explorer_Localhost_First_Item - Use 'RightClick_Explorer_Localhost_First_ItemParams' to pass parameters into this method.
-        /// </summary>
-        public void RightClick_Explorer_Localhost_First_Item()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem open = this.MainStudioWindow.ExplorerContextMenu.Open;
-            WpfMenuItem showDependencies = this.MainStudioWindow.ExplorerContextMenu.ShowDependencies;
-            WpfMenuItem delete = this.MainStudioWindow.ExplorerContextMenu.Delete;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
-
-            // Verify that the 'Exists' property of 'Open' menu item equals 'True'
-            Assert.AreEqual(this.RightClick_Explorer_Localhost_First_ItemParams.OpenExists, open.Exists, "Open does not exist in explorer context menu.");
-
-            // Verify that the 'Exists' property of 'Show Dependencies' menu item equals 'True'
-            Assert.AreEqual(this.RightClick_Explorer_Localhost_First_ItemParams.ShowDependenciesExists, showDependencies.Exists, "ShowDependencies does not exist in explorer context menu.");
-
-            // Verify that the 'Exists' property of 'Delete' menu item equals 'True'
-            Assert.AreEqual(this.RightClick_Explorer_Localhost_First_ItemParams.DeleteExists, delete.Exists, "Delete does not exist in ExplorerContextMenu");
-        }
-        
-        /// <summary>
-        /// RightClick_FindIndex_OnDesignSurface
-        /// </summary>
-        public void RightClick_FindIndex_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom findIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
-            #endregion
-
-            // Right-Click 'DsfIndexActivity' custom control
-            Mouse.Click(findIndex, MouseButtons.Right, ModifierKeys.None, new Point(113, 8));
-        }
-        
-        /// <summary>
-        /// RightClick_FindRecordIndex_OnDesignSurface
-        /// </summary>
-        public void RightClick_FindRecordIndex_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom findRecordsIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex;
-            #endregion
-
-            // Right-Click 'DsfFindRecordsMultipleCriteriaActivity' custom control
-            Mouse.Click(findRecordsIndex, MouseButtons.Right, ModifierKeys.None, new Point(191, 11));
-        }
-        
-        /// <summary>
-        /// RightClick_ForEach_OnDesignSurface
-        /// </summary>
-        public void RightClick_ForEach_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom forEach = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
-            #endregion
-
-            // Right-Click 'DsfForEachActivity' custom control
-            Mouse.Click(forEach, MouseButtons.Right, ModifierKeys.None, new Point(137, 9));
-        }
-        
-        /// <summary>
-        /// RightClick_FormatNumber_OnDesignSurface
-        /// </summary>
-        public void RightClick_FormatNumber_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom formatNumber = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
-            #endregion
-
-            // Right-Click 'DsfNumberFormatActivity' custom control
-            Mouse.Click(formatNumber, MouseButtons.Right, ModifierKeys.None, new Point(143, 9));
-        }
-        
-        /// <summary>
-        /// RightClick_Length_OnDesignSurface
-        /// </summary>
-        public void RightClick_Length_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom length = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
-            #endregion
-
-            // Right-Click 'DsfRecordsetLengthActivity' custom control
-            Mouse.Click(length, MouseButtons.Right, ModifierKeys.None, new Point(97, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_Move_OnDesignSurface
-        /// </summary>
-        public void RightClick_Move_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom pathMove = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
-            #endregion
-
-            // Right-Click 'DsfPathMove' custom control
-            Mouse.Click(pathMove, MouseButtons.Right, ModifierKeys.None, new Point(98, 11));
-        }
-        
-        /// <summary>
-        /// RightClick_MySQLConnector_OnDesignSurface
-        /// </summary>
-        public void RightClick_MySQLConnector_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom mySqlDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase;
-            #endregion
-
-            // Right-Click 'DsfMySqlDatabaseActivity' custom control
-            Mouse.Click(mySqlDatabase, MouseButtons.Right, ModifierKeys.None, new Point(202, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_New_Workflow_Tab
-        /// </summary>
-        public void RightClick_New_Workflow_Tab()
-        {
-            #region Variable Declarations
-            WpfTabPage workflowTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab;
-            #endregion
-
-            // Right-Click 'Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi...' tab
-            Mouse.Click(workflowTab, MouseButtons.Right, ModifierKeys.None, new Point(63, 18));
-        }
-        
-        /// <summary>
-        /// RightClick_Random_OnDesignSurface
-        /// </summary>
-        public void RightClick_Random_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom random = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
-            #endregion
-
-            // Right-Click 'DsfRandomActivity' custom control
-            Mouse.Click(random, MouseButtons.Right, ModifierKeys.None, new Point(107, 13));
-        }
-        
-        /// <summary>
-        /// RightClick_ReadFile_OnDesignSurface
-        /// </summary>
-        public void RightClick_ReadFile_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom fileRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
-            #endregion
-
-            // Right-Click 'DsfFileRead' custom control
-            Mouse.Click(fileRead, MouseButtons.Right, ModifierKeys.None, new Point(99, 14));
-        }
-        
-        /// <summary>
-        /// RightClick_ReadFolder_OnDesignSurface
-        /// </summary>
-        public void RightClick_ReadFolder_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom folderRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
-            #endregion
-
-            // Right-Click 'DsfFolderRead' custom control
-            Mouse.Click(folderRead, MouseButtons.Right, ModifierKeys.None, new Point(115, 12));
-        }
-        
-        /// <summary>
-        /// RightClick_Rename_OnDesignSurface
-        /// </summary>
-        public void RightClick_Rename_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom pathRename = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
-            #endregion
-
-            // Right-Click 'DsfPathRename' custom control
-            Mouse.Click(pathRename, MouseButtons.Right, ModifierKeys.None, new Point(103, 7));
-        }
-        
-        /// <summary>
-        /// RightClick_Replace_OnDesignSurface
-        /// </summary>
-        public void RightClick_Replace_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom replace = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
-            #endregion
-
-            // Right-Click 'DsfReplaceActivity' custom control
-            Mouse.Click(replace, MouseButtons.Right, ModifierKeys.None, new Point(100, 7));
-        }
-        
-        /// <summary>
-        /// RightClick_ScriptTool_OnDesignSurface
-        /// </summary>
-        public void RightClick_ScriptTool_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom scripting = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Scripting;
-            #endregion
-
-            // Right-Click 'DsfScriptingActivity' custom control
-            Mouse.Click(scripting, MouseButtons.Right, ModifierKeys.None, new Point(110, 11));
-        }
-        
-        /// <summary>
-        /// RightClick_Sequence_OnDesignSurface
-        /// </summary>
-        public void RightClick_Sequence_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
-            #endregion
-
-            // Right-Click 'DsfSequenceActivity' custom control
-            Mouse.Click(sequence, MouseButtons.Right, ModifierKeys.None, new Point(119, 8));
-        }
-        
-        /// <summary>
-        /// RightClick_SharepointCreateListItem_OnDesignSurface
-        /// </summary>
-        public void RightClick_SharepointCreateListItem_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom sharepointCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate;
-            #endregion
-
-            // Right-Click 'SharepointCreateListItemActivity' custom control
-            Mouse.Click(sharepointCreate, MouseButtons.Right, ModifierKeys.None, new Point(199, 12));
-        }
-        
-        /// <summary>
-        /// RightClick_SharepointDelete_OnDesignSurface
-        /// </summary>
-        public void RightClick_SharepointDelete_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom sharepointDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete;
-            #endregion
-
-            // Right-Click 'SharepointDeleteListItemActivity' custom control
-            Mouse.Click(sharepointDelete, MouseButtons.Right, ModifierKeys.None, new Point(217, 8));
-        }
-        
-        /// <summary>
-        /// RightClick_SharepointRead_OnDesignSurface
-        /// </summary>
-        public void RightClick_SharepointRead_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom sharepointRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead;
-            #endregion
-
-            // Right-Click 'SharepointReadListActivity' custom control
-            Mouse.Click(sharepointRead, MouseButtons.Right, ModifierKeys.None, new Point(203, 9));
-        }
-        
-        /// <summary>
-        /// RightClick_SharepointUpdate_OnDesignSurface
-        /// </summary>
-        public void RightClick_SharepointUpdate_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom sharepointUpdate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate;
-            #endregion
-
-            // Right-Click 'SharepointUpdateListItemActivity' custom control
-            Mouse.Click(sharepointUpdate, MouseButtons.Right, ModifierKeys.None, new Point(210, 5));
-        }
-        
-        /// <summary>
-        /// RightClick_SortRecords_OnDesignSurface
-        /// </summary>
-        public void RightClick_SortRecords_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom sortRecords = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
-            #endregion
-
-            // Right-Click 'DsfSortRecordsActivity' custom control
-            Mouse.Click(sortRecords, MouseButtons.Right, ModifierKeys.None, new Point(118, 8));
-        }
-        
-        /// <summary>
-        /// RightClick_SQLConnector_OnDesignSurface
-        /// </summary>
-        public void RightClick_SQLConnector_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
-            #endregion
-
-            // Right-Click 'DsfSqlBulkInsertActivity' custom control
-            Mouse.Click(sqlBulkInsert, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
-        }
-        
-        /// <summary>
-        /// RightClick_SqlServerConnector_OnDesignSurface
-        /// </summary>
-        public void RightClick_SqlServerConnector_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            #endregion
-
-            // Right-Click 'DsfSqlServerDatabaseActivity' custom control
-            Mouse.Click(sqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(198, 8));
-        }
-        
-        /// <summary>
-        /// RightClick_Switch_OnDesignSurface
-        /// </summary>
-        public void RightClick_Switch_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom switch1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
-            #endregion
-
-            // Right-Click 'FlowSwitch`1[String]' custom control
-            Mouse.Click(switch1, MouseButtons.Right, ModifierKeys.None, new Point(46, 15));
-        }
-        
-        /// <summary>
-        /// RightClick_SystemInformation_OnDesignSurface
-        /// </summary>
-        public void RightClick_SystemInformation_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
-            #endregion
-
-            // Right-Click 'DsfGatherSystemInformationActivity' custom control
-            Mouse.Click(gatherSystemInfo, MouseButtons.Right, ModifierKeys.None, new Point(217, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_UniqueRecords_OnDesignSurface
-        /// </summary>
-        public void RightClick_UniqueRecords_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom unique = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique;
-            #endregion
-
-            // Right-Click 'DsfUniqueActivity' custom control
-            Mouse.Click(unique, MouseButtons.Right, ModifierKeys.None, new Point(133, 11));
-        }
-        
-        /// <summary>
-        /// RightClick_Unzip_OnDesignSurface
-        /// </summary>
-        public void RightClick_Unzip_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom unZip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
-            #endregion
-
-            // Right-Click 'DsfUnZip' custom control
-            Mouse.Click(unZip, MouseButtons.Right, ModifierKeys.None, new Point(101, 10));
-        }
-        
-        /// <summary>
-        /// RightClick_WebRequest_OnDesignSurface
-        /// </summary>
-        public void RightClick_WebRequest_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
-            #endregion
-
-            // Right-Click 'DsfWebRequestActivity' custom control
-            Mouse.Click(webRequest, MouseButtons.Right, ModifierKeys.None, new Point(165, 8));
-        }
-        
-        /// <summary>
-        /// RightClick_WriteFile_OnDesignSurface
-        /// </summary>
-        public void RightClick_WriteFile_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
-            #endregion
-
-            // Right-Click 'DsfFileWrite' custom control
-            Mouse.Click(fileWrite, MouseButtons.Right, ModifierKeys.None, new Point(96, 12));
-        }
-        
-        /// <summary>
-        /// RightClick_XPath_OnDesignSurface
-        /// </summary>
-        public void RightClick_XPath_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
-            #endregion
-
-            // Right-Click 'DsfXPathActivity' custom control
-            Mouse.Click(xPath, MouseButtons.Right, ModifierKeys.None, new Point(99, 8));
-        }
-        
-        /// <summary>
-        /// RightClick_Zip_OnDesignSurface
-        /// </summary>
-        public void RightClick_Zip_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom zip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
-            #endregion
-
-            // Right-Click 'DsfZip' custom control
-            Mouse.Click(zip, MouseButtons.Right, ModifierKeys.None, new Point(95, 12));
-        }
-        
-        /// <summary>
-        /// Search_And_Select_DiceRoll - Use 'Search_And_Select_DiceRollParams' to pass parameters into this method.
-        /// </summary>
-        public void Search_And_Select_DiceRoll()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            #endregion
-
-            // Click 'SearchTextBox' text box
-            Mouse.Click(searchTextBox, new Point(165, 9));
-
-            // Type 'Dice Roll' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Search_And_Select_DiceRollParams.SearchTextBoxText;
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
-        }
-        
-        /// <summary>
-        /// Search_And_Select_HelloWolrd - Use 'Search_And_Select_HelloWolrdParams' to pass parameters into this method.
-        /// </summary>
-        public void Search_And_Select_HelloWolrd()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            #endregion
-
-            // Click 'SearchTextBox' text box
-            Mouse.Click(searchTextBox, new Point(165, 9));
-
-            // Type 'Hello World' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Search_And_Select_HelloWolrdParams.SearchTextBoxText;
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
-        }
-        
-        /// <summary>
-        /// Select_Copy_FromContextMenu
-        /// </summary>
-        public void Select_Copy_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem copy = this.MainStudioWindow.DesignSurfaceContextMenu.Copy;
-            #endregion
-
-            // Click 'Copy' menu item
-            Mouse.Click(copy, new Point(27, 18));
-        }
-        
-        /// <summary>
-        /// Select_CopyAsImage_FromContextMenu
-        /// </summary>
-        public void Select_CopyAsImage_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem copyasImage = this.MainStudioWindow.DesignSurfaceContextMenu.CopyasImage;
-            #endregion
-
-            // Click 'Copy as Image' menu item
-            Mouse.Click(copyasImage, new Point(62, 22));
-        }
-        
-        /// <summary>
-        /// Select_Cut_FromContextMenu
-        /// </summary>
-        public void Select_Cut_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem cut = this.MainStudioWindow.DesignSurfaceContextMenu.Cut;
-            #endregion
-
-            // Click 'Cut' menu item
-            Mouse.Click(cut, new Point(53, 16));
-        }
-        
-        /// <summary>
-        /// Select_Delete_FromContextMenu - Use 'Select_Delete_FromContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_Delete_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem delete = this.MainStudioWindow.DesignSurfaceContextMenu.Delete;
-            WpfWindow messageBoxWindow = this.MessageBoxWindow;
-            #endregion
-
-            // Click 'Delete' menu item
-            Mouse.Click(delete, new Point(27, 18));
-
-            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
-            Assert.AreEqual(this.Select_Delete_FromContextMenuParams.MessageBoxWindowExists, messageBoxWindow.Exists, "Delete Dialog does not exist after clicking delete button");
-        }
-        
-        /// <summary>
-        /// Select_Delete_FromExplorerContextMenu - Use 'Select_Delete_FromExplorerContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_Delete_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem delete = this.MainStudioWindow.ExplorerContextMenu.Delete;
-            WpfButton yesButton = this.MessageBoxWindow.YesButton;
-            #endregion
-
-            // Click 'Delete' menu item
-            Mouse.Click(delete, new Point(87, 12));
-
-            // Verify that the 'Exists' property of 'Yes' button equals 'True'
-            Assert.AreEqual(this.Select_Delete_FromExplorerContextMenuParams.YesButtonExists, yesButton.Exists, "Message box Yes button does not exist");
-        }
-        
-        /// <summary>
-        /// Select_DeleteRow_FromContextMenu
-        /// </summary>
-        public void Select_DeleteRow_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem deleteRow = this.MainStudioWindow.DesignSurfaceContextMenu.DeleteRow;
-            #endregion
-
-            // Click 'Delete Row' menu item
-            Mouse.Click(deleteRow, new Point(74, 9));
-        }
-        
-        /// <summary>
-        /// Select_Deploy_FromExplorerContextMenu - Use 'Select_Deploy_FromExplorerContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_Deploy_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem deploy = this.MainStudioWindow.ExplorerContextMenu.Deploy;
-            WpfTabPage deployTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab;
-            #endregion
-
-            // Click 'Deploy' menu item
-            Mouse.Click(deploy, new Point(57, 11));
-
-            // Verify that the 'Exists' property of 'Dev2.ViewModels.DeployWorksurfaceViewModel' tab equals 'True'
-            Assert.AreEqual(this.Select_Deploy_FromExplorerContextMenuParams.DeployTabExists, deployTab.Exists, "DeployTab does not exist after clicking Deploy");
-        }
-        
-        /// <summary>
-        /// Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox - Use 'Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox()
-        {
-            #region Variable Declarations
-            WpfCustom databaseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox;
-            WpfCustom comboboxListItemAsDev2TestingDB = this.MainStudioWindow.ComboboxListItemAsDev2TestingDB;
-            WpfText uIDev2TestingDBText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIDev2TestingDBText;
-            #endregion
-
-            // Click 'DatabaseComboxBox' custom control
-            Mouse.Click(databaseCombobox, new Point(221, 9));
-
-            // Click 'Dev2TestingDB' custom control
-            Mouse.Click(comboboxListItemAsDev2TestingDB, new Point(129, 19));
-
-            // Verify that the 'DisplayText' property of 'Dev2TestingDB' label equals 'Dev2TestingDB'
-            Assert.AreEqual(this.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams.UIDev2TestingDBTextDisplayText, uIDev2TestingDBText.DisplayText);
-        }
-        
-        /// <summary>
-        /// Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox
-        /// </summary>
-        public void Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox;
-            WpfListItem listItem1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.ListItem1;
-            #endregion
-
-            // Click 'SourcesComboBox' combo box
-            Mouse.Click(sourcesComboBox, new Point(175, 9));
-
-            // Click 'Dev2.Common.Interfaces.Core.PluginSourceDefinition' list item
-            Mouse.Click(listItem1, new Point(163, 17));
-        }
-        
-        /// <summary>
-        /// Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
-            #endregion
-
-            // Click 'ActionsComboBox' combo box
-            Mouse.Click(actionsComboBox, new Point(216, 7));
-
-            // Click 'Item1' list item
-            Mouse.Click(item1, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Dev2.Common.Interfaces.PluginAction'
-            Assert.AreEqual(this.Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
-        }
-        
-        /// <summary>
-        /// Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox - Use 'Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox actionsCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox;
-            WpfListItem getCountriesListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox.GetCountriesListItem;
-            #endregion
-
-            // Click 'ActionsComboBox' combo box
-            Mouse.Click(actionsCombobox, new Point(216, 7));
-
-            // Click 'GetCountries' list item
-            Mouse.Click(getCountriesListItem, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'dbo.GetCountries'
-            Assert.AreEqual(this.Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues.ActionsComboboxSelectedItem, actionsCombobox.SelectedItem, "GetCountries is not selected in SQL server large view action combobox.");
-        }
-        
-        /// <summary>
-        /// Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown - Use 'Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown()
-        {
-            #region Variable Declarations
-            WpfButton toggleDropdown = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
-            WpfCustom comboboxListItemAsHttp = this.MainStudioWindow.ComboboxListItemAsHttp;
-            WpfText httpSelectedItemText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.HttpSelectedItemText;
-            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(toggleDropdown, new Point(54, 8));
-
-            // Verify that the 'Exists' property of 'http' custom control equals 'True'
-            Assert.AreEqual(this.Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams.ComboboxListItemAsHttpExists, comboboxListItemAsHttp.Exists, "Http does not exist in server source wizard address protocol dropdown list.");
-
-            // Click 'http' custom control
-            Mouse.Click(comboboxListItemAsHttp, new Point(31, 12));
-
-            // Verify that the 'DisplayText' property of 'http' label equals 'http'
-            Assert.AreEqual(this.Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams.HttpSelectedItemTextDisplayText, httpSelectedItemText.DisplayText, "Server source wizard address protocol is not equal to http.");
-
-            // Verify that the 'Exists' property of 'Text' text box equals 'True'
-            Assert.AreEqual(this.Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams.AddressEditBoxExists, addressEditBox.Exists, "Server source wizard address textbox does not exist");
-        }
-        
-        /// <summary>
-        /// Select_InsertRow_FromContextMenu
-        /// </summary>
-        public void Select_InsertRow_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem insertRow = this.MainStudioWindow.DesignSurfaceContextMenu.InsertRow;
-            #endregion
-
-            // Click 'Insert Row' menu item
-            Mouse.Click(insertRow, new Point(66, 19));
-        }
-        
-        /// <summary>
-        /// Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox - Use 'Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox()
-        {
-            #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
-            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
-            WpfCustom comboboxListItemAsLocalhostConnected = this.MainStudioWindow.ComboboxListItemAsLocalhostConnected;
-            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(toggleButton, new Point(230, 9));
-
-            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-
-            // Verify that the 'Exists' property of 'localhost (Connected)' custom control equals 'True'
-            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsLocalhostConnectedExists, comboboxListItemAsLocalhostConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
-                    "x.");
-
-            // Click 'localhost (Connected)' custom control
-            Mouse.Click(comboboxListItemAsLocalhostConnected, new Point(226, 13));
-
-            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
-            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
-        }
-        
-        /// <summary>
-        /// Select_LoggingTab
-        /// </summary>
-        public void Select_LoggingTab()
-        {
-            #region Variable Declarations
-            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
-            #endregion
-
-            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
-            Mouse.Click(loggingTab, new Point(57, 7));
-        }
-        
-        /// <summary>
-        /// Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown - Use 'Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown()
-        {
-            #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.ToggleButton;
-            WpfText microsoftSQLServerText = this.MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText;
-            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(toggleButton, new Point(625, 11));
-
-            // Verify that the 'Exists' property of 'Microsoft SQL Server' label equals 'True'
-            Assert.AreEqual(this.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams.MicrosoftSQLServerTextExists, microsoftSQLServerText.Exists, "Microsoft SQL Server does not exist as an option in new DB source wizard type com" +
-                    "bobox.");
-
-            // Click 'Microsoft SQL Server' label
-            Mouse.Click(microsoftSQLServerText, new Point(118, 6));
-
-            // Verify that the 'DisplayText' property of 'Microsoft SQL Server' label equals 'Microsoft SQL Server'
-            Assert.AreEqual(this.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams.MicrosoftSQLServerDisplayText, microsoftSQLServer.DisplayText, "Microsoft SQL Server is not selected in DB source wizard.");
-        }
-        
-        /// <summary>
-        /// Select_NewDatabaseSource_FromExplorerContextMenu
-        /// </summary>
-        public void Select_NewDatabaseSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newDatabaseSource = this.MainStudioWindow.ExplorerContextMenu.NewDatabaseSource;
-            #endregion
-
-            // Click 'New Database Source' menu item
-            Mouse.Click(newDatabaseSource, new Point(72, 14));
-        }
-        
-        /// <summary>
-        /// Select_NewDatabaseSource_FromSqlServerTool - Use 'Select_NewDatabaseSource_FromSqlServerToolParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_NewDatabaseSource_FromSqlServerTool()
-        {
-            #region Variable Declarations
-            WpfButton newDbSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
-            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
-            WpfEdit userNameTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox;
-            WpfEdit passwordTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox;
-            #endregion
-
-            // Click 'New' button
-            Mouse.Click(newDbSourceButton, new Point(16, 13));
-
-            // Verify that the 'DisplayText' property of 'Microsoft SQL Server' label equals 'Microsoft SQL Server'
-            Assert.AreEqual(this.Select_NewDatabaseSource_FromSqlServerToolParams.MicrosoftSQLServerDisplayText, microsoftSQLServer.DisplayText, "Microsoft SQL Server is not selected in DB source wizard.");
-
-            // Verify that the 'Exists' property of 'UserNameTextBox' text box equals 'True'
-            Assert.AreEqual(this.Select_NewDatabaseSource_FromSqlServerToolParams.UserNameTextBoxExists, userNameTextBox.Exists, "User name testbox does not exist on db source wizard.");
-
-            // Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
-            Assert.AreEqual(this.Select_NewDatabaseSource_FromSqlServerToolParams.PasswordTextBoxExists, passwordTextBox.Exists, "Password textbox does not exist on database source wizard.");
-        }
-        
-        /// <summary>
-        /// Select_NewDropboxSource_FromExplorerContextMenu
-        /// </summary>
-        public void Select_NewDropboxSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newDropboxSource = this.MainStudioWindow.ExplorerContextMenu.NewDropboxSource;
-            #endregion
-
-            // Click 'New Dropbox Source' menu item
-            Mouse.Click(newDropboxSource, new Point(119, 15));
-        }
-        
-        /// <summary>
-        /// Select_NewEmailSource_FromExplorerContextMenu
-        /// </summary>
-        public void Select_NewEmailSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newEmailSource = this.MainStudioWindow.ExplorerContextMenu.NewEmailSource;
-            #endregion
-
-            // Click 'New Email Source' menu item
-            Mouse.Click(newEmailSource, new Point(101, 13));
-        }
-        
-        /// <summary>
-        /// Select_NewFolder_FromExplorerContextMenu
-        /// </summary>
-        public void Select_NewFolder_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newFolder = this.MainStudioWindow.ExplorerContextMenu.NewFolder;
-            #endregion
-
-            // Click 'New Folder' menu item
-            Mouse.Click(newFolder, new Point(87, 14));
-        }
-        
-        /// <summary>
-        /// Select_NewPluginSource_FromExplorerContextMenu
-        /// </summary>
-        public void Select_NewPluginSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newPluginSource = this.MainStudioWindow.ExplorerContextMenu.NewPluginSource;
-            #endregion
-
-            // Click 'New Plugin Source' menu item
-            Mouse.Click(newPluginSource, new Point(78, 11));
-        }
-        
-        /// <summary>
-        /// Select_NewServerSource_FromExplorerContextMenu
-        /// </summary>
-        public void Select_NewServerSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newServerSource = this.MainStudioWindow.ExplorerContextMenu.NewServerSource;
-            #endregion
-
-            // Click 'New Server Source' menu item
-            Mouse.Click(newServerSource, new Point(44, 13));
-        }
-        
-        /// <summary>
-        /// Select_NewSharepointSource_FromExplorerContextMenu
-        /// </summary>
-        public void Select_NewSharepointSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newSharepointSource = this.MainStudioWindow.ExplorerContextMenu.NewSharepointSource;
-            #endregion
-
-            // Click 'New Sharepoint Source' menu item
-            Mouse.Click(newSharepointSource, new Point(126, 17));
-        }
-        
-        /// <summary>
-        /// Select_NewSharepointSource_FromServer_Lookup - Use 'Select_NewSharepointSource_FromServer_LookupParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_NewSharepointSource_FromServer_Lookup()
-        {
-            #region Variable Declarations
-            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
-            #endregion
-
-            // Click 'UI__Database_AutoID' combo box
-            Mouse.Click(server, new Point(107, 13));
-
-            // Type '{Down}{Enter}' in 'UI__Database_AutoID' combo box
-            Keyboard.SendKeys(server, this.Select_NewSharepointSource_FromServer_LookupParams.ServerSendKeys, ModifierKeys.None);
-        }
-        
-        /// <summary>
-        /// Select_NewWebSource_FromExplorerContextMenu
-        /// </summary>
-        public void Select_NewWebSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newWebServiceSource = this.MainStudioWindow.ExplorerContextMenu.NewWebServiceSource;
-            #endregion
-
-            // Click 'New Web Service Source' menu item
-            Mouse.Click(newWebServiceSource, new Point(82, 20));
-        }
-        
-        /// <summary>
-        /// Select_NewWorkflow_FromExplorerContextMenu
-        /// </summary>
-        public void Select_NewWorkflow_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newWorkflow = this.MainStudioWindow.ExplorerContextMenu.NewWorkflow;
-            #endregion
-
-            // Click 'New Workflow Service' menu item
-            Mouse.Click(newWorkflow, new Point(30, 11));
-        }
-        
-        /// <summary>
-        /// Select_NewWorkFlowService_From_ContextMenu - Use 'Select_NewWorkFlowService_From_ContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_NewWorkFlowService_From_ContextMenu()
-        {
-            #region Variable Declarations
-            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            WpfMenuItem newWorkflow = this.MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
-
-            // Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
-            Assert.AreEqual(this.Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowEnabled, newWorkflow.Enabled, "NewWorkFlowService button is disabled.");
-
-            // Click 'New Workflow Service' menu item
-            Mouse.Click(newWorkflow, new Point(79, 13));
-        }
-        
-        /// <summary>
-        /// Select_Next_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Select_Next_From_DotNet_DLL_Large_View_Action_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem nextListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.NextListItem;
-            #endregion
-
-            // Click 'ActionsComboBox' combo box
-            Mouse.Click(actionsComboBox, new Point(216, 7));
-
-            // Click 'Next' list item
-            Mouse.Click(nextListItem, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Next'
-            Assert.AreEqual(this.Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
-        }
-        
-        /// <summary>
-        /// Select_Open_FromExplorerContextMenu
-        /// </summary>
-        public void Select_Open_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem open = this.MainStudioWindow.ExplorerContextMenu.Open;
-            #endregion
-
-            // Click 'Open' menu item
-            Mouse.Click(open, new Point(30, 11));
-        }
-        
-        /// <summary>
-        /// Select_Paste_FromContextMenu
-        /// </summary>
-        public void Select_Paste_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem paste = this.MainStudioWindow.DesignSurfaceContextMenu.Paste;
-            #endregion
-
-            // Click 'Paste' menu item
-            Mouse.Click(paste, new Point(52, 16));
-        }
-        
-        /// <summary>
-        /// Select_PerfomanceCounterTab
-        /// </summary>
-        public void Select_PerfomanceCounterTab()
-        {
-            #region Variable Declarations
-            WpfTabPage perfomanceCounterTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab;
-            #endregion
-
-            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
-            Mouse.Click(perfomanceCounterTab, new Point(124, 14));
-        }
-        
-        /// <summary>
-        /// Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox - Use 'Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
-        {
-            #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
-            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
-            WpfCustom comboboxListItemAsRemoteConnectionIntegration = this.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
-            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(toggleButton, new Point(230, 9));
-
-            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-
-            // Verify that the 'Exists' property of 'Remote Connection Integration' custom control equals 'True'
-            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsRemoteConnectionIntegrationExists, comboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
-                    "x.");
-
-            // Click 'Remote Connection Integration' custom control
-            Mouse.Click(comboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
-
-            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
-            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected destination server in deploy is not Remote Connection Integration.");
-        }
-        
-        /// <summary>
-        /// Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox - Use 'Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
-        {
-            #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
-            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
-            WpfCustom comboboxListItemAsRemoteConnectionIntegration = this.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
-            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(toggleButton, new Point(230, 9));
-
-            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-
-            // Verify that the 'Exists' property of 'Remote Connection Integration' custom control equals 'True'
-            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsRemoteConnectionIntegrationExists, comboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
-                    "x.");
-
-            // Click 'Remote Connection Integration' custom control
-            Mouse.Click(comboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
-
-            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
-            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
-        }
-        
-        /// <summary>
-        /// Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox - Use 'Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox()
-        {
-            #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
-            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
-            WpfCustom comboboxListItemAsRemoteConnectionIntegrationConnected = this.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected;
-            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(toggleButton, new Point(230, 9));
-
-            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-            Assert.AreEqual(this.Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-
-            // Verify that the 'Exists' property of 'Remote Connection Integration (Connected)' custom control equals 'True'
-            Assert.AreEqual(this.Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsRemoteConnectionIntegrationConnectedExists, comboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
-                    "x.");
-
-            // Click 'Remote Connection Integration (Connected)' custom control
-            Mouse.Click(comboboxListItemAsRemoteConnectionIntegrationConnected, new Point(226, 13));
-
-            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
-            Assert.AreEqual(this.Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
-        }
-        
-        /// <summary>
-        /// Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist - Use 'Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
-        {
-            #region Variable Declarations
-            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
-            #endregion
-
-            // Click 'RSAKLFSVRGENDEV' list item
-            Mouse.Click(rSAKLFSVRGENDEV, new Point(97, 17));
-
-            // Verify that the 'Text' property of 'Text' text box equals 'RSAKLFSVRGENDEV'
-            Assert.AreEqual(this.Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues.TextboxText, textbox.Text, "RSAKLFSVRGENDEV is not selected as the server in the DB source wizard.");
-        }
-        
-        /// <summary>
-        /// Select_SaveAsImage_FromContextMenu
-        /// </summary>
-        public void Select_SaveAsImage_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem saveasImage = this.MainStudioWindow.DesignSurfaceContextMenu.SaveasImage;
-            #endregion
-
-            // Click 'Save as Image' menu item
-            Mouse.Click(saveasImage, new Point(38, 15));
-        }
-        
-        /// <summary>
-        /// Select_SecurityTab
-        /// </summary>
-        public void Select_SecurityTab()
-        {
-            #region Variable Declarations
-            WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab;
-            #endregion
-
-            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
-            Mouse.Click(securityTab, new Point(102, 10));
-        }
-        
-        /// <summary>
-        /// Select_SetAsStartNode_FromContextMenu
-        /// </summary>
-        public void Select_SetAsStartNode_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem setasStartNode = this.MainStudioWindow.DesignSurfaceContextMenu.SetasStartNode;
-            #endregion
-
-            // Click 'Set as Start Node' menu item
-            Mouse.Click(setasStartNode, new Point(67, 16));
-        }
-        
-        /// <summary>
-        /// Select_SharepointTestServer
-        /// </summary>
-        public void Select_SharepointTestServer()
-        {
-            #region Variable Declarations
-            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
-            WpfListItem sharepointTestServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server.SharepointTestServer;
-            #endregion
-
-            // Click 'UI__Database_AutoID' combo box
-            Mouse.Click(server, new Point(98, 12));
-
-            // Click '{"Server":"http://rsaklfsvrsharep/","Authenticatio...' list item
-            Mouse.Click(sharepointTestServer, new Point(67, 13));
-        }
-        
-        /// <summary>
-        /// Select_ShowLargeView_FromContextMenu
-        /// </summary>
-        public void Select_ShowLargeView_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
-            #endregion
-
-            // Click 'Show Large View' menu item
-            Mouse.Click(showLargeView, new Point(43, 15));
-        }
-        
-        /// <summary>
-        /// Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox - Use 'Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfListItem comboboxlistItemAsSystemObject = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject;
-            #endregion
-
-            // Click 'NamespaceComboBox' combo box
-            Mouse.Click(classNameComboBox, new Point(216, 7));
-
-            // Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
-            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
-
-            // Click '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item
-            Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
-            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
-        }
-        
-        /// <summary>
-        /// Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox - Use 'Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfListItem systemRandomListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem;
-            #endregion
-
-            // Click 'NamespaceComboBox' combo box
-            Mouse.Click(classNameComboBox, new Point(216, 7));
-
-            // Click 'SystemRandom' list item
-            Mouse.Click(systemRandomListItem, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Random","MethodName":null}'
-            Assert.AreEqual(this.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
-        }
-        
-        /// <summary>
-        /// Select_Tests_From_Context_Menu - Use 'Select_Tests_From_Context_MenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_Tests_From_Context_Menu()
-        {
-            #region Variable Declarations
-            WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
-            WpfTabPage testsTabPage = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage;
-            #endregion
-
-            // Click 'Tests' menu item
-            Mouse.Click(tests, new Point(46, 16));
-
-            // Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
-            Assert.AreEqual(this.Select_Tests_From_Context_MenuParams.TestsTabPageExists, testsTabPage.Exists, "TestsTabPage does not exist after clicking view tests in the explorer context men" +
-                    "u.");
-        }
-        
-        /// <summary>
-        /// Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
-            #endregion
-
-            // Click 'ActionsComboBox' combo box
-            Mouse.Click(actionsComboBox, new Point(216, 7));
-
-            // Click 'Item1' list item
-            Mouse.Click(item1, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'ToString'
-            Assert.AreEqual(this.Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
-        }
-        
-        /// <summary>
-        /// Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist - Use 'Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist()
-        {
-            #region Variable Declarations
-            WpfListItem tSTCIREMOTE = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE;
-            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
-            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton;
-            #endregion
-
-            // Click 'TST-CI-REMOTE' list item
-            Mouse.Click(tSTCIREMOTE, new Point(70, 19));
-
-            // Verify that the 'Text' property of 'Text' text box equals 'TST-CI-REMOTE'
-            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.AddressEditBoxText, addressEditBox.Text, "Server source address textbox text does not equal TST-CI-REMOTE");
-
-            // Verify that the 'Exists' property of 'Test Connection' button equals 'True'
-            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.TestConnectionButtonExists, testConnectionButton.Exists, "Server source wizard does not contain a test connection button");
-        }
-        
-        /// <summary>
-        /// Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox - Use 'Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox sourcesCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox;
-            WpfListItem uITestingDBSourceListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox.UITestingDBSourceListItem;
-            #endregion
-
-            // Click 'SourcesComboBox' combo box
-            Mouse.Click(sourcesCombobox, new Point(216, 7));
-
-            // Click 'UITestingDBSource' list item
-            Mouse.Click(uITestingDBSourceListItem, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'SourcesComboBox' combo box equals 'UITestingDBSource'
-            Assert.AreEqual(this.Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams.SourcesComboboxSelectedItem, sourcesCombobox.SelectedItem, "SQL Server large view source combobox selected item is not equal to UITestingDBSo" +
-                    "urce.");
-        }
-        
-        /// <summary>
-        /// Select_User_From_RunTestAs - Use 'Select_User_From_RunTestAsParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_User_From_RunTestAs()
-        {
-            #region Variable Declarations
-            WpfRadioButton userRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UserRadioButton;
-            WpfEdit usernameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UsernameTextBoxEdit;
-            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.PasswordTextBoxEdit;
-            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
-
-            // Select 'User' radio button
-            userRadioButton.Selected = this.Select_User_From_RunTestAsParams.UserRadioButtonSelected;
-
-            // Verify that the 'Exists' property of 'UsernameTextBox' text box equals 'True'
-            Assert.AreEqual(this.Select_User_From_RunTestAsParams.UsernameTextBoxEditExists, usernameTextBoxEdit.Exists, "Username textbox does not exist after clicking RunAsUser radio button");
-
-            // Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
-            Assert.AreEqual(this.Select_User_From_RunTestAsParams.PasswordTextBoxEditExists, passwordTextBoxEdit.Exists, "Password textbox does not exist after clicking RunAsUser radio button");
-
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(this.Select_User_From_RunTestAsParams.SaveButtonEnabled, saveButton.Enabled, "Save Ribbon Menu buton is disabled after changing test");
-        }
-        
-        /// <summary>
-        /// Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox - Use 'Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox()
-        {
-            #region Variable Declarations
-            WpfEdit dataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox;
-            #endregion
-
-            // Type '0' in 'Text' text box
-            dataTextbox.Text = this.Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues.DataTextboxText;
-
-            // Verify that the 'Text' property of 'Text' text box equals '0'
-            Assert.AreEqual(this.Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues.DataTextboxText1, dataTextbox.Text, "SQL Server large view inputs row 1 data textbox text is not equal to S");
-        }
-        
-        /// <summary>
-        /// Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox - Use 'Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox()
-        {
-            #region Variable Declarations
-            WpfEdit testDataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox;
-            #endregion
-
-            // Type '0' in 'Text' text box
-            testDataTextbox.Text = this.Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues.TestDataTextboxText;
-
-            // Verify that the 'Text' property of 'Text' text box equals '0'
-            Assert.AreEqual(this.Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues.TestDataTextboxText1, testDataTextbox.Text, "SQL Server large view test inputs row 1 test data textbox text is not equal to S");
-        }
-        
-        /// <summary>
-        /// Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox - Use 'Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
-        {
-            #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
-            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
-            #endregion
-
-            // Type 'rsaklfsvrgen' in 'Text' text box
-            textbox.Text = this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.TextboxText;
-
-            // Verify that the 'Exists' property of 'RSAKLFSVRGENDEV' list item equals 'True'
-            Assert.AreEqual(this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.RSAKLFSVRGENDEVExists, rSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
-        }
-        
-        /// <summary>
-        /// Type_TestSite_into_Web_Source_Wizard_Address_Textbox - Use 'Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Type_TestSite_into_Web_Source_Wizard_Address_Textbox()
-        {
-            #region Variable Declarations
-            WpfEdit addressTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox;
-            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton;
-            #endregion
-
-            // Type 'http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx' in 'ServerTextBox' text box
-            addressTextbox.Text = this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.AddressTextboxText;
-
-            // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
-            Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
-                    "d web address.");
-        }
-        
-        /// <summary>
-        /// Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurface - Use 'Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom selectAndApply = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply;
-            WpfComboBox selectFromIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.SelectFromIntellisenseTextbox;
-            WpfComboBox aliasIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.AliasIntellisenseTextbox;
-            WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.DropActivityHere;
-            #endregion
-
-            // Verify that the 'Exists' property of 'DsfSelectAndApplyActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues.SelectAndApplyExists, selectAndApply.Exists, "Select and apply does not exist on design surface after dragging from toolbox.");
-
-            // Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues.SelectFromIntellisenseTextboxExists, selectFromIntellisenseTextbox.Exists, "Select and apply select from textbox does not exist after dropping tool from tool" +
-                    "box.");
-
-            // Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues.AliasIntellisenseTextboxExists, aliasIntellisenseTextbox.Exists, "Select and apply alias textbox does not exist after dropping tool from toolbox.");
-
-            // Verify that the 'Exists' property of 'Drop Activity Here' custom control equals 'True'
-            Assert.AreEqual(this.Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues.DropActivityHereExists, dropActivityHere.Exists, "Select and apply activity drop box does not exist after dropping tool from toolbo" +
-                    "x.");
-        }
-        
-        /// <summary>
         /// Open_Selectandapply_Large_View - Use 'Open_Selectandapply_Large_ViewParams' to pass parameters into this method.
         /// </summary>
+        [When(@"I Open Selectandapply Large View")]
         public void Open_Selectandapply_Large_View()
         {
             #region Variable Declarations
@@ -6752,6 +4958,2160 @@ namespace Warewolf.UITests
             // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
             Assert.AreEqual(this.Open_Selectandapply_Large_ViewParams.OnErrorPaneExists, onErrorPane.Exists, "Select and apply OnError pane does not exist after openning tool large view with " +
                     "double click.");
+        }
+        
+        /// <summary>
+        /// Open_Sharepoint_Create_Tool_Large_View
+        /// </summary>
+        [When(@"I Open Sharepoint Create Tool Large View")]
+        public void Open_Sharepoint_Create_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate;
+            #endregion
+
+            // Double-Click 'SharepointCreateListItemActivity' custom control
+            Mouse.DoubleClick(sharepointCreate, new Point(195, 11));
+        }
+        
+        /// <summary>
+        /// Open_Sharepoint_Delete_Tool_Large_View
+        /// </summary>
+        [When(@"I Open Sharepoint Delete Tool Large View")]
+        public void Open_Sharepoint_Delete_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete;
+            #endregion
+
+            // Double-Click 'SharepointDeleteListItemActivity' custom control
+            Mouse.DoubleClick(sharepointDelete, new Point(218, 11));
+        }
+        
+        /// <summary>
+        /// Open_Sharepoint_Read_Tool_Large_View
+        /// </summary>
+        [When(@"I Open Sharepoint Read Tool Large View")]
+        public void Open_Sharepoint_Read_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead;
+            #endregion
+
+            // Double-Click 'SharepointReadListActivity' custom control
+            Mouse.DoubleClick(sharepointRead, new Point(195, 7));
+        }
+        
+        /// <summary>
+        /// Open_Sharepoint_Update_Tool_Large_View
+        /// </summary>
+        [When(@"I Open Sharepoint Update Tool Large View")]
+        public void Open_Sharepoint_Update_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointUpdate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate;
+            #endregion
+
+            // Double-Click 'SharepointUpdateListItemActivity' custom control
+            Mouse.DoubleClick(sharepointUpdate, new Point(230, 11));
+        }
+        
+        /// <summary>
+        /// Open_SMTP_Email_Tool_Large_View - Use 'Open_SMTP_Email_Tool_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open SMTP Email Tool Large View")]
+        public void Open_SMTP_Email_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeView;
+            #endregion
+
+            // Double-Click 'DsfSendEmailActivity' custom control
+            Mouse.DoubleClick(sMTPEmail, new Point(168, 11));
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_SMTP_Email_Tool_Large_ViewParams.LargeViewExists, largeView.Exists, "Email Tool large view does not exist on the design surface");
+        }
+        
+        /// <summary>
+        /// Open_SortRecords_Large_View
+        /// </summary>
+        [When(@"I Open SortRecords Large View")]
+        public void Open_SortRecords_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sortRecords = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
+            #endregion
+
+            // Double-Click 'DsfSortRecordsActivity' custom control
+            Mouse.DoubleClick(sortRecords, new Point(114, 13));
+        }
+        
+        /// <summary>
+        /// Open_SQL_Bulk_Insert_Tool_Large_View - Use 'Open_SQL_Bulk_Insert_Tool_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open SQL Bulk Insert Tool Large View")]
+        public void Open_SQL_Bulk_Insert_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
+            #endregion
+
+            // Double-Click 'DsfSqlBulkInsertActivity' custom control
+            Mouse.DoubleClick(sqlBulkInsert, new Point(157, 6));
+
+            // Verify that the 'Exists' property of 'DsfSqlBulkInsertActivity' custom control equals 'True'
+            Assert.AreEqual(this.Open_SQL_Bulk_Insert_Tool_Large_ViewParams.SqlBulkInsertExists, sqlBulkInsert.Exists, "Sql Bulk Insert large view on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Open_SQL_Bulk_Insert_Tool_Qvi_Large_View - Use 'Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open SQL Bulk Insert Tool Qvi Large View")]
+        public void Open_SQL_Bulk_Insert_Tool_Qvi_Large_View()
+        {
+            #region Variable Declarations
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.OpenQuickVariableInpToggleButton;
+            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
+            #endregion
+
+            // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
+            openQuickVariableInpToggleButton.Pressed = this.Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
+
+            // Verify that the 'Exists' property of 'DsfSqlBulkInsertActivity' custom control equals 'True'
+            Assert.AreEqual(this.Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams.SqlBulkInsertExists, sqlBulkInsert.Exists, "Sql Bulk Insert Qvi window on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Open_SQL_Large_View_FromContextMenu - Use 'Open_SQL_Large_View_FromContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open SQL Large View FromContextMenu")]
+        public void Open_SQL_Large_View_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
+            WpfButton newDbSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
+            #endregion
+
+            // Right-Click 'DsfSqlServerDatabaseActivity' custom control
+            Mouse.Click(sqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
+
+            // Click 'Show Large View' menu item
+            Mouse.Click(showLargeView, new Point(43, 15));
+
+            // Verify that the 'Exists' property of 'New' button equals 'True'
+            Assert.AreEqual(this.Open_SQL_Large_View_FromContextMenuParams.NewDbSourceButtonExists, newDbSourceButton.Exists, "\"New button does not exist\"");
+        }
+        
+        /// <summary>
+        /// Open_Sql_Server_Tool_Large_View - Use 'Open_Sql_Server_Tool_Large_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Sql Server Tool Large View")]
+        public void Open_Sql_Server_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView;
+            #endregion
+
+            // Double-Click 'DsfSqlServerDatabaseActivity' custom control
+            Mouse.DoubleClick(sqlServerDatabase, new Point(145, 5));
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Sql_Server_Tool_Large_ViewExpectedValues.LargeViewExists, largeView.Exists, "SQL Server tool large view does not exist on the design surface.");
+        }
+        
+        /// <summary>
+        /// Open_Sql_Server_Tool_small_View
+        /// </summary>
+        [When(@"I Open Sql Server Tool small View")]
+        public void Open_Sql_Server_Tool_small_View()
+        {
+            #region Variable Declarations
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            #endregion
+
+            // Double-Click 'DsfSqlServerDatabaseActivity' custom control
+            Mouse.DoubleClick(sqlServerDatabase, new Point(253, 18));
+        }
+        
+        /// <summary>
+        /// Open_System_Information_Tool_Qvi_Large_View - Use 'Open_System_Information_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open System Information Tool Qvi Large View")]
+        public void Open_System_Information_Tool_Qvi_Large_View()
+        {
+            #region Variable Declarations
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.OpenQuickVariableInpToggleButton;
+            WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
+            #endregion
+
+            // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
+            openQuickVariableInpToggleButton.Pressed = this.Open_System_Information_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
+
+            // Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
+            Assert.AreEqual(this.Open_System_Information_Tool_Qvi_Large_ViewParams.GatherSystemInfoExists, gatherSystemInfo.Exists, "System Info QVI window does not exist on the design surface");
+        }
+        
+        /// <summary>
+        /// Open_UniqueRecords_Large_View
+        /// </summary>
+        [When(@"I Open UniqueRecords Large View")]
+        public void Open_UniqueRecords_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom unique = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique;
+            #endregion
+
+            // Double-Click 'DsfUniqueActivity' custom control
+            Mouse.DoubleClick(unique, new Point(134, 10));
+        }
+        
+        /// <summary>
+        /// Open_Unzip_Tool_Large_View - Use 'Open_Unzip_Tool_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Unzip Tool Large View")]
+        public void Open_Unzip_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom unZip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
+            #endregion
+
+            // Double-Click 'DsfUnZip' custom control
+            Mouse.DoubleClick(unZip, new Point(102, 14));
+
+            // Verify that the 'Exists' property of 'DsfUnZip' custom control equals 'True'
+            Assert.AreEqual(this.Open_Unzip_Tool_Large_ViewParams.UnZipExists, unZip.Exists, "Unzip large view on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Open_WebRequest_LargeView - Use 'Open_WebRequest_LargeViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open WebRequest LargeView")]
+        public void Open_WebRequest_LargeView()
+        {
+            #region Variable Declarations
+            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeView;
+            #endregion
+
+            // Double-Click 'DsfWebRequestActivity' custom control
+            Mouse.DoubleClick(webRequest, new Point(126, 13));
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_WebRequest_LargeViewParams.LargeViewExists, largeView.Exists, "Web request large view does not exist on design surface.");
+        }
+        
+        /// <summary>
+        /// Open_Write_File_Tool_Large_View - Use 'Open_Write_File_Tool_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Write File Tool Large View")]
+        public void Open_Write_File_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
+            #endregion
+
+            // Double-Click 'DsfFileWrite' custom control
+            Mouse.DoubleClick(fileWrite, new Point(149, 13));
+
+            // Verify that the 'Exists' property of 'DsfFileWrite' custom control equals 'True'
+            Assert.AreEqual(this.Open_Write_File_Tool_Large_ViewParams.FileWriteExists, fileWrite.Exists, "Write file large view on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Open_Xpath_Tool_Large_View - Use 'Open_Xpath_Tool_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Xpath Tool Large View")]
+        public void Open_Xpath_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            #endregion
+
+            // Double-Click 'DsfXPathActivity' custom control
+            Mouse.DoubleClick(xPath, new Point(113, 12));
+
+            // Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
+            Assert.AreEqual(this.Open_Xpath_Tool_Large_ViewParams.XPathExists, xPath.Exists, "Xpath large view does not exist on the design surface");
+        }
+        
+        /// <summary>
+        /// Open_Xpath_Tool_Qvi_Large_View - Use 'Open_Xpath_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Xpath Tool Qvi Large View")]
+        public void Open_Xpath_Tool_Qvi_Large_View()
+        {
+            #region Variable Declarations
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.OpenQuickVariableInpToggleButton;
+            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.QuickVariableInputContent;
+            #endregion
+
+            // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
+            openQuickVariableInpToggleButton.Pressed = this.Open_Xpath_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
+
+            // Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
+            Assert.AreEqual(this.Open_Xpath_Tool_Qvi_Large_ViewParams.XPathExists, xPath.Exists, "Xpath Qvi does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Xpath_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on XPath is not open");
+        }
+        
+        /// <summary>
+        /// Open_Zip_Tool_Large_View - Use 'Open_Zip_Tool_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Zip Tool Large View")]
+        public void Open_Zip_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom zip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
+            #endregion
+
+            // Double-Click 'DsfZip' custom control
+            Mouse.DoubleClick(zip, new Point(124, 12));
+
+            // Verify that the 'Exists' property of 'DsfZip' custom control equals 'True'
+            Assert.AreEqual(this.Open_Zip_Tool_Large_ViewParams.ZipExists, zip.Exists, "Zip large view on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Press_F6 - Use 'Press_F6Params' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Press F6")]
+        public void Press_F6()
+        {
+            #region Variable Declarations
+            WpfWindow mainStudioWindow = this.MainStudioWindow;
+            #endregion
+
+            // Type '{F6}' in 'Warewolf' window
+            Keyboard.SendKeys(mainStudioWindow, this.Press_F6Params.MainStudioWindowSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// PressF11_EnterFullScreen - Use 'PressF11_EnterFullScreenParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I PressF11 EnterFullScreen")]
+        public void PressF11_EnterFullScreen()
+        {
+            #region Variable Declarations
+            WpfWindow mainStudioWindow = this.MainStudioWindow;
+            #endregion
+
+            // Type '{F11}' in 'Warewolf' window
+            Keyboard.SendKeys(mainStudioWindow, this.PressF11_EnterFullScreenParams.MainStudioWindowSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// Remove_WorkflowName_From_Save_Dialog - Use 'Remove_WorkflowName_From_Save_DialogParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Remove WorkflowName From Save Dialog")]
+        public void Remove_WorkflowName_From_Save_Dialog()
+        {
+            #region Variable Declarations
+            WpfEdit serviceNameTextBox = this.SaveDialogWindow.ServiceNameTextBox;
+            WpfText errorLabel = this.SaveDialogWindow.ErrorLabel;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Type '' in 'ServiceNameTextBox' text box
+            serviceNameTextBox.Text = this.Remove_WorkflowName_From_Save_DialogParams.ServiceNameTextBoxText;
+
+            // Verify that the 'DisplayText' property of ''Name' cannot be empty.' label equals 'Cannot be null'
+            Assert.AreEqual(this.Remove_WorkflowName_From_Save_DialogParams.ErrorLabelDisplayText, errorLabel.DisplayText, "Name cannot be null validation message does not appear");
+
+            // Verify that the 'Enabled' property of 'Save' button equals 'False'
+            Assert.AreEqual(this.Remove_WorkflowName_From_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save button on the Save dialog is enabled");
+        }
+        
+        /// <summary>
+        /// Rename_LocalWorkflow_To_SecodWorkFlow - Use 'Rename_LocalWorkflow_To_SecodWorkFlowParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Rename LocalWorkflow To SecodWorkFlow")]
+        public void Rename_LocalWorkflow_To_SecodWorkFlow()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem rename = this.MainStudioWindow.ExplorerContextMenu.Rename;
+            WpfEdit itemEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
+
+            // Click 'Rename' menu item
+            Mouse.Click(rename, new Point(73, 15));
+
+            // Type 'SecondWorkflow' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            itemEdit.Text = this.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditText;
+
+            // Type '{Enter}' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Keyboard.SendKeys(itemEdit, this.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// Right_Click_Help_Tab
+        /// </summary>
+        [When(@"I Right Click Help Tab")]
+        public void Right_Click_Help_Tab()
+        {
+            #region Variable Declarations
+            WpfTabPage helpTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.HelpTab;
+            #endregion
+
+            // Right-Click 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab
+            Mouse.Click(helpTab, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
+        }
+        
+        /// <summary>
+        /// RightClick_Assign_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Assign OnDesignSurface")]
+        public void RightClick_Assign_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            #endregion
+
+            // Right-Click 'DsfMultiAssignActivity' custom control
+            Mouse.Click(multiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_BaseConvert_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick BaseConvert OnDesignSurface")]
+        public void RightClick_BaseConvert_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
+            #endregion
+
+            // Right-Click 'DsfBaseConvertActivity' custom control
+            Mouse.Click(baseConvert, MouseButtons.Right, ModifierKeys.None, new Point(148, 12));
+        }
+        
+        /// <summary>
+        /// RightClick_Calculate_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Calculate OnDesignSurface")]
+        public void RightClick_Calculate_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
+            #endregion
+
+            // Right-Click 'DsfCalculateActivity' custom control
+            Mouse.Click(calculate, MouseButtons.Right, ModifierKeys.None, new Point(144, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_CaseConvert_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick CaseConvert OnDesignSurface")]
+        public void RightClick_CaseConvert_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom caseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
+            #endregion
+
+            // Right-Click 'DsfCaseConvertActivity' custom control
+            Mouse.Click(caseConvert, MouseButtons.Right, ModifierKeys.None, new Point(156, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_Comment_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Comment OnDesignSurface")]
+        public void RightClick_Comment_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom comment = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
+            #endregion
+
+            // Right-Click 'DsfCommentActivity' custom control
+            Mouse.Click(comment, MouseButtons.Right, ModifierKeys.None, new Point(121, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_Copy_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Copy OnDesignSurface")]
+        public void RightClick_Copy_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom pathCopy = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
+            #endregion
+
+            // Right-Click 'DsfPathCopy' custom control
+            Mouse.Click(pathCopy, MouseButtons.Right, ModifierKeys.None, new Point(104, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_CountRecords_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick CountRecords OnDesignSurface")]
+        public void RightClick_CountRecords_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom countRecordset = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset;
+            #endregion
+
+            // Right-Click 'DsfCountRecordsetActivity' custom control
+            Mouse.Click(countRecordset, MouseButtons.Right, ModifierKeys.None, new Point(131, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_CreateJSON_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick CreateJSON OnDesignSurface")]
+        public void RightClick_CreateJSON_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
+            #endregion
+
+            // Right-Click 'DsfCreateJsonActivity' custom control
+            Mouse.Click(createJson, MouseButtons.Right, ModifierKeys.None, new Point(128, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_CreateTool_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick CreateTool OnDesignSurface")]
+        public void RightClick_CreateTool_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom pathCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
+            #endregion
+
+            // Right-Click 'DsfPathCreate' custom control
+            Mouse.Click(pathCreate, MouseButtons.Right, ModifierKeys.None, new Point(108, 14));
+        }
+        
+        /// <summary>
+        /// RightClick_DataMerge_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick DataMerge OnDesignSurface")]
+        public void RightClick_DataMerge_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dataMerge = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
+            #endregion
+
+            // Right-Click 'DsfDataMergeActivity' custom control
+            Mouse.Click(dataMerge, MouseButtons.Right, ModifierKeys.None, new Point(140, 7));
+        }
+        
+        /// <summary>
+        /// RightClick_DataSplit_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick DataSplit OnDesignSurface")]
+        public void RightClick_DataSplit_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dataSplit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
+            #endregion
+
+            // Right-Click 'DsfDataSplitActivity' custom control
+            Mouse.Click(dataSplit, MouseButtons.Right, ModifierKeys.None, new Point(153, 6));
+        }
+        
+        /// <summary>
+        /// RightClick_DateTime_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick DateTime OnDesignSurface")]
+        public void RightClick_DateTime_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dateTime = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
+            #endregion
+
+            // Right-Click 'DsfDateTimeActivity' custom control
+            Mouse.Click(dateTime, MouseButtons.Right, ModifierKeys.None, new Point(145, 13));
+        }
+        
+        /// <summary>
+        /// RightClick_DateTimeDifference_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick DateTimeDifference OnDesignSurface")]
+        public void RightClick_DateTimeDifference_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dateTimeDifference = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
+            #endregion
+
+            // Right-Click 'DsfDateTimeDifferenceActivity' custom control
+            Mouse.Click(dateTimeDifference, MouseButtons.Right, ModifierKeys.None, new Point(174, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_Decision_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Decision OnDesignSurface")]
+        public void RightClick_Decision_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom decision = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision;
+            #endregion
+
+            // Right-Click 'FlowDecision' custom control
+            Mouse.Click(decision, MouseButtons.Right, ModifierKeys.None, new Point(28, 22));
+        }
+        
+        /// <summary>
+        /// RightClick_Delete_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Delete OnDesignSurface")]
+        public void RightClick_Delete_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom pathDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
+            #endregion
+
+            // Right-Click 'DsfPathDelete' custom control
+            Mouse.Click(pathDelete, MouseButtons.Right, ModifierKeys.None, new Point(100, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_DeleteRecord_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick DeleteRecord OnDesignSurface")]
+        public void RightClick_DeleteRecord_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom deleteRecord = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord;
+            #endregion
+
+            // Right-Click 'DsfDeleteRecordActivity' custom control
+            Mouse.Click(deleteRecord, MouseButtons.Right, ModifierKeys.None, new Point(116, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_DotNetDllConnector_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick DotNetDllConnector OnDesignSurface")]
+        public void RightClick_DotNetDllConnector_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dotNetDll = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
+            #endregion
+
+            // Right-Click 'DsfDotNetDllActivity' custom control
+            Mouse.Click(dotNetDll, MouseButtons.Right, ModifierKeys.None, new Point(164, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_DropboxFileOperation_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick DropboxFileOperation OnDesignSurface")]
+        public void RightClick_DropboxFileOperation_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dropBox_DOWNLOAD = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD;
+            #endregion
+
+            // Right-Click 'DsfDropBoxFileActivity' custom control
+            Mouse.Click(dropBox_DOWNLOAD, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_Email_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Email OnDesignSurface")]
+        public void RightClick_Email_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
+            #endregion
+
+            // Right-Click 'DsfSendEmailActivity' custom control
+            Mouse.Click(sMTPEmail, MouseButtons.Right, ModifierKeys.None, new Point(129, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_ExecuteCommandLine_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick ExecuteCommandLine OnDesignSurface")]
+        public void RightClick_ExecuteCommandLine_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
+            #endregion
+
+            // Right-Click 'DsfExecuteCommandLineActivity' custom control
+            Mouse.Click(executeCommandLine, MouseButtons.Right, ModifierKeys.None, new Point(165, 13));
+        }
+        
+        /// <summary>
+        /// RightClick_Explorer_First_Remote_Server_First_Item
+        /// </summary>
+        [When(@"I RightClick Explorer First Remote Server First Item")]
+        public void RightClick_Explorer_First_Remote_Server_First_Item()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_Explorer_Localhost_First_Item - Use 'RightClick_Explorer_Localhost_First_ItemParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I RightClick Explorer Localhost First Item")]
+        public void RightClick_Explorer_Localhost_First_Item()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem open = this.MainStudioWindow.ExplorerContextMenu.Open;
+            WpfMenuItem showDependencies = this.MainStudioWindow.ExplorerContextMenu.ShowDependencies;
+            WpfMenuItem delete = this.MainStudioWindow.ExplorerContextMenu.Delete;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+
+            // Verify that the 'Exists' property of 'Open' menu item equals 'True'
+            Assert.AreEqual(this.RightClick_Explorer_Localhost_First_ItemParams.OpenExists, open.Exists, "Open does not exist in explorer context menu.");
+
+            // Verify that the 'Exists' property of 'Show Dependencies' menu item equals 'True'
+            Assert.AreEqual(this.RightClick_Explorer_Localhost_First_ItemParams.ShowDependenciesExists, showDependencies.Exists, "ShowDependencies does not exist in explorer context menu.");
+
+            // Verify that the 'Exists' property of 'Delete' menu item equals 'True'
+            Assert.AreEqual(this.RightClick_Explorer_Localhost_First_ItemParams.DeleteExists, delete.Exists, "Delete does not exist in ExplorerContextMenu");
+        }
+        
+        /// <summary>
+        /// RightClick_FindIndex_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick FindIndex OnDesignSurface")]
+        public void RightClick_FindIndex_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom findIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
+            #endregion
+
+            // Right-Click 'DsfIndexActivity' custom control
+            Mouse.Click(findIndex, MouseButtons.Right, ModifierKeys.None, new Point(113, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_FindRecordIndex_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick FindRecordIndex OnDesignSurface")]
+        public void RightClick_FindRecordIndex_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom findRecordsIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex;
+            #endregion
+
+            // Right-Click 'DsfFindRecordsMultipleCriteriaActivity' custom control
+            Mouse.Click(findRecordsIndex, MouseButtons.Right, ModifierKeys.None, new Point(191, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_ForEach_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick ForEach OnDesignSurface")]
+        public void RightClick_ForEach_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom forEach = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
+            #endregion
+
+            // Right-Click 'DsfForEachActivity' custom control
+            Mouse.Click(forEach, MouseButtons.Right, ModifierKeys.None, new Point(137, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_FormatNumber_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick FormatNumber OnDesignSurface")]
+        public void RightClick_FormatNumber_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom formatNumber = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
+            #endregion
+
+            // Right-Click 'DsfNumberFormatActivity' custom control
+            Mouse.Click(formatNumber, MouseButtons.Right, ModifierKeys.None, new Point(143, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_Length_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Length OnDesignSurface")]
+        public void RightClick_Length_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom length = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
+            #endregion
+
+            // Right-Click 'DsfRecordsetLengthActivity' custom control
+            Mouse.Click(length, MouseButtons.Right, ModifierKeys.None, new Point(97, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_Move_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Move OnDesignSurface")]
+        public void RightClick_Move_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom pathMove = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
+            #endregion
+
+            // Right-Click 'DsfPathMove' custom control
+            Mouse.Click(pathMove, MouseButtons.Right, ModifierKeys.None, new Point(98, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_MySQLConnector_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick MySQLConnector OnDesignSurface")]
+        public void RightClick_MySQLConnector_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom mySqlDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase;
+            #endregion
+
+            // Right-Click 'DsfMySqlDatabaseActivity' custom control
+            Mouse.Click(mySqlDatabase, MouseButtons.Right, ModifierKeys.None, new Point(202, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_New_Workflow_Tab
+        /// </summary>
+        [When(@"I RightClick New Workflow Tab")]
+        public void RightClick_New_Workflow_Tab()
+        {
+            #region Variable Declarations
+            WpfTabPage workflowTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab;
+            #endregion
+
+            // Right-Click 'Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi...' tab
+            Mouse.Click(workflowTab, MouseButtons.Right, ModifierKeys.None, new Point(63, 18));
+        }
+        
+        /// <summary>
+        /// RightClick_Random_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Random OnDesignSurface")]
+        public void RightClick_Random_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom random = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
+            #endregion
+
+            // Right-Click 'DsfRandomActivity' custom control
+            Mouse.Click(random, MouseButtons.Right, ModifierKeys.None, new Point(107, 13));
+        }
+        
+        /// <summary>
+        /// RightClick_ReadFile_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick ReadFile OnDesignSurface")]
+        public void RightClick_ReadFile_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom fileRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
+            #endregion
+
+            // Right-Click 'DsfFileRead' custom control
+            Mouse.Click(fileRead, MouseButtons.Right, ModifierKeys.None, new Point(99, 14));
+        }
+        
+        /// <summary>
+        /// RightClick_ReadFolder_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick ReadFolder OnDesignSurface")]
+        public void RightClick_ReadFolder_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom folderRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
+            #endregion
+
+            // Right-Click 'DsfFolderRead' custom control
+            Mouse.Click(folderRead, MouseButtons.Right, ModifierKeys.None, new Point(115, 12));
+        }
+        
+        /// <summary>
+        /// RightClick_Rename_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Rename OnDesignSurface")]
+        public void RightClick_Rename_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom pathRename = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
+            #endregion
+
+            // Right-Click 'DsfPathRename' custom control
+            Mouse.Click(pathRename, MouseButtons.Right, ModifierKeys.None, new Point(103, 7));
+        }
+        
+        /// <summary>
+        /// RightClick_Replace_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Replace OnDesignSurface")]
+        public void RightClick_Replace_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom replace = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
+            #endregion
+
+            // Right-Click 'DsfReplaceActivity' custom control
+            Mouse.Click(replace, MouseButtons.Right, ModifierKeys.None, new Point(100, 7));
+        }
+        
+        /// <summary>
+        /// RightClick_ScriptTool_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick ScriptTool OnDesignSurface")]
+        public void RightClick_ScriptTool_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom scripting = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Scripting;
+            #endregion
+
+            // Right-Click 'DsfScriptingActivity' custom control
+            Mouse.Click(scripting, MouseButtons.Right, ModifierKeys.None, new Point(110, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_Sequence_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Sequence OnDesignSurface")]
+        public void RightClick_Sequence_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
+            #endregion
+
+            // Right-Click 'DsfSequenceActivity' custom control
+            Mouse.Click(sequence, MouseButtons.Right, ModifierKeys.None, new Point(119, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_SharepointCreateListItem_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick SharepointCreateListItem OnDesignSurface")]
+        public void RightClick_SharepointCreateListItem_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate;
+            #endregion
+
+            // Right-Click 'SharepointCreateListItemActivity' custom control
+            Mouse.Click(sharepointCreate, MouseButtons.Right, ModifierKeys.None, new Point(199, 12));
+        }
+        
+        /// <summary>
+        /// RightClick_SharepointDelete_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick SharepointDelete OnDesignSurface")]
+        public void RightClick_SharepointDelete_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete;
+            #endregion
+
+            // Right-Click 'SharepointDeleteListItemActivity' custom control
+            Mouse.Click(sharepointDelete, MouseButtons.Right, ModifierKeys.None, new Point(217, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_SharepointRead_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick SharepointRead OnDesignSurface")]
+        public void RightClick_SharepointRead_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead;
+            #endregion
+
+            // Right-Click 'SharepointReadListActivity' custom control
+            Mouse.Click(sharepointRead, MouseButtons.Right, ModifierKeys.None, new Point(203, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_SharepointUpdate_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick SharepointUpdate OnDesignSurface")]
+        public void RightClick_SharepointUpdate_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointUpdate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate;
+            #endregion
+
+            // Right-Click 'SharepointUpdateListItemActivity' custom control
+            Mouse.Click(sharepointUpdate, MouseButtons.Right, ModifierKeys.None, new Point(210, 5));
+        }
+        
+        /// <summary>
+        /// RightClick_SortRecords_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick SortRecords OnDesignSurface")]
+        public void RightClick_SortRecords_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sortRecords = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
+            #endregion
+
+            // Right-Click 'DsfSortRecordsActivity' custom control
+            Mouse.Click(sortRecords, MouseButtons.Right, ModifierKeys.None, new Point(118, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_SQLConnector_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick SQLConnector OnDesignSurface")]
+        public void RightClick_SQLConnector_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
+            #endregion
+
+            // Right-Click 'DsfSqlBulkInsertActivity' custom control
+            Mouse.Click(sqlBulkInsert, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
+        }
+        
+        /// <summary>
+        /// RightClick_SqlServerConnector_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick SqlServerConnector OnDesignSurface")]
+        public void RightClick_SqlServerConnector_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            #endregion
+
+            // Right-Click 'DsfSqlServerDatabaseActivity' custom control
+            Mouse.Click(sqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(198, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_Switch_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Switch OnDesignSurface")]
+        public void RightClick_Switch_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom switch1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
+            #endregion
+
+            // Right-Click 'FlowSwitch`1[String]' custom control
+            Mouse.Click(switch1, MouseButtons.Right, ModifierKeys.None, new Point(46, 15));
+        }
+        
+        /// <summary>
+        /// RightClick_SystemInformation_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick SystemInformation OnDesignSurface")]
+        public void RightClick_SystemInformation_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
+            #endregion
+
+            // Right-Click 'DsfGatherSystemInformationActivity' custom control
+            Mouse.Click(gatherSystemInfo, MouseButtons.Right, ModifierKeys.None, new Point(217, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_UniqueRecords_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick UniqueRecords OnDesignSurface")]
+        public void RightClick_UniqueRecords_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom unique = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique;
+            #endregion
+
+            // Right-Click 'DsfUniqueActivity' custom control
+            Mouse.Click(unique, MouseButtons.Right, ModifierKeys.None, new Point(133, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_Unzip_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Unzip OnDesignSurface")]
+        public void RightClick_Unzip_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom unZip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
+            #endregion
+
+            // Right-Click 'DsfUnZip' custom control
+            Mouse.Click(unZip, MouseButtons.Right, ModifierKeys.None, new Point(101, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_WebRequest_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick WebRequest OnDesignSurface")]
+        public void RightClick_WebRequest_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
+            #endregion
+
+            // Right-Click 'DsfWebRequestActivity' custom control
+            Mouse.Click(webRequest, MouseButtons.Right, ModifierKeys.None, new Point(165, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_WriteFile_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick WriteFile OnDesignSurface")]
+        public void RightClick_WriteFile_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
+            #endregion
+
+            // Right-Click 'DsfFileWrite' custom control
+            Mouse.Click(fileWrite, MouseButtons.Right, ModifierKeys.None, new Point(96, 12));
+        }
+        
+        /// <summary>
+        /// RightClick_XPath_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick XPath OnDesignSurface")]
+        public void RightClick_XPath_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            #endregion
+
+            // Right-Click 'DsfXPathActivity' custom control
+            Mouse.Click(xPath, MouseButtons.Right, ModifierKeys.None, new Point(99, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_Zip_OnDesignSurface
+        /// </summary>
+        [When(@"I RightClick Zip OnDesignSurface")]
+        public void RightClick_Zip_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom zip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
+            #endregion
+
+            // Right-Click 'DsfZip' custom control
+            Mouse.Click(zip, MouseButtons.Right, ModifierKeys.None, new Point(95, 12));
+        }
+        
+        /// <summary>
+        /// Search_And_Select_DiceRoll - Use 'Search_And_Select_DiceRollParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Search And Select DiceRoll")]
+        public void Search_And_Select_DiceRoll()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Click 'SearchTextBox' text box
+            Mouse.Click(searchTextBox, new Point(165, 9));
+
+            // Type 'Dice Roll' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Search_And_Select_DiceRollParams.SearchTextBoxText;
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
+        }
+        
+        /// <summary>
+        /// Search_And_Select_HelloWolrd - Use 'Search_And_Select_HelloWolrdParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Search And Select HelloWolrd")]
+        public void Search_And_Select_HelloWolrd()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Click 'SearchTextBox' text box
+            Mouse.Click(searchTextBox, new Point(165, 9));
+
+            // Type 'Hello World' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Search_And_Select_HelloWolrdParams.SearchTextBoxText;
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
+        }
+        
+        /// <summary>
+        /// Select_Copy_FromContextMenu
+        /// </summary>
+        [When(@"I Select Copy FromContextMenu")]
+        public void Select_Copy_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem copy = this.MainStudioWindow.DesignSurfaceContextMenu.Copy;
+            #endregion
+
+            // Click 'Copy' menu item
+            Mouse.Click(copy, new Point(27, 18));
+        }
+        
+        /// <summary>
+        /// Select_CopyAsImage_FromContextMenu
+        /// </summary>
+        [When(@"I Select CopyAsImage FromContextMenu")]
+        public void Select_CopyAsImage_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem copyasImage = this.MainStudioWindow.DesignSurfaceContextMenu.CopyasImage;
+            #endregion
+
+            // Click 'Copy as Image' menu item
+            Mouse.Click(copyasImage, new Point(62, 22));
+        }
+        
+        /// <summary>
+        /// Select_Cut_FromContextMenu
+        /// </summary>
+        [When(@"I Select Cut FromContextMenu")]
+        public void Select_Cut_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem cut = this.MainStudioWindow.DesignSurfaceContextMenu.Cut;
+            #endregion
+
+            // Click 'Cut' menu item
+            Mouse.Click(cut, new Point(53, 16));
+        }
+        
+        /// <summary>
+        /// Select_Delete_FromContextMenu - Use 'Select_Delete_FromContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select Delete FromContextMenu")]
+        public void Select_Delete_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem delete = this.MainStudioWindow.DesignSurfaceContextMenu.Delete;
+            WpfWindow messageBoxWindow = this.MessageBoxWindow;
+            #endregion
+
+            // Click 'Delete' menu item
+            Mouse.Click(delete, new Point(27, 18));
+
+            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+            Assert.AreEqual(this.Select_Delete_FromContextMenuParams.MessageBoxWindowExists, messageBoxWindow.Exists, "Delete Dialog does not exist after clicking delete button");
+        }
+        
+        /// <summary>
+        /// Select_Delete_FromExplorerContextMenu - Use 'Select_Delete_FromExplorerContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select Delete FromExplorerContextMenu")]
+        public void Select_Delete_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem delete = this.MainStudioWindow.ExplorerContextMenu.Delete;
+            WpfButton yesButton = this.MessageBoxWindow.YesButton;
+            #endregion
+
+            // Click 'Delete' menu item
+            Mouse.Click(delete, new Point(87, 12));
+
+            // Verify that the 'Exists' property of 'Yes' button equals 'True'
+            Assert.AreEqual(this.Select_Delete_FromExplorerContextMenuParams.YesButtonExists, yesButton.Exists, "Message box Yes button does not exist");
+        }
+        
+        /// <summary>
+        /// Select_DeleteRow_FromContextMenu
+        /// </summary>
+        [When(@"I Select DeleteRow FromContextMenu")]
+        public void Select_DeleteRow_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem deleteRow = this.MainStudioWindow.DesignSurfaceContextMenu.DeleteRow;
+            #endregion
+
+            // Click 'Delete Row' menu item
+            Mouse.Click(deleteRow, new Point(74, 9));
+        }
+        
+        /// <summary>
+        /// Select_Deploy_FromExplorerContextMenu - Use 'Select_Deploy_FromExplorerContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select Deploy FromExplorerContextMenu")]
+        public void Select_Deploy_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem deploy = this.MainStudioWindow.ExplorerContextMenu.Deploy;
+            WpfTabPage deployTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab;
+            #endregion
+
+            // Click 'Deploy' menu item
+            Mouse.Click(deploy, new Point(57, 11));
+
+            // Verify that the 'Exists' property of 'Dev2.ViewModels.DeployWorksurfaceViewModel' tab equals 'True'
+            Assert.AreEqual(this.Select_Deploy_FromExplorerContextMenuParams.DeployTabExists, deployTab.Exists, "DeployTab does not exist after clicking Deploy");
+        }
+        
+        /// <summary>
+        /// Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox - Use 'Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select Dev2TestingDB From DB Source Wizard Database Combobox")]
+        public void Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox()
+        {
+            #region Variable Declarations
+            WpfCustom databaseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox;
+            WpfCustom comboboxListItemAsDev2TestingDB = this.MainStudioWindow.ComboboxListItemAsDev2TestingDB;
+            WpfText uIDev2TestingDBText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIDev2TestingDBText;
+            #endregion
+
+            // Click 'DatabaseComboxBox' custom control
+            Mouse.Click(databaseCombobox, new Point(221, 9));
+
+            // Click 'Dev2TestingDB' custom control
+            Mouse.Click(comboboxListItemAsDev2TestingDB, new Point(129, 19));
+
+            // Verify that the 'DisplayText' property of 'Dev2TestingDB' label equals 'Dev2TestingDB'
+            Assert.AreEqual(this.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams.UIDev2TestingDBTextDisplayText, uIDev2TestingDBText.DisplayText);
+        }
+        
+        /// <summary>
+        /// Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox
+        /// </summary>
+        [When(@"I Select First Item From DotNet DLL Large View Source Combobox")]
+        public void Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox;
+            WpfListItem listItem1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.ListItem1;
+            #endregion
+
+            // Click 'SourcesComboBox' combo box
+            Mouse.Click(sourcesComboBox, new Point(175, 9));
+
+            // Click 'Dev2.Common.Interfaces.Core.PluginSourceDefinition' list item
+            Mouse.Click(listItem1, new Point(163, 17));
+        }
+        
+        /// <summary>
+        /// Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select FirstItem From DotNet DLL Large View Action Combobox")]
+        public void Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
+            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
+            #endregion
+
+            // Click 'ActionsComboBox' combo box
+            Mouse.Click(actionsComboBox, new Point(216, 7));
+
+            // Click 'Item1' list item
+            Mouse.Click(item1, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Dev2.Common.Interfaces.PluginAction'
+            Assert.AreEqual(this.Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+        }
+        
+        /// <summary>
+        /// Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox - Use 'Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select GetCountries From SQL Server Large View Action Combobox")]
+        public void Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox actionsCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox;
+            WpfListItem getCountriesListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox.GetCountriesListItem;
+            #endregion
+
+            // Click 'ActionsComboBox' combo box
+            Mouse.Click(actionsCombobox, new Point(216, 7));
+
+            // Click 'GetCountries' list item
+            Mouse.Click(getCountriesListItem, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'dbo.GetCountries'
+            Assert.AreEqual(this.Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues.ActionsComboboxSelectedItem, actionsCombobox.SelectedItem, "GetCountries is not selected in SQL server large view action combobox.");
+        }
+        
+        /// <summary>
+        /// Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown - Use 'Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select http From Server Source Wizard Address Protocol Dropdown")]
+        public void Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown()
+        {
+            #region Variable Declarations
+            WpfButton toggleDropdown = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
+            WpfCustom comboboxListItemAsHttp = this.MainStudioWindow.ComboboxListItemAsHttp;
+            WpfText httpSelectedItemText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.HttpSelectedItemText;
+            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleDropdown, new Point(54, 8));
+
+            // Verify that the 'Exists' property of 'http' custom control equals 'True'
+            Assert.AreEqual(this.Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams.ComboboxListItemAsHttpExists, comboboxListItemAsHttp.Exists, "Http does not exist in server source wizard address protocol dropdown list.");
+
+            // Click 'http' custom control
+            Mouse.Click(comboboxListItemAsHttp, new Point(31, 12));
+
+            // Verify that the 'DisplayText' property of 'http' label equals 'http'
+            Assert.AreEqual(this.Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams.HttpSelectedItemTextDisplayText, httpSelectedItemText.DisplayText, "Server source wizard address protocol is not equal to http.");
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams.AddressEditBoxExists, addressEditBox.Exists, "Server source wizard address textbox does not exist");
+        }
+        
+        /// <summary>
+        /// Select_InsertRow_FromContextMenu
+        /// </summary>
+        [When(@"I Select InsertRow FromContextMenu")]
+        public void Select_InsertRow_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem insertRow = this.MainStudioWindow.DesignSurfaceContextMenu.InsertRow;
+            #endregion
+
+            // Click 'Insert Row' menu item
+            Mouse.Click(insertRow, new Point(66, 19));
+        }
+        
+        /// <summary>
+        /// Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox - Use 'Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select LocalhostConnected From Deploy Tab Destination Server Combobox")]
+        public void Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
+            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
+            WpfCustom comboboxListItemAsLocalhostConnected = this.MainStudioWindow.ComboboxListItemAsLocalhostConnected;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(230, 9));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+
+            // Verify that the 'Exists' property of 'localhost (Connected)' custom control equals 'True'
+            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsLocalhostConnectedExists, comboboxListItemAsLocalhostConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
+                    "x.");
+
+            // Click 'localhost (Connected)' custom control
+            Mouse.Click(comboboxListItemAsLocalhostConnected, new Point(226, 13));
+
+            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
+        }
+        
+        /// <summary>
+        /// Select_LoggingTab
+        /// </summary>
+        [When(@"I Select LoggingTab")]
+        public void Select_LoggingTab()
+        {
+            #region Variable Declarations
+            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
+            #endregion
+
+            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
+            Mouse.Click(loggingTab, new Point(57, 7));
+        }
+        
+        /// <summary>
+        /// Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown - Use 'Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select MSSQLSERVER From DB Source Wizard Address Protocol Dropdown")]
+        public void Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.ToggleButton;
+            WpfText microsoftSQLServerText = this.MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText;
+            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(625, 11));
+
+            // Verify that the 'Exists' property of 'Microsoft SQL Server' label equals 'True'
+            Assert.AreEqual(this.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams.MicrosoftSQLServerTextExists, microsoftSQLServerText.Exists, "Microsoft SQL Server does not exist as an option in new DB source wizard type com" +
+                    "bobox.");
+
+            // Click 'Microsoft SQL Server' label
+            Mouse.Click(microsoftSQLServerText, new Point(118, 6));
+
+            // Verify that the 'DisplayText' property of 'Microsoft SQL Server' label equals 'Microsoft SQL Server'
+            Assert.AreEqual(this.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams.MicrosoftSQLServerDisplayText, microsoftSQLServer.DisplayText, "Microsoft SQL Server is not selected in DB source wizard.");
+        }
+        
+        /// <summary>
+        /// Select_NewDatabaseSource_FromExplorerContextMenu
+        /// </summary>
+        [When(@"I Select NewDatabaseSource FromExplorerContextMenu")]
+        public void Select_NewDatabaseSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newDatabaseSource = this.MainStudioWindow.ExplorerContextMenu.NewDatabaseSource;
+            #endregion
+
+            // Click 'New Database Source' menu item
+            Mouse.Click(newDatabaseSource, new Point(72, 14));
+        }
+        
+        /// <summary>
+        /// Select_NewDatabaseSource_FromSqlServerTool - Use 'Select_NewDatabaseSource_FromSqlServerToolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select NewDatabaseSource FromSqlServerTool")]
+        public void Select_NewDatabaseSource_FromSqlServerTool()
+        {
+            #region Variable Declarations
+            WpfButton newDbSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
+            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
+            WpfEdit userNameTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox;
+            WpfEdit passwordTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox;
+            #endregion
+
+            // Click 'New' button
+            Mouse.Click(newDbSourceButton, new Point(16, 13));
+
+            // Verify that the 'DisplayText' property of 'Microsoft SQL Server' label equals 'Microsoft SQL Server'
+            Assert.AreEqual(this.Select_NewDatabaseSource_FromSqlServerToolParams.MicrosoftSQLServerDisplayText, microsoftSQLServer.DisplayText, "Microsoft SQL Server is not selected in DB source wizard.");
+
+            // Verify that the 'Exists' property of 'UserNameTextBox' text box equals 'True'
+            Assert.AreEqual(this.Select_NewDatabaseSource_FromSqlServerToolParams.UserNameTextBoxExists, userNameTextBox.Exists, "User name testbox does not exist on db source wizard.");
+
+            // Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
+            Assert.AreEqual(this.Select_NewDatabaseSource_FromSqlServerToolParams.PasswordTextBoxExists, passwordTextBox.Exists, "Password textbox does not exist on database source wizard.");
+        }
+        
+        /// <summary>
+        /// Select_NewDropboxSource_FromExplorerContextMenu
+        /// </summary>
+        [When(@"I Select NewDropboxSource FromExplorerContextMenu")]
+        public void Select_NewDropboxSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newDropboxSource = this.MainStudioWindow.ExplorerContextMenu.NewDropboxSource;
+            #endregion
+
+            // Click 'New Dropbox Source' menu item
+            Mouse.Click(newDropboxSource, new Point(119, 15));
+        }
+        
+        /// <summary>
+        /// Select_NewEmailSource_FromExplorerContextMenu
+        /// </summary>
+        [When(@"I Select NewEmailSource FromExplorerContextMenu")]
+        public void Select_NewEmailSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newEmailSource = this.MainStudioWindow.ExplorerContextMenu.NewEmailSource;
+            #endregion
+
+            // Click 'New Email Source' menu item
+            Mouse.Click(newEmailSource, new Point(101, 13));
+        }
+        
+        /// <summary>
+        /// Select_NewFolder_FromExplorerContextMenu
+        /// </summary>
+        [When(@"I Select NewFolder FromExplorerContextMenu")]
+        public void Select_NewFolder_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newFolder = this.MainStudioWindow.ExplorerContextMenu.NewFolder;
+            #endregion
+
+            // Click 'New Folder' menu item
+            Mouse.Click(newFolder, new Point(87, 14));
+        }
+        
+        /// <summary>
+        /// Select_NewPluginSource_FromExplorerContextMenu
+        /// </summary>
+        [When(@"I Select NewPluginSource FromExplorerContextMenu")]
+        public void Select_NewPluginSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newPluginSource = this.MainStudioWindow.ExplorerContextMenu.NewPluginSource;
+            #endregion
+
+            // Click 'New Plugin Source' menu item
+            Mouse.Click(newPluginSource, new Point(78, 11));
+        }
+        
+        /// <summary>
+        /// Select_NewServerSource_FromExplorerContextMenu
+        /// </summary>
+        [When(@"I Select NewServerSource FromExplorerContextMenu")]
+        public void Select_NewServerSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newServerSource = this.MainStudioWindow.ExplorerContextMenu.NewServerSource;
+            #endregion
+
+            // Click 'New Server Source' menu item
+            Mouse.Click(newServerSource, new Point(44, 13));
+        }
+        
+        /// <summary>
+        /// Select_NewSharepointSource_FromExplorerContextMenu
+        /// </summary>
+        [When(@"I Select NewSharepointSource FromExplorerContextMenu")]
+        public void Select_NewSharepointSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newSharepointSource = this.MainStudioWindow.ExplorerContextMenu.NewSharepointSource;
+            #endregion
+
+            // Click 'New Sharepoint Source' menu item
+            Mouse.Click(newSharepointSource, new Point(126, 17));
+        }
+        
+        /// <summary>
+        /// Select_NewSharepointSource_FromServer_Lookup - Use 'Select_NewSharepointSource_FromServer_LookupParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select NewSharepointSource FromServer Lookup")]
+        public void Select_NewSharepointSource_FromServer_Lookup()
+        {
+            #region Variable Declarations
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
+            #endregion
+
+            // Click 'UI__Database_AutoID' combo box
+            Mouse.Click(server, new Point(107, 13));
+
+            // Type '{Down}{Enter}' in 'UI__Database_AutoID' combo box
+            Keyboard.SendKeys(server, this.Select_NewSharepointSource_FromServer_LookupParams.ServerSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// Select_NewWebSource_FromExplorerContextMenu
+        /// </summary>
+        [When(@"I Select NewWebSource FromExplorerContextMenu")]
+        public void Select_NewWebSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newWebServiceSource = this.MainStudioWindow.ExplorerContextMenu.NewWebServiceSource;
+            #endregion
+
+            // Click 'New Web Service Source' menu item
+            Mouse.Click(newWebServiceSource, new Point(82, 20));
+        }
+        
+        /// <summary>
+        /// Select_NewWorkflow_FromExplorerContextMenu
+        /// </summary>
+        [When(@"I Select NewWorkflow FromExplorerContextMenu")]
+        public void Select_NewWorkflow_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newWorkflow = this.MainStudioWindow.ExplorerContextMenu.NewWorkflow;
+            #endregion
+
+            // Click 'New Workflow Service' menu item
+            Mouse.Click(newWorkflow, new Point(30, 11));
+        }
+        
+        /// <summary>
+        /// Select_NewWorkFlowService_From_ContextMenu - Use 'Select_NewWorkFlowService_From_ContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select NewWorkFlowService From ContextMenu")]
+        public void Select_NewWorkFlowService_From_ContextMenu()
+        {
+            #region Variable Declarations
+            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            WpfMenuItem newWorkflow = this.MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
+
+            // Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
+            Assert.AreEqual(this.Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowEnabled, newWorkflow.Enabled, "NewWorkFlowService button is disabled.");
+
+            // Click 'New Workflow Service' menu item
+            Mouse.Click(newWorkflow, new Point(79, 13));
+        }
+        
+        /// <summary>
+        /// Select_Next_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select Next From DotNet DLL Large View Action Combobox")]
+        public void Select_Next_From_DotNet_DLL_Large_View_Action_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
+            WpfListItem nextListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.NextListItem;
+            #endregion
+
+            // Click 'ActionsComboBox' combo box
+            Mouse.Click(actionsComboBox, new Point(216, 7));
+
+            // Click 'Next' list item
+            Mouse.Click(nextListItem, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Next'
+            Assert.AreEqual(this.Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+        }
+        
+        /// <summary>
+        /// Select_Open_FromExplorerContextMenu
+        /// </summary>
+        [When(@"I Select Open FromExplorerContextMenu")]
+        public void Select_Open_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem open = this.MainStudioWindow.ExplorerContextMenu.Open;
+            #endregion
+
+            // Click 'Open' menu item
+            Mouse.Click(open, new Point(30, 11));
+        }
+        
+        /// <summary>
+        /// Select_Paste_FromContextMenu
+        /// </summary>
+        [When(@"I Select Paste FromContextMenu")]
+        public void Select_Paste_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem paste = this.MainStudioWindow.DesignSurfaceContextMenu.Paste;
+            #endregion
+
+            // Click 'Paste' menu item
+            Mouse.Click(paste, new Point(52, 16));
+        }
+        
+        /// <summary>
+        /// Select_PerfomanceCounterTab
+        /// </summary>
+        [When(@"I Select PerfomanceCounterTab")]
+        public void Select_PerfomanceCounterTab()
+        {
+            #region Variable Declarations
+            WpfTabPage perfomanceCounterTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab;
+            #endregion
+
+            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
+            Mouse.Click(perfomanceCounterTab, new Point(124, 14));
+        }
+        
+        /// <summary>
+        /// Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox - Use 'Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
+        public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
+            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
+            WpfCustom comboboxListItemAsRemoteConnectionIntegration = this.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(230, 9));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+
+            // Verify that the 'Exists' property of 'Remote Connection Integration' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsRemoteConnectionIntegrationExists, comboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
+                    "x.");
+
+            // Click 'Remote Connection Integration' custom control
+            Mouse.Click(comboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
+
+            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected destination server in deploy is not Remote Connection Integration.");
+        }
+        
+        /// <summary>
+        /// Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox - Use 'Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox")]
+        public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
+            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
+            WpfCustom comboboxListItemAsRemoteConnectionIntegration = this.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(230, 9));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+
+            // Verify that the 'Exists' property of 'Remote Connection Integration' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsRemoteConnectionIntegrationExists, comboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
+                    "x.");
+
+            // Click 'Remote Connection Integration' custom control
+            Mouse.Click(comboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
+
+            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
+        }
+        
+        /// <summary>
+        /// Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox - Use 'Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select RemoteConnectionIntegrationConnected From Deploy Tab Source Server Combobox")]
+        public void Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
+            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
+            WpfCustom comboboxListItemAsRemoteConnectionIntegrationConnected = this.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(230, 9));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+
+            // Verify that the 'Exists' property of 'Remote Connection Integration (Connected)' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsRemoteConnectionIntegrationConnectedExists, comboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
+                    "x.");
+
+            // Click 'Remote Connection Integration (Connected)' custom control
+            Mouse.Click(comboboxListItemAsRemoteConnectionIntegrationConnected, new Point(226, 13));
+
+            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
+        }
+        
+        /// <summary>
+        /// Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist - Use 'Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist")]
+        public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
+        {
+            #region Variable Declarations
+            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
+            #endregion
+
+            // Click 'RSAKLFSVRGENDEV' list item
+            Mouse.Click(rSAKLFSVRGENDEV, new Point(97, 17));
+
+            // Verify that the 'Text' property of 'Text' text box equals 'RSAKLFSVRGENDEV'
+            Assert.AreEqual(this.Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues.TextboxText, textbox.Text, "RSAKLFSVRGENDEV is not selected as the server in the DB source wizard.");
+        }
+        
+        /// <summary>
+        /// Select_SaveAsImage_FromContextMenu
+        /// </summary>
+        [When(@"I Select SaveAsImage FromContextMenu")]
+        public void Select_SaveAsImage_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem saveasImage = this.MainStudioWindow.DesignSurfaceContextMenu.SaveasImage;
+            #endregion
+
+            // Click 'Save as Image' menu item
+            Mouse.Click(saveasImage, new Point(38, 15));
+        }
+        
+        /// <summary>
+        /// Select_SecurityTab
+        /// </summary>
+        [When(@"I Select SecurityTab")]
+        public void Select_SecurityTab()
+        {
+            #region Variable Declarations
+            WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab;
+            #endregion
+
+            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
+            Mouse.Click(securityTab, new Point(102, 10));
+        }
+        
+        /// <summary>
+        /// Select_SetAsStartNode_FromContextMenu
+        /// </summary>
+        [When(@"I Select SetAsStartNode FromContextMenu")]
+        public void Select_SetAsStartNode_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem setasStartNode = this.MainStudioWindow.DesignSurfaceContextMenu.SetasStartNode;
+            #endregion
+
+            // Click 'Set as Start Node' menu item
+            Mouse.Click(setasStartNode, new Point(67, 16));
+        }
+        
+        /// <summary>
+        /// Select_SharepointTestServer
+        /// </summary>
+        [When(@"I Select SharepointTestServer")]
+        public void Select_SharepointTestServer()
+        {
+            #region Variable Declarations
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
+            WpfListItem sharepointTestServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server.SharepointTestServer;
+            #endregion
+
+            // Click 'UI__Database_AutoID' combo box
+            Mouse.Click(server, new Point(98, 12));
+
+            // Click '{"Server":"http://rsaklfsvrsharep/","Authenticatio...' list item
+            Mouse.Click(sharepointTestServer, new Point(67, 13));
+        }
+        
+        /// <summary>
+        /// Select_ShowLargeView_FromContextMenu
+        /// </summary>
+        [When(@"I Select ShowLargeView FromContextMenu")]
+        public void Select_ShowLargeView_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
+            #endregion
+
+            // Click 'Show Large View' menu item
+            Mouse.Click(showLargeView, new Point(43, 15));
+        }
+        
+        /// <summary>
+        /// Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox - Use 'Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select SystemObject From DotNet DLL Large View Namespace Combobox")]
+        public void Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
+            WpfListItem comboboxlistItemAsSystemObject = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject;
+            #endregion
+
+            // Click 'NamespaceComboBox' combo box
+            Mouse.Click(classNameComboBox, new Point(216, 7));
+
+            // Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
+            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
+
+            // Click '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item
+            Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
+            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+        }
+        
+        /// <summary>
+        /// Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox - Use 'Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select SystemRandom From DotNet DLL Large View Namespace Combobox")]
+        public void Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
+            WpfListItem systemRandomListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem;
+            #endregion
+
+            // Click 'NamespaceComboBox' combo box
+            Mouse.Click(classNameComboBox, new Point(216, 7));
+
+            // Click 'SystemRandom' list item
+            Mouse.Click(systemRandomListItem, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Random","MethodName":null}'
+            Assert.AreEqual(this.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+        }
+        
+        /// <summary>
+        /// Select_Tests_From_Context_Menu - Use 'Select_Tests_From_Context_MenuParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select Tests From Context Menu")]
+        public void Select_Tests_From_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
+            WpfTabPage testsTabPage = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage;
+            #endregion
+
+            // Click 'Tests' menu item
+            Mouse.Click(tests, new Point(46, 16));
+
+            // Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
+            Assert.AreEqual(this.Select_Tests_From_Context_MenuParams.TestsTabPageExists, testsTabPage.Exists, "TestsTabPage does not exist after clicking view tests in the explorer context men" +
+                    "u.");
+        }
+        
+        /// <summary>
+        /// Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select ToString From DotNet DLL Large View Action Combobox")]
+        public void Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
+            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
+            #endregion
+
+            // Click 'ActionsComboBox' combo box
+            Mouse.Click(actionsComboBox, new Point(216, 7));
+
+            // Click 'Item1' list item
+            Mouse.Click(item1, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'ToString'
+            Assert.AreEqual(this.Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+        }
+        
+        /// <summary>
+        /// Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist - Use 'Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select TSTCIREMOTE From Server Source Wizard Dropdownlist")]
+        public void Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist()
+        {
+            #region Variable Declarations
+            WpfListItem tSTCIREMOTE = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE;
+            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton;
+            #endregion
+
+            // Click 'TST-CI-REMOTE' list item
+            Mouse.Click(tSTCIREMOTE, new Point(70, 19));
+
+            // Verify that the 'Text' property of 'Text' text box equals 'TST-CI-REMOTE'
+            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.AddressEditBoxText, addressEditBox.Text, "Server source address textbox text does not equal TST-CI-REMOTE");
+
+            // Verify that the 'Exists' property of 'Test Connection' button equals 'True'
+            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.TestConnectionButtonExists, testConnectionButton.Exists, "Server source wizard does not contain a test connection button");
+        }
+        
+        /// <summary>
+        /// Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox - Use 'Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select UITestingDBSource From SQL Server Large View Source Combobox")]
+        public void Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox sourcesCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox;
+            WpfListItem uITestingDBSourceListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox.UITestingDBSourceListItem;
+            #endregion
+
+            // Click 'SourcesComboBox' combo box
+            Mouse.Click(sourcesCombobox, new Point(216, 7));
+
+            // Click 'UITestingDBSource' list item
+            Mouse.Click(uITestingDBSourceListItem, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'SourcesComboBox' combo box equals 'UITestingDBSource'
+            Assert.AreEqual(this.Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams.SourcesComboboxSelectedItem, sourcesCombobox.SelectedItem, "SQL Server large view source combobox selected item is not equal to UITestingDBSo" +
+                    "urce.");
+        }
+        
+        /// <summary>
+        /// Select_User_From_RunTestAs - Use 'Select_User_From_RunTestAsParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select User From RunTestAs")]
+        public void Select_User_From_RunTestAs()
+        {
+            #region Variable Declarations
+            WpfRadioButton userRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UserRadioButton;
+            WpfEdit usernameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UsernameTextBoxEdit;
+            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.PasswordTextBoxEdit;
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Select 'User' radio button
+            userRadioButton.Selected = this.Select_User_From_RunTestAsParams.UserRadioButtonSelected;
+
+            // Verify that the 'Exists' property of 'UsernameTextBox' text box equals 'True'
+            Assert.AreEqual(this.Select_User_From_RunTestAsParams.UsernameTextBoxEditExists, usernameTextBoxEdit.Exists, "Username textbox does not exist after clicking RunAsUser radio button");
+
+            // Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
+            Assert.AreEqual(this.Select_User_From_RunTestAsParams.PasswordTextBoxEditExists, passwordTextBoxEdit.Exists, "Password textbox does not exist after clicking RunAsUser radio button");
+
+            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(this.Select_User_From_RunTestAsParams.SaveButtonEnabled, saveButton.Enabled, "Save Ribbon Menu buton is disabled after changing test");
+        }
+        
+        /// <summary>
+        /// Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox - Use 'Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Type 0 Into SQL Server Large View Inputs Row1 Data Textbox")]
+        public void Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit dataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox;
+            #endregion
+
+            // Type '0' in 'Text' text box
+            dataTextbox.Text = this.Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues.DataTextboxText;
+
+            // Verify that the 'Text' property of 'Text' text box equals '0'
+            Assert.AreEqual(this.Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues.DataTextboxText1, dataTextbox.Text, "SQL Server large view inputs row 1 data textbox text is not equal to S");
+        }
+        
+        /// <summary>
+        /// Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox - Use 'Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Type 0 Into SQL Server Large View Test Inputs Row1 Test Data Textbox")]
+        public void Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit testDataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox;
+            #endregion
+
+            // Type '0' in 'Text' text box
+            testDataTextbox.Text = this.Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues.TestDataTextboxText;
+
+            // Verify that the 'Text' property of 'Text' text box equals '0'
+            Assert.AreEqual(this.Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues.TestDataTextboxText1, testDataTextbox.Text, "SQL Server large view test inputs row 1 test data textbox text is not equal to S");
+        }
+        
+        /// <summary>
+        /// Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox - Use 'Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
+        public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
+            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
+            #endregion
+
+            // Type 'rsaklfsvrgen' in 'Text' text box
+            textbox.Text = this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.TextboxText;
+
+            // Verify that the 'Exists' property of 'RSAKLFSVRGENDEV' list item equals 'True'
+            Assert.AreEqual(this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.RSAKLFSVRGENDEVExists, rSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
+        }
+        
+        /// <summary>
+        /// Type_TestSite_into_Web_Source_Wizard_Address_Textbox - Use 'Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Type TestSite into Web Source Wizard Address Textbox")]
+        public void Type_TestSite_into_Web_Source_Wizard_Address_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit addressTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox;
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton;
+            #endregion
+
+            // Type 'http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx' in 'ServerTextBox' text box
+            addressTextbox.Text = this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.AddressTextboxText;
+
+            // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
+            Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
+                    "d web address.");
         }
         
         #region Properties
@@ -7799,18 +8159,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((this.mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams == null))
-                {
-                    this.mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams = new Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams();
-                }
-                return this.mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams;
-            }
-        }
-        
         public virtual Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams
         {
             get
@@ -7976,6 +8324,18 @@ namespace Warewolf.UITests
                     this.mDrag_Toolbox_Ruby_Onto_DesignSurfaceParams = new Drag_Toolbox_Ruby_Onto_DesignSurfaceParams();
                 }
                 return this.mDrag_Toolbox_Ruby_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams = new Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams;
             }
         }
         
@@ -8723,6 +9083,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Open_Selectandapply_Large_ViewParams Open_Selectandapply_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_Selectandapply_Large_ViewParams == null))
+                {
+                    this.mOpen_Selectandapply_Large_ViewParams = new Open_Selectandapply_Large_ViewParams();
+                }
+                return this.mOpen_Selectandapply_Large_ViewParams;
+            }
+        }
+        
         public virtual Open_SMTP_Email_Tool_Large_ViewParams Open_SMTP_Email_Tool_Large_ViewParams
         {
             get
@@ -9287,30 +9659,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues == null))
-                {
-                    this.mAssert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues = new Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues();
-                }
-                return this.mAssert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues;
-            }
-        }
-        
-        public virtual Open_Selectandapply_Large_ViewParams Open_Selectandapply_Large_ViewParams
-        {
-            get
-            {
-                if ((this.mOpen_Selectandapply_Large_ViewParams == null))
-                {
-                    this.mOpen_Selectandapply_Large_ViewParams = new Open_Selectandapply_Large_ViewParams();
-                }
-                return this.mOpen_Selectandapply_Large_ViewParams;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -9404,30 +9752,6 @@ namespace Warewolf.UITests
                     this.mSwitchCaseDialog = new SwitchCaseDialog();
                 }
                 return this.mSwitchCaseDialog;
-            }
-        }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
-        
-        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
-                {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
-                }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
         #endregion
@@ -9607,8 +9931,6 @@ namespace Warewolf.UITests
         
         private Drag_Toolbox_For_Each_Onto_DesignSurfaceParams mDrag_Toolbox_For_Each_Onto_DesignSurfaceParams;
         
-        private Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams;
-        
         private Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams mDrag_Toolbox_Format_Number_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Javascript_Onto_DesignSurfaceParams mDrag_Toolbox_Javascript_Onto_DesignSurfaceParams;
@@ -9636,6 +9958,8 @@ namespace Warewolf.UITests
         private Drag_Toolbox_Replace_Onto_DesignSurfaceParams mDrag_Toolbox_Replace_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Ruby_Onto_DesignSurfaceParams mDrag_Toolbox_Ruby_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Sequence_Onto_DesignSurfaceParams mDrag_Toolbox_Sequence_Onto_DesignSurfaceParams;
         
@@ -9761,6 +10085,8 @@ namespace Warewolf.UITests
         
         private Open_Rename_Tool_Large_ViewParams mOpen_Rename_Tool_Large_ViewParams;
         
+        private Open_Selectandapply_Large_ViewParams mOpen_Selectandapply_Large_ViewParams;
+        
         private Open_SMTP_Email_Tool_Large_ViewParams mOpen_SMTP_Email_Tool_Large_ViewParams;
         
         private Open_SQL_Bulk_Insert_Tool_Large_ViewParams mOpen_SQL_Bulk_Insert_Tool_Large_ViewParams;
@@ -9855,10 +10181,6 @@ namespace Warewolf.UITests
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
-        private Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues mAssert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues;
-        
-        private Open_Selectandapply_Large_ViewParams mOpen_Selectandapply_Large_ViewParams;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -9874,10 +10196,6 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
-        
-        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -10043,11 +10361,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'UI__Row1_FromExpressiontxt_AutoID' text box equals 'SomeData'
         /// </summary>
         public string ValueTextboxText = "SomeData";
-        
-        /// <summary>
-        /// Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
-        /// </summary>
-        public string NameTextboxText = "SomeVariable";
         #endregion
     }
     
@@ -11765,21 +12078,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Drag_Toolbox_Selectandapply_Onto_DesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'Select and apply' in 'SearchTextBox' text box
-        /// </summary>
-        public string SearchTextBoxText = "Select and apply";
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_Format_Number_Onto_DesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12126,6 +12424,46 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfRubyActivity' custom control equals 'True'
         /// </summary>
         public bool RubyExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Selectandapply_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Select and apply' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Select and apply";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfSelectAndApplyActivity' custom control equals 'True'
+        /// </summary>
+        public bool SelectAndApplyExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool SelectFromIntellisenseTextboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool AliasIntellisenseTextboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Drop Activity Here' custom control equals 'True'
+        /// </summary>
+        public bool DropActivityHereExists = true;
         #endregion
     }
     
@@ -13440,6 +13778,41 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Open_Selectandapply_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Selectandapply_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool SelectFromIntellisenseTextboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool AliasIntellisenseTextboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Drop Activity Here' custom control equals 'True'
+        /// </summary>
+        public bool DropActivityHereExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorPaneExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Open_SMTP_Email_Tool_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -14300,71 +14673,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_for_Drag_Toolbox_Selectandapply_Onto_DesignSurfaceExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfSelectAndApplyActivity' custom control equals 'True'
-        /// </summary>
-        public bool SelectAndApplyExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool SelectFromIntellisenseTextboxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool AliasIntellisenseTextboxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Drop Activity Here' custom control equals 'True'
-        /// </summary>
-        public bool DropActivityHereExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Open_Selectandapply_Large_View'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Selectandapply_Large_ViewParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool SelectFromIntellisenseTextboxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool AliasIntellisenseTextboxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Drop Activity Here' custom control equals 'True'
-        /// </summary>
-        public bool DropActivityHereExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
-        /// </summary>
-        public bool OnErrorPaneExists = true;
         #endregion
     }
     
@@ -45938,639 +46246,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISharepointCreateListCustom UISharepointCreateListCustom
-        {
-            get
-            {
-                if ((this.mUISharepointCreateListCustom == null))
-                {
-                    this.mUISharepointCreateListCustom = new UISharepointCreateListCustom(this);
-                }
-                return this.mUISharepointCreateListCustom;
-            }
-        }
-        
-        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
-                {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
-                }
-                return this.mUIUI_SplitPane_AutoIDCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISharepointCreateListCustom mUISharepointCreateListCustom;
-        
-        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISharepointCreateListCustom : WpfCustom
-    {
-        
-        public UISharepointCreateListCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListCreateDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Create List Item(SharepointListCreateDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISmallViewContentCustom UISmallViewContentCustom
-        {
-            get
-            {
-                if ((this.mUISmallViewContentCustom == null))
-                {
-                    this.mUISmallViewContentCustom = new UISmallViewContentCustom(this);
-                }
-                return this.mUISmallViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISmallViewContentCustom mUISmallViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISmallViewContentCustom : WpfCustom
-    {
-        
-        public UISmallViewContentCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfComboBox UIUI__Database_AutoIDComboBox
-        {
-            get
-            {
-                if ((this.mUIUI__Database_AutoIDComboBox == null))
-                {
-                    this.mUIUI__Database_AutoIDComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mUIUI__Database_AutoIDComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Database_AutoID";
-                    this.mUIUI__Database_AutoIDComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIUI__Database_AutoIDComboBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfComboBox mUIUI__Database_AutoIDComboBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
-    {
-        
-        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
-        {
-            get
-            {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
-                {
-                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
-                }
-                return this.mUIUI_TabManager_AutoIDTabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_TabManager_AutoIDTabList : WpfTabList
-    {
-        
-        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfTabPage UIDev2ViewModelsStudioTabPage
-        {
-            get
-            {
-                if ((this.mUIDev2ViewModelsStudioTabPage == null))
-                {
-                    this.mUIDev2ViewModelsStudioTabPage = new WpfTabPage(this);
-                    #region Search Criteria
-                    this.mUIDev2ViewModelsStudioTabPage.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.StudioTestViewModel";
-                    this.mUIDev2ViewModelsStudioTabPage.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIDev2ViewModelsStudioTabPage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfTabPage mUIDev2ViewModelsStudioTabPage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2ASHLEYLEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_SplitPane_AutoIDCustom1 UIUI_SplitPane_AutoIDCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
-                {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom1(this);
-                }
-                return this.mUIUI_SplitPane_AutoIDCustom;
-            }
-        }
-        
-        public UIUI_ToolboxControl_AuCustom UIUI_ToolboxControl_AuCustom
-        {
-            get
-            {
-                if ((this.mUIUI_ToolboxControl_AuCustom == null))
-                {
-                    this.mUIUI_ToolboxControl_AuCustom = new UIUI_ToolboxControl_AuCustom(this);
-                }
-                return this.mUIUI_ToolboxControl_AuCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_SplitPane_AutoIDCustom1 mUIUI_SplitPane_AutoIDCustom;
-        
-        private UIUI_ToolboxControl_AuCustom mUIUI_ToolboxControl_AuCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_SplitPane_AutoIDCustom1 : WpfCustom
-    {
-        
-        public UIUI_SplitPane_AutoIDCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_TabManager_AutoIDTabList1 UIUI_TabManager_AutoIDTabList
-        {
-            get
-            {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
-                {
-                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList1(this);
-                }
-                return this.mUIUI_TabManager_AutoIDTabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_TabManager_AutoIDTabList1 mUIUI_TabManager_AutoIDTabList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_TabManager_AutoIDTabList1 : WpfTabList
-    {
-        
-        public UIUI_TabManager_AutoIDTabList1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDev2StudioViewModelsTabPage UIDev2StudioViewModelsTabPage
-        {
-            get
-            {
-                if ((this.mUIDev2StudioViewModelsTabPage == null))
-                {
-                    this.mUIDev2StudioViewModelsTabPage = new UIDev2StudioViewModelsTabPage(this);
-                }
-                return this.mUIDev2StudioViewModelsTabPage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2StudioViewModelsTabPage mUIDev2StudioViewModelsTabPage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDev2StudioViewModelsTabPage : WpfTabPage
-    {
-        
-        public UIDev2StudioViewModelsTabPage(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
-        {
-            get
-            {
-                if ((this.mUIDev2StudioViewModelsCustom == null))
-                {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
-                }
-                return this.mUIDev2StudioViewModelsCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDev2StudioViewModelsCustom : WpfCustom
-    {
-        
-        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_WorkflowDesigner_Custom UIUI_WorkflowDesigner_Custom
-        {
-            get
-            {
-                if ((this.mUIUI_WorkflowDesigner_Custom == null))
-                {
-                    this.mUIUI_WorkflowDesigner_Custom = new UIUI_WorkflowDesigner_Custom(this);
-                }
-                return this.mUIUI_WorkflowDesigner_Custom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_WorkflowDesigner_Custom mUIUI_WorkflowDesigner_Custom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_WorkflowDesigner_Custom : WpfCustom
-    {
-        
-        public UIUI_WorkflowDesigner_Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_WorkflowDesigner_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUserControl_1Custom UIUserControl_1Custom
-        {
-            get
-            {
-                if ((this.mUIUserControl_1Custom == null))
-                {
-                    this.mUIUserControl_1Custom = new UIUserControl_1Custom(this);
-                }
-                return this.mUIUserControl_1Custom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUserControl_1Custom mUIUserControl_1Custom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUserControl_1Custom : WpfCustom
-    {
-        
-        public UIUserControl_1Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DesignerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UserControl_1";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIScrollViewerPane UIScrollViewerPane
-        {
-            get
-            {
-                if ((this.mUIScrollViewerPane == null))
-                {
-                    this.mUIScrollViewerPane = new UIScrollViewerPane(this);
-                }
-                return this.mUIScrollViewerPane;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIScrollViewerPane mUIScrollViewerPane;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIScrollViewerPane : WpfPane
-    {
-        
-        public UIScrollViewerPane(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "scrollViewer";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIActivityBuilderCustom UIActivityBuilderCustom
-        {
-            get
-            {
-                if ((this.mUIActivityBuilderCustom == null))
-                {
-                    this.mUIActivityBuilderCustom = new UIActivityBuilderCustom(this);
-                }
-                return this.mUIActivityBuilderCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIActivityBuilderCustom mUIActivityBuilderCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIActivityBuilderCustom : WpfCustom
-    {
-        
-        public UIActivityBuilderCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActivityTypeDesigner";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
-        {
-            get
-            {
-                if ((this.mUIWorkflowItemPresenteCustom == null))
-                {
-                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
-                }
-                return this.mUIWorkflowItemPresenteCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWorkflowItemPresenteCustom : WpfCustom
-    {
-        
-        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIFlowchartCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIFlowchartCustom mUIFlowchartCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIFlowchartCustom : WpfCustom
-    {
-        
-        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom ForEach
-        {
-            get
-            {
-                if ((this.mForEach == null))
-                {
-                    this.mForEach = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mForEach.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ForeachDesigner";
-                    this.mForEach.SearchProperties[WpfControl.PropertyNames.AutomationId] = "For Each(ForeachDesigner)";
-                    this.mForEach.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mForEach;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mForEach;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_ToolboxControl_AuCustom : WpfCustom
-    {
-        
-        public UIUI_ToolboxControl_AuCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolboxView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ToolboxControl_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIBackedupToolListBoxList UIBackedupToolListBoxList
-        {
-            get
-            {
-                if ((this.mUIBackedupToolListBoxList == null))
-                {
-                    this.mUIBackedupToolListBoxList = new UIBackedupToolListBoxList(this);
-                }
-                return this.mUIBackedupToolListBoxList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIBackedupToolListBoxList mUIBackedupToolListBoxList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIBackedupToolListBoxList : WpfList
-    {
-        
-        public UIBackedupToolListBoxList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "BackedupToolListBox";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfGroup LoopConstructsGroup
-        {
-            get
-            {
-                if ((this.mLoopConstructsGroup == null))
-                {
-                    this.mLoopConstructsGroup = new WpfGroup(this);
-                    #region Search Criteria
-                    this.mLoopConstructsGroup.SearchProperties[WpfGroup.PropertyNames.Name] = "Loop Constructs";
-                    this.mLoopConstructsGroup.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mLoopConstructsGroup;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfGroup mLoopConstructsGroup;
         #endregion
     }
 }
