@@ -32,7 +32,7 @@ namespace Dev2.ExtMethods
             }
 
             var nestedFrame = new DispatcherFrame();
-            task.ContinueWith(_ => nestedFrame.Continue = false);
+            task.ContinueWith(_ => nestedFrame.Continue = true);
             Dispatcher.PushFrame(nestedFrame);
             return task.Wait(millisecondsTimeout);
         }
