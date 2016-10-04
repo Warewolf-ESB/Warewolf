@@ -194,7 +194,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 56
  testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 57
- testRunner.And("I Save With Ribbon Button And Dialog As \"DeployViewOnly\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Save With Ribbon Button and Dialog As \"DeployViewOnly\" and Append Unique Guid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 58
  testRunner.And("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
