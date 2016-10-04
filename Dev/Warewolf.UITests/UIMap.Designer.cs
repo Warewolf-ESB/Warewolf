@@ -2427,6 +2427,8 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
+            WpfComboBox scriptIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ScriptIntellisenseTextbox;
+            WpfComboBox resultIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ResultIntellisenseTextbox;
             #endregion
 
             // Type 'CMD Script' in 'SearchTextBox' text box
@@ -2442,6 +2444,12 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfExecuteCommandLineActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams.ExecuteCommandLineExists, executeCommandLine.Exists, "CMD Line tool on the design surface tool does not exist");
+
+            // Verify that the 'Exists' property of 'UI__Cmdtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams.ScriptIntellisenseTextboxExists, scriptIntellisenseTextbox.Exists, "CMD script textbox does not exist after dragging onto design surface.");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams.ResultIntellisenseTextboxExists, resultIntellisenseTextbox.Exists, "CMD script result textbox does not exist after dragging onto design surface.");
         }
         
         /// <summary>
@@ -2966,6 +2974,8 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom javascript1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.SmallView.ScriptIntellisenseCombobox;
+            WpfComboBox resultsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.SmallView.ResultsIntellisenseCombobox;
             #endregion
 
             // Type 'Javascript' in 'SearchTextBox' text box
@@ -2981,6 +2991,14 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfJavascriptActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Javascript_Onto_DesignSurfaceParams.JavascriptExists, javascript1.Exists, "Javascript tool on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Javascript_Onto_DesignSurfaceParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "JavaScript script textbox does not exist after dragging on tool from the toolbox." +
+                    "");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Javascript_Onto_DesignSurfaceParams.ResultsIntellisenseComboboxExists, resultsIntellisenseCombobox.Exists, "JavaScript result textbox does not exist after dragging on tool from the toolbox." +
+                    "");
         }
         
         /// <summary>
@@ -3139,6 +3157,8 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom python1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ScriptIntellisenseCombobox;
+            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ResultIntellisenseCombobox;
             #endregion
 
             // Type 'Python' in 'SearchTextBox' text box
@@ -3154,6 +3174,12 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfPythonActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Python_Onto_DesignSurfaceParams.PythonExists, python1.Exists, "Python tool on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Python_Onto_DesignSurfaceParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "Python script textbox does not exist after dragging on tool from the toolbox.");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Python_Onto_DesignSurfaceParams.ResultIntellisenseComboboxExists, resultIntellisenseCombobox.Exists, "Python result textbox does not exist after dragging on tool from the toolbox.");
         }
         
         /// <summary>
@@ -3313,6 +3339,8 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom ruby1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ScriptIntellisenseCombobox;
+            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ResultIntellisenseCombobox;
             #endregion
 
             // Type 'Ruby' in 'SearchTextBox' text box
@@ -3328,6 +3356,12 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfRubyActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Ruby_Onto_DesignSurfaceParams.RubyExists, ruby1.Exists, "Ruby tool on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Ruby_Onto_DesignSurfaceParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "Ruby script textbox does not exist after dragging on tool from the toolbox.");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Ruby_Onto_DesignSurfaceParams.ResultIntellisenseComboboxExists, resultIntellisenseCombobox.Exists, "Ruby result textbox does not exist after dragging on tool from the toolbox.");
         }
         
         /// <summary>
@@ -4346,6 +4380,11 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
+            WpfComboBox scriptIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.ScriptIntellisenseTextbox;
+            WpfComboBox priorityComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.PriorityComboBox;
+            WpfComboBox resultIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.ResultIntellisenseTextbox;
+            WpfCustom onError = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.OnError;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.DoneButton;
             #endregion
 
             // Double-Click 'DsfExecuteCommandLineActivity' custom control
@@ -4353,6 +4392,26 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfExecuteCommandLineActivity' custom control equals 'True'
             Assert.AreEqual(this.Open_CMD_Line_Tool_Large_ViewParams.ExecuteCommandLineExists, executeCommandLine.Exists, "CMD Line large view on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__Cmdtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_CMD_Line_Tool_Large_ViewParams.ScriptIntellisenseTextboxExists, scriptIntellisenseTextbox.Exists, "CMD script textbox does not exist after openning tool large view with double clic" +
+                    "k.");
+
+            // Verify that the 'Exists' property of 'UI__CmdPriority_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_CMD_Line_Tool_Large_ViewParams.PriorityComboBoxExists, priorityComboBox.Exists, "CMD script priority combobox does not exist after openning tool large view with d" +
+                    "ouble click.");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_CMD_Line_Tool_Large_ViewParams.ResultIntellisenseTextboxExists, resultIntellisenseTextbox.Exists, "CMD script result textbox does not exist after openning tool large view with doub" +
+                    "le click.");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_CMD_Line_Tool_Large_ViewParams.OnErrorExists, onError.Exists, "CMD script on error pane does not exist after openning tool large view with doubl" +
+                    "e click.");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_CMD_Line_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "CMD script done button does not exist after openning tool large view with double " +
+                    "click.");
         }
         
         /// <summary>
@@ -4787,6 +4846,55 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_Javascript_Large_View - Use 'Open_Javascript_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Javascript Large View")]
+        public void Open_Javascript_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom javascript = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.ScriptIntellisenseCombobox;
+            WpfComboBox attachmentsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.AttachmentsIntellisenseCombobox;
+            WpfButton attachFileButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.AttachFileButton;
+            WpfCheckBox escapesequencesCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.EscapesequencesCheckBox;
+            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.ResultIntellisenseCombobox;
+            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.OnErrorPane;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.DoneButton;
+            #endregion
+
+            // Double-Click 'DsfJavascriptActivity' custom control
+            Mouse.DoubleClick(javascript, new Point(115, 14));
+
+            // Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Javascript_Large_ViewParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "Javascript script textbox does not exist after openning large view with a double " +
+                    "click.");
+
+            // Verify that the 'Exists' property of 'UI__AttachmentsTxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Javascript_Large_ViewParams.AttachmentsIntellisenseComboboxExists, attachmentsIntellisenseCombobox.Exists, "Javascript Attachments textbox does not exist after openning large view with a do" +
+                    "uble click.");
+
+            // Verify that the 'Exists' property of '...' button equals 'True'
+            Assert.AreEqual(this.Open_Javascript_Large_ViewParams.AttachFileButtonExists, attachFileButton.Exists, "Javascript Attach File Button does not exist after openning large view with a dou" +
+                    "ble click.");
+
+            // Verify that the 'Exists' property of 'Escape sequences in variables' check box equals 'True'
+            Assert.AreEqual(this.Open_Javascript_Large_ViewParams.EscapesequencesCheckBoxExists, escapesequencesCheckBox.Exists, "Javascript escape sequences checkbox does not exist after openning large view wit" +
+                    "h a double click.");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Javascript_Large_ViewParams.ResultIntellisenseComboboxExists, resultIntellisenseCombobox.Exists, "Javascript result textbox does not exist after openning large view with a double " +
+                    "click.");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Javascript_Large_ViewParams.OnErrorPaneExists, onErrorPane.Exists, "Javascript OnError pane does not exist after openning large view with a double cl" +
+                    "ick.");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Javascript_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Javascript Done button does not exist after openning large view with a double cli" +
+                    "ck.");
+        }
+        
+        /// <summary>
         /// Open_Json_Tool_Large_View - Use 'Open_Json_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Open Json Tool Large View")]
@@ -4871,6 +4979,54 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_Python_Large_View - Use 'Open_Python_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Python Large View")]
+        public void Open_Python_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom python = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.ScriptIntellisenseCombobox;
+            WpfComboBox attachmentsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachmentsIntellisenseCombobox;
+            WpfButton attachFileButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachFileButton;
+            WpfCheckBox escapesequencesCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.EscapesequencesCheckBox;
+            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.ResultIntellisenseCombobox;
+            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.OnErrorPane;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.DoneButton;
+            #endregion
+
+            // Double-Click 'DsfPythonActivity' custom control
+            Mouse.DoubleClick(python, new Point(117, 9));
+
+            // Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Python_Large_ViewParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "Python script textbox does not exist after openning large view with a double clic" +
+                    "k.");
+
+            // Verify that the 'Exists' property of 'UI__AttachmentsTxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Python_Large_ViewParams.AttachmentsIntellisenseComboboxExists, attachmentsIntellisenseCombobox.Exists, "Python Attachments textbox does not exist after openning large view with a double" +
+                    " click.");
+
+            // Verify that the 'Exists' property of '...' button equals 'True'
+            Assert.AreEqual(this.Open_Python_Large_ViewParams.AttachFileButtonExists, attachFileButton.Exists, "Python Attach File Button does not exist after openning large view with a double " +
+                    "click.");
+
+            // Verify that the 'Exists' property of 'Escape sequences in variables' check box equals 'True'
+            Assert.AreEqual(this.Open_Python_Large_ViewParams.EscapesequencesCheckBoxExists, escapesequencesCheckBox.Exists, "Python escape sequences checkbox does not exist after openning large view with a " +
+                    "double click.");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Python_Large_ViewParams.ResultIntellisenseComboboxExists, resultIntellisenseCombobox.Exists, "Python result textbox does not exist after openning large view with a double clic" +
+                    "k.");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Python_Large_ViewParams.OnErrorPaneExists, onErrorPane.Exists, "Python OnError pane does not exist after openning large view with a double click." +
+                    "");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Python_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Python Done button does not exist after openning large view with a double click.");
+        }
+        
+        /// <summary>
         /// Open_Read_File_Tool_Large_View - Use 'Open_Read_File_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Open Read File Tool Large View")]
@@ -4919,6 +5075,53 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfPathRename' custom control equals 'True'
             Assert.AreEqual(this.Open_Rename_Tool_Large_ViewParams.PathRenameExists, pathRename.Exists, "Rename tool large view on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Open_Ruby_Large_View - Use 'Open_Ruby_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Ruby Large View")]
+        public void Open_Ruby_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom ruby = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.ScriptIntellisenseCombobox;
+            WpfComboBox attachmentsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.AttachmentsIntellisenseCombobox;
+            WpfButton attachFileButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.AttachFileButton;
+            WpfCheckBox escapesequencesCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.EscapesequencesCheckBox;
+            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.ResultIntellisenseCombobox;
+            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.OnErrorPane;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.DoneButton;
+            #endregion
+
+            // Double-Click 'DsfRubyActivity' custom control
+            Mouse.DoubleClick(ruby, new Point(116, 12));
+
+            // Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Ruby_Large_ViewParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "Ruby script textbox does not exist after openning large view with a double click." +
+                    "");
+
+            // Verify that the 'Exists' property of 'UI__AttachmentsTxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Ruby_Large_ViewParams.AttachmentsIntellisenseComboboxExists, attachmentsIntellisenseCombobox.Exists, "Ruby Attachments textbox does not exist after openning large view with a double c" +
+                    "lick.");
+
+            // Verify that the 'Exists' property of '...' button equals 'True'
+            Assert.AreEqual(this.Open_Ruby_Large_ViewParams.AttachFileButtonExists, attachFileButton.Exists, "Ruby Attach File Button does not exist after openning large view with a double cl" +
+                    "ick.");
+
+            // Verify that the 'Exists' property of 'Escape sequences in variables' check box equals 'True'
+            Assert.AreEqual(this.Open_Ruby_Large_ViewParams.EscapesequencesCheckBoxExists, escapesequencesCheckBox.Exists, "Ruby escape sequences checkbox does not exist after openning large view with a do" +
+                    "uble click.");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Ruby_Large_ViewParams.ResultIntellisenseComboboxExists, resultIntellisenseCombobox.Exists, "Ruby result textbox does not exist after openning large view with a double click." +
+                    "");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Ruby_Large_ViewParams.OnErrorPaneExists, onErrorPane.Exists, "Ruby OnError pane does not exist after openning large view with a double click.");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Ruby_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Ruby Done button does not exist after openning large view with a double click.");
         }
         
         /// <summary>
@@ -5866,20 +6069,6 @@ namespace Warewolf.UITests
 
             // Right-Click 'DsfReplaceActivity' custom control
             Mouse.Click(replace, MouseButtons.Right, ModifierKeys.None, new Point(100, 7));
-        }
-        
-        /// <summary>
-        /// RightClick_ScriptTool_OnDesignSurface
-        /// </summary>
-        [When(@"I RightClick ScriptTool OnDesignSurface")]
-        public void RightClick_ScriptTool_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom scripting = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Scripting;
-            #endregion
-
-            // Right-Click 'DsfScriptingActivity' custom control
-            Mouse.Click(scripting, MouseButtons.Right, ModifierKeys.None, new Point(110, 11));
         }
         
         /// <summary>
@@ -8999,6 +9188,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Open_Javascript_Large_ViewParams Open_Javascript_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_Javascript_Large_ViewParams == null))
+                {
+                    this.mOpen_Javascript_Large_ViewParams = new Open_Javascript_Large_ViewParams();
+                }
+                return this.mOpen_Javascript_Large_ViewParams;
+            }
+        }
+        
         public virtual Open_Json_Tool_Large_ViewParams Open_Json_Tool_Large_ViewParams
         {
             get
@@ -9047,6 +9248,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Open_Python_Large_ViewParams Open_Python_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_Python_Large_ViewParams == null))
+                {
+                    this.mOpen_Python_Large_ViewParams = new Open_Python_Large_ViewParams();
+                }
+                return this.mOpen_Python_Large_ViewParams;
+            }
+        }
+        
         public virtual Open_Read_File_Tool_Large_ViewParams Open_Read_File_Tool_Large_ViewParams
         {
             get
@@ -9080,6 +9293,18 @@ namespace Warewolf.UITests
                     this.mOpen_Rename_Tool_Large_ViewParams = new Open_Rename_Tool_Large_ViewParams();
                 }
                 return this.mOpen_Rename_Tool_Large_ViewParams;
+            }
+        }
+        
+        public virtual Open_Ruby_Large_ViewParams Open_Ruby_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_Ruby_Large_ViewParams == null))
+                {
+                    this.mOpen_Ruby_Large_ViewParams = new Open_Ruby_Large_ViewParams();
+                }
+                return this.mOpen_Ruby_Large_ViewParams;
             }
         }
         
@@ -10071,6 +10296,8 @@ namespace Warewolf.UITests
         
         private Open_GET_Web_Connector_Tool_Large_ViewParams mOpen_GET_Web_Connector_Tool_Large_ViewParams;
         
+        private Open_Javascript_Large_ViewParams mOpen_Javascript_Large_ViewParams;
+        
         private Open_Json_Tool_Large_ViewParams mOpen_Json_Tool_Large_ViewParams;
         
         private Open_Json_Tool_Qvi_Large_ViewParams mOpen_Json_Tool_Qvi_Large_ViewParams;
@@ -10079,11 +10306,15 @@ namespace Warewolf.UITests
         
         private Open_PostWeb_RequestTool_Large_ViewParams mOpen_PostWeb_RequestTool_Large_ViewParams;
         
+        private Open_Python_Large_ViewParams mOpen_Python_Large_ViewParams;
+        
         private Open_Read_File_Tool_Large_ViewParams mOpen_Read_File_Tool_Large_ViewParams;
         
         private Open_Read_Folder_Tool_Large_ViewParams mOpen_Read_Folder_Tool_Large_ViewParams;
         
         private Open_Rename_Tool_Large_ViewParams mOpen_Rename_Tool_Large_ViewParams;
+        
+        private Open_Ruby_Large_ViewParams mOpen_Ruby_Large_ViewParams;
         
         private Open_Selectandapply_Large_ViewParams mOpen_Selectandapply_Large_ViewParams;
         
@@ -11664,6 +11895,16 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfExecuteCommandLineActivity' custom control equals 'True'
         /// </summary>
         public bool ExecuteCommandLineExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Cmdtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ScriptIntellisenseTextboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultIntellisenseTextboxExists = true;
         #endregion
     }
     
@@ -12124,6 +12365,16 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfJavascriptActivity' custom control equals 'True'
         /// </summary>
         public bool JavascriptExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ScriptIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultsIntellisenseComboboxExists = true;
         #endregion
     }
     
@@ -12274,6 +12525,16 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfPythonActivity' custom control equals 'True'
         /// </summary>
         public bool PythonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ScriptIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultIntellisenseComboboxExists = true;
         #endregion
     }
     
@@ -12424,6 +12685,16 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfRubyActivity' custom control equals 'True'
         /// </summary>
         public bool RubyExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ScriptIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultIntellisenseComboboxExists = true;
         #endregion
     }
     
@@ -13379,6 +13650,31 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfExecuteCommandLineActivity' custom control equals 'True'
         /// </summary>
         public bool ExecuteCommandLineExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Cmdtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ScriptIntellisenseTextboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__CmdPriority_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool PriorityComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultIntellisenseTextboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -13668,6 +13964,51 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Open_Javascript_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Javascript_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ScriptIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__AttachmentsTxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool AttachmentsIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of '...' button equals 'True'
+        /// </summary>
+        public bool AttachFileButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Escape sequences in variables' check box equals 'True'
+        /// </summary>
+        public bool EscapesequencesCheckBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorPaneExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Open_Json_Tool_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13733,6 +14074,51 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Open_Python_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Python_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ScriptIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__AttachmentsTxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool AttachmentsIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of '...' button equals 'True'
+        /// </summary>
+        public bool AttachFileButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Escape sequences in variables' check box equals 'True'
+        /// </summary>
+        public bool EscapesequencesCheckBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorPaneExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Open_Read_File_Tool_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13774,6 +14160,51 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfPathRename' custom control equals 'True'
         /// </summary>
         public bool PathRenameExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Ruby_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Ruby_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__txtScript_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ScriptIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__AttachmentsTxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool AttachmentsIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of '...' button equals 'True'
+        /// </summary>
+        public bool AttachFileButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Escape sequences in variables' check box equals 'True'
+        /// </summary>
+        public bool EscapesequencesCheckBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultIntellisenseComboboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorPaneExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -27024,37 +27455,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom ExecuteCommandLine
+        public ExecuteCommandLine ExecuteCommandLine
         {
             get
             {
                 if ((this.mExecuteCommandLine == null))
                 {
-                    this.mExecuteCommandLine = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mExecuteCommandLine.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CommandLineDesigner";
-                    this.mExecuteCommandLine.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Execute Command Line(CommandLineDesigner)";
-                    this.mExecuteCommandLine.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mExecuteCommandLine = new ExecuteCommandLine(this);
                 }
                 return this.mExecuteCommandLine;
-            }
-        }
-        
-        public WpfCustom Scripting
-        {
-            get
-            {
-                if ((this.mScripting == null))
-                {
-                    this.mScripting = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mScripting.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ScriptDesigner";
-                    this.mScripting.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Script(ScriptDesigner)";
-                    this.mScripting.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mScripting;
             }
         }
         
@@ -27772,9 +28181,7 @@ namespace Warewolf.UITests
         
         private CreateJson1 mCreateJson;
         
-        private WpfCustom mExecuteCommandLine;
-        
-        private WpfCustom mScripting;
+        private ExecuteCommandLine mExecuteCommandLine;
         
         private SharepointCreate mSharepointCreate;
         
@@ -31996,6 +32403,510 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExecuteCommandLine : WpfCustom
+    {
+        
+        public ExecuteCommandLine(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CommandLineDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Execute Command Line(CommandLineDesigner)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        
+        public LargeViewContent LargeViewContent
+        {
+            get
+            {
+                if ((this.mLargeViewContent == null))
+                {
+                    this.mLargeViewContent = new LargeViewContent(this);
+                }
+                return this.mLargeViewContent;
+            }
+        }
+        
+        public SmallViewContent SmallViewContent
+        {
+            get
+            {
+                if ((this.mSmallViewContent == null))
+                {
+                    this.mSmallViewContent = new SmallViewContent(this);
+                }
+                return this.mSmallViewContent;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDoneButton;
+        
+        private LargeViewContent mLargeViewContent;
+        
+        private SmallViewContent mSmallViewContent;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LargeViewContent : WpfCustom
+    {
+        
+        public LargeViewContent(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public ScriptIntellisenseTextbox ScriptIntellisenseTextbox
+        {
+            get
+            {
+                if ((this.mScriptIntellisenseTextbox == null))
+                {
+                    this.mScriptIntellisenseTextbox = new ScriptIntellisenseTextbox(this);
+                }
+                return this.mScriptIntellisenseTextbox;
+            }
+        }
+        
+        public WpfComboBox PriorityComboBox
+        {
+            get
+            {
+                if ((this.mPriorityComboBox == null))
+                {
+                    this.mPriorityComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mPriorityComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__CmdPriority_AutoID";
+                    this.mPriorityComboBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mPriorityComboBox;
+            }
+        }
+        
+        public ResultIntellisenseTextbox ResultIntellisenseTextbox
+        {
+            get
+            {
+                if ((this.mResultIntellisenseTextbox == null))
+                {
+                    this.mResultIntellisenseTextbox = new ResultIntellisenseTextbox(this);
+                }
+                return this.mResultIntellisenseTextbox;
+            }
+        }
+        
+        public OnError1 OnError
+        {
+            get
+            {
+                if ((this.mOnError == null))
+                {
+                    this.mOnError = new OnError1(this);
+                }
+                return this.mOnError;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScriptIntellisenseTextbox mScriptIntellisenseTextbox;
+        
+        private WpfComboBox mPriorityComboBox;
+        
+        private ResultIntellisenseTextbox mResultIntellisenseTextbox;
+        
+        private OnError1 mOnError;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScriptIntellisenseTextbox : WpfComboBox
+    {
+        
+        public ScriptIntellisenseTextbox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Cmdtxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResultIntellisenseTextbox : WpfComboBox
+    {
+        
+        public ResultIntellisenseTextbox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OnError1 : WpfCustom
+    {
+        
+        public OnError1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.OnError";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "On Error";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public OnErrorGroup3 OnErrorGroup
+        {
+            get
+            {
+                if ((this.mOnErrorGroup == null))
+                {
+                    this.mOnErrorGroup = new OnErrorGroup3(this);
+                }
+                return this.mOnErrorGroup;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private OnErrorGroup3 mOnErrorGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OnErrorGroup3 : WpfGroup
+    {
+        
+        public OnErrorGroup3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.AutomationId] = "OnErrorGroupBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public ErrorVariableIntellisenseTextbox1 ErrorVariableIntellisenseTextbox
+        {
+            get
+            {
+                if ((this.mErrorVariableIntellisenseTextbox == null))
+                {
+                    this.mErrorVariableIntellisenseTextbox = new ErrorVariableIntellisenseTextbox1(this);
+                }
+                return this.mErrorVariableIntellisenseTextbox;
+            }
+        }
+        
+        public OnErrorWorkflow OnErrorWorkflow
+        {
+            get
+            {
+                if ((this.mOnErrorWorkflow == null))
+                {
+                    this.mOnErrorWorkflow = new OnErrorWorkflow(this);
+                }
+                return this.mOnErrorWorkflow;
+            }
+        }
+        
+        public WpfCheckBox EndthisworkflowCheckBox
+        {
+            get
+            {
+                if ((this.mEndthisworkflowCheckBox == null))
+                {
+                    this.mEndthisworkflowCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mEndthisworkflowCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__IsEnded_AutoID";
+                    this.mEndthisworkflowCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mEndthisworkflowCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ErrorVariableIntellisenseTextbox1 mErrorVariableIntellisenseTextbox;
+        
+        private OnErrorWorkflow mOnErrorWorkflow;
+        
+        private WpfCheckBox mEndthisworkflowCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ErrorVariableIntellisenseTextbox1 : WpfComboBox
+    {
+        
+        public ErrorVariableIntellisenseTextbox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Variable_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OnErrorWorkflow : WpfComboBox
+    {
+        
+        public OnErrorWorkflow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Workflow_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SmallViewContent : WpfCustom
+    {
+        
+        public SmallViewContent(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public ScriptIntellisenseTextbox1 ScriptIntellisenseTextbox
+        {
+            get
+            {
+                if ((this.mScriptIntellisenseTextbox == null))
+                {
+                    this.mScriptIntellisenseTextbox = new ScriptIntellisenseTextbox1(this);
+                }
+                return this.mScriptIntellisenseTextbox;
+            }
+        }
+        
+        public ResultIntellisenseTextbox1 ResultIntellisenseTextbox
+        {
+            get
+            {
+                if ((this.mResultIntellisenseTextbox == null))
+                {
+                    this.mResultIntellisenseTextbox = new ResultIntellisenseTextbox1(this);
+                }
+                return this.mResultIntellisenseTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScriptIntellisenseTextbox1 mScriptIntellisenseTextbox;
+        
+        private ResultIntellisenseTextbox1 mResultIntellisenseTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScriptIntellisenseTextbox1 : WpfComboBox
+    {
+        
+        public ScriptIntellisenseTextbox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Cmdtxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResultIntellisenseTextbox1 : WpfComboBox
+    {
+        
+        public ResultIntellisenseTextbox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointCreate : WpfCustom
     {
         
@@ -34520,13 +35431,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public OnErrorGroup3 OnErrorGroup
+        public OnErrorGroup4 OnErrorGroup
         {
             get
             {
                 if ((this.mOnErrorGroup == null))
                 {
-                    this.mOnErrorGroup = new OnErrorGroup3(this);
+                    this.mOnErrorGroup = new OnErrorGroup4(this);
                 }
                 return this.mOnErrorGroup;
             }
@@ -34534,15 +35445,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private OnErrorGroup3 mOnErrorGroup;
+        private OnErrorGroup4 mOnErrorGroup;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class OnErrorGroup3 : WpfGroup
+    public class OnErrorGroup4 : WpfGroup
     {
         
-        public OnErrorGroup3(UITestControl searchLimitContainer) : 
+        public OnErrorGroup4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -35092,13 +36003,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public OnErrorGroup4 OnErrorGroup
+        public OnErrorGroup5 OnErrorGroup
         {
             get
             {
                 if ((this.mOnErrorGroup == null))
                 {
-                    this.mOnErrorGroup = new OnErrorGroup4(this);
+                    this.mOnErrorGroup = new OnErrorGroup5(this);
                 }
                 return this.mOnErrorGroup;
             }
@@ -35106,15 +36017,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private OnErrorGroup4 mOnErrorGroup;
+        private OnErrorGroup5 mOnErrorGroup;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class OnErrorGroup4 : WpfGroup
+    public class OnErrorGroup5 : WpfGroup
     {
         
-        public OnErrorGroup4(UITestControl searchLimitContainer) : 
+        public OnErrorGroup5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -35664,13 +36575,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public OnErrorGroup5 OnErrorGroup
+        public OnErrorGroup6 OnErrorGroup
         {
             get
             {
                 if ((this.mOnErrorGroup == null))
                 {
-                    this.mOnErrorGroup = new OnErrorGroup5(this);
+                    this.mOnErrorGroup = new OnErrorGroup6(this);
                 }
                 return this.mOnErrorGroup;
             }
@@ -35678,15 +36589,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private OnErrorGroup5 mOnErrorGroup;
+        private OnErrorGroup6 mOnErrorGroup;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class OnErrorGroup5 : WpfGroup
+    public class OnErrorGroup6 : WpfGroup
     {
         
-        public OnErrorGroup5(UITestControl searchLimitContainer) : 
+        public OnErrorGroup6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -36254,13 +37165,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public OnErrorGroup6 OnErrorGroup
+        public OnErrorGroup7 OnErrorGroup
         {
             get
             {
                 if ((this.mOnErrorGroup == null))
                 {
-                    this.mOnErrorGroup = new OnErrorGroup6(this);
+                    this.mOnErrorGroup = new OnErrorGroup7(this);
                 }
                 return this.mOnErrorGroup;
             }
@@ -36268,15 +37179,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private OnErrorGroup6 mOnErrorGroup;
+        private OnErrorGroup7 mOnErrorGroup;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class OnErrorGroup6 : WpfGroup
+    public class OnErrorGroup7 : WpfGroup
     {
         
-        public OnErrorGroup6(UITestControl searchLimitContainer) : 
+        public OnErrorGroup7(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -36286,13 +37197,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ErrorVariableIntellisenseTextbox1 ErrorVariableIntellisenseTextbox
+        public ErrorVariableIntellisenseTextbox2 ErrorVariableIntellisenseTextbox
         {
             get
             {
                 if ((this.mErrorVariableIntellisenseTextbox == null))
                 {
-                    this.mErrorVariableIntellisenseTextbox = new ErrorVariableIntellisenseTextbox1(this);
+                    this.mErrorVariableIntellisenseTextbox = new ErrorVariableIntellisenseTextbox2(this);
                 }
                 return this.mErrorVariableIntellisenseTextbox;
             }
@@ -36328,7 +37239,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ErrorVariableIntellisenseTextbox1 mErrorVariableIntellisenseTextbox;
+        private ErrorVariableIntellisenseTextbox2 mErrorVariableIntellisenseTextbox;
         
         private ErrorWorkflowIntellisenseTextbox mErrorWorkflowIntellisenseTextbox;
         
@@ -36337,10 +37248,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ErrorVariableIntellisenseTextbox1 : WpfComboBox
+    public class ErrorVariableIntellisenseTextbox2 : WpfComboBox
     {
         
-        public ErrorVariableIntellisenseTextbox1(UITestControl searchLimitContainer) : 
+        public ErrorVariableIntellisenseTextbox2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

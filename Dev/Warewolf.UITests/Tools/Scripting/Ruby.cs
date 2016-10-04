@@ -11,6 +11,7 @@ namespace Warewolf.UITests.Tools
         public void RubyScriptToolUITest()
         {
             Uimap.Drag_Toolbox_Ruby_Onto_DesignSurface();
+            Uimap.Open_Ruby_Large_View();
         }
 
         #region Additional test attributes

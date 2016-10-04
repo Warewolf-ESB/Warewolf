@@ -11,6 +11,7 @@ namespace Warewolf.UITests.Tools
         public void PythonScriptToolUITest()
         {
             Uimap.Drag_Toolbox_Python_Onto_DesignSurface();
+            Uimap.Open_Python_Large_View();
         }
 
         #region Additional test attributes
