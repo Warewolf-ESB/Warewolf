@@ -217,13 +217,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var serviceTestCommandHandler = new ServiceTestCommandHandlerModel();
             var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
-            var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
-            var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
-            var mockResourceRepo = new Mock<IResourceRepository>();
+
             var testRunResult = new TestRunResult();
             testRunResult.DebugForTest = new List<IDebugState>();
             testRunResult.RunTestResult = RunResult.TestPassed;
+            var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
+
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            
             mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(mockSelectedServiceTestModelTO.Object);
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
@@ -248,13 +252,16 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var serviceTestCommandHandler = new ServiceTestCommandHandlerModel();
             var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
-            var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
-            var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
-            var mockResourceRepo = new Mock<IResourceRepository>();
+
             var testRunResult = new TestRunResult();
             testRunResult.DebugForTest = new List<IDebugState>();
             testRunResult.RunTestResult = RunResult.TestFailed;
+            var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            
             mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(mockSelectedServiceTestModelTO.Object);
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
@@ -278,13 +285,16 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var serviceTestCommandHandler = new ServiceTestCommandHandlerModel();
             var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
-            var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
-            var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
-            var mockResourceRepo = new Mock<IResourceRepository>();
+
             var testRunResult = new TestRunResult();
             testRunResult.DebugForTest = new List<IDebugState>();
             testRunResult.RunTestResult = RunResult.TestInvalid;
+            var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            
             mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(mockSelectedServiceTestModelTO.Object);
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
@@ -362,19 +372,23 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var serviceTestCommandHandler = new ServiceTestCommandHandlerModel();
             var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
+
+            var testRunResult = new TestRunResult();
+            testRunResult.DebugForTest = new List<IDebugState>();
+            testRunResult.RunTestResult = RunResult.TestResourceDeleted;
             var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
             var mockResourceModel = new Mock<IContextualResourceModel>();
             var mockEnvironment = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var testRunResult = new TestRunResult();
+            
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(model => model.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             CustomContainer.Register(mockPopupController.Object);
             CustomContainer.Register(mockShellViewModel.Object);
-            testRunResult.DebugForTest = new List<IDebugState>();
-            testRunResult.RunTestResult = RunResult.TestResourceDeleted;
+            
             mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(mockSelectedServiceTestModelTO.Object);
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
