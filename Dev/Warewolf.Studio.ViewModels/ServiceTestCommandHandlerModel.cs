@@ -135,26 +135,25 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestOutput.Result = output.Result;
                         return serviceTestOutput;
                     }).ToObservableCollection();
-
-                    foreach (var resTestStep in res.TestSteps)
+                    if (selectedServiceTest.TestSteps != null)
                     {
-                        foreach (var serviceTestStep in selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId))
+                        foreach (var resTestStep in res.TestSteps)
                         {
-                            serviceTestStep.Result = resTestStep.Result;
-                    if(selectedServiceTest.TestSteps != null)
-                    {
-                        foreach (var serviceTestStep in selectedServiceTest.TestSteps)
-                        {
-                            foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == serviceTestStep.UniqueId))
+                            foreach (var serviceTestStep in selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId))
                             {
-                                serviceTestStep.Result = testStep.Result;
+                                serviceTestStep.Result = resTestStep.Result;
 
-                            serviceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, serviceTestStep as ServiceTestStep);
-                        }
-                    }
+                               
+                                    foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == serviceTestStep.UniqueId))
+                                    {
+                                        serviceTestStep.Result = testStep.Result;
+
+                                        serviceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, serviceTestStep as ServiceTestStep);
+                                    }
+                                
                                 foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
                                 {
-                                    serviceTestOutput.Result = testStep.StepOutputs[0].Result;
+                                    serviceTestOutput.Result = resTestStep.StepOutputs[0].Result;
                                 }
                             }
                         }
