@@ -470,15 +470,12 @@ Scenario: Delete folder with resources deletes all tests
 	And "Hello bob" has 0 tests
 
 Scenario: Run all unselects all tests on selection shows corect debug
-	Given the test builder is open with "WorkflowWithTests"
-	Then there are 4 tests
-	And "Test1" is passing
-	And "Test2" is failing
-	And "Test3" is invalid
-	And "Test4" is pending
+	Given the test builder is open with "Hello World"
+	And I add "test 1,test 2,test 3" to "Hello World"
+	Then there are 3 tests	
 	When I run all tests
 	And selected test is empty
-	And I select "Test1"
+	And I select "test 1"
 	Then debug window is visible	
 
 
@@ -690,7 +687,7 @@ Scenario: Run a test with mock step
 	| If [[Name]] <> (Not Equal) |                 | Blank Input  | Decision      |
 	And I save
 	When I run the test
-	Then test result is invalid
+	Then test result is Failed
 	Then service debug inputs as
 		| Variable | Value |
 		| [[Name]] | Bob   |	
@@ -720,7 +717,7 @@ Scenario: Run a test with mock step assign
 	| Set the output variable (1) | Message         | hello mock   | Assign        |             |           |
 	And I save
 	When I run the test
-	Then test result is Passed
+	Then test result is Failed
 	Then service debug inputs as
 		| Variable | Value |
 		| [[Name]] | Bob   |	
@@ -750,7 +747,7 @@ Scenario: Run a test with Assert step assign
 	| Set the output variable (1) | Message         | hello mock   | Assign        |             |           |
 	And I save
 	When I run the test
-	Then test result is Passed
+	Then test result is Failed
 	Then service debug inputs as
 		| Variable | Value |
 		| [[Name]] | Bob   |	
@@ -771,19 +768,19 @@ Scenario: Run a test with Assert step assign
 	And test is enabled
 	And I update inputs as
 	| Variable Name | Value |
-	| Name          | Bob   |
+	| Name          |       |
 	And I update outputs as
 	| Variable Name | Value       |
 	| Message       | Hello World. |
 	And I add Assert steps as
 	| Step Name                  | Output Variable | Output Value | Activity Type | Output From | Output To |
-	| If [[Name]] <> (Not Equal) |                 | Blank Input  | Decision      |             |           |
+	| If [[Name]] <> (Not Equal) | Message         | Blank Input  | Decision      |             |           |
 	And I save
 	When I run the test
-	Then test result is Failed
+	Then test result is Passed
 	Then service debug inputs as
 		| Variable | Value |
-		| [[Name]] | Bob   |	
+		| [[Name]] |       |
 	And the service debug outputs as
 	  | Variable    | Value      |
 	  | [[Message]] | Hello World. |
