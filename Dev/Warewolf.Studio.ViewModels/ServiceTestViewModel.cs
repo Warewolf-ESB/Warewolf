@@ -317,6 +317,10 @@ namespace Warewolf.Studio.ViewModels
                             AssertOp = "=",
                             AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
                         };
+                        if (debugItemResult.MoreLink != null)
+                        {
+                            serviceTestOutput.AssertOp = "Contains";
+                        }
                         serviceTestOutputs.Add(serviceTestOutput);
                     }
                 }

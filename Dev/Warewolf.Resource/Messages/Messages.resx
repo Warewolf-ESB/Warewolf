@@ -117,8 +117,122 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Test_FailureMessage_Choose" xml:space="preserve">
+    <value>Assert Choose failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsError" xml:space="preserve">
+    <value>Assert Is Error failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotError" xml:space="preserve">
+    <value>Assert Is Not Error failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNull" xml:space="preserve">
+    <value>Assert Is Null failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotNull" xml:space="preserve">
+    <value>Assert Is Not Null failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNumeric" xml:space="preserve">
+    <value>Assert Is Numeric failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotNumeric" xml:space="preserve">
+    <value>Assert Is Not Numeric failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsText" xml:space="preserve">
+    <value>Assert Is Text failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotText" xml:space="preserve">
+    <value>Assert Is Not Text failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsAlphanumeric" xml:space="preserve">
+    <value>Assert Is Alphanumeric failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotAlphanumeric" xml:space="preserve">
+    <value>Assert Is Not Alphanumeric failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsXML" xml:space="preserve">
+    <value>Assert Is XML failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotXML" xml:space="preserve">
+    <value>Assert Is Not XML failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsDate" xml:space="preserve">
+    <value>Assert Is Date failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotDate" xml:space="preserve">
+    <value>Assert Is Not Date failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsEmail" xml:space="preserve">
+    <value>Assert Is Email failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotEmail" xml:space="preserve">
+    <value>Assert Is Not Email failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsRegEx" xml:space="preserve">
+    <value>Assert Is Reg Ex failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_NotRegEx" xml:space="preserve">
+    <value>Assert Not Reg Ex failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
   <data name="Test_FailureMessage_Equals" xml:space="preserve">
     <value>Assert Equal failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotEqual" xml:space="preserve">
+    <value>Assert Is Not Equal failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsLessThan" xml:space="preserve">
+    <value>Assert Is Less Than failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsLessThanOrEqual" xml:space="preserve">
+    <value>Assert Is Less Than Or Equal failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsGreaterThan" xml:space="preserve">
+    <value>Assert Is Greater Than failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsGreaterThanOrEqual" xml:space="preserve">
+    <value>Assert Is Greater Than Or Equal failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsContains" xml:space="preserve">
+    <value>Assert Is Contains failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_NotContain" xml:space="preserve">
+    <value>Assert Not Contain failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsEndsWith" xml:space="preserve">
+    <value>Assert Is Ends With failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_NotEndsWith" xml:space="preserve">
+    <value>Assert Not Ends With failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsStartsWith" xml:space="preserve">
+    <value>Assert Is Starts With failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_NotStartsWith" xml:space="preserve">
+    <value>Assert Not Starts With failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsBetween" xml:space="preserve">
+    <value>Assert Is Between failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_NotBetween" xml:space="preserve">
+    <value>Assert Not Between failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsBinary" xml:space="preserve">
+    <value>Assert Is Binary failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotBinary" xml:space="preserve">
+    <value>Assert Is Not Binary failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsHex" xml:space="preserve">
+    <value>Assert Is Hex failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotHex" xml:space="preserve">
+    <value>Assert Is Not Hex failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsBase64" xml:space="preserve">
+    <value>Assert Is Base64 failed. Expected "{0}" for '{1}' but got "{2}"</value>
+  </data>
+  <data name="Test_FailureMessage_IsNotBase64" xml:space="preserve">
+    <value>Assert Is Not Base64 failed. Expected "{0}" for '{1}' but got "{2}"</value>
   </data>
   <data name="Test_FailureResult" xml:space="preserve">
     <value>Failed</value>
