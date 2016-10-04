@@ -94,7 +94,14 @@
                       HorizontalContentAlignment="Stretch"
                       Style="{StaticResource VariablesTreeViewStyle}"
                       Grid.IsSharedSizeScope="True"
-                      AutomationProperties.AutomationId="UI_VariableTreeView_AutoID">
+                      AutomationProperties.AutomationId="UI_VariableTreeView_AutoID"
+                      ScrollViewer.CanContentScroll="True"
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                      VirtualizingPanel.IsVirtualizingWhenGrouping="True" 
+                      VirtualizingStackPanel.ScrollUnit="Item"  
+                      VirtualizingStackPanel.CacheLength="30,30"
+                      VirtualizingStackPanel.CacheLengthUnit="Page">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type dataList3:ScalarItemModel}">
                         <Grid HorizontalAlignment="Stretch" 
