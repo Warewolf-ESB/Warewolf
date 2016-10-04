@@ -278,7 +278,7 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
 
         public IList<IResourceHistory> CreateHistory(IScheduledResource resource)
         {
-            ITaskEventLog evt = _factory.CreateTaskEventLog(string.Format("\\{0}\\", _warewolfFolderPath) + resource.Name);
+            ITaskEventLog evt = _factory.CreateTaskEventLog($"\\{_warewolfFolderPath}\\" + resource.Name);
             var groupings =
                 from a in
                     evt.Where(x => !string.IsNullOrEmpty(x.Correlation) 

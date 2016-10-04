@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             _scenarioContext = scenarioContext;
-            _commonSteps = new CommonSteps(_scenarioContext);            
+            _commonSteps = new CommonSteps(_scenarioContext);
         }
 
         [Given(@"I have a schedule ""(.*)""")]
@@ -67,15 +67,25 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)"" and group ""(.*)""")]
         public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password, string groupName)
         {
-            if (AccountExists("LocalSchedulerAdmin"))
+            const string Localscheduleradmin = "LocalSchedulerAdmin";
+            if (AccountExists(Localscheduleradmin))
             {
                 DirectoryEntry localDirectory = new DirectoryEntry("WinNT://" + Environment.MachineName);
                 DirectoryEntries users = localDirectory.Children;
-                DirectoryEntry user = users.Find("LocalSchedulerAdmin");
+                DirectoryEntry user = users.Find(Localscheduleradmin);
                 users.Remove(user);
 
             }
-            CreateLocalWindowsAccount("LocalSchedulerAdmin", "987Sched#@!", groupName);
+            CreateLocalWindowsAccount(Localscheduleradmin, "987Sched#@!", "Warewolf Administrators");
+            try
+            {
+                Dev2LocalSecurityWrapper lsa = new Dev2LocalSecurityWrapper();
+                lsa.SetRight(Localscheduleradmin, "SeBatchLogonRight");
+            }
+            catch (Exception)
+            {
+                //
+            }
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", password);
         }
@@ -83,15 +93,33 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)""")]
         public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password)
         {
-            if(AccountExists("LocalSchedulerAdmin"))
+            //const string Localscheduleradmin = "LocalSchedulerAdmin";
+            string groupname = "";
+            if (userName.Contains('\\'))
+            {
+                var strings = userName.Split('\\');
+                groupname = strings.First();
+                userName = strings.Last();
+
+            }
+            if (AccountExists(userName))
             {
                 DirectoryEntry localDirectory = new DirectoryEntry("WinNT://" + Environment.MachineName);
                 DirectoryEntries users = localDirectory.Children;
-                DirectoryEntry user = users.Find("LocalSchedulerAdmin");
+                DirectoryEntry user = users.Find(userName);
                 users.Remove(user);
-                
+
             }
-            CreateLocalWindowsAccount("LocalSchedulerAdmin", "987Sched#@!", "Administrators");            
+            CreateLocalWindowsAccount(userName, password, groupname);
+            try
+            {
+                Dev2LocalSecurityWrapper lsa = new Dev2LocalSecurityWrapper();
+                lsa.SetRight(userName, "SeBatchLogonRight");
+            }
+            catch (Exception)
+            {
+                //
+            }
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", password);
         }
@@ -113,7 +141,7 @@ namespace Dev2.Activities.Specs.Scheduler
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
 
             environmentModel.Connect();
-            scheduler.ScheduledResourceModel = new ClientScheduledResourceModel(environmentModel,()=>{});
+            scheduler.ScheduledResourceModel = new ClientScheduledResourceModel(environmentModel, () => { });
             scheduler.CurrentEnvironment = environmentModel;
             scheduler.CreateNewTask();
             scheduler.SelectedTask.Name = _scenarioContext["ScheduleName"].ToString();
@@ -140,7 +168,7 @@ namespace Dev2.Activities.Specs.Scheduler
                     _scenarioContext["Error"] = scheduler.Error;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
                 _scenarioContext["Error"] = e.Message;
@@ -153,7 +181,7 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             var sched = table.Rows[0]["ScheduleType"];
             Microsoft.Win32.TaskScheduler.Trigger x;
-            switch(sched)
+            switch (sched)
             {
                 case "At log on":
                     x = new LogonTrigger();
@@ -177,7 +205,7 @@ namespace Dev2.Activities.Specs.Scheduler
         Microsoft.Win32.TaskScheduler.Trigger CreateScheduleTrigger(Table table)
         {
             var sched = table.Rows[0]["Interval"];
-            switch(sched)
+            switch (sched)
             {
                 case "Daily":
                     return new DailyTrigger(Convert.ToInt16(table.Rows[0]["Recurs"])) { StartBoundary = DateTime.Parse(table.Rows[0]["StartDate"] + " " + table.Rows[0]["StartTime"]) };
@@ -197,7 +225,7 @@ namespace Dev2.Activities.Specs.Scheduler
             DaysOfTheWeek res;
             Enum.TryParse(split.First(), true, out res);
 
-            foreach(var s in split.Except(new[] { split.First() }))
+            foreach (var s in split.Except(new[] { split.First() }))
             {
                 DaysOfTheWeek day;
                 Enum.TryParse(s, true, out day);
@@ -213,15 +241,16 @@ namespace Dev2.Activities.Specs.Scheduler
         public void ThenTheScheduleStatusIs(string status)
         {
             var scheduler = _scenarioContext["Scheduler"] as SchedulerViewModel;
-            if(scheduler != null)
+            if (scheduler != null)
             {
                 scheduler.ActiveItem = new TabItem { Header = "History" };
                 Thread.Sleep(12000);
                 // ReSharper disable RedundantAssignment
-                IList<IResourceHistory> x = scheduler.ScheduledResourceModel.CreateHistory(scheduler.SelectedTask).ToList();
+                var scheduledResource = scheduler.SelectedTask;
+                IList<IResourceHistory> x = scheduler.ScheduledResourceModel.CreateHistory(scheduledResource).ToList();
                 // ReSharper restore RedundantAssignment
 
-                if(status == "Success")
+                if (status == "Success")
                     Assert.AreEqual(ScheduleRunStatus.Success, x[0].TaskHistoryOutput.Success);
                 else
                 {
@@ -270,7 +299,7 @@ namespace Dev2.Activities.Specs.Scheduler
         [Then(@"the Schedule task has ""(.*)"" error")]
         public void ThenTheScheduleTaskHasError(string error)
         {
-            if(error == "AN" && _scenarioContext["Error"] == null)
+            if (error == "AN" && _scenarioContext["Error"] == null)
                 Assert.Fail("Error Expected");
             if (error == "NO" && _scenarioContext["Error"] != null)
                 Assert.Fail(_scenarioContext["Error"].ToString());
@@ -281,12 +310,11 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             try
             {
-
-
+                
                 int i = 0;
                 var x = new TaskService();
                 x.GetFolder("Warewolf");
-                var task = x.FindTask(scheduleName);                
+                var task = x.FindTask(scheduleName);
                 do
                 {
                     task.Run();
@@ -294,7 +322,7 @@ namespace Dev2.Activities.Specs.Scheduler
 
                     const int TimeOut = 10;
                     int time = 0;
-                    while(task.State == TaskState.Running && time < TimeOut)
+                    while (task.State == TaskState.Running && time < TimeOut)
                     {
                         time++;
                         Thread.Sleep(1000);
@@ -302,9 +330,9 @@ namespace Dev2.Activities.Specs.Scheduler
                     i++;
 
 
-                } while(i < times);
+                } while (i < times);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
                 _scenarioContext["Error"] = e;
@@ -320,9 +348,9 @@ namespace Dev2.Activities.Specs.Scheduler
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
             }
-                // ReSharper disable EmptyGeneralCatchClause
-            catch(Exception)
-                // ReSharper restore EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
+            catch (Exception)
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 /* Invalid user account */
             }
@@ -332,10 +360,10 @@ namespace Dev2.Activities.Specs.Scheduler
         public static SecurityIdentifier GetUserSecurityIdentifier(string name)
         {
             NTAccount acct = new NTAccount(Environment.MachineName, name);
-            SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));            
+            SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
             return id;
         }
-        
+
         public static bool CreateLocalWindowsAccount(string username, string password, string groupName)
         {
             try
@@ -352,7 +380,7 @@ namespace Dev2.Activities.Specs.Scheduler
                 AddUserToGroup(groupName, context, user);
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(@"error creating user" + ex.Message);
                 return false;
@@ -362,7 +390,7 @@ namespace Dev2.Activities.Specs.Scheduler
         public static void AddUserToGroup(string groupName, PrincipalContext context, UserPrincipal user)
         {
             GroupPrincipal usersGroup = GroupPrincipal.FindByIdentity(context, groupName);
-            if(usersGroup != null)
+            if (usersGroup != null)
             {
                 usersGroup.Members.Add(user);
                 usersGroup.Save();
