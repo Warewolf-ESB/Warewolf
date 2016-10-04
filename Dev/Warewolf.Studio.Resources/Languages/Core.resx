@@ -440,7 +440,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>function sum average product count max median min var stdev concatenate choose irr counta subtotal total avedev and or isnull istext npv</value>
   </data>
   <data name="Tool_Utility_Create JSON_Tags" xml:space="preserve">
-    <value />
+    <value>object</value>
   </data>
   <data name="Tool_Utility_Calculate_Tags" xml:space="preserve">
     <value>add subtract minus maths divide power compute excel exel</value>
@@ -467,7 +467,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>header page content html</value>
   </data>
   <data name="Tool_Utility_Xpath_Tags" xml:space="preserve">
-    <value />
+    <value>xml</value>
   </data>
   <data name="Tool_Utility_Rabbit MQ Publish_Tags" xml:space="preserve">
     <value>source connector</value>
