@@ -135,32 +135,21 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestOutput.Result = output.Result;
                         return serviceTestOutput;
                     }).ToObservableCollection();
+
                     if (selectedServiceTest.TestSteps != null)
                     {
                         foreach (var resTestStep in res.TestSteps)
                         {
-                            foreach (var serviceTestStep in selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId))
+                            var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
+                            foreach (var serviceTestStep in serviceTestSteps)
                             {
                                 serviceTestStep.Result = resTestStep.Result;
-
-                    foreach (var resTestStep in res.TestSteps)
-                    {
-                        var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
-                        foreach (var serviceTestStep in serviceTestSteps)
-                        {
-                            serviceTestStep.Result = resTestStep.Result;
-
-                               
-                                    foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == serviceTestStep.UniqueId))
-                                    {
-                                        serviceTestStep.Result = testStep.Result;
-
-                                        serviceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, serviceTestStep as ServiceTestStep);
-                                    }
                                 
-                                foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                                foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == serviceTestStep.UniqueId))
                                 {
-                                    serviceTestOutput.Result = resTestStep.StepOutputs[0].Result;
+                                    serviceTestStep.Result = testStep.Result;
+
+                                    serviceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, serviceTestStep as ServiceTestStep);
                                 }
                             }
                         }
