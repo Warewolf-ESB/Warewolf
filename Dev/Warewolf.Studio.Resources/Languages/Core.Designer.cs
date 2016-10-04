@@ -9172,7 +9172,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to object.
         /// </summary>
         public static string Tool_Utility_Create_JSON_Tags {
             get {
@@ -9253,7 +9253,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to xml.
         /// </summary>
         public static string Tool_Utility_Xpath_Tags {
             get {
