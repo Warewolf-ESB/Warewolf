@@ -60,9 +60,13 @@ namespace Warewolf.UITests
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
             Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists);
             Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            Uimap.Click_Explorer_RemoteServer_Connect_Button();
-            Uimap.Click_MessageBox_OK();
-            Uimap.Select_Localhost_From_Explorer();
+            Uimap.Click_Explorer_RemoteServer_Edit_Button();
+            Uimap.Click_Server_Source_Wizard_Test_Connection_Button();
+            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.Spinner);
+            Uimap.Click_Close_Server_Source_Wizard_Tab_Button();
+            Uimap.Click_MessageBox_No();
+            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.Spinner);
+            Uimap.Select_localhost_From_Explorer_Remote_Server_Dropdown_List();
         }
     
         [TestMethod]
