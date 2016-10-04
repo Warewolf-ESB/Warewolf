@@ -92,10 +92,11 @@
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0" Style="{StaticResource TestsListBoxStyle}" 
-						BorderThickness="1,0,1,1"                        
-						ItemsSource="{Binding Tests}" SelectionMode="Single" 
-						x:Name="TestsListbox"
-						SelectedItem="{Binding SelectedServiceTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                         BorderThickness="1,0,1,1"                        
+                         ItemsSource="{Binding Tests}" SelectionMode="Single" 
+                         x:Name="TestsListbox"
+                         SelectedItem="{Binding SelectedServiceTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -115,7 +116,7 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="2" Margin="{StaticResource ElementBorderRight}">
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="2" >
                                         <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="20" Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="20"  Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" Margin="{StaticResource ControlBorderLeft}" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="20"  Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -561,7 +562,7 @@
                                                                                BorderBrush="{StaticResource XamGridBorderBrush}"
                                                                                Height="Auto"
                                                                                MaxHeight="107"
-                                                                               HeadersVisibility="All">
+                                                                               HeadersVisibility="All" HorizontalScrollBarVisibility="Auto">
                                                             <DataGrid.Columns>
                                                                 <DataGridTemplateColumn Width="20" MinWidth="20" MaxWidth="20" Header="" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
                                                                     <DataGridTemplateColumn.CellTemplate>
