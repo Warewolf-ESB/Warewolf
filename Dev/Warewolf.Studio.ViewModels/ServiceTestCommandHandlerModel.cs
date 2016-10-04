@@ -135,6 +135,13 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestOutput.Result = output.Result;
                         return serviceTestOutput;
                     }).ToObservableCollection();
+                    if (selectedServiceTest.TestSteps != null)
+                    {
+                        foreach (var resTestStep in res.TestSteps)
+                        {
+                            foreach (var serviceTestStep in selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId))
+                            {
+                                serviceTestStep.Result = resTestStep.Result;
 
                     foreach (var resTestStep in res.TestSteps)
                     {
@@ -143,7 +150,19 @@ namespace Warewolf.Studio.ViewModels
                         {
                             serviceTestStep.Result = resTestStep.Result;
 
-                            serviceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, serviceTestStep as ServiceTestStep);
+                               
+                                    foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == serviceTestStep.UniqueId))
+                                    {
+                                        serviceTestStep.Result = testStep.Result;
+
+                                        serviceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, serviceTestStep as ServiceTestStep);
+                                    }
+                                
+                                foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                                {
+                                    serviceTestOutput.Result = resTestStep.StepOutputs[0].Result;
+                                }
+                            }
                         }
                     }
 
