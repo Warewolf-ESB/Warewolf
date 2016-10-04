@@ -72,7 +72,7 @@ namespace Dev2.Studio.Views.DataList
             {
                 return;
             }
-            WriteToResourceModel();
+            //WriteToResourceModel();
         }
 
         private void Outputcbx_OnChecked(object sender, RoutedEventArgs e)
@@ -82,7 +82,7 @@ namespace Dev2.Studio.Views.DataList
             {
                 return;
             }
-            WriteToResourceModel();
+           // WriteToResourceModel();
         }
 
         private void NametxtFocusLost(object sender, RoutedEventArgs e)
@@ -153,7 +153,11 @@ namespace Dev2.Studio.Views.DataList
 
         private void DataListView_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            WriteToResourceModel();
+            IDataListViewModel vm = DataContext as IDataListViewModel;
+            if (vm != null && !vm.IsSorting)
+            {
+                vm?.AddBlankRow(null);
+            }
         }
     }
 }

@@ -630,10 +630,21 @@ namespace Dev2.Studio.ViewModels.DataList
             var result = GetDataListString();
             if (Resource != null)
             {
-                Resource.DataList = result;
+                if (!Resource.DataList.Equals(result, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (BaseCollection.Count >= 1)
+                    {
+                        BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
+                        BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
+                        BaseCollection[2].Children = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);                        
+                    }
+                    AddBlankRow(null);
+                    Resource.DataList = result;
+                    return result;
+                }
             }
 
-            if (BaseCollection.Count >= 1)
+            if (BaseCollection.Count >= 1 && BaseCollection.All(model => model.Children.Count==0))
             {
                 BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
                 BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
