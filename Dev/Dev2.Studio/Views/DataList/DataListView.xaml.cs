@@ -107,7 +107,7 @@ namespace Dev2.Studio.Views.DataList
 
         private void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            WriteToResourceModel();
+            //WriteToResourceModel();
         }
 
         #endregion Events
