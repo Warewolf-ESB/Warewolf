@@ -1929,13 +1929,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
-            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
-            Assert.AreEqual(assignActivity.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
-            Assert.AreEqual(3, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
-            var serviceTestOutput1 = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
-            var serviceTestOutput2 = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[1] as ServiceTestOutput;
-            var serviceTestOutput3 = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[2] as ServiceTestOutput;
+            Assert.AreEqual(2, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[1].Type);
+            Assert.AreEqual(assignActivity.GetType().Name, testFrameworkViewModel.SelectedServiceTest.TestSteps[1].ActivityType);
+            Assert.AreEqual(3, testFrameworkViewModel.SelectedServiceTest.TestSteps[1].StepOutputs.Count);
+            var serviceTestOutput1 = testFrameworkViewModel.SelectedServiceTest.TestSteps[1].StepOutputs[0] as ServiceTestOutput;
+            var serviceTestOutput2 = testFrameworkViewModel.SelectedServiceTest.TestSteps[1].StepOutputs[1] as ServiceTestOutput;
+            var serviceTestOutput3 = testFrameworkViewModel.SelectedServiceTest.TestSteps[1].StepOutputs[2] as ServiceTestOutput;
             Assert.IsFalse(serviceTestOutput1.HasOptionsForValue);
             Assert.IsFalse(serviceTestOutput2.HasOptionsForValue);
             Assert.IsFalse(serviceTestOutput3.HasOptionsForValue);

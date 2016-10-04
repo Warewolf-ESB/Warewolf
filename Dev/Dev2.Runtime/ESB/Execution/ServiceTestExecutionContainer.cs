@@ -247,12 +247,15 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     var debugState = wfappUtils.GetDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DataObject.StartTime, false, true, true);
                     DebugItem itemToAdd = new DebugItem();
-                    var msg = test.FailureMessage;
-                    if (test.TestPassed)
+                    if(test != null)
                     {
-                        msg = "Passed";
+                        var msg = test.FailureMessage;
+                        if (test.TestPassed)
+                        {
+                            msg = "Passed";
+                        }
+                        itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg).GetDebugItemResult());
                     }
-                    itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg).GetDebugItemResult());
                     debugState.AssertResultList.Add(itemToAdd);
                     wfappUtils.WriteDebug(DataObject, debugState);
                 }
@@ -536,12 +539,18 @@ namespace Dev2.Runtime.ESB.Execution
                 if (foundTestStep.ActivityType == typeof(DsfDecision).Name && foundTestStep.Type == StepType.Mock)
                 {
                     var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == GlobalConstants.ArmResultText);
-                    resource = new TestMockDecisionStep(resource as DsfDecision) { NameOfArmToReturn = serviceTestOutput.Value };
+                    if(serviceTestOutput != null)
+                    {
+                        resource = new TestMockDecisionStep(resource as DsfDecision) { NameOfArmToReturn = serviceTestOutput.Value };
+                    }
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfSwitch).Name && foundTestStep.Type == StepType.Mock)
                 {
                     var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == GlobalConstants.ArmResultText);
-                    resource = new TestMockSwitchStep(resource as DsfSwitch) { ConditionToUse = serviceTestOutput.Value };
+                    if(serviceTestOutput != null)
+                    {
+                        resource = new TestMockSwitchStep(resource as DsfSwitch) { ConditionToUse = serviceTestOutput.Value };
+                    }
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfSequenceActivity).Name)
                 {

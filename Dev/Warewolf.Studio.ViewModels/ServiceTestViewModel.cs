@@ -161,7 +161,7 @@ namespace Warewolf.Studio.ViewModels
             if (debugState.Children != null && debugState.Children.Count > 0)
             {
                 var testSteps = SelectedServiceTest.TestSteps;
-                AddChildDebugItems(debugItemContent, debugState, testSteps, null);
+                AddChildDebugItems(debugItemContent, debugState, null);
             }
             else
             {
@@ -179,7 +179,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void AddChildDebugItems(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, ObservableCollection<IServiceTestStep> testSteps, IServiceTestStep parent)
+        private void AddChildDebugItems(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
         {
             if (parent == null)
             {
@@ -249,7 +249,7 @@ namespace Warewolf.Studio.ViewModels
                             parent.Children.Add(childStep);
                             if (childItem.Children != null && childItem.Children.Count > 0)
                             {
-                                AddChildDebugItems(childItemContent, childItem, parent.Children, childStep);
+                                AddChildDebugItems(childItemContent, childItem, childStep);
                             }
                         }
                     }
@@ -281,7 +281,7 @@ namespace Warewolf.Studio.ViewModels
                             parent.Children.Add(childStep);
                             if (childItem.Children != null && childItem.Children.Count > 0)
                             {
-                                AddChildDebugItems(childItemContent, childItem, parent.Children, childStep);
+                                AddChildDebugItems(childItemContent, childItem, childStep);
                             }
                         }
                     }

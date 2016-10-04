@@ -179,8 +179,11 @@ namespace Dev2.Activities.SelectAndApply
                     executionEnvironment.SetDataSource(exp);
 
                     var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
-                    _childUniqueID = exeAct.UniqueID;
-                    exeAct?.Execute(dataObject, 0);
+                    if(exeAct != null)
+                    {
+                        _childUniqueID = exeAct.UniqueID;
+                        exeAct?.Execute(dataObject, 0);
+                    }
                 }
             }
             catch(Exception e)
