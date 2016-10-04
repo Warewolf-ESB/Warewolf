@@ -127,15 +127,18 @@ namespace Warewolf.Studio.ViewModels
                                                       res.Result.RunTestResult != RunResult.TestResourceDeleted &&
                                                       res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
 
-                    foreach (var serviceTestStep in selectedServiceTest.TestSteps)
+                    if(selectedServiceTest.TestSteps != null)
                     {
-                        foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == serviceTestStep.UniqueId))
+                        foreach (var serviceTestStep in selectedServiceTest.TestSteps)
                         {
-                            serviceTestStep.Result = testStep.Result;
-
-                            foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                            foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == serviceTestStep.UniqueId))
                             {
-                                serviceTestOutput.Result = testStep.StepOutputs[0].Result;
+                                serviceTestStep.Result = testStep.Result;
+
+                                foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                                {
+                                    serviceTestOutput.Result = testStep.StepOutputs[0].Result;
+                                }
                             }
                         }
                     }
