@@ -154,6 +154,8 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+
+
         public ObservableCollection<IScalarItemModel> ScalarCollection
         {
             get
@@ -628,29 +630,32 @@ namespace Dev2.Studio.ViewModels.DataList
             ScalarCollection.ForEach(_scalarHandler.FixNamingForScalar);
             _recordsetHandler.AddRecordsetNamesIfMissing();
             var result = GetDataListString();
-            if (Resource != null)
-            {
-                if (!Resource.DataList.Equals(result, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (BaseCollection.Count >= 1)
-                    {
-                        BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
-                        BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
-                        BaseCollection[2].Children = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);                        
-                    }
-                    AddBlankRow(null);
-                    Resource.DataList = result;
-                    return result;
-                }
-            }
-
-            if (BaseCollection.Count >= 1 && BaseCollection.All(model => model.Children.Count==0))
-            {
-                BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
-                BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
-                BaseCollection[2].Children = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);
-                AddBlankRow(null);
-            }
+//            _baseScalarCollection = BaseCollection[0].Children;
+//            _baseRecSetCollection = BaseCollection[1].Children;
+//            _baseComplexObjectCollection = BaseCollection[2].Children;
+//            if (Resource != null)
+//            {
+//                if (!Resource.DataList.Equals(result, StringComparison.InvariantCultureIgnoreCase))
+//                {
+//                    if (BaseCollection.Count >= 1)
+//                    {
+//                        _baseScalarCollection = new ObservableCollection<IDataListItemModel>(ScalarCollection);
+//                        _baseRecSetCollection = new ObservableCollection<IDataListItemModel>(RecsetCollection);
+//                        _baseComplexObjectCollection = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);                        
+//                    }
+//                    AddBlankRow(null);
+//                    Resource.DataList = result;
+//                    return result;
+//                }
+//            }
+//
+//            if (BaseCollection.Count >= 1 && BaseCollection.All(model => model.Children.Count==0))
+//            {
+//                _baseScalarCollection = new ObservableCollection<IDataListItemModel>(ScalarCollection);
+//                _baseRecSetCollection = new ObservableCollection<IDataListItemModel>(RecsetCollection);
+//                _baseComplexObjectCollection = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);
+//                AddBlankRow(null);
+//            }
             return result;
         }
 
@@ -830,6 +835,13 @@ namespace Dev2.Studio.ViewModels.DataList
 
             DataListHeaderItemModel complexObjectNode = DataListItemModelFactory.CreateDataListHeaderItem("Object");
             BaseCollection.Add(complexObjectNode);
+
+            AddBlankRow(null);
+
+            BaseCollection[0].Children = ScalarCollection;
+            BaseCollection[1].Children = RecsetCollection;
+            BaseCollection[2].Children = ComplexObjectCollection;
+
             WriteToResourceModel();
         }
 
@@ -1069,6 +1081,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         public ISuggestionProvider Provider { get; set; }
+        
 
         private static string BuildErrorMessage(IDataListItemModel model)
         {
