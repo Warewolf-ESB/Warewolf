@@ -57,6 +57,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Dev2LocalSecurityWrapper.cs" />
     <Compile Include="TestFramework\StudioTestFramework1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
