@@ -226,7 +226,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var contains = testSteps.Contains(serviceTestStep.Object);
             Assert.IsTrue(contains);
             //---------------Execute Test ----------------------
-            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, testSteps, serviceTestStep.Object });
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, serviceTestStep.Object });
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testSteps.Count);
         }
@@ -276,7 +276,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, testSteps, default(IServiceTestStep) });
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, default(IServiceTestStep) });
             //---------------Test Result -----------------------
             Assert.AreEqual(0, testSteps.Count);
         }
@@ -392,7 +392,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             try
             {
-                methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, testSteps, default(IServiceTestStep) });
+                methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, default(IServiceTestStep) });
             }
             catch(Exception ex) when(ex is TargetInvocationException)//weird error during a test run
             {
