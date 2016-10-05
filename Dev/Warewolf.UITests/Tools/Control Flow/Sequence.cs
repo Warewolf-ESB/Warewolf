@@ -11,6 +11,8 @@ namespace Warewolf.UITests.Tools.Control_Flow
         public void SequenceToolUITest()
         {
             Uimap.Drag_Toolbox_Sequence_Onto_DesignSurface();
+            Uimap.Open_Sequence_Large_tool_View();
+            Uimap.Drag_Toolbox_AssignObject_Onto_DesignSurface();
         }
 
         #region Additional test attributes

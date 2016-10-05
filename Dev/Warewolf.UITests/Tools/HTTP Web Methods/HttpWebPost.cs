@@ -1,19 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Warewolf.UITests.Tools.Control_Flow
+namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class Decision
+    public class HttpWebPost
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void DecisionToolUITest()
+        public void HttpWebPostToolUITest()
         {
-            Uimap.Drag_Toolbox_Decision_Onto_DesignSurface();
-            Uimap.Click_Decision_Dialog_Done_Button();
-            Uimap.Open_Decision_Large_View();
-            Uimap.Click_Decision_Dialog_Done_Button();
+            Uimap.Drag_PostWeb_RequestTool_Onto_DesignSurface();
+            Uimap.Open_PostWeb_RequestTool_Large_View();
         }
 
         #region Additional test attributes
@@ -27,6 +25,24 @@ namespace Warewolf.UITests.Tools.Control_Flow
 #endif
             Uimap.InitializeABlankWorkflow();
         }
+
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
+        }
+
+        private TestContext testContextInstance;
 
         UIMap Uimap
         {
