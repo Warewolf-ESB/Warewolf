@@ -6,6 +6,7 @@ using Dev2.Common.Interfaces;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
+using Newtonsoft.Json;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -322,39 +323,11 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => AssertOps);
             }
         }
+        [JsonIgnore]
         public Action AddNewAction { get; set; }
+        [JsonIgnore]
         public Action<string> AddStepOutputRow { get; set; }
 
-        #region Implementation of ICloneable
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>
-        /// A new object that is a copy of this instance.
-        /// </returns>
-        public object Clone()
-        {
-            var memberwiseClone = (ServiceTestOutput)MemberwiseClone();
-            var assertOps = new ObservableCollection<string>();
-            foreach (var assertOp in memberwiseClone.AssertOps)
-            {
-
-                assertOps.Add(string.Copy(assertOp));
-            }
-            memberwiseClone.AssertOps = new ObservableCollection<string>();
-            memberwiseClone.AssertOps = assertOps;
-            var optionsForValue = new ObservableCollection<string>();
-            if(memberwiseClone.OptionsForValue != null)
-            {
-                foreach (var value in memberwiseClone.OptionsForValue)
-                {
-                    optionsForValue.Add(string.Copy(value));
-                }
-            }
-            return memberwiseClone;
-        }
-
-        #endregion
+       
     }
 }

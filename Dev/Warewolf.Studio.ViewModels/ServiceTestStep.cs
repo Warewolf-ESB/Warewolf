@@ -6,6 +6,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
+using Newtonsoft.Json;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -54,6 +55,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        [JsonIgnore]
         public ImageSource StepIcon
         {
             get { return _stepIcon; }
@@ -232,11 +234,12 @@ namespace Warewolf.Studio.ViewModels
                 if (_assertSelected)
                 {
                     Type = StepType.Assert;
-                    foreach (var serviceTestOutput in StepOutputs)
-                    {
-                        var item = serviceTestOutput as ServiceTestOutput;
-                        item?.OnSearchTypeChanged();
-                    }
+                    if (StepOutputs != null)
+                        foreach (var serviceTestOutput in StepOutputs)
+                        {
+                            var item = serviceTestOutput as ServiceTestOutput;
+                            item?.OnSearchTypeChanged();
+                        }
                 }
                 OnPropertyChanged(() => AssertSelected);
             }
@@ -251,22 +254,23 @@ namespace Warewolf.Studio.ViewModels
                 if (_mockSelected)
                 {
                     Type = StepType.Mock;
-                    foreach (var serviceTestOutput in StepOutputs)
-                    {
-                        var item = serviceTestOutput as ServiceTestOutput;
-                        if (item != null)
+                    if (StepOutputs != null)
+                        foreach (var serviceTestOutput in StepOutputs)
                         {
-                            if (!item.IsSearchCriteriaEnabled)
+                            var item = serviceTestOutput as ServiceTestOutput;
+                            if (item != null)
                             {
-                                item.IsSearchCriteriaEnabled = true;
-                            }
-                            if (!item.IsSinglematchCriteriaVisible)
-                            {
-                                item.IsSinglematchCriteriaVisible = true;
-                                item.IsBetweenCriteriaVisible = false;
+                                if (!item.IsSearchCriteriaEnabled)
+                                {
+                                    item.IsSearchCriteriaEnabled = true;
+                                }
+                                if (!item.IsSinglematchCriteriaVisible)
+                                {
+                                    item.IsSinglematchCriteriaVisible = true;
+                                    item.IsBetweenCriteriaVisible = false;
+                                }
                             }
                         }
-                    }
                 }
                 OnPropertyChanged(() => MockSelected);
             }

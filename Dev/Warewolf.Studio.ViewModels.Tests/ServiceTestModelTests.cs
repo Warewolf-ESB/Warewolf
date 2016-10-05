@@ -127,19 +127,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual("Never run", testModel.NeverRunString);
         }
-
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void TestModel_GivenIsNew_ShouldBeClonable()
-        {
-            //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel(Guid.NewGuid());
-            //------------Execute Test---------------------------
-            //------------Assert Results-------------------------
-            Assert.IsInstanceOfType(testModel, typeof(ICloneable));
-        }
-
+        
 
         [TestMethod]
         [Owner("Pieter Terblanche")]

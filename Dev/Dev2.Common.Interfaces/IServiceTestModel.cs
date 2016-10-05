@@ -8,7 +8,7 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IServiceTestModel : INotifyPropertyChanged, ICloneable
+    public interface IServiceTestModel : INotifyPropertyChanged
     {
         Guid ParentId { get; set; }
         string OldTestName { get; set; }
@@ -44,7 +44,7 @@ namespace Dev2.Common.Interfaces
         IServiceTestStep SelectedTestStep { get; set; }
 
         void SetItem(IServiceTestModel model);
-
+        IServiceTestModel Clone();
         IServiceTestStep AddTestStep(string activityUniqueID, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType = StepType.Assert);
     }
 
@@ -55,7 +55,7 @@ namespace Dev2.Common.Interfaces
         bool EmptyIsNull { get; set; }
     }
 
-    public interface IServiceTestOutput:ICloneable
+    public interface IServiceTestOutput
     {
         string Variable { get; set; }
         string Value { get; set; }

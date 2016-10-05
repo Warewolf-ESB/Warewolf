@@ -15,20 +15,5 @@ namespace Dev2.Data
         public bool HasOptionsForValue { get; set; }
         public List<string> OptionsForValue { get; set; }
         public TestRunResult Result { get; set; }
-
-        #region Implementation of ICloneable
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>
-        /// A new object that is a copy of this instance.
-        /// </returns>
-        public object Clone()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }
