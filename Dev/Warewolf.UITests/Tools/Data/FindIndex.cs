@@ -4,20 +4,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class Replace
+    public class FindIndex
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void ReplaceToolUITest()
+        public void FindIndexToolUITest()
         {
-            Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();
-            Uimap.Open_Replace_Tool_Large_View();
-            //Uimap.Enter_Values_Into_Replace_Tool_Large_View();
-            //Uimap.Click_Replace_Tool_Large_View_Done_Button();
-            //Uimap.Click_Replace_Tool_QVI_Button();
-            //Uimap.Click_Debug_Bibbon_Button();
-            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.ReplaceToolDebugOutputExists = true;
-            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
+            Uimap.Drag_Toolbox_Find_Index_Onto_DesignSurface();
+            Uimap.Open_Find_Index_Tool_Large_View();
         }
 
         #region Additional test attributes
