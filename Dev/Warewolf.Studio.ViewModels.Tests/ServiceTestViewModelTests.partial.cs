@@ -169,9 +169,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, testSteps, serviceTestStep.Object });
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, serviceTestStep.Object });
             //---------------Test Result -----------------------
-            var contains = testSteps.Contains(serviceTestStep.Object);
+            var serviceTestSteps = testFrameworkViewModel.Tests[0].TestSteps;
+            var contains = serviceTestSteps.Contains(serviceTestStep.Object);
             Assert.IsTrue(contains);
         }
 
@@ -225,7 +226,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var contains = testSteps.Contains(serviceTestStep.Object);
             Assert.IsTrue(contains);
             //---------------Execute Test ----------------------
-            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, testSteps, serviceTestStep.Object });
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, serviceTestStep.Object });
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testSteps.Count);
         }
@@ -275,7 +276,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, testSteps, default(IServiceTestStep) });
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, default(IServiceTestStep) });
             //---------------Test Result -----------------------
             Assert.AreEqual(0, testSteps.Count);
         }
@@ -329,14 +330,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, testSteps, default(IServiceTestStep) });
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, default(IServiceTestStep) });
             //---------------Test Result -----------------------
-            Assert.AreEqual(1, testSteps.Count);
-            Assert.AreEqual("DsfSequenceActivity", testSteps[0].ActivityType);
-            Assert.AreEqual("Sequence", testSteps[0].StepDescription);
-            Assert.AreEqual(0, testSteps[0].StepOutputs.Count);
-            Assert.AreEqual("549601d4-c800-4176-89b7-4eba3bac46fa".ToGuid(), testSteps[0].UniqueId);
-            Assert.AreEqual(StepType.Assert, testSteps[0].Type);
+            var serviceTestSteps = testFrameworkViewModel.Tests[0].TestSteps;
+            Assert.AreEqual(2, serviceTestSteps.Count);
+            Assert.AreEqual("DsfMultiAssignActivity", serviceTestSteps[0].ActivityType);
+            Assert.AreEqual("Set the output variable (1)", serviceTestSteps[0].StepDescription);
+            Assert.AreEqual(1, serviceTestSteps[0].StepOutputs.Count);
+            Assert.AreEqual("670132e7-80d4-4e41-94af-ba4a71b28118".ToGuid(), serviceTestSteps[0].UniqueId);
+            Assert.AreEqual(StepType.Assert, serviceTestSteps[0].Type);
         }
 
         [TestMethod]
@@ -390,7 +392,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             try
             {
-                methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, testSteps, default(IServiceTestStep) });
+                methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, default(IServiceTestStep) });
             }
             catch(Exception ex) when(ex is TargetInvocationException)//weird error during a test run
             {
