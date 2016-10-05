@@ -64,6 +64,76 @@ namespace Warewolf.Studio.ViewModels
 
         private static readonly IEnumerable<Type> Types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
 
+
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg = null)
+        {
+
+            if (resourceModel == null)
+                throw new ArgumentNullException(nameof(resourceModel));
+            _processExecutor = processExecutor;
+            AsyncWorker = asyncWorker;
+            EventPublisher = eventPublisher;
+            ResourceModel = resourceModel;
+            ResourceModel.Environment.IsConnectedChanged += (sender, args) =>
+            {
+                ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
+                RefreshCommands();
+            };
+
+            ResourceModel.Environment.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
+            SetServerName(resourceModel);
+            DisplayName = resourceModel.DisplayName + " - Tests" + _serverName;
+
+            ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            PopupController = CustomContainer.Get<IPopupController>();
+            _shellViewModel = CustomContainer.Get<IShellViewModel>();
+            RunAllTestsInBrowserCommand = new DelegateCommand(RunAllTestsInBrowser, IsServerConnected);
+            RunAllTestsCommand = new DelegateCommand(RunAllTests, IsServerConnected);
+            RunSelectedTestInBrowserCommand = new DelegateCommand(RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
+            RunSelectedTestCommand = new DelegateCommand(RunSelectedTest, () => CanRunSelectedTest);
+            StopTestCommand = new DelegateCommand(StopTest, () => CanStopTest);
+            CreateTestCommand = new DelegateCommand(CreateTests);
+            DeleteTestCommand = new DelegateCommand<IServiceTestModel>(DeleteTest, CanDeleteTest);
+            DeleteTestStepCommand = new DelegateCommand<IServiceTestStep>(DeleteTestStep);
+            DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
+            CanSave = true;
+            RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
+            IsLoading = true;
+
+
+            UpdateHelpDescriptor(Resources.Languages.Core.ServiceTestGenericHelpText);
+
+            WorkflowDesignerViewModel = workflowDesignerViewModel;
+            WorkflowDesignerViewModel.IsTestView = true;
+            WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
+
+            AsyncWorker.Start(GetTests, models =>
+            {
+                var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
+                models.Add(dummyTest);
+                SelectedServiceTest = dummyTest;
+                Tests = models;
+                IsLoading = false;
+
+                if (msg != null)
+                {
+                    var test = msg as NewTestFromDebugMessage;
+                    if (test != null)
+                    {
+                        NewTestFromDebugMessage newTest = test;
+                        if (newTest.RootItems == null)
+                            throw new ArgumentNullException(nameof(newTest.RootItems));
+                        PrepopulateTestsUsingDebug(newTest.RootItems);
+                    }
+                    else
+                    {
+                        throw new ArgumentException("expected " + typeof(NewTestFromDebugMessage).Name + " but got " + msg.GetType().Name);
+                    }
+                }
+            }, OnError);
+
+        }
+
         private void PrepopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models)
         {
             CreateTests();
@@ -362,74 +432,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg = null)
-        {
-
-            if (resourceModel == null)
-                throw new ArgumentNullException(nameof(resourceModel));
-            _processExecutor = processExecutor;
-            AsyncWorker = asyncWorker;
-            EventPublisher = eventPublisher;
-            ResourceModel = resourceModel;
-            ResourceModel.Environment.IsConnectedChanged += (sender, args) =>
-            {
-                ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
-                RefreshCommands();
-            };
-
-            ResourceModel.Environment.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
-            SetServerName(resourceModel);
-            DisplayName = resourceModel.DisplayName + " - Tests" + _serverName;
-
-            ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
-            PopupController = CustomContainer.Get<IPopupController>();
-            _shellViewModel = CustomContainer.Get<IShellViewModel>();
-            RunAllTestsInBrowserCommand = new DelegateCommand(RunAllTestsInBrowser, IsServerConnected);
-            RunAllTestsCommand = new DelegateCommand(RunAllTests, IsServerConnected);
-            RunSelectedTestInBrowserCommand = new DelegateCommand(RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
-            RunSelectedTestCommand = new DelegateCommand(RunSelectedTest, () => CanRunSelectedTest);
-            StopTestCommand = new DelegateCommand(StopTest, () => CanStopTest);
-            CreateTestCommand = new DelegateCommand(CreateTests);
-            DeleteTestCommand = new DelegateCommand<IServiceTestModel>(DeleteTest, CanDeleteTest);
-            DeleteTestStepCommand = new DelegateCommand<IServiceTestStep>(DeleteTestStep);
-            DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
-            CanSave = true;
-            RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
-            IsLoading = true;
-
-
-            UpdateHelpDescriptor(Resources.Languages.Core.ServiceTestGenericHelpText);
-
-            WorkflowDesignerViewModel = workflowDesignerViewModel;
-            WorkflowDesignerViewModel.IsTestView = true;
-            WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
-
-            AsyncWorker.Start(GetTests, models =>
-            {
-                var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
-                models.Add(dummyTest);
-                SelectedServiceTest = dummyTest;
-                Tests = models;
-                IsLoading = false;
-
-                if (msg != null)
-                {
-                    var test = msg as NewTestFromDebugMessage;
-                    if (test != null)
-                    {
-                        NewTestFromDebugMessage newTest = test;
-                        if (newTest.RootItems == null)
-                            throw new ArgumentNullException(nameof(newTest.RootItems));
-                        PrepopulateTestsUsingDebug(newTest.RootItems);
-                    }
-                    else
-                    {
-                        throw new ArgumentException("expected " + typeof(NewTestFromDebugMessage).Name + " but got " + msg.GetType().Name);
-                    }
-                }
-            }, OnError);
-
-        }
+    
 
         private void OnError(Exception exception)
         {

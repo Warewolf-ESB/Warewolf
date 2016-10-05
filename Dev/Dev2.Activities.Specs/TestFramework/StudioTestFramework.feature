@@ -803,5 +803,70 @@ Scenario: Run a test with Error Expected
 	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	#And test folder is cleaned
+	
+
+#Web Execution
+Scenario: Run Selected Test in Web fails when workflow deleted
+	Given the test builder is open with "Hello World"
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| Name             |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Hello World - Tests"
+	And I close the test builder
+	When the test builder is open with "Hello World"
+	Then there are 1 tests
+	And "Dummy Test" is selected
+	And I select "Test 1"
+	And "Test 1" is selected
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| Name             |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message   |       |
+	And save is disabled
+	When "Hello World" is deleted
+	And I run selected test in Web
+	Then The WebResponse as
+	| Test Name | Result | Message |
+	| Test 1    | Passed |         |
+
+Scenario: Run All Tests in Web fails when workflow deleted
+	Given the test builder is open with "Hello World"
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| Name             |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Hello World - Tests"
+	And I close the test builder
+	When the test builder is open with "Hello World"
+	Then there are 1 tests
+	When "Hello World" is deleted
+	And I run all tests in Web
+	Then The WebResponse as
+	| Test Name | Result | Message |
+	| Test 1    | Passed |         |
+
 
