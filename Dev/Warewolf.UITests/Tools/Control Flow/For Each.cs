@@ -10,7 +10,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
 		[TestCategory("Tools")]
         public void ForEachToolUITest()
         {
-            Uimap.Drag_Toolbox_For_Each_Onto_DesignSurface();
+            UIMap.Drag_Toolbox_For_Each_Onto_DesignSurface();
         }
 
         #region Additional test attributes
@@ -18,27 +18,27 @@ namespace Warewolf.UITests.Tools.Control_Flow
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

@@ -10,9 +10,9 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Tools")]
         public void XpathToolUITest()
         {
-            Uimap.Drag_Toolbox_XPath_Onto_DesignSurface();
-            Uimap.Open_Xpath_Tool_Large_View();
-            Uimap.Open_Xpath_Tool_Qvi_Large_View();
+            UIMap.Drag_Toolbox_XPath_Onto_DesignSurface();
+            UIMap.Open_Xpath_Tool_Large_View();
+            UIMap.Open_Xpath_Tool_Qvi_Large_View();
         }
 
         #region Additional test attributes
@@ -20,11 +20,11 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
         }
 
         /// <summary>
@@ -45,20 +45,20 @@ namespace Warewolf.UITests.Tools
 
         private TestContext testContextInstance;
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

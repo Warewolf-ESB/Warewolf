@@ -17,14 +17,14 @@ namespace Warewolf.UITests
         [TestMethod]
         public void RefreshExplorerAfterDeletingResourceFromDiskUITest()
         {
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
             File.Delete(resourcesFolder + @"\" + WorkflowName + ".xml");
-            Uimap.Filter_Explorer(WorkflowName);
-            Uimap.Click_Explorer_Refresh_Button();
+            UIMap.Filter_Explorer(WorkflowName);
+            UIMap.Click_Explorer_Refresh_Button();
             Point point;
-            Assert.IsFalse(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.TryGetClickablePoint(out point));
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.TryGetClickablePoint(out point));
         }
 
         #region Additional test attributes
@@ -32,26 +32,26 @@ namespace Warewolf.UITests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

@@ -186,7 +186,6 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"I have a source path ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveASourcePathWithValue(string pathVariable, string location)
         {
-            location = AddGuidToPath(location);
             List<Tuple<string, string>> variableList;
             scenarioContext.TryGetValue("variableList", out variableList);
 
@@ -202,9 +201,27 @@ namespace Dev2.Activities.Specs.BaseTypes
             scenarioContext.Add(ActualSourceHolder, location);
         }
 
-        private static string AddGuidToPath(string location)
+        public static string GetGuid()
         {
-            return Path.GetDirectoryName(location) + "\\" + Path.GetFileNameWithoutExtension(location) + Guid.NewGuid().ToString().Substring(0, 8) + Path.GetExtension(location);
+            return Guid.NewGuid().ToString().Substring(0, 8);
+        }
+
+        public static string AddGuidToPath(string location, string GetGuid)
+        {
+            string getExtention;
+            try
+            {
+                getExtention = Path.GetExtension(location);
+            }
+            catch (ArgumentException)
+            {
+                getExtention = null;
+            }
+            if (!string.IsNullOrEmpty(getExtention))
+            {
+                return location.Replace(getExtention, GetGuid + getExtention);
+            }
+            return location;
         }
 
         [Given(@"use private public key for source is ""(.*)""")]

@@ -54,7 +54,7 @@ Scenario: Drag on Remote Subworkflow from Explorer And Check Permissions Icons
 Scenario: Deploy and Reverse Deploy View Only Workflow
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
-	And I Save With Ribbon Button And Dialog As "DeployViewOnly"
+	And I Save With Ribbon Button and Dialog As "DeployViewOnly" and Append Unique Guid
 	And I Click Close Workflow Tab Button
 	And I Set Resource Permissions For "DeployViewOnly" to Group "Public" and Permissions for View to "true" and Contribute to "false" and Execute to "false"
 	And I Click Deploy Ribbon Button
