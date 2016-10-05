@@ -314,7 +314,10 @@ namespace Dev2.Activities.SelectAndApply
             iter.AddVariableToIterateOn(c3);
             while (iter.HasMoreData())
             {
-                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) });
+                var val1 = iter.FetchNextValue(c1);
+                var val2 = iter.FetchNextValue(c2);
+                var val3 = iter.FetchNextValue(c3);
+                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { val1, val2, val3 });
                 var testResult = new TestRunResult();
                 if (assertResult)
                 {
@@ -323,16 +326,19 @@ namespace Dev2.Activities.SelectAndApply
                 else
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Assert Failed").ToString();
+                    var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
+                    var actMsg = string.Format(msg, val1, val2, val3);
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
                 }
                 if (dataObject.IsDebugMode())
                 {
                     var msg = testResult.Message;
                     if (testResult.RunTestResult == RunResult.TestPassed)
                     {
-                        msg = "Passed";
+                        msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
                     }
-                    var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(msg);
+                    var hasError = testResult.RunTestResult == RunResult.TestFailed;
+                    var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(msg, hasError);
                     DebugItem itemToAdd = new DebugItem();
                     itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
                     debugState.AssertResultList.Add(itemToAdd);

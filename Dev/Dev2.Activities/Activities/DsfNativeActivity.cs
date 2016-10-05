@@ -728,16 +728,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { serviceTestOutput.Result }, "");
                 if (dataObject.IsDebugMode())
                 {
-                    var msg = "Failed";
+                    var msg = Warewolf.Resource.Messages.Messages.Test_FailureResult;
                     if (assertPassed)
                     {
-                        msg = "Passed";
+                        msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
                     }
-                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
+                    var hasError = msg == Warewolf.Resource.Messages.Messages.Test_FailureResult;
+                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg, hasError));
                 }
                 else
                 {
-                    dataObject.Environment.AddError("Failed");
+                    dataObject.Environment.AddError(Warewolf.Resource.Messages.Messages.Test_FailureResult);
                 }
             }
         }
@@ -759,16 +760,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { serviceTestOutput.Result }, "");
                 if (dataObject.IsDebugMode())
                 {
-                    var msg = "Failed";
+                    var msg = Warewolf.Resource.Messages.Messages.Test_FailureResult;
                     if (assertPassed)
                     {
-                        msg = "Passed";
+                        msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
                     }
-                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
+                    var hasError = msg == Warewolf.Resource.Messages.Messages.Test_FailureResult;
+                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg, hasError));
                 }
                 else
                 {
-                    dataObject.Environment.AddError("Failed");
+                    dataObject.Environment.AddError(Warewolf.Resource.Messages.Messages.Test_FailureResult);
                 }
             }
         }
@@ -798,7 +800,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
                             dataObject.ServiceTest.TestPassed = assertPassed;
                             dataObject.ServiceTest.TestFailing = !assertPassed;
-                            dataObject.Environment.AddError("Failed");
+                            dataObject.Environment.AddError(Warewolf.Resource.Messages.Messages.Test_FailureResult);
                         }
                     }
                     else if (stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
@@ -814,7 +816,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
                             dataObject.ServiceTest.TestPassed = assertPassed;
                             dataObject.ServiceTest.TestFailing = !assertPassed;
-                            dataObject.Environment.AddError("Failed");
+                            dataObject.Environment.AddError(Warewolf.Resource.Messages.Messages.Test_FailureResult);
                         }
                     }
                     else
@@ -899,9 +901,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var msg = testResult.Message;
                     if(testResult.RunTestResult == RunResult.TestPassed)
                     {
-                        msg = "Passed";
+                        msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
                     }
-                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg));
+                    var hasError = testResult.RunTestResult == RunResult.TestFailed;
+                    AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg, hasError));
                 }
                 output.Result = testResult;
                 ret.Add(testResult);

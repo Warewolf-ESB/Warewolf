@@ -22,6 +22,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         string GroupName { get; set; }
         int GroupIndex { get; set; }
         string MoreLink { get; set; }
+        bool HasError { get; set; }
 
         string GetMoreLinkItem();
     }

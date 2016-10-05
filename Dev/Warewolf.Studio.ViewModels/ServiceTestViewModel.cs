@@ -255,37 +255,19 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
+            else if (parent.ActivityType == typeof(DsfSequenceActivity).Name)
+            {
+                var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
+                var sequence = model.GetCurrentValue() as DsfSequenceActivity;
+                if (sequence != null)
+                {
+                    parent.UniqueId = Guid.Parse(sequence.UniqueID);
+                    AddChildren(debugState, parent);
+                }
+            }
             else
             {
-                foreach (var debugTreeViewItemViewModel in debugState.Children)
-                {
-                    var childItem = debugTreeViewItemViewModel as DebugStateTreeViewItemViewModel;
-                    var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
-                    if (childItem != null)
-                    {
-                        var childItemContent = childItem.Content;
-                        var outputs = childItemContent.Outputs;
-
-                        var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
-                        if (exists == null)
-                        {
-                            var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType,
-                                serviceTestOutputs, StepType.Assert)
-                            {
-                                StepDescription = childItemContent.DisplayName,
-                                Parent = parent,
-                                Type = StepType.Assert
-                            };
-                            AddOutputs(outputs, childStep);
-                            SetStepIcon(childStep.ActivityType, childStep);
-                            parent.Children.Add(childStep);
-                            if (childItem.Children != null && childItem.Children.Count > 0)
-                            {
-                                AddChildDebugItems(childItemContent, childItem, parent.Children, childStep);
-                            }
-                        }
-                    }
-                }
+                AddChildren(debugState, parent);
             }
             while (parent != null)
             {
@@ -299,6 +281,40 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
                 parent = child.Parent;
+            }
+        }
+
+        private void AddChildren(IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
+        {
+            foreach (var debugTreeViewItemViewModel in debugState.Children)
+            {
+                var childItem = debugTreeViewItemViewModel as DebugStateTreeViewItemViewModel;
+                if (childItem != null)
+                {
+                    var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+
+                    var childItemContent = childItem.Content;
+                    var outputs = childItemContent.Outputs;
+
+                    var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
+                    if (exists == null)
+                    {
+                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType,
+                            serviceTestOutputs, StepType.Assert)
+                        {
+                            StepDescription = childItemContent.DisplayName,
+                            Parent = parent,
+                            Type = StepType.Assert
+                        };
+                        AddOutputs(outputs, childStep);
+                        SetStepIcon(childStep.ActivityType, childStep);
+                        parent.Children.Add(childStep);
+                        if (childItem.Children != null && childItem.Children.Count > 0)
+                        {
+                            AddChildDebugItems(childItemContent, childItem, parent.Children, childStep);
+                        }
+                    }
+                }
             }
         }
 

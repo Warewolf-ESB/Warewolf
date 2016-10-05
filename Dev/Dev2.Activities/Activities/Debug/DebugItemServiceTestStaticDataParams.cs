@@ -8,10 +8,11 @@ namespace Dev2.Activities.Debug
     {
         readonly string _operand;
 
-        public DebugItemServiceTestStaticDataParams(string value)
+        public DebugItemServiceTestStaticDataParams(string value, bool hasError = false)
         {
             Value = value;
             Type = DebugItemResultType.Value;
+            HasError = hasError;
         }
 
         public DebugItemServiceTestStaticDataParams(string value, string variable)
@@ -35,6 +36,8 @@ namespace Dev2.Activities.Debug
 
         public string Variable { get; }
 
+        public bool HasError { get; }
+
         public DebugItemResultType Type { get; }
 
         public override List<IDebugItemResult> GetDebugItemResult()
@@ -47,6 +50,7 @@ namespace Dev2.Activities.Debug
                         Value = Value,
                         Label = LabelText,
                         Variable = Variable,
+                        HasError = HasError,
                         Operator = string.IsNullOrWhiteSpace(_operand) ? "" : "="
                     }};
             return debugItemsResults;
