@@ -126,9 +126,9 @@ namespace Warewolf.Studio.ViewModels
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public object Clone()
+        public IServiceTestModel Clone()
         {
-            return MemberwiseClone();
+            return this;
         }
 
         #endregion

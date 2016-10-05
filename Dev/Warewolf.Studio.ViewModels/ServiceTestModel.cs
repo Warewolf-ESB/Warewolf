@@ -5,6 +5,7 @@ using System.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
@@ -657,34 +658,82 @@ namespace Warewolf.Studio.ViewModels
                 {
                     stepCompare = false;
                 }
+                if (!stepCompare) continue;
                 if (TestSteps[i].StepOutputs.Count != other.TestSteps[i].StepOutputs.Count)
                 {
                     stepCompare = false;
                 }
                 if (!stepCompare) continue;
+                if (TestSteps[i].Children.Count != other.TestSteps[i].Children.Count)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+
+                if (TestSteps[i].Children.Count > 0)
+                {
+                    var stepChildren = TestSteps[i].Children;
+                    var otherStepChildren = other.TestSteps[i].Children;
+
+                    stepCompare = StepChildrenCompare(stepChildren, otherStepChildren);
+                }
+                if (!stepCompare) continue;
                 var stepOutputs = TestSteps[i].StepOutputs;
                 var otherStepOutputs = other.TestSteps[i].StepOutputs;
-                for (int c = 0; c < stepOutputs.Count; c++)
+                stepCompare = StepOutputsCompare(stepOutputs, otherStepOutputs);
+            }
+            return stepCompare;
+        }
+
+        private static bool StepChildrenCompare(ObservableCollection<IServiceTestStep> stepChildren, ObservableCollection<IServiceTestStep> otherStepChildren)
+        {
+            bool stepCompare = true;
+            for (int c = 0; c < stepChildren.Count; c++)
+            {
+                if (stepChildren[c].Type != otherStepChildren[c].Type)
                 {
-                    if (stepOutputs[c].AssertOp != otherStepOutputs[c].AssertOp)
-                    {
-                        stepCompare = false;
-                    }
-                    if (!stepCompare) continue;
-                    if (stepOutputs[c].Value != otherStepOutputs[c].Value)
-                    {
-                        stepCompare = false;
-                    }
-                    if (!stepCompare) continue;
-                    if (stepOutputs[c].From != otherStepOutputs[c].From)
-                    {
-                        stepCompare = false;
-                    }
-                    if (!stepCompare) continue;
-                    if (stepOutputs[c].To != otherStepOutputs[c].To)
-                    {
-                        stepCompare = false;
-                    }
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+
+                var childStepOutputs = stepChildren[c].StepOutputs;
+                var otherChildStepOutputs = otherStepChildren[c].StepOutputs;
+                stepCompare = StepOutputsCompare(childStepOutputs, otherChildStepOutputs);
+
+                if (stepChildren[c].Children.Count > 0)
+                {
+                    var stepChildren1 = stepChildren[c].Children;
+                    var otherStepChildren1 = otherStepChildren[c].Children;
+
+                    stepCompare = StepChildrenCompare(stepChildren1, otherStepChildren1);
+                }
+            }
+            return stepCompare;
+        }
+
+        private static bool StepOutputsCompare(ObservableCollection<IServiceTestOutput> stepOutputs, ObservableCollection<IServiceTestOutput> otherStepOutputs)
+        {
+            bool stepCompare = true;
+            for (int c = 0; c < stepOutputs.Count; c++)
+            {
+                if (stepOutputs[c].AssertOp != otherStepOutputs[c].AssertOp)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                if (stepOutputs[c].Value != otherStepOutputs[c].Value)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                if (stepOutputs[c].From != otherStepOutputs[c].From)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                if (stepOutputs[c].To != otherStepOutputs[c].To)
+                {
+                    stepCompare = false;
                 }
             }
             return stepCompare;
@@ -741,6 +790,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     outputCompare = false;
                 }
+                if (!outputCompare) continue;
                 if (_outputs[i].AssertOp != other._outputs[i].AssertOp)
                 {
                     outputCompare = false;
@@ -782,46 +832,13 @@ namespace Warewolf.Studio.ViewModels
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public object Clone()
+        public IServiceTestModel Clone()
         {
-            var memberwiseClone = (ServiceTestModel)MemberwiseClone();
-
-            if (Inputs != null)
-            {
-                memberwiseClone.Inputs = new ObservableCollection<IServiceTestInput>();
-                var serviceTestInputs = Inputs.ToList();
-                foreach (var serviceTestInput in serviceTestInputs)
-                {
-                    memberwiseClone.Inputs.Add(new ServiceTestInput(serviceTestInput.Variable, serviceTestInput.Value)
-                    {
-                        EmptyIsNull = serviceTestInput.EmptyIsNull
-                    });
-                }
-            }
-            if (TestSteps != null)
-            {
-                memberwiseClone.TestSteps = new ObservableCollection<IServiceTestStep>();
-                var serviceTestOutputs = TestSteps.ToList();
-                foreach (var testStep in serviceTestOutputs)
-                {
-                    var newStep = new ServiceTestStep(
-                        testStep.UniqueId
-                        , testStep.ActivityType
-                        , new ObservableCollection<IServiceTestOutput>(testStep.StepOutputs.Select(a => a.Clone() as IServiceTestOutput).ToObservableCollection())
-                        , testStep.Type);
-                    memberwiseClone.TestSteps.Add(newStep);
-                }
-            }
-            if (Outputs != null)
-            {
-                memberwiseClone.Outputs = new ObservableCollection<IServiceTestOutput>();
-                var serviceTestOutputs = Outputs.ToList();
-                foreach (var serviceTestOutput in serviceTestOutputs)
-                {
-                    memberwiseClone.Outputs.Add(new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value, serviceTestOutput.From, serviceTestOutput.To));
-                }
-            }
-            return memberwiseClone;
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            IServiceTestModel serviceTestModel = this;
+            var ser = serializer.SerializeToBuilder(serviceTestModel);
+            IServiceTestModel clone = serializer.Deserialize<IServiceTestModel>(ser);
+            return clone;
         }
 
         #endregion
