@@ -9,7 +9,7 @@
 */
 
 using System;
-using System.Threading;
+using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
@@ -24,17 +24,25 @@ namespace Dev2.ExtMethods
         /// <param name="task">The task for which to wait.</param>
         /// <param name="millisecondsTimeout">The number of milliseconds to wait, or Infinite (-1) to wait indefinitely.</param>
         /// <remarks>This method is intended for usage with Windows Presentation Foundation.</remarks>
-        public static bool WaitWithPumping(this Task task, int millisecondsTimeout = Timeout.Infinite)
+        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        public static void WaitWithPumping(this Task task, int millisecondsTimeout)
         {
             if (task == null)
             {
                 throw new ArgumentNullException("task");
             }
 
-            var nestedFrame = new DispatcherFrame();
-            task.ContinueWith(_ => nestedFrame.Continue = true);
-            Dispatcher.PushFrame(nestedFrame);
-            return task.Wait(millisecondsTimeout);
+            var frame = new DispatcherFrame();
+            task.ContinueWith(_ => frame.Continue = true);
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(ExitFrame), frame);
+            Dispatcher.PushFrame(frame);
+            task.Wait(millisecondsTimeout);
+        }
+
+        private static object ExitFrame(object frame)
+        {
+            ((DispatcherFrame)frame).Continue = false;
+            return null;
         }
     }
 }
