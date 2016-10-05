@@ -21,7 +21,7 @@ REM ****************************************************************************
 
 set /a LoopCounter=0
 :RetryClean
-IF NOT EXIST "%PROGRAMDATA%\Warewolf\Resources"IF NOT EXIST "%PROGRAMDATA%\Warewolf\Tests" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Workspaces" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Server Settings" GOTO StopRetrying
+IF NOT EXIST "%PROGRAMDATA%\Warewolf\Resources" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Tests" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Workspaces" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Server Settings" GOTO StopRetrying
 
 :InterrogateService
 sc interrogate "Warewolf Server"
