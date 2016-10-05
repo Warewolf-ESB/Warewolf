@@ -32,7 +32,6 @@ using Dev2.Threading;
 using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -96,10 +95,10 @@ namespace Dev2.Activities.Specs.TestFramework
         public StudioTestFrameworkSteps(ScenarioContext scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
-            ScenarioContext = scenarioContext;
+            MyContext = scenarioContext;
         }
 
-        ScenarioContext ScenarioContext { get; }
+        ScenarioContext MyContext { get; }
 
         [Given(@"test folder is cleaned")]
         [When(@"test folder is cleaned")]
@@ -108,7 +107,7 @@ namespace Dev2.Activities.Specs.TestFramework
             //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
-            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests();
+            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
         }
 
         [Then(@"test folder is cleaned")]
@@ -117,15 +116,16 @@ namespace Dev2.Activities.Specs.TestFramework
             //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
-            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests();
+            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
         }
 
         [AfterFeature("@StudioTestFramework")]
         public static void ScenarioCleaning()
         {
+        
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
-            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests();
+            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
         }
 
         FlowNode CreateFlowNode(Guid id, string displayName)
@@ -147,7 +147,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             var resourceModel = BuildResourceModel(workflowName, environmentModel);
-            ScenarioContext.Add(workflowName + "Resourceid", resourceModel.ID);
+            MyContext.Add(workflowName + "Resourceid", resourceModel.ID);
             var workflowHelper = new WorkflowHelper();
             var builder = workflowHelper.CreateWorkflow(workflowName);
             if (workflowName.Equals("WorkflowWithTests", StringComparison.InvariantCultureIgnoreCase))
@@ -165,21 +165,21 @@ namespace Dev2.Activities.Specs.TestFramework
                 AddVariables(variablesRow["Input Var Name"], datalistViewModel, enDev2ColumnArgumentDirection.Input);
             }
             datalistViewModel.WriteToResourceModel();
-            ScenarioContext.Add(workflowName, resourceModel);
-            ScenarioContext.Add($"{workflowName}dataListViewModel", datalistViewModel);
-            if (!ScenarioContext.ContainsKey("popupController"))
+            MyContext.Add(workflowName, resourceModel);
+            MyContext.Add($"{workflowName}dataListViewModel", datalistViewModel);
+            if (!MyContext.ContainsKey("popupController"))
             {
                 var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
                 popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
                 popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
                 popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Information, null, false, true, false, false)).Verifiable();
                 CustomContainer.Register(popupController.Object);
-                ScenarioContext["popupController"] = popupController;
+                MyContext["popupController"] = popupController;
             }
             var shellViewModel = new Mock<IShellViewModel>();
             shellViewModel.Setup(model => model.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
             CustomContainer.Register(shellViewModel.Object);
-            ScenarioContext["shellViewModel"] = shellViewModel;
+            MyContext["shellViewModel"] = shellViewModel;
         }
 
         private static ResourceModel BuildResourceModel(string workflowName, IEnvironmentModel environmentModel)
@@ -232,9 +232,9 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             environmentModel.ResourceRepository.ForceLoad();
             var savedSource = environmentModel.ResourceRepository.All().First(model => model.ResourceName.Equals(_resourceForTests, StringComparison.InvariantCultureIgnoreCase));
-            ScenarioContext["PluginSource" + "id"] = savedSource.ID;
+            MyContext["PluginSource" + "id"] = savedSource.ID;
 
-            var resourceID = ScenarioContext.Get<Guid>("PluginSourceid");
+            var resourceID = MyContext.Get<Guid>("PluginSourceid");
             lock (_syncRoot)
             {
                 var testNamesNames = p0.Split(',');
@@ -265,7 +265,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenHasTests(string resourceName, int numberOdTests)
         {
             var environmentModel = EnvironmentRepository.Instance.Source;
-            var resourceID = ScenarioContext.Get<Guid>(resourceName + "id");
+            var resourceID = MyContext.Get<Guid>(resourceName + "id");
             var serviceTestModelTos = environmentModel.ResourceRepository.LoadResourceTests(resourceID);
             Assert.AreEqual(numberOdTests, serviceTestModelTos.Count);
         }
@@ -274,7 +274,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIDeleteResource(string resourceName)
         {
             var environmentModel = EnvironmentRepository.Instance.Source;
-            ScenarioContext.Get<Guid>(resourceName + "id");
+            MyContext.Get<Guid>(resourceName + "id");
             // ReSharper disable once UnusedVariable
             var savedSource = environmentModel.ResourceRepository.All().First(model => model.ResourceName.Equals(_resourceForTests, StringComparison.InvariantCultureIgnoreCase));
             environmentModel.ResourceRepository.DeleteResource(savedSource);
@@ -319,7 +319,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenTestsAs(string workFlowName, Table table)
         {
             var resourceIdKey = workFlowName + "Resourceid";
-            var resourceID = ScenarioContext.Get<Guid>(resourceIdKey);
+            var resourceID = MyContext.Get<Guid>(resourceIdKey);
             var environmentModel = EnvironmentRepository.Instance.Source;
             List<IServiceTestModelTO> serviceTestModelTos = new List<IServiceTestModelTO>();
             foreach (var tableRow in table.Rows)
@@ -406,10 +406,10 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenHasOutputsAs(string workflowName, Table outputVariables)
         {
             ResourceModel resourceModel;
-            if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
+            if (MyContext.TryGetValue(workflowName, out resourceModel))
             {
                 DataListViewModel dataListViewModel;
-                if (ScenarioContext.TryGetValue($"{workflowName}dataListViewModel", out dataListViewModel))
+                if (MyContext.TryGetValue($"{workflowName}dataListViewModel", out dataListViewModel))
                 {
                     foreach (var variablesRow in outputVariables.Rows)
                     {
@@ -438,12 +438,12 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenTheTestBuilderIsOpenWith(string workflowName)
         {
             ResourceModel resourceModel;
-            if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
+            if (MyContext.TryGetValue(workflowName, out resourceModel))
             {
                 var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
-                ScenarioContext.Add("testFramework", testFramework);
+                MyContext.Add("testFramework", testFramework);
             }
             if (workflowName == "Hello World")
             {
@@ -451,7 +451,15 @@ namespace Dev2.Activities.Specs.TestFramework
                 var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
-                ScenarioContext.Add("testFramework", testFramework);
+                MyContext.Add("testFramework", testFramework);
+            }
+            if (workflowName == "Control Flow - Sequence")
+            {
+                var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(new Guid("0bdc3207-ff6b-4c01-a5eb-c7060222f75d"));
+                var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
+                Assert.IsNotNull(testFramework);
+                Assert.IsNotNull(testFramework.ResourceModel);
+                MyContext.Add("testFramework", testFramework);
             }
         }
 
@@ -520,6 +528,24 @@ namespace Dev2.Activities.Specs.TestFramework
             serviceTest.RunSelectedTestInBrowserCommand.Execute(null);
         }
 
+        [Then(@"all tests pass")]
+        public void ThenAllTestsPass()
+        {
+            var testModels = GetTestForCurrentTestFramework();
+            var allPassed = testModels.All(model => model.TestPassed);
+            Assert.IsTrue(allPassed);
+        }
+
+
+        [Then(@"I run all tests")]
+        public void ThenIRunAllTests()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.RunAllTestsCommand.Execute(null);
+        }
+
+
+
         [When(@"I run all tests in Web")]
         public void WhenIRunAllTestsInWeb()
         {
@@ -563,7 +589,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var resourceIdKey = workflow + "Resourceid";
             var environmentModel = EnvironmentRepository.Instance.Source;
-            var resourceId = ScenarioContext.Get<Guid>(resourceIdKey);
+            var resourceId = MyContext.Get<Guid>(resourceIdKey);
             var resourceToChange = environmentModel.ResourceRepository.FindResourcesByID(environmentModel, new[] { resourceId.ToString() }, ResourceType.WorkflowService).Single();
             var newDatalist = resourceToChange.DataList.Replace(input, input + "Newname");
             resourceToChange.DataList = newDatalist;
@@ -590,14 +616,14 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"the tab is closed")]
         public void ThenTheTabIsClosed()
         {
-            Mock<IShellViewModel> shellViewModel = ScenarioContext.Get<Mock<IShellViewModel>>("shellViewModel");
+            Mock<IShellViewModel> shellViewModel = MyContext.Get<Mock<IShellViewModel>>("shellViewModel");
             shellViewModel.Verify(vm => vm.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
         }
 
         [Then(@"The ""(.*)"" popup is shown I click Ok")]
         public void ThenThePopupIsShownIClickOk(string popupViewName)
         {
-            Mock<Common.Interfaces.Studio.Controller.IPopupController> popupController = ScenarioContext.Get<Mock<Common.Interfaces.Studio.Controller.IPopupController>>("popupController");
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> popupController = MyContext.Get<Mock<Common.Interfaces.Studio.Controller.IPopupController>>("popupController");
 
             switch (popupViewName)
             {
@@ -801,7 +827,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIsDeleted(string workflowName)
         {
             ResourceModel resourceModel;
-            if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
+            if (MyContext.TryGetValue(workflowName, out resourceModel))
             {
                 var env = EnvironmentRepository.Instance.Source;
                 env.ResourceRepository.DeleteResource(resourceModel);
@@ -812,7 +838,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIsMoved(string workflowName)
         {
             ResourceModel resourceModel;
-            if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
+            if (MyContext.TryGetValue(workflowName, out resourceModel))
             {
                 var env = EnvironmentRepository.Instance.Source;
                 resourceModel.Category = "bob\\" + workflowName;
@@ -1143,7 +1169,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"The Confirmation popup is shown")]
         public void ThenTheConfirmationPopupIsShown()
         {
-            var mock = ScenarioContext["popupController"] as Mock<Common.Interfaces.Studio.Controller.IPopupController>;
+            var mock = MyContext["popupController"] as Mock<Common.Interfaces.Studio.Controller.IPopupController>;
             // ReSharper disable once PossibleNullReferenceException
             mock.VerifyAll();
         }
@@ -1151,7 +1177,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"The Pending Changes Confirmation popup is shown I click Ok")]
         public void ThenThePendingChangesConfirmationPopupIsShownIClickOk()
         {
-            var mock = (Mock<Common.Interfaces.Studio.Controller.IPopupController>)ScenarioContext["popupController"];
+            var mock = (Mock<Common.Interfaces.Studio.Controller.IPopupController>)MyContext["popupController"];
             mock.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Information, null, false, true, false, false));
         }
 
@@ -1283,7 +1309,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"The duplicate Name popup is shown")]
         public void ThenTheDuplicateNamePopupIsShown()
         {
-            var mock = (Mock<Common.Interfaces.Studio.Controller.IPopupController>)ScenarioContext["popupController"];
+            var mock = (Mock<Common.Interfaces.Studio.Controller.IPopupController>)MyContext["popupController"];
             mock.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false));
         }
 
@@ -1291,13 +1317,13 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenIHaveAFolder(string foldername)
         {
             var category = ResourceCat + foldername;
-            ScenarioContext.Add("folderPath", category);
+            MyContext.Add("folderPath", category);
         }
 
         [Given(@"I have a resouce workflow ""(.*)"" inside Home")]
         public void GivenIHaveAResouceWorkflowInsideHome(string resourceName)
         {
-            var path = ScenarioContext.Get<string>("folderPath");
+            var path = MyContext.Get<string>("folderPath");
             var environmentModel = EnvironmentRepository.Instance.Source;
 
 
@@ -1322,7 +1348,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenIAddTo(string testNames, string rName)
         {
             string path;
-            ScenarioContext.TryGetValue("folderPath", out path);
+            MyContext.TryGetValue("folderPath", out path);
             var environmentModel = EnvironmentRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             environmentModel.ResourceRepository.ForceLoad();
@@ -1330,8 +1356,8 @@ namespace Dev2.Activities.Specs.TestFramework
             {
 
                 var savedSource = environmentModel.ResourceRepository.All().First(model => model.Category.Equals(path + "\\" + rName, StringComparison.InvariantCultureIgnoreCase));
-                ScenarioContext[rName + "id"] = savedSource.ID;
-                var resourceID = ScenarioContext.Get<Guid>(rName + "id");
+                MyContext[rName + "id"] = savedSource.ID;
+                var resourceID = MyContext.Get<Guid>(rName + "id");
                 lock (_syncRoot)
                 {
                     var testNamesNames = testNames.Split(',');
@@ -1385,14 +1411,14 @@ namespace Dev2.Activities.Specs.TestFramework
                 var executeMessage = environmentModel.ResourceRepository.SaveTests(testFrameworkFromContext.ResourceModel, serviceTestModelTos);
                 Assert.IsTrue(executeMessage.Result == SaveResult.Success || executeMessage.Result == SaveResult.ResourceUpdated);
                 testFrameworkFromContext = new ServiceTestViewModel(testFrameworkFromContext.ResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
-                ScenarioContext["testFramework"] = testFrameworkFromContext;
+                MyContext["testFramework"] = testFrameworkFromContext;
 
             }
         }
         [When(@"I delete folder ""(.*)""")]
         public void WhenIDeleteFolder(string folderName)
         {
-            var path = ScenarioContext.Get<string>("folderPath");
+            var path = MyContext.Get<string>("folderPath");
             var environmentModel = EnvironmentRepository.Instance.Source;
 
             var controller = new CommunicationController { ServiceName = "DeleteItemService" };
@@ -1417,7 +1443,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
             Assert.IsNotNull(serviceTestVm);
             Assert.IsNotNull(serviceTestVm.ResourceModel);
-            ScenarioContext.Add("testFramework", serviceTestVm);
+            MyContext.Add("testFramework", serviceTestVm);
         }
 
 
@@ -1581,6 +1607,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
             Assert.IsNotNull(builder);
             var act = (Flowchart)builder.Implementation;
+          
             foreach (var flowNode in act.Nodes)
             {
                 var searchNode = flowNode as FlowStep;
@@ -1685,7 +1712,7 @@ namespace Dev2.Activities.Specs.TestFramework
         ServiceTestViewModel GetTestFrameworkFromContext()
         {
             ServiceTestViewModel serviceTest;
-            if (ScenarioContext.TryGetValue("testFramework", out serviceTest))
+            if (MyContext.TryGetValue("testFramework", out serviceTest))
             {
                 return serviceTest;
             }
