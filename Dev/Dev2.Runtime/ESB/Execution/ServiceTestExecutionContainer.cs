@@ -74,11 +74,7 @@ namespace Dev2.Runtime.ESB.Execution
             // Set resource ID, only if not set yet - original resource;
             if (DataObject.ResourceID == Guid.Empty && ServiceAction?.Service != null)
                 DataObject.ResourceID = ServiceAction.Service.ID;
-            if (_request.Args.ContainsKey("ResourceID"))
-            {
-                var resourceId = _request.Args["ResourceID"].ToString().ToGuid();
-                DataObject.ResourceID = resourceId;
-            }
+
 
             // Travis : Now set Data List
             DataObject.DataList = ServiceAction.DataListSpecification;
