@@ -10,8 +10,8 @@ namespace Warewolf.UITests
         [TestMethod]
         public void ItemDragAndDropUITest()
         {
-            Uimap.Search_And_Select_DiceRoll();
-            Uimap.Move_Dice_Roll_To_Localhost();
+            UIMap.Search_And_Select_DiceRoll();
+            UIMap.Move_Dice_Roll_To_Localhost();
         }
 
         #region Additional test attributes
@@ -19,26 +19,26 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

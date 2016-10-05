@@ -11,27 +11,27 @@ namespace Warewolf.UITests
         [TestMethod]
         public void ConfigureSettingPermission()
         {
-            Uimap.TryRemoveFromExplorer(Dice);
-            Uimap.Select_NewWorkFlowService_From_ContextMenu();
-            Uimap.Drag_Toolbox_Random_Onto_DesignSurface();
-            Uimap.Enter_Dice_Roll_Values();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(Dice, true);
-            Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Click_Explorer_Refresh_Button();
-            Uimap.Click_ConfigureSetting_From_Menu();
-            Uimap.Check_Public_Contribute();
-            Uimap.Check_Public_Administrator();
-            Uimap.UnCheck_Public_View();
-            Uimap.Check_Public_Administrator();
-            Uimap.UnCheck_Public_Administrator();
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Click_Select_Resource_Button_From_Resource_Permissions();
-            Uimap.Select_Service_From_Service_Picker(Dice);
-            Assert.AreEqual(Dice, Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
-            Uimap.Enter_Public_As_Windows_Group();
-            Uimap.Check_Resource_Contribute();
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Click_Close_Settings_Tab_Button();
+            UIMap.TryRemoveFromExplorer(Dice);
+            UIMap.Select_NewWorkFlowService_From_ContextMenu();
+            UIMap.Drag_Toolbox_Random_Onto_DesignSurface();
+            UIMap.Enter_Dice_Roll_Values();
+            UIMap.Save_With_Ribbon_Button_And_Dialog(Dice, true);
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_Explorer_Refresh_Button();
+            UIMap.Click_ConfigureSetting_From_Menu();
+            UIMap.Check_Public_Contribute();
+            UIMap.Check_Public_Administrator();
+            UIMap.UnCheck_Public_View();
+            UIMap.Check_Public_Administrator();
+            UIMap.UnCheck_Public_Administrator();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Select_Resource_Button_From_Resource_Permissions();
+            UIMap.Select_Service_From_Service_Picker(Dice);
+            Assert.AreEqual(Dice, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+            UIMap.Enter_Public_As_Windows_Group();
+            UIMap.Check_Resource_Contribute();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_Settings_Tab_Button();
         }
 
         #region Additional test attributes
@@ -39,26 +39,26 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

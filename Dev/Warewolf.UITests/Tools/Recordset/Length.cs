@@ -10,7 +10,7 @@ namespace Warewolf.UITests.Tools.Recordset
 		[TestCategory("Tools")]
         public void LengthToolUITest()
         {
-            Uimap.Drag_Toolbox_Length_Onto_DesignSurface();
+            UIMap.Drag_Toolbox_Length_Onto_DesignSurface();
         }
 
         #region Additional test attributes
@@ -18,11 +18,11 @@ namespace Warewolf.UITests.Tools.Recordset
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
         }
 
         /// <summary>
@@ -43,20 +43,20 @@ namespace Warewolf.UITests.Tools.Recordset
 
         private TestContext testContextInstance;
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if ((_uiMap == null))
+                if ((_UIMap == null))
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }
