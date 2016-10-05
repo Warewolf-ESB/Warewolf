@@ -1600,7 +1600,7 @@ namespace Warewolf.Studio.ViewModels
             }
             foreach (var model in RealTests())
             {
-                var clone = model.Clone() as IServiceTestModel;
+                var clone = model.Clone();
                 model.SetItem(clone);
             }
 

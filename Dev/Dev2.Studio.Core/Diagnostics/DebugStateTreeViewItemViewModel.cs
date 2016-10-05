@@ -37,15 +37,17 @@ namespace Dev2.Studio.Core
 
         public void AppendError(string errorMessage)
         {
-            if(Content != null)
+            if (Content != null)
             {
-                if(Content.HasError)
+                if (Content.HasError)
                 {
                     var currentError = new StringBuilder(Content.ErrorMessage);
-                    if(!currentError.Contains(errorMessage))
-                    {  currentError.Append(errorMessage);
-                        Content.ErrorMessage = currentError.ToString();
-                    }
+                    if (!string.IsNullOrEmpty(errorMessage))
+                        if (!currentError.Contains(errorMessage))
+                        {
+                            currentError.Append(errorMessage);
+                            Content.ErrorMessage = currentError.ToString();
+                        }
                 }
                 else Content.ErrorMessage = errorMessage;
                 Content.HasError = true;
@@ -62,7 +64,7 @@ namespace Dev2.Studio.Core
             _outputs.Clear();
             _assertResultList.Clear();
 
-            if(content == null)
+            if (content == null)
             {
                 return;
             }
@@ -74,7 +76,7 @@ namespace Dev2.Studio.Core
             // check for remote server ID ;)
             Guid serverID;
             var isRemote = Guid.TryParse(content.Server, out serverID);
-            if (isRemote|| String.IsNullOrEmpty( content.Server)) //todo:Technical debt. this must be removed on a major upgrade
+            if (isRemote || String.IsNullOrEmpty(content.Server)) //todo:Technical debt. this must be removed on a major upgrade
             {
 
 
@@ -93,7 +95,7 @@ namespace Dev2.Studio.Core
                         env = _environmentRepository.Source;
                     }
                 }
-                if (Equals(env, _environmentRepository.Source) )
+                if (Equals(env, _environmentRepository.Source))
                 {
                     // We have an unknown remote server ;)
                     content.Server = "Unknown Remote Server";
@@ -110,11 +112,11 @@ namespace Dev2.Studio.Core
             BuildBindableListFromDebugItems(content.Outputs, _outputs);
             BuildBindableListFromDebugItems(content.AssertResultList, _assertResultList);
 
-            if(content.HasError)
+            if (content.HasError)
             {
                 HasError = true;
             }
-            if(content.AssertResultList != null)
+            if (content.AssertResultList != null)
             {
                 foreach (var debugItem in content.AssertResultList)
                 {
@@ -138,7 +140,7 @@ namespace Dev2.Studio.Core
         protected override void OnPropertyChanged(string propertyName)
         {
             base.OnPropertyChanged(propertyName);
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "IsSelected":
                     NotifySelectionChanged();
@@ -148,10 +150,10 @@ namespace Dev2.Studio.Core
 
         void NotifySelectionChanged()
         {
-            if(IsSelected)
+            if (IsSelected)
             {
                 var content = Content;
-                if(Parent != null)
+                if (Parent != null)
                 {
                     // Only show selection at the root level!
                     var parent = (DebugStateTreeViewItemViewModel)Parent;
@@ -160,7 +162,7 @@ namespace Dev2.Studio.Core
                         content = parent.Content;
                         parent = (DebugStateTreeViewItemViewModel)parent.Parent;
                     }
-                    while(parent != null);
+                    while (parent != null);
                 }
                 EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = content, SelectionType = SelectionType });
             }
@@ -176,25 +178,25 @@ namespace Dev2.Studio.Core
         {
             destinationList.Clear();
 
-            if(debugItems == null)
+            if (debugItems == null)
             {
                 return;
             }
 
-            foreach(var item in debugItems)
+            foreach (var item in debugItems)
             {
                 var list = new DebugLine();
                 var groups = new Dictionary<string, DebugLineGroup>();
-                foreach(var result in item.FetchResultsList())
+                foreach (var result in item.FetchResultsList())
                 {
-                    if(string.IsNullOrEmpty(result.GroupName))
+                    if (string.IsNullOrEmpty(result.GroupName))
                     {
                         list.LineItems.Add(new DebugLineItem(result));
                     }
                     else
                     {
                         DebugLineGroup group;
-                        if(!groups.TryGetValue(result.GroupName, out group))
+                        if (!groups.TryGetValue(result.GroupName, out group))
                         {
                             group = new DebugLineGroup(result.GroupName, result.Label)
                             {
@@ -206,7 +208,7 @@ namespace Dev2.Studio.Core
                         }
 
                         DebugLineGroupRow row;
-                        if(!group.Rows.TryGetValue(result.GroupIndex, out row))
+                        if (!group.Rows.TryGetValue(result.GroupIndex, out row))
                         {
                             row = new DebugLineGroupRow();
                             group.Rows.Add(result.GroupIndex, row);
