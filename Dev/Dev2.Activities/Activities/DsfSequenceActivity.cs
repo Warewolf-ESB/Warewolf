@@ -367,7 +367,16 @@ namespace Dev2.Activities
                     var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(msg, hasError);
                     DebugItem itemToAdd = new DebugItem();
                     itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
-                    debugState.AssertResultList.Add(itemToAdd);
+
+                    if (debugState.AssertResultList != null)
+                    {
+                        bool addItem = debugState.AssertResultList.Select(debugItem => debugItem.ResultsList.Where(debugItemResult => debugItemResult.Value == Warewolf.Resource.Messages.Messages.Test_PassedResult)).All(debugItemResults => !debugItemResults.Any());
+
+                        if (addItem)
+                        {
+                            debugState.AssertResultList.Add(itemToAdd);
+                        }
+                    }
                 }
                 output.Result = testResult;
                 ret.Add(testResult);

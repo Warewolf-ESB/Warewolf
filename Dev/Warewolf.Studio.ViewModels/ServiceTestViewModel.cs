@@ -438,10 +438,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var variable = debugItem.ResultsList.First().Variable.Replace("[[", "").Replace("]]", "");
                     var value = debugItem.ResultsList.First().Value;
-                    var serviceTestInput = SelectedServiceTest.Outputs.FirstOrDefault(input => input.Variable.Equals(variable));
-                    if (serviceTestInput != null)
+                    var serviceTestOutput = SelectedServiceTest.Outputs.FirstOrDefault(input => input.Variable.Equals(variable));
+                    if (serviceTestOutput != null)
                     {
-                        serviceTestInput.Value = value;
+                        serviceTestOutput.Value = value;
                     }
                 }
             }

@@ -94,15 +94,12 @@ namespace Warewolf.Studio.ViewModels
 
         public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest, int testNumber)
         {
-            var nameForDisplay = selectedTest.NameForDisplay.Replace(" *", "") + " " + (testNumber == 0 ? 1 : testNumber);
-
-            var clone = (ServiceTestModel)selectedTest.Clone();
+            var clone = selectedTest.Clone();
             clone.TestName = selectedTest.TestName + " " + (testNumber == 0 ? 1 : testNumber);
             clone.Enabled = true;
             clone.IsTestSelected = true;
             clone.TestPending = true;
             clone.NewTest = true;
-            clone.NameForDisplay = nameForDisplay + " *";
 
             return clone;
         }

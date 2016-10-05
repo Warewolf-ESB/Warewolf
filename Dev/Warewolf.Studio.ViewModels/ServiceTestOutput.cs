@@ -32,6 +32,12 @@ namespace Warewolf.Studio.ViewModels
         private bool _testFailing;
         private TestRunResult _result;
 
+        // ReSharper disable once UnusedMember.Global
+        public ServiceTestOutput()
+        {
+            
+        }
+
         public ServiceTestOutput(string variable, string value, string from, string to)
         {
             if (variable == null)
