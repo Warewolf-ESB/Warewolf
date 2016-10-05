@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ESB.Execution
             errors = new ErrorResultTO();
             // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
             Guid result = GlobalConstants.NullDataListID;
-            var resourceId = _request.Args["ResourceID"].ToString().ToGuid();
+
 
             Dev2Logger.Debug("Entered Wf Container");
 
@@ -74,7 +74,12 @@ namespace Dev2.Runtime.ESB.Execution
             // Set resource ID, only if not set yet - original resource;
             if (DataObject.ResourceID == Guid.Empty && ServiceAction?.Service != null)
                 DataObject.ResourceID = ServiceAction.Service.ID;
-            DataObject.ResourceID = resourceId;
+            if (_request.Args.ContainsKey("ResourceID"))
+            {
+                var resourceId = _request.Args["ResourceID"].ToString().ToGuid();
+                DataObject.ResourceID = resourceId;
+            }
+
             // Travis : Now set Data List
             DataObject.DataList = ServiceAction.DataListSpecification;
             // Set original instance ID, only if not set yet - original resource;
@@ -99,14 +104,14 @@ namespace Dev2.Runtime.ESB.Execution
 
             ErrorResultTO to = errors;
             var serviceTestModelTO = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
-            if(serviceTestModelTO == null)
+            if (serviceTestModelTO == null)
             {
                 TestCatalog.Instance.Load();
                 serviceTestModelTO = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
             }
             if (serviceTestModelTO == null)
             {
-               
+
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 var testRunResult = new TestRunResult
                 {
@@ -247,7 +252,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     var debugState = wfappUtils.GetDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DataObject.StartTime, false, true, true);
                     DebugItem itemToAdd = new DebugItem();
-                    if(test != null)
+                    if (test != null)
                     {
                         var msg = test.FailureMessage;
                         if (test.TestPassed)
@@ -390,10 +395,10 @@ namespace Dev2.Runtime.ESB.Execution
                         failureMessage.AppendLine(fetchErrors);
                     }
                 }
-                if(test.TestSteps != null)
+                if (test.TestSteps != null)
                 {
                     testPassed = testPassed && test.TestSteps.All(step => step.Result?.RunTestResult == RunResult.TestPassed);
-                    test.FailureMessage = failureMessage.AppendLine(string.Join("", test.TestSteps.Select(step => step.Result?.Message))).ToString();               
+                    test.FailureMessage = failureMessage.AppendLine(string.Join("", test.TestSteps.Select(step => step.Result?.Message))).ToString();
                     test.TestFailing = !testPassed;
                     test.TestPassed = testPassed;
                     test.TestPending = false;
@@ -441,7 +446,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
-                }               
+                }
                 return new[] { testResult };
             }
             if (decisionType == enDecisionType.IsNotError)
@@ -456,7 +461,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
-                }                
+                }
                 return new[] { testResult };
             }
             var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };
@@ -539,7 +544,7 @@ namespace Dev2.Runtime.ESB.Execution
                 if (foundTestStep.ActivityType == typeof(DsfDecision).Name && foundTestStep.Type == StepType.Mock)
                 {
                     var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == GlobalConstants.ArmResultText);
-                    if(serviceTestOutput != null)
+                    if (serviceTestOutput != null)
                     {
                         resource = new TestMockDecisionStep(resource as DsfDecision) { NameOfArmToReturn = serviceTestOutput.Value };
                     }
@@ -547,7 +552,7 @@ namespace Dev2.Runtime.ESB.Execution
                 else if (foundTestStep.ActivityType == typeof(DsfSwitch).Name && foundTestStep.Type == StepType.Mock)
                 {
                     var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == GlobalConstants.ArmResultText);
-                    if(serviceTestOutput != null)
+                    if (serviceTestOutput != null)
                     {
                         resource = new TestMockSwitchStep(resource as DsfSwitch) { ConditionToUse = serviceTestOutput.Value };
                     }
