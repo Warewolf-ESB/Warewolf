@@ -4,14 +4,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class POST
+    public class HttpWebPut
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void POSTToolUITest()
+        public void HttpWebPutToolUITest()
         {
-            Uimap.Drag_PostWeb_RequestTool_Onto_DesignSurface();
-            Uimap.Open_PostWeb_RequestTool_Large_View();
+            Uimap.Drag_PutWeb_Tool_Onto_DesignSurface();
+            Uimap.Open_PutWeb_Tool_large_view();
+            //Uimap.Select_GetRequest_As_Source();
+            //Uimap.Click_PutWeb_GenerateOutputs_Button();
+            //Uimap.Click_PutWeb_Paste_Response_Button();
+            //Uimap.Click_PutWeb_Cancel_Button();
         }
 
         #region Additional test attributes

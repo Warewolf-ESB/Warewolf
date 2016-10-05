@@ -78,12 +78,14 @@
     <Compile Include="Sharepoint\SharepointCreateUITest.cs" />
     <Compile Include="Tools\Data\AssignObject.cs" />
     <Compile Include="Tools\Data\FindIndex.cs" />
+    <Compile Include="Tools\HTTP Web Methods\HttpWebGet.cs" />
+    <Compile Include="Tools\HTTP Web Methods\HttpWebPut.cs" />
+    <Compile Include="Tools\HTTP Web Methods\HttpWebDelete.cs" />
     <Compile Include="Tools\Scripting\Ruby.cs" />
     <Compile Include="Tools\Scripting\Python.cs" />
     <Compile Include="Variables\Variables.cs" />
     <Compile Include="WorkflowTesting\TestsResults.cs" />
     <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
-    <Compile Include="Tools\HTTP Web Methods\Create_WEB_Source_From_Tool.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="Explorer\WebConnector.cs" />
     <Compile Include="Explorer\Refresh.cs" />
@@ -110,7 +112,7 @@
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Delete.cs" />
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Create.cs" />
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Copy.cs" />
-    <Compile Include="Tools\HTTP Web Methods\POST.cs" />
+    <Compile Include="Tools\HTTP Web Methods\HttpWebPost.cs" />
     <Compile Include="Tools\Recordset\Length.cs" />
     <Compile Include="Tools\Recordset\Find Records.cs" />
     <Compile Include="Tools\Resources\Service.cs" />
