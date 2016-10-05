@@ -400,6 +400,7 @@ namespace Dev2.Network
         {
             if (!IsConnecting)
             {
+                StopReconnectHeartbeat();
                 Connect(ID);
             }
             if (IsConnected)
@@ -411,8 +412,6 @@ namespace Dev2.Network
 
         public void Disconnect()
         {
-            // It can take some time to shutdown when permissions have changed ;(
-            // Give 5 seconds, then force a dispose ;)
             try
             {
                 IsShuttingDown = true;
@@ -492,22 +491,15 @@ namespace Dev2.Network
 
         void OnMemoReceived(string objString)
         {
-            // DO NOT use publish as memo is of type object 
-            // and hence won't find the correct subscriptions
-
             var obj = _serializer.Deserialize<DesignValidationMemo>(objString);
             ServerEvents.PublishObject(obj);
         }
 
         void OnPermissionsMemoReceived(string objString)
         {
-            // DO NOT use publish as memo is of type object 
-            // and hence won't find the correct subscriptions
             var obj = _serializer.Deserialize<PermissionsModifiedMemo>(objString);
             try
             {
-                // When we connect against group A with Administrator perms, and we remove all permissions, a 403 will be thrown. 
-                // Handle it more gracefully ;)
                 RaisePermissionsModified(obj.ModifiedPermissions);
             }
             catch (Exception e)
@@ -522,10 +514,6 @@ namespace Dev2.Network
         void OnItemAddedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
-            if (serverExplorerItem.ServerId == ServerID)
-            {
-              //  return;
-            }
             serverExplorerItem.ServerId = ID;
             ItemAddedMessageAction?.Invoke(serverExplorerItem);
         }
@@ -598,7 +586,6 @@ namespace Dev2.Network
 
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
-            // build up payload 
             var messageId = Guid.NewGuid();
             var envelope = new Envelope
             {
@@ -623,17 +610,19 @@ namespace Dev2.Network
                 result.Append(fragmentInvoke.Result);
             }
 
-            // prune any result for old datalist junk ;)
-            if (result.Length > 0)
+            return ProcessResult(result);
+        }
+
+        private static StringBuilder ProcessResult(StringBuilder result)
+        {
+            if(result.Length > 0)
             {
-                // Only return Dev2System.ManagmentServicePayload if present ;)
                 var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-                if (start > 0)
+                if(start > 0)
                 {
                     var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if (start < end && end - start > 1)
+                    if(start < end && end - start > 1)
                     {
-                        // we can return the trimmed payload instead
                         start += GlobalConstants.ManagementServicePayload.Length + 2;
                         return new StringBuilder(result.Substring(start, end - start));
                     }
@@ -642,6 +631,7 @@ namespace Dev2.Network
 
             return result;
         }
+
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId)
         {
             if (payload == null || payload.Length == 0)
@@ -651,7 +641,6 @@ namespace Dev2.Network
 
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
-            // build up payload 
             var messageId = Guid.NewGuid();
             var envelope = new Envelope
             {
@@ -666,23 +655,7 @@ namespace Dev2.Network
                 await EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
                 var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
                 result.Append(fragmentInvoke);
-
-                // prune any result for old datalist junk ;)
-                if (result.Length > 0)
-                {
-                    // Only return Dev2System.ManagmentServicePayload if present ;)
-                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if (start > 0)
-                    {
-                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                        if (start < end && end - start > 1)
-                        {
-                            // we can return the trimmed payload instead
-                            start += GlobalConstants.ManagementServicePayload.Length + 2;
-                            return new StringBuilder(result.Substring(start, end - start));
-                        }
-                    }
-                }
+                return ProcessResult(result);
             }
             catch(Exception e)
             {
