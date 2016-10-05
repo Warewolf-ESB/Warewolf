@@ -24,6 +24,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
+using Dev2.Data;
 using Dev2.Data.Decision;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -222,7 +223,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     {
                         var allTests = TestCatalog.Instance.Fetch(dataObject.ResourceID);
                         List<Task> taskList = new List<Task>();
-                        var testResults = new List<TestRunResult>();
+                        var testResults = new List<IServiceTestModelTO>();
                         foreach(var test in allTests)
                         {
                             var dataObjectClone = dataObject.Clone();
@@ -260,7 +261,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 if (dataObject.IsServiceTestExecution)
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                    var result = serializer.Deserialize<TestRunResult>(esbExecuteRequest.ExecuteResult);
+                    var result = serializer.Deserialize<Data.ServiceTestModelTO>(esbExecuteRequest.ExecuteResult);
                     if (result != null)
                     {
                         var resObj = BuildTestResultForWebRequest(result);
@@ -380,7 +381,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
         }
 
-        private static async Task GetTaskForTestExecution(string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, List<TestRunResult> testResults, IDSFDataObject dataObjectClone)
+        private static async Task GetTaskForTestExecution(string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, List<IServiceTestModelTO> testResults, IDSFDataObject dataObjectClone)
         {
             var lastTask = Task.Run(() =>
             {
@@ -392,7 +393,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     ErrorResultTO errs;
                     esbEndpointClone.ExecuteRequest(dataObjectToUse, interTestRequest, workspaceGuid,out errs);
                 });
-                var result = serializer.Deserialize<TestRunResult>(interTestRequest.ExecuteResult);
+                var result = serializer.Deserialize<ServiceTestModelTO>(interTestRequest.ExecuteResult);
                 Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObjectToUse.DataListID);
                 dataObjectToUse.Environment = null;
                 testResults.Add(result);
@@ -400,22 +401,22 @@ namespace Dev2.Runtime.WebServer.Handlers
             await lastTask;
         }
 
-        private static JObject BuildTestResultForWebRequest(TestRunResult result)
+        private static JObject BuildTestResultForWebRequest(IServiceTestModelTO result)
         {
             var resObj = new JObject { { "Test Name", result.TestName } };
-            if(result.RunTestResult == RunResult.TestPassed)
+            if(result.Result.RunTestResult == RunResult.TestPassed)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_PassedResult);
             }
-            else if(result.RunTestResult == RunResult.TestFailed)
+            else if(result.Result.RunTestResult == RunResult.TestFailed)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_FailureResult);
-                resObj.Add("Message", result.Message);
+                resObj.Add("Message", result.Result.Message);
             }
-            else if (result.RunTestResult == RunResult.TestInvalid)
+            else if (result.Result.RunTestResult == RunResult.TestInvalid)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_InvalidResult);
-                resObj.Add("Message", result.Message);
+                resObj.Add("Message", result.Result.Message);
             }
             return resObj;
         }

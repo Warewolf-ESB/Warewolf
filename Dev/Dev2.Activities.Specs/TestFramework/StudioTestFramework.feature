@@ -803,5 +803,109 @@ Scenario: Run a test with Error Expected
 	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	#And test folder is cleaned
+	
+
+#Web Execution
+Scenario: Run Selected Test in Web
+	Given the test builder is open with "Hello World"
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| Name             |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Hello World - Tests"
+	And I close the test builder
+	When the test builder is open with "Hello World"
+	Then there are 1 tests
+	And "Dummy Test" is selected
+	And I select "Test 1"
+	And "Test 1" is selected
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| Name             |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message   |       |
+	And save is disabled
+	When I run selected test in Web
+	Then The WebResponse as
+	| Test Name | Result | Message |
+	| Test 1    | Failed |         |
+
+Scenario: Run All Tests in Web 
+	Given the test builder is open with "Hello World"
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And I update inputs as
+	| Variable Name | Value |
+	| Name          |       |
+	And I update outputs as
+	| Variable Name | Value       |
+	| Message       | Hello World. |
+	And save is enabled
+	When I save
+	Then Tab Header is "Hello World - Tests"
+	And I close the test builder
+	When the test builder is open with "Hello World"
+	Then there are 1 tests
+	When I run all tests in Web
+	Then The WebResponse as
+	| Test Name | Result | Message |
+	| Test 1    | Passed |         |
+
+Scenario: Run Selected Test passed with all teststeps fails
+	Given the test builder is open with "Hello World"
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| Name             |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message   |       |
+	And I Add all TestSteps
+	And save is enabled
+	When I save
+	And I run the test
+	Then test result is Failed
+	
+Scenario: Run Selected Test passed with assign teststep Passes
+	Given the test builder is open with "Hello World"
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| Name             |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message   |       |
+	And I Add "Assign a value to Name if blank (1)" as TestStep
+	And save is enabled
+	When I save
+	And I run the test
+	Then test result is Failed
+
+
 
