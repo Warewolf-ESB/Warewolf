@@ -10,9 +10,9 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Tools")]
         public void SQLBulkInsertToolUITest()
         {
-            Uimap.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface();
-            Uimap.Open_SQL_Bulk_Insert_Tool_Large_View();
-            Uimap.Open_SQL_Bulk_Insert_Tool_Qvi_Large_View();
+            UIMap.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface();
+            UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();
+            UIMap.Open_SQL_Bulk_Insert_Tool_Qvi_Large_View();
         }
 
         #region Additional test attributes
@@ -20,61 +20,28 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
         }
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
+        UIMap UIMap
         {
             get
             {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
-
-        UIMap Uimap
-        {
-            get
-            {
-                if ((_uiMap == null))
+                if ((_UIMap == null))
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
-
-        public UIMap UIMap
-        {
-            get
-            {
-                if ((this.map == null))
-                {
-                    this.map = new UIMap();
-                }
-
-                return this.map;
-            }
-        }
-
-        private UIMap map;
     }
 }
