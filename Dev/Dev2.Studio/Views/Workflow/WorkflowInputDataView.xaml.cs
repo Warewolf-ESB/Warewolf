@@ -89,7 +89,7 @@ namespace Dev2.Studio.Views.Workflow
 
         private void TextBoxTextChanged(object sender, RoutedEventArgs routedEventArgs)
         {
-            var tb = routedEventArgs.OriginalSource as TextBox;
+            var tb = routedEventArgs.OriginalSource as IntellisenseTextBox;
             if (tb != null)
             {
                 var dli = tb.DataContext as IDataListItem;
