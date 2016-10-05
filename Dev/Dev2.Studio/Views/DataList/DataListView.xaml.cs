@@ -11,9 +11,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Caliburn.Micro;
 using Dev2.Common.Interfaces;
-using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
@@ -26,19 +24,10 @@ namespace Dev2.Studio.Views.DataList
     /// </summary>
     public partial class DataListView : IView,ICheckControlEnabledView
     {
-        readonly IEventAggregator _eventPublisher;
 
         public DataListView()
-            : this(EventPublishers.Aggregator)
-        {
-        }
-
-        public DataListView(IEventAggregator eventPublisher)
         {
             InitializeComponent();
-
-            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _eventPublisher = eventPublisher;
             KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
         }
 
@@ -72,7 +61,7 @@ namespace Dev2.Studio.Views.DataList
             {
                 return;
             }
-            //WriteToResourceModel();
+            WriteToResourceModel();
         }
 
         private void Outputcbx_OnChecked(object sender, RoutedEventArgs e)
@@ -82,7 +71,7 @@ namespace Dev2.Studio.Views.DataList
             {
                 return;
             }
-           // WriteToResourceModel();
+            WriteToResourceModel();
         }
 
         private void NametxtFocusLost(object sender, RoutedEventArgs e)
@@ -107,7 +96,7 @@ namespace Dev2.Studio.Views.DataList
 
         private void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            //WriteToResourceModel();
+            WriteToResourceModel();
         }
 
         #endregion Events
@@ -153,11 +142,11 @@ namespace Dev2.Studio.Views.DataList
 
         private void DataListView_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            IDataListViewModel vm = DataContext as IDataListViewModel;
-            if (vm != null && !vm.IsSorting)
-            {
-                vm?.AddBlankRow(null);
-            }
+//            IDataListViewModel vm = DataContext as IDataListViewModel;
+//            if (vm != null && !vm.IsSorting)
+//            {
+//                vm?.AddBlankRow(null);
+//            }
         }
     }
 }

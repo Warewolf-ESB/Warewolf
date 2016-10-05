@@ -630,32 +630,11 @@ namespace Dev2.Studio.ViewModels.DataList
             ScalarCollection.ForEach(_scalarHandler.FixNamingForScalar);
             _recordsetHandler.AddRecordsetNamesIfMissing();
             var result = GetDataListString();
-//            _baseScalarCollection = BaseCollection[0].Children;
-//            _baseRecSetCollection = BaseCollection[1].Children;
-//            _baseComplexObjectCollection = BaseCollection[2].Children;
-//            if (Resource != null)
-//            {
-//                if (!Resource.DataList.Equals(result, StringComparison.InvariantCultureIgnoreCase))
-//                {
-//                    if (BaseCollection.Count >= 1)
-//                    {
-//                        _baseScalarCollection = new ObservableCollection<IDataListItemModel>(ScalarCollection);
-//                        _baseRecSetCollection = new ObservableCollection<IDataListItemModel>(RecsetCollection);
-//                        _baseComplexObjectCollection = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);                        
-//                    }
-//                    AddBlankRow(null);
-//                    Resource.DataList = result;
-//                    return result;
-//                }
-//            }
-//
-//            if (BaseCollection.Count >= 1 && BaseCollection.All(model => model.Children.Count==0))
-//            {
-//                _baseScalarCollection = new ObservableCollection<IDataListItemModel>(ScalarCollection);
-//                _baseRecSetCollection = new ObservableCollection<IDataListItemModel>(RecsetCollection);
-//                _baseComplexObjectCollection = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);
-//                AddBlankRow(null);
-//            }
+            if (Resource != null)
+            {
+                Resource.DataList = result;
+            }
+
             return result;
         }
 
