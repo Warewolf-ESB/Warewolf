@@ -8,7 +8,7 @@ namespace Warewolf.UITests.Tools.Data
     {
         [TestMethod]
         [TestCategory("Tools")]
-        public void AssignToolOpenLargeViewWithDoubleClickUITest()
+        public void AssignToolOpenAndCloseLargeViewWithDoubleClickUITest()
         {
             UIMap.Open_Assign_Tool_Large_View();
             UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
@@ -19,7 +19,7 @@ namespace Warewolf.UITests.Tools.Data
 
         [TestMethod]
         [TestCategory("Tools")]
-        public void AssignToolOpenLargeViewWithExpandAllToggleUITest()
+        public void AssignToolOpenAndCloseLargeViewWithExpandAllToggleUITest()
         {
             UIMap.Click_Assign_Tool_ExpandAll();
             UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
