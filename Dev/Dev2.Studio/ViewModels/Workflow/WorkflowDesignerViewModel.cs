@@ -704,6 +704,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             workflowFields.AddRange(GetDecisionElements(((dynamic) activity).ExpressionText, DataListSingleton.ActiveDataList));
                         }
+                    }
+                    else
+                    {
+                        var activity = property.ComputedValue;
+                        if (activity != null)
+                        {
+                            workflowFields.AddRange(GetDecisionElements(((dynamic)activity).ExpressionText, DataListSingleton.ActiveDataList));
+                        }
                     }                                     
                 }
                 else
