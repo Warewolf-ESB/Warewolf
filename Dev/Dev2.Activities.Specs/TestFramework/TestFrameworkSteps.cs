@@ -3,6 +3,9 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
@@ -29,6 +32,7 @@ using Dev2.Threading;
 using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ServerProxyLayer;
@@ -40,6 +44,50 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Activities.Specs.TestFramework
 {
+    internal interface ISpecExternalProcessExecutor : IExternalProcessExecutor
+    {
+        string WebResult { get; set; }
+    }
+
+    internal class SpecExternalProcessExecutor : ISpecExternalProcessExecutor
+    {
+        #region Implementation of IExternalProcessExecutor
+
+        public void OpenInBrowser(Uri url)
+        {
+            var userPrinciple = Thread.CurrentPrincipal;
+            //Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+            //{
+                
+                try
+                {
+                    using(var client = new WebClient())
+                    {
+
+
+                        client.Credentials = CredentialCache.DefaultNetworkCredentials;
+                        
+                        WebResult = client.DownloadString(url);
+                    }
+               
+                }
+                catch(Exception e)
+                {
+                    Dev2Logger.Error(e);
+                }
+            //});
+         
+        }
+
+        #endregion
+
+        #region Implementation of ISpecExternalProcessExecutor
+
+        public string WebResult { get; set; }
+
+        #endregion
+    }
+
     [Binding]
     public class StudioTestFrameworkSteps
     {
@@ -390,7 +438,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
-                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework", testFramework);
@@ -398,7 +446,7 @@ namespace Dev2.Activities.Specs.TestFramework
             if (workflowName == "Hello World")
             {
                 var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(new Guid("acb75027-ddeb-47d7-814e-a54c37247ec1"));
-                var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+                var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework", testFramework);
@@ -462,6 +510,21 @@ namespace Dev2.Activities.Specs.TestFramework
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             serviceTest.RunSelectedTestCommand.Execute(null);
         }
+
+        [When(@"I run selected test in Web")]
+        public void WhenIRunSelectedTestInWeb()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.RunSelectedTestInBrowserCommand.Execute(null);
+        }
+
+        [When(@"I run all tests in Web")]
+        public void WhenIRunAllTestsInWeb()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.RunAllTestsInBrowserCommand.Execute(null);
+        }
+
 
         [Then(@"test result is Passed")]
         public void ThenTestResultIsPassed()
@@ -689,6 +752,46 @@ namespace Dev2.Activities.Specs.TestFramework
                 i++;
             }
         }
+
+       
+
+        [Then(@"The WebResponse as")]
+        public void ThenTheWebResponseAs(Table table)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var fieldInfo = typeof(ServiceTestViewModel).GetField("_processExecutor", BindingFlags.NonPublic | BindingFlags.Instance);
+            var specExternalProcessExecutor = fieldInfo?.GetValue(serviceTest) as ISpecExternalProcessExecutor;
+            if(specExternalProcessExecutor != null)
+            {
+                var webResult = specExternalProcessExecutor.WebResult;
+                var jObject = JObject.Parse(webResult);
+               
+                foreach (var tableRow in table.Rows)
+                {
+                    foreach (var resultPairs in jObject)
+                    {
+                       // Assert.AreEqual(tableRow["Test Name"], resultPairs);
+                        if(resultPairs.Key == "Test Name")
+                        {
+                            Assert.AreEqual(tableRow["Test Name"], resultPairs.Value);
+                        }
+                        if (resultPairs.Key == "Result")
+                        {
+                            Assert.AreEqual(tableRow["Result"], resultPairs.Value);
+                        }
+
+                        if (resultPairs.Key == "Message")
+                        {
+                            Assert.AreEqual(tableRow["Message"], resultPairs.Value);
+                        }
+                    }
+                }
+            }
+            Assert.Fail("Web result is empty");
+         
+        }
+
+
 
         [When(@"""(.*)"" is deleted")]
         public void WhenIsDeleted(string workflowName)
@@ -1221,7 +1324,7 @@ namespace Dev2.Activities.Specs.TestFramework
             environmentModel.ResourceRepository.ForceLoad();
             if (!string.IsNullOrEmpty(path))
             {
-              
+
                 var savedSource = environmentModel.ResourceRepository.All().First(model => model.Category.Equals(path + "\\" + rName, StringComparison.InvariantCultureIgnoreCase));
                 ScenarioContext[rName + "id"] = savedSource.ID;
                 var resourceID = ScenarioContext.Get<Guid>(rName + "id");
@@ -1263,7 +1366,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                         var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
                         serviceTestModelTO.TestName = resourceName;
-                        
+
                         serviceTestModelTO.ResourceId = resourceId;
                         serviceTestModelTO.Inputs = new List<IServiceTestInput>();
                         serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
@@ -1274,10 +1377,10 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
 
                 var testFrameworkFromContext = GetTestFrameworkFromContext();
-                
+
                 var executeMessage = environmentModel.ResourceRepository.SaveTests(testFrameworkFromContext.ResourceModel, serviceTestModelTos);
                 Assert.IsTrue(executeMessage.Result == SaveResult.Success || executeMessage.Result == SaveResult.ResourceUpdated);
-                testFrameworkFromContext = new ServiceTestViewModel(testFrameworkFromContext.ResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+                testFrameworkFromContext = new ServiceTestViewModel(testFrameworkFromContext.ResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
                 ScenarioContext["testFramework"] = testFrameworkFromContext;
 
             }
@@ -1307,7 +1410,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var res = env.ResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
             var contextualResource = env.ResourceRepository.LoadContextualResourceModel(res.ID);
             helloGuid = res.ID;
-            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
             Assert.IsNotNull(serviceTestVm);
             Assert.IsNotNull(serviceTestVm.ResourceModel);
             ScenarioContext.Add("testFramework", serviceTestVm);
@@ -1393,6 +1496,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         if (foundNode != null)
                         {
                             var decisionNode = foundNode as FlowDecision;
+                            // ReSharper disable once PossibleNullReferenceException
                             var condition = decisionNode.Condition;
                             var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
@@ -1433,6 +1537,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             return false;
                         });
                         var decisionNode = foundNode as FlowStep;
+                        // ReSharper disable once PossibleNullReferenceException
                         var action = decisionNode.Action;
                         var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];
@@ -1476,6 +1581,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         if (foundNode != null)
                         {
                             var decisionNode = foundNode as FlowDecision;
+                            // ReSharper disable once PossibleNullReferenceException
                             var condition = decisionNode.Condition;
                             var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
@@ -1507,6 +1613,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             return false;
                         });
                         var decisionNode = foundNode as FlowStep;
+                        // ReSharper disable once PossibleNullReferenceException
                         var action = decisionNode.Action;
                         var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];
