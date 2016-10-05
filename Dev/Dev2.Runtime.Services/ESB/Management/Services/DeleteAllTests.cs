@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -35,9 +36,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             CompressedExecuteMessage result = new CompressedExecuteMessage { HasError = false };
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
             try
             {
-                TestCatalog.DeleteAllTests();
+                StringBuilder excludeTests;
+                values.TryGetValue("excludeList", out excludeTests);
+                var testsToLive = jsonSerializer.Deserialize<List<string>>(excludeTests);
+                TestCatalog.DeleteAllTests(testsToLive.Select(a => a.ToUpper()).ToList());
                 result.SetMessage("Test reload succesful");
             }
             catch (Exception ex)
