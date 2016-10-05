@@ -46,11 +46,8 @@ namespace Dev2.Studio.Views.DataList
                     {
                         itemThatChanged.IsExpanded = true;
                     }
-                    if(itemThatChanged != null)
-                    {
-                        vm.AddBlankRow(itemThatChanged);
-                    }
                 }
+                vm.AddBlankRow(null);
             }
         }
 
