@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
@@ -21,6 +20,7 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
@@ -32,6 +32,7 @@ using Dev2.Threading;
 using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -46,44 +47,45 @@ namespace Dev2.Activities.Specs.TestFramework
 {
     internal interface ISpecExternalProcessExecutor : IExternalProcessExecutor
     {
-        string WebResult { get; set; }
+        List<string> WebResult { get; set; }
     }
 
     internal class SpecExternalProcessExecutor : ISpecExternalProcessExecutor
     {
         #region Implementation of IExternalProcessExecutor
 
+        public SpecExternalProcessExecutor()
+        {
+            WebResult = new List<string>();
+        }
+
         public void OpenInBrowser(Uri url)
         {
-            var userPrinciple = Thread.CurrentPrincipal;
-            //Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
-            //{
-                
-                try
+
+            try
+            {
+                using (var client = new WebClient())
                 {
-                    using(var client = new WebClient())
-                    {
 
 
-                        client.Credentials = CredentialCache.DefaultNetworkCredentials;
-                        
-                        WebResult = client.DownloadString(url);
-                    }
-               
+                    client.Credentials = CredentialCache.DefaultNetworkCredentials;
+
+                    WebResult.Add(client.DownloadString(url));
                 }
-                catch(Exception e)
-                {
-                    Dev2Logger.Error(e);
-                }
-            //});
-         
+
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e);
+            }
+
         }
 
         #endregion
 
         #region Implementation of ISpecExternalProcessExecutor
 
-        public string WebResult { get; set; }
+        public List<string> WebResult { get; set; }
 
         #endregion
     }
@@ -753,7 +755,7 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-       
+
 
         [Then(@"The WebResponse as")]
         public void ThenTheWebResponseAs(Table table)
@@ -761,34 +763,36 @@ namespace Dev2.Activities.Specs.TestFramework
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             var fieldInfo = typeof(ServiceTestViewModel).GetField("_processExecutor", BindingFlags.NonPublic | BindingFlags.Instance);
             var specExternalProcessExecutor = fieldInfo?.GetValue(serviceTest) as ISpecExternalProcessExecutor;
-            if(specExternalProcessExecutor != null)
+            if (specExternalProcessExecutor != null)
             {
                 var webResult = specExternalProcessExecutor.WebResult;
-                var jObject = JObject.Parse(webResult);
-               
-                foreach (var tableRow in table.Rows)
+                foreach (var result in webResult)
                 {
-                    foreach (var resultPairs in jObject)
-                    {
-                       // Assert.AreEqual(tableRow["Test Name"], resultPairs);
-                        if(resultPairs.Key == "Test Name")
-                        {
-                            Assert.AreEqual(tableRow["Test Name"], resultPairs.Value);
-                        }
-                        if (resultPairs.Key == "Result")
-                        {
-                            Assert.AreEqual(tableRow["Result"], resultPairs.Value);
-                        }
+                    var cleanresult = result.Replace("[", "").Replace("]", "");
+                       var jObject = JObject.Parse(cleanresult);
 
-                        if (resultPairs.Key == "Message")
+                    foreach (var tableRow in table.Rows)
+                    {
+                        foreach (var resultPairs in jObject)
                         {
-                            Assert.AreEqual(tableRow["Message"], resultPairs.Value);
+                            // Assert.AreEqual(tableRow["Test Name"], resultPairs);
+                            if (resultPairs.Key == "Test Name")
+                            {
+                                Assert.AreEqual(tableRow["Test Name"], resultPairs.Value, "value message dont match");
+                            }
+                            if (resultPairs.Key == "Result")
+                            {
+                                Assert.AreEqual(tableRow["Result"], resultPairs.Value, "Result message dont match");
+                            }
+
+                            if (resultPairs.Key == "Message")
+                            {
+                                Assert.AreEqual(tableRow["Message"], resultPairs.Value.ToString().Replace("\n","").Replace("\r", "").Replace(Environment.NewLine, ""), "error message dont match");
+                            }
                         }
                     }
                 }
             }
-            Assert.Fail("Web result is empty");
-         
         }
 
 
@@ -1551,6 +1555,47 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
             }
         }
+
+        [Then(@"I Add all TestSteps")]
+        public void ThenIAddAllTestSteps()
+        {
+
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            WorkflowHelper helper = new WorkflowHelper();
+            var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
+            Assert.IsNotNull(builder);
+            var act = (Flowchart)builder.Implementation;
+            foreach (var flowNode in act.Nodes)
+            {
+                var modelItem = ModelItemUtils.CreateModelItem(flowNode);
+                var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                methodInfo.Invoke(serviceTest, new object[] { modelItem });
+            }
+        }
+
+        [Then(@"I Add ""(.*)"" as TestStep")]
+        public void ThenIAddAsTestStep(string actNameToFind)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            WorkflowHelper helper = new WorkflowHelper();
+            var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
+            Assert.IsNotNull(builder);
+            var act = (Flowchart)builder.Implementation;
+            foreach (var flowNode in act.Nodes)
+            {
+                var searchNode = flowNode as FlowStep;
+                var isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                if (isCorr)
+                {
+                    var modelItem = ModelItemUtils.CreateModelItem(flowNode);
+                    var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                    methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                    break;
+                }
+            }
+        }
+
+
 
         [Then(@"I add Assert steps as")]
         public void ThenIAddAssertStepsAs(Table table)
