@@ -11,6 +11,7 @@ namespace Warewolf.UITests.Tools
         public void JavaScriptToolUITest()
         {
             Uimap.Drag_Toolbox_Javascript_Onto_DesignSurface();
+            Uimap.Open_Javascript_Large_View();
         }
 
         #region Additional test attributes

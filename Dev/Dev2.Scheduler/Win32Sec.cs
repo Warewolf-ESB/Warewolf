@@ -193,7 +193,7 @@ public class SecurityWrapper : ISecurityWrapper
 
                 var intersection = localGroups.Intersect(Accounts);
 
-                return intersection.Any();
+                return intersection.Any(s => !s.Equals(Environment.MachineName+"\\"+userName,StringComparison.InvariantCultureIgnoreCase));
 
             }
         }

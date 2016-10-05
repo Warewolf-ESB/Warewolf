@@ -4,14 +4,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class Python
+    public class Selectandapply
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void PythonScriptToolUITest()
+        public void SelectandapplyToolUITest()
         {
-            Uimap.Drag_Toolbox_Python_Onto_DesignSurface();
-            Uimap.Open_Python_Large_View();
+            Uimap.Drag_Toolbox_Selectandapply_Onto_DesignSurface();
+            Uimap.Open_Selectandapply_Large_View();
         }
 
         #region Additional test attributes
@@ -48,7 +48,7 @@ namespace Warewolf.UITests.Tools
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }
