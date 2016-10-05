@@ -607,9 +607,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        public void DeleteAlltests()
+        public void DeleteAlltests(List<string> ignoreList )
         {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializeToBuilder = serializer.SerializeToBuilder(ignoreList);
             var comsController = GetCommunicationController("DeleteAllTestsService");
+            comsController.AddPayloadArgument("excludeList", serializeToBuilder);
             var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
             var message = executeCommand.GetDecompressedMessage();
             if (executeCommand.HasError)

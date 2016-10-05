@@ -906,6 +906,30 @@ Scenario: Run Selected Test passed with assign teststep Passes
 	When I save
 	And I run the test
 	Then test result is Failed
+	
+Scenario: Control Flow - Sequence Debug Run Selected Test passed with create Example Data teststep Passes
+	Given the test builder is open with "Control Flow - Sequence"
+	And Tab Header is "Control Flow - Sequence - Tests"
+	Then there are 4 tests		
+	And I select "ControlFlowExampleWithExampleDataStepTests"
+	And test name starts with "ControlFlowExampleWithExampleDataStepTests"	
+	When I run the test	
+	Then test result is Passed
+	And I select "ControlFlowExampleWithForEachStepTest"
+	And test name starts with "ControlFlowExampleWithForEachStepTest"	
+	When I run the test	
+	Then test result is Passed
+	And I select "ControlFlowExampleWithOrganiseCustomerStepTest"
+	And test name starts with "ControlFlowExampleWithOrganiseCustomerStepTest"	
+	When I run the test	
+	Then test result is Passed
+	And Tab Header is "Control Flow - Sequence - Tests"
+	And I select "ControlFlowExampleWithAllStepsTests"
+	And test name starts with "ControlFlowExampleWithAllStepsTests"			
+	When I run the test
+	Then test result is Passed
+	And I run all tests
+	Then all tests pass
 
 
 
