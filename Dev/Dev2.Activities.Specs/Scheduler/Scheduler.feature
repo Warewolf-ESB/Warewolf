@@ -33,7 +33,6 @@ Scenario: Creating task with schedule statud disabled
 	  | On a schedule | "Daily"  | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
 	  When the "Diceroll00" is executed "1" times
 	  Then the Schedule task has "An" error
-	  Then the schedule status is "Failure"
 
 @Scheduler
 Scenario: Setting schedule task "At log on"

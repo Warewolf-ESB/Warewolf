@@ -174,7 +174,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             var result = scenarioContext.Get<IDSFDataObject>("result");
             Assert.IsNotNull(result);
             if (result.Environment.AllErrors.Any())
-                Assert.AreEqual(p0, result.Environment.AllErrors.FirstOrDefault().ToString());
+                Assert.AreEqual(p0, result.Environment.AllErrors.FirstOrDefault());
         }
     }
 }
