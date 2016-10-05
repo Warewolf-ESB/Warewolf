@@ -120,12 +120,12 @@ namespace Dev2.Studio.Core
                 {
                     foreach (var debugItemResult in debugItem.ResultsList)
                     {
-                        if (debugItemResult.Value.Contains("Failed"))
+                        if (debugItemResult.HasError)
                         {
                             HasError = true;
                             HasNoError = false;
                         }
-                        else if (debugItemResult.Value.Contains("Passed"))
+                        else
                         {
                             HasError = false;
                             HasNoError = true;

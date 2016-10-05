@@ -28,7 +28,8 @@ namespace Dev2.Diagnostics
         public string GroupName { get; set; }
         public int GroupIndex { get; set; }
         public string MoreLink { get; set; }
-  
+        public bool HasError { get; set; }
+
         #region IXmlSerializable
 
         #region Equality members
@@ -165,13 +166,19 @@ namespace Dev2.Diagnostics
                     MoreLink = reader.ReadElementString("MoreLink");
                 }
 
-                if(reader.NodeType == XmlNodeType.EndElement && reader.Name == "DebugItemResult")
+                if (reader.IsStartElement("HasError"))
+                {
+                    bool hasError;
+                    bool.TryParse(reader.ReadElementString("HasError"), out hasError);
+                    HasError = hasError;
+                }
+
+                if (reader.NodeType == XmlNodeType.EndElement && reader.Name == "DebugItemResult")
                 {
                     reader.ReadEndElement();
                     break;
                 }
             }
-
         }
 
         public void WriteXml(XmlWriter writer)
@@ -191,6 +198,7 @@ namespace Dev2.Diagnostics
             writer.WriteElementString("Variable", Variable);
             writer.WriteElementString("Operator", Operator);
             writer.WriteElementString("Value", Value);
+            writer.WriteElementString("HasError", HasError.ToString());
 
             if(!string.IsNullOrWhiteSpace(MoreLink))
             {

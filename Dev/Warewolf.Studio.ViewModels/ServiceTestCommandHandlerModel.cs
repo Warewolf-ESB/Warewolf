@@ -144,12 +144,17 @@ namespace Warewolf.Studio.ViewModels
                             foreach (var serviceTestStep in serviceTestSteps)
                             {
                                 serviceTestStep.Result = resTestStep.Result;
-                                
+
                                 foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == serviceTestStep.UniqueId))
                                 {
                                     serviceTestStep.Result = testStep.Result;
 
                                     serviceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, serviceTestStep as ServiceTestStep);
+                                }
+                                var children = resTestStep.Children;
+                                if (children.Count > 0)
+                                {
+                                    SetChildrenTestResult(children, serviceTestStep.Children);
                                 }
                             }
                         }
@@ -176,8 +181,26 @@ namespace Warewolf.Studio.ViewModels
                     selectedServiceTest.TestInvalid = true;
                 }
                 selectedServiceTest.IsTestRunning = false;
-
             });
+        }
+
+        private void SetChildrenTestResult(ObservableCollection<IServiceTestStep> resTestStepchildren, ObservableCollection<IServiceTestStep> serviceTestStepChildren)
+        {
+            foreach (var child in resTestStepchildren)
+            {
+                var childServiceTestSteps = serviceTestStepChildren.Where(testStep => testStep.UniqueId == child.UniqueId).ToList();
+                foreach (var childServiceTestStep in childServiceTestSteps)
+                {
+                    childServiceTestStep.Result = child.Result;
+
+                    childServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(child.StepOutputs, childServiceTestStep as ServiceTestStep);
+                    var children1 = child.Children;
+                    if (children1.Count > 0)
+                    {
+                        SetChildrenTestResult(children1, childServiceTestStep.Children);
+                    }
+                }
+            }
         }
 
         private ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)

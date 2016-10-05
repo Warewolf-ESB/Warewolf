@@ -657,6 +657,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     stepCompare = false;
                 }
+                if (TestSteps[i].StepOutputs.Count != other.TestSteps[i].StepOutputs.Count)
+                {
+                    stepCompare = false;
+                }
                 if (!stepCompare) continue;
                 var stepOutputs = TestSteps[i].StepOutputs;
                 var otherStepOutputs = other.TestSteps[i].StepOutputs;
