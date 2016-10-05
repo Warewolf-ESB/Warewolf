@@ -1,6 +1,7 @@
 using System;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
+using Newtonsoft.Json;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -9,6 +10,12 @@ namespace Warewolf.Studio.ViewModels
         private string _variable;
         private string _value;
         private bool _emptyIsNull;
+
+        // ReSharper disable once UnusedMember.Global
+        public ServiceTestInput()
+        {
+            
+        }
 
         public ServiceTestInput(string variableName, string value)
         {
@@ -62,6 +69,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => EmptyIsNull);
             }
         }
+        [JsonIgnore]
         public Action AddNewAction { get; set; }
 
         #endregion
