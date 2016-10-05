@@ -143,12 +143,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             }
         }
 
-        [Given(@"I get the length from a object that looks like with this shape")]
-        public void GivenIGetTheLengthFromAObjectThatLooksLikeWithThisShape()
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
         [Given(@"get length on record ""(.*)""")]
         public void GivenGetLengthOnRecord(string recordset)
         {
