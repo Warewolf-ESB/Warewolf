@@ -253,7 +253,7 @@ namespace Dev2.Runtime.ESB.Execution
                         var msg = test.FailureMessage;
                         if (test.TestPassed)
                         {
-                            msg = "Passed";
+                            msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
                         }
                         itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg).GetDebugItemResult());
                     }

@@ -366,44 +366,10 @@ namespace Warewolf.Studio.ViewModels
                     var childItemContent = childItem.Content;
                     var outputs = childItemContent.Outputs;
 
-                        var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
-                        if (exists == null)
-                        {
-                            var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType,
-                                serviceTestOutputs, StepType.Assert)
-                            {
-                                StepDescription = childItemContent.DisplayName,
-                                Parent = parent,
-                                Type = StepType.Assert
-                            };
-                            AddOutputs(outputs, childStep);
-                            SetStepIcon(childStep.ActivityType, childStep);
-                            parent.Children.Add(childStep);
-                            if (childItem.Children != null && childItem.Children.Count > 0)
-                            {
-                                AddChildDebugItems(childItemContent, childItem, childStep);
-                            }
-                        }
-                    }
-                }
-            }
-            while (parent != null)
-            {
-                var child = parent;
-                if (child.Parent == null)
-                {
-                    var exists = FindExistingStep(child.UniqueId.ToString());
-                    if (exists == null)
-                    {
-                        SelectedServiceTest.TestSteps.Add(child);
-                    }
-                }
-                parent = child.Parent;
                     var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
                     if (exists == null)
                     {
-                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType,
-                            serviceTestOutputs, StepType.Assert)
+                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
                         {
                             StepDescription = childItemContent.DisplayName,
                             Parent = parent,
@@ -414,7 +380,7 @@ namespace Warewolf.Studio.ViewModels
                         parent.Children.Add(childStep);
                         if (childItem.Children != null && childItem.Children.Count > 0)
                         {
-                            AddChildDebugItems(childItemContent, childItem, parent.Children, childStep);
+                            AddChildDebugItems(childItemContent, childItem, childStep);
                         }
                     }
                 }
