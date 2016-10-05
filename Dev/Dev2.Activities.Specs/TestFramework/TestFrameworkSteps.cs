@@ -531,8 +531,8 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"all tests pass")]
         public void ThenAllTestsPass()
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            var allPassed = serviceTest.Tests.All(model => model.TestPassed);
+            var testModels = GetTestForCurrentTestFramework();
+            var allPassed = testModels.All(model => model.TestPassed);
             Assert.IsTrue(allPassed);
         }
 

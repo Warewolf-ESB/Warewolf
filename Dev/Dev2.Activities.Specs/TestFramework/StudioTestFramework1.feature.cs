@@ -2621,7 +2621,7 @@ this.FeatureBackground();
 #line 912
  testRunner.And("Tab Header is \"Control Flow - Sequence - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 913
- testRunner.Then("there are 4 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("there are 3 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 914
  testRunner.And("I select \"ControlFlowExampleWithExampleDataStepTests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 915
@@ -2647,18 +2647,8 @@ this.FeatureBackground();
 #line 925
  testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 926
- testRunner.And("Tab Header is \"Control Flow - Sequence - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 927
- testRunner.And("I select \"ControlFlowExampleWithAllStepsTests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 928
- testRunner.And("test name starts with \"ControlFlowExampleWithAllStepsTests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 929
- testRunner.When("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 930
- testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 931
  testRunner.And("I run all tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 932
+#line 927
  testRunner.Then("all tests pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
