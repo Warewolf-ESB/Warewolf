@@ -11211,6 +11211,32 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.PasteButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="11" Y="14" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.ResponseTextbox">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Response body does not exist on the Put Web large view after clicking paste customized response</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_PostWeb_Paste_Response_Button">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.GenerateOutputsButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -11237,6 +11263,32 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.GenerateOutputsButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="51" Y="1" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.InputDataGridTable">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>InputDataGridTable does not exist on the Put Web large view after clicking Generate outputs</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_PostWeb_GenerateOutputs_Button">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.CancelButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -11247,6 +11299,24 @@
       <MouseButton>Left</MouseButton>
     </MouseAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Click_PutWeb_Cancel_Button">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.CancelButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="18" Y="6" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_PostWeb_Cancel_Button">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -23967,6 +24037,20 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
+                                                            <UIObject ControlType="Edit" Id="ResponseTextbox" FriendlyName="ResponseTextbox" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">ResponseTextbox</PropertyCondition>
+                                                                <PropertyCondition Name="Instance">2</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
+                                                            </UIObject>
                                                             <UIObject ControlType="Custom" Id="LargeView" FriendlyName="LargeViewContent" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
