@@ -110,8 +110,13 @@ IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath
 GOTO StartService
 
 :StartService
-REM ** Try refresh server bin resources
+REM ** Try Refresh Warewolf Server Bin Resources and Tests
 IF NOT EXIST "%DeploymentDirectory%\Resources" IF EXIST "%~dp0..\..\..\Resources - Debug\Resources" echo d | xcopy /S /Y "%~dp0..\..\..\Resources - Debug\Resources" "%DeploymentDirectory%\Resources"
+IF NOT EXIST "%DeploymentDirectory%\Tests" IF EXIST "%~dp0..\..\..\Resources - Debug\Tests" echo d | xcopy /S /Y "%~dp0..\..\..\Resources - Debug\Tests" "%DeploymentDirectory%\Tests"
+
+REM ** Try Refresh Warewolf ProgramData Resources and Tests
+IF NOT EXIST "%ProgramData%\Warewolf\Resources" IF EXIST "%DeploymentDirectory%\Resources" echo d | xcopy /S /Y "%DeploymentDirectory%\Resources" "%ProgramData%\Warewolf\Resources"
+IF NOT EXIST "%ProgramData%\Warewolf\Tests" IF EXIST "%DeploymentDirectory%\Tests" echo d | xcopy /S /Y "%DeploymentDirectory%\Tests" "%ProgramData%\Warewolf\Tests"
 
 REM ** Start the server service
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc start "Warewolf Server") else (sc start "Warewolf Server")

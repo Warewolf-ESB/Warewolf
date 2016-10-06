@@ -127,34 +127,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsTrue(task.IsFaulted);
             Assert.IsTrue(serverProxy.IsConnected);
         }
-
-        [TestMethod, Timeout(3000)]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerProxy_Wait")]
-        public void ServerProxy_Wait_TaskThrowsReconnectingBeforeInvocationInvalidOperationException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
-        {
-            //------------Setup for test--------------------------
-            const string ExMessage = "Connection started reconnecting before invocation result was received";
-            var result = new StringBuilder();
-            var task = new Task<string>(() =>
-            {
-                throw new InvalidOperationException(ExMessage);
-            });
-
-            var serverProxy = new TestServerProxy
-            {
-                IsConnected = true
-            };
-
-            //------------Execute Test---------------------------
-            serverProxy.TestWait(task, result);
-
-            //------------Assert Results-------------------------
-            StringAssert.Contains(result.ToString(), ExMessage);
-            Assert.IsTrue(task.IsFaulted);
-            Assert.IsTrue(serverProxy.IsConnected);
-        }
-
+        
     }
 
     internal class TestServerProxyWithFallback : ServerProxy

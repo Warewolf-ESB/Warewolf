@@ -10,14 +10,14 @@ namespace Warewolf.UITests.Tools.Data
 		[TestCategory("Tools")]
         public void BaseConvertToolUITest()
         {
-            Uimap.Drag_Toolbox_Base_Conversion_Onto_DesignSurface();
-            Uimap.Open_Base_Conversion_Tool_Large_View();
-            Uimap.Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox();
-            Uimap.Click_Base_Convert_Large_View_Done_Button();
-            Uimap.Press_F6();
-            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            Uimap.Click_Debug_Output_BaseConvert_Cell();
-            Uimap.Open_Base_Conversion_Tool_Qvi_Large_View();
+            UIMap.Drag_Toolbox_Base_Conversion_Onto_DesignSurface();
+            UIMap.Open_Base_Conversion_Tool_Large_View();
+            UIMap.Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox();
+            UIMap.Click_Base_Convert_Large_View_Done_Button();
+            UIMap.Press_F6();
+            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            UIMap.Click_Debug_Output_BaseConvert_Cell();
+            UIMap.Open_Base_Conversion_Tool_Qvi_Large_View();
         }
 
         #region Additional test attributes
@@ -25,27 +25,27 @@ namespace Warewolf.UITests.Tools.Data
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

@@ -9,13 +9,13 @@ namespace Warewolf.UITests
         [TestMethod]
         public void SchedulerUITest()
         {
-            Uimap.Click_Scheduler_Ribbon_Button();
-            Uimap.Click_Scheduler_Create_New_Task_Ribbon_Button();
-            Uimap.Click_Scheduler_ResourcePicker();
-            Uimap.Select_Service_From_Service_Picker_Dialog("Hello World");
-            Uimap.Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab();
-            Uimap.Click_Scheduler_Disable_Task_Radio_Button();
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog(30000);
+            UIMap.Click_Scheduler_Ribbon_Button();
+            UIMap.Click_Scheduler_Create_New_Task_Ribbon_Button();
+            UIMap.Click_Scheduler_ResourcePicker();
+            UIMap.Select_Service_From_Service_Picker_Dialog("Hello World");
+            UIMap.Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab();
+            UIMap.Click_Scheduler_Disable_Task_Radio_Button();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog(30000);
         }
 
         #region Additional test attributes
@@ -23,26 +23,26 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }
