@@ -66,6 +66,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
 
         #endregion
 
+        [BeforeScenario("fileFeature")]
+        public void SetupForTesting()
+        {
+        }
+
         [AfterScenario("fileFeature")]
         public void CleanUpFiles()
         {

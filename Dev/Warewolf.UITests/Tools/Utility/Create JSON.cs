@@ -10,9 +10,9 @@ namespace Warewolf.UITests.Tools.Utility
 		[TestCategory("Tools")]
         public void CreateJSONToolUITest()
         {
-            Uimap.Drag_Toolbox_JSON_Onto_DesignSurface();
-            Uimap.Open_Json_Tool_Large_View();
-            Uimap.Open_Json_Tool_Qvi_Large_View();
+            UIMap.Drag_Toolbox_JSON_Onto_DesignSurface();
+            UIMap.Open_Json_Tool_Large_View();
+            UIMap.Open_Json_Tool_Qvi_Large_View();
         }
 
         #region Additional test attributes
@@ -20,11 +20,11 @@ namespace Warewolf.UITests.Tools.Utility
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
         }
         
         public TestContext TestContext
@@ -41,20 +41,20 @@ namespace Warewolf.UITests.Tools.Utility
 
         private TestContext testContextInstance;
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

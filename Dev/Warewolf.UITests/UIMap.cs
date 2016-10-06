@@ -163,8 +163,8 @@ namespace Warewolf.UITests
 
         public bool ControlExistsNow(UITestControl thisControl)
         {
-            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount;
+            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout;
             Playback.PlaybackError -= OnError;
             OnErrorHandlerDisabled = true;
             bool controlExists = false;
@@ -176,8 +176,8 @@ namespace Warewolf.UITests
             {
                 OnErrorHandlerDisabled = false;
                 Playback.PlaybackError += OnError;
-                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
             }
             return controlExists;
         }
@@ -592,7 +592,30 @@ namespace Warewolf.UITests
             WaitForControlNotVisible(control, searchTimeout);
         }
 
+        [When(@"I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As ""(.*)""")]
+        public void Enter_Invalid_Service_Name_With_Whitespace_Into_Duplicate_Dialog(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, true, true, true, SaveOrDuplicate.Duplicate);
+        }
+
+        [When(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
+        public void Enter_Invalid_Service_Name_Into_Duplicate_Dialog(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, true, true, false, SaveOrDuplicate.Duplicate);
+        }
+        
+        [When(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
+        public void Enter_Service_Name_Into_Duplicate_Dialog(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, true, false, false, SaveOrDuplicate.Duplicate);
+        }
+
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
+        public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
+        }
+
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false, SaveOrDuplicate saveOrDuplicate = SaveOrDuplicate.Save)
         {
 
@@ -729,16 +752,22 @@ namespace Warewolf.UITests
             Mouse.Click(comboboxListItemAsLocalhostConnected);
         }
 
-        [When(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
-        public void Save_With_Ribbon_Button_And_Dialog(string Name)
+        [When(@"I Save With Ribbon Button and Dialog As ""(.*)"" and Append Unique Guid")]
+        public void WhenISaveWithRibbonButtonAndDialogAsAndAppendUniqueGuid(string p0)
         {
-            Save_With_Ribbon_Button_And_Dialog(Name, false);
+            Save_With_Ribbon_Button_And_Dialog(p0 + Guid.NewGuid().ToString().Substring(0, 8));
+        }
+
+        [When(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
+        public void WhenISaveWithRibbonButtonAndDialogAs(string Name)
+        {
+            Save_With_Ribbon_Button_And_Dialog(Name);
         }
 
         [When(@"I Save With Ribbon Button And Dialog As ""(.*)"" without filtering the explorer")]
-        public void Save_With_Ribbon_Button_And_Dialog_Without_Filtering(string Name)
+        public void Save_With_Ribbon_Button_And_Dialog_Without_Filtering(string name)
         {
-            Save_With_Ribbon_Button_And_Dialog(Name, true);
+            Save_With_Ribbon_Button_And_Dialog(name, true);
         }
 
         public void Save_With_Ribbon_Button_And_Dialog(string Name, bool skipExplorerFilter = false)
@@ -2014,6 +2043,47 @@ namespace Warewolf.UITests
         {
             Point point;
             Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
+        }
+        
+        public void Delete_Assign_With_Context_Menu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Delete, new Point(27, 18));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView), "Assign tool still exists on design surface after deleting with context menu.");
+        }
+
+        public void Debug_Workflow_With_Ribbon_Button()
+        {
+            Click_Debug_Ribbon_Button();
+            Click_DebugInput_Debug_Button();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+        }
+
+        public void Remove_Assign_Row_1_With_Context_Menu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRowMenuItem, MouseButtons.Left, ModifierKeys.None, new Point(6, 6));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1.");
+        }
+
+        [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
+        public void Enter_Variable_And_Value_Into_Assign(string VariableText, string ValueText, int RowNumber)
+        {
+            switch (RowNumber)
+            {
+                case 2:
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params.TextboxText = VariableText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params.TextEditText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2();
+                    Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2.");
+                    break;
+                default:
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText = VariableText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextEditText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
+                    Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1.");
+                    break;
+            }
         }
 
         /// <summary>

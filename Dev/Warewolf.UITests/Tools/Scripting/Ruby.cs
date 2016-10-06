@@ -10,7 +10,8 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Tools")]
         public void RubyScriptToolUITest()
         {
-            Uimap.Drag_Toolbox_Ruby_Onto_DesignSurface();
+            UIMap.Drag_Toolbox_Ruby_Onto_DesignSurface();
+            UIMap.Open_Ruby_Large_View();
         }
 
         #region Additional test attributes
@@ -18,11 +19,11 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
         }
 
         /// <summary>
@@ -43,20 +44,20 @@ namespace Warewolf.UITests.Tools
 
         private TestContext testContextInstance;
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if ((_uiMap == null))
+                if ((_UIMap == null))
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

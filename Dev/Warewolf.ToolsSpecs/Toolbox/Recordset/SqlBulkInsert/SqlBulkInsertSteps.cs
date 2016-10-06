@@ -338,29 +338,5 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 
             Assert.AreEqual(numOfInserts, actualInserts);
         }
-
-        [Given(@"I have ""(.*)"" as ""(.*)""")]
-        public void GivenIHaveAs(string p0, string p1)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"table as ""(.*)""")]
-        public void GivenTableAs(string p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Then(@"the ""(.*)"" tab is opened")]
-        public void ThenTheTabIsOpened(string p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" is checked by default")]
-        public void GivenIsCheckedByDefault(string p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
     }
 }
