@@ -1,4 +1,5 @@
-﻿Feature: StudioTestFramework
+﻿@TestFramework
+Feature: StudioTestFramework
 	In order to test workflows in warewolf 
 	As a user
 	I want to create, edit, delete and update tests in a test window
@@ -41,7 +42,7 @@ Background: Setup for workflows for tests
 			| Test4    | Windows            | false | false       | true        | false       | false      |
 
 				
-
+@TestFramework
 Scenario: Create New Test
 	Given the test builder is open with "Workflow 1"	
 	And Tab Header is "Workflow 1 - Tests"
@@ -63,6 +64,7 @@ Scenario: Create New Test
 	And test is enabled
 	And Duplicate Test is "Disabled"
 
+@TestFramework
 Scenario: Create New Test with Service that as recordset inputs
 	Given the test builder is open with "Workflow 2"	
 	And Tab Header is "Workflow 2 - Tests"
@@ -88,6 +90,7 @@ Scenario: Create New Test with Service that as recordset inputs
 	| rec(2).a      |       |
 	| rec(2).b      |       |
 
+@TestFramework
 Scenario: Save a New Test
 	Given the test builder is open with "Workflow 1"
 	And Tab Header is "Workflow 1 - Tests"
@@ -120,6 +123,7 @@ Scenario: Save a New Test
 	| outputValue   |       |
 	And save is disabled
 
+@TestFramework
 Scenario: Save multiple New Tests Enabled Save after Edit
 	Given the test builder is open with "Workflow 1"
 	And Tab Header is "Workflow 1 - Tests"
@@ -165,6 +169,7 @@ Scenario: Save multiple New Tests Enabled Save after Edit
 	When I change the test name to "testing2"
 	Then "Save" test is visible
 
+@TestFramework
 Scenario: Save a New Test fails when workflow deleted
 	Given the test builder is open with "Workflow 1"
 	And Tab Header is "Workflow 1 - Tests"
@@ -185,6 +190,7 @@ Scenario: Save a New Test fails when workflow deleted
 	Then The "Workflow Deleted" popup is shown I click Ok
 	And the tab is closed
 
+@TestFramework
 Scenario: Run Selected Test fails when workflow deleted
 	Given the test builder is open with "Workflow 1"
 	And Tab Header is "Workflow 1 - Tests"
@@ -221,6 +227,7 @@ Scenario: Run Selected Test fails when workflow deleted
 	Then The "Workflow Deleted" popup is shown I click Ok
 	And the tab is closed
 
+@TestFramework
 Scenario: Run All Tests fails when workflow deleted
 	Given the test builder is open with "Workflow 1"
 	And Tab Header is "Workflow 1 - Tests"
@@ -246,7 +253,7 @@ Scenario: Run All Tests fails when workflow deleted
 	Then The "Workflow Deleted" popup is shown I click Ok
 	And the tab is closed
 
-
+@TestFramework
 Scenario: Edit existing test validate star	
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
@@ -279,6 +286,7 @@ Scenario: Edit existing test validate star
 	| Test2    | Windows            | true  |
 	Then Name for display is "Test2" and test is not edited
 
+@TestFramework
 Scenario: Edit existing test  	
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
@@ -315,6 +323,7 @@ Scenario: Edit existing test
 	And Test name is "Test2"
 	And Authentication is Public
 
+@TestFramework
 Scenario: Rename existing test
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
@@ -349,6 +358,7 @@ Scenario: Rename existing test
 	And I select "testing2"
 	And Test name is "testing2"
 
+@TestFramework
 Scenario: Loading existing Tests has correct Name for display
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
@@ -367,6 +377,7 @@ Scenario: Loading existing Tests has correct Name for display
 	And I select "Test1"
 	And Name for display is "Test1" and test is not edited
 
+@TestFramework
 Scenario: Loading existing Tests has correct Test Status
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
@@ -385,6 +396,7 @@ Scenario: Loading existing Tests has correct Test Status
 	Then there are 1 tests
 	And Test Status is "TestPending"
 
+@TestFramework
 Scenario: Loading existing Tests  	
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
@@ -408,6 +420,7 @@ Scenario: Loading existing Tests
 	When the test builder is open with "Workflow 3"
 	Then there are 2 tests
 
+@TestFramework
 Scenario: Close test window
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
@@ -426,7 +439,7 @@ Scenario: Close test window
 	| NewName  | Windows            | false |
 	Then Tab Header is "Workflow 3 - Tests *"
 
-
+@TestFramework
 Scenario: Delete an Disabled Test
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
@@ -448,7 +461,7 @@ Scenario: Delete an Disabled Test
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are 0 tests
 
-
+@TestFramework
 Scenario: Delete Resource with tests
 	Given I have a resouce "PluginSource"
 	And I add "test1,test2,test3" as tests
@@ -456,6 +469,7 @@ Scenario: Delete Resource with tests
 	When I delete resource "PluginSource"
 	Then "PluginSource" has 0 tests
 
+@TestFramework
 Scenario: Delete folder with resources deletes all tests
 	Given I have a folder "Home" 
 	And I have a resouce workflow "PluginSource1" inside Home
@@ -468,6 +482,7 @@ Scenario: Delete folder with resources deletes all tests
 	Then "PluginSource1" has 0 tests
 	And "Hello bob" has 0 tests
 
+@TestFramework
 Scenario: Run all unselects all tests on selection shows corect debug
 	Given the test builder is open with "WorkflowWithTests"
 	Then there are 4 tests
@@ -480,7 +495,7 @@ Scenario: Run all unselects all tests on selection shows corect debug
 	And I select "Test1"
 	Then debug window is visible	
 
-
+@TestFramework
 Scenario: Duplicate a test
 	Given the test builder is open with "Workflow 1"
 	And Tab Header is "Workflow 1 - Tests"
@@ -507,6 +522,7 @@ Scenario: Duplicate a test
 	And save is enabled
 	When I save
 
+@TestFramework
 Scenario: Duplicate a test with same name fails
 	Given the test builder is open with "Workflow 1"
 	And Tab Header is "Workflow 1 - Tests"
@@ -536,6 +552,7 @@ Scenario: Duplicate a test with same name fails
 	Then The duplicate Name popup is shown
 	And Duplicate Test is "Disabled"
 
+@TestFramework
 Scenario: Run a test with single scalar inputs and outputs
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
@@ -572,6 +589,7 @@ Scenario: Run a test with single scalar inputs and outputs
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
+@TestFramework
 Scenario: Run a test with single scalar inputs and outputs failure
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
@@ -609,6 +627,7 @@ Scenario: Run a test with single scalar inputs and outputs failure
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
 #Feedback specs
+@TestFramework
 Scenario: Duplicate test new test has name
 	Given the test builder is open with "Workflow 1"
 	And Tab Header is "Workflow 1 - Tests"
@@ -633,6 +652,7 @@ Scenario: Duplicate test new test has name
 	Then there are 2 tests
 	And Test name is "Test 1 1"
 
+@TestFramework
 Scenario: Run Selected Test Shows Stop Option
 	Given the test builder is open with "Workflow 1"
 	And Tab Header is "Workflow 1 - Tests"
@@ -666,6 +686,7 @@ Scenario: Run Selected Test Shows Stop Option
 	And save is disabled
 	When I run selected test
 
+@TestFramework
 Scenario: Run a test with mock step
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
@@ -695,6 +716,7 @@ Scenario: Run a test with mock step
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
+@TestFramework
 Scenario: Run a test with mock step assign
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
