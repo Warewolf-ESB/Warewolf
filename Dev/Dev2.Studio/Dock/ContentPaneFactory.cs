@@ -18,6 +18,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics;
@@ -524,24 +526,31 @@ namespace Dev2.Studio.Dock
         public void OnPaneClosing(object sender, PaneClosingEventArgs e)
         {
             ContentPane contentPane = sender as ContentPane;
-            if(contentPane != null)
+            if (contentPane != null)
             {
                 var pane = contentPane;
+
                 WorkSurfaceContextViewModel model = pane.DataContext as WorkSurfaceContextViewModel;
-                if(model != null)
+                if (model != null)
                 {
-                    var vm = model;
-                    vm.TryClose();
-                    var mainVm = vm.Parent as MainViewModel;
-                    if(mainVm != null)
+                    var workflowVm = model.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
+                    IContextualResourceModel resource = workflowVm?.ResourceModel;
+
+                    if (resource != null && !resource.IsWorkflowSaved)
                     {
-                        if(mainVm.CloseCurrent)
+                        var vm = model;
+                        vm.TryClose();
+                        var mainVm = vm.Parent as MainViewModel;
+                        if (mainVm != null)
                         {
-                            //vm.Dispose();
-                        }
-                        else
-                        {
-                            e.Cancel = true;
+                            if (mainVm.CloseCurrent)
+                            {
+                                //vm.Dispose();
+                            }
+                            else
+                            {
+                                e.Cancel = true;
+                            }
                         }
                     }
                 }
