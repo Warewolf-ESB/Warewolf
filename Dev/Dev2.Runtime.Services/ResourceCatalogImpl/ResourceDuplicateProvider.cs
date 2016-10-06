@@ -63,9 +63,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         private void SaveResource(Guid resourceId, string newPath, string newResourceName)
         {
 
-            StringBuilder result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
+            var result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
             var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
-            var xElement = result.ToXElement();
+            var newResult = result.Replace(resource.ResourceName, newResourceName);
+            var xElement = newResult.ToXElement();
             resource.IsUpgraded = true;
             var resourceID = Guid.NewGuid();
             resource.ResourceName = newResourceName;
