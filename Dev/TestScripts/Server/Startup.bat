@@ -55,7 +55,6 @@ REM ** Start Warewolf server from deployed binaries **
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe") else (START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe")
 @echo Started "%DeploymentDirectory%\Warewolf Server.exe".
 
-REM using the "ping" command as make-shift wait (or sleep) command, so now we wait for the server started file to appear - Ashley
 :WaitForServerStart
 set /a LoopCounter=0
 :MainLoopBody
@@ -64,5 +63,5 @@ set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 exit 1
 rem wait for 5 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
-ping -n 5 -w 1000 192.0.2.2 > nul
+waitfor ServerStart /t 5 2>NUL
 goto MainLoopBody
