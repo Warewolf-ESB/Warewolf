@@ -6459,11 +6459,15 @@ namespace Warewolf.UITests
         public void Open_SortRecords_Large_View()
         {
             #region Variable Declarations
+            WpfCustom sortRecords = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
             WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords.DoneButton;
             WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
             WpfComboBox sortOrderComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords.LargeViewContentCustom.SortOrderComboBox;
             WpfComboBox sortFieldComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords.LargeViewContentCustom.SortFieldComboBox;
             #endregion
+
+            // Double-Click 'DsfSortRecordsActivity' custom control
+            Mouse.DoubleClick(sortRecords, new Point(140, 8));
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
             Assert.AreEqual(this.Open_SortRecords_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Sort records large view");
@@ -64132,10 +64136,24 @@ namespace Warewolf.UITests
                 return this.mUIFlowchartCustom;
             }
         }
+        
+        public UIFlowchartCustom1 UIFlowchartCustom1
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom1 == null))
+                {
+                    this.mUIFlowchartCustom1 = new UIFlowchartCustom1(this);
+                }
+                return this.mUIFlowchartCustom1;
+            }
+        }
         #endregion
         
         #region Fields
         private UIFlowchartCustom mUIFlowchartCustom;
+        
+        private UIFlowchartCustom1 mUIFlowchartCustom1;
         #endregion
     }
     
@@ -64174,6 +64192,44 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCustom mUIDsfDeleteRecordNullHCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIFlowchartCustom1 : WpfCustom
+    {
+        
+        public UIFlowchartCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 2(FlowchartDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIDsfSortRecordsActiviCustom
+        {
+            get
+            {
+                if ((this.mUIDsfSortRecordsActiviCustom == null))
+                {
+                    this.mUIDsfSortRecordsActiviCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIDsfSortRecordsActiviCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SortRecordsDesigner";
+                    this.mUIDsfSortRecordsActiviCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sort Records(SortRecordsDesigner)";
+                    this.mUIDsfSortRecordsActiviCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIDsfSortRecordsActiviCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIDsfSortRecordsActiviCustom;
         #endregion
     }
 }

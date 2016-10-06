@@ -12,6 +12,9 @@ namespace Warewolf.UITests
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Unique_Records_Onto_DesignSurface();
             UIMap.Open_UniqueRecords_Large_View();
+
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
         #region Additional test attributes
