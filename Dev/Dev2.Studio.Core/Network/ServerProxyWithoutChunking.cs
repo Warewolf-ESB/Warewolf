@@ -599,13 +599,13 @@ namespace Dev2.Network
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
             // build up payload 
-            var messageId = Guid.NewGuid();
-            var envelope = new Envelope
-            {
-                PartID = 0,
-                Type = typeof(Envelope),
-                Content = payload.ToString()
-            };
+//            var messageId = Guid.NewGuid();
+//            var envelope = new Envelope
+//            {
+//                PartID = 0,
+//                Type = typeof(Envelope),
+//                Content = payload.ToString()
+//            };
 
             var result = new StringBuilder();
 
