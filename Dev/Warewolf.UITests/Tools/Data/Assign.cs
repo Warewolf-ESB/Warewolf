@@ -3,68 +3,103 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools.Data
 {
-    /// <summary>
-    /// Summary description for WorkflowDesignSurface
-    /// </summary>
     [CodedUITest]
     public class Assign
     {
-        const string WorkflowName = "SomeWorkflow";
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void AssignToolOpenAndCloseLargeViewWithDoubleClickUITest()
+        {
+            UIMap.Open_Assign_Tool_Large_View();
+            UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
+            UIMap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName();
+            UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
+            UIMap.Click_Assign_Tool_Large_View_Done_Button();
+        }
 
         [TestMethod]
-		[TestCategory("Tools")]
-        public void AssignToolUITest()
+        [TestCategory("Tools")]
+        public void AssignToolOpenAndCloseLargeViewWithExpandAllToggleUITest()
         {
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Uimap.Open_Assign_Tool_Large_View();
-            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            Uimap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
-            Uimap.Click_Assign_Tool_Large_View_Done_Button();
-            Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense();
-            Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();
-            Uimap.Click_Assign_Tool_ExpandAll();
-            Uimap.Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1();
-            Uimap.Click_Workflow_CollapseAll();
-            Uimap.Click_Assign_Tool_url();
-            Uimap.Open_Assign_Tool_Qvi_Large_View();
-            Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_DebugInput_Debug_Button();
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            Uimap.Click_Debug_Output_Assign_Cell();
-            Uimap.Click_Assign_Tool_ExpandAll();
-            Uimap.Click_Assign_Tool_Remove_Variable_From_Tool();
-            Uimap.RightClick_Assign_OnDesignSurface();
-            Uimap.Select_Delete_FromContextMenu();
-            Assert.IsFalse(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool still exists on design surface after deleting with context menu.");
+            UIMap.Click_Assign_Tool_ExpandAll();
+            UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
+            UIMap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName();
+            UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
+            UIMap.Click_Workflow_CollapseAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void AssignToolUrlUITest()
+        {
+            UIMap.Click_Assign_Tool_url();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void AssignToolQviUITest()
+        {
+            UIMap.Open_Assign_Tool_Qvi_Large_View();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void AssignToolDebugOutputUITest()
+        {
+            UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
+            UIMap.Debug_Workflow_With_Ribbon_Button();
+            UIMap.Click_Debug_Output_Assign_Cell();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void AssignToolAddRemoveVariablesUITest()
+        {
+            const string Variable1Name = "SomeVariable";
+            const string Variable1Value = "50";
+            UIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable1Name + "]]", Variable1Value, 1);
+            Assert.AreEqual(Variable1Name, UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
+            const string Variable2Name = "SomeOtherVariable";
+            const string Variable2Value = "100";
+            UIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable2Name + "]]", Variable2Value, 2);
+            Assert.AreEqual(Variable2Name, UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 2.");
+            UIMap.Remove_Assign_Row_1_With_Context_Menu();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void AssignDeleteToolUITest()
+        {
+            UIMap.Delete_Assign_With_Context_Menu();
         }
 
         #region Additional test attributes
-        
+
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }
