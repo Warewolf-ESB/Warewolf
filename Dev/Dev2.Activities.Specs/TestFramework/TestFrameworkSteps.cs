@@ -1351,5 +1351,12 @@ namespace Dev2.Activities.Specs.TestFramework
             return null;
         }
 
+        [AfterScenario("TestFramework")]
+        public void CleanupTestFramework()
+        {
+            var testFrameworkFromContext = GetTestFrameworkFromContext();
+            testFrameworkFromContext?.Dispose();
+        }
+
     }
 }
