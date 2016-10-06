@@ -61,6 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
+    <Compile Include="Recordset\DeleteRecordTest.cs" />
+    <Compile Include="Recordset\UniqueRecordsTests.cs" />
+    <Compile Include="Recordset\SortTest.cs" />
+    <Compile Include="Recordset\CountTest.cs" />
+    <Compile Include="Recordset\LengthTest.cs" />
+    <Compile Include="Recordset\FindRecordIndexTest.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
