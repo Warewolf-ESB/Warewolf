@@ -2213,6 +2213,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_VariableList_Scalar_Row1_Delete_Button
+        /// </summary>
+        [When(@"I Click VariableList Scalar Row1 Delete Button")]
+        public void Click_VariableList_Scalar_Row1_Delete_Button()
+        {
+            #region Variable Declarations
+            WpfImage image = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Image;
+            #endregion
+
+            // Click 'DeleteVar' image
+            Mouse.Click(image, new Point(5, 8));
+        }
+        
+        /// <summary>
         /// Click_VariableList_Scalar_Row1_IsInputCheckbox - Use 'Click_VariableList_Scalar_Row1_IsInputCheckboxParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click VariableList Scalar Row1 IsInputCheckbox")]
@@ -5955,6 +5969,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_PutWeb_Tool_large_view
+        /// </summary>
+        [When(@"I Open PutWeb Tool large view")]
+        public void Open_PutWeb_Tool_large_view()
+        {
+            #region Variable Declarations
+            WpfCustom webPut = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut;
+            #endregion
+
+            // Double-Click 'DsfWebPutActivity' custom control
+            Mouse.DoubleClick(webPut, new Point(145, 5));
+        }
+        
+        /// <summary>
         /// Open_Python_Large_View - Use 'Open_Python_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Open Python Large View")]
@@ -6000,20 +6028,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
             Assert.AreEqual(this.Open_Python_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Python Done button does not exist after openning large view with a double click.");
-        }
-        
-        /// <summary>
-        /// Open_PutWeb_Tool_large_view
-        /// </summary>
-        [When(@"I Open PutWeb Tool large view")]
-        public void Open_PutWeb_Tool_large_view()
-        {
-            #region Variable Declarations
-            WpfCustom webPut = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut;
-            #endregion
-
-            // Double-Click 'DsfWebPutActivity' custom control
-            Mouse.DoubleClick(webPut, new Point(145, 5));
         }
         
         /// <summary>
@@ -6102,24 +6116,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Open_Sequence_Large_tool_View - Use 'Open_Sequence_Large_tool_ViewParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Open Sequence Large tool View")]
-        public void Open_Sequence_Large_tool_View()
-        {
-            #region Variable Declarations
-            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
-            WpfCustom sequenceLargeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView;
-            #endregion
-
-            // Double-Click 'DsfSequenceActivity' custom control
-            Mouse.DoubleClick(sequence, new Point(139, 12));
-
-            // Verify that the 'Exists' property of 'DsfSequenceActivity' custom control equals 'True'
-            Assert.AreEqual(this.Open_Sequence_Large_tool_ViewParams.SequenceLargeViewExists, sequenceLargeView.Exists, "SequenceLargeView does not exist after opening Sequence tool large view");
-        }
-        
-        /// <summary>
         /// Open_Ruby_Large_View - Use 'Open_Ruby_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Open Ruby Large View")]
@@ -6203,6 +6199,24 @@ namespace Warewolf.UITests
             // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
             Assert.AreEqual(this.Open_Selectandapply_Large_ViewParams.OnErrorPaneExists, onErrorPane.Exists, "Select and apply OnError pane does not exist after openning tool large view with " +
                     "double click.");
+        }
+        
+        /// <summary>
+        /// Open_Sequence_Large_tool_View - Use 'Open_Sequence_Large_tool_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Sequence Large tool View")]
+        public void Open_Sequence_Large_tool_View()
+        {
+            #region Variable Declarations
+            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
+            WpfCustom sequenceLargeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView;
+            #endregion
+
+            // Double-Click 'DsfSequenceActivity' custom control
+            Mouse.DoubleClick(sequence, new Point(139, 12));
+
+            // Verify that the 'Exists' property of 'DsfSequenceActivity' custom control equals 'True'
+            Assert.AreEqual(this.Open_Sequence_Large_tool_ViewParams.SequenceLargeViewExists, sequenceLargeView.Exists, "SequenceLargeView does not exist after opening Sequence tool large view");
         }
         
         /// <summary>
@@ -8617,20 +8631,6 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
-        }
-        
-        /// <summary>
-        /// Click_VariableList_Scalar_Row1_Delete_Button
-        /// </summary>
-        [When(@"I Click VariableList Scalar Row1 Delete Button")]
-        public void Click_VariableList_Scalar_Row1_Delete_Button()
-        {
-            #region Variable Declarations
-            WpfImage image = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Image;
-            #endregion
-
-            // Click 'DeleteVar' image
-            Mouse.Click(image, new Point(5, 8));
         }
         
         #region Properties
@@ -11082,18 +11082,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Open_Sequence_Large_tool_ViewParams Open_Sequence_Large_tool_ViewParams
-        {
-            get
-            {
-                if ((this.mOpen_Sequence_Large_tool_ViewParams == null))
-                {
-                    this.mOpen_Sequence_Large_tool_ViewParams = new Open_Sequence_Large_tool_ViewParams();
-                }
-                return this.mOpen_Sequence_Large_tool_ViewParams;
-            }
-        }
-        
         public virtual Open_Ruby_Large_ViewParams Open_Ruby_Large_ViewParams
         {
             get
@@ -11115,6 +11103,18 @@ namespace Warewolf.UITests
                     this.mOpen_Selectandapply_Large_ViewParams = new Open_Selectandapply_Large_ViewParams();
                 }
                 return this.mOpen_Selectandapply_Large_ViewParams;
+            }
+        }
+        
+        public virtual Open_Sequence_Large_tool_ViewParams Open_Sequence_Large_tool_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_Sequence_Large_tool_ViewParams == null))
+                {
+                    this.mOpen_Sequence_Large_tool_ViewParams = new Open_Sequence_Large_tool_ViewParams();
+                }
+                return this.mOpen_Sequence_Large_tool_ViewParams;
             }
         }
         
@@ -12284,11 +12284,11 @@ namespace Warewolf.UITests
         
         private Open_Replace_Tool_Large_ViewParams mOpen_Replace_Tool_Large_ViewParams;
         
-        private Open_Sequence_Large_tool_ViewParams mOpen_Sequence_Large_tool_ViewParams;
-        
         private Open_Ruby_Large_ViewParams mOpen_Ruby_Large_ViewParams;
         
         private Open_Selectandapply_Large_ViewParams mOpen_Selectandapply_Large_ViewParams;
+        
+        private Open_Sequence_Large_tool_ViewParams mOpen_Sequence_Large_tool_ViewParams;
         
         private Open_SMTP_Email_Tool_Large_ViewParams mOpen_SMTP_Email_Tool_Large_ViewParams;
         
@@ -16978,21 +16978,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Open_Sequence_Large_tool_View'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Sequence_Large_tool_ViewParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfSequenceActivity' custom control equals 'True'
-        /// </summary>
-        public bool SequenceLargeViewExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Open_Ruby_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -17069,6 +17054,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
         /// </summary>
         public bool OnErrorPaneExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Sequence_Large_tool_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Sequence_Large_tool_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfSequenceActivity' custom control equals 'True'
+        /// </summary>
+        public bool SequenceLargeViewExists = true;
         #endregion
     }
     

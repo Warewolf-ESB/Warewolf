@@ -7,10 +7,10 @@ namespace Warewolf.UITests
 {
     [CodedUITest]
     public class ItemDragAndDropTest
-    {        
+    {
         [TestMethod]
         public void ItemDragAndDropUITest()
-        {            
+        {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests\Acceptance Testing Resources";
             Assert.IsFalse(Directory.Exists(resourcesFolder));
             UIMap.Move_AcceptanceTestd_To_AcceptanceTestingResopurces();
@@ -34,6 +34,7 @@ namespace Warewolf.UITests
         {
             UIMap.Filter_Explorer("Hello World");
             Mouse.Hover(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+            Mouse.Hover(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon);
             UIMap.Debug_Using_Play_Icon();
             UIMap.Click_DebugInput_Debug_Button();
             UIMap.Click_Close_Workflow_Tab_Button();
