@@ -586,50 +586,59 @@ namespace Dev2.Network
 
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
-            var messageId = Guid.NewGuid();
-            var envelope = new Envelope
-            {
-                PartID = 0,
-                Type = typeof(Envelope),
-                Content = payload.ToString()
-            };
+            // build up payload 
+//            var messageId = Guid.NewGuid();
+//            var envelope = new Envelope
+//            {
+//                PartID = 0,
+//                Type = typeof(Envelope),
+//                Content = payload.ToString()
+//            };
 
             var result = new StringBuilder();
-            Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
-            Wait(invoke, result);
-            if (invoke.IsFaulted)
-            {
-                var popupController = CustomContainer.Get<IPopupController>();
-                popupController?.Show(ErrorResource.ErrorConnectingToServer, "Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
-                return result;
-            }
-            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
-            Wait(fragmentInvoke, result);
-            if (!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
-            {
-                result.Append(fragmentInvoke.Result);
-            }
 
-            return ProcessResult(result);
-        }
+            var resultTask = Task.Run(async () => result = await ExecuteCommandAsync(payload, workspaceId));
+            resultTask.Wait();
 
-        private static StringBuilder ProcessResult(StringBuilder result)
-        {
-            if(result.Length > 0)
-            {
-                var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-                if(start > 0)
-                {
-                    var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if(start < end && end - start > 1)
-                    {
-                        start += GlobalConstants.ManagementServicePayload.Length + 2;
-                        return new StringBuilder(result.Substring(start, end - start));
-                    }
-                }
-            }
-
+//            Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
+//            Wait(invoke, result);
+//            if (invoke.IsFaulted)
+//            {
+//                var popupController = CustomContainer.Get<IPopupController>();
+//                popupController?.Show(ErrorResource.ErrorConnectingToServer, "Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
+//                return result;
+//            }
+//            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
+//
+//            fragmentInvoke.ContinueWith(task =>
+//            {
+//                if (!task.IsFaulted && task.Result != null)
+//                {
+//                    result.Append(task.Result);
+//                }
+//
+//                // prune any result for old datalist junk ;)
+//                if (result.Length > 0)
+//                {
+//                    // Only return Dev2System.ManagmentServicePayload if present ;)
+//                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
+//                    if (start > 0)
+//                    {
+//                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+//                        if (start < end && end - start > 1)
+//                        {
+//                            // we can return the trimmed payload instead
+//                            start += GlobalConstants.ManagementServicePayload.Length + 2;
+//                            return new StringBuilder(result.Substring(start, end - start));
+//                        }
+//                    }
+//                }
+//
+//                return result;
+//            });
             return result;
+            //Wait(fragmentInvoke, result);
+            
         }
 
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId)
@@ -655,7 +664,23 @@ namespace Dev2.Network
                 await EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
                 var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
                 result.Append(fragmentInvoke);
-                return ProcessResult(result);
+
+                // prune any result for old datalist junk ;)
+                if (result.Length > 0)
+                {
+                    // Only return Dev2System.ManagmentServicePayload if present ;)
+                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
+                    if (start > 0)
+                    {
+                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+                        if (start < end && end - start > 1)
+                        {
+                            // we can return the trimmed payload instead
+                            start += GlobalConstants.ManagementServicePayload.Length + 2;
+                            return new StringBuilder(result.Substring(start, end - start));
+                        }
+                    }
+                }
             }
             catch(Exception e)
             {

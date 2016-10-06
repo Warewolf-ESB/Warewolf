@@ -10,14 +10,14 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Tools")]
         public void ReplaceToolUITest()
         {
-            Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();
-            //Uimap.Open_Replace_Tool_Large_View();
-            //Uimap.Enter_Values_Into_Replace_Tool_Large_View();
-            //Uimap.Click_Replace_Tool_Large_View_Done_Button();
-            //Uimap.Click_Replace_Tool_QVI_Button();
-            //Uimap.Click_Debug_Bibbon_Button();
-            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.ReplaceToolDebugOutputExists = true;
-            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
+            UIMap.Drag_Toolbox_Replace_Onto_DesignSurface();
+            //UIMap.Open_Replace_Tool_Large_View();
+            //UIMap.Enter_Values_Into_Replace_Tool_Large_View();
+            //UIMap.Click_Replace_Tool_Large_View_Done_Button();
+            //UIMap.Click_Replace_Tool_QVI_Button();
+            //UIMap.Click_Debug_Bibbon_Button();
+            //UIMap.Click_Debug_Input_Dialog_Debug_ButtonParams.ReplaceToolDebugOutputExists = true;
+            //UIMap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
         #region Additional test attributes
@@ -25,11 +25,11 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
         }
         
         public TestContext TestContext
@@ -46,20 +46,20 @@ namespace Warewolf.UITests.Tools
 
         private TestContext testContextInstance;
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }
