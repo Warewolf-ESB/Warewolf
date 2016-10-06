@@ -10,14 +10,15 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Tools")]
         public void ReplaceToolUITest()
         {
+            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            Uimap.Assign_Recordset_value();
+            Uimap.DeleteAssign_FromContextMenu();
             Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();
             Uimap.Open_Replace_Tool_Large_View();
-            //Uimap.Enter_Values_Into_Replace_Tool_Large_View();
-            //Uimap.Click_Replace_Tool_Large_View_Done_Button();
-            //Uimap.Click_Replace_Tool_QVI_Button();
-            //Uimap.Click_Debug_Bibbon_Button();
-            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.ReplaceToolDebugOutputExists = true;
-            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
+            Uimap.Enter_Values_Into_Replace_Tool_Large_View();
+            Uimap.Press_F6();
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
         }
 
         #region Additional test attributes
