@@ -62,16 +62,8 @@ namespace Dev2.Settings.Security
 
         static IEnvironmentViewModel GetEnvironment()
         {
-            var environment = EnvironmentRepository.Instance.ActiveEnvironment;
-
-            IServer server = new Server(environment);
-
-            if (server.Permissions == null)
-            {
-                server.Permissions = new List<IWindowsGroupPermission>();
-                server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
-            }
-            var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var env = new EnvironmentViewModel(shellViewModel.ActiveServer, shellViewModel, true);
             return env;
         }
 
@@ -82,10 +74,10 @@ namespace Dev2.Settings.Security
             VerifyArgument.IsNotNull(@"parentWindow", parentWindow);
             VerifyArgument.IsNotNull(@"environment", environment);
 
+            _environment = environment;
+            _parentWindow = parentWindow;
             _resourcePicker = (createfunc ?? CreateResourcePickerDialog)();
             _directoryObjectPicker = directoryObjectPicker;
-            _parentWindow = parentWindow;
-            _environment = environment;
             _directoryObjectPicker.AllowedObjectTypes = ObjectTypes.BuiltInGroups | ObjectTypes.Groups;
             _directoryObjectPicker.DefaultObjectTypes = ObjectTypes.Groups;
             _directoryObjectPicker.AllowedLocations = Locations.All;
