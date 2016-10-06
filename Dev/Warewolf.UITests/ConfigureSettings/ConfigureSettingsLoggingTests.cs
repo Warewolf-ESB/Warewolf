@@ -9,12 +9,12 @@ namespace Warewolf.UITests
         [TestMethod]
         public void ConfigureSettingLogging()
         {
-            Uimap.TryCloseSettingsTab();
-            Uimap.Click_ConfigureSetting_From_Menu();
-            Uimap.Select_LoggingTab();
-            Uimap.Click_Server_Log_File_Button();
-            Uimap.Click_Studio_Log_File();
-            Uimap.Click_Close_Settings_Tab_Button();
+            UIMap.TryCloseSettingsTab();
+            UIMap.Click_ConfigureSetting_From_Menu();
+            UIMap.Select_LoggingTab();
+            UIMap.Click_Server_Log_File_Button();
+            UIMap.Click_Studio_Log_File();
+            UIMap.Click_Close_Settings_Tab_Button();
         }
 
         #region Additional test attributes
@@ -22,26 +22,26 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

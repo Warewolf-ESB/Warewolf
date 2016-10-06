@@ -11,11 +11,11 @@ namespace Warewolf.UITests
         [TestMethod]
         public void Deploy_WorkFlow_To_Remote_Server()
         {
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(LocalWorkflow);
-            Uimap.Click_Deploy_Ribbon_Button();
-            Uimap.Click_Deploy_Tab_Destination_Server_Combobox();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            UIMap.Save_With_Ribbon_Button_And_Dialog(LocalWorkflow);
+            UIMap.Click_Deploy_Ribbon_Button();
+            UIMap.Click_Deploy_Tab_Destination_Server_Combobox();
         }
 
 
@@ -24,26 +24,26 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

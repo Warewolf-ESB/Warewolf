@@ -11,11 +11,11 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Tools")]
         public void WebSourceFromTool()
         {
-            Uimap.Drag_GET_Web_Connector_Onto_DesignSurface();
-            Uimap.Open_GET_Web_Connector_Tool_Large_View();
-            Uimap.Click_AddNew_Web_Source_From_tool();
-            Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
+            UIMap.Drag_GET_Web_Connector_Onto_DesignSurface();
+            UIMap.Open_GET_Web_Connector_Tool_Large_View();
+            UIMap.Click_AddNew_Web_Source_From_tool();
+            UIMap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
+            UIMap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
         }
 
         #region Additional test attributes
@@ -23,27 +23,27 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if ((_uiMap == null))
+                if ((_UIMap == null))
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }
