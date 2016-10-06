@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics.Windows.DockManager;
 
 namespace Dev2.Studio.AppResources.Behaviors
@@ -28,19 +29,19 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// </summary>
         List<TabGroupPane> GetAllTabGroupPanes()
         {
-            var tabGroupPanes = new List<TabGroupPane>();
+            _tabGroupPanes = new List<TabGroupPane>();
 
             if(DocumentHost == null)
             {
                 if(AssociatedObject != null)
                 {
-                    tabGroupPanes.Add(AssociatedObject);
+                    _tabGroupPanes.Add(AssociatedObject);
                 }
 
-                return tabGroupPanes;
+                return _tabGroupPanes;
             }
-            tabGroupPanes.AddRange(DocumentHost.GetDescendents().OfType<TabGroupPane>());
-            return tabGroupPanes;
+            _tabGroupPanes.AddRange(DocumentHost.GetDescendents().OfType<TabGroupPane>());
+            return _tabGroupPanes;
         }
 
         #endregion Private Methods
@@ -84,6 +85,8 @@ namespace Dev2.Studio.AppResources.Behaviors
         // Using a DependencyProperty as the backing store for SelectedItem.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register("SelectedItem", typeof(object), typeof(TabGroupPaneBindingBehavior), new UIPropertyMetadata(null, SelectedItemChangedCallback));
+
+        private static List<TabGroupPane> _tabGroupPanes;
         public object SelectedItem { get { return GetValue(SelectedItemProperty); } set { SetValue(SelectedItemProperty, value); } }
 
         static void SelectedItemChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -94,27 +97,14 @@ namespace Dev2.Studio.AppResources.Behaviors
                 return;
             }
 
-            foreach (var tabGroupPane in itemsControlBindingBehavior.GetAllTabGroupPanes())
+            if (_tabGroupPanes == null || _tabGroupPanes.Count <= 0)
             {
-                FocusManager.AddGotFocusHandler(tabGroupPane, GotFocusHandler);
-                var found = false;
-
-                for (var i = 0; i < tabGroupPane.Items.Count; i++)
-                {
-                    var frameworkElement = tabGroupPane.Items[i] as FrameworkElement;
-                    if (frameworkElement != null && frameworkElement.DataContext == e.NewValue)
-                    {
-                        tabGroupPane.SelectedIndex = i;
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (found)
-                {
-                    break;
-                }
+                _tabGroupPanes = itemsControlBindingBehavior.GetAllTabGroupPanes();
             }
+
+            var newValue = e.NewValue as WorkSurfaceContextViewModel;
+            if (newValue != null)
+                SetActivePane(newValue);
         }
 
         static void GotFocusHandler(object sender, RoutedEventArgs routedEventArgs)
@@ -126,14 +116,8 @@ namespace Dev2.Studio.AppResources.Behaviors
         static void RefreshActiveEnvironment(object sender)
         {
             var frameworkElement = sender as FrameworkElement;
-            if (frameworkElement != null && frameworkElement.DataContext != null)
-            {
-                var vm = frameworkElement.DataContext as MainViewModel;
-                if (vm != null)
-                {
-                    vm.RefreshActiveEnvironment();
-                }
-            }
+            var vm = frameworkElement?.DataContext as MainViewModel;
+            vm?.RefreshActiveEnvironment();
         }
 
         #endregion SelectedItem
@@ -146,7 +130,32 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             if (routedPropertyChangedEventArgs.NewValue != null)
             {
-                SelectedItem = routedPropertyChangedEventArgs.NewValue.DataContext;
+                if (_tabGroupPanes == null || _tabGroupPanes.Count <= 0)
+                {
+                    _tabGroupPanes = GetAllTabGroupPanes();
+                }
+
+                var newValue = routedPropertyChangedEventArgs.NewValue.DataContext as WorkSurfaceContextViewModel;
+                if (newValue != null)
+                    SetActivePane(newValue);
+            }
+        }
+
+        private static void SetActivePane(WorkSurfaceContextViewModel newValue)
+        {
+            if (_tabGroupPanes != null && _tabGroupPanes.Count > 0)
+            {
+                var tabGroupPane = _tabGroupPanes[0];
+
+                foreach (var item in from object item in tabGroupPane.Items
+                    let frameworkElement = item as FrameworkElement
+                    where frameworkElement != null && frameworkElement.DataContext == newValue
+                    select item)
+                {
+                    tabGroupPane.SelectedItem = item;
+                    break;
+                }
+                FocusManager.AddGotFocusHandler(tabGroupPane, GotFocusHandler);
             }
         }
 
