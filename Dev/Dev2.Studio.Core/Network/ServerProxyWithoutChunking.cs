@@ -664,7 +664,23 @@ namespace Dev2.Network
                 await EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
                 var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
                 result.Append(fragmentInvoke);
-                return ProcessResult(result);
+
+                // prune any result for old datalist junk ;)
+                if (result.Length > 0)
+                {
+                    // Only return Dev2System.ManagmentServicePayload if present ;)
+                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
+                    if (start > 0)
+                    {
+                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+                        if (start < end && end - start > 1)
+                        {
+                            // we can return the trimmed payload instead
+                            start += GlobalConstants.ManagementServicePayload.Length + 2;
+                            return new StringBuilder(result.Substring(start, end - start));
+                        }
+                    }
+                }
             }
             catch(Exception e)
             {
