@@ -7669,6 +7669,24 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_PostWeb_Paste_Response_Button - Use 'Click_PostWeb_Paste_Response_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_PostWeb_Paste_Response_Button()
+        {
+            #region Variable Declarations
+            WpfButton pasteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.PasteButton;
+            WpfEdit responseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.ResponseTextbox;
+            #endregion
+
+            // Click '' button
+            Mouse.Click(pasteButton, new Point(11, 14));
+
+            // Verify that the 'Exists' property of 'ResponseTextbox' text box equals 'True'
+            Assert.AreEqual(this.Click_PostWeb_Paste_Response_ButtonParams.ResponseTextboxExists, responseTextbox.Exists, "Response body does not exist on the Put Web large view after clicking paste custo" +
+                    "mized response");
+        }
+        
+        /// <summary>
         /// Click_PutWeb_GenerateOutputs_Button - Use 'Click_PutWeb_GenerateOutputs_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_PutWeb_GenerateOutputs_Button()
@@ -7687,12 +7705,43 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_PostWeb_GenerateOutputs_Button - Use 'Click_PostWeb_GenerateOutputs_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_PostWeb_GenerateOutputs_Button()
+        {
+            #region Variable Declarations
+            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.GenerateOutputsButton;
+            WpfTable inputDataGridTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.InputDataGridTable;
+            #endregion
+
+            // Click 'Generate Outputs' button
+            Mouse.Click(generateOutputsButton, new Point(51, 1));
+
+            // Verify that the 'Exists' property of 'LargeDataGrid' table equals 'True'
+            Assert.AreEqual(this.Click_PostWeb_GenerateOutputs_ButtonParams.InputDataGridTableExists, inputDataGridTable.Exists, "InputDataGridTable does not exist on the Put Web large view after clicking Genera" +
+                    "te outputs");
+        }
+        
+        /// <summary>
         /// Click_PutWeb_Cancel_Button
         /// </summary>
         public void Click_PutWeb_Cancel_Button()
         {
             #region Variable Declarations
             WpfButton cancelButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.CancelButton;
+            #endregion
+
+            // Click 'Cancel' button
+            Mouse.Click(cancelButton, new Point(18, 6));
+        }
+        
+        /// <summary>
+        /// Click_PostWeb_Cancel_Button
+        /// </summary>
+        public void Click_PostWeb_Cancel_Button()
+        {
+            #region Variable Declarations
+            WpfButton cancelButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.CancelButton;
             #endregion
 
             // Click 'Cancel' button
@@ -10664,6 +10713,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_PostWeb_Paste_Response_ButtonParams Click_PostWeb_Paste_Response_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_PostWeb_Paste_Response_ButtonParams == null))
+                {
+                    this.mClick_PostWeb_Paste_Response_ButtonParams = new Click_PostWeb_Paste_Response_ButtonParams();
+                }
+                return this.mClick_PostWeb_Paste_Response_ButtonParams;
+            }
+        }
+        
         public virtual Click_PutWeb_GenerateOutputs_ButtonParams Click_PutWeb_GenerateOutputs_ButtonParams
         {
             get
@@ -10673,6 +10734,18 @@ namespace Warewolf.UITests
                     this.mClick_PutWeb_GenerateOutputs_ButtonParams = new Click_PutWeb_GenerateOutputs_ButtonParams();
                 }
                 return this.mClick_PutWeb_GenerateOutputs_ButtonParams;
+            }
+        }
+        
+        public virtual Click_PostWeb_GenerateOutputs_ButtonParams Click_PostWeb_GenerateOutputs_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_PostWeb_GenerateOutputs_ButtonParams == null))
+                {
+                    this.mClick_PostWeb_GenerateOutputs_ButtonParams = new Click_PostWeb_GenerateOutputs_ButtonParams();
+                }
+                return this.mClick_PostWeb_GenerateOutputs_ButtonParams;
             }
         }
         
@@ -11280,7 +11353,11 @@ namespace Warewolf.UITests
         
         private Click_PutWeb_Paste_Response_ButtonParams mClick_PutWeb_Paste_Response_ButtonParams;
         
+        private Click_PostWeb_Paste_Response_ButtonParams mClick_PostWeb_Paste_Response_ButtonParams;
+        
         private Click_PutWeb_GenerateOutputs_ButtonParams mClick_PutWeb_GenerateOutputs_ButtonParams;
+        
+        private Click_PostWeb_GenerateOutputs_ButtonParams mClick_PostWeb_GenerateOutputs_ButtonParams;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -16401,10 +16478,40 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_PostWeb_Paste_Response_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_PostWeb_Paste_Response_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ResponseTextbox' text box equals 'True'
+        /// </summary>
+        public bool ResponseTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_PutWeb_GenerateOutputs_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_PutWeb_GenerateOutputs_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeDataGrid' table equals 'True'
+        /// </summary>
+        public bool InputDataGridTableExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_PostWeb_GenerateOutputs_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_PostWeb_GenerateOutputs_ButtonParams
     {
         
         #region Fields
@@ -39785,6 +39892,23 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public WpfEdit ResponseTextbox
+        {
+            get
+            {
+                if ((this.mResponseTextbox == null))
+                {
+                    this.mResponseTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mResponseTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "ResponseTextbox";
+                    this.mResponseTextbox.SearchProperties[WpfEdit.PropertyNames.Instance] = "2";
+                    this.mResponseTextbox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mResponseTextbox;
+            }
+        }
+        
         public LargeView7 LargeView
         {
             get
@@ -39799,6 +39923,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private WpfEdit mResponseTextbox;
+        
         private LargeView7 mLargeView;
         #endregion
     }
