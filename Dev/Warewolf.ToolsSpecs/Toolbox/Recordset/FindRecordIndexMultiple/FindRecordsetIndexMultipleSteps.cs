@@ -255,11 +255,5 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
                 }
             }
         }
-
-        [Given(@"I have the following in field ""(.*)"" equals ""(.*)""")]
-        public void GivenIHaveTheFollowingInFieldEquals(string p0, string p1)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
     }
 }
