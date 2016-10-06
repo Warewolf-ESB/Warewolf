@@ -47,7 +47,7 @@ set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 60 exit 1
 rem wait for 10 seconds before trying again
 @echo %ComputerName% is attempting number %LoopCounter% out of 60: Waiting 10 more seconds for server service to be ready...
-ping -n 10 -w 1000 192.0.2.2 > nul
+waitfor ServiceReady /t 10 2>NUL
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING")
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING") else (taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING")
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN") else (taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN")
@@ -82,7 +82,7 @@ set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 exit 1
 rem wait for 5 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%PROGRAMDATA%\Warewolf" folder cleanup...
-ping -n 5 -w 1000 192.0.2.2 > nul
+waitfor ServerWorkspaceClean /t 5 2>NUL
 set errorlevel=0
 goto RetryClean
 
