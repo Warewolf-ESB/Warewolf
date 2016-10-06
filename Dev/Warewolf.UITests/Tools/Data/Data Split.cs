@@ -12,12 +12,11 @@ namespace Warewolf.UITests.Tools.Data
         {
             Uimap.Drag_Toolbox_Data_Split_Onto_DesignSurface();
             Uimap.Open_Data_Split_Large_View();
-            //Uimap.Enter_Values_Into_Data_Split_Tool_Large_View();
-            //Uimap.Click_Data_Split_Tool_Large_View_Done_Button();
-            Uimap.Open_Data_Split_Tool_Qvi_Large_View();
-            //Uimap.Click_Debug_Bibbon_Button();
-            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.DataSplitToolDebugOutputExists = true;
-            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
+            Uimap.Open_Data_Split_Large_View();
+            Uimap.Enter_Values_Into_Data_Split_Tool_Large_View();
+            Uimap.Press_F6();
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
         }
 
         #region Additional test attributes
