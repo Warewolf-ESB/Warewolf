@@ -10,8 +10,8 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Tools")]
         public void WebRequestToolUITest()
         {
-            Uimap.Drag_Toolbox_Web_Request_Onto_DesignSurface();
-            Uimap.Open_WebRequest_LargeView();
+            UIMap.Drag_Toolbox_Web_Request_Onto_DesignSurface();
+            UIMap.Open_WebRequest_LargeView();
         }
 
         #region Additional test attributes
@@ -19,11 +19,11 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
         }
         
         public TestContext TestContext
@@ -40,20 +40,20 @@ namespace Warewolf.UITests.Tools
 
         private TestContext testContextInstance;
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }
