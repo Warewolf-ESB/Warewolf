@@ -26,7 +26,7 @@ namespace Warewolf.UITests
         const int _lenientMaximumRetryCount = 3;
         const int _strictSearchTimeout = 3000;
         const int _strictMaximumRetryCount = 1;
-        
+
         public void SetPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
@@ -163,8 +163,8 @@ namespace Warewolf.UITests
 
         public bool ControlExistsNow(UITestControl thisControl)
         {
-            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount;
+            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout;
             Playback.PlaybackError -= OnError;
             OnErrorHandlerDisabled = true;
             bool controlExists = false;
@@ -176,8 +176,8 @@ namespace Warewolf.UITests
             {
                 OnErrorHandlerDisabled = false;
                 Playback.PlaybackError += OnError;
-                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
             }
             return controlExists;
         }
@@ -567,7 +567,8 @@ namespace Warewolf.UITests
         public void WaitForSpinner(String control)
         {
             var SpinnerTokens = control.Split(new char[] { '.' });
-            if (SpinnerTokens.Length > 1) {
+            if (SpinnerTokens.Length > 1)
+            {
                 switch (SpinnerTokens[0])
                 {
                     case "ExplorerTree":
@@ -589,6 +590,24 @@ namespace Warewolf.UITests
         public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
         {
             WaitForControlNotVisible(control, searchTimeout);
+        }
+
+        [When(@"I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As ""(.*)""")]
+        public void Enter_Invalid_Service_Name_With_Whitespace_Into_Duplicate_Dialog(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, true, true, true, SaveOrDuplicate.Duplicate);
+        }
+
+        [When(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
+        public void Enter_Invalid_Service_Name_Into_Duplicate_Dialog(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, true, true, false, SaveOrDuplicate.Duplicate);
+        }
+        
+        [When(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
+        public void Enter_Service_Name_Into_Duplicate_Dialog(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, true, false, false, SaveOrDuplicate.Duplicate);
         }
 
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
@@ -1745,21 +1764,6 @@ namespace Warewolf.UITests
             Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
         }
 
-        public void Click_Assign_Tool_Remove_Variable_From_Tool()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool large view on the design surface does not exist");
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox.Text = "[[SomeOtherVariable]]";
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox, "{Right}{Tab}", ModifierKeys.None);
-            Assert.AreEqual("[[Some$Invalid%Variable]]", MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox.Text, "Multiassign small view row 1 variable textbox text does not equal \"[[Some$Invalid%Variable]]\".");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox.Exists, "Assign large view row 1 variable textbox does not exist");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.Exists, "Variable filter textbox does not exist");
-            MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.Text = "Other";
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.ClearSearchButton.Exists, "Variable clear filter button does not exist");
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.ClearSearchButton, new Point(8, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Exists, "Variable delete does not exist");
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton, new Point(9, 8));
-        }
-
         [When(@"I Refresh Explorer")]
         public void Click_Explorer_Refresh_Button()
         {
@@ -1877,7 +1881,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton, new Point(35, 10));
         }
-        
+
         [Given(@"That The First Test ""(.*)"" Passing")]
         [Then(@"The First Test ""(.*)"" Passing")]
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Passing(string IsIsNot)
@@ -1888,7 +1892,7 @@ namespace Warewolf.UITests
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Passing(bool passing = true)
         {
             Point point;
-            Assert.AreEqual(passing, MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), (passing?"First test is not passing.":"First test is passing."));
+            Assert.AreEqual(passing, MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), (passing ? "First test is not passing." : "First test is passing."));
         }
 
         [Given(@"That The First Test ""(.*)"" Invalid")]
@@ -1902,6 +1906,47 @@ namespace Warewolf.UITests
         {
             Point point;
             Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
+        }
+        
+        public void Delete_Assign_With_Context_Menu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Delete, new Point(27, 18));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView), "Assign tool still exists on design surface after deleting with context menu.");
+        }
+
+        public void Debug_Workflow_With_Ribbon_Button()
+        {
+            Click_Debug_Ribbon_Button();
+            Click_DebugInput_Debug_Button();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+        }
+
+        public void Remove_Assign_Row_1_With_Context_Menu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRowMenuItem, MouseButtons.Left, ModifierKeys.None, new Point(6, 6));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1.");
+        }
+
+        [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
+        public void Enter_Variable_And_Value_Into_Assign(string VariableText, string ValueText, int RowNumber)
+        {
+            switch (RowNumber)
+            {
+                case 2:
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params.TextboxText = VariableText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params.TextEditText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2();
+                    Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2.");
+                    break;
+                default:
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText = VariableText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextEditText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
+                    Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1.");
+                    break;
+            }
         }
     }
 }
