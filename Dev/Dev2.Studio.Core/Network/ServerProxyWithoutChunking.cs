@@ -400,7 +400,6 @@ namespace Dev2.Network
         {
             if (!IsConnecting)
             {
-                StopReconnectHeartbeat();
                 Connect(ID);
             }
             if (IsConnected)
@@ -412,6 +411,8 @@ namespace Dev2.Network
 
         public void Disconnect()
         {
+            // It can take some time to shutdown when permissions have changed ;(
+            // Give 5 seconds, then force a dispose ;)
             try
             {
                 IsShuttingDown = true;
@@ -491,15 +492,22 @@ namespace Dev2.Network
 
         void OnMemoReceived(string objString)
         {
+            // DO NOT use publish as memo is of type object 
+            // and hence won't find the correct subscriptions
+
             var obj = _serializer.Deserialize<DesignValidationMemo>(objString);
             ServerEvents.PublishObject(obj);
         }
 
         void OnPermissionsMemoReceived(string objString)
         {
+            // DO NOT use publish as memo is of type object 
+            // and hence won't find the correct subscriptions
             var obj = _serializer.Deserialize<PermissionsModifiedMemo>(objString);
             try
             {
+                // When we connect against group A with Administrator perms, and we remove all permissions, a 403 will be thrown. 
+                // Handle it more gracefully ;)
                 RaisePermissionsModified(obj.ModifiedPermissions);
             }
             catch (Exception e)
@@ -514,6 +522,10 @@ namespace Dev2.Network
         void OnItemAddedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
+            if (serverExplorerItem.ServerId == ServerID)
+            {
+              //  return;
+            }
             serverExplorerItem.ServerId = ID;
             ItemAddedMessageAction?.Invoke(serverExplorerItem);
         }
@@ -586,52 +598,60 @@ namespace Dev2.Network
 
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
-            var messageId = Guid.NewGuid();
-            var envelope = new Envelope
-            {
-                PartID = 0,
-                Type = typeof(Envelope),
-                Content = payload.ToString()
-            };
+            // build up payload 
+//            var messageId = Guid.NewGuid();
+//            var envelope = new Envelope
+//            {
+//                PartID = 0,
+//                Type = typeof(Envelope),
+//                Content = payload.ToString()
+//            };
 
             var result = new StringBuilder();
-            Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
-            Wait(invoke, result);
-            if (invoke.IsFaulted)
-            {
-                var popupController = CustomContainer.Get<IPopupController>();
-                popupController?.Show(ErrorResource.ErrorConnectingToServer, "Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
-                return result;
-            }
-            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
-            Wait(fragmentInvoke, result);
-            if (!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
-            {
-                result.Append(fragmentInvoke.Result);
-            }
 
-            return ProcessResult(result);
-        }
+            var resultTask = Task.Run(async () => result = await ExecuteCommandAsync(payload, workspaceId));
+            resultTask.Wait();
 
-        private static StringBuilder ProcessResult(StringBuilder result)
-        {
-            if(result.Length > 0)
-            {
-                var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-                if(start > 0)
-                {
-                    var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if(start < end && end - start > 1)
-                    {
-                        start += GlobalConstants.ManagementServicePayload.Length + 2;
-                        return new StringBuilder(result.Substring(start, end - start));
-                    }
-                }
-            }
-
+//            Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
+//            Wait(invoke, result);
+//            if (invoke.IsFaulted)
+//            {
+//                var popupController = CustomContainer.Get<IPopupController>();
+//                popupController?.Show(ErrorResource.ErrorConnectingToServer, "Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
+//                return result;
+//            }
+//            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
+//
+//            fragmentInvoke.ContinueWith(task =>
+//            {
+//                if (!task.IsFaulted && task.Result != null)
+//                {
+//                    result.Append(task.Result);
+//                }
+//
+//                // prune any result for old datalist junk ;)
+//                if (result.Length > 0)
+//                {
+//                    // Only return Dev2System.ManagmentServicePayload if present ;)
+//                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
+//                    if (start > 0)
+//                    {
+//                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+//                        if (start < end && end - start > 1)
+//                        {
+//                            // we can return the trimmed payload instead
+//                            start += GlobalConstants.ManagementServicePayload.Length + 2;
+//                            return new StringBuilder(result.Substring(start, end - start));
+//                        }
+//                    }
+//                }
+//
+//                return result;
+//            });
             return result;
+            //Wait(fragmentInvoke, result);
+            
         }
-
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId)
         {
             if (payload == null || payload.Length == 0)
@@ -641,6 +661,7 @@ namespace Dev2.Network
 
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
+            // build up payload 
             var messageId = Guid.NewGuid();
             var envelope = new Envelope
             {
@@ -655,7 +676,23 @@ namespace Dev2.Network
                 await EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
                 var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
                 result.Append(fragmentInvoke);
-                return ProcessResult(result);
+
+                // prune any result for old datalist junk ;)
+                if (result.Length > 0)
+                {
+                    // Only return Dev2System.ManagmentServicePayload if present ;)
+                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
+                    if (start > 0)
+                    {
+                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+                        if (start < end && end - start > 1)
+                        {
+                            // we can return the trimmed payload instead
+                            start += GlobalConstants.ManagementServicePayload.Length + 2;
+                            return new StringBuilder(result.Substring(start, end - start));
+                        }
+                    }
+                }
             }
             catch(Exception e)
             {
