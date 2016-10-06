@@ -61,7 +61,7 @@ set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 60 exit 1
 rem wait for 10 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 60: Waiting 10 more seconds for server service to be ready...
-ping -n 10 -w 1000 192.0.2.2 > nul
+waitfor ServiceReady /t 10 2>NUL
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING")
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN") else (taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN")
 sc interrogate "Warewolf Server"
@@ -88,7 +88,6 @@ IF NOT EXIST "%ProgramData%\Warewolf\Tests" IF EXIST "%DeploymentDirectory%\Test
 REM ** Start the server service
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc start "Warewolf Server") else (sc start "Warewolf Server")
 
-REM using the "ping" command as make-shift wait (or sleep) command, so now we wait for the server started file to appear - Ashley
 :WaitForServerStart
 set /a LoopCounter=0
 :WaitForServerStartLoopBody
@@ -97,5 +96,5 @@ set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 60 exit 1
 rem wait for 10 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 60: Waiting 10 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
-ping -n 10 -w 1000 192.0.2.2 > nul
+waitfor ServerStart /t 10 2>NUL
 goto WaitForServerStartLoopBody
