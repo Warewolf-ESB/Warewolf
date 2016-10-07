@@ -11,8 +11,9 @@ namespace Warewolf.UITests
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Length_Onto_DesignSurface();
+            UIMap.Enter_Recordset_On_Length_tool();
             UIMap.Open_Length_Tool_Large_View();
-
+            UIMap.Press_F6();
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Click_MessageBox_No();
         }

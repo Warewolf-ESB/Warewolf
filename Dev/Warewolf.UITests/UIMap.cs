@@ -2107,6 +2107,58 @@ namespace Warewolf.UITests
             //Assert.IsFalse(uIRemoteConnectionInteText.DisplayText.Contains("*"), "Remote Connection Intergration Tab does not contain the star");
         }
 
+        public void Enter_Recordset_On_Delete_tool()
+        {
+            #region Variable Declarations
+            WpfEdit recordset = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord.SmallViewContentCustom.RecordsetComboBox.TextEdit;
+            WpfEdit result = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord.SmallViewContentCustom.ResultComboBox.TextEdit;
+            #endregion
+
+            recordset.Text = "[[rec()]]";
+            result.Text = "[[result]]";
+        }
+        public void Enter_Recordset_On_Length_tool()
+        {
+            #region Variable Declarations
+            WpfEdit inFields = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.SmallViewContentCustom.RecordsetComboBox.TextEdit;
+            WpfEdit result = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.SmallViewContentCustom.ResultComboBox.TextEdit;
+            #endregion
+
+            inFields.Text = "[[rec()]]";
+            result.Text = "[[result]]";
+        }
+
+        public void Enter_Recordset_On_SortRecorsds_tool()
+        {
+            #region Variable Declarations
+            WpfEdit sortField = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords.SmallViewContentCustom.SortFieldComboBox.TextEdit;
+            #endregion
+
+            sortField.Text = "[[rec().a]]";
+        }
+        public void Enter_Recordset_On_UniqueRecorsds_tool()
+        {
+            #region Variable Declarations
+            WpfEdit inFields = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique.SmallViewContentCustom.InFieldsComboBox.TextEdit;
+            WpfEdit returnFields = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique.SmallViewContentCustom.ReturnFieldsComboBox.TextEdit;
+            WpfEdit result = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique.SmallViewContentCustom.ResultsComboBox.TextEdit;
+            #endregion
+
+            inFields.Text = "[[rec().a]],[[rec().a]],[[rec().c]]";
+            returnFields.Text = "[[rec().b]]";
+            result.Text = "[[rec().c]]";
+
+        }
+        public void Enter_Recordset_On_CountRecordset_tool()
+        {
+            #region Variable Declarations
+            WpfEdit recordset = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset.SmallViewContentCustom.RecorsetComboBox.TextEdit;
+            WpfEdit result = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset.SmallViewContentCustom.ResultComboBox.TextEdit;
+            #endregion
+
+            recordset.Text = "[[Recordset()]]";
+            result.Text = "[[Result]]";
+        }
         /// <summary>
         /// Enter_Person_Age_On_Assign_Object_tool - Use 'Enter_Person_Age_On_Assign_Object_toolParams' to pass parameters into this method.
         /// </summary>
@@ -2174,6 +2226,104 @@ namespace Warewolf.UITests
             //System parameter 'Show window contents while dragging' is not set.This could lead to incorrect recording of drag actions.
             Mouse.StartDragging(uIFlowchartCustom, new Point(300, 220));
             Mouse.StopDragging(uIFlowchartCustom, 0, 44);
+        }
+
+        /// <summary>
+        /// Enter_Values_Into_Replace_Tool_Large_View - Use 'Enter_Values_Into_Replace_Tool_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Values_Into_Replace_Tool_Large_View()
+        {
+            string FindComboBoxEditableItem = "u";
+            string InFiledsComboBoxEditableItem = "[[rec().a]]";
+            string ReplaceComboBoxEditableItem = "o";
+            string ResultComboBoxEditableItem = "res";
+
+            #region Variable Declarations
+            WpfEdit inFiledsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.InFiledsComboBox.TextEdit;
+            WpfEdit findComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.FindComboBox.TextEdit;
+            WpfEdit replaceComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.ReplaceComboBox.TextEdit;
+            WpfEdit resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.ResultComboBox.TextEdit;
+            #endregion
+
+            // Select '[[rec().a]]' in 'UI__InFiledstxt_AutoID' combo box
+            inFiledsComboBox.Text = InFiledsComboBoxEditableItem;
+
+            // Select 'u' in 'UI__Findtxt_AutoID' combo box
+            findComboBox.Text = FindComboBoxEditableItem;
+
+            // Select 'o' in 'UI__Replacetxt_AutoID' combo box
+            replaceComboBox.Text = ReplaceComboBoxEditableItem;
+
+            // Select 'res' in 'UI__Resulttxt_AutoID' combo box
+            resultComboBox.Text = ResultComboBoxEditableItem;
+        }
+
+        /// <summary>
+        /// Enter_Values_Into_FindIndex_Tool - Use 'Enter_Values_Into_FindIndex_ToolParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Values_Into_FindIndex_Tool()
+        {
+
+            string InFieldComboBoxEditableItem = "SomeLongString";
+            string CharactersComboBoxEditableItem = "r";
+            string CharactersComboBoxSendKeys = "{Escape}";
+            string ResultComboBoxEditableItem = "res";
+
+            #region Variable Declarations
+            WpfEdit inFieldComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.SmallViewContentCustom.InFieldComboBox.TextEdit;
+            WpfComboBox indexComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.SmallViewContentCustom.IndexComboBox;
+            WpfEdit charactersComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.SmallViewContentCustom.CharactersComboBox.TextEdit;
+            WpfEdit resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.SmallViewContentCustom.ResultComboBox.TextEdit;
+            #endregion
+
+            // Select 'SomeLongString' in 'UI__InFieldtxt_AutoID' combo box
+            inFieldComboBox.Text = InFieldComboBoxEditableItem;
+
+            // Click 'UI__Indextcbx_AutoID' combo box
+            Mouse.Click(indexComboBox, new Point(85, 13));
+
+            // Click 'UI__Indextcbx_AutoID' combo box
+            Mouse.Click(indexComboBox, new Point(62, 19));
+
+            // Select 'r' in 'UI__Characterstxt_AutoID' combo box
+            charactersComboBox.Text = CharactersComboBoxEditableItem;
+
+            // Click 'UI__Characterstxt_AutoID' combo box
+            Mouse.Click(charactersComboBox, new Point(45, 2));
+
+            // Click 'UI__Characterstxt_AutoID' combo box
+            Mouse.Click(charactersComboBox, new Point(39, 12));
+
+            // Type '{Escape}' in 'UI__Characterstxt_AutoID' combo box
+            Keyboard.SendKeys(charactersComboBox, CharactersComboBoxSendKeys, ModifierKeys.None);
+
+            // Select 'res' in 'UI__Resulttxt_AutoID' combo box
+            resultComboBox.Text = ResultComboBoxEditableItem;
+        }
+
+        /// <summary>
+        /// Enter_Values_Into_Data_Split_Tool - Use 'Enter_Values_Into_Data_Split_Tool_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Values_Into_Data_Split_Tool()
+        {
+            string SourceStringComboBoxEditableItem = "some long string here";
+            string ValueCellValue = "[[res]]";
+            string AtIndexCellValue = "5";
+
+            #region Variable Declarations
+            WpfEdit sourceStringComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.SmallViewContentCustom.SourceStringComboBox.TextEdit;
+            WpfEdit value = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.SmallViewContentCustom.SmallDataGridTable.Row1.ValueCell.ValueComboBox.TextEdit;
+            WpfEdit atIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.SmallViewContentCustom.SmallDataGridTable.Row1.AtIndexCell.AtIndexComboBox.TextEdit;
+            #endregion
+
+            // Select 'some long string here' in 'UI__SourceStringtxt_AutoID' combo box
+            sourceStringComboBox.Text = SourceStringComboBoxEditableItem;
+
+            // Type '[[res]]' in 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
+            value.Text = ValueCellValue;
+
+            // Type '5' in 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
+            atIndex.Text = AtIndexCellValue;
         }
     }
 }

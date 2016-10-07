@@ -11,8 +11,9 @@ namespace Warewolf.UITests
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Sort_Record_Onto_DesignSurface();
+            UIMap.Enter_Recordset_On_SortRecorsds_tool();
             UIMap.Open_SortRecords_Large_View();
-
+            UIMap.Press_F6();
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Click_MessageBox_No();
         }

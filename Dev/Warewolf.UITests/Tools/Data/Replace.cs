@@ -11,8 +11,8 @@ namespace Warewolf.UITests.Tools
         public void ReplaceToolUITest()
         {            
             Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();
-            Uimap.Open_Replace_Tool_Large_View();
             Uimap.Enter_Values_Into_Replace_Tool_Large_View();
+            Uimap.Open_Replace_Tool_Large_View();
             Uimap.Press_F6();
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.Click_MessageBox_No();

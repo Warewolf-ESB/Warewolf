@@ -11,9 +11,8 @@ namespace Warewolf.UITests.Tools.Data
         public void DataSplitToolUITest()
         {
             Uimap.Drag_Toolbox_Data_Split_Onto_DesignSurface();
+            Uimap.Enter_Values_Into_Data_Split_Tool();
             Uimap.Open_Data_Split_Large_View();
-            Uimap.Open_Data_Split_Large_View();
-            Uimap.Enter_Values_Into_Data_Split_Tool_Large_View();
             Uimap.Press_F6();
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.Click_MessageBox_No();

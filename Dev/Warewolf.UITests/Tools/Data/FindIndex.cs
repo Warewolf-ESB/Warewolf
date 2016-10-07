@@ -11,8 +11,8 @@ namespace Warewolf.UITests.Tools
         public void FindIndexToolUITest()
         {
             Uimap.Drag_Toolbox_Find_Index_Onto_DesignSurface();
-            Uimap.Open_Find_Index_Tool_Large_View();
             Uimap.Enter_Values_Into_FindIndex_Tool();
+            Uimap.Open_Find_Index_Tool_Large_View();
             Uimap.Press_F6();
 
             Uimap.Click_Close_Workflow_Tab_Button();
