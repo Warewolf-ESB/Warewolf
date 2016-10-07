@@ -7,6 +7,7 @@ using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 
 
@@ -18,9 +19,9 @@ namespace Warewolf.UITests.Tabs
         [TestMethod]
         public void UnpinAndRepinNewWorkflowTab()
         {
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Unpin_New_Workflow_Tab_With_Drag();
-            Uimap.Pin_New_Workflow_Tab_To_Default_Position();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Unpin_New_Workflow_Tab_With_Drag();
+            UIMap.Pin_New_Workflow_Tab_To_Default_Position();
         }
 
         #region Additional test attributes
@@ -28,13 +29,13 @@ namespace Warewolf.UITests.Tabs
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
