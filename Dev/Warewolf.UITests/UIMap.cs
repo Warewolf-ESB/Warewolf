@@ -603,7 +603,7 @@ namespace Warewolf.UITests
         {
             Enter_Service_Name_Into_Save_Dialog(ServiceName, true, true, false, SaveOrDuplicate.Duplicate);
         }
-        
+
         [When(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Duplicate_Dialog(string ServiceName)
         {
@@ -2044,7 +2044,7 @@ namespace Warewolf.UITests
             Point point;
             Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
         }
-        
+
         public void Delete_Assign_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
@@ -2094,7 +2094,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfButton editServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton;
             WpfTabPage serverSourceWizardTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab;
-//            WpfText uIRemoteConnectionInteText = this.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIRemoteConnectionInteText;
+            //            WpfText uIRemoteConnectionInteText = this.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIRemoteConnectionInteText;
             #endregion
 
             // Click '...' button
@@ -2105,6 +2105,75 @@ namespace Warewolf.UITests
 
             // Verify that the 'DisplayText' property of 'Remote Connection Integration *' label contains '*'
             //Assert.IsFalse(uIRemoteConnectionInteText.DisplayText.Contains("*"), "Remote Connection Intergration Tab does not contain the star");
+        }
+
+        /// <summary>
+        /// Enter_Person_Age_On_Assign_Object_tool - Use 'Enter_Person_Age_On_Assign_Object_toolParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Person_Age_On_Assign_Object_tool()
+        {
+            string FieldCellValue = "[[@Person.Age]]";
+            string FieldValueCellValue = "10";
+            #region Variable Declarations
+            WpfEdit fieldCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.LargeView.DataGrid.Row2.FieldCell.FieldNameComboBox.TextEdit;
+            WpfEdit fieldValueCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.LargeView.DataGrid.Row2.FieldValueCell.FieldValueComboBox.TextEdit;
+            #endregion
+
+            // Type '[[@Person.Age]]' in 'Item: Dev2.TO.AssignObjectDTO, Column Display Inde...' cell
+            fieldCell.Text = FieldCellValue;
+
+            // Type '10' in 'Item: Dev2.TO.AssignObjectDTO, Column Display Inde...' cell
+            fieldValueCell.Text = FieldValueCellValue;
+        }
+
+        /// <summary>
+        /// Enter_Person_Name_On_Assign_Object_tool - Use 'Enter_Person_Name_On_Assign_Object_toolParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Person_Name_On_Assign_Object_tool()
+        {
+            string FieldCellValue = "[[@Person.Name]]";
+            string FieldValueCellValue = "Bob";
+            #region Variable Declarations
+            WpfEdit fieldCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.LargeView.DataGrid.Row1.FieldCell.FieldNameComboBox.TextEdit;
+            WpfEdit fieldValueCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.LargeView.DataGrid.Row1.FieldValueCell.FieldValueComboBox.TextEdit;
+            #endregion
+
+            // Type '[[@Person.Name]]' in 'Item: Dev2.TO.AssignObjectDTO, Column Display Inde...' cell
+            fieldCell.Text = FieldCellValue;
+
+            // Type 'Bob' in 'Item: Dev2.TO.AssignObjectDTO, Column Display Inde...' cell
+            fieldValueCell.Text = FieldValueCellValue;
+        }
+
+        /// <summary>
+        /// Enter_Values_Into_Case_Conversion_Tool - Use 'Enter_Values_Into_Case_Conversion_ToolParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Values_Into_Case_Conversion_Tool()
+        {
+            string ValueComboBoxEditableItem = "res";
+
+            #region Variable Declarations
+            WpfEdit valueComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.SmallViewContentCustom.SmallDataGridTable.Row1.ValueCell.ValueComboBox.TextEdit;
+            #endregion
+
+            // Select 'res' in 'UI__Row1_OutputVariable_AutoID' combo box
+            valueComboBox.Text = ValueComboBoxEditableItem;
+        }
+
+        /// <summary>
+        /// Connect_Assign_to_Next_tool
+        /// </summary>
+        public void Connect_Assign_to_Next_tool()
+        {
+            #region Variable Declarations
+            WpfCustom uIFlowchartCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion
+
+            Mouse.Hover(uIFlowchartCustom, new Point(200, 220));
+            // Move 'Flowchart' custom control
+            //System parameter 'Show window contents while dragging' is not set.This could lead to incorrect recording of drag actions.
+            Mouse.StartDragging(uIFlowchartCustom, new Point(300, 220));
+            Mouse.StopDragging(uIFlowchartCustom, 0, 44);
         }
     }
 }

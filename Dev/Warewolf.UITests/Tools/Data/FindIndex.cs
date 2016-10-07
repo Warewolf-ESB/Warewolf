@@ -14,6 +14,7 @@ namespace Warewolf.UITests.Tools
             Uimap.Open_Find_Index_Tool_Large_View();
             Uimap.Enter_Values_Into_FindIndex_Tool();
             Uimap.Press_F6();
+
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.Click_MessageBox_No();
         }

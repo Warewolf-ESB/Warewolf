@@ -9,10 +9,7 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
 		[TestCategory("Tools")]
         public void ReplaceToolUITest()
-        {
-            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Uimap.Assign_Recordset_value();
-            Uimap.DeleteAssign_FromContextMenu();
+        {            
             Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();
             Uimap.Open_Replace_Tool_Large_View();
             Uimap.Enter_Values_Into_Replace_Tool_Large_View();

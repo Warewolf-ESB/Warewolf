@@ -9,14 +9,14 @@ namespace Warewolf.UITests.Tools.Data
         [TestMethod]
 		[TestCategory("Tools")]
         public void CaseConvertUITest()
-        {
-            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Uimap.Assign_Variable_value();
-            Uimap.Drag_Toolbox_Case_Conversion_Onto_DesignSurface();
+        {            
+            Uimap.Drag_Toolbox_Case_Conversion_Onto_DesignSurface();            
             Uimap.Enter_Values_Into_Case_Conversion_Tool();
             Uimap.Press_F6();
+
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.Click_MessageBox_No();
+            Uimap.Click_Clear_Toolbox_Filter_Clear_Button();
         }
 
         #region Additional test attributes

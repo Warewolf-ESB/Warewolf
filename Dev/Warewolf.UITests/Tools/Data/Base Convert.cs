@@ -18,6 +18,10 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             UIMap.Click_Debug_Output_BaseConvert_Cell();
             UIMap.Open_Base_Conversion_Tool_Qvi_Large_View();
+
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+            UIMap.Click_Clear_Toolbox_Filter_Clear_Button();
         }
 
         #region Additional test attributes
