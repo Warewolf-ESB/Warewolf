@@ -1630,6 +1630,11 @@ namespace Warewolf.UITests
         }
 
         [When("I Click Save Ribbon Button Without Expecting a Dialog")]
+        public void Click_Save_Ribbon_Button_Without_Expecting_A_Dialog()
+        {
+            Click_Save_Ribbon_Button_With_No_Save_Dialog();
+        }
+        
         public void Click_Save_Ribbon_Button_With_No_Save_Dialog(int WaitForSave = 2000)
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
