@@ -44,7 +44,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
-using Warewolf.Resource.Errors;
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
