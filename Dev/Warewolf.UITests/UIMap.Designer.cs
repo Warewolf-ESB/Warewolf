@@ -4940,92 +4940,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Enter_Values_Into_Data_Split_Tool_Large_View - Use 'Enter_Values_Into_Data_Split_Tool_Large_ViewParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Enter Values Into Data Split Tool Large View")]
-        public void Enter_Values_Into_Data_Split_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfComboBox sourceStringComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.SmallViewContentCustom.SourceStringComboBox;
-            WpfCell valueCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.SmallViewContentCustom.SmallDataGridTable.Row1.ValueCell;
-            WpfCell atIndexCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.SmallViewContentCustom.SmallDataGridTable.Row1.AtIndexCell;
-            #endregion
-
-            // Select 'some long string here' in 'UI__SourceStringtxt_AutoID' combo box
-            sourceStringComboBox.EditableItem = this.Enter_Values_Into_Data_Split_Tool_Large_ViewParams.SourceStringComboBoxEditableItem;
-
-            // Type '[[res]]' in 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
-            valueCell.Value = this.Enter_Values_Into_Data_Split_Tool_Large_ViewParams.ValueCellValue;
-
-            // Type '5' in 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
-            atIndexCell.Value = this.Enter_Values_Into_Data_Split_Tool_Large_ViewParams.AtIndexCellValue;
-        }
-        
-        /// <summary>
-        /// Enter_Values_Into_FindIndex_Tool - Use 'Enter_Values_Into_FindIndex_ToolParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Enter Values Into FindIndex Tool")]
-        public void Enter_Values_Into_FindIndex_Tool()
-        {
-            #region Variable Declarations
-            WpfComboBox inFieldComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.SmallViewContentCustom.InFieldComboBox;
-            WpfComboBox indexComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.SmallViewContentCustom.IndexComboBox;
-            WpfComboBox charactersComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.SmallViewContentCustom.CharactersComboBox;
-            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.SmallViewContentCustom.ResultComboBox;
-            #endregion
-
-            // Select 'SomeLongString' in 'UI__InFieldtxt_AutoID' combo box
-            inFieldComboBox.EditableItem = this.Enter_Values_Into_FindIndex_ToolParams.InFieldComboBoxEditableItem;
-
-            // Click 'UI__Indextcbx_AutoID' combo box
-            Mouse.Click(indexComboBox, new Point(85, 13));
-
-            // Click 'UI__Indextcbx_AutoID' combo box
-            Mouse.Click(indexComboBox, new Point(62, 19));
-
-            // Select 'r' in 'UI__Characterstxt_AutoID' combo box
-            charactersComboBox.EditableItem = this.Enter_Values_Into_FindIndex_ToolParams.CharactersComboBoxEditableItem;
-
-            // Click 'UI__Characterstxt_AutoID' combo box
-            Mouse.Click(charactersComboBox, new Point(45, 2));
-
-            // Click 'UI__Characterstxt_AutoID' combo box
-            Mouse.Click(charactersComboBox, new Point(39, 12));
-
-            // Type '{Escape}' in 'UI__Characterstxt_AutoID' combo box
-            Keyboard.SendKeys(charactersComboBox, this.Enter_Values_Into_FindIndex_ToolParams.CharactersComboBoxSendKeys, ModifierKeys.None);
-
-            // Select 'res' in 'UI__Resulttxt_AutoID' combo box
-            resultComboBox.EditableItem = this.Enter_Values_Into_FindIndex_ToolParams.ResultComboBoxEditableItem;
-        }
-        
-        /// <summary>
-        /// Enter_Values_Into_Replace_Tool_Large_View - Use 'Enter_Values_Into_Replace_Tool_Large_ViewParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Enter Values Into Replace Tool Large View")]
-        public void Enter_Values_Into_Replace_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfComboBox inFiledsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.InFiledsComboBox;
-            WpfComboBox findComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.FindComboBox;
-            WpfComboBox replaceComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.ReplaceComboBox;
-            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.ResultComboBox;
-            #endregion
-
-            // Select '[[rec().a]]' in 'UI__InFiledstxt_AutoID' combo box
-            inFiledsComboBox.EditableItem = this.Enter_Values_Into_Replace_Tool_Large_ViewParams.InFiledsComboBoxEditableItem;
-
-            // Select 'u' in 'UI__Findtxt_AutoID' combo box
-            findComboBox.EditableItem = this.Enter_Values_Into_Replace_Tool_Large_ViewParams.FindComboBoxEditableItem;
-
-            // Select 'o' in 'UI__Replacetxt_AutoID' combo box
-            replaceComboBox.EditableItem = this.Enter_Values_Into_Replace_Tool_Large_ViewParams.ReplaceComboBoxEditableItem;
-
-            // Select 'res' in 'UI__Resulttxt_AutoID' combo box
-            resultComboBox.EditableItem = this.Enter_Values_Into_Replace_Tool_Large_ViewParams.ResultComboBoxEditableItem;
-        }
-        
-        /// <summary>
         /// Filter_variables - Use 'Filter_variablesParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Filter variables")]
@@ -10719,42 +10633,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Enter_Values_Into_Data_Split_Tool_Large_ViewParams Enter_Values_Into_Data_Split_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((this.mEnter_Values_Into_Data_Split_Tool_Large_ViewParams == null))
-                {
-                    this.mEnter_Values_Into_Data_Split_Tool_Large_ViewParams = new Enter_Values_Into_Data_Split_Tool_Large_ViewParams();
-                }
-                return this.mEnter_Values_Into_Data_Split_Tool_Large_ViewParams;
-            }
-        }
-        
-        public virtual Enter_Values_Into_FindIndex_ToolParams Enter_Values_Into_FindIndex_ToolParams
-        {
-            get
-            {
-                if ((this.mEnter_Values_Into_FindIndex_ToolParams == null))
-                {
-                    this.mEnter_Values_Into_FindIndex_ToolParams = new Enter_Values_Into_FindIndex_ToolParams();
-                }
-                return this.mEnter_Values_Into_FindIndex_ToolParams;
-            }
-        }
-        
-        public virtual Enter_Values_Into_Replace_Tool_Large_ViewParams Enter_Values_Into_Replace_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((this.mEnter_Values_Into_Replace_Tool_Large_ViewParams == null))
-                {
-                    this.mEnter_Values_Into_Replace_Tool_Large_ViewParams = new Enter_Values_Into_Replace_Tool_Large_ViewParams();
-                }
-                return this.mEnter_Values_Into_Replace_Tool_Large_ViewParams;
-            }
-        }
-        
         public virtual Filter_variablesParams Filter_variablesParams
         {
             get
@@ -12364,12 +12242,6 @@ namespace Warewolf.UITests
         private Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams;
         
         private Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
-        
-        private Enter_Values_Into_Data_Split_Tool_Large_ViewParams mEnter_Values_Into_Data_Split_Tool_Large_ViewParams;
-        
-        private Enter_Values_Into_FindIndex_ToolParams mEnter_Values_Into_FindIndex_ToolParams;
-        
-        private Enter_Values_Into_Replace_Tool_Large_ViewParams mEnter_Values_Into_Replace_Tool_Large_ViewParams;
         
         private Filter_variablesParams mFilter_variablesParams;
         
@@ -16178,91 +16050,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'Text' text box equals 'User'
         /// </summary>
         public string TextboxText = "User";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Enter_Values_Into_Data_Split_Tool_Large_View'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_Values_Into_Data_Split_Tool_Large_ViewParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'some long string here' in 'UI__SourceStringtxt_AutoID' combo box
-        /// </summary>
-        public string SourceStringComboBoxEditableItem = "some long string here";
-        
-        /// <summary>
-        /// Type '[[res]]' in 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
-        /// </summary>
-        public string ValueCellValue = "[[res]]";
-        
-        /// <summary>
-        /// Type '5' in 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
-        /// </summary>
-        public string AtIndexCellValue = "5";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Enter_Values_Into_FindIndex_Tool'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_Values_Into_FindIndex_ToolParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'SomeLongString' in 'UI__InFieldtxt_AutoID' combo box
-        /// </summary>
-        public string InFieldComboBoxEditableItem = "SomeLongString";
-        
-        /// <summary>
-        /// Select 'r' in 'UI__Characterstxt_AutoID' combo box
-        /// </summary>
-        public string CharactersComboBoxEditableItem = "r";
-        
-        /// <summary>
-        /// Type '{Escape}' in 'UI__Characterstxt_AutoID' combo box
-        /// </summary>
-        public string CharactersComboBoxSendKeys = "{Escape}";
-        
-        /// <summary>
-        /// Select 'res' in 'UI__Resulttxt_AutoID' combo box
-        /// </summary>
-        public string ResultComboBoxEditableItem = "res";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Enter_Values_Into_Replace_Tool_Large_View'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_Values_Into_Replace_Tool_Large_ViewParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select '[[rec().a]]' in 'UI__InFiledstxt_AutoID' combo box
-        /// </summary>
-        public string InFiledsComboBoxEditableItem = "[[rec().a]]";
-        
-        /// <summary>
-        /// Select 'u' in 'UI__Findtxt_AutoID' combo box
-        /// </summary>
-        public string FindComboBoxEditableItem = "u";
-        
-        /// <summary>
-        /// Select 'o' in 'UI__Replacetxt_AutoID' combo box
-        /// </summary>
-        public string ReplaceComboBoxEditableItem = "o";
-        
-        /// <summary>
-        /// Select 'res' in 'UI__Resulttxt_AutoID' combo box
-        /// </summary>
-        public string ResultComboBoxEditableItem = "res";
         #endregion
     }
     
