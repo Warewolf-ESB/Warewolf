@@ -97,9 +97,10 @@ namespace Warewolf.Studio.ViewModels
                 _stats.Calculate(_source?.SourceLoadedItems?.ToList());
             }
             _stats.Calculate(_source?.SourceLoadedItems?.ToList());
-        }        
+        }
 
-        private bool CanSelectDependencies => Source.SelectedItems.Count > 0;
+        public bool CanSelectDependencies => Source.SelectedItems.Count > 0;
+        public bool CanDeployTests => CanSelectDependencies;
 
         public IList<IExplorerTreeItem> NewItems
         {
@@ -233,6 +234,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     canDeploy = true;
                 }
+
                 if (!canDeploy)
                 {
                     ViewOverrides();
