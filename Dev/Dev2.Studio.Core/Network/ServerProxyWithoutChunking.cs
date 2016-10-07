@@ -82,7 +82,7 @@ namespace Dev2.Network
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
             Dev2Logger.Debug(credentials);
             Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name);
-            HubConnection = new HubConnectionWrapper(uriString){ Credentials = credentials };
+            HubConnection = new HubConnectionWrapper(uriString) { Credentials = credentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
@@ -90,7 +90,7 @@ namespace Dev2.Network
             AsyncWorker = worker;
 
         }
-        
+
         public IPrincipal Principal { get; private set; }
 
         public ServerProxyWithoutChunking(string webAddress, string userName, string password)
@@ -255,13 +255,13 @@ namespace Dev2.Network
                     }
                     throw ex;
                 });
-            }          
+            }
             catch (Exception e)
             {
                 HandleConnectError(e);
             }
         }
-        
+
         public async Task<bool> ConnectAsync(Guid id)
         {
             ID = id;
@@ -279,7 +279,7 @@ namespace Dev2.Network
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
                     await HubConnection.Start();
-                    if(HubConnection.State==ConnectionStateWrapped.Disconnected)
+                    if (HubConnection.State == ConnectionStateWrapped.Disconnected)
                     {
                         if (!IsLocalHost)
                         {
@@ -306,7 +306,7 @@ namespace Dev2.Network
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
-                    if(ex.Message.Contains("1.4"))
+                    if (ex.Message.Contains("1.4"))
                         throw new FallbackException();
                     Dev2Logger.Error(this, aex);
                     var hex = ex as HttpClientException;
@@ -524,7 +524,7 @@ namespace Dev2.Network
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             if (serverExplorerItem.ServerId == ServerID)
             {
-              //  return;
+                //  return;
             }
             serverExplorerItem.ServerId = ID;
             ItemAddedMessageAction?.Invoke(serverExplorerItem);
@@ -599,58 +599,48 @@ namespace Dev2.Network
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
             // build up payload 
-//            var messageId = Guid.NewGuid();
-//            var envelope = new Envelope
-//            {
-//                PartID = 0,
-//                Type = typeof(Envelope),
-//                Content = payload.ToString()
-//            };
+            var messageId = Guid.NewGuid();
+            var envelope = new Envelope
+            {
+                PartID = 0,
+                Type = typeof(Envelope),
+                Content = payload.ToString()
+            };
 
             var result = new StringBuilder();
+            Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
+            Wait(invoke, result);
+            if (invoke.IsFaulted)
+            {
+                var popupController = CustomContainer.Get<IPopupController>();
+                popupController?.Show(ErrorResource.ErrorConnectingToServer, "Error connecting", MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
+                return result;
+            }
+            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
+            Wait(fragmentInvoke, result);
+            if (!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
+            {
+                result.Append(fragmentInvoke.Result);
+            }
 
-            var resultTask = Task.Run(async () => result = await ExecuteCommandAsync(payload, workspaceId));
-            resultTask.Wait();
+            // prune any result for old datalist junk ;)
+            if (result.Length > 0)
+            {
+                // Only return Dev2System.ManagmentServicePayload if present ;)
+                var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
+                if (start > 0)
+                {
+                    var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+                    if (start < end && end - start > 1)
+                    {
+                        // we can return the trimmed payload instead
+                        start += GlobalConstants.ManagementServicePayload.Length + 2;
+                        return new StringBuilder(result.Substring(start, end - start));
+                    }
+                }
+            }
 
-//            Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
-//            Wait(invoke, result);
-//            if (invoke.IsFaulted)
-//            {
-//                var popupController = CustomContainer.Get<IPopupController>();
-//                popupController?.Show(ErrorResource.ErrorConnectingToServer, "Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
-//                return result;
-//            }
-//            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
-//
-//            fragmentInvoke.ContinueWith(task =>
-//            {
-//                if (!task.IsFaulted && task.Result != null)
-//                {
-//                    result.Append(task.Result);
-//                }
-//
-//                // prune any result for old datalist junk ;)
-//                if (result.Length > 0)
-//                {
-//                    // Only return Dev2System.ManagmentServicePayload if present ;)
-//                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-//                    if (start > 0)
-//                    {
-//                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-//                        if (start < end && end - start > 1)
-//                        {
-//                            // we can return the trimmed payload instead
-//                            start += GlobalConstants.ManagementServicePayload.Length + 2;
-//                            return new StringBuilder(result.Substring(start, end - start));
-//                        }
-//                    }
-//                }
-//
-//                return result;
-//            });
             return result;
-            //Wait(fragmentInvoke, result);
-            
         }
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId)
         {
@@ -694,9 +684,9 @@ namespace Dev2.Network
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Dev2Logger.Error(e);                
+                Dev2Logger.Error(e);
             }
             return result;
         }
