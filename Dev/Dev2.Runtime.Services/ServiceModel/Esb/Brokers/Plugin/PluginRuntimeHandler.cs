@@ -204,6 +204,25 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
+                var constructors = type.GetConstructors();
+
+                constructors.ToList().ForEach(info =>
+                {
+                    var serviceMethod = new ServiceMethod { Name = info.Name };
+                    var parameterInfos = info.GetParameters().ToList();
+                    parameterInfos.ForEach(parameterInfo =>
+                        serviceMethod.Parameters.Add(
+                            new MethodParameter
+                            {
+                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                                EmptyToNull = false,
+                                IsRequired = true,
+                                Name = parameterInfo.Name,
+                                TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
+                            }));
+                    serviceMethodList.Add(serviceMethod);
+                });
+
 
                 methodInfos.ToList().ForEach(info =>
                 {
@@ -213,7 +232,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         serviceMethod.Parameters.Add(
                             new MethodParameter
                             {
-                                DefaultValue = parameterInfo.DefaultValue == null ? string.Empty : parameterInfo.DefaultValue.ToString(),
+                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
                                 EmptyToNull = false,
                                 IsRequired = true,
                                 Name = parameterInfo.Name,
@@ -221,6 +240,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                             }));
                     serviceMethodList.Add(serviceMethod);
                 });
+                
             }
 
             return serviceMethodList;
