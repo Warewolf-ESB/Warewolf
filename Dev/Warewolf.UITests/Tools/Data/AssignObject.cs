@@ -17,7 +17,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Drag_Toolbox_AssignObject_Onto_DesignSurface();
             Uimap.Open_AssignObject_Large_Tool();
             Uimap.Enter_Person_Name_On_Assign_Object_tool();
-            Uimap.Enter_Person_Age_On_Assign_Object_tool();
+            Uimap.click_AssignObject_Done();
         }
 
         #region Additional test attributes
