@@ -1205,6 +1205,8 @@ namespace Warewolf.UITests
             WpfText text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
             #endregion
 
+            Filter_Explorer(ServiceName);
+            RightClick_Explorer_Localhost_First_Item();
             Mouse.Click(showDependencies, new Point(50, 15));
             Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
             Assert.IsTrue(textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
@@ -1954,16 +1956,16 @@ namespace Warewolf.UITests
             }
         }
 
-        public void Pin_New_Workflow_Tab_To_Default_Position()
+        public void Pin_Unpinned_Pane_To_Default_Position()
         {
             Mouse.StartDragging(MainStudioWindow.ToolWindow, new Point(5, 5));
             Mouse.StopDragging(MainStudioWindow.ToolWindow);
         }
 
-        public void Unpin_New_Workflow_Tab_With_Drag()
+        public void Unpin_Tab_With_Drag(UITestControl Tab)
         {
-            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab);
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab, 25, 40);
+            Mouse.StartDragging(Tab);
+            Mouse.StopDragging(25, 40);
         }
     }
 }
