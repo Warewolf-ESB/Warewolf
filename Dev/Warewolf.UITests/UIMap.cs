@@ -603,7 +603,7 @@ namespace Warewolf.UITests
         {
             Enter_Service_Name_Into_Save_Dialog(ServiceName, true, true, false, SaveOrDuplicate.Duplicate);
         }
-        
+
         [When(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Duplicate_Dialog(string ServiceName)
         {
@@ -1634,7 +1634,7 @@ namespace Warewolf.UITests
         {
             Click_Save_Ribbon_Button_With_No_Save_Dialog();
         }
-        
+
         public void Click_Save_Ribbon_Button_With_No_Save_Dialog(int WaitForSave = 2000)
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
@@ -1912,7 +1912,7 @@ namespace Warewolf.UITests
             Point point;
             Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
         }
-        
+
         public void Delete_Assign_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
@@ -1952,6 +1952,18 @@ namespace Warewolf.UITests
                     Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1.");
                     break;
             }
+        }
+
+        public void Pin_New_Workflow_Tab_To_Default_Position()
+        {
+            Mouse.StartDragging(MainStudioWindow.ToolWindow, new Point(5, 5));
+            Mouse.StopDragging(MainStudioWindow.ToolWindow);
+        }
+
+        public void Unpin_New_Workflow_Tab_With_Drag()
+        {
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab, 25, 40);
         }
     }
 }
