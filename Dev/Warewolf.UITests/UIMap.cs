@@ -786,7 +786,7 @@ namespace Warewolf.UITests
         public void Click_SaveDialog_Save_Button()
         {
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
-            Assert.IsFalse(ControlExistsNow(SaveDialogWindow));
+            Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveButton), "Save dialog still exists after clicking save button.");
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
