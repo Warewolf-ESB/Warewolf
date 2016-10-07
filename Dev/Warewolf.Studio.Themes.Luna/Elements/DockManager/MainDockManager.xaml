@@ -764,6 +764,7 @@
 
                         <Trigger Property="IsMouseOverTab" Value="true">
                             <Setter TargetName="closeBtn" Property="Foreground" Value="{StaticResource WareWolfOrangeBrush}" />
+                            <Setter TargetName="closeBtn" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="AllowClosing" Value="False">
                             <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
