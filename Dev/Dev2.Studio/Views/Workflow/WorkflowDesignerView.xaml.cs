@@ -9,6 +9,7 @@
 */
 
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
@@ -48,7 +49,28 @@ namespace Dev2.Studio.Views.Workflow
 
         void WorkflowDesignerViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            StartNodeContextMenu.Visibility = Visibility.Collapsed;
+
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                var grid = e.OriginalSource as Grid;
+                var rect = e.OriginalSource as System.Windows.Shapes.Rectangle;
+                if (grid != null)
+                {
+                    StartNodeContextMenu.Visibility = grid.DataContext.ToString() == "System.Activities.Core.Presentation.StartSymbol"
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
+                }
+                else if (rect != null)
+                {
+                    StartNodeContextMenu.Visibility = rect.DataContext.ToString() == "System.Activities.Core.Presentation.StartSymbol"
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
+                }
+            }
+
             var vm = DataContext as WorkflowDesignerViewModel;
+
             if (vm != null)
             {
                 CustomContainer.Get<IMainViewModel>().AddWorkSurfaceContext(vm.ResourceModel);
