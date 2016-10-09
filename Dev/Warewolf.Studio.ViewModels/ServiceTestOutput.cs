@@ -247,6 +247,12 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testPassed = value;
+                if (_testPassed)
+                {
+                    TestPending = false;
+                    TestFailing = false;
+                    TestInvalid = false;
+                }
                 OnPropertyChanged(() => TestPassed);
             }
         }
@@ -257,6 +263,12 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testFailing = value;
+                if (_testFailing)
+                {
+                    TestPending = false;
+                    TestInvalid = false;
+                    TestPassed = false;
+                }
                 OnPropertyChanged(() => TestFailing);
             }
         }
@@ -267,6 +279,12 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testInvalid = value;
+                if (_testInvalid)
+                {
+                    TestPending = false;
+                    TestFailing = false;
+                    TestPassed = false;
+                }
                 OnPropertyChanged(() => TestInvalid);
             }
         }
@@ -277,13 +295,20 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testPending = value;
+                if (_testPending)
+                {
+                    TestFailing = false;
+                    TestInvalid = false;
+                    TestPassed = false;
+                }
                 OnPropertyChanged(() => TestPending);
             }
         }
 
         public void OnSearchTypeChanged()
         {
-            UpdateMatchVisibility(_assertOp, _findRecsetOptions);
+            UpdateMatchVisibility(_assertOp, _findRecsetOptions ?? FindRecsetOptions.FindAllDecision());
+
             var requiresCriteria = _requiresSearchCriteria.Contains(_assertOp);
             IsSearchCriteriaEnabled = requiresCriteria;
             if (!requiresCriteria)

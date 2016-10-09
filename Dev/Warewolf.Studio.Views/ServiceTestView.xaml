@@ -602,7 +602,7 @@
                                                                                 <RadioButton Grid.Column="0" 
 																							ToolTip="{x:Static languages:Core.ServiceTestStepAssertRadioButtonTooltip}" 
 																							Content="Assert" 
-																							Margin="0,-3,0,0"
+																							Margin="8,-3,0,0"
 																							IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
 																							AutomationProperties.AutomationId="UI_AssertRadioButton_AutoID">
                                                                                     <i:Interaction.Behaviors>
