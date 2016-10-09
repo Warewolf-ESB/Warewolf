@@ -133,8 +133,7 @@
                                 <ig:XamMenuItem Name="Dependencies"
                                                 Command="{Binding ShowDependenciesCommand}"
                                                 CommandParameter="{Binding Data}"
-                                                Header="Show Dependencies"
-                                                Visibility="{Binding CanShowDependencies, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                Header="Show Dependencies">
                                     <ig:XamMenuItem.Icon>
                                         <fa:FontAwesome Margin="0,2,0,0"
                                                         FontSize="12"
