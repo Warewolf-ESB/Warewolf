@@ -1024,6 +1024,11 @@ namespace Warewolf.Studio.ViewModels
                 if (serviceTestStep != null)
                     serviceTestStep.StepIcon = Application.Current?.TryFindResource(desc.Icon) as ImageSource;
             }
+            if (type.Name == "DsfActivity")
+            {
+                if (serviceTestStep != null)
+                    serviceTestStep.StepIcon = Application.Current?.TryFindResource("Explorer-WorkflowService") as ImageSource;
+            }
         }
 
         private void SetStepIcon(string typeName, ServiceTestStep serviceTestStep)
@@ -1045,6 +1050,11 @@ namespace Warewolf.Studio.ViewModels
                 var desc = GetDescriptorFromAttribute(type);
                 if (serviceTestStep != null)
                     serviceTestStep.StepIcon = Application.Current?.TryFindResource(desc.Icon) as ImageSource;
+            }
+            if (type.Name == "DsfActivity")
+            {
+                if (serviceTestStep != null)
+                    serviceTestStep.StepIcon = Application.Current?.TryFindResource("Explorer-WorkflowService") as ImageSource;
             }
         }
 
