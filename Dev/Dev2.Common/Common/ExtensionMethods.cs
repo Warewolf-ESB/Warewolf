@@ -380,6 +380,14 @@ namespace Dev2.Common.Common
             }
             else
             {
+                if (that != null && sb != null)
+                {
+                    var compareOrdinal = string.CompareOrdinal(sb.ToString(), that.ToString());
+                    if (compareOrdinal == 0)
+                    {
+                        return true;
+                    }
+                }
                 return false;
             }
 
