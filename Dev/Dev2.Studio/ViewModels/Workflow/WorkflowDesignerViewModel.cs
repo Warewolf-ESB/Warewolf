@@ -503,9 +503,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            //var explorerItem = mvm.ActiveItem.ContextualResourceModel as IExplorerItemViewModel;
+                            IExplorerItemViewModel explorerItem = null;
+                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
+                            foreach (var environmentViewModel in environmentViewModels)
+                            {
+                                explorerItem = environmentViewModel.Children.FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                            }
                             
-                            //mvm.DuplicateResource(explorerItem);
+                            mvm.DuplicateResource(explorerItem);
                         }
                     }
                 }));
@@ -523,7 +528,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            mvm.DeployCommand.Execute(mvm.ActiveItem);
+                            IExplorerItemViewModel explorerItem = null;
+                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
+                            foreach (var environmentViewModel in environmentViewModels)
+                            {
+                                explorerItem = environmentViewModel.Children.FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                            }
+                            if (explorerItem != null)
+                                mvm.AddDeploySurface(explorerItem.AsList().Union(new[] {explorerItem}));
                         }
                     }
                 }));
