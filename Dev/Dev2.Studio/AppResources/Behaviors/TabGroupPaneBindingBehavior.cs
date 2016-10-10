@@ -107,8 +107,6 @@ namespace Dev2.Studio.AppResources.Behaviors
             if (newValue != null)
             {
                 SetActivePane(newValue);
-                var mainViewModel = CustomContainer.Get<IMainViewModel>() as MainViewModel;
-                mainViewModel?.ActivateWorkSurfaceContext(newValue);
             }
         }
 
@@ -144,8 +142,6 @@ namespace Dev2.Studio.AppResources.Behaviors
                 if (newValue != null)
                 {
                     SetActivePane(newValue);
-                    var mainViewModel = CustomContainer.Get<IMainViewModel>() as MainViewModel;
-                    mainViewModel?.ActivateWorkSurfaceContext(newValue);
                 }
             }
         }
@@ -162,6 +158,11 @@ namespace Dev2.Studio.AppResources.Behaviors
                     select item)
                 {
                     tabGroupPane.SelectedItem = item;
+                    var mainViewModel = CustomContainer.Get<IMainViewModel>() as MainViewModel;
+                    if (mainViewModel?.ActiveItem != newValue)
+                    {
+                        mainViewModel?.ActivateItem(newValue);
+                    }
                     break;
                 }
                 FocusManager.AddGotFocusHandler(tabGroupPane, GotFocusHandler);
