@@ -145,7 +145,7 @@
                             </i:Interaction.Behaviors>
                         </Button>
                         <TextBlock Text="Also Deploy Tests?" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
-                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding Destination.DeployTests}" IsEnabled="{Binding CanDeployTests}"/>
+                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding Destination.DeployTests}" IsEnabled="{Binding CanDeployTests}" />
                     </StackPanel>
                 </Grid>
 
