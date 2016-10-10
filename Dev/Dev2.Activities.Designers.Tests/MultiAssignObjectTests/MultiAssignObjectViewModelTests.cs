@@ -15,6 +15,7 @@ using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Activities.Presentation.Model;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -104,6 +105,10 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignObjectTests
 
         public static MultiAssignObjectDesignerViewModel CreateDsfMultiAssignObjectActivityViewModel()
         {
+            if (CustomContainer.Get<IShellViewModel>() == null)
+            {
+                CustomContainer.Register(new Mock<IShellViewModel>().Object);
+            }
             var dsfMultiAssignObjectActivityViewModel = new MultiAssignObjectDesignerViewModel(ModelItemUtils.CreateModelItem(new DsfMultiAssignObjectActivity()));
             return dsfMultiAssignObjectActivityViewModel;
         }
