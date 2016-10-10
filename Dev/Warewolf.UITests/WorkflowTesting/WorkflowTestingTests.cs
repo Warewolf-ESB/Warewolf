@@ -16,7 +16,7 @@ namespace Warewolf.UITests
         const string HelloWorld = "Hello World";
 
         [TestMethod]
-        public void Create_And_Run_New_Failing_Test()
+        public void Run_Failing_Test()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Assert.AreEqual("Blank Input", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestNameDisplay.DisplayText, "First 'Hello World' test is not 'Blank Input' as expected.");
@@ -26,7 +26,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        public void Create_And_Run_New_Passing_Test()
+        public void Run_Passing_Test()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Assert.AreEqual("Valid Input", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.TestNameDisplay.DisplayText, "Third 'Hello World' test is not 'Valid Input' as expected.");
