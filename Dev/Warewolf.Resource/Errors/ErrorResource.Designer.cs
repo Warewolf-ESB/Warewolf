@@ -2248,6 +2248,69 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NotAuthorizedToAdministratorException.
+        /// </summary>
+        public static string NotAuthorizedToAdministratorException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToAdministratorException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NotAuthorizedToContributeException.
+        /// </summary>
+        public static string NotAuthorizedToContributeException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToContributeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NotAuthorizedToCreateException.
+        /// </summary>
+        public static string NotAuthorizedToCreateException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToCreateException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NotAuthorizedToDeployFromException.
+        /// </summary>
+        public static string NotAuthorizedToDeployFromException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToDeployFromException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NotAuthorizedToDeployToException.
+        /// </summary>
+        public static string NotAuthorizedToDeployToException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToDeployToException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NotAuthorizedToExecuteException.
+        /// </summary>
+        public static string NotAuthorizedToExecuteException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToExecuteException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NotAuthorizedToViewException.
+        /// </summary>
+        public static string NotAuthorizedToViewException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToViewException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no text for object &apos;{0}&apos;..
         /// </summary>
         public static string NoTextForObject {

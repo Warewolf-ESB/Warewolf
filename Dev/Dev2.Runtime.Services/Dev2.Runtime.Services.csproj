@@ -185,6 +185,7 @@
     <Compile Include="DynamicProxy\DynamicProxyException.cs" />
     <Compile Include="DynamicProxy\DynamicProxyFactory.cs" />
     <Compile Include="DynamicProxy\DynamicProxyFactoryOptions.cs" />
+    <Compile Include="ESB\Management\ISecuredService.cs" />
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\ComDllLoaderHandler.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
@@ -295,6 +296,7 @@
     <Compile Include="ESB\Management\Services\TestEmailServiceSource.cs" />
     <Compile Include="ESB\Management\Services\TestSharepointServerService.cs" />
     <Compile Include="ESB\Management\Services\TestNetworkService.cs" />
+    <Compile Include="Exceptions\NotAuthorizedToCreateException.cs" />
     <Compile Include="Execution\ExecutionToken.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />
     <Compile Include="Hosting\ExplorerItemFactory.cs" />
