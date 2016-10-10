@@ -21,11 +21,10 @@ namespace Warewolf.UITests.Tools.Data
         [TestCategory("Tools")]
         public void AssignToolOpenAndCloseLargeViewWithExpandAllToggleUITest()
         {
-            UIMap.Click_Assign_Tool_ExpandAll();
-            UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            UIMap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
+            UIMap.Click_Workflow_ExpandAll();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.Exists, "Multiassign large view does not exist after openning it with the expand all button.");
             UIMap.Click_Workflow_CollapseAll();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.Exists, "Multiassign small view does not exist after collaping it with the collapse all button.");
         }
 
         [TestMethod]
