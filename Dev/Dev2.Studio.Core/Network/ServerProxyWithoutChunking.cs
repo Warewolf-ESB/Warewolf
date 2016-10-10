@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Net.Security;
 using System.Network;
 using System.Security.Claims;
@@ -33,7 +32,6 @@ using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
-using Dev2.ExtMethods;
 using Dev2.Messages;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
@@ -699,58 +697,6 @@ namespace Dev2.Network
                 Dev2Logger.Error(e);
             }
             return result;
-        }
-
-        protected virtual T Wait<T>(Task<T> task, StringBuilder result)
-        {
-            return Wait(task, result, GlobalConstants.NetworkTimeOut);
-        }
-
-        protected T Wait<T>(Task<T> task, StringBuilder result, int millisecondsTimeout)
-        {
-            try
-            {
-                task.WaitWithPumping(millisecondsTimeout);
-                return task.Result;
-            }
-            catch (AggregateException aex)
-            {
-                var hasDisconnected = false;
-                aex.Handle(ex =>
-                {
-                    result.AppendFormat("<Error>{0}</Error>", ex.Message);
-                    var hex = ex as HttpRequestException;
-                    if (hex != null)
-                    {
-                        hasDisconnected = true;
-                        return true; // This we know how to handle this
-                    }
-                    var ioex = ex as InvalidOperationException;
-                    if (ioex != null && ioex.Message.Contains(@"Connection started reconnecting before invocation result was received"))
-                    {
-                        Dev2Logger.Debug("Connection is reconnecting");
-                        return true; // This we know how to handle this
-                    }
-                    // handle 403 errors when permissions have been removed ;)
-                    var hce = ex as HttpClientException;
-                    if (hce != null && hce.Message.Contains("StatusCode: 403"))
-                    {
-                        Dev2Logger.Debug("Forbidden - Most Likely Permissions Changed.");
-                        // Signal not-authorized anymore ;)
-                        UpdateIsAuthorized(false);
-                        return true;
-                    }
-
-                    // handle generic errors ;)                   
-                    Dev2Logger.Error(this, ex);
-                    return true; // Let anything else stop the application.
-                });
-                if (hasDisconnected)
-                {
-                    HasDisconnected();
-                }
-            }
-            return default(T);
         }
 
         public void AddDebugWriter(Guid workspaceId)
