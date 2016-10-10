@@ -90,6 +90,9 @@
     <Compile Include="Tools\Loop Constructs\ForEach.cs" />
     <Compile Include="Tools\Scripting\Ruby.cs" />
     <Compile Include="Tools\Scripting\Python.cs" />
+    <Compile Include="Tools\Utility\RabbitMQPublish.cs" />
+    <Compile Include="Tools\Utility\RabbitMQConsume.cs" />
+    <Compile Include="Tools\Utility\AggregateCalculate.cs" />
     <Compile Include="Variables\Variables.cs" />
     <Compile Include="WorkflowTesting\TestsResults.cs" />
     <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
