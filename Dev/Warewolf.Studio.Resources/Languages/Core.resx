@@ -2686,6 +2686,39 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="MenuDatabaseToolTip" xml:space="preserve">
     <value>Create a new database source</value>
   </data>
+  <data name="StartNodeDebugInputsToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service [F5]</value>
+  </data>
+  <data name="StartNodeDebugStudioToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service [F6]</value>
+  </data>
+  <data name="StartNodeDebugBrowserToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service [F7]</value>
+  </data>
+  <data name="StartNodeScheduleToolTip" xml:space="preserve">
+    <value>Schedule a service to run</value>
+  </data>
+  <data name="StartNodeTestEditorToolTip" xml:space="preserve">
+    <value>View the current tests for this resource</value>
+  </data>
+  <data name="StartNodeRunAllTestsToolTip" xml:space="preserve">
+    <value>Run all tests in browser for this resource</value>
+  </data>
+  <data name="StartNodeDuplicateToolTip" xml:space="preserve">
+    <value>Duplicate the current resource</value>
+  </data>
+  <data name="StartNodeDeployToolTip" xml:space="preserve">
+    <value>Move current resource between Warewolf servers</value>
+  </data>
+  <data name="StartNodeDependenciesToolTip" xml:space="preserve">
+    <value>View which resources are dependant on the current resource</value>
+  </data>
+  <data name="StartNodeViewSwaggerToolTip" xml:space="preserve">
+    <value>View Swagger source for the current resource</value>
+  </data>
+  <data name="StartNodeCopyUrlToolTip" xml:space="preserve">
+    <value>Copy the current resource Url</value>
+  </data>
   <data name="MappingsObjectOutputTooltip" xml:space="preserve">
     <value>MappingsObjectOutputTooltip</value>
   </data>

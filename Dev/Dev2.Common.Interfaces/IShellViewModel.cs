@@ -62,6 +62,7 @@ namespace Dev2.Common.Interfaces
         void ViewSwagger(Guid resourceId, IServer server);
         void ViewApisJson(string resourcePath, Uri webServerUri);
         void CreateTest(Guid resourceId);
+        void RunAllTests(Guid resourceId);
         void CloseResourceTestView(Guid resourceId, Guid serverId, Guid environmentId);
     }
 }
