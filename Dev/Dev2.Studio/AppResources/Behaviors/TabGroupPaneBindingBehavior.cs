@@ -13,6 +13,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -104,7 +105,11 @@ namespace Dev2.Studio.AppResources.Behaviors
 
             var newValue = e.NewValue as WorkSurfaceContextViewModel;
             if (newValue != null)
+            {
                 SetActivePane(newValue);
+                var mainViewModel = CustomContainer.Get<IMainViewModel>() as MainViewModel;
+                mainViewModel?.ActivateWorkSurfaceContext(newValue);
+            }
         }
 
         static void GotFocusHandler(object sender, RoutedEventArgs routedEventArgs)
@@ -137,7 +142,11 @@ namespace Dev2.Studio.AppResources.Behaviors
 
                 var newValue = routedPropertyChangedEventArgs.NewValue.DataContext as WorkSurfaceContextViewModel;
                 if (newValue != null)
+                {
                     SetActivePane(newValue);
+                    var mainViewModel = CustomContainer.Get<IMainViewModel>() as MainViewModel;
+                    mainViewModel?.ActivateWorkSurfaceContext(newValue);
+                }
             }
         }
 
