@@ -696,6 +696,8 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"I close the test builder")]
         public void ThenICloseTheTestBuilder()
         {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest?.Dispose();
             ScenarioContext.Current.Remove("testFramework");
         }
 
@@ -1355,8 +1357,11 @@ namespace Dev2.Activities.Specs.TestFramework
         [AfterScenario("TestFramework")]
         public void CleanupTestFramework()
         {
-            var testFrameworkFromContext = GetTestFrameworkFromContext();
-            testFrameworkFromContext?.Dispose();
+            ServiceTestViewModel serviceTest;
+            if (ScenarioContext.TryGetValue("testFramework", out serviceTest))
+            {
+                serviceTest?.Dispose();
+            }
         }
 
     }
