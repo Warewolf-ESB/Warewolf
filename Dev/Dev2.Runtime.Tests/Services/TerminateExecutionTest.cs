@@ -55,16 +55,6 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
-        public void ExecuteExpectTaskTerminated()
-        {
-            var service = GetExecutableService();
-            ExecutableServiceRepository.Instance.Add(service.Object);
-            var terminateExecution = new TerminateExecution();
-            terminateExecution.Execute(GetDictionary(), GetWorkspace().Object);
-            service.Verify(s => s.Terminate(), Times.Once());
-        }
-
-        [TestMethod]
         public void ExecuteExpectSuccessResult()
         {
             var service = GetExecutableService();

@@ -64,7 +64,7 @@ namespace Dev2.Runtime.Security
                 authorized = IsAuthorized(ClaimsPrincipal.Current, context, resource);
             }
 
-            if (!authorized) // TODO : Do we need to check pending request for user?
+            if (!authorized)
             {
                 if (ResultsCache.Instance.ContainsPendingRequestForUser(ClaimsPrincipal.Current.Identity.Name))
                 {
