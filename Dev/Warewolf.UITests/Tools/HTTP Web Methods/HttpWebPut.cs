@@ -6,7 +6,7 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class HttpWebPut
     {
-        const string WebSourceName = "UITestingWebSourceFromTool";
+        const string WebSourceName = "UITestingWebSource";
 
         [TestMethod]
 		[TestCategory("Tools")]
@@ -14,12 +14,14 @@ namespace Warewolf.UITests.Tools
         {
             Uimap.Drag_PutWeb_Tool_Onto_DesignSurface();
             Uimap.Open_PutWeb_Tool_large_view();
-            Uimap.Click_AddNew_Web_Source_From_tool();
+            Uimap.Click_AddNew_Web_Source_From_PutWebtool();
             Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
             Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
-            Uimap.Click_PutWeb_GenerateOutputs_Button();
-            Uimap.Click_PutWeb_Paste_Response_Button();
-            Uimap.Click_PutWeb_Cancel_Button();
+            Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
+            Uimap.Click_Workflow_ExpandAll();
+            //Uimap.Click_PutWeb_GenerateOutputs_Button();
+            //Uimap.Click_PutWeb_Paste_Response_Button();
+            //Uimap.Click_PutWeb_Cancel_Button();
         }
 
         #region Additional test attributes

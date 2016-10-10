@@ -14,7 +14,6 @@ namespace Warewolf.UITests
             UIMap.Enter_Recordset_On_UniqueRecorsds_tool();
             UIMap.Open_UniqueRecords_Large_View();
             UIMap.Press_F6();
-
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Click_MessageBox_No();
         }

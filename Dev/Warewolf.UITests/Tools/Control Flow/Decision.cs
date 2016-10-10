@@ -13,7 +13,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
             Uimap.Drag_Toolbox_Decision_Onto_DesignSurface();
             Uimap.Click_Decision_Dialog_Done_Button();
             Uimap.Open_Decision_Large_View();
-            Uimap.Click_Decision_Dialog_Done_Button();
+            Uimap.Click_Decision_Dialog_Cancel_Button();
         }
 
         #region Additional test attributes
@@ -26,6 +26,13 @@ namespace Warewolf.UITests.Tools.Control_Flow
             Uimap.CloseHangingDialogs();
 #endif
             Uimap.InitializeABlankWorkflow();
+        }
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
         }
 
         UIMap Uimap

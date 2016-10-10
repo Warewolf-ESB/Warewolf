@@ -12,7 +12,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {
             Uimap.Drag_Toolbox_Sequence_Onto_DesignSurface();
             Uimap.Open_Sequence_Large_tool_View();
-            Uimap.Drag_Toolbox_AssignObject_Onto_DesignSurface();
+            Uimap.Drag_Toolbox_AssignObject_Onto_Sequence_Tool();
         }
 
         #region Additional test attributes
@@ -25,6 +25,13 @@ namespace Warewolf.UITests.Tools.Control_Flow
             Uimap.CloseHangingDialogs();
 #endif
             Uimap.InitializeABlankWorkflow();
+        }
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
         }
 
         UIMap Uimap
