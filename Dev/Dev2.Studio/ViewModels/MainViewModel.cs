@@ -1200,6 +1200,11 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.AddWorkSurfaceContext(resourceModel);
         }
 
+        public void ActivateWorkSurfaceContext(IWorkSurfaceContextViewModel resourceModel)
+        {
+            _worksurfaceContextManager.AddAndActivateWorkSurface(resourceModel as WorkSurfaceContextViewModel);
+        }
+
         /// <summary>
         ///     Saves all open tabs locally and writes the open tabs the to collection of workspace items
         /// </summary>
