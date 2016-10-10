@@ -386,7 +386,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public bool CanSave()
         {
-            var enabled = IsEnvironmentConnected() && !DebugOutputViewModel.IsStopping && !DebugOutputViewModel.IsConfiguring;
+            var enabled = IsEnvironmentConnected() && !DebugOutputViewModel.IsStopping && !DebugOutputViewModel.IsConfiguring && !ContextualResourceModel.IsWorkflowSaved;
             return enabled;
         }
 

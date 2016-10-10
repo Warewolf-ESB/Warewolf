@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Linq;
+using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -100,6 +101,7 @@ namespace Dev2.Studio.ViewModels
         void AddSettingsWorkSurface();
 
         void AddSchedulerWorkSurface();
+        void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
 
         void AddWorkspaceItem(IContextualResourceModel model);
 
@@ -118,6 +120,7 @@ namespace Dev2.Studio.ViewModels
 
         bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false);
         void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
+        void RunAllTestsForService(IContextualResourceModel resourceModel);
     }
 
     public class WorksurfaceContextManager : IWorksurfaceContextManager
@@ -205,6 +208,13 @@ namespace Dev2.Studio.ViewModels
             var key = workSurfaceKey as WorkSurfaceKey;
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void RunAllTestsForService(IContextualResourceModel resourceModel)
+        {
+            var workflow = new WorkflowDesignerViewModel(resourceModel);
+            var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow);
+            testViewModel.RunAllTestsInBrowserCommand.Execute(null);
         }
 
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
@@ -883,6 +893,19 @@ namespace Dev2.Studio.ViewModels
         public void AddSchedulerWorkSurface()
         {
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
+        }
+
+        public void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var schedulerViewModel = new SchedulerViewModel(_mainViewModel.EventPublisher, new DirectoryObjectPickerDialog(), _mainViewModel.PopupProvider, _mainViewModel.AsyncWorker, ActiveServer, null);
+           
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.Scheduler, resourceModel.ID);
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, schedulerViewModel);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+
+            schedulerViewModel.CreateNewTask();
+            schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
         }
 
         public void AddWorkspaceItem(IContextualResourceModel model)

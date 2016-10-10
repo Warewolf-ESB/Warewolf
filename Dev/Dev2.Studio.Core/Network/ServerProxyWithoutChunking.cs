@@ -44,7 +44,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
-using Warewolf.Resource.Errors;
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -400,7 +399,6 @@ namespace Dev2.Network
         {
             if (!IsConnecting)
             {
-                StopReconnectHeartbeat();
                 Connect(ID);
             }
             if (IsConnected)
@@ -412,6 +410,8 @@ namespace Dev2.Network
 
         public void Disconnect()
         {
+            // It can take some time to shutdown when permissions have changed ;(
+            // Give 5 seconds, then force a dispose ;)
             try
             {
                 IsShuttingDown = true;
@@ -491,15 +491,22 @@ namespace Dev2.Network
 
         void OnMemoReceived(string objString)
         {
+            // DO NOT use publish as memo is of type object 
+            // and hence won't find the correct subscriptions
+
             var obj = _serializer.Deserialize<DesignValidationMemo>(objString);
             ServerEvents.PublishObject(obj);
         }
 
         void OnPermissionsMemoReceived(string objString)
         {
+            // DO NOT use publish as memo is of type object 
+            // and hence won't find the correct subscriptions
             var obj = _serializer.Deserialize<PermissionsModifiedMemo>(objString);
             try
             {
+                // When we connect against group A with Administrator perms, and we remove all permissions, a 403 will be thrown. 
+                // Handle it more gracefully ;)
                 RaisePermissionsModified(obj.ModifiedPermissions);
             }
             catch (Exception e)
@@ -514,6 +521,10 @@ namespace Dev2.Network
         void OnItemAddedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
+            if (serverExplorerItem.ServerId == ServerID)
+            {
+              //  return;
+            }
             serverExplorerItem.ServerId = ID;
             ItemAddedMessageAction?.Invoke(serverExplorerItem);
         }
@@ -640,7 +651,6 @@ namespace Dev2.Network
             //Wait(fragmentInvoke, result);
             
         }
-
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId)
         {
             if (payload == null || payload.Length == 0)
@@ -650,6 +660,7 @@ namespace Dev2.Network
 
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
+            // build up payload 
             var messageId = Guid.NewGuid();
             var envelope = new Envelope
             {

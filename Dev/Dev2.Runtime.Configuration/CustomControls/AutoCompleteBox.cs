@@ -1728,10 +1728,7 @@ namespace System.Windows.Controls
 
             if(hasFocus)
             {
-                if(TextBox != null && TextBox.SelectionLength == 0)
-                {
-                    TextBox.SelectAll();
-                }
+                
             }
             else
             {

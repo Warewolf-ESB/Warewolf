@@ -126,7 +126,7 @@ namespace Warewolf.Studio.ViewModels
         {
             AsyncWorker.Start(() =>
             {
-                var contextModel = ResourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
+                var contextModel = ResourceModel?.Environment?.ResourceRepository?.LoadContextualResourceModel(resourceId);
                 _resourceModel = contextModel;
                 return GetTests();
             }, models =>
