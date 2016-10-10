@@ -30,16 +30,30 @@ using Warewolf.Core;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    // ReSharper disable once MemberCanBeInternal
     public class SaveDbService : IEsbManagementEndpoint
     {
+        private readonly IAuthorizer _authorizer;
         IExplorerServerResourceRepository _serverExplorerRepository;
 
+        public SaveDbService(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public SaveDbService()
+            :this(new SecuredCreateEndpoint())
+        {
+            
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
+                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
 
                 Dev2Logger.Info("Save Resource Service");
                 StringBuilder resourceDefinition;

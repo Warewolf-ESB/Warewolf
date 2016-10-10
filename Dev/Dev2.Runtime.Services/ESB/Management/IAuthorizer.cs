@@ -5,12 +5,12 @@ using Dev2.Services.Security;
 
 namespace Dev2.Runtime.ESB.Management
 {
-    public interface ISecuredService
+    public interface IAuthorizer
     {
         void RunPermissions(Guid resourceId);
     }
 
-    public class SecuredCreateEndpoint : ISecuredService
+    public class SecuredCreateEndpoint : IAuthorizer
     {
         private readonly IAuthorizationService _authorizationService;
 
@@ -31,14 +31,14 @@ namespace Dev2.Runtime.ESB.Management
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceId.ToString());
             if (!isAuthorized)
             {
-                throw new NotAuthorizedToCreateException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToCreateException);
+                throw new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToCreateException);
             }
         }
 
         #endregion
     }
 
-    public class SecuredViewManagementEndpoint : ISecuredService
+    public class SecuredViewManagementEndpoint : IAuthorizer
     {
         private readonly IAuthorizationService _authorizationService;
 
@@ -59,14 +59,14 @@ namespace Dev2.Runtime.ESB.Management
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.View, resourceId.ToString());
             if (!isAuthorized)
             {
-                throw new NotAuthorizedToCreateException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToViewException);
+                throw new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToViewException);
             }
         }
 
         #endregion
     }
 
-    public class SecuredContributeManagementEndpoint : ISecuredService
+    public class SecuredContributeManagementEndpoint : IAuthorizer
     {
         private readonly IAuthorizationService _authorizationService;
 
@@ -87,14 +87,14 @@ namespace Dev2.Runtime.ESB.Management
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceId.ToString());
             if (!isAuthorized)
             {
-                throw new NotAuthorizedToCreateException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException);
+                throw new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException);
             }
         }
 
         #endregion
     }
 
-    public class SecuredExecuteManagementEndpoint : ISecuredService
+    public class SecuredExecuteManagementEndpoint : IAuthorizer
     {
         private readonly IAuthorizationService _authorizationService;
 
@@ -115,13 +115,13 @@ namespace Dev2.Runtime.ESB.Management
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.Execute, resourceId.ToString());
             if (!isAuthorized)
             {
-                throw new NotAuthorizedToCreateException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToExecuteException);
+                throw new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToExecuteException);
             }
         }
 
         #endregion
     }
-    public class SecuredDeployFromManagementEndpoint : ISecuredService
+    public class SecuredDeployFromManagementEndpoint : IAuthorizer
     {
         private readonly IAuthorizationService _authorizationService;
 
@@ -142,14 +142,14 @@ namespace Dev2.Runtime.ESB.Management
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resourceId.ToString());
             if (!isAuthorized)
             {
-                throw new NotAuthorizedToCreateException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToDeployFromException);
+                throw new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToDeployFromException);
             }
         }
 
         #endregion
     }
 
-    public class SecuredDeployToManagementEndpoint : ISecuredService
+    public class SecuredDeployToManagementEndpoint : IAuthorizer
     {
         private readonly IAuthorizationService _authorizationService;
 
@@ -170,14 +170,14 @@ namespace Dev2.Runtime.ESB.Management
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resourceId.ToString());
             if (!isAuthorized)
             {
-                throw new NotAuthorizedToCreateException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToDeployToException);
+                throw new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToDeployToException);
             }
         }
 
         #endregion
     }
 
-    public class SecuredAdministratorManagementEndpoint : ISecuredService
+    public class SecuredAdministratorManagementEndpoint : IAuthorizer
     {
         private readonly IAuthorizationService _authorizationService;
 
@@ -198,7 +198,7 @@ namespace Dev2.Runtime.ESB.Management
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.Administrator, resourceId.ToString());
             if (!isAuthorized)
             {
-                throw new NotAuthorizedToCreateException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToAdministratorException);
+                throw new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToAdministratorException);
             }
         }
 
