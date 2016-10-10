@@ -404,7 +404,7 @@ namespace Dev2.Settings.Scheduler
 
         public ObservableCollection<IScheduledResource> TaskList => ScheduledResourceModel != null ? ScheduledResourceModel.ScheduledResources : new ObservableCollection<IScheduledResource>();
 
-        public string TriggerText => SelectedTask != null ? SelectedTask.Trigger.Trigger.Instance.ToString() : string.Empty;
+        public string TriggerText => SelectedTask?.Trigger.Trigger.Instance.ToString() ?? string.Empty;
 
         public IScheduledResource SelectedTask
         {
@@ -822,6 +822,11 @@ namespace Dev2.Settings.Scheduler
             {
                 return _popupController;
             }
+        }
+
+        public void UpdateScheduleWithResourceDetails(string resourcePath, Guid id, string resourceName)
+        {
+            SchedulerTaskManager.UpdateScheduleWithResourceDetails(resourcePath, id, resourceName);
         }
     }
 

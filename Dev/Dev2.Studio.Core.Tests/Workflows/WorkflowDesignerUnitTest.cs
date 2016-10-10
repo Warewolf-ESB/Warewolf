@@ -4018,6 +4018,8 @@ namespace Dev2.Core.Tests.Workflows
 
         }
 
+        private Mock<IShellViewModel> _shellViewModelMock;
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("WorkflowDesignerModel_DebugInputsCommand")]
@@ -4063,11 +4065,14 @@ namespace Dev2.Core.Tests.Workflows
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
             resourceModel.SetupProperty(model => model.WorkflowXaml);
 
+            _shellViewModelMock = new Mock<IShellViewModel>();
+
             #endregion
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.DebugInputsCommand.Execute(null);
+            Assert.IsTrue(viewModel.DebugInputsCommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -4121,6 +4126,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.DebugStudioCommand.Execute(null);
+            Assert.IsTrue(viewModel.DebugStudioCommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -4174,6 +4180,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.DebugBrowserCommand.Execute(null);
+            Assert.IsTrue(viewModel.DebugBrowserCommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -4227,6 +4234,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.ScheduleCommand.Execute(null);
+            Assert.IsTrue(viewModel.ScheduleCommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -4280,6 +4288,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.TestEditorCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestEditorCommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -4333,6 +4342,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.RunAllTestsCommand.Execute(null);
+            Assert.IsTrue(viewModel.RunAllTestsCommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -4386,6 +4396,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.DuplicateCommand.Execute(null);
+            Assert.IsTrue(viewModel.DuplicateCommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -4439,6 +4450,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.DeployCommand.Execute(null);
+            Assert.IsTrue(viewModel.DeployCommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -4492,6 +4504,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.ShowDependenciesCommand.Execute(null);
+            Assert.IsTrue(viewModel.ShowDependenciesCommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -4545,6 +4558,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.ViewSwaggerCommand.Execute(null);
+            Assert.IsTrue(viewModel.ViewSwaggerCommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -4598,6 +4612,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.CopyUrlCommand.Execute(null);
+            Assert.IsTrue(viewModel.ViewSwaggerCommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
     }

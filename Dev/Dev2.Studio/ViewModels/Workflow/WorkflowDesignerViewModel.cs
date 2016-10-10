@@ -449,7 +449,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            mvm.SchedulerCommand.Execute(mvm.ActiveItem);
+                            mvm.CreateNewSchedule(mvm.ActiveItem.ContextualResourceModel.ID);
                         }
                     }
                 }));
@@ -485,7 +485,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            //Run All Tests
+                            mvm.RunAllTests(mvm.ActiveItem.ContextualResourceModel.ID);
                         }
                     }
                 }));

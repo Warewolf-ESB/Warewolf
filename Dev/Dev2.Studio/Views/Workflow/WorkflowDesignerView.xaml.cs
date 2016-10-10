@@ -23,28 +23,14 @@ namespace Dev2.Studio.Views.Workflow
     public partial class WorkflowDesignerView : IWorkflowDesignerView
     {
         readonly DragDropHelpers _dragDropHelpers;
-        //IDisposable _subscription;
+
         public WorkflowDesignerView()
         {
             InitializeComponent();
             PreviewDrop += DropPointOnDragEnter;
             PreviewDragOver += DropPointOnDragEnter;
             PreviewMouseDown += WorkflowDesignerViewPreviewMouseDown;
-            KeyDown += OnKeyDown;
             _dragDropHelpers = new DragDropHelpers(this);
-            //            var pattern = Observable.FromEventPattern<KeyEventArgs>(this,"KeyUp");
-            //            pattern.Throttle(TimeSpan.FromMilliseconds(50000))
-            //                .ObserveOn(SynchronizationContext.Current);
-            //
-            //            pattern.Subscribe(PerformOnDispatcher);
-        }
-
-        void OnKeyDown(object sender, KeyEventArgs e)
-        {
-            //if (e.Key == Key.Enter)
-            //{
-                
-            //}
         }
 
         void WorkflowDesignerViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
