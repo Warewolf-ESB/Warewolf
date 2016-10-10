@@ -21,6 +21,19 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
 
+        private readonly IAuthorizer _authorizer;
+        public SaveOAuthSource(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public SaveOAuthSource()
+            :this(new SecuredCreateEndpoint())
+        {
+
+        }
+
         #region Implementation of ISpookyLoadable<out string>
 
         public string HandlesType()
@@ -44,6 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
+                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save OAuth Source");
                 StringBuilder resourceDefinition;
 

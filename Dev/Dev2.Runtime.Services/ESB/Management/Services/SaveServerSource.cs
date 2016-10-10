@@ -24,6 +24,18 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SaveServerSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
+        private readonly IAuthorizer _authorizer;
+        public SaveServerSource(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public SaveServerSource()
+            :this(new SecuredCreateEndpoint())
+        {
+
+        }
 
         private static int GETSpecifiedIndexOf(string str, char ch, int index)
         {
@@ -42,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-
+                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
 

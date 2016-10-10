@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.PerformanceCounters.Management;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,7 +27,9 @@ namespace Dev2.Tests.Runtime.Services
             var serializedCounter = serializer.SerializeToBuilder(new PerformanceCounterTo());
             var mockPerfCounterManager = new Mock<IPerformanceCounterRepository>();
             mockPerfCounterManager.Setup(repository => repository.Save(It.IsAny<IPerformanceCounterTo>())).Verifiable();
-            var savePerformanceCounters = new SavePerformanceCounters { Manager = mockPerfCounterManager.Object };
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID));
+            var savePerformanceCounters = new SavePerformanceCounters(mock.Object) { Manager = mockPerfCounterManager.Object };
             var values = new Dictionary<string, StringBuilder> { { "PerformanceCounterTo", serializedCounter } };
             //------------Execute Test---------------------------
             var result = savePerformanceCounters.Execute(values, new Mock<IWorkspace>().Object);
@@ -46,7 +50,9 @@ namespace Dev2.Tests.Runtime.Services
             var serializedCounter = serializer.SerializeToBuilder(new PerformanceCounterTo());
             var mockPerfCounterManager = new Mock<IPerformanceCounterRepository>();
             mockPerfCounterManager.Setup(repository => repository.Save(It.IsAny<IPerformanceCounterTo>())).Throws(new Exception("This call failed"));
-            var savePerformanceCounters = new SavePerformanceCounters { Manager = mockPerfCounterManager.Object };
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID));
+            var savePerformanceCounters = new SavePerformanceCounters(mock.Object) { Manager = mockPerfCounterManager.Object };
             var values = new Dictionary<string, StringBuilder> { { "PerformanceCounterTo", serializedCounter } };
             //------------Execute Test---------------------------
             var result = savePerformanceCounters.Execute(values, new Mock<IWorkspace>().Object);

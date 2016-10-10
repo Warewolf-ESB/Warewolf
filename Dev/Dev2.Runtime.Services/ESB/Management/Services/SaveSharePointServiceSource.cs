@@ -19,13 +19,25 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SaveSharePointServiceSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
+        private readonly IAuthorizer _authorizer;
+        public SaveSharePointServiceSource(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
 
+        // ReSharper disable once MemberCanBeInternal
+        public SaveSharePointServiceSource()
+            :this(new SecuredCreateEndpoint())
+        {
+
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
+                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save Sharepoint Source");
                 StringBuilder resourceDefinition;
 

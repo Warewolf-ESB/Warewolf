@@ -31,7 +31,18 @@ namespace Dev2.Runtime.ESB.Management.Services
         private IServerSchedulerFactory _schedulerFactory;
         ISecurityWrapper _securityWrapper;
         private IResourceCatalog _catalog;
+        private readonly IAuthorizer _authorizer;
+        public SaveScheduledResource(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
 
+        // ReSharper disable once MemberCanBeInternal
+        public SaveScheduledResource()
+            :this(new SecuredCreateEndpoint())
+        {
+
+        }
         public string HandlesType()
         {
             return "SaveScheduledResourceService";
@@ -45,7 +56,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                if(tmp != null)
+                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
+                if (tmp != null)
                 {
 
                     var res = serializer.Deserialize<IScheduledResource>(tmp);

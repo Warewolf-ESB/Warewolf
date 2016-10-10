@@ -19,6 +19,18 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SaveComPluginSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
+        private readonly IAuthorizer _authorizer;
+        public SaveComPluginSource(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public SaveComPluginSource()
+            :this(new SecuredCreateEndpoint())
+        {
+
+        }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -26,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-
+                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save Com Plugin Source");
                 StringBuilder resourceDefinition;
 
