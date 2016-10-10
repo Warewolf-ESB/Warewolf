@@ -1,0 +1,106 @@
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Warewolf.UITests.Tools.Data
+{
+    [CodedUITest]
+    public class AssignToolInUnpinnedWorkflowTab
+    {
+        //[TestMethod]
+        //public void AssignToolInUnpinnedWorkflowTabOpenAndCloseLargeViewWithDoubleClickUITest()
+        //{
+        //    UIMap.Open_Assign_Tool_Large_View();
+        //    UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
+        //    UIMap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName();
+        //    UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
+        //    UIMap.Click_Assign_Tool_Large_View_Done_Button();
+        //}
+
+        //[TestMethod]
+        //public void AssignToolInUnpinnedWorkflowTabOpenAndCloseLargeViewWithExpandAllToggleUITest()
+        //{
+        //    UIMap.Click_Assign_Tool_ExpandAll();
+        //    UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
+        //    UIMap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName();
+        //    UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
+        //    UIMap.Click_Workflow_CollapseAll();
+        //}
+
+        //[TestMethod]
+        //public void AssignToolInUnpinnedWorkflowTabUrlUITest()
+        //{
+        //    UIMap.Click_Assign_Tool_url();
+        //}
+
+        //[TestMethod]
+        //public void AssignToolInUnpinnedWorkflowTabQviUITest()
+        //{
+        //    UIMap.Open_Assign_Tool_Qvi_Large_View();
+        //}
+
+        //[TestMethod]
+        //public void AssignToolInUnpinnedWorkflowTabDebugOutputUITest()
+        //{
+        //    UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
+        //    UIMap.Debug_Workflow_With_Ribbon_Button();
+        //    UIMap.Click_Debug_Output_Assign_Cell();
+        //}
+
+        //[TestMethod]
+        //public void AssignToolInUnpinnedWorkflowTabAddRemoveVariablesUITest()
+        //{
+        //    const string Variable1Name = "SomeVariable";
+        //    const string Variable1Value = "50";
+        //    UIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable1Name + "]]", Variable1Value, 1);
+        //    Assert.AreEqual(Variable1Name, UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
+        //    const string Variable2Name = "SomeOtherVariable";
+        //    const string Variable2Value = "100";
+        //    UIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable2Name + "]]", Variable2Value, 2);
+        //    Assert.AreEqual(Variable2Name, UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 2.");
+        //    UIMap.Remove_Assign_Row_1_With_Context_Menu();
+        //}
+
+        //[TestMethod]
+        //public void AssignDeleteToolUITest()
+        //{
+        //    UIMap.Delete_Assign_With_Context_Menu();
+        //}
+
+        #region Additional test attributes
+
+        [TestInitialize]
+        public void MyTestInitialize()
+        {
+            UIMap.SetPlaybackSettings();
+#if !DEBUG
+            UIMap.CloseHangingDialogs();
+#endif
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab);
+            UIMap.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface();
+        }
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.TryPin_Unpinned_Pane_To_Default_Position();
+        }
+
+        UIMap UIMap
+        {
+            get
+            {
+                if (_UIMap == null)
+                {
+                    _UIMap = new UIMap();
+                }
+
+                return _UIMap;
+            }
+        }
+
+        private UIMap _UIMap;
+
+        #endregion
+    }
+}

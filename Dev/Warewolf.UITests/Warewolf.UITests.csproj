@@ -68,6 +68,7 @@
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Explorer\ItemDragAndDrop.cs" />
     <Compile Include="Sharepoint\SharepointCreateUITest.cs" />
+    <Compile Include="Tabs\AssignToolInUnpinnedWorkflowTab.cs" />
     <Compile Include="Tabs\PinUnpinPanes.cs" />
     <Compile Include="Tools\Loop Constructs\Selectandapply.cs" />
     <Compile Include="Tools\Loop Constructs\ForEach.cs" />

@@ -25,10 +25,10 @@ namespace Warewolf.UITests.Tabs
         }
 
         [TestMethod]
-        public void UnpinAndRepinDeployTab()
+        public void UnpinAndRepinSettingsTab()
         {
-            UIMap.Click_Deploy_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab);
+            UIMap.Click_Settings_Ribbon_Button();
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
@@ -41,26 +41,10 @@ namespace Warewolf.UITests.Tabs
         }
 
         [TestMethod]
-        public void UnpinAndRepinSettingsTab()
-        {
-            UIMap.Click_Settings_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
-        }
-
-        [TestMethod]
         public void UnpinAndRepinDBSourceWizardTab()
         {
             UIMap.Click_New_Database_Source_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
-        }
-
-        [TestMethod]
-        public void UnpinAndRepinDependencyGraphTab()
-        {
-            UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
@@ -77,6 +61,22 @@ namespace Warewolf.UITests.Tabs
         {
             UIMap.Click_New_Web_Source_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab);
+            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+        }
+
+        [TestMethod]
+        public void UnpinAndRepinDeployTab()
+        {
+            UIMap.Click_Deploy_Ribbon_Button();
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab);
+            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+        }
+
+        [TestMethod]
+        public void UnpinAndRepinDependencyGraphTab()
+        {
+            UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
