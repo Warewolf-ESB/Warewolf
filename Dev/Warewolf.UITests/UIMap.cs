@@ -59,9 +59,9 @@ namespace Warewolf.UITests
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
         {
-            if (ControlExistsNow(MainStudioWindow.ToolWindow))
+            if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
             {
-                Pin_Unpinned_Pane_To_Default_Position();
+                Restore_Unpinned_Tab_Using_Context_Menu();
             }
         }
 
@@ -1775,8 +1775,15 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink.Exists, "Url hyperlink does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink, new Point(201, 10));
-            Assert.IsTrue(MessageBoxWindow.Exists, "Did you know popup does not exis");
-            Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Ok button does not exist on the DidYouKnow button");
+            Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Did you know popup does not exist after clicking workflow hyperlink.");
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
+        }
+
+        public void Click_Assign_Tool_url_On_Unpinned_Tab()
+        {
+            Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink.Exists, "Url hyperlink does not exist on unpinned tab.");
+            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink, new Point(201, 10));
+            Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Did you know popup does not exist after clicking workflow hyperlink on unpinned tab.");
             Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
         }
 
@@ -1931,6 +1938,13 @@ namespace Warewolf.UITests
             Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView), "Assign tool still exists on design surface after deleting with context menu.");
         }
 
+        public void Delete_Assign_With_Context_Menu_On_Unpinned_Tab()
+        {
+            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Delete, new Point(27, 18));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView), "Assign tool still exists on unpinned design surface after deleting with context menu.");
+        }
+
         public void Debug_Workflow_With_Ribbon_Button()
         {
             Click_Debug_Ribbon_Button();
@@ -1943,6 +1957,13 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRowMenuItem, MouseButtons.Left, ModifierKeys.None, new Point(6, 6));
             Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1.");
+        }
+
+        public void Remove_Assign_Row_1_With_Context_Menu_On_Unpinned_Tab()
+        {
+            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRowMenuItem, MouseButtons.Left, ModifierKeys.None, new Point(6, 6));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1 on unpinned tab.");
         }
 
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
@@ -1965,10 +1986,30 @@ namespace Warewolf.UITests
             }
         }
 
+        [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1 on unpinned tab")]
+        public void Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab(string VariableText, string ValueText, int RowNumber)
+        {
+            switch (RowNumber)
+            {
+                case 2:
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextboxText = VariableText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextEditText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tab();
+                    Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2 on unpinned tab.");
+                    break;
+                default:
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextboxText = VariableText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextEditText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tab();
+                    Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1 on unpinned tab.");
+                    break;
+            }
+        }
+
         public void Pin_Unpinned_Pane_To_Default_Position()
         {
-            Mouse.StartDragging(MainStudioWindow.ToolWindow, new Point(5, 5));
-            Mouse.StopDragging(MainStudioWindow.ToolWindow);
+            Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
+            Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
         }
 
         public void Unpin_Tab_With_Drag(UITestControl Tab)
