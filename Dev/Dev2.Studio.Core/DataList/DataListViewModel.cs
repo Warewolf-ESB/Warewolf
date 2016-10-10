@@ -717,13 +717,15 @@ namespace Dev2.Studio.ViewModels.DataList
             if (RecsetCollection != null)
             {
                 hasUnused = RecsetCollection.Any(sc => !sc.IsUsed);
+                if (!hasUnused)
+                {
+                    hasUnused = RecsetCollection.SelectMany(sc => sc.Children).Any(sc => !sc.IsUsed);
+                }
                 if (hasUnused)
                 {
                     DeleteCommand.RaiseCanExecuteChanged();
                     return true;
                 }
-
-                hasUnused = RecsetCollection.SelectMany(sc => sc.Children).Any(sc => !sc.IsUsed);
             }
 
             if (ComplexObjectCollection != null)

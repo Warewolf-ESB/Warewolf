@@ -10,7 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -45,6 +45,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         string _assemblyLocation = "";
+        private readonly List<string> _loadedAssemblies = new List<string>();
+
         /// <summary>
         /// Runs the specified setup information.
         /// </summary>
@@ -54,6 +56,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             Assembly loadedAssembly;
             _assemblyLocation = setupInfo.AssemblyLocation;
+            SetAppDomainConfiguration(_assemblyLocation);
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
             {
@@ -72,6 +75,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return pluginResult;
         }
 
+        private void SetAppDomainConfiguration(string assemblyLocation)
+        {
+            System.Configuration.Configuration conf = ConfigurationManager.OpenExeConfiguration(assemblyLocation);
+            if (File.Exists(conf.FilePath))
+            {
+                AppDomain.CurrentDomain.SetupInformation.ConfigurationFile = conf.FilePath;
+            }
+        }
+
         public IOutputDescription Test(PluginInvokeArgs setupInfo,out string jsonResult)
         {
             try
@@ -79,6 +91,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 Assembly loadedAssembly;
                 jsonResult = null;
                 _assemblyLocation = setupInfo.AssemblyLocation;
+                SetAppDomainConfiguration(_assemblyLocation);
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
                 if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
                 {
@@ -113,7 +126,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        private MethodInfo ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
+        private MethodBase ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
         {
             var typeList = BuildTypeList(setupInfo.Parameters);
             var type = loadedAssembly.GetType(setupInfo.Fullname);
@@ -139,6 +152,18 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 methodToRun = type.GetMethod(setupInfo.Method);
             }
             object instance = Activator.CreateInstance(type);
+            if (methodToRun == null)
+            {
+                var constructor = type.GetConstructor(typeList.ToArray());
+                if (constructor != null)
+                {
+                    {
+                        pluginResult = constructor.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                        return constructor;
+                    }
+                }
+            }
+            
 
             if(methodToRun != null)
             {
@@ -153,9 +178,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string[] tokens = args.Name.Split(",".ToCharArray());
-            Debug.WriteLine("Resolving : " + args.Name);
+            Dev2Logger.Debug("Resolving : " + args.Name);
             var directoryName = Path.GetDirectoryName(_assemblyLocation);
-            return Assembly.LoadFile(Path.Combine(new[] { directoryName, tokens[0] + ".dll" }));
+            var path = Path.Combine(new[] { directoryName, tokens[0] + ".dll" });
+            var assembly = Assembly.LoadFile(path);
+            SetAppDomainConfiguration(path);
+            //TryLoadAssembly(path,assembly.FullName,out assembly);
+            return assembly;
         }
         /// <summary>
         /// Lists the namespaces.
@@ -204,6 +233,25 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
+                var constructors = type.GetConstructors();
+
+                constructors.ToList().ForEach(info =>
+                {
+                    var serviceMethod = new ServiceMethod { Name = info.Name };
+                    var parameterInfos = info.GetParameters().ToList();
+                    parameterInfos.ForEach(parameterInfo =>
+                        serviceMethod.Parameters.Add(
+                            new MethodParameter
+                            {
+                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                                EmptyToNull = false,
+                                IsRequired = true,
+                                Name = parameterInfo.Name,
+                                TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
+                            }));
+                    serviceMethodList.Add(serviceMethod);
+                });
+
 
                 methodInfos.ToList().ForEach(info =>
                 {
@@ -213,7 +261,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         serviceMethod.Parameters.Add(
                             new MethodParameter
                             {
-                                DefaultValue = parameterInfo.DefaultValue == null ? string.Empty : parameterInfo.DefaultValue.ToString(),
+                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
                                 EmptyToNull = false,
                                 IsRequired = true,
                                 Name = parameterInfo.Name,
@@ -221,6 +269,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                             }));
                     serviceMethodList.Add(serviceMethod);
                 });
+                
             }
 
             return serviceMethodList;
@@ -246,15 +295,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <param name="pluginResult">The plugin result.</param>
         /// <param name="methodToRun">The method automatic run.</param>
         /// <returns></returns>
-        private object AdjustPluginResult(object pluginResult, MethodInfo methodToRun)
+        private object AdjustPluginResult(object pluginResult, MethodBase methodToRun)
         {
             object result = pluginResult;
+            var method = methodToRun as MethodInfo;
             // When it returns a primitive or string and it is not XML or JSON, make it so ;)
-            if ((methodToRun.ReturnType.IsPrimitive || methodToRun.ReturnType.FullName == "System.String")
-                && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
+            if ((method != null && method.ReturnType.IsPrimitive || method.ReturnType.FullName == "System.String") && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
             {
                 // add our special tags ;)
-                result = string.Format("<{0}>{1}</{2}>", GlobalConstants.PrimitiveReturnValueTag, pluginResult, GlobalConstants.PrimitiveReturnValueTag);
+                result = $"<{GlobalConstants.PrimitiveReturnValueTag}>{pluginResult}</{GlobalConstants.PrimitiveReturnValueTag}>";
             }
 
             return result;
@@ -312,7 +361,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return typeList;
         }
 
-        /*
+        
         /// <summary>
         /// Tries the load assembly.
         /// </summary>
@@ -448,6 +497,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 throw new Exception("Could not locate Assembly [ " + assemblyLocation + " ]");
             }
-        }*/
+        }
     }
 }

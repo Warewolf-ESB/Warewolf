@@ -8541,6 +8541,105 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy the current resource Url.
+        /// </summary>
+        public static string StartNodeCopyUrlToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeCopyUrlToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F7].
+        /// </summary>
+        public static string StartNodeDebugBrowserToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugBrowserToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F5].
+        /// </summary>
+        public static string StartNodeDebugInputsToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugInputsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F6].
+        /// </summary>
+        public static string StartNodeDebugStudioToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugStudioToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View which resources are dependant on the current resource.
+        /// </summary>
+        public static string StartNodeDependenciesToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDependenciesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move current resource between Warewolf servers.
+        /// </summary>
+        public static string StartNodeDeployToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDeployToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate the current resource.
+        /// </summary>
+        public static string StartNodeDuplicateToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDuplicateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run all tests in browser for this resource.
+        /// </summary>
+        public static string StartNodeRunAllTestsToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeRunAllTestsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule a service to run.
+        /// </summary>
+        public static string StartNodeScheduleToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeScheduleToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View the current tests for this resource.
+        /// </summary>
+        public static string StartNodeTestEditorToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeTestEditorToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Swagger source for the current resource.
+        /// </summary>
+        public static string StartNodeViewSwaggerToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeViewSwaggerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Switch tool cannot be dropped onto this tool..
         /// </summary>
         public static string SwitchDropNotAllowedMessage {

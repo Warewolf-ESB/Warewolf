@@ -9,6 +9,8 @@
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:workflow="clr-namespace:Dev2.Studio.ViewModels.Workflow"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              AllowDrop="True"
              AutomationProperties.AutomationId="UI_WorkflowDesigner_AutoID"
              mc:Ignorable="d"
@@ -58,6 +60,125 @@
                                     Content="{Binding Path=DesignerView}"
                                     AutomationProperties.AutomationId="{Binding Path=DesignerText}"
                                     cal:Message.Attach="[Event LostKeyboardFocus] = [Action DoWorkspaceSave]">
+                <ig:ContextMenuService.Manager>
+                    <ig:ContextMenuManager OpenMode="RightClick">
+                        <ig:ContextMenuManager.ContextMenu>
+                            <ig:XamContextMenu x:Name="StartNodeContextMenu" Visibility="Collapsed" >
+                                <ig:XamContextMenu.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel Background="{StaticResource WareWolfWhiteBrush}" Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ig:XamContextMenu.ItemsPanel>
+
+                                <ig:XamMenuItem Name="DebugInputs"
+                                                Command="{Binding DebugInputsCommand}"
+                                                Header="Debug Inputs"
+                                                InputGestureText="F5" 
+                                                ToolTip="{x:Static languages:Core.StartNodeDebugInputsToolTip}">
+                                    <ig:XamMenuItem.Icon>
+                                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                    </ig:XamMenuItem.Icon>
+                                </ig:XamMenuItem>
+
+                                <ig:XamMenuItem Name="DebugStudio"
+                                                Command="{Binding DebugStudioCommand}"
+                                                Header="Debug Studio"
+                                                InputGestureText="F6"
+                                                ToolTip="{x:Static languages:Core.StartNodeDebugStudioToolTip}">
+                                    <ig:XamMenuItem.Icon>
+                                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                    </ig:XamMenuItem.Icon>
+                                </ig:XamMenuItem>
+
+                                <ig:XamMenuItem Name="DebugBrowser"
+                                                Command="{Binding DebugBrowserCommand}"
+                                                Header="Debug Browser"
+                                                InputGestureText="F7"
+                                                ToolTip="{x:Static languages:Core.StartNodeDebugBrowserToolTip}">
+                                    <ig:XamMenuItem.Icon>
+                                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                    </ig:XamMenuItem.Icon>
+                                </ig:XamMenuItem>
+
+                                <ig:XamMenuItem Name="Schedule"
+                                                Command="{Binding ScheduleCommand}"
+                                                Header="Schedule"
+                                                ToolTip="{x:Static languages:Core.StartNodeScheduleToolTip}">
+                                    <ig:XamMenuItem.Icon>
+                                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
+                                    </ig:XamMenuItem.Icon>
+                                </ig:XamMenuItem>
+
+                                <ig:XamMenuSeparator />
+
+                                <ig:XamMenuItem Name="TestEditor"
+                                                Command="{Binding TestEditorCommand}"
+                                                Header="Test Editor"
+                                                ToolTip="{x:Static languages:Core.MenuDeployToolTip}">
+                                    <ig:XamMenuItem.Icon>
+                                        <fa:FontAwesome Margin="0,2,0,0" FontSize="14" FontWeight="Light" Icon="Flask" />
+                                    </ig:XamMenuItem.Icon>
+                                </ig:XamMenuItem>
+
+                                <ig:XamMenuItem Name="RunAllTests"
+                                                Command="{Binding RunAllTestsCommand}"
+                                                Header="Run All Tests"
+                                                ToolTip="{x:Static languages:Core.MenuDeployToolTip}">
+                                </ig:XamMenuItem>
+
+                                <ig:XamMenuSeparator />
+
+                                <ig:XamMenuItem Name="Duplicate"
+                                                Command="{Binding DuplicateCommand}"
+                                                Header="Duplicate"
+                                                ToolTip="{x:Static languages:Core.MenuDeployToolTip}">
+                                    <ig:XamMenuItem.Icon>
+                                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Clone" />
+                                    </ig:XamMenuItem.Icon>
+                                </ig:XamMenuItem>
+
+                                <ig:XamMenuItem Name="Deploy"
+                                                Command="{Binding DeployCommand}"
+                                                Header="Deploy"
+                                                ToolTip="{x:Static languages:Core.StartNodeDeployToolTip}">
+                                    <ig:XamMenuItem.Icon>
+                                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
+                                    </ig:XamMenuItem.Icon>
+                                </ig:XamMenuItem>
+
+                                <ig:XamMenuSeparator />
+
+                                <ig:XamMenuItem Name="Dependencies"
+                                                Command="{Binding ShowDependenciesCommand}"
+                                                CommandParameter="{Binding Data}"
+                                                Header="Show Dependencies"
+                                                ToolTip="{x:Static languages:Core.StartNodeDependenciesToolTip}">
+                                    <ig:XamMenuItem.Icon>
+                                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Sitemap" />
+                                    </ig:XamMenuItem.Icon>
+                                </ig:XamMenuItem>
+
+                                <ig:XamMenuItem Name="ViewSwagger"
+                                                Command="{Binding ViewSwaggerCommand}"
+                                                Header="View Swagger" 
+                                                ToolTip="{x:Static languages:Core.StartNodeViewSwaggerToolTip}">
+                                    <ig:XamMenuItem.Icon>
+                                        <Image Style="{StaticResource ViewSwaggerIcon}" Margin="-2,-2,0,0"/>
+                                    </ig:XamMenuItem.Icon>
+                                </ig:XamMenuItem>
+
+                                <ig:XamMenuSeparator />
+
+                                <ig:XamMenuItem Name="CopyUrl"
+                                                Command="{Binding CopyUrlCommand}"
+                                                Header="Copy URL to Clipboard"
+                                                ToolTip="{x:Static languages:Core.StartNodeCopyUrlToolTip}">
+                                </ig:XamMenuItem>
+
+                            </ig:XamContextMenu>
+                        </ig:ContextMenuManager.ContextMenu>
+                    </ig:ContextMenuManager>
+                </ig:ContextMenuService.Manager>
                 <i:Interaction.Behaviors>
                     <local:WorkflowDesignerLinkBehaviours CollapseAllCommand="{Binding CollapseAllCommand}"
                                                                   ExpandAllCommand="{Binding ExpandAllCommand}" />
