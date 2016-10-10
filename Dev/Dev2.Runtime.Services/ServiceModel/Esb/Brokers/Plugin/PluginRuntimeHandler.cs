@@ -183,7 +183,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var path = Path.Combine(new[] { directoryName, tokens[0] + ".dll" });
             var assembly = Assembly.LoadFile(path);
             SetAppDomainConfiguration(path);
-            TryLoadAssembly(path,assembly.FullName,out assembly);
+            //TryLoadAssembly(path,assembly.FullName,out assembly);
             return assembly;
         }
         /// <summary>
