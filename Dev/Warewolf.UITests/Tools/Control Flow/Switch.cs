@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
     public class Switch
     {
         [TestMethod]
-		[TestCategory("Tools")]
+        [TestCategory("Tools")]
         public void SwitchToolUITest()
         {
             Uimap.Drag_Toolbox_Switch_Onto_DesignSurface();
@@ -28,6 +28,13 @@ namespace Warewolf.UITests.Tools.Control_Flow
             Uimap.CloseHangingDialogs();
 #endif
             Uimap.InitializeABlankWorkflow();
+        }
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
         }
 
         UIMap Uimap

@@ -1678,7 +1678,19 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field1.Exists, "rec().a does not exist in the variable explorer");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field2.Exists, "rec().b does not exist in the variable explorer");
         }
+      
+        public void Click_AddNew_Web_Source_From_PutWebtool()
+        {
+            #region Variable Declarations
+            WpfButton newSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.NewSourceButton;
+            #endregion
 
+            // Verify that the 'Exists' property of 'New' button equals 'True'
+            Assert.AreEqual(this.Click_AddNew_Web_Source_From_toolParams.NewSourceButtonExists, newSourceButton.Exists, "New Source Button does not exist");
+
+            // Click 'New' button
+            Mouse.Click(newSourceButton, new Point(30, 4));
+        }
         public void Enter_Text_Into_Debug_Input_Row1_Value_Textbox_With_Special_Test_For_Textbox_Height(string text)
         {
             var varValue = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
@@ -2144,7 +2156,7 @@ namespace Warewolf.UITests
             WpfEdit result = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique.SmallViewContentCustom.ResultsComboBox.TextEdit;
             #endregion
 
-            inFields.Text = "[[rec().a]],[[rec().a]],[[rec().c]]";
+            inFields.Text = "[[rec().a]],[[rec().b]],[[rec().c]]";
             returnFields.Text = "[[rec().b]]";
             result.Text = "[[rec().c]]";
 
@@ -2325,5 +2337,53 @@ namespace Warewolf.UITests
             // Type '5' in 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
             atIndex.Text = AtIndexCellValue;
         }
+
+        /// <summary>
+        /// Drag_Toolbox_AssignObject_Onto_Sequence_Tool - Use 'Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Toolbox_AssignObject_Onto_Sequence_Tool()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem assignObject = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject;
+            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity;
+            #endregion
+
+            // Type 'Assign Object' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            sequence.EnsureClickable(new Point(155, 22));
+            Mouse.StartDragging(assignObject, new Point(13, 17));
+            Mouse.StopDragging(sequence);
+        }
+
+        public virtual Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_AssignObject_Onto_Sequence_ToolParams == null))
+                {
+                    this.mDrag_Toolbox_AssignObject_Onto_Sequence_ToolParams = new Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams();
+                }
+                return this.mDrag_Toolbox_AssignObject_Onto_Sequence_ToolParams;
+            }
+        }
+
+        private Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams mDrag_Toolbox_AssignObject_Onto_Sequence_ToolParams;
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_AssignObject_Onto_Sequence_Tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Type 'Assign Object' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Assign Object";
+        #endregion
     }
 }

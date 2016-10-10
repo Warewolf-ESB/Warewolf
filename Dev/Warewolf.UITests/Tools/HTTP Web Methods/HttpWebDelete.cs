@@ -6,7 +6,7 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class HttpWebDelete
     {
-        const string WebSourceName = "UITestingWebSourceFromTool";
+        const string WebSourceName = "UITestingWebSource";
 
         [TestMethod]
         [TestCategory("Tools")]
@@ -17,6 +17,10 @@ namespace Warewolf.UITests.Tools
             Uimap.Click_AddNew_Web_Source_From_tool();
             Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
             Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
+            Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
+            Uimap.Open_DeleteWeb_Tool_Large_View();
+            Uimap.Select_UITestingSource_From_Web_Server_Large_View_Source_Combobox();
+            Uimap.Click_DeleteWeb_Generate_Outputs();
         }
     
         #region Additional test attributes
