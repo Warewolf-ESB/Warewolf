@@ -1265,4 +1265,25 @@ Please contact your Windows System Administrator.</value>
   <data name="InvalidMovePermissionErrorMessage" xml:space="preserve">
     <value>You do not have permission to move this item. Contribute permission is required to move an item.</value>
   </data>
+  <data name="NotAuthorizedToAdministratorException" xml:space="preserve">
+    <value>NotAuthorizedToAdministratorException</value>
+  </data>
+  <data name="NotAuthorizedToContributeException" xml:space="preserve">
+    <value>NotAuthorizedToContributeException</value>
+  </data>
+  <data name="NotAuthorizedToCreateException" xml:space="preserve">
+    <value>NotAuthorizedToCreateException</value>
+  </data>
+  <data name="NotAuthorizedToDeployFromException" xml:space="preserve">
+    <value>NotAuthorizedToDeployFromException</value>
+  </data>
+  <data name="NotAuthorizedToDeployToException" xml:space="preserve">
+    <value>NotAuthorizedToDeployToException</value>
+  </data>
+  <data name="NotAuthorizedToExecuteException" xml:space="preserve">
+    <value>NotAuthorizedToExecuteException</value>
+  </data>
+  <data name="NotAuthorizedToViewException" xml:space="preserve">
+    <value>NotAuthorizedToViewException</value>
+  </data>
 </root>
