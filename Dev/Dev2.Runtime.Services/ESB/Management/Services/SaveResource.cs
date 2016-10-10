@@ -29,11 +29,23 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SaveResource : IEsbManagementEndpoint
     {
+        private readonly IAuthorizer _authorizer;
+        public SaveResource(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public SaveResource()
+            :this(new SecuredCreateEndpoint())
+        {
+
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
-
+                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
 

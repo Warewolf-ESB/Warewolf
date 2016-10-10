@@ -22,12 +22,26 @@ namespace Dev2.Runtime.ESB.Management.Services
         private IExplorerServerResourceRepository _serverExplorerRepository;
         private IResourceCatalog _resourceCatalogue;
 
+        private readonly IAuthorizer _authorizer;
+        public SaveExchangeServiceSource(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public SaveExchangeServiceSource()
+            :this(new SecuredCreateEndpoint())
+        {
+
+        }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
+                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save Exchange Service Source");
                 StringBuilder resourceDefinition;
 

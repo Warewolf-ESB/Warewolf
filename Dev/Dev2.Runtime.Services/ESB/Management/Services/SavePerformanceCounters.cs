@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
@@ -13,6 +14,20 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SavePerformanceCounters : IEsbManagementEndpoint
     {
         private IPerformanceCounterRepository _manager;
+        private readonly IAuthorizer _authorizer;
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        public SavePerformanceCounters(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public SavePerformanceCounters()
+            :this(new SecuredCreateEndpoint())
+        {
+
+        }
 
         public string HandlesType()
         {
@@ -31,6 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
+                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Manager.Save(serializer.Deserialize<IPerformanceCounterTo>(values["PerformanceCounterTo"]));
                 msg.HasError = false;
                 msg.Message = new StringBuilder();

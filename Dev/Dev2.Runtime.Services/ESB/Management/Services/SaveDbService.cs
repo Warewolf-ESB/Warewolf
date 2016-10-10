@@ -33,9 +33,9 @@ namespace Dev2.Runtime.ESB.Management.Services
     // ReSharper disable once MemberCanBeInternal
     public class SaveDbService : IEsbManagementEndpoint
     {
-        private readonly IAuthorizer _authorizer;
+       
         IExplorerServerResourceRepository _serverExplorerRepository;
-
+        private readonly IAuthorizer _authorizer;
         public SaveDbService(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
