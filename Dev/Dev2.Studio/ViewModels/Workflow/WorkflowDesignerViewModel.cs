@@ -245,7 +245,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public string GetWorkflowLink()
+        public string GetWorkflowLink(bool addWorkflowId = true)
         {
             if (_workflowInputDataViewModel != null)
             {
@@ -258,7 +258,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _workflowInputDataViewModel.LoadWorkflowInputs();
                 _workflowInputDataViewModel.SetXmlData(true);
                 var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
-                var workflowUri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.Json);
+                var workflowUri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.Json, addWorkflowId);
                 if (workflowUri != null)
                 {
                     _workflowLink = workflowUri.ToString();
@@ -584,7 +584,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return _copyUrlCommand ?? (_copyUrlCommand = new DelegateCommand(param =>
                 {
-                    Clipboard.SetText(GetWorkflowLink());
+                    Clipboard.SetText(GetWorkflowLink(false));
                 }));
             }
         }
