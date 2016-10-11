@@ -305,7 +305,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenDebugWindowIsVisible()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            var count = serviceTest.SelectedServiceTest.DebugForTest.All(state => state.DisplayName== "WorkflowWithTests");
+            var count = serviceTest.SelectedServiceTest.DebugForTest.All(state => state.DisplayName == "WorkflowWithTests");
             Assert.IsTrue(count);
         }
 
@@ -338,7 +338,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 Assert.Fail($"Resource Model for {workflowName} not found");
             }
         }
-        
+
 
 
         [Given(@"the test builder is open with ""(.*)""")]
@@ -349,7 +349,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
-                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object,new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework", testFramework);
@@ -696,6 +696,8 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"I close the test builder")]
         public void ThenICloseTheTestBuilder()
         {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest?.Dispose();
             ScenarioContext.Current.Remove("testFramework");
         }
 
@@ -1126,7 +1128,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 DisplayName = resourceName,
                 DataList = "",
                 ID = resourceId,
-                Category = path+"\\"+resourceName
+                Category = path + "\\" + resourceName
             };
             var workflowHelper = new WorkflowHelper();
             var builder = workflowHelper.CreateWorkflow(resourceName);
@@ -1196,7 +1198,7 @@ namespace Dev2.Activities.Specs.TestFramework
             env.ForceLoadResources();
             var res = env.ResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
             var contextualResource = env.ResourceRepository.LoadContextualResourceModel(res.ID);
-            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
             Assert.IsNotNull(serviceTestVm);
             Assert.IsNotNull(serviceTestVm.ResourceModel);
             ScenarioContext.Add("testFramework", serviceTestVm);
@@ -1212,7 +1214,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsNotNull(test.DebugForTest);
             var debugStates = test.DebugForTest;
             var serviceStartDebug = debugStates[0];
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
                 var variableName = tableRow["Variable"];
                 var variableValue = tableRow["Value"];
@@ -1224,7 +1226,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 });
                 Assert.IsNotNull(debugItem);
                 Assert.IsNotNull(debugItemResult);
-                Assert.AreEqual(variableValue,debugItemResult.Value);
+                Assert.AreEqual(variableValue, debugItemResult.Value);
             }
         }
 
@@ -1236,7 +1238,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsNotNull(test);
             Assert.IsNotNull(test.DebugForTest);
             var debugStates = test.DebugForTest;
-            var serviceEndDebug = debugStates[debugStates.Count-1];
+            var serviceEndDebug = debugStates[debugStates.Count - 1];
             foreach (var tableRow in table.Rows)
             {
                 var variableName = tableRow["Variable"];
@@ -1258,11 +1260,11 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             var test = serviceTest.SelectedServiceTest;
-            WorkflowHelper helper =new WorkflowHelper();
+            WorkflowHelper helper = new WorkflowHelper();
             var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
             Assert.IsNotNull(builder);
             var act = (Flowchart)builder.Implementation;
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
                 var actNameToFind = tableRow["Step Name"];
                 var actType = tableRow["Activity Type"];
@@ -1298,13 +1300,14 @@ namespace Dev2.Activities.Specs.TestFramework
                                     {
                                         var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText) };
                                         test.AddTestStep(activity.UniqueID, typeof(DsfDecision).Name, serviceTestOutputs);
-                                    }else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
+                                    }
+                                    else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText) };
                                         test.AddTestStep(activity.UniqueID, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }
                                 }
-                            }                            
+                            }
 
                         }
                     }
@@ -1354,8 +1357,11 @@ namespace Dev2.Activities.Specs.TestFramework
         [AfterScenario("TestFramework")]
         public void CleanupTestFramework()
         {
-            var testFrameworkFromContext = GetTestFrameworkFromContext();
-            testFrameworkFromContext?.Dispose();
+            ServiceTestViewModel serviceTest;
+            if (ScenarioContext.TryGetValue("testFramework", out serviceTest))
+            {
+                serviceTest?.Dispose();
+            }
         }
 
     }

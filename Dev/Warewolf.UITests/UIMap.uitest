@@ -5852,18 +5852,18 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UsernameTextBoxEdit">
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UsernameTextBoxEdit">
       <ParameterName />
       <Value Encoded="false">testuser</Value>
       <Type>String</Type>
     </SetValueAction>
-    <SendKeysAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UsernameTextBoxEdit">
+    <SendKeysAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UsernameTextBoxEdit">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
       <Text Encoded="false">{Tab}</Text>
     </SendKeysAction>
-    <SendKeysAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.PasswordTextBoxEdit">
+    <SendKeysAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.PasswordTextBoxEdit">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -6061,13 +6061,13 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SendKeysAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox">
+    <SendKeysAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
       <Text Encoded="false">Helo User</Text>
     </SendKeysAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox">
       <ParameterName />
       <PropertyName>Text</PropertyName>
       <ExpectedValue>Hello User</ExpectedValue>
@@ -6084,13 +6084,13 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SendKeysAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox">
+    <SendKeysAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
       <Text Encoded="false">User</Text>
     </SendKeysAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox">
       <ParameterName />
       <PropertyName>Text</PropertyName>
       <ExpectedValue>User</ExpectedValue>
@@ -6833,49 +6833,6 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Open_Explorer_First_Item_Dependancies_With_Context_Menu">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="107" Y="9" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Right</MouseButton>
-    </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.Tests">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>View tests does not exist in explorer context menu.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.Tests">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="30" Y="11" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Run all button does not exist on tests tab</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Open_Explorer_First_Item_Tests_With_Context_Menu">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -10446,11 +10403,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UserRadioButton">
+    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UserRadioButton">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UsernameTextBoxEdit">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UsernameTextBoxEdit">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -10458,7 +10415,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.PasswordTextBoxEdit">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.PasswordTextBoxEdit">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -10475,6 +10432,49 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Select_User_From_RunTestAs">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="107" Y="9" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Right</MouseButton>
+    </MouseAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.Tests">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>View tests does not exist in explorer context menu.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.Tests">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="30" Y="11" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Run all button does not exist on tests tab</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Show_Explorer_First_Item_Tests_With_Context_Menu">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -24250,890 +24250,6 @@
                               <SupportLevel>0</SupportLevel>
                               <Descendants />
                             </UIObject>
-                            <UIObject ControlType="Custom" Id="ServiceTestView" FriendlyName="UI_ServiceTestView_AutoID" SpecialControlType="None">
-                              <TechnologyName>UIA</TechnologyName>
-                              <WindowTitles>
-                                <WindowTitle>Warewolf</WindowTitle>
-                              </WindowTitles>
-                              <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                <PropertyCondition Name="ClassName">Uia.ServiceTestView</PropertyCondition>
-                                <PropertyCondition Name="AutomationId">UI_ServiceTestView_AutoID</PropertyCondition>
-                              </AndCondition>
-                              <SupportLevel>0</SupportLevel>
-                              <Descendants>
-                                <UIObject ControlType="Text" Id="UrlText" FriendlyName=" " SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="Instance">1</PropertyCondition>
-                                    <PropertyCondition Name="Name">\ </PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants>
-                                    <UIObject ControlType="Hyperlink" Id="UrlHyperlink" FriendlyName=" " SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="ControlType">Hyperlink</PropertyCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">RunAllTestsUrl</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                  </Descendants>
-                                </UIObject>
-                                <UIObject ControlType="Button" Id="RunAllButton" FriendlyName="Run All" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="Name">Run All</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="List" Id="TestsListboxList" FriendlyName="TestsListbox" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="ControlType">List</PropertyCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">TestsListbox</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants>
-                                    <UIObject ControlType="ListItem" Id="CreateTest" FriendlyName="Warewolf.Studio.ViewModels.DummyServiceTest" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.DummyServiceTest</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants>
-                                        <UIObject ControlType="Button" Id="CreateTestButton" FriendlyName="Create a new test" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Create a new test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                      </Descendants>
-                                    </UIObject>
-                                    <UIObject ControlType="ListItem" Id="Test1" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestModel" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="Instance">1</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants>
-                                        <UIObject ControlType="CheckBox" Id="TestEnabledSelector" FriendlyName="TestEnabledSelector" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Enable or Ignore this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="RunButton" FriendlyName="Run this test" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="StopButton" FriendlyName="StopButton" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Stop this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="DisabledDeleteButton" FriendlyName="DisabledDeleteButton" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Cannot delete an enabled test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="TestNameDisplay" FriendlyName="TestNameDisplay" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Test Name</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Pending" FriendlyName="Pending" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Pending</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Passing" FriendlyName="Passing" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Passed</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Failing" FriendlyName="Failing" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Failed</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Invalid" FriendlyName="Invalid" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="NeverRunDisplay" FriendlyName="NeverRunDisplay" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="Name">Never run</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="RunTimeDisplay" FriendlyName="RunTimeDisplay" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                      </Descendants>
-                                    </UIObject>
-                                    <UIObject ControlType="ListItem" Id="Test2" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestModel" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <SearchConfigurations>
-                                        <SearchConfiguration>Distinct</SearchConfiguration>
-                                      </SearchConfigurations>
-                                      <AndCondition>
-                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="Instance">2</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants>
-                                        <UIObject ControlType="CheckBox" Id="TestEnabledSelector" FriendlyName="TestEnabledSelector" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Enable or Ignore this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="RunButton" FriendlyName="RunButton" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="StopButton" FriendlyName="StopButton" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Stop this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="DisabledDeleteButton" FriendlyName="DisabledDeleteButton" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Cannot delete an enabled test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="TestNameDisplay" FriendlyName="TestNameDisplay" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Test Name</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Pending" FriendlyName="Pending" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Pending</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Passing" FriendlyName="Passing" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Passed</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Failing" FriendlyName="Failing" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Failed</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Invalid" FriendlyName="Invalid" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="NeverRunDisplay" FriendlyName="NeverRunDisplay" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="Name">Never run</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="RunTimeDisplay" FriendlyName="RunTimeDisplay" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                      </Descendants>
-                                    </UIObject>
-                                    <UIObject ControlType="ListItem" Id="Test3" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestModel" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ServiceTestModel</PropertyCondition>
-                                        <PropertyCondition Name="Instance">3</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants>
-                                        <UIObject ControlType="CheckBox" Id="TestEnabledSelector" FriendlyName="Select or De-Select to run the test" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Enable or Ignore this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="RunButton" FriendlyName="Run this test" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="StopButton" FriendlyName="StopButton" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Stop this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="DisabledDeleteButton" FriendlyName="DisabledDeleteButton" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Cannot delete an enabled test</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="TestNameDisplay" FriendlyName="TestNameDisplay" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Test Name</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Pending" FriendlyName="Pending" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Pending</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Passing" FriendlyName="Passing" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Passed</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Failing" FriendlyName="Failing" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Failed</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="Invalid" FriendlyName="Invalid" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="NeverRunDisplay" FriendlyName="NeverRunDisplay" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="Name">Never run</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="RunTimeDisplay" FriendlyName="RunTimeDisplay" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                      </Descendants>
-                                    </UIObject>
-                                  </Descendants>
-                                </UIObject>
-                                <UIObject ControlType="Button" Id="DuplicateButton" FriendlyName="" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                    <PropertyCondition Name="Name"></PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="RadioButton" Id="WindowsRadioButton" FriendlyName="Windows" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">WindowsRadioButton</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="Text" Id="TestNameText" FriendlyName="Test Name" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                    <PropertyCondition Name="Name">Test Name</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="Table" Id="TestInputsTable" FriendlyName="TestInputs" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">UI_TestInputsDev2DataGrid_AutoID</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants>
-                                    <UIObject ControlType="Row" Id="Row1" FriendlyName="" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <SearchConfigurations>
-                                        <SearchConfiguration>AlwaysSearch</SearchConfiguration>
-                                      </SearchConfigurations>
-                                      <AndCondition>
-                                        <PropertyCondition Name="ControlType">Row</PropertyCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="Instance">1</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants>
-                                        <UIObject ControlType="Cell" Id="Cell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestInput,..." SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ColumnHeader">Value</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants>
-                                            <UIObject ControlType="ComboBox" Id="IntellisenseComboBox" FriendlyName="UI_TestInputsValue_AutoID" SpecialControlType="None">
-                                              <TechnologyName>UIA</TechnologyName>
-                                              <WindowTitles>
-                                                <WindowTitle>Warewolf</WindowTitle>
-                                              </WindowTitles>
-                                              <AndCondition>
-                                                <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="AutomationId">UI_TestInputsValue_AutoID</PropertyCondition>
-                                              </AndCondition>
-                                              <SupportLevel>0</SupportLevel>
-                                              <Descendants>
-                                                <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
-                                                  <TechnologyName>UIA</TechnologyName>
-                                                  <WindowTitles>
-                                                    <WindowTitle>Warewolf</WindowTitle>
-                                                  </WindowTitles>
-                                                  <AndCondition>
-                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                    <PropertyCondition Name="Instance">1</PropertyCondition>
-                                                  </AndCondition>
-                                                  <SupportLevel>0</SupportLevel>
-                                                  <Descendants />
-                                                </UIObject>
-                                              </Descendants>
-                                            </UIObject>
-                                          </Descendants>
-                                        </UIObject>
-                                      </Descendants>
-                                    </UIObject>
-                                  </Descendants>
-                                </UIObject>
-                                <UIObject ControlType="Table" Id="TestOutputsTable" FriendlyName="TestOutputsGrid" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">UI_TestOutputsDev2DataGrid_AutoID</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants>
-                                    <UIObject ControlType="Row" Id="Row1" FriendlyName="" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <SearchConfigurations>
-                                        <SearchConfiguration>AlwaysSearch</SearchConfiguration>
-                                      </SearchConfigurations>
-                                      <AndCondition>
-                                        <PropertyCondition Name="ControlType">Row</PropertyCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="Instance">1</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants>
-                                        <UIObject ControlType="Cell" Id="Cell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestOutput" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ColumnHeader">Value</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants>
-                                            <UIObject ControlType="ComboBox" Id="IntellisenseComboBox" FriendlyName="UI_TestOutputsValue_AutoID" SpecialControlType="None">
-                                              <TechnologyName>UIA</TechnologyName>
-                                              <WindowTitles>
-                                                <WindowTitle>Warewolf</WindowTitle>
-                                              </WindowTitles>
-                                              <AndCondition>
-                                                <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="AutomationId">UI_TestOutputsValue_AutoID</PropertyCondition>
-                                              </AndCondition>
-                                              <SupportLevel>0</SupportLevel>
-                                              <Descendants>
-                                                <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
-                                                  <TechnologyName>UIA</TechnologyName>
-                                                  <WindowTitles>
-                                                    <WindowTitle>Warewolf</WindowTitle>
-                                                  </WindowTitles>
-                                                  <AndCondition>
-                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                    <PropertyCondition Name="Instance">1</PropertyCondition>
-                                                  </AndCondition>
-                                                  <SupportLevel>0</SupportLevel>
-                                                  <Descendants />
-                                                </UIObject>
-                                              </Descendants>
-                                            </UIObject>
-                                          </Descendants>
-                                        </UIObject>
-                                      </Descendants>
-                                    </UIObject>
-                                  </Descendants>
-                                </UIObject>
-                                <UIObject ControlType="RadioButton" Id="ErrorRadioButton" FriendlyName="Error" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">ErrorRadioButton</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="RadioButton" Id="NoErrorRadioButton" FriendlyName="No Error" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">NoErrorRadioButton</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="RadioButton" Id="UserRadioButton" FriendlyName="User" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">UserRadioButton</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="Edit" Id="PasswordTextBoxEdit" FriendlyName="PasswordTextBox" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">PasswordTextBox</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="Edit" Id="UsernameTextBoxEdit" FriendlyName="UsernameTextBox" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">UsernameTextBox</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="Text" Id="TestUrlText" FriendlyName=" " SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="Instance">2</PropertyCondition>
-                                    <PropertyCondition Name="Name">\ </PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="Edit" Id="TestNameTextbox" FriendlyName="" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <SearchConfigurations>
-                                    <SearchConfiguration>NextTo</SearchConfiguration>
-                                  </SearchConfigurations>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                              </Descendants>
-                            </UIObject>
                             <UIObject ControlType="Button" Id="CloseTestTabButton" FriendlyName="" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
@@ -25146,6 +24262,1242 @@
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants />
+                            </UIObject>
+                            <UIObject ControlType="Custom" Id="WorkSurfaceContext" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="Custom" Id="ServiceTestView" FriendlyName="UI_ServiceTestView_AutoID" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.ServiceTestView</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">UI_ServiceTestView_AutoID</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Text" Id="UrlText" FriendlyName=" " SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="Instance">1</PropertyCondition>
+                                        <PropertyCondition Name="Name">\ </PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Hyperlink" Id="UrlHyperlink" FriendlyName=" " SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Hyperlink</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">RunAllTestsUrl</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="Button" Id="RunAllButton" FriendlyName="Run All" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="Name">Run All</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="List" Id="TestsListboxList" FriendlyName="TestsListbox" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="ControlType">List</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">TestsListbox</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="ListItem" Id="CreateTest" FriendlyName="Warewolf.Studio.ViewModels.DummyServiceTest" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.DummyServiceTest</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Button" Id="CreateTestButton" FriendlyName="Create a new test" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Create a new test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="ListItem" Id="Test1" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestModel" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="CheckBox" Id="TestEnabledSelector" FriendlyName="TestEnabledSelector" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Enable or Ignore this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="RunButton" FriendlyName="Run this test" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="StopButton" FriendlyName="StopButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Stop this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="DisabledDeleteButton" FriendlyName="DisabledDeleteButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Cannot delete an enabled test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="TestNameDisplay" FriendlyName="TestNameDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Test Name</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Pending" FriendlyName="Pending" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Pending</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Passing" FriendlyName="Passing" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Passed</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Failing" FriendlyName="Failing" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Failed</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Invalid" FriendlyName="Invalid" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="NeverRunDisplay" FriendlyName="NeverRunDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="Name">Never run</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="RunTimeDisplay" FriendlyName="RunTimeDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="ListItem" Id="Test2" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestModel" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <SearchConfigurations>
+                                            <SearchConfiguration>Distinct</SearchConfiguration>
+                                          </SearchConfigurations>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="Instance">2</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="CheckBox" Id="TestEnabledSelector" FriendlyName="TestEnabledSelector" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Enable or Ignore this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="RunButton" FriendlyName="RunButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="StopButton" FriendlyName="StopButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Stop this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="DisabledDeleteButton" FriendlyName="DisabledDeleteButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Cannot delete an enabled test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="TestNameDisplay" FriendlyName="TestNameDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Test Name</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Pending" FriendlyName="Pending" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Pending</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Passing" FriendlyName="Passing" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Passed</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Failing" FriendlyName="Failing" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Failed</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Invalid" FriendlyName="Invalid" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="NeverRunDisplay" FriendlyName="NeverRunDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="Name">Never run</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="RunTimeDisplay" FriendlyName="RunTimeDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="ListItem" Id="Test3" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestModel" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ServiceTestModel</PropertyCondition>
+                                            <PropertyCondition Name="Instance">3</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="CheckBox" Id="TestEnabledSelector" FriendlyName="Select or De-Select to run the test" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Enable or Ignore this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="RunButton" FriendlyName="Run this test" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="StopButton" FriendlyName="StopButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Stop this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="DisabledDeleteButton" FriendlyName="DisabledDeleteButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Cannot delete an enabled test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="TestNameDisplay" FriendlyName="TestNameDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Test Name</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Pending" FriendlyName="Pending" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Pending</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Passing" FriendlyName="Passing" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Passed</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Failing" FriendlyName="Failing" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Failed</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Invalid" FriendlyName="Invalid" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="NeverRunDisplay" FriendlyName="NeverRunDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="Name">Never run</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="RunTimeDisplay" FriendlyName="RunTimeDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="ListItem" Id="Test4" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestModel" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ServiceTestModel</PropertyCondition>
+                                            <PropertyCondition Name="Instance">4</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="CheckBox" Id="TestEnabledSelector" FriendlyName="Select or De-Select to run the test" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Enable or Ignore this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="RunButton" FriendlyName="Run this test" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="StopButton" FriendlyName="StopButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Stop this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="DisabledDeleteButton" FriendlyName="DisabledDeleteButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Cannot delete an enabled test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="TestNameDisplay" FriendlyName="TestNameDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Test Name</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Pending" FriendlyName="Pending" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Pending</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Passing" FriendlyName="Passing" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Passed</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Failing" FriendlyName="Failing" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Failed</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Invalid" FriendlyName="Invalid" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="NeverRunDisplay" FriendlyName="NeverRunDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="Name">Never run</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="RunTimeDisplay" FriendlyName="RunTimeDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="ListItem" Id="Test5" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestModel" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ServiceTestModel</PropertyCondition>
+                                            <PropertyCondition Name="Instance">5</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="CheckBox" Id="TestEnabledSelector" FriendlyName="Select or De-Select to run the test" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Enable or Ignore this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="RunButton" FriendlyName="Run this test" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="StopButton" FriendlyName="StopButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Stop this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="DeleteButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Button" Id="DisabledDeleteButton" FriendlyName="DisabledDeleteButton" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Cannot delete an enabled test</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="TestNameDisplay" FriendlyName="TestNameDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Test Name</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Pending" FriendlyName="Pending" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Pending</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Passing" FriendlyName="Passing" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Passed</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Failing" FriendlyName="Failing" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="HelpText">Failed</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="Invalid" FriendlyName="Invalid" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="NeverRunDisplay" FriendlyName="NeverRunDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="Name">Never run</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="RunTimeDisplay" FriendlyName="RunTimeDisplay" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="Button" Id="DuplicateButton" FriendlyName="DuplicateButton" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="RadioButton" Id="WindowsRadioButton" FriendlyName="Windows" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">WindowsRadioButton</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="Text" Id="TestNameText" FriendlyName="Test Name" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                        <PropertyCondition Name="Name">Test Name</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="Table" Id="TestInputsTable" FriendlyName="TestInputs" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">UI_TestInputsDev2DataGrid_AutoID</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Row" Id="Row1" FriendlyName="" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <SearchConfigurations>
+                                            <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                          </SearchConfigurations>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Cell" Id="Cell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestInput,..." SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ColumnHeader">Value</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="ComboBox" Id="IntellisenseComboBox" FriendlyName="UI_TestInputsValue_AutoID" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_TestInputsValue_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants />
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="Table" Id="TestOutputsTable" FriendlyName="TestOutputsGrid" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">UI_TestOutputsDev2DataGrid_AutoID</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Row" Id="Row1" FriendlyName="" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <SearchConfigurations>
+                                            <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                          </SearchConfigurations>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Cell" Id="Cell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestOutput" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ColumnHeader">Value</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="ComboBox" Id="IntellisenseComboBox" FriendlyName="UI_TestOutputsValue_AutoID" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_TestOutputsValue_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants />
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="RadioButton" Id="ErrorRadioButton" FriendlyName="Error" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">ErrorRadioButton</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="RadioButton" Id="NoErrorRadioButton" FriendlyName="No Error" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">NoErrorRadioButton</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="RadioButton" Id="UserRadioButton" FriendlyName="User" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">UserRadioButton</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="Edit" Id="PasswordTextBoxEdit" FriendlyName="PasswordTextBox" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">PasswordTextBox</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="Edit" Id="UsernameTextBoxEdit" FriendlyName="UsernameTextBox" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">UsernameTextBox</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="Text" Id="TestUrlText" FriendlyName=" " SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="Instance">2</PropertyCondition>
+                                        <PropertyCondition Name="Name">\ </PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="Edit" Id="TestNameTextbox" FriendlyName="" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>NextTo</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                              </Descendants>
                             </UIObject>
                           </Descendants>
                         </UIObject>
