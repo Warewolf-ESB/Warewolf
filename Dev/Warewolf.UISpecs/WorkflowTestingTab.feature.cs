@@ -17,7 +17,7 @@ namespace Warewolf.UISpecs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class WorkflowTestingTabFeature
     {
         

@@ -88,73 +88,73 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNull(actual);
         }
 
-        [TestMethod]
-        public void OnExecuteWhereConsolePathHasSpacesIsNotWrappedInQuotesExpectError()
-        {
-            //------------Setup for test--------------------------
-            const string ExeName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
-            var destDir = Path.Combine(TestContext.DeploymentDirectory, Guid.NewGuid() + " Temp");
+//        [TestMethod]
+//        public void OnExecuteWhereConsolePathHasSpacesIsNotWrappedInQuotesExpectError()
+//        {
+//            //------------Setup for test--------------------------
+//            const string ExeName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            var destDir = Path.Combine(TestContext.DeploymentDirectory, Guid.NewGuid() + " Temp");
+//
+//            var sourceFile = Path.Combine(TestContext.DeploymentDirectory, ExeName);
+//            if(!File.Exists(sourceFile))
+//            {
+//                sourceFile = Path.Combine(Environment.CurrentDirectory, ExeName);
+//            }
+//            var destFile = Path.Combine(destDir, ExeName);
+//
+//            Directory.CreateDirectory(destDir);
+//            File.Copy(sourceFile, destFile, true);
+//
+//            var activity = new DsfExecuteCommandLineActivity { CommandFileName = destFile, CommandResult = "[[OutVar1]]" };
+//
+//            TestStartNode = new FlowStep
+//            {
+//                Action = activity
+//            };
+//            TestData = "<root><OutVar1 /></root>";
+//            //------------Execute Test---------------------------
+//            var result = ExecuteProcess();
+//            var res = result.Environment.HasErrors();
+//
+//            // remove test datalist ;)
+//            //------------Assert Results-------------------------
+//            Assert.IsTrue(res);
+//        }
 
-            var sourceFile = Path.Combine(TestContext.DeploymentDirectory, ExeName);
-            if(!File.Exists(sourceFile))
-            {
-                sourceFile = Path.Combine(Environment.CurrentDirectory, ExeName);
-            }
-            var destFile = Path.Combine(destDir, ExeName);
-
-            Directory.CreateDirectory(destDir);
-            File.Copy(sourceFile, destFile, true);
-
-            var activity = new DsfExecuteCommandLineActivity { CommandFileName = destFile, CommandResult = "[[OutVar1]]" };
-
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };
-            TestData = "<root><OutVar1 /></root>";
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            var res = result.Environment.HasErrors();
-
-            // remove test datalist ;)
-            //------------Assert Results-------------------------
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void OnExecuteWhereConsolePathHasNoSpacesIsNotWrappedInQuotesExpectSuccess()
-        {
-            //------------Setup for test--------------------------
-            var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if(!File.Exists(toolPath))
-            {
-                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            }
-            var randomString = "\"" + toolPath + "\" \"output\"";
-            activity.CommandFileName = randomString;
-            activity.CommandResult = "[[OutVar1]]";
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };
-            string actual;
-            string error;
-            TestData = "<root><OutVar1 /></root>";
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            //------------Assert Results-------------------------
-            var fetchErrors = DataObject.Environment.FetchErrors();
-            if(fetchErrors != string.Empty)
-            {
-                Assert.Fail(fetchErrors);
-            }
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
-
-            // remove test datalist ;)
-
-            StringAssert.Contains(actual, "");
-        }
+//        [TestMethod]
+//        public void OnExecuteWhereConsolePathHasNoSpacesIsNotWrappedInQuotesExpectSuccess()
+//        {
+//            //------------Setup for test--------------------------
+//            var activity = new DsfExecuteCommandLineActivity();
+//            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            if(!File.Exists(toolPath))
+//            {
+//                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            }
+//            var randomString = "\"" + toolPath + "\" \"output\"";
+//            activity.CommandFileName = randomString;
+//            activity.CommandResult = "[[OutVar1]]";
+//            TestStartNode = new FlowStep
+//            {
+//                Action = activity
+//            };
+//            string actual;
+//            string error;
+//            TestData = "<root><OutVar1 /></root>";
+//            //------------Execute Test---------------------------
+//            var result = ExecuteProcess();
+//            //------------Assert Results-------------------------
+//            var fetchErrors = DataObject.Environment.FetchErrors();
+//            if(fetchErrors != string.Empty)
+//            {
+//                Assert.Fail(fetchErrors);
+//            }
+//            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+//
+//            // remove test datalist ;)
+//
+//            StringAssert.Contains(actual, "");
+//        }
 
         [TestMethod]
         public void OnExecute_WhereConsolePathStartsWithExplorer_ShouldError()
@@ -201,77 +201,77 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
 
-        [TestMethod]
-        public void OnExecuteWhereConsoleOutputsWithArgsWrappedInQuotesExpectSuccess()
-        {
-            //------------Setup for test--------------------------
-            var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if(!File.Exists(toolPath))
-            {
-                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            }
-            var randomString = "\"" + toolPath + "\" \"output\"";
-            activity.CommandFileName = randomString;
-            activity.CommandResult = "[[OutVar1]]";
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };
-            string actual;
-            string error;
-            TestData = "<root><OutVar1 /></root>";
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            //------------Assert Results-------------------------
-            var fetchErrors = DataObject.Environment.FetchErrors();
-            if(fetchErrors != string.Empty)
-            {
-                Assert.Fail(fetchErrors);
-            }
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
-
-            // remove test datalist ;)
-
-            StringAssert.Contains(actual, "This is output from the user");
-
-        }
-
-        [TestMethod]
-        public void OnExecuteWhereConsoleOutputsExpectOutputForResult()
-        {
-            //------------Setup for test--------------------------
-            var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if(!File.Exists(toolPath))
-            {
-                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            }
-            var randomString = "\"" + toolPath + "\" output";
-            activity.CommandFileName = randomString;
-            activity.CommandResult = "[[OutVar1]]";
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };
-            string actual;
-            string error;
-            TestData = "<root><OutVar1 /></root>";
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            //------------Assert Results-------------------------
-            var fetchErrors = DataObject.Environment.FetchErrors();
-            if(fetchErrors != string.Empty)
-            {
-                Assert.Fail(fetchErrors);
-            }
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
-
-            // remove test datalist ;)
-
-            StringAssert.Contains(actual, "This is output from the user");
-
-        }
+//        [TestMethod]
+//        public void OnExecuteWhereConsoleOutputsWithArgsWrappedInQuotesExpectSuccess()
+//        {
+//            //------------Setup for test--------------------------
+//            var activity = new DsfExecuteCommandLineActivity();
+//            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            if(!File.Exists(toolPath))
+//            {
+//                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            }
+//            var randomString = "\"" + toolPath + "\" \"output\"";
+//            activity.CommandFileName = randomString;
+//            activity.CommandResult = "[[OutVar1]]";
+//            TestStartNode = new FlowStep
+//            {
+//                Action = activity
+//            };
+//            string actual;
+//            string error;
+//            TestData = "<root><OutVar1 /></root>";
+//            //------------Execute Test---------------------------
+//            var result = ExecuteProcess();
+//            //------------Assert Results-------------------------
+//            var fetchErrors = DataObject.Environment.FetchErrors();
+//            if(fetchErrors != string.Empty)
+//            {
+//                Assert.Fail(fetchErrors);
+//            }
+//            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+//
+//            // remove test datalist ;)
+//
+//            StringAssert.Contains(actual, "This is output from the user");
+//
+//        }
+//
+//        [TestMethod]
+//        public void OnExecuteWhereConsoleOutputsExpectOutputForResult()
+//        {
+//            //------------Setup for test--------------------------
+//            var activity = new DsfExecuteCommandLineActivity();
+//            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            if(!File.Exists(toolPath))
+//            {
+//                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            }
+//            var randomString = "\"" + toolPath + "\" output";
+//            activity.CommandFileName = randomString;
+//            activity.CommandResult = "[[OutVar1]]";
+//            TestStartNode = new FlowStep
+//            {
+//                Action = activity
+//            };
+//            string actual;
+//            string error;
+//            TestData = "<root><OutVar1 /></root>";
+//            //------------Execute Test---------------------------
+//            var result = ExecuteProcess();
+//            //------------Assert Results-------------------------
+//            var fetchErrors = DataObject.Environment.FetchErrors();
+//            if(fetchErrors != string.Empty)
+//            {
+//                Assert.Fail(fetchErrors);
+//            }
+//            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+//
+//            // remove test datalist ;)
+//
+//            StringAssert.Contains(actual, "This is output from the user");
+//
+//        }
 
         [TestMethod]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResultCmddirc()
@@ -321,199 +321,199 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
 
-        [TestMethod]
-        public void OnExecuteWhereConsoleErrorsExpectErrorInDatalist()
-        {
-            // ------------Setup for test--------------------------
-            var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if(!File.Exists(toolPath))
-            {
-                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            }
-            var randomString = "\"" + toolPath + "\" error";
-            activity.CommandFileName = randomString;
-            activity.CommandResult = "[[OutVar1]]";
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };
-            string actual;
-            string error;
-            TestData = "<root><OutVar1 /></root>";
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(result.Environment.HasErrors());
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
-            Assert.IsNull(actual);
-            var fetchErrors = DataObject.Environment.FetchErrors();
-            // remove test datalist ;)
-            StringAssert.Contains(fetchErrors, "The console errored");
+//        [TestMethod]
+//        public void OnExecuteWhereConsoleErrorsExpectErrorInDatalist()
+//        {
+//            // ------------Setup for test--------------------------
+//            var activity = new DsfExecuteCommandLineActivity();
+//            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            if(!File.Exists(toolPath))
+//            {
+//                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            }
+//            var randomString = "\"" + toolPath + "\" error";
+//            activity.CommandFileName = randomString;
+//            activity.CommandResult = "[[OutVar1]]";
+//            TestStartNode = new FlowStep
+//            {
+//                Action = activity
+//            };
+//            string actual;
+//            string error;
+//            TestData = "<root><OutVar1 /></root>";
+//            //------------Execute Test---------------------------
+//            var result = ExecuteProcess();
+//            //------------Assert Results-------------------------
+//            Assert.IsTrue(result.Environment.HasErrors());
+//            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+//            Assert.IsNull(actual);
+//            var fetchErrors = DataObject.Environment.FetchErrors();
+//            // remove test datalist ;)
+//            StringAssert.Contains(fetchErrors, "The console errored");
+//
+//        }
 
-        }
+//        [TestMethod]
+//        public void OnExecuteWhereOutputToRecordWithNoIndexWithConsoleOutputsExpectOutputForResultAppendedToRecordsets()
+//        {
+//            //------------Setup for test--------------------------
+//            var activity = new DsfExecuteCommandLineActivity();
+//            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            if(!File.Exists(toolPath))
+//            {
+//                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            }
+//            var randomString = "\"" + toolPath + "\" output";
+//            activity.CommandFileName = randomString;
+//            activity.CommandResult = "[[recset1().field1]]";
+//            TestStartNode = new FlowStep
+//            {
+//                Action = activity
+//            };
+//            var expected = new List<string> { "This is output from the user" };
+//            string error;
+//            CurrentDl = "<ADL><recset1><field1/></recset1></ADL>";
+//            TestData = "<root></root>";
+//            //------------Execute Test---------------------------
+//            var result = ExecuteProcess();
+//            //------------Assert Results-------------------------
+//            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+//            // remove test datalist ;)
+//
+//            var actualArray = actual.ToArray();
+//            actual.Clear();
+//
+//            actual.AddRange(actualArray.Select(s => s.Trim()));
+//
+//            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
+//
+//        }
 
-        [TestMethod]
-        public void OnExecuteWhereOutputToRecordWithNoIndexWithConsoleOutputsExpectOutputForResultAppendedToRecordsets()
-        {
-            //------------Setup for test--------------------------
-            var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if(!File.Exists(toolPath))
-            {
-                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            }
-            var randomString = "\"" + toolPath + "\" output";
-            activity.CommandFileName = randomString;
-            activity.CommandResult = "[[recset1().field1]]";
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };
-            var expected = new List<string> { "This is output from the user" };
-            string error;
-            CurrentDl = "<ADL><recset1><field1/></recset1></ADL>";
-            TestData = "<root></root>";
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
-            // remove test datalist ;)
+//        [TestMethod]
+//        public void OnExecuteWhereOutputToRecordWithStarIndexWithConsoleOutputsExpectOutputForResultOverwriteToRecordsets()
+//        {
+//            //------------Setup for test--------------------------
+//            var activity = new DsfExecuteCommandLineActivity();
+//            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            if(!File.Exists(toolPath))
+//            {
+//                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            }
+//            var randomString = "\"" + toolPath + "\" output";
+//            activity.CommandFileName = randomString;
+//            activity.CommandResult = "[[recset1(*).field1]]";
+//            TestStartNode = new FlowStep
+//            {
+//                Action = activity
+//            };
+//            var expected = new List<string> { "This is output from the user" };
+//            string error;
+//            CurrentDl = "<ADL><recset1><field1/></recset1></ADL>";
+//            TestData = "<root></root>";
+//            //------------Execute Test---------------------------
+//            var result = ExecuteProcess();
+//            //------------Assert Results-------------------------
+//            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+//
+//            // remove test datalist ;)
+//
+//            var actualArray = actual.ToArray();
+//            actual.Clear();
+//
+//            actual.AddRange(actualArray.Select(s => s.Trim()));
+//
+//            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
+//
+//        }
 
-            var actualArray = actual.ToArray();
-            actual.Clear();
+//        [TestMethod]
+//        public void OnExecuteWhereOutputToRecordWithSpecificIndexWithConsoleOutputsExpectOutputForResultInsertsToRecordsets()
+//        {
+//            //------------Setup for test--------------------------
+//            var activity = new DsfExecuteCommandLineActivity();
+//            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            if(!File.Exists(toolPath))
+//            {
+//                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            }
+//            var randomString = "\"" + toolPath + "\" output";
+//            activity.CommandFileName = randomString;
+//            activity.CommandResult = "[[recset1(1).field1]]";
+//            SetUpForExecution(activity, "<root></root>", "<ADL><recset1><field1/></recset1></ADL>");
+//            var expected = new List<string> { "This is output from the user" };
+//            string error;
+//            //------------Execute Test---------------------------
+//            var result = ExecuteProcess();
+//            //------------Assert Results-------------------------
+//            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+//
+//            // remove test datalist ;)
+//
+//            var actualArray = actual.ToArray();
+//            actual.Clear();
+//
+//            actual.AddRange(actualArray.Select(s => s.Trim()));
+//
+//            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
+//
+//
+//        }
 
-            actual.AddRange(actualArray.Select(s => s.Trim()));
+//        [TestMethod]
+//        public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToRecordSetExpectOutputResultsToMultipleRowsInRecordSet()
+//        {
+//            //------------Setup for test--------------------------
+//            var activity = new DsfExecuteCommandLineActivity();
+//            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            if(!File.Exists(toolPath))
+//            {
+//                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            }
+//            var command1 = "\"" + toolPath + "\" output";
+//            var command2 = "\"" + toolPath + "\" differentoutput";
+//            activity.CommandFileName = "[[recset1(*).rec1]]";
+//            activity.CommandResult = "[[recset2().field1]]";
+//            var testData = "<root><recset1><rec1>" + command1 + "</rec1></recset1><recset1><rec1>" + command2 + "</rec1></recset1></root>";
+//            SetUpForExecution(activity, testData, "<ADL><recset1><rec1></rec1></recset1><recset2><field1></field1></recset2></ADL>");
+//            var expected = new List<string> { "This is output from the user", "This is a different output from the user" };
+//            string error;
+//            //------------Execute Test---------------------------
+//            var result = ExecuteProcess();
+//            //------------Assert Results-------------------------
+//            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field1", out error);
+//
+//            var actualArray = actual.ToArray();
+//            actual.Clear();
+//            actual.AddRange(actualArray.Select(s => s.Trim()));
+//            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
+//        }
 
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-
-        }
-
-        [TestMethod]
-        public void OnExecuteWhereOutputToRecordWithStarIndexWithConsoleOutputsExpectOutputForResultOverwriteToRecordsets()
-        {
-            //------------Setup for test--------------------------
-            var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if(!File.Exists(toolPath))
-            {
-                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            }
-            var randomString = "\"" + toolPath + "\" output";
-            activity.CommandFileName = randomString;
-            activity.CommandResult = "[[recset1(*).field1]]";
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };
-            var expected = new List<string> { "This is output from the user" };
-            string error;
-            CurrentDl = "<ADL><recset1><field1/></recset1></ADL>";
-            TestData = "<root></root>";
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
-
-            // remove test datalist ;)
-
-            var actualArray = actual.ToArray();
-            actual.Clear();
-
-            actual.AddRange(actualArray.Select(s => s.Trim()));
-
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-
-        }
-
-        [TestMethod]
-        public void OnExecuteWhereOutputToRecordWithSpecificIndexWithConsoleOutputsExpectOutputForResultInsertsToRecordsets()
-        {
-            //------------Setup for test--------------------------
-            var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if(!File.Exists(toolPath))
-            {
-                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            }
-            var randomString = "\"" + toolPath + "\" output";
-            activity.CommandFileName = randomString;
-            activity.CommandResult = "[[recset1(1).field1]]";
-            SetUpForExecution(activity, "<root></root>", "<ADL><recset1><field1/></recset1></ADL>");
-            var expected = new List<string> { "This is output from the user" };
-            string error;
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
-
-            // remove test datalist ;)
-
-            var actualArray = actual.ToArray();
-            actual.Clear();
-
-            actual.AddRange(actualArray.Select(s => s.Trim()));
-
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-
-
-        }
-
-        [TestMethod]
-        public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToRecordSetExpectOutputResultsToMultipleRowsInRecordSet()
-        {
-            //------------Setup for test--------------------------
-            var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if(!File.Exists(toolPath))
-            {
-                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            }
-            var command1 = "\"" + toolPath + "\" output";
-            var command2 = "\"" + toolPath + "\" differentoutput";
-            activity.CommandFileName = "[[recset1(*).rec1]]";
-            activity.CommandResult = "[[recset2().field1]]";
-            var testData = "<root><recset1><rec1>" + command1 + "</rec1></recset1><recset1><rec1>" + command2 + "</rec1></recset1></root>";
-            SetUpForExecution(activity, testData, "<ADL><recset1><rec1></rec1></recset1><recset2><field1></field1></recset2></ADL>");
-            var expected = new List<string> { "This is output from the user", "This is a different output from the user" };
-            string error;
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field1", out error);
-
-            var actualArray = actual.ToArray();
-            actual.Clear();
-            actual.AddRange(actualArray.Select(s => s.Trim()));
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-        }
-
-        [TestMethod]
-        public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToScalarExpectOutputResultOfLastCommandinScalar()
-        {
-            //------------Setup for test--------------------------
-            var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if(!File.Exists(toolPath))
-            {
-                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            }
-            var command1 = "\"" + toolPath + "\" output";
-            var command2 = "\"" + toolPath + "\" differentoutput";
-            activity.CommandFileName = "[[recset1(*).rec1]]";
-            activity.CommandResult = "[[OutVar1]]";
-            var testData = "<root><recset1><rec1>" + command1 + "</rec1></recset1><recset1><rec1>" + command2 + "</rec1></recset1></root>";
-            SetUpForExecution(activity, testData, "<ADL><recset1><rec1></rec1></recset1><OutVar1/></ADL>");
-            const string Expected = "This is a different output from the user";
-            string error;
-            string actual;
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            //------------Assert Results-------------------------
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
-
-            StringAssert.Contains(actual, Expected);
-        }
+//        [TestMethod]
+//        public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToScalarExpectOutputResultOfLastCommandinScalar()
+//        {
+//            //------------Setup for test--------------------------
+//            var activity = new DsfExecuteCommandLineActivity();
+//            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            if(!File.Exists(toolPath))
+//            {
+//                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+//            }
+//            var command1 = "\"" + toolPath + "\" output";
+//            var command2 = "\"" + toolPath + "\" differentoutput";
+//            activity.CommandFileName = "[[recset1(*).rec1]]";
+//            activity.CommandResult = "[[OutVar1]]";
+//            var testData = "<root><recset1><rec1>" + command1 + "</rec1></recset1><recset1><rec1>" + command2 + "</rec1></recset1></root>";
+//            SetUpForExecution(activity, testData, "<ADL><recset1><rec1></rec1></recset1><OutVar1/></ADL>");
+//            const string Expected = "This is a different output from the user";
+//            string error;
+//            string actual;
+//            //------------Execute Test---------------------------
+//            var result = ExecuteProcess();
+//            //------------Assert Results-------------------------
+//            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+//
+//            StringAssert.Contains(actual, Expected);
+//        }
 
         [TestMethod]
         public void ExecuteCommandLineGetDebugInputOutputExpectedCorrectResults()
