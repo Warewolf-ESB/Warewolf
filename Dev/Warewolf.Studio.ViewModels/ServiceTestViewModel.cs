@@ -1441,6 +1441,7 @@ namespace Warewolf.Studio.ViewModels
         private void Save(List<IServiceTestModel> serviceTestModels)
         {
             var serviceTestModelTos = serviceTestModels.Select(CreateServiceTestModelTO).ToList();
+            serviceTestModelTos = MarkPending(serviceTestModelTos);
             var result = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel, serviceTestModelTos);
             switch (result.Result)
             {
@@ -1460,7 +1461,18 @@ namespace Warewolf.Studio.ViewModels
                     throw new ArgumentOutOfRangeException();
             }
         }
-
+        
+        private List<IServiceTestModelTO> MarkPending(List<IServiceTestModelTO> serviceTestModels)
+        {
+            foreach(var serviceTestModel in serviceTestModels)
+            {
+                serviceTestModel.TestFailing = false;
+                serviceTestModel.TestInvalid = false;
+                serviceTestModel.TestPassed = false;
+                serviceTestModel.TestPending = true;
+            }
+            return serviceTestModels;
+        }
         private static IServiceTestModelTO CreateServiceTestModelTO(IServiceTestModel model)
         {
             return new ServiceTestModelTO
