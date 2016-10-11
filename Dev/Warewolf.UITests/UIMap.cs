@@ -664,7 +664,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
             WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
         public void Enter_GroupName_Into_Windows_Group_Dialog(string GroupName)
@@ -706,18 +706,21 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Select ""(.*)"" From Explorer Remote Server Dropdown List")]
-        public void Select_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
+        public void Select_From_Explorer_Remote_Server_Dropdown_List(string serverName)
         {
-            Select_From_Explorer_Remote_Server_Dropdown_List(comboboxListItem);
+            switch (serverName)
+            {
+                default:
+                case "Remote Connection Integration":
+                    Select_From_Explorer_Remote_Server_Dropdown_List(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text);
+                    break;
+            }
         }
 
-        public void Select_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem, int openComboboxListRetries = 3)
+        public void Select_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
         {
-            while (!ControlExistsNow(comboboxListItem) && openComboboxListRetries-- > 0)
-            {
-                Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox, new Point(217, 8));
-            }
-            Assert.IsTrue(comboboxListItem.Exists, "TSTCIREMOTE does not exist in explorer remote server drop down list.");
+            Click_Explorer_Remote_Server_Dropdown_List();
+            Assert.IsTrue(comboboxListItem.Exists, "Server does not exist in explorer remote server drop down list.");
             Mouse.Click(comboboxListItem, new Point(79, 8));
         }
 
@@ -1033,7 +1036,8 @@ namespace Warewolf.UITests
                 Mouse.Click(MessageBoxWindow.OKButton);
             }
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Spinner);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText.Contains("Success"), "Deploy message does not contain 'success' after waiting for deploy spinner.");
+            var displayText = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText;
+            Assert.IsTrue(displayText.Contains("Success"), "Deploy message '" + displayText + "' does not contain 'success' after waiting for deploy spinner.");
         }
 
         public void Change_Selected_Database_ToMySql_DataBase()

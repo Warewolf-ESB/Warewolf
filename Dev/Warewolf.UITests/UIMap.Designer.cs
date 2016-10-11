@@ -7301,6 +7301,20 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
+        /// <summary>
+        /// Click_Explorer_Remote_Server_Dropdown_List
+        /// </summary>
+        [When(@"I Click Explorer Remote Server Dropdown List")]
+        public void Click_Explorer_Remote_Server_Dropdown_List()
+        {
+            #region Variable Declarations
+            var serverComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
+            #endregion
+
+            // Click 'TheServerComboBox' custom control
+            Mouse.Click(serverComboBox, new Point(167, 10));
+        }
+        
         #region Properties
         public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
         {
@@ -15360,18 +15374,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom ComboboxListItemAsRemoteConnectionIntegration
+        public ComboboxListItemAsRemoteConnectionIntegration ComboboxListItemAsRemoteConnectionIntegration
         {
             get
             {
                 if ((this.mComboboxListItemAsRemoteConnectionIntegration == null))
                 {
-                    this.mComboboxListItemAsRemoteConnectionIntegration = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mComboboxListItemAsRemoteConnectionIntegration.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mComboboxListItemAsRemoteConnectionIntegration.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
-                    this.mComboboxListItemAsRemoteConnectionIntegration.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mComboboxListItemAsRemoteConnectionIntegration = new ComboboxListItemAsRemoteConnectionIntegration(this);
                 }
                 return this.mComboboxListItemAsRemoteConnectionIntegration;
             }
@@ -15813,7 +15822,7 @@ namespace Warewolf.UITests
         
         private WpfText mComboboxListItemAsLocalhost;
         
-        private WpfCustom mComboboxListItemAsRemoteConnectionIntegration;
+        private ComboboxListItemAsRemoteConnectionIntegration mComboboxListItemAsRemoteConnectionIntegration;
         
         private WpfCustom mComboboxListItemAsLocalhostConnected;
         
@@ -47058,6 +47067,43 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mNewRemoteServerItemText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ComboboxListItemAsRemoteConnectionIntegration : WpfCustom
+    {
+        
+        public ComboboxListItemAsRemoteConnectionIntegration(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
         #endregion
     }
     
