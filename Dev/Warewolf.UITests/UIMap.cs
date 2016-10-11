@@ -595,7 +595,7 @@ namespace Warewolf.UITests
         [When(@"I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Invalid_Service_Name_With_Whitespace_Into_Duplicate_Dialog(string ServiceName)
         {
-            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, true, true, SaveOrDuplicate.Duplicate);
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, true, SaveOrDuplicate.Duplicate);
         }
 
         [When(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
