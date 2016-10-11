@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
 
                 var itemToMove = ServerExplorerRepo.Find(Guid.Parse(itemToBeRenamed.ToString())) ?? ServerExplorerRepo.Find(a => a.ResourcePath == itemToBeRenamedPath.ToString());
-                Dev2Logger.Info(String.Format("Move Item. Path:{0} NewPath:{1}", itemToBeRenamed, newPath));
+                Dev2Logger.Info($"Move Item. Path:{itemToBeRenamed} NewPath:{newPath}");
                 item = ServerExplorerRepo.MoveItem(itemToMove, newPath.ToString(), GlobalConstants.ServerWorkspaceID);               
             }
             catch (Exception e)

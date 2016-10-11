@@ -73,13 +73,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (dependsOnMe)
                 {
-                    result.Message.Append(string.Format("<graph title=\"Local Dependants Graph: {0}\">", resourceId));
+                    result.Message.Append($"<graph title=\"Local Dependants Graph: {resourceId}\">");
                     result.Message.Append(FindWhatDependsOnMe(theWorkspace.ID, resource.ResourceID, new List<Guid>()));
                     result.Message.Append("</graph>");
                 }
                 else
                 {
-                    result.Message.Append(string.Format("<graph title=\"Dependency Graph Of {0}\">", resourceId));
+                    result.Message.Append($"<graph title=\"Dependency Graph Of {resourceId}\">");
                     result.Message.Append(FindDependenciesRecursive(resource.ResourceID, theWorkspace.ID, new List<Guid>()));
                     result.Message.Append("</graph>");
                 }
@@ -116,13 +116,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             dependants.AddRange(ResourceCatalog.GetDependants(workspaceId, resourceID) ?? new List<Guid>());
             dependants = dependants.Distinct().ToList();
             var sb = new StringBuilder();
-            sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resourceID));
+            sb.Append($"<node id=\"{resourceID}\" x=\"\" y=\"\" broken=\"false\">");
             dependants.ForEach(c =>
             {
                 var resource = ResourceCatalog.GetResource(workspaceId, c) ?? ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, c);
                 if (resource != null)
                 {
-                    sb.Append(string.Format("<dependency id=\"{0}\" />", resource.ResourceID));
+                    sb.Append($"<dependency id=\"{resource.ResourceID}\" />");
                 }
 
             });
@@ -177,9 +177,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var dependencies = resource.Dependencies;
                 if (dependencies != null)
                 {
-                    sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resource.ResourceID));
+                    sb.Append($"<node id=\"{resource.ResourceID}\" x=\"\" y=\"\" broken=\"false\">");
                     // ReSharper disable ImplicitlyCapturedClosure
-                    dependencies.ForEach(c => sb.Append(string.Format("<dependency id=\"{0}\" />", c.ResourceID)));
+                    dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
                     // ReSharper restore ImplicitlyCapturedClosure
                     sb.Append("</node>");
                     seenResource.Add(resourceGuid);

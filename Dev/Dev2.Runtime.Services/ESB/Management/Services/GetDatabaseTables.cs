@@ -97,7 +97,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(string.IsNullOrEmpty(runtimeDbSource.DatabaseName) || string.IsNullOrEmpty(runtimeDbSource.Server))
             {
                 var res = new DbTableList("Invalid database sent {0}.", database);
-                Dev2Logger.Debug(String.Format("Invalid database sent {0}.", database));
+                Dev2Logger.Debug($"Invalid database sent {database}.");
                 return serializer.SerializeToBuilder(res);
             }
 

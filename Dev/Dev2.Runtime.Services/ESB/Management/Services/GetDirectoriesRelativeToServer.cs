@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 directory = tmp.ToString();
             }
-            if(String.IsNullOrEmpty(directory))
+            if(string.IsNullOrEmpty(directory))
             {
                 throw new InvalidDataContractException(ErrorResource.DirectoryIsRequired);
             }

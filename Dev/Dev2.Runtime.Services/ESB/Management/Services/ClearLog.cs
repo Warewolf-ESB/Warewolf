@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 directory = tmp.ToString();
             }
 
-            if(String.IsNullOrWhiteSpace(directory))
+            if(string.IsNullOrWhiteSpace(directory))
             {
                 AppendError(msg, directory, ErrorResource.CannotDeleteFileWithoughtDirectory);
             }
@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             result.AppendFormat("Error clearing '{0}'...", directory);
             result.AppendLine();
-            result.Append(String.Format("Error: {0}", msg));
+            result.Append($"Error: {msg}");
         }
 
         public DynamicService CreateServiceEntry()

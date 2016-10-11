@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 resourceType = tmp.ToString();
             }
-            Dev2Logger.Info(String.Format("Reload Resource. Id:{0} Type:{1}",resourceID,resourceType));
+            Dev2Logger.Info($"Reload Resource. Id:{resourceID} Type:{resourceType}");
             try
             {
                 // 2012.10.01: TWR - 5392 - Server does not dynamically reload resources 
