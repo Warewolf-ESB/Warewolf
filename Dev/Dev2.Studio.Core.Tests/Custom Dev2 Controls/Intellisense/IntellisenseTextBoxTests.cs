@@ -53,23 +53,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 
         #region Test Initialization
 
-        //BUG 9639
-        [TestMethod]
-        // This test is here for when the designers load. The check is to prevent them from hammering the providers on load ;)
-        public void IntellisenseBoxDoesntQueryProvidersWhenTextLengthIsZero()
-        {
-
-            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
-            intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>())).Verifiable();
-
-            IntellisenseTextBox textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
-            textBox.IntellisenseProvider = intellisenseProvider.Object;
-            textBox.Text = "";
-
-            // Ensure the get results method is never called, mimics a initalize event from the design surface ;)
-            intellisenseProvider.Verify(s => s.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>()), Times.Exactly(0));
-        }
+     
 
 
         [TestMethod]

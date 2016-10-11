@@ -142,6 +142,7 @@
                         <TextBox Text="{Binding ModelItem.DisplayName}" 
                                  Visibility="{Binding IsSelected, PresentationTraceSources.TraceLevel=High, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                  ToolTip="{Binding ModelItem.ServiceName}"
+                                 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type sap:ActivityDesigner}}}"
                                  VerticalAlignment="Center" 
                                  HorizontalContentAlignment="Left"
                                  Height="20"

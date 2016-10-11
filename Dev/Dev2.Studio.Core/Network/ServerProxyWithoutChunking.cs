@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Net.Security;
 using System.Network;
 using System.Security.Claims;
@@ -33,7 +32,6 @@ using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
-using Dev2.ExtMethods;
 using Dev2.Messages;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
@@ -44,6 +42,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
+
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -81,7 +80,7 @@ namespace Dev2.Network
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
             Dev2Logger.Debug(credentials);
             Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name);
-            HubConnection = new HubConnectionWrapper(uriString){ Credentials = credentials };
+            HubConnection = new HubConnectionWrapper(uriString) { Credentials = credentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
@@ -89,7 +88,7 @@ namespace Dev2.Network
             AsyncWorker = worker;
 
         }
-        
+
         public IPrincipal Principal { get; private set; }
 
         public ServerProxyWithoutChunking(string webAddress, string userName, string password)
@@ -254,13 +253,13 @@ namespace Dev2.Network
                     }
                     throw ex;
                 });
-            }          
+            }
             catch (Exception e)
             {
                 HandleConnectError(e);
             }
         }
-        
+
         public async Task<bool> ConnectAsync(Guid id)
         {
             ID = id;
@@ -278,7 +277,7 @@ namespace Dev2.Network
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
                     await HubConnection.Start();
-                    if(HubConnection.State==ConnectionStateWrapped.Disconnected)
+                    if (HubConnection.State == ConnectionStateWrapped.Disconnected)
                     {
                         if (!IsLocalHost)
                         {
@@ -305,7 +304,7 @@ namespace Dev2.Network
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
-                    if(ex.Message.Contains("1.4"))
+                    if (ex.Message.Contains("1.4"))
                         throw new FallbackException();
                     Dev2Logger.Error(this, aex);
                     var hex = ex as HttpClientException;
@@ -523,7 +522,7 @@ namespace Dev2.Network
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             if (serverExplorerItem.ServerId == ServerID)
             {
-              //  return;
+                //  return;
             }
             serverExplorerItem.ServerId = ID;
             ItemAddedMessageAction?.Invoke(serverExplorerItem);
@@ -598,58 +597,58 @@ namespace Dev2.Network
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
             // build up payload 
-//            var messageId = Guid.NewGuid();
-//            var envelope = new Envelope
-//            {
-//                PartID = 0,
-//                Type = typeof(Envelope),
-//                Content = payload.ToString()
-//            };
+            //            var messageId = Guid.NewGuid();
+            //            var envelope = new Envelope
+            //            {
+            //                PartID = 0,
+            //                Type = typeof(Envelope),
+            //                Content = payload.ToString()
+            //            };
 
             var result = new StringBuilder();
 
             var resultTask = Task.Run(async () => result = await ExecuteCommandAsync(payload, workspaceId));
             resultTask.Wait();
 
-//            Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
-//            Wait(invoke, result);
-//            if (invoke.IsFaulted)
-//            {
-//                var popupController = CustomContainer.Get<IPopupController>();
-//                popupController?.Show(ErrorResource.ErrorConnectingToServer, "Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
-//                return result;
-//            }
-//            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
-//
-//            fragmentInvoke.ContinueWith(task =>
-//            {
-//                if (!task.IsFaulted && task.Result != null)
-//                {
-//                    result.Append(task.Result);
-//                }
-//
-//                // prune any result for old datalist junk ;)
-//                if (result.Length > 0)
-//                {
-//                    // Only return Dev2System.ManagmentServicePayload if present ;)
-//                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-//                    if (start > 0)
-//                    {
-//                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-//                        if (start < end && end - start > 1)
-//                        {
-//                            // we can return the trimmed payload instead
-//                            start += GlobalConstants.ManagementServicePayload.Length + 2;
-//                            return new StringBuilder(result.Substring(start, end - start));
-//                        }
-//                    }
-//                }
-//
-//                return result;
-//            });
+            //            Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
+            //            Wait(invoke, result);
+            //            if (invoke.IsFaulted)
+            //            {
+            //                var popupController = CustomContainer.Get<IPopupController>();
+            //                popupController?.Show(ErrorResource.ErrorConnectingToServer, "Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
+            //                return result;
+            //            }
+            //            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
+            //
+            //            fragmentInvoke.ContinueWith(task =>
+            //            {
+            //                if (!task.IsFaulted && task.Result != null)
+            //                {
+            //                    result.Append(task.Result);
+            //                }
+            //
+            //                // prune any result for old datalist junk ;)
+            //                if (result.Length > 0)
+            //                {
+            //                    // Only return Dev2System.ManagmentServicePayload if present ;)
+            //                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
+            //                    if (start > 0)
+            //                    {
+            //                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+            //                        if (start < end && end - start > 1)
+            //                        {
+            //                            // we can return the trimmed payload instead
+            //                            start += GlobalConstants.ManagementServicePayload.Length + 2;
+            //                            return new StringBuilder(result.Substring(start, end - start));
+            //                        }
+            //                    }
+            //                }
+            //
+            //                return result;
+            //            });
             return result;
             //Wait(fragmentInvoke, result);
-            
+
         }
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId)
         {
@@ -693,63 +692,11 @@ namespace Dev2.Network
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Dev2Logger.Error(e);                
+                Dev2Logger.Error(e);
             }
             return result;
-        }
-
-        protected virtual T Wait<T>(Task<T> task, StringBuilder result)
-        {
-            return Wait(task, result, GlobalConstants.NetworkTimeOut);
-        }
-
-        protected T Wait<T>(Task<T> task, StringBuilder result, int millisecondsTimeout)
-        {
-            try
-            {
-                task.WaitWithPumping(millisecondsTimeout);
-                return task.Result;
-            }
-            catch (AggregateException aex)
-            {
-                var hasDisconnected = false;
-                aex.Handle(ex =>
-                {
-                    result.AppendFormat("<Error>{0}</Error>", ex.Message);
-                    var hex = ex as HttpRequestException;
-                    if (hex != null)
-                    {
-                        hasDisconnected = true;
-                        return true; // This we know how to handle this
-                    }
-                    var ioex = ex as InvalidOperationException;
-                    if (ioex != null && ioex.Message.Contains(@"Connection started reconnecting before invocation result was received"))
-                    {
-                        Dev2Logger.Debug("Connection is reconnecting");
-                        return true; // This we know how to handle this
-                    }
-                    // handle 403 errors when permissions have been removed ;)
-                    var hce = ex as HttpClientException;
-                    if (hce != null && hce.Message.Contains("StatusCode: 403"))
-                    {
-                        Dev2Logger.Debug("Forbidden - Most Likely Permissions Changed.");
-                        // Signal not-authorized anymore ;)
-                        UpdateIsAuthorized(false);
-                        return true;
-                    }
-
-                    // handle generic errors ;)                   
-                    Dev2Logger.Error(this, ex);
-                    return true; // Let anything else stop the application.
-                });
-                if (hasDisconnected)
-                {
-                    HasDisconnected();
-                }
-            }
-            return default(T);
         }
 
         public void AddDebugWriter(Guid workspaceId)
