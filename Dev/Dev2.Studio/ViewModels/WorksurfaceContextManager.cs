@@ -897,13 +897,7 @@ namespace Dev2.Studio.ViewModels
 
         public void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null)
         {
-            var schedulerViewModel = new SchedulerViewModel(_mainViewModel.EventPublisher, new DirectoryObjectPickerDialog(), _mainViewModel.PopupProvider, _mainViewModel.AsyncWorker, ActiveServer, null);
-           
-            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.Scheduler, resourceModel.ID);
-            var key = workSurfaceKey as WorkSurfaceKey;
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, schedulerViewModel);
-            AddAndActivateWorkSurface(workSurfaceContextViewModel);
-
+            var schedulerViewModel = ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
             schedulerViewModel.CreateNewTask();
             schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
         }
