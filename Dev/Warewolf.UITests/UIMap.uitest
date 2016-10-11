@@ -10572,6 +10572,47 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.DebugInputsMenuItem">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Debug Inputs does not exist on the Explorer context menu</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.DebugStudioMenuItem">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Debug Studio does not exist on the Explorer context menu</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.DebugBrowserMenuItem">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Debug Browser does not exist on the Explorer context menu</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.RunAllTestsMenuItem">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Run All Tests does not exist on the Explorer context menu</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod1">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
   <OnErrorActions />
@@ -11308,6 +11349,70 @@
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
                     <PropertyCondition Name="AutomationId">ViewSwagger</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="DebugBrowserMenuItem" FriendlyName="Debug Browser" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">DebugBrowser</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="DebugInputsMenuItem" FriendlyName="Debug Inputs" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">DebugInputs</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="DebugStudioMenuItem" FriendlyName="Debug Studio" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">DebugStudio</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="MenuItem" Id="RunAllTestsMenuItem" FriendlyName="Run All Tests" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">RunAllTests</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -31350,6 +31455,37 @@ Error while saving: This task requires that the user account specified has 'Log 
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ToolWindow</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2PIETERTEWindow" FriendlyName="Warewolf (DEV2\PIETER.TERBLANCHE)" SpecialControlType="None" SessionId="49940976">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\PIETER.TERBLANCHE)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Menu" Id="UIExplorerMenuMenu" FriendlyName="ExplorerMenu" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+              </WindowTitles>
+              <SearchConfigurations>
+                <SearchConfiguration>Expand</SearchConfiguration>
+              </SearchConfigurations>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Menu</PropertyCondition>
+                <PropertyCondition Name="AutomationId">ExplorerMenu</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
