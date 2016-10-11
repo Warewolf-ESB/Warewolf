@@ -93,7 +93,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(string.IsNullOrEmpty(runtimeSource.Server))
             {
                 var res = new DbTableList(ErrorResource.InvalidSharepointServerSent, serializedSource);
-                Dev2Logger.Debug(String.Format(ErrorResource.InvalidSharepointServerSent, serializedSource));
+                Dev2Logger.Debug(string.Format(ErrorResource.InvalidSharepointServerSent, serializedSource));
                 return serializer.SerializeToBuilder(res);
             }
 

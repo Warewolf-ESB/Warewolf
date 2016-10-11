@@ -29,6 +29,19 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class RenameResource : IEsbManagementEndpoint
     {
+        private readonly IAuthorizer _authorizer;
+        public RenameResource(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public RenameResource()
+            :this(new SecuredContributeManagementEndpoint())
+        {
+
+        }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -51,6 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     resourceId = tmp.ToString();
                 }
+              
                 values.TryGetValue("NewName", out tmp);
                 if(tmp != null)
                 {
@@ -66,14 +80,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException(string.Format(ErrorResource.NoValueProvidedForParameter, "ResourceID"));
                 }
-                if(String.IsNullOrEmpty(newName))
+                if(string.IsNullOrEmpty(newName))
                 {
                     throw new InvalidDataContractException(ErrorResource.NoParameter);
                 }
 
                 Guid id;
                 Guid.TryParse(resourceId, out id);
-                Dev2Logger.Info(String.Format( "Rename Resource. ResourceId:{0} NewName:{1}",resourceId,newName));
+                _authorizer.RunPermissions(id);
+                Dev2Logger.Info($"Rename Resource. ResourceId:{resourceId} NewName:{newName}");
                 var saveToWorkSpaceResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID, id, newName, resourcePath);
                 if (saveToWorkSpaceResult.Status == ExecStatus.Success)
                 {

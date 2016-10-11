@@ -90,7 +90,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Debug("No table name set.");
                 return serializer.SerializeToBuilder(res);
             }
-            Dev2Logger.Info(String.Format("Get Database Columns For Table. Database:{0} Schema:{1} Table{2}" ,database,schema,tableName));
+            Dev2Logger.Info($"Get Database Columns For Table. Database:{database} Schema:{schema} Table{tableName}");
             try
             {
                 var dbSource = serializer.Deserialize<DbSource>(database);

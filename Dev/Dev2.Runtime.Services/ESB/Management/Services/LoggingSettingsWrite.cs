@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                throw new InvalidDataException(ErrorResource.InvalidSecuritySettings + string.Format(" Error: {0}", e.Message));
+                throw new InvalidDataException(ErrorResource.InvalidSecuritySettings + $" Error: {e.Message}");
             }
 
             var msg = new ExecuteMessage { HasError = false };

@@ -40,11 +40,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 if(values == null)
                 {
-                    throw new ArgumentNullException("values");
+                    throw new ArgumentNullException(nameof(values));
                 }
                 if(theWorkspace == null)
                 {
-                    throw new ArgumentNullException("theWorkspace");
+                    throw new ArgumentNullException(nameof(theWorkspace));
                 }
                 StringBuilder path;
                 if(!values.TryGetValue("path", out path))
@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "newPath"));
                 }
-                Dev2Logger.Info(String.Format("Reanme Folder. Path:{0} NewPath:{1}",path,newPath));
+                Dev2Logger.Info($"Reanme Folder. Path:{path} NewPath:{newPath}");
                 item = ServerExplorerRepository.Instance.RenameFolder(path.ToString(), newPath.ToString(), theWorkspace.ID);
             }
             catch(Exception e)

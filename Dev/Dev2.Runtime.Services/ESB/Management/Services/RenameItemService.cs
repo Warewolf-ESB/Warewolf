@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 if(values == null)
                 {
-                    throw new ArgumentNullException("values");
+                    throw new ArgumentNullException(nameof(values));
                 }
                 StringBuilder itemToBeRenamed;
                 StringBuilder newName;
@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (itemToBeRenamed != null)
                 {
                     explorerItem = ServerExplorerRepo.Find(Guid.Parse(itemToBeRenamed.ToString()));
-                    Dev2Logger.Info(String.Format("Rename Item. Path:{0} NewPath:{1}", explorerItem.ResourcePath, newName));
+                    Dev2Logger.Info($"Rename Item. Path:{explorerItem.ResourcePath} NewPath:{newName}");
                     item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
                 }
                 else if (folderToBeRenamed != null)
