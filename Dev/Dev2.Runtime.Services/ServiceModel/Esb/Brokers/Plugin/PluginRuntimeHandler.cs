@@ -21,6 +21,7 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
@@ -183,7 +184,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var path = Path.Combine(new[] { directoryName, tokens[0] + ".dll" });
             var assembly = Assembly.LoadFile(path);
             SetAppDomainConfiguration(path);
-            //TryLoadAssembly(path,assembly.FullName,out assembly);
             return assembly;
         }
         /// <summary>
@@ -360,94 +360,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             return typeList;
         }
-
-        
-        /// <summary>
-        /// Tries the load assembly.
-        /// </summary>
-        /// <param name="assemblyLocation">The assembly location.</param>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        /// <param name="loadedAssembly">The loaded assembly.</param>
-        /// <returns></returns>
-        public bool TryLoadAssembly(string assemblyLocation, string assemblyName, out Assembly loadedAssembly)
-        {
-            loadedAssembly = null;
-
-            if (assemblyLocation != null && assemblyLocation.StartsWith(GlobalConstants.GACPrefix))
-            {
-                try
-                {
-                    loadedAssembly = Assembly.Load(assemblyName);
-                    LoadDepencencies(loadedAssembly, assemblyLocation);
-                    return true;
-                }
-                catch (System.BadImageFormatException e)//WOLF-1640
-                {
-                    Dev2Logger.Error(e);
-                    throw;
-
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e.Message);
-                }
-            }
-            else
-            {
-                try
-                {
-                    if (assemblyLocation != null)
-                    {
-                        loadedAssembly = Assembly.LoadFrom(assemblyLocation);
-                        LoadDepencencies(loadedAssembly, assemblyLocation);
-                    }
-                    return true;
-                }
-                catch (System.BadImageFormatException e)//WOLF-1640
-                {
-                    Dev2Logger.Error(e);
-                    throw;
-                }
-                catch
-                {
-                    try
-                    {
-                        if (assemblyLocation != null)
-                        {
-                            loadedAssembly = Assembly.UnsafeLoadFrom(assemblyLocation);
-                            LoadDepencencies(loadedAssembly, assemblyLocation);
-                        }
-                        return true;
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Error(e);
-                    }
-                }
-                try
-                {
-                    if (assemblyLocation != null)
-                    {
-                        var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
-                        var loadedObject = objHAndle.Unwrap();
-                        loadedAssembly = Assembly.GetAssembly(loadedObject.GetType());
-                    }
-                    LoadDepencencies(loadedAssembly, assemblyLocation);
-                    return true;
-                }
-                catch (System.BadImageFormatException e)//WOLF-1640
-                {
-                    Dev2Logger.Error(e);
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e);
-                }
-            }
-            return false;
-        }
-
 
         /// <summary>
         /// Loads the dependencies.
