@@ -1,6 +1,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -248,8 +249,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var msg = iwe.Message;
 
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
-                if(to != null)
-                    to.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
+                to?.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
                 var failureMessage = DataObject.Environment.FetchErrors();
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), failureMessage, out invokeErrors, DataObject.StartTime, false, true);
 
@@ -431,6 +431,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private static IDev2Activity MockActivity(IDev2Activity resource, List<IServiceTestStep> testSteps)
         {
             var foundTestStep = testSteps.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);

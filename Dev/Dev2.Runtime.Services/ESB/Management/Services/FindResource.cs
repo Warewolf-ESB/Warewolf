@@ -73,7 +73,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 List<Resource> resources;
                 if (resourceId == null || resourceId == "*")
                 {
-                         _authorizer.RunPermissions(resourceId.ToGuid());
                     // ReSharper disable once RedundantAssignment
                     resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "resourceName", resourceName }, { "type", type } }).ToList();
                 }

@@ -35,7 +35,9 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
 using Dev2.Explorer;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Exceptions;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
@@ -2593,6 +2595,45 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("RenameResourceService_Execute")]
+        public void RenameResourceService_ExecuteNoPermitted_DashesInNewName_ResourceFileNameChanged()
+        {
+            var workspace = Guid.NewGuid();
+            var resourceID = Guid.NewGuid();
+            const string newResourceName = "New-Name-With-Dashes";
+            const string oldResourceName = "Old Resource Name";
+
+            var getCatalog = ResourceCatalog.Instance;
+            var resource = new Resource
+            {
+                ResourceName = oldResourceName,
+                ResourceID = resourceID,
+                ResourceType = "Unknown"
+            };
+            getCatalog.SaveResource(workspace, resource, "");
+            var mock = new Mock<IAuthorizer>();
+            var renameResourceService = new RenameResource(mock.Object);
+            var mockedWorkspace = new Mock<IWorkspace>();
+            mockedWorkspace.Setup(ws => ws.ID).Returns(workspace);
+            Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\"));
+            Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\", workspace));
+            Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\", workspace, "\\Services\\"));
+
+            //------------Execute Test---------------------------
+            var result = renameResourceService.Execute(new Dictionary<string, StringBuilder> { { "ResourceID", new StringBuilder(resourceID.ToString()) }, { "NewName", new StringBuilder(newResourceName) } }, mockedWorkspace.Object);
+
+            var obj = ConvertToMsg(result.ToString());
+            var renamedResource = getCatalog.GetResource(workspace, resourceID);
+            Assert.IsNotNull(renamedResource);
+            // Assert Resource FileName Changed
+            Assert.IsTrue(obj.Message.Contains("Renamed Resource"));
+            Assert.IsTrue(File.Exists(renamedResource.FilePath), "Resource does not exist");
+            StringAssert.Contains(renamedResource.FilePath, newResourceName + ".xml");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("RenameResourceService_Execute")]
+        [ExpectedException(typeof(ServiceNotAuthorizedException))]
         public void RenameResourceService_Execute_DashesInNewName_ResourceFileNameChanged()
         {
             var workspace = Guid.NewGuid();
@@ -2608,7 +2649,10 @@ namespace Dev2.Tests.Runtime.Hosting
                 ResourceType = "Unknown"
             };
             getCatalog.SaveResource(workspace, resource, "");
-            var renameResourceService = new RenameResource();
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()))
+                .Throws(new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException));
+            var renameResourceService = new RenameResource(mock.Object);
             var mockedWorkspace = new Mock<IWorkspace>();
             mockedWorkspace.Setup(ws => ws.ID).Returns(workspace);
             Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\"));

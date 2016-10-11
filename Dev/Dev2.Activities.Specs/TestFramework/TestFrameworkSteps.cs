@@ -1284,6 +1284,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         if (foundNode != null)
                         {
                             var decisionNode = foundNode as FlowDecision;
+                            // ReSharper disable once PossibleNullReferenceException
                             var condition = decisionNode.Condition;
                             var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
@@ -1323,6 +1324,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             return false;
                         });
                         var decisionNode = foundNode as FlowStep;
+                        // ReSharper disable once PossibleNullReferenceException
                         var action = decisionNode.Action;
                         var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];
