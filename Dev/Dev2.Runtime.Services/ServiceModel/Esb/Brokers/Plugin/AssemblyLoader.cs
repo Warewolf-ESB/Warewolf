@@ -100,7 +100,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         public void LoadDepencencies(Assembly asm, string assemblyLocation)
         {
-            // load dependencies ;)
             if (asm != null)
             {
                 var toLoadAsm = asm.GetReferencedAssemblies();
