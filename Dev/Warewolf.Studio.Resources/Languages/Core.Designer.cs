@@ -8595,6 +8595,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot execute this command on an unsaved workflow.
+        /// </summary>
+        public static string StartNodeDisabledToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDisabledToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duplicate the current resource.
         /// </summary>
         public static string StartNodeDuplicateToolTip {
