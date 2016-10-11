@@ -601,7 +601,7 @@ namespace Warewolf.UITests
         [When(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Invalid_Service_Name_Into_Duplicate_Dialog(string ServiceName)
         {
-            Enter_Service_Name_Into_Save_Dialog(ServiceName, true, true, false, SaveOrDuplicate.Duplicate);
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, true, false, false, SaveOrDuplicate.Duplicate);
         }
         
         [When(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
@@ -749,16 +749,10 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhost, new Point(94, 10));
         }
 
-        [When(@"I Save With Ribbon Button and Dialog As ""(.*)"" and Append Unique Guid")]
-        public void WhenISaveWithRibbonButtonAndDialogAsAndAppendUniqueGuid(string p0)
-        {
-            Save_With_Ribbon_Button_And_Dialog(p0 + Guid.NewGuid().ToString().Substring(0, 8));
-        }
-
         [When(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
         public void WhenISaveWithRibbonButtonAndDialogAs(string Name)
         {
-            Save_With_Ribbon_Button_And_Dialog(Name);
+            Save_With_Ribbon_Button_And_Dialog(Name, false);
         }
 
         [When(@"I Save With Ribbon Button And Dialog As ""(.*)"" without filtering the explorer")]
@@ -767,26 +761,33 @@ namespace Warewolf.UITests
             Save_With_Ribbon_Button_And_Dialog(name, true);
         }
 
+        [When(@"I Save With Ribbon Button and Dialog As ""(.*)"" and Append Unique Guid")]
+        public void WhenISaveWithRibbonButtonAndDialogAsAndAppendUniqueGuid(string p0)
+        {
+            Save_With_Ribbon_Button_And_Dialog(p0 + Guid.NewGuid().ToString().Substring(0, 8));
+        }
+
         public void Save_With_Ribbon_Button_And_Dialog(string Name, bool skipExplorerFilter = false)
         {
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Enter_Service_Name_Into_Save_Dialog(Name);
             Click_SaveDialog_Save_Button();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             if (!skipExplorerFilter)
             {
                 Filter_Explorer(Name);
                 Click_Explorer_Refresh_Button();
+                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
             }
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
         }
 
         [When(@"I Click SaveDialog Save Button")]
         public void Click_SaveDialog_Save_Button()
         {
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
-            Assert.IsFalse(ControlExistsNow(SaveDialogWindow));
+            Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveButton), "Save dialog still exists after clicking save button.");
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
@@ -993,7 +994,7 @@ namespace Warewolf.UITests
         [When(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
         public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress)
         {
-            CreateRemoteServerSource(ServerSourceName, ServerAddress);
+            CreateRemoteServerSource(ServerSourceName, ServerAddress, false);
         }
 
         public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress, bool PublicAuth = false)
@@ -1026,8 +1027,13 @@ namespace Warewolf.UITests
         public void Click_Deploy_Tab_Deploy_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton);
-            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Spinner);
-            Assert.AreEqual("Success", MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText);
+            if (ControlExistsNow(MessageBoxWindow))
+            {
+                //Dismiss Server Version Conflict Dialog
+                Mouse.Click(MessageBoxWindow.OKButton);
+            }
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Spinner);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText.Contains("Success"), "Deploy message does not contain 'success' after waiting for deploy spinner.");
         }
 
         public void Change_Selected_Database_ToMySql_DataBase()
@@ -1400,7 +1406,7 @@ namespace Warewolf.UITests
             }
             return neverRunDisplay;
         }
-
+        
         public void Click_Run_Test_Button(TestResultEnum? expectedTestResultEnum = null, int instance = 1)
         {
             var currentTest = GetCurrentTest(instance);
@@ -1630,6 +1636,11 @@ namespace Warewolf.UITests
         }
 
         [When("I Click Save Ribbon Button Without Expecting a Dialog")]
+        public void Click_Save_Ribbon_Button_Without_Expecting_A_Dialog()
+        {
+            Click_Save_Ribbon_Button_With_No_Save_Dialog(2000);
+        }
+
         public void Click_Save_Ribbon_Button_With_No_Save_Dialog(int WaitForSave = 2000)
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
@@ -1907,7 +1918,14 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.DeleteButton, new Point(10, 10));
         }
-        public void Click_First_Test_Button()
+
+        [When(@"I Click First Test Run Button")]
+        public void Click_First_Test_Run_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.RunButton, new Point(10, 10));
+        }
+
+        public void Select_First_Test()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1, new Point(80, 10));
         }

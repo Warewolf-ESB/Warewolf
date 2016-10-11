@@ -6847,7 +6847,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
-            WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton;
+            WpfListItem createTest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest;
             #endregion
 
             // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -6859,8 +6859,9 @@ namespace Warewolf.UITests
             // Click 'Tests' menu item
             Mouse.Click(tests, new Point(30, 11));
 
-            // Verify that the 'Exists' property of 'Run All' button equals 'True'
-            Assert.AreEqual(this.Show_Explorer_First_Item_Tests_With_Context_MenuParams.RunAllButtonExists, runAllButton.Exists, "Run all button does not exist on tests tab");
+            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.DummyServiceTest' list item equals 'True'
+            Assert.AreEqual(this.Show_Explorer_First_Item_Tests_With_Context_MenuParams.CreateTestExists, createTest.Exists, "Create new test button does not exist on tests tab after openning it with the exp" +
+                    "lorer context menu.");
         }
         
         /// <summary>
@@ -14653,9 +14654,9 @@ namespace Warewolf.UITests
         public bool TestsExists = true;
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'Run All' button equals 'True'
+        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.DummyServiceTest' list item equals 'True'
         /// </summary>
-        public bool RunAllButtonExists = true;
+        public bool CreateTestExists = true;
         #endregion
     }
     
