@@ -61,9 +61,9 @@
                                     AutomationProperties.AutomationId="{Binding Path=DesignerText}"
                                     cal:Message.Attach="[Event LostKeyboardFocus] = [Action DoWorkspaceSave]">
                 <ig:ContextMenuService.Manager>
-                    <ig:ContextMenuManager OpenMode="RightClick">
+                    <ig:ContextMenuManager>
                         <ig:ContextMenuManager.ContextMenu>
-                            <ig:XamContextMenu x:Name="StartNodeContextMenu" Visibility="Collapsed" >
+                            <ig:XamContextMenu x:Name="StartNodeContextMenu" >
                                 <ig:XamContextMenu.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel Background="{StaticResource WareWolfWhiteBrush}" Orientation="Vertical" />
@@ -150,7 +150,6 @@
                                                 Command="{Binding RunAllTestsCommand}"
                                                 Header="Run All Tests"
                                                 ToolTipService.ShowOnDisabled="True"
-                                                ToolTip="{x:Static languages:Core.MenuDeployToolTip}"
                                                 IsEnabled="{Binding IsCommandEnabled}">
                                     <ig:XamMenuItem.Style>
                                         <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="{x:Type ig:XamMenuItem}">
@@ -216,7 +215,6 @@
 
                                 <ig:XamMenuItem Name="Dependencies"
                                                 Command="{Binding ShowDependenciesCommand}"
-                                                CommandParameter="{Binding Data}"
                                                 Header="Show Dependencies"
                                                 ToolTipService.ShowOnDisabled="True"
                                                 IsEnabled="{Binding IsCommandEnabled}">

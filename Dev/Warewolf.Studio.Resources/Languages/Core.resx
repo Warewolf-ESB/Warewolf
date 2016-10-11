@@ -1049,6 +1049,12 @@ The window will be reloaded when you click OK.</value>
   <data name="SchedulerNewTaskName" xml:space="preserve">
     <value>New Task</value>
   </data>
+  <data name="SchedulerUnsavedTaskMessage" xml:space="preserve">
+    <value>Please save currently edited Task(s) before creating a new one.</value>
+  </data>
+  <data name="SchedulerUnsavedTaskHeader" xml:space="preserve">
+    <value>Save before continuing</value>
+  </data>
   <data name="SchedulerConnectionError" xml:space="preserve">
     <value>You don't have permission to schedule on this server. You need Administrator permission.</value>
   </data>

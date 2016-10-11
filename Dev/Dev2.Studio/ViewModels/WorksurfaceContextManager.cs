@@ -44,6 +44,7 @@ using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.ViewModels;
 using Infragistics.Windows.DockManager.Events;
+using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 // ReSharper disable InconsistentNaming
@@ -898,16 +899,35 @@ namespace Dev2.Studio.ViewModels
         {
             if (resourceModel != null)
             {
-                try
+                WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateEnvKey(WorkSurfaceContext.Scheduler, ActiveServer.EnvironmentID) as WorkSurfaceKey;
+                var workSurfaceContextViewModel = FindWorkSurfaceContextViewModel(key);
+                if (workSurfaceContextViewModel != null)
+                {
+                    var workSurfaceViewModel = workSurfaceContextViewModel.WorkSurfaceViewModel;
+                    if (workSurfaceViewModel != null)
+                    {
+                        var findWorkSurfaceContextViewModel = (SchedulerViewModel) workSurfaceViewModel;
+                        
+                        if (findWorkSurfaceContextViewModel.IsDirty)
+                        {
+                            _mainViewModel.PopupProvider.Show(Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskMessage, 
+                                Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskHeader, 
+                                MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                            ActivateAndReturnWorkSurfaceIfPresent(key);
+                        }
+                        else
+                        {
+                            ActivateAndReturnWorkSurfaceIfPresent(key);
+                            findWorkSurfaceContextViewModel.CreateNewTask();
+                            findWorkSurfaceContextViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
+                        }
+                    }
+                }
+                else
                 {
                     var schedulerViewModel = ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
                     schedulerViewModel.CreateNewTask();
                     schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
-                }
-                catch
-                {
-                    //Do nothing
-                    ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
                 }
             }
         }

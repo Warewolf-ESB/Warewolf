@@ -192,7 +192,7 @@ namespace Dev2.Settings.Scheduler
         {
             if (_schedulerViewModel.IsDirty)
             {
-                _schedulerViewModel.PopupController.Show(@"Please save currently edited Task(s) before creating a new one.", @"Save before continuing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                _schedulerViewModel.PopupController.Show(Core.SchedulerUnsavedTaskMessage, Core.SchedulerUnsavedTaskHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                 return;
             }
 
