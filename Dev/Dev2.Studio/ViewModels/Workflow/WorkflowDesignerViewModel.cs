@@ -457,6 +457,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        public bool IsCommandEnabled => ResourceModel != null && !ResourceModel.IsNewWorkflow;
+
         public ICommand TestEditorCommand
         {
             get

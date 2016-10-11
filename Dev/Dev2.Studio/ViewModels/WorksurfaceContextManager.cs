@@ -101,7 +101,7 @@ namespace Dev2.Studio.ViewModels
         void AddSettingsWorkSurface();
 
         void AddSchedulerWorkSurface();
-        void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
+        void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel);
 
         void AddWorkspaceItem(IContextualResourceModel model);
 
@@ -895,11 +895,22 @@ namespace Dev2.Studio.ViewModels
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 
-        public void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null)
+        public void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
         {
-            var schedulerViewModel = ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
-            schedulerViewModel.CreateNewTask();
-            schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
+            if (resourceModel != null)
+            {
+                try
+                {
+                    var schedulerViewModel = ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
+                    schedulerViewModel.CreateNewTask();
+                    schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
+                }
+                catch
+                {
+                    //Do nothing
+                    ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
+                }
+            }
         }
 
         public void AddWorkspaceItem(IContextualResourceModel model)

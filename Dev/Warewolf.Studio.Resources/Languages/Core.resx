@@ -2719,6 +2719,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="StartNodeCopyUrlToolTip" xml:space="preserve">
     <value>Copy the current resource Url</value>
   </data>
+  <data name="StartNodeDisabledToolTip" xml:space="preserve">
+    <value>Cannot execute this command on an unsaved workflow</value>
+  </data>
   <data name="MappingsObjectOutputTooltip" xml:space="preserve">
     <value>MappingsObjectOutputTooltip</value>
   </data>
