@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Linq;
-using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
