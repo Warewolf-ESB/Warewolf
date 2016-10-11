@@ -18,5 +18,5 @@ Scenario: SaveDialogServiceNameValidation
 	And I Enter Service Name Into Duplicate Dialog As "TestingWF"
 	And I Enter Invalid Service Name Into Duplicate Dialog As "Inv@lid N&m#"
 	And I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As "Test "
-	And I Enter Service Name Into Duplicate Dialog As "ValidWFName"
+	When I Enter Service Name Into Duplicate Dialog As "ValidWFName"
 	And I Click Duplicate From Duplicate Dialog

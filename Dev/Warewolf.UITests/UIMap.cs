@@ -607,7 +607,7 @@ namespace Warewolf.UITests
         [When(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Duplicate_Dialog(string ServiceName)
         {
-            Enter_Service_Name_Into_Save_Dialog(ServiceName, true, false, false, SaveOrDuplicate.Duplicate);
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
         }
 
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
