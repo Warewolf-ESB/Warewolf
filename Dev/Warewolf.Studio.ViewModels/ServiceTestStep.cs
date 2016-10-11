@@ -94,6 +94,10 @@ namespace Warewolf.Studio.ViewModels
                 _stepOutputs = value;
                 if (value != null)
                 {
+                    if (value.Count < 1)
+                    {
+                        TestInvalid = true;
+                    }
                     if (ActivityType == "DsfDecision" || ActivityType == "DsfSwitch")
                     {
                         foreach (var serviceTestOutput in value)
@@ -168,7 +172,13 @@ namespace Warewolf.Studio.ViewModels
             get { return _testPassed; }
             set
             {
-                _testPassed = value; 
+                _testPassed = value;
+                if (_testPassed)
+                {
+                    TestPending = false;
+                    TestFailing = false;
+                    TestInvalid = false;
+                }
                 OnPropertyChanged(()=> TestPassed);
             }
         }
@@ -179,6 +189,12 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testFailing = value;
+                if (_testFailing)
+                {
+                    TestPending = false;
+                    TestInvalid = false;
+                    TestPassed = false;
+                }
                 OnPropertyChanged(() => TestFailing);
             }
         }
@@ -189,6 +205,12 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testInvalid = value;
+                if (_testInvalid)
+                {
+                    TestPending = false;
+                    TestFailing = false;
+                    TestPassed = false;
+                }
                 OnPropertyChanged(() => TestInvalid);
             }
         }
@@ -199,6 +221,12 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testPending = value;
+                if (_testPending)
+                {
+                    TestFailing = false;
+                    TestInvalid = false;
+                    TestPassed = false;
+                }
                 OnPropertyChanged(() => TestPending);
             }
         }
