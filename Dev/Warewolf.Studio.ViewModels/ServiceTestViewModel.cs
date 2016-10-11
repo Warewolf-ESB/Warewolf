@@ -1051,7 +1051,7 @@ namespace Warewolf.Studio.ViewModels
                 if (serviceTestStep != null)
                     serviceTestStep.StepIcon = Application.Current?.TryFindResource(desc.Icon) as ImageSource;
             }
-            if (type.Name == "DsfActivity")
+            if (type != null && type.Name == "DsfActivity")
             {
                 if (serviceTestStep != null)
                     serviceTestStep.StepIcon = Application.Current?.TryFindResource("Explorer-WorkflowService") as ImageSource;
@@ -1450,8 +1450,9 @@ namespace Warewolf.Studio.ViewModels
 
         private void Save(List<IServiceTestModel> serviceTestModels)
         {
+            MarkPending(serviceTestModels);
             var serviceTestModelTos = serviceTestModels.Select(CreateServiceTestModelTO).ToList();
-            serviceTestModelTos = MarkPending(serviceTestModelTos);
+            
             var result = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel, serviceTestModelTos);
             switch (result.Result)
             {
@@ -1472,7 +1473,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         
-        private List<IServiceTestModelTO> MarkPending(List<IServiceTestModelTO> serviceTestModels)
+        private void MarkPending(List<IServiceTestModel> serviceTestModels)
         {
             foreach(var serviceTestModel in serviceTestModels)
             {
@@ -1481,8 +1482,8 @@ namespace Warewolf.Studio.ViewModels
                 serviceTestModel.TestPassed = false;
                 serviceTestModel.TestPending = true;
             }
-            return serviceTestModels;
         }
+
         private static IServiceTestModelTO CreateServiceTestModelTO(IServiceTestModel model)
         {
             return new ServiceTestModelTO
