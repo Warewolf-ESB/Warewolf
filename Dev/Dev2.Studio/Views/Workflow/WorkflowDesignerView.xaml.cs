@@ -54,13 +54,6 @@ namespace Dev2.Studio.Views.Workflow
                         : Visibility.Collapsed;
                 }
             }
-
-            var vm = DataContext as WorkflowDesignerViewModel;
-
-            if (vm != null)
-            {
-                CustomContainer.Get<IMainViewModel>().AddWorkSurfaceContext(vm.ResourceModel);
-            }
         }
         //a return from here without settings handled to true and DragDropEffects.None implies that the item drop is allowed
         void DropPointOnDragEnter(object sender, DragEventArgs e)

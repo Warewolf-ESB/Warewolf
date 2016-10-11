@@ -6532,6 +6532,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save before continuing.
+        /// </summary>
+        public static string SchedulerUnsavedTaskHeader {
+            get {
+                return ResourceManager.GetString("SchedulerUnsavedTaskHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please save currently edited Task(s) before creating a new one..
+        /// </summary>
+        public static string SchedulerUnsavedTaskMessage {
+            get {
+                return ResourceManager.GetString("SchedulerUnsavedTaskMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your variables might contain values like &apos;\t&apos; or &apos;\n&apos; etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences..
         /// </summary>
         public static string ScriptingHelpEscapeScript {
