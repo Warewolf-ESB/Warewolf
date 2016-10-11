@@ -65,7 +65,7 @@ namespace Dev2
     /// </summary>
     sealed class ServerLifecycleManager : IDisposable
     {
-   
+
         static ServerLifecycleManager _singleton;
 
         /// <summary>
@@ -78,127 +78,127 @@ namespace Dev2
             {
                 using (new MemoryFailPoint(2048))
                 {
-                   return RunMain(arguments);
+                    return RunMain(arguments);
                 }
             }
             catch (InsufficientMemoryException)
             {
                 return RunMain(arguments);
             }
-            
+
         }
 
         static int RunMain(string[] arguments)
         {
             var result = 0;
-           
-                CommandLineParameters options = new CommandLineParameters();
-                CommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
-                if(!parser.ParseArguments(arguments, options))
+
+            var options = new CommandLineParameters();
+            var parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
+            if (!parser.ParseArguments(arguments, options))
+            {
+                return 80;
+            }
+
+            var commandLineParameterProcessed = false;
+            if (options.Install)
+            {
+                Dev2Logger.Info("Starting Install");
+                commandLineParameterProcessed = true;
+
+                if (!EnsureRunningAsAdministrator(arguments))
                 {
-                    return 80;
-                }
-
-                bool commandLineParameterProcessed = false;
-                if(options.Install)
-                {
-                    Dev2Logger.Info("Starting Install");
-                    commandLineParameterProcessed = true;
-
-                    if(!EnsureRunningAsAdministrator(arguments))
-                    {
-                        Dev2Logger.Info("Cannot install because the server is not running as an admin user");
-                        return result;
-                    }
-
-                    if(!WindowsServiceManager.Install())
-                    {
-                        result = 81;
-                        Dev2Logger.Info("Install Success Result is 81");
-                    }
-                }
-
-                if(options.StartService)
-                {
-                    Dev2Logger.Info("Starting Service");
-                    commandLineParameterProcessed = true;
-
-                    if(!EnsureRunningAsAdministrator(arguments))
-                    {
-                        Dev2Logger.Info("Cannot start because the server is not running as an admin user");
-                        return result;
-                    }
-
-                    if(!WindowsServiceManager.StartService(null))
-                    {
-                        Dev2Logger.Info("Starting Service success. result 83");
-                        result = 83;
-                    }
-                }
-
-                if(options.StopService)
-                {
-                    Dev2Logger.Info("Stopping Service");
-                    commandLineParameterProcessed = true;
-
-                    if(!EnsureRunningAsAdministrator(arguments))
-                    {
-                        Dev2Logger.Info("Cannot stop because the server is not running as an admin user");
-                        return result;
-                    }
-
-                    if(!WindowsServiceManager.StopService(null))
-                    {
-                        Dev2Logger.Info("Stopping Service success. result 84");
-                        result = 84;
-                    }
-                }
-
-                if(options.Uninstall)
-                {
-                    Dev2Logger.Info("Uninstall Service");
-                    commandLineParameterProcessed = true;
-
-                    if(!EnsureRunningAsAdministrator(arguments))
-                    {
-                        Dev2Logger.Info("Cannot uninstall because the server is not running as an admin user");
-                        return result;
-                    }
-
-                    if(!WindowsServiceManager.Uninstall())
-                    {
-                        Dev2Logger.Info("Uninstall Service success. result 92");
-                        result = 82;
-                    }
-                }
-
-                if(commandLineParameterProcessed)
-                {
-                    Dev2Logger.Info("Command line processed. Returning");
+                    Dev2Logger.Info("Cannot install because the server is not running as an admin user");
                     return result;
                 }
-                AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-                {
-                    Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
-                };
-                if(Environment.UserInteractive || options.IntegrationTestMode)
-                {
-                    Dev2Logger.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
-                    using(_singleton = new ServerLifecycleManager(arguments))
-                    {
-                        _singleton.Run(true);
-                    }
 
-                    _singleton = null;
-                }
-                else
+                if (!WindowsServiceManager.Install())
                 {
-                    Dev2Logger.Info("** Starting In Service Mode **");
-                    using(var service = new ServerLifecycleManagerService())
-                    {
-                        ServiceBase.Run(service);
-                    }
+                    result = 81;
+                    Dev2Logger.Info("Install Success Result is 81");
                 }
+            }
+
+            if (options.StartService)
+            {
+                Dev2Logger.Info("Starting Service");
+                commandLineParameterProcessed = true;
+
+                if (!EnsureRunningAsAdministrator(arguments))
+                {
+                    Dev2Logger.Info("Cannot start because the server is not running as an admin user");
+                    return result;
+                }
+
+                if (!WindowsServiceManager.StartService(null))
+                {
+                    Dev2Logger.Info("Starting Service success. result 83");
+                    result = 83;
+                }
+            }
+
+            if (options.StopService)
+            {
+                Dev2Logger.Info("Stopping Service");
+                commandLineParameterProcessed = true;
+
+                if (!EnsureRunningAsAdministrator(arguments))
+                {
+                    Dev2Logger.Info("Cannot stop because the server is not running as an admin user");
+                    return result;
+                }
+
+                if (!WindowsServiceManager.StopService(null))
+                {
+                    Dev2Logger.Info("Stopping Service success. result 84");
+                    result = 84;
+                }
+            }
+
+            if (options.Uninstall)
+            {
+                Dev2Logger.Info("Uninstall Service");
+                commandLineParameterProcessed = true;
+
+                if (!EnsureRunningAsAdministrator(arguments))
+                {
+                    Dev2Logger.Info("Cannot uninstall because the server is not running as an admin user");
+                    return result;
+                }
+
+                if (!WindowsServiceManager.Uninstall())
+                {
+                    Dev2Logger.Info("Uninstall Service success. result 92");
+                    result = 82;
+                }
+            }
+
+            if (commandLineParameterProcessed)
+            {
+                Dev2Logger.Info("Command line processed. Returning");
+                return result;
+            }
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
+            };
+            if (Environment.UserInteractive || options.IntegrationTestMode)
+            {
+                Dev2Logger.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
+                using (_singleton = new ServerLifecycleManager(arguments))
+                {
+                    _singleton.Run(true);
+                }
+
+                _singleton = null;
+            }
+            else
+            {
+                Dev2Logger.Info("** Starting In Service Mode **");
+                using (var service = new ServerLifecycleManagerService())
+                {
+                    ServiceBase.Run(service);
+                }
+            }
             return result;
         }
 
@@ -272,12 +272,12 @@ namespace Dev2
             }
             try
             {
-                Dev2Logger.AddEventLogging(settingsConfigFile,"Warewolf Server");
+                Dev2Logger.AddEventLogging(settingsConfigFile, "Warewolf Server");
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Dev2Logger.Error("Error in startup.",e);
+                Dev2Logger.Error("Error in startup.", e);
             }
             Common.Utilities.ServerUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
             SetupTempCleanupSetting();
@@ -285,24 +285,24 @@ namespace Dev2
 
         private static void MoveSettingsFiles()
         {
-            if(File.Exists("Settings.config"))
+            if (File.Exists("Settings.config"))
             {
-                if(!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
+                if (!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
                 {
                     Directory.CreateDirectory(EnvironmentVariables.ServerSettingsFolder);
                 }
-                if(!File.Exists(EnvironmentVariables.ServerLogSettingsFile))
+                if (!File.Exists(EnvironmentVariables.ServerLogSettingsFile))
                 {
                     File.Copy("Settings.config", EnvironmentVariables.ServerLogSettingsFile);
                 }
             }
-            if(File.Exists("secure.config"))
+            if (File.Exists("secure.config"))
             {
-                if(!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
+                if (!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
                 {
                     Directory.CreateDirectory(EnvironmentVariables.ServerSettingsFolder);
                 }
-                if(!File.Exists(EnvironmentVariables.ServerSecuritySettingsFile))
+                if (!File.Exists(EnvironmentVariables.ServerSecuritySettingsFile))
                 {
                     File.Copy("secure.config", EnvironmentVariables.ServerSecuritySettingsFile);
                 }
@@ -312,10 +312,10 @@ namespace Dev2
         private void SetupTempCleanupSetting()
         {
             var daysToKeepTempFilesValue = ConfigurationManager.AppSettings.Get("DaysToKeepTempFiles");
-            if(!string.IsNullOrEmpty(daysToKeepTempFilesValue))
+            if (!string.IsNullOrEmpty(daysToKeepTempFilesValue))
             {
                 int daysToKeepTempFiles;
-                if(int.TryParse(daysToKeepTempFilesValue, out daysToKeepTempFiles))
+                if (int.TryParse(daysToKeepTempFilesValue, out daysToKeepTempFiles))
                 {
                     _daysToKeepTempFiles = daysToKeepTempFiles;
                 }
@@ -338,7 +338,7 @@ namespace Dev2
                 var miq = MoqInstallerActionFactory.CreateInstallerActions();
                 miq.ExecuteMoqInstallerActions();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception("Ensure you are running as an Administrator. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", e);
             }
@@ -362,13 +362,13 @@ namespace Dev2
                 LoadTestCatalog();
                 ServerLoop(interactiveMode);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
-                Dev2Logger.Error("Error Starting Server",e);
+                Dev2Logger.Error("Error Starting Server", e);
                 Stop(true, 0);
             }
-           
+
         }
 
         void StartPulseLogger()
@@ -380,7 +380,7 @@ namespace Dev2
         void PerformTimerActions(object state)
         {
             GetComputerNames.GetComputerNamesList();
-            if(_daysToKeepTempFiles != 0)
+            if (_daysToKeepTempFiles != 0)
             {
                 DeleteTempFiles();
             }
@@ -394,8 +394,8 @@ namespace Dev2
         static void PreloadReferences()
         {
             Write("Preloading assemblies...  ");
-            Assembly currentAsm = typeof(ServerLifecycleManager).Assembly;
-            HashSet<string> inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
+            var currentAsm = typeof(ServerLifecycleManager).Assembly;
+            var inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
             LoadReferences(currentAsm, inspected);
             WriteLine("done.");
         }
@@ -406,14 +406,14 @@ namespace Dev2
         /// </summary>
         static void LoadReferences(Assembly asm, HashSet<string> inspected)
         {
-            AssemblyName[] allReferences = asm.GetReferencedAssemblies();
+            var allReferences = asm.GetReferencedAssemblies();
 
-            foreach (AssemblyName toLoad in allReferences)
+            foreach (var toLoad in allReferences)
             {
                 if (!inspected.Contains(toLoad.Name))
                 {
                     inspected.Add(toLoad.Name);
-                    Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
+                    var loaded = AppDomain.CurrentDomain.Load(toLoad);
                     LoadReferences(loaded, inspected);
                 }
             }
@@ -424,24 +424,24 @@ namespace Dev2
         {
             var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
             DeleteTempFiles(tempPath);
-            string schedulerTempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
+            var schedulerTempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
             DeleteTempFiles(schedulerTempPath);
         }
 
         private void DeleteTempFiles(string tempPath)
         {
-            if(Directory.Exists(tempPath))
+            if (Directory.Exists(tempPath))
             {
                 var dir = new DirectoryInfo(tempPath);
                 var files = dir.GetFiles();
                 var filesToDelete = files.Where(info =>
                 {
-                    var maxDaysToKeepTimeSpan = new TimeSpan(_daysToKeepTempFiles,0, 0, 0);
+                    var maxDaysToKeepTimeSpan = new TimeSpan(_daysToKeepTempFiles, 0, 0, 0);
                     var time = DateTime.Now.Subtract(info.CreationTime);
                     return time > maxDaysToKeepTimeSpan;
                 }).ToList();
 
-                foreach(var fileInfo in filesToDelete)
+                foreach (var fileInfo in filesToDelete)
                 {
                     fileInfo.Delete();
                 }
@@ -453,21 +453,21 @@ namespace Dev2
 
             Tracker.Stop();
 
-            if(!didBreak)
+            if (!didBreak)
             {
                 Dispose();
             }
-           
+
             Write($"Exiting with exitcode {result}");
         }
 
         void ServerLoop(bool interactiveMode)
         {
-            
+
             if (interactiveMode)
             {
                 Write("Press <ENTER> to terminate service and/or web server if started");
-                if(EnvironmentVariables.IsServerOnline)
+                if (EnvironmentVariables.IsServerOnline)
                 {
                     Console.ReadLine();
                 }
@@ -485,7 +485,7 @@ namespace Dev2
             {
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Fail("Unable to set working directory.", e);
             }
@@ -496,17 +496,17 @@ namespace Dev2
 
             try
             {
-                if(!IsElevated())
+                if (!IsElevated())
                 {
-                    ProcessStartInfo startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location) { Verb = "runas", Arguments = string.Join(" ", arguments) };
+                    var startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location) { Verb = "runas", Arguments = string.Join(" ", arguments) };
 
-                    Process process = new Process { StartInfo = startInfo };
+                    var process = new Process { StartInfo = startInfo };
 
                     try
                     {
                         process.Start();
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         LogException(e);
                     }
@@ -514,7 +514,7 @@ namespace Dev2
                     return false;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 LogException(e);
             }
@@ -524,24 +524,24 @@ namespace Dev2
 
         static bool IsElevated()
         {
-            WindowsIdentity currentIdentity = WindowsIdentity.GetCurrent();
+            var currentIdentity = WindowsIdentity.GetCurrent();
             {
-                WindowsPrincipal principal = new WindowsPrincipal(currentIdentity);
+                var principal = new WindowsPrincipal(currentIdentity);
                 return principal.IsInRole(WindowsBuiltInRole.Administrator);
             }
         }
 
         internal void ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
         {
-            if(String.Equals(section.Name, sectionName, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(section.Name, sectionName, StringComparison.OrdinalIgnoreCase))
             {
-                if(!String.IsNullOrEmpty(section.InnerText))
+                if (!string.IsNullOrEmpty(section.InnerText))
                 {
-                    if(String.Equals(section.InnerText, "true", StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(section.InnerText, "true", StringComparison.OrdinalIgnoreCase))
                     {
                         setter = true;
                     }
-                    else if(String.Equals(section.InnerText, "false", StringComparison.OrdinalIgnoreCase))
+                    else if (string.Equals(section.InnerText, "false", StringComparison.OrdinalIgnoreCase))
                     {
                         setter = false;
                     }
@@ -579,16 +579,16 @@ namespace Dev2
                 bool.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
                 bool.TryParse(ConfigurationManager.AppSettings["webServerSslEnabled"], out _isWebServerSslEnabled);
 
-                if(_isWebServerEnabled)
+                if (_isWebServerEnabled)
                 {
-                    if(string.IsNullOrEmpty(webServerPort) && _isWebServerEnabled)
+                    if (string.IsNullOrEmpty(webServerPort) && _isWebServerEnabled)
                     {
                         throw new ArgumentException("Web server port not set but web server is enabled. Please set the webServerPort value in the configuration file.");
                     }
 
                     int realPort;
 
-                    if(!Int32.TryParse(webServerPort, out realPort))
+                    if (!int.TryParse(webServerPort, out realPort))
                     {
                         throw new ArgumentException("Web server port is not valid. Please set the webServerPort value in the configuration file.");
                     }
@@ -598,7 +598,7 @@ namespace Dev2
                     var httpEndpoint = new IPEndPoint(IPAddress.Any, realPort);
                     var httpUrl = $"http://*:{webServerPort}/";
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
-                    
+
                     EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);
                     EnableSSLForServer(webServerSslPort, endpoints);
 
@@ -606,7 +606,7 @@ namespace Dev2
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Fail("Server initialization failed", ex);
             }
@@ -615,29 +615,29 @@ namespace Dev2
         private string ParseArguments(ref string webServerSslPort)
         {
             var webServerPort = "";
-            Dictionary<string, string> arguments = new Dictionary<string, string>();
+            var arguments = new Dictionary<string, string>();
 
-            if(_arguments.Any())
+            if (_arguments.Any())
             {
-                foreach(string t in _arguments)
+                foreach (var t in _arguments)
                 {
-                    string[] arg = t.Split('=');
-                    if(arg.Length == 2)
+                    var arg = t.Split('=');
+                    if (arg.Length == 2)
                     {
                         arguments.Add(arg[0].Replace("/", string.Empty), arg[1]);
                     }
                 }
             }
 
-            foreach(KeyValuePair<string, string> argument in arguments)
+            foreach (var argument in arguments)
             {
-                if(argument.Key.Equals("webServerPort", StringComparison.InvariantCultureIgnoreCase))
+                if (argument.Key.Equals("webServerPort", StringComparison.InvariantCultureIgnoreCase))
                 {
                     webServerPort = argument.Value;
                     continue;
                 }
 
-                if(argument.Key.Equals("webServerSslPort", StringComparison.InvariantCultureIgnoreCase))
+                if (argument.Key.Equals("webServerSslPort", StringComparison.InvariantCultureIgnoreCase))
                 {
                     webServerSslPort = argument.Value;
                 }
@@ -647,20 +647,20 @@ namespace Dev2
 
         private void EnableSSLForServer(string webServerSslPort, List<Dev2Endpoint> endpoints)
         {
-            if(!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
+            if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
             {
                 int realWebServerSslPort;
-                Int32.TryParse(webServerSslPort, out realWebServerSslPort);
+                int.TryParse(webServerSslPort, out realWebServerSslPort);
 
                 var sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
 
-                if(!string.IsNullOrEmpty(sslCertPath))
+                if (!string.IsNullOrEmpty(sslCertPath))
                 {
                     var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
                     var httpsUrl = $"https://*:{webServerSslPort}/";
                     var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(sslCertPath, httpsEndpoint);
 
-                    if(canEnableSsl)
+                    if (canEnableSsl)
                     {
                         endpoints.Add(new Dev2Endpoint(httpsEndpoint, httpsUrl, sslCertPath));
                     }
@@ -698,12 +698,12 @@ namespace Dev2
                 LogException(ex);
             }
         }
-        
+
         static void Fail(string message, Exception e)
         {
             var ex = e;
             var errors = new StringBuilder();
-            while(ex != null)
+            while (ex != null)
             {
                 errors.AppendLine(ex.Message);
                 errors.AppendLine(ex.StackTrace);
@@ -720,7 +720,7 @@ namespace Dev2
         {
             WriteLine("Critical Failure: " + message);
 
-            if(!String.IsNullOrEmpty(details))
+            if (!string.IsNullOrEmpty(details))
             {
                 WriteLine("Details");
                 WriteLine("--");
@@ -744,7 +744,7 @@ namespace Dev2
         /// </summary>
         public void Dispose()
         {
-            if(_isDisposed)
+            if (_isDisposed)
                 return;
             _isDisposed = true;
             Dispose(true);
@@ -758,12 +758,12 @@ namespace Dev2
         void Dispose(bool disposing)
         {
 
-            if(disposing)
+            if (disposing)
             {
                 CleanupServer();
             }
 
-            if(_timer != null)
+            if (_timer != null)
             {
                 _timer.Dispose();
                 _timer = null;
@@ -776,9 +776,9 @@ namespace Dev2
         {
             try
             {
-                PerformanceCounterPersistence perf = new PerformanceCounterPersistence(new FileWrapper());
-                WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate(),perf.LoadOrCreateResourcesCounters(perf.DefaultResourceCounters));
-                var locater = new WarewolfPerformanceCounterManager(register.Counters,register.ResourceCounters ,register,perf);
+                var perf = new PerformanceCounterPersistence(new FileWrapper());
+                var register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate(), perf.LoadOrCreateResourcesCounters(perf.DefaultResourceCounters));
+                var locater = new WarewolfPerformanceCounterManager(register.Counters, register.ResourceCounters, register, perf);
                 locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ExecutionErrors, "workflow1");
                 locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.AverageExecutionTime, "workflow1");
                 locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ConcurrentRequests, "workflow1");
@@ -813,6 +813,7 @@ namespace Dev2
 
         void LoadTestCatalog()
         {
+            MigrateOldTests();
             Write("Loading Test catalog...  ");
             TestCatalog.Instance.Load();
             WriteLine("done.");
@@ -828,11 +829,21 @@ namespace Dev2
         }
 
         static void MigrateOldResources()
-        {            
-            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath,"Resources");
-            if(!Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverBinResources))
+        {
+            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
+            if (!Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverBinResources))
             {
                 DirectoryHelper.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
+                DirectoryHelper.CleanUp(serverBinResources);
+            }
+        }
+
+        static void MigrateOldTests()
+        {
+            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
+            if (!Directory.Exists(EnvironmentVariables.TestPath) && Directory.Exists(serverBinResources))
+            {
+                DirectoryHelper.Copy(serverBinResources, EnvironmentVariables.TestPath, true);
                 DirectoryHelper.CleanUp(serverBinResources);
             }
         }
@@ -867,10 +878,10 @@ namespace Dev2
                 var instance = Runtime.Configuration.SettingsProvider.Instance;
                 var settings = instance.Configuration;
                 WorkflowLoggger.LoggingSettings = settings.Logging;
-               
+
                 WriteLine("done.");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Write("fail.");
                 WriteLine(e.Message);
@@ -896,7 +907,7 @@ namespace Dev2
 
         void StartWebServer()
         {
-            if(_isWebServerEnabled || _isWebServerSslEnabled)
+            if (_isWebServerEnabled || _isWebServerSslEnabled)
             {
                 try
                 {
@@ -911,14 +922,14 @@ namespace Dev2
                         }
                         SetStarted();
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         LogException(e);
                         Fail("Webserver failed to start", e);
                         Console.ReadLine();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     EnvironmentVariables.IsServerOnline = false;
                     Fail("Webserver failed to start", e);
@@ -929,7 +940,7 @@ namespace Dev2
 
         internal static void WriteLine(string message)
         {
-            if(Environment.UserInteractive)
+            if (Environment.UserInteractive)
             {
                 Console.WriteLine(message);
                 Dev2Logger.Info(message);
@@ -943,7 +954,7 @@ namespace Dev2
 
         internal static void Write(string message)
         {
-            if(Environment.UserInteractive)
+            if (Environment.UserInteractive)
             {
                 Console.Write(message);
                 Dev2Logger.Info(message);
