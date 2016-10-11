@@ -4614,6 +4614,11 @@ namespace Dev2.Core.Tests.Workflows
             viewModel.CopyUrlCommand.Execute(null);
             Assert.IsTrue(viewModel.ViewSwaggerCommand.CanExecute(null));
             //------------Assert Results-------------------------
+            var workflowLink = viewModel.GetWorkflowLink(false);
+            var displayWorkflowLink = viewModel.DisplayWorkflowLink;
+            viewModel.OpenWorkflowLinkCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>", workflowLink);
         }
     }
 }
