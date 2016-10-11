@@ -69,6 +69,7 @@ using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -1141,6 +1142,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.Measure(new Size(2000, 2000));
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
+                _wd.View.MouseEnter+=ViewOnMouseEnter;
                 _wd.View.PreviewKeyDown += ViewOnKeyDown;
                 _wd.View.LostFocus += OnViewOnLostFocus;
 
@@ -1175,6 +1177,21 @@ namespace Dev2.Studio.ViewModels.Workflow
                 WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNode-Icon") as DrawingBrush;
                 SubscribeToDebugSelectionChanged();
             }
+        }
+
+        private void ViewOnMouseEnter(object sender, MouseEventArgs mouseEventArgs)
+        {
+            var senderAsFrameworkElement = ModelService.Root.View as FrameworkElement;
+            var freePormPanel = senderAsFrameworkElement?.FindChildren<AdornerLayer>(layer => layer.IsEnabled);
+            if (freePormPanel != null)
+            {
+                var ad = freePormPanel.FirstOrDefault();
+                if (ad != null)
+                {
+                    
+                }
+            }
+            
         }
 
         private void SetHashTable()
@@ -1508,7 +1525,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     break;
                 }
             }
-        }
+        }        
 
         protected void WdOnModelChanged(object sender, EventArgs eventArgs)
         {
@@ -1690,7 +1707,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         private bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
         {
             if (HandleDoubleClick(leftButtonState, clickCount, dp, designerView))
+            {
                 return true;
+            }
 
             if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
             {
@@ -1699,6 +1718,28 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     mvm.RefreshActiveEnvironment();
                 }
+            }
+
+            var dp1 = dp as Run;
+            if (dp1?.Parent is TextBlock && dp1.DataContext.GetType().Name.Contains("FlowchartDesigner"))
+            {
+                var selectedModelItem = ModelService.Find(ModelService.Root, typeof(Flowchart)).FirstOrDefault();
+                if (selectedModelItem != null)
+                {
+                    SelectSingleModelItem(selectedModelItem);
+                }
+                return true;
+            }
+
+            var dp2 = dp as TextBlock;
+            if (dp2 != null && dp2.DataContext.GetType().Name.Contains("FlowchartDesigner"))
+            {
+                var selectedModelItem = ModelService.Find(ModelService.Root, typeof(Flowchart)).FirstOrDefault();
+                if (selectedModelItem != null)
+                {
+                    SelectSingleModelItem(selectedModelItem);
+                }
+                return true;
             }
 
             return false;
