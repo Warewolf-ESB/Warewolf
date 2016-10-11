@@ -2,6 +2,7 @@
 using Dev2.Runtime.Exceptions;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+// ReSharper disable MemberCanBeInternal
 
 namespace Dev2.Runtime.ESB.Management
 {

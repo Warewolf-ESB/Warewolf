@@ -14,6 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
@@ -31,6 +32,19 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FindResource : IEsbManagementEndpoint
     {
+        private readonly IAuthorizer _authorizer;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public FindResource(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public FindResource()
+            :this(new SecuredViewManagementEndpoint())
+        {
+
+        }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -55,15 +69,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     resourceId = tmp.ToString();
                 }
-
+           
                 List<Resource> resources;
                 if (resourceId == null || resourceId == "*")
                 {
+                         _authorizer.RunPermissions(resourceId.ToGuid());
                     // ReSharper disable once RedundantAssignment
                     resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "resourceName", resourceName }, { "type", type } }).ToList();
                 }
                 else
                 {
+                    _authorizer.RunPermissions(resourceId.ToGuid());
                     resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", resourceId }, { "type", type } }).ToList();
                 }
                 Dev2Logger.Info("Find Resource. ResourceName: " + resourceName);

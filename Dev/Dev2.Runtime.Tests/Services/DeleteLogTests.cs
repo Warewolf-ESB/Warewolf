@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -71,7 +72,9 @@ namespace Dev2.Tests.Runtime.Services
             var workspace = new Mock<IWorkspace>();
 
             var values = new Dictionary<string, StringBuilder> { { "ResourcePath", new StringBuilder() }, { "Directory", new StringBuilder("xyz") } };
-            var esb = new DeleteLog();
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
+            var esb = new DeleteLog(mock.Object);
             var result = esb.Execute(values, workspace.Object);
             var msg = ConvertToMsg(result);
             Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
@@ -83,7 +86,9 @@ namespace Dev2.Tests.Runtime.Services
             var workspace = new Mock<IWorkspace>();
 
             var values = new Dictionary<string, StringBuilder> { { "ResourcePath", new StringBuilder("abc") }, { "Directory", new StringBuilder() } };
-            var esb = new DeleteLog();
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
+            var esb = new DeleteLog(mock.Object);
             var result = esb.Execute(values, workspace.Object);
             var msg = ConvertToMsg(result);
             Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
@@ -95,7 +100,9 @@ namespace Dev2.Tests.Runtime.Services
             var workspace = new Mock<IWorkspace>();
 
             var values = new Dictionary<string, StringBuilder> { { "ResourcePath", new StringBuilder("abc") }, { "Directory", new StringBuilder("xyz") } };
-            var esb = new DeleteLog();
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
+            var esb = new DeleteLog(mock.Object);
             var result = esb.Execute(values, workspace.Object);
             var msg = ConvertToMsg(result);
             Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
@@ -107,7 +114,9 @@ namespace Dev2.Tests.Runtime.Services
             var workspace = new Mock<IWorkspace>();
 
             var values = new Dictionary<string, StringBuilder> { { "ResourcePath", new StringBuilder(Guid.NewGuid().ToString()) }, { "Directory", new StringBuilder("C:") } };
-            var esb = new DeleteLog();
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
+            var esb = new DeleteLog(mock.Object);
             var result = esb.Execute(values, workspace.Object);
             var msg = ConvertToMsg(result);
             Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
@@ -133,7 +142,9 @@ namespace Dev2.Tests.Runtime.Services
                     var workspace = new Mock<IWorkspace>();
 
                     var values = new Dictionary<string, StringBuilder> { { "ResourcePath", new StringBuilder(fileName) }, { "Directory", new StringBuilder(_testDir) } };
-                    var esb = new DeleteLog();
+                    var mock = new Mock<IAuthorizer>();
+                    mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
+                    var esb = new DeleteLog(mock.Object);
                     var result = esb.Execute(values, workspace.Object);
                     var msg = ConvertToMsg(result);
                     Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));

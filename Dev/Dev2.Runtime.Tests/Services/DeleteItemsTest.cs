@@ -17,7 +17,9 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Explorer;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Exceptions;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -97,7 +99,9 @@ namespace Dev2.Tests.Runtime.Services
         public void DeleteItem_Execute_ExpectName()
         {
             //------------Setup for test--------------------------
-            var deleteItem = new DeleteItemService();
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
+            var deleteItem = new DeleteItemService(mock.Object);
 
             ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
             var repo = new Mock<IExplorerServerResourceRepository>();
@@ -105,14 +109,44 @@ namespace Dev2.Tests.Runtime.Services
             repo.Setup(a => a.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>())).Returns(new ExplorerRepositoryResult(ExecStatus.Success, "")).Verifiable();
 
             var serializer = new Dev2JsonSerializer();
-            var inputs = new Dictionary<string, StringBuilder>();
-            inputs.Add("itemToDelete", serializer.SerializeToBuilder(item));
+            var inputs = new Dictionary<string, StringBuilder> { { "itemToDelete", serializer.SerializeToBuilder(item) } };
             ws.Setup(a => a.ID).Returns(Guid.Empty);
             deleteItem.ServerExplorerRepo = repo.Object;
             //------------Execute Test---------------------------
             deleteItem.Execute(inputs, ws.Object);
             //------------Assert Results-------------------------
             repo.Verify(a => a.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("deleteItem_Execute")]
+        public void DeleteItem_ExecuteNotPermited_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IAuthorizer>();
+             
+            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()))
+                .Throws(new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException));
+            var deleteItem = new DeleteItemService(mock.Object);
+
+            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
+            var repo = new Mock<IExplorerServerResourceRepository>();
+            var ws = new Mock<IWorkspace>();
+            repo.Setup(a => a.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>())).Returns(new ExplorerRepositoryResult(ExecStatus.Success, "")).Verifiable();
+            repo.Setup(a => a.Find(It.IsAny<Func<IExplorerItem, bool>>())).Returns(item).Verifiable();
+
+            var serializer = new Dev2JsonSerializer();
+            var inputs = new Dictionary<string, StringBuilder> { { "itemToDelete", serializer.SerializeToBuilder(item) } };
+            ws.Setup(a => a.ID).Returns(Guid.Empty);
+            deleteItem.ServerExplorerRepo = repo.Object;
+            //------------Execute Test---------------------------
+            var stringBuilder = deleteItem.Execute(inputs, ws.Object);
+            //------------Assert Results-------------------------
+            repo.Verify(a => a.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()), Times.Never);
+            var explorerRepositoryResult = serializer.Deserialize<ExplorerRepositoryResult>(stringBuilder);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException,explorerRepositoryResult.Message);
+            Assert.IsTrue(explorerRepositoryResult.Status == ExecStatus.Fail);
         }
 
         [TestMethod]

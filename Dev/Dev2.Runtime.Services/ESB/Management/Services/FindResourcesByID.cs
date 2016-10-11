@@ -52,7 +52,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     type = tmp.ToString();
                 }
-                Dev2Logger.Info("Find Resource By Id. " + guidCsv);
                 // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
 
                 var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", guidCsv }, { "type", type } });

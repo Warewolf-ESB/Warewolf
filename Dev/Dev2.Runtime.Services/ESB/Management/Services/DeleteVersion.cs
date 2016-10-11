@@ -20,13 +20,26 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+// ReSharper disable MemberCanBeInternal
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DeleteVersion : IEsbManagementEndpoint
     {
         IServerVersionRepository _serverExplorerRepository;
+        private readonly IAuthorizer _authorizer;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public DeleteVersion(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
 
+        // ReSharper disable once MemberCanBeInternal
+        public DeleteVersion()
+            :this(new SecuredContributeManagementEndpoint())
+        {
+
+        }
         #region Implementation of ISpookyLoadable<string>
 
         public string HandlesType()
@@ -65,8 +78,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 try
                 {
                     var guid = Guid.Parse(values["resourceId"].ToString());
+                    _authorizer.RunPermissions(guid);
                     var version = values["versionNumber"].ToString();
-                    Dev2Logger.Info(String.Format("Delete Version. ResourceId:{0} VersionNumber{1}",guid,version));
+                    Dev2Logger.Info($"Delete Version. ResourceId:{guid} VersionNumber{version}");
                     StringBuilder tmp;
                     string resourcePath = "";
                     values.TryGetValue("resourcePath", out tmp);
@@ -79,7 +93,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(String.Format("Delete Version Error."),e);
+                    Dev2Logger.Error("Delete Version Error.",e);
                     execMessage.HasError = true;
                     execMessage.Message = new StringBuilder( e.Message);
                 }

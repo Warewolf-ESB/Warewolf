@@ -25,9 +25,11 @@ using Dev2.Util;
 using Dev2.Workspaces;
 using Dev2.Common.Utils;
 using System.Text.RegularExpressions;
+using Dev2.Runtime.Exceptions;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 // ReSharper disable NonLocalizedString
+// ReSharper disable MemberCanBeInternal
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -40,9 +42,22 @@ namespace Dev2.Runtime.ESB.Management.Services
         const string PayloadEnd = @"</XamlDefinition>";
         const string AltPayloadStart = @"<Actions>";
         const string AltPayloadEnd = @"</Actions>";
+        private readonly IAuthorizer _authorizer;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public FetchResourceDefinition(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
 
+        // ReSharper disable once MemberCanBeInternal
+        public FetchResourceDefinition()
+            :this(new SecuredViewManagementEndpoint())
+        {
+
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
                 var res = new ExecuteMessage { HasError = false };
@@ -65,9 +80,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Guid resourceId;
                 Guid.TryParse(serviceId, out resourceId);
+              
                 Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}");
                 try
                 {
+                    _authorizer.RunPermissions(resourceId);
+
                     var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
                     if (!result.IsNullOrEmpty())
                     {
@@ -83,6 +101,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                             DoWorkflowServiceMessage(result, res);
                         }
                     }
+                }
+                catch(ServiceNotAuthorizedException ex)
+                {
+                    res.Message = ex.Message.ToStringBuilder();
+                    res.HasError = true;
+                    return serializer.SerializeToBuilder(res);
                 }
                 catch (Exception e)
                 {
@@ -106,7 +130,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                 }
 
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            
                 return serializer.SerializeToBuilder(res);
             }
             catch (Exception err)

@@ -18,6 +18,7 @@ using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Exceptions;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 
@@ -28,40 +29,61 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class DeleteResource : IEsbManagementEndpoint
+    {
+        private readonly IAuthorizer _authorizer;
+        public DeleteResource(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
 
-{
+        // ReSharper disable once MemberCanBeInternal
+        public DeleteResource()
+            :this(new SecuredContributeManagementEndpoint())
+        {
+
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string type = null;
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            StringBuilder tmp;
-            values.TryGetValue("ResourceID", out tmp);
-            Guid resourceId = Guid.Empty;
-            if(tmp != null)
+            try
             {
-                if(!Guid.TryParse(tmp.ToString(), out resourceId))
+                string type = null;
+              
+                StringBuilder tmp;
+                values.TryGetValue("ResourceID", out tmp);
+                Guid resourceId = Guid.Empty;
+                if (tmp != null)
                 {
-                    Dev2Logger.Info("Delete Resource Service. Invalid Parameter Guid:");
-                    var failureResult = new ExecuteMessage { HasError = true };
-                    failureResult.SetMessage("Invalid guid passed for ResourceID");
-                    return serializer.SerializeToBuilder(failureResult);
+                    if (!Guid.TryParse(tmp.ToString(), out resourceId))
+                    {
+                        Dev2Logger.Info("Delete Resource Service. Invalid Parameter Guid:");
+                        var failureResult = new ExecuteMessage { HasError = true };
+                        failureResult.SetMessage("Invalid guid passed for ResourceID");
+                        return serializer.SerializeToBuilder(failureResult);
+                    }
                 }
+                values.TryGetValue("ResourceType", out tmp);
+                if (tmp != null)
+                {
+                    type = tmp.ToString();
+                }
+                _authorizer.RunPermissions(resourceId);
+                Dev2Logger.Info("Delete Resource Service. Resource:" + resourceId);
+                // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
+                var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceId, type);
+                TestCatalog.Instance.DeleteAllTests(resourceId);
+                TestCatalog.Instance.Load();
+                var result = new ExecuteMessage { HasError = false };
+                result.SetMessage(msg.Message);
+                result.HasError = msg.Status != ExecStatus.Success;
+                return serializer.SerializeToBuilder(result);
             }
-            values.TryGetValue("ResourceType", out tmp);
-            if(tmp != null)
+            catch(ServiceNotAuthorizedException ex)
             {
-                type = tmp.ToString();
+                var result = new ExecuteMessage { HasError = true };
+                result.SetMessage(ex.Message);
+                return serializer.SerializeToBuilder(result);
             }
-
-            Dev2Logger.Info("Delete Resource Service. Resource:" + resourceId);
-            // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceId, type);
-            TestCatalog.Instance.DeleteAllTests(resourceId);
-            TestCatalog.Instance.Load();
-            var result = new ExecuteMessage { HasError = false };
-            result.SetMessage(msg.Message);
-            result.HasError = msg.Status != ExecStatus.Success;
-            return serializer.SerializeToBuilder(result);
         }
 
         public string HandlesType()

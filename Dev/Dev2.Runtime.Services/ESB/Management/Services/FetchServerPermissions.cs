@@ -19,12 +19,25 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchServerPermissions : IEsbManagementEndpoint
     {
+        private readonly IAuthorizer _authorizer;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public FetchServerPermissions(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public FetchServerPermissions()
+            :this(new SecuredAdministratorManagementEndpoint())
+        {
+
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
                 Dev2Logger.Info("Find Server User Name");
-
+                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 var user = Thread.CurrentPrincipal;
                 var permissionsMemo = new PermissionsModifiedMemo
                 {

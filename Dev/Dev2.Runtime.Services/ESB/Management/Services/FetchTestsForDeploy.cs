@@ -11,6 +11,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+// ReSharper disable MemberCanBeInternal
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -21,7 +22,19 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class FetchTestsForDeploy : IEsbManagementEndpoint
     {
         private ITestCatalog _testCatalog;
+        private readonly IAuthorizer _authorizer;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public FetchTestsForDeploy(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
 
+        // ReSharper disable once MemberCanBeInternal
+        public FetchTestsForDeploy()
+            :this(new SecuredViewManagementEndpoint())
+        {
+
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -40,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-
+                _authorizer.RunPermissions(resourceId);
                 var tests = TestCatalog.Fetch(resourceId);
                 foreach(var serviceTestModelTO in tests.Where(to => !string.IsNullOrEmpty(to.Password)))
                 {
