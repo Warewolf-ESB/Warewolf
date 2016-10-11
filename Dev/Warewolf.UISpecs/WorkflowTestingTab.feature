@@ -22,13 +22,13 @@ Scenario: Unsaved Tests Contain a Star in their Name
 	Then The First Test "Has No" Unsaved Star
 
 Scenario: Run Passing Tests
-	#When I Click New Workflow Ribbon Button
-	#And I Drag Toolbox MultiAssign Onto DesignSurface
-	#And I Click Save Ribbon Button to Open Save Dialog
-	#And I Enter Service Name Into Save Dialog As "Testing123"
-	#And I Click SaveDialog Save Button
-	#And I Click Close Workflow Tab Button
-	When I Click View Tests In Explorer Context Menu for "Testing123"
+	When I Click New Workflow Ribbon Button
+	And I Drag Toolbox MultiAssign Onto DesignSurface
+	And I Click Save Ribbon Button to Open Save Dialog
+	And I Enter Service Name Into Save Dialog As "Testing123"
+	And I Click SaveDialog Save Button
+	And I Click Close Workflow Tab Button
+	And I Click View Tests In Explorer Context Menu for "Testing123"
 	And I Click The Create a New Test Button
 	And I Update Test Name To "Testing123_Test"
 	And I Click Save Ribbon Button Without Expecting a Dialog
