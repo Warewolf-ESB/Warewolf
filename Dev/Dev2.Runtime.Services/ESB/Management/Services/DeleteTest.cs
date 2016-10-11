@@ -10,6 +10,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+// ReSharper disable MemberCanBeInternal
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -20,10 +21,23 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class DeleteTest : IEsbManagementEndpoint
     {
         private ITestCatalog _testCatalog;
+        private readonly IAuthorizer _authorizer;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public DeleteTest(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public DeleteTest()
+            :this(new SecuredContributeManagementEndpoint())
+        {
+
+        }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 Dev2Logger.Info("Delete Test Service");
@@ -39,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-
+                _authorizer.RunPermissions(resourceId);
                 StringBuilder testName;
                 values.TryGetValue("testName", out testName);
                 if (string.IsNullOrEmpty(testName?.ToString()))

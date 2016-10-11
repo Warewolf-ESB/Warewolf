@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
@@ -29,6 +30,18 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class DeleteItemService : IEsbManagementEndpoint
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
+        private readonly IAuthorizer _authorizer;
+        public DeleteItemService(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public DeleteItemService()
+            : this(new SecuredContributeManagementEndpoint())
+        {
+
+        }
 
         public string HandlesType()
         {
@@ -41,12 +54,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                if(values == null)
+                if (values == null)
                 {
                     throw new ArgumentNullException(nameof(values));
-                }               
+                }
                 StringBuilder itemBeingDeleted;
-                StringBuilder pathBeingDeleted=null;
+                StringBuilder pathBeingDeleted = null;
                 if (!values.TryGetValue("itemToDelete", out itemBeingDeleted))
                 {
                     if (!values.TryGetValue("folderToDelete", out pathBeingDeleted))
@@ -54,27 +67,33 @@ namespace Dev2.Runtime.ESB.Management.Services
                         throw new ArgumentException(string.Format(ErrorResource.IsBlank, "itemToDelete"));
                     }
                 }
+
                 IExplorerItem itemToDelete;
                 if (itemBeingDeleted != null)
                 {
+
                     itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
+                    if(itemToDelete != null)
+                        _authorizer.RunPermissions(itemToDelete.ResourceId);
                     Dev2Logger.Info("Delete Item Service." + itemToDelete);
                     item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
+
                 }
-                else if(pathBeingDeleted != null)
+                else if (pathBeingDeleted != null)
                 {
                     itemToDelete = new ServerExplorerItem
                     {
-                        ResourceType =  "Folder",
+                        ResourceType = "Folder",
                         ResourcePath = pathBeingDeleted.ToString()
-                        
+
                     };
+
                     item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Dev2Logger.Error("Delete Item Error" ,e);
+                Dev2Logger.Error("Delete Item Error", e);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             return serializer.SerializeToBuilder(item);

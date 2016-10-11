@@ -15,7 +15,9 @@ using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Exceptions;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -94,12 +96,39 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DeleteVersion_Execute")]
+        public void DeleteVersion_ExecuteNotPermited_Valid_ExpectFailure()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>())).Throws(new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException));
+            var deleteVersion = new DeleteVersion(mock.Object);
+            var serializer = new Dev2JsonSerializer();
+            var ws = new Mock<IWorkspace>();
+            var server = new Mock<IServerVersionRepository>();
+            var res = Guid.NewGuid();
+            //------------Execute Test---------------------------
+            deleteVersion.ServerVersionRepo = server.Object;
+            var ax = deleteVersion.Execute(new Dictionary<string, StringBuilder> { { "resourceId", new StringBuilder(res.ToString()) }, { "versionNumber", new StringBuilder("1") } }, ws.Object);
+
+            //------------Assert Results-------------------------
+            var executeMessage = serializer.Deserialize<ExecuteMessage>(ax);
+            server.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1", ""), Times.Never);
+            Assert.AreEqual(executeMessage.Message.ToString(), Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException);
+            Assert.IsTrue(executeMessage.HasError);
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeleteVersion_Execute")]
         public void DeleteVersion_Execute_Valid_ExpectServerCalled()
         {
             //------------Setup for test--------------------------
-            var deleteVersion = new DeleteVersion();
+
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
+            var deleteVersion = new DeleteVersion(mock.Object);
             var serializer = new Dev2JsonSerializer();
             var ws = new Mock<IWorkspace>();
             var server = new Mock<IServerVersionRepository>();

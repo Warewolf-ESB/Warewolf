@@ -10,6 +10,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+// ReSharper disable MemberCanBeInternal
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -19,6 +20,19 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchTests : IEsbManagementEndpoint
     {
+        private readonly IAuthorizer _authorizer;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public FetchTests(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public FetchTests()
+            :this(new SecuredViewManagementEndpoint())
+        {
+
+        }
         private ITestCatalog _testCatalog;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -39,8 +53,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-
-                var tests = TestCatalog.Fetch(resourceId);
+                _authorizer.RunPermissions(resourceId);
+                 var tests = TestCatalog.Fetch(resourceId);
                 CompressedExecuteMessage message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(tests));
                 message.HasError = false;

@@ -30,6 +30,19 @@ namespace Dev2.Runtime.ESB.Management.Services
         ISecurityWrapper _securityWrapper;
         private IResourceCatalog _catalog;
 
+        private readonly IAuthorizer _authorizer;
+        public DeleteScheduledResource(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public DeleteScheduledResource()
+            :this(new SecuredContributeManagementEndpoint())
+        {
+
+        }
+
         public string HandlesType()
         {
             return "DeleteScheduledResourceService";

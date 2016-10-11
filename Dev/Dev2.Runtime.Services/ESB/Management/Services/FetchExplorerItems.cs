@@ -20,13 +20,26 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+// ReSharper disable MemberCanBeInternal
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchExplorerItems : IEsbManagementEndpoint
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
+        private readonly IAuthorizer _authorizer;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public FetchExplorerItems(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
 
+        // ReSharper disable once MemberCanBeInternal
+        public FetchExplorerItems()
+            :this(new SecuredViewManagementEndpoint())
+        {
+
+        }
         public string HandlesType()
         {
             return "FetchExplorerItemsService";
@@ -45,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 StringBuilder tmp;
                 values.TryGetValue("ReloadResourceCatalogue", out tmp);
-                String reloadResourceCatalogueString = "";
+                string reloadResourceCatalogueString = "";
                 if (tmp != null)
                 {
                     reloadResourceCatalogueString = tmp.ToString();
@@ -59,6 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         reloadResourceCatalogue = false;
                     }
                 }
+                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 if (reloadResourceCatalogue)
                 {
                     ResourceCatalog.Instance.Reload();

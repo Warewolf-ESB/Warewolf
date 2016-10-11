@@ -22,8 +22,22 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    // ReSharper disable once MemberCanBeInternal
     public class DeleteLog : IEsbManagementEndpoint
     {
+        private readonly IAuthorizer _authorizer;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public DeleteLog(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public DeleteLog()
+            :this(new SecuredContributeManagementEndpoint())
+        {
+
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             string filePath = null;
@@ -42,14 +56,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 directory = tmp.ToString();
             }
-
-            if(String.IsNullOrWhiteSpace(filePath))
+            _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
+            if (string.IsNullOrWhiteSpace(filePath))
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage(ErrorResource.CannotDeleteFileWithoutFilename, filePath, directory));
                 Dev2Logger.Info(msg.Message.ToString());
             }
-            else if(String.IsNullOrWhiteSpace(directory))
+            else if(string.IsNullOrWhiteSpace(directory))
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage(ErrorResource.CannotDeleteFileWithoughtDirectory, filePath, directory));
@@ -109,7 +123,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         static string FormatMessage(string message, string filePath, string directory)
         {
-            return string.Format("DeleteLog: Error deleting '{0}' from '{1}'...{2}", filePath, directory, message);
+            return $"DeleteLog: Error deleting '{filePath}' from '{directory}'...{message}";
         }
     }
 }

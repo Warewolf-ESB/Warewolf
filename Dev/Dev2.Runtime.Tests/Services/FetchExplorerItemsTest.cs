@@ -18,7 +18,9 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Explorer;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Exceptions;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -65,7 +67,9 @@ namespace Dev2.Tests.Runtime.Services
         public void FetchExplorerItems_Execute_ExpectName()
         {
             //------------Setup for test--------------------------
-            var fetchExplorerItems = new FetchExplorerItems();
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
+            var fetchExplorerItems = new FetchExplorerItems(mock.Object);
 
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
             Assert.IsNotNull(item);
@@ -87,6 +91,34 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("FetchExplorerItems_HandlesType")]
+        public void FetchExplorerItems_ExecuteNotPermitted_ExpectEmpty()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IAuthorizer>();
+            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>())).Throws(new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToViewException));
+            var fetchExplorerItems = new FetchExplorerItems(mock.Object);
+
+            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
+            Assert.IsNotNull(item);
+            var repo = new Mock<IExplorerServerResourceRepository>();
+            var ws = new Mock<IWorkspace>();
+            repo.Setup(a => a.Load(GlobalConstants.ServerWorkspaceID, false))
+                .Returns(item).Verifiable();
+            var serializer = new Dev2JsonSerializer();
+            ws.Setup(a => a.ID).Returns(Guid.Empty);
+            fetchExplorerItems.ServerExplorerRepo = repo.Object;
+            //------------Execute Test---------------------------
+            var execute = fetchExplorerItems.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
+            //------------Assert Results-------------------------
+            repo.Verify(a => a.Load(GlobalConstants.ServerWorkspaceID, false), Times.Never);
+            var message = serializer.Deserialize<IExplorerRepositoryResult>(execute);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToViewException, message.Message);
+            Assert.AreEqual(ExecStatus.Fail, message.Status);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("FetchExplorerItems_HandlesType")]
         public void FetchExplorerItems_CreateServiceEntry_ExpectProperlyFormedDynamicService()
         {
             //------------Setup for test--------------------------
@@ -100,5 +132,5 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);
         }
     }
-  
+
 }
