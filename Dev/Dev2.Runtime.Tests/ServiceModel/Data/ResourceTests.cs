@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -97,6 +98,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         [TestMethod]
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public void ToXMLWhereValidResourceWIthErrorInfoDataIsValidFalse()
         {
             //------------Setup for test--------------------------
@@ -115,6 +117,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(errorMessagesElement);
             var errorMessageElement = errorMessagesElement.Element("ErrorMessage");
             Assert.IsNotNull(errorMessageElement);
+            // ReSharper disable once PossibleNullReferenceException
             Assert.AreEqual("Fix Me", errorMessageElement.Attribute("Message").Value);
             Assert.AreEqual("Line 1", errorMessageElement.Attribute("StackTrace").Value);
             Assert.AreEqual("None", errorMessageElement.Attribute("FixType").Value);

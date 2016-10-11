@@ -33,9 +33,10 @@ namespace Dev2.Runtime.ServiceModel.Data
             : base(xml)
         {
             ResourceType = "ComPluginService";
-            var action = xml.Descendants("Action").FirstOrDefault(); ;
+            var action = xml.Descendants("Action").FirstOrDefault();
             if(action == null)
             {
+                // ReSharper disable once PossibleNullReferenceException
                 if (xml.HasAttributes && xml.Attribute("Type").Value == "ComPlugin")
                 {
                     action = xml;

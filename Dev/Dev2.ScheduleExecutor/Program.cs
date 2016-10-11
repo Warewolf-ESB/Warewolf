@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -326,11 +327,13 @@ namespace Dev2.ScheduleExecutor
 
         }
 
-        private static List<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        private static IEnumerable<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
         {
             var processRecordSet = new List<IDebugItemResult>();
             var recSetName = recordSetElement.Name.LocalName;
             var index = recordSetElement.Attribute("Index").Value;
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var xElement in elements)
             {
                 var debugItemResult = new DebugItemResult
