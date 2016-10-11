@@ -264,6 +264,22 @@ namespace Warewolf.Studio.ViewModels
             {
                 _explorerItemViewModelCommandController.NewServiceCommand(ResourcePath, Server);
             });
+            DebugStudioCommand = new DelegateCommand<string>(type =>
+            {
+                _explorerItemViewModelCommandController.DebugStudioCommand(ResourceId, Server);
+            });
+            DebugBrowserCommand = new DelegateCommand<string>(type =>
+            {
+                _explorerItemViewModelCommandController.DebugBrowserCommand(ResourceId, Server);
+            });
+            RunAllTestsCommand = new DelegateCommand<string>(type =>
+            {
+                _explorerItemViewModelCommandController.RunAllTestsCommand(ResourceId);
+            });
+            CopyUrlCommand = new DelegateCommand<string>(type =>
+            {
+                _explorerItemViewModelCommandController.CopyUrlCommand(ResourceId, Server);
+            });
             ShowDependenciesCommand = new DelegateCommand(ShowDependencies);
             ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
             DeleteCommand = new DelegateCommand(Delete);
@@ -761,6 +777,11 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewSharepointSourceSourceCommand { get; set; }
         public ICommand NewDropboxSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
+
+        public ICommand DebugStudioCommand { get; set; }
+        public ICommand DebugBrowserCommand { get; set; }
+        public ICommand RunAllTestsCommand { get; set; }
+        public ICommand CopyUrlCommand { get; set; }
 
         public bool ForcedRefresh
         {
