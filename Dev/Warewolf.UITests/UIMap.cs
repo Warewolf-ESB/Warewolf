@@ -1697,7 +1697,7 @@ namespace Warewolf.UITests
         public void Click_AddNew_Web_Source_From_PutWebtool()
         {
             #region Variable Declarations
-            WpfButton newSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.NewSourceButton;
+            WpfButton newSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.NewSourceButton;
             #endregion
 
             // Verify that the 'Exists' property of 'New' button equals 'True'
@@ -2180,7 +2180,7 @@ namespace Warewolf.UITests
         public void Enter_Number_To_Format()
         {
             #region Variable Declarations
-            WpfEdit numberToFormat = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.NumberInputComboBox.TextEdit;
+            WpfEdit numberToFormat = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.NumberInputComboBox.TextEdit;
             #endregion
 
             numberToFormat.Text = "5.8961";
@@ -2188,7 +2188,7 @@ namespace Warewolf.UITests
         public void Enter_Decimals_To_Show()
         {
             #region Variable Declarations
-            WpfEdit numberToFormat = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.DecimalsToShowComboBox.TextEdit;
+            WpfEdit numberToFormat = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.DecimalsToShowComboBox.TextEdit;
             #endregion
 
             numberToFormat.Text = "2";
@@ -2196,7 +2196,7 @@ namespace Warewolf.UITests
         public void Enter_Result_Variable_On_Random_Tool()
         {
             #region Variable Declarations
-            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.ResultComboBox.TextEdit;
+            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.ResultComboBox.TextEdit;
             #endregion
                         
             resultscombobox.Text = "[[results]]";
@@ -2204,7 +2204,7 @@ namespace Warewolf.UITests
         public void Enter_Result_Variable_Into_DateTime()
         {
             #region Variable Declarations
-            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.ResultComboBox.TextEdit;
+            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.ResultComboBox.TextEdit;
             #endregion
                         
             resultscombobox.Text = "[[results]]";
@@ -2212,7 +2212,7 @@ namespace Warewolf.UITests
         public void Enter_Result_Variable_Into_DateTimeDifference()
         {
             #region Variable Declarations
-            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.ResultComboBox.TextEdit;
+            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.ResultComboBox.TextEdit;
             #endregion
                         
             resultscombobox.Text = "[[results]]";
@@ -2220,7 +2220,7 @@ namespace Warewolf.UITests
         public void Enter_Result_Variable_Into_Web_Request()
         {
             #region Variable Declarations
-            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.ResultComboBox.TextEdit;            
+            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.ResultComboBox.TextEdit;            
             #endregion
                         
             resultscombobox.Text = "[[results]]";
@@ -2228,7 +2228,7 @@ namespace Warewolf.UITests
         public void Enter_Result_Variable()
         {
             #region Variable Declarations
-            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.ResultInputComboBox.TextEdit;
+            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.ResultInputComboBox.TextEdit;
             #endregion
                         
             resultscombobox.Text = "[[results]]";
@@ -2236,8 +2236,8 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Aggregate_Calculate_Large_View()
         {
             #region Variable Declarations
-            WpfEdit fx = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.fxComboBox.TextEdit;
-            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.ResultComboBox.TextEdit;
+            WpfEdit fx = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.fxComboBox.TextEdit;
+            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.ResultComboBox.TextEdit;
             #endregion
 
             fx.Text = "Sum(5,5)";
@@ -2246,9 +2246,9 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_DateTime_Input()
         {
             #region Variable Declarations
-            WpfEdit input = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.InputComboBox.TextEdit;
-            WpfEdit inputFormat = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.InputFormatComboBox.TextEdit;
-            WpfEdit outputFormat = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.OutputFormatComboBox.TextEdit;
+            WpfEdit input = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.InputComboBox.TextEdit;
+            WpfEdit inputFormat = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.InputFormatComboBox.TextEdit;
+            WpfEdit outputFormat = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.OutputFormatComboBox.TextEdit;
             #endregion
             input.Text = "20/03/2016";
             inputFormat.Text = "dd/mm/yyyy";
@@ -2257,9 +2257,9 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_DateTimeDiffetence_Tool()
         {
             #region Variable Declarations
-            WpfEdit input1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.Input1ComboBox.TextEdit;
-            WpfEdit input2 = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.Input2ComboBox.TextEdit;
-            WpfEdit inputFormat = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.InputFormatComboBox.TextEdit;
+            WpfEdit input1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.Input1ComboBox.TextEdit;
+            WpfEdit input2 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.Input2ComboBox.TextEdit;
+            WpfEdit inputFormat = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.InputFormatComboBox.TextEdit;
             #endregion
             input1.Text = "20/03/2016";
             input2.Text = "25/03/2016";
@@ -2268,7 +2268,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_DateTime_AddTime_Amount()
         {
             #region Variable Declarations            
-            WpfEdit addAmount = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.AddTimeAmountComboBox.TextEdit;
+            WpfEdit addAmount = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.AddTimeAmountComboBox.TextEdit;
             #endregion
 
             addAmount.Text = "4";
@@ -2276,7 +2276,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Web_Request_Url()
         {
             #region Variable Declarations
-            WpfEdit url = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.InputComboBox.TextEdit;
+            WpfEdit url = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.InputComboBox.TextEdit;
             #endregion
 
             url.Text = "https://warewolf.atlassian.net/secure/Dashboard.jspa";
@@ -2284,7 +2284,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Random_Length()
         {
             #region Variable Declarations
-            WpfEdit lenght = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.LengthComboBox.TextEdit;
+            WpfEdit lenght = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.LengthComboBox.TextEdit;
             #endregion
 
             lenght.Text = "5";
@@ -2292,7 +2292,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Xpath_Tool()
         {
             #region Variable Declarations
-            WpfEdit xpath = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.SmallViewContentCustom.SourceStringComboBox.TextEdit;
+            WpfEdit xpath = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.SmallViewContentCustom.SourceStringComboBox.TextEdit;
             #endregion
 
             xpath.Text = "<Service>";
@@ -2300,7 +2300,7 @@ namespace Warewolf.UITests
         public void Enter_Text_On_Comment_Tool()
         {
             #region Variable Declarations
-            WpfEdit variable = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit;
+            WpfEdit variable = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit;
             #endregion
 
             variable.Text = "Hello World";
@@ -2309,7 +2309,7 @@ namespace Warewolf.UITests
         public void Enter_Variable_On_System_Information_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfEdit variable = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.SmallDataGridTable.Row1.VariableCell.VariableComboBox.TextEdit;
+            WpfEdit variable = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.SmallDataGridTable.Row1.VariableCell.VariableComboBox.TextEdit;
             #endregion
 
             variable.Text = "[[rec()]]";
@@ -2542,7 +2542,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem assignObject = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject;
-            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity;
+            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity;
             #endregion
 
             // Type 'Assign Object' in 'SearchTextBox' text box
