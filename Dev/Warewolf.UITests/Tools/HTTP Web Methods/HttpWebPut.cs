@@ -43,7 +43,6 @@ namespace Warewolf.UITests.Tools
         public void MyTestCleanup()
         {
             Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Click_MessageBox_No();
             Uimap.TryRemoveFromExplorer(WebPutName);            
         }
         /// <summary>
