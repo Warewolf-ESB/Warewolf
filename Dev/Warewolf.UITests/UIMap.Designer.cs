@@ -34,6 +34,31 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
+        /// Open_Explorer_First_Item_Tests_With_Context_Menu - Use 'Open_Explorer_First_Item_Tests_With_Context_MenuParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Explorer First Item Tests With Context Menu")]
+        public void Open_Explorer_First_Item_Tests_With_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
+            WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+
+            // Verify that the 'Exists' property of 'Tests' menu item equals 'True'
+            Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.TestsExists, tests.Exists, "View tests does not exist in explorer context menu.");
+
+            // Click 'Tests' menu item
+            Mouse.Click(tests, new Point(30, 11));
+
+            // Verify that the 'Exists' property of 'Run All' button equals 'True'
+            Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.RunAllButtonExists, runAllButton.Exists, "Run all button does not exist on tests tab");
+        }
+        
+        /// <summary>
         /// Click_Unpinned_Workflow_ExpandAll - Use 'Click_Unpinned_Workflow_ExpandAllParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click Unpinned Workflow ExpandAll")]
@@ -7709,6 +7734,18 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public virtual Open_Explorer_First_Item_Tests_With_Context_MenuParams Open_Explorer_First_Item_Tests_With_Context_MenuParams
+        {
+            get
+            {
+                if ((this.mOpen_Explorer_First_Item_Tests_With_Context_MenuParams == null))
+                {
+                    this.mOpen_Explorer_First_Item_Tests_With_Context_MenuParams = new Open_Explorer_First_Item_Tests_With_Context_MenuParams();
+                }
+                return this.mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
+            }
+        }
+        
         public virtual Click_Unpinned_Workflow_ExpandAllParams Click_Unpinned_Workflow_ExpandAllParams
         {
             get
@@ -10603,6 +10640,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private Open_Explorer_First_Item_Tests_With_Context_MenuParams mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
+        
         private Click_Unpinned_Workflow_ExpandAllParams mClick_Unpinned_Workflow_ExpandAllParams;
         
         private Click_Unpinned_Workflow_CollapseAllParams mClick_Unpinned_Workflow_CollapseAllParams;
@@ -11084,6 +11123,26 @@ namespace Warewolf.UITests
         private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         
         private UIWarewolfDEV2PIETERTEWindow mUIWarewolfDEV2PIETERTEWindow;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Explorer_First_Item_Tests_With_Context_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Explorer_First_Item_Tests_With_Context_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Tests' menu item equals 'True'
+        /// </summary>
+        public bool TestsExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Run All' button equals 'True'
+        /// </summary>
+        public bool RunAllButtonExists = true;
         #endregion
     }
     
