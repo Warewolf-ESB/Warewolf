@@ -7077,14 +7077,14 @@ namespace Warewolf.UITests
             // Click 'NamespaceComboBox' combo box
             Mouse.Click(classNameComboBox, new Point(216, 7));
 
-            // Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
+            // Verify that the 'Exists' property of 'ComboboxlistItemAsSystemObject' list item equals 'True'
             Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
 
-            // Click '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item
+            // Click 'ComboboxlistItemAsSystemObject' list item
             Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
 
             // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
-            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Object is not selected in DotNet DLL tool large view namespace combobox.");
         }
         
         /// <summary>
@@ -14899,7 +14899,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
+        /// Verify that the 'Exists' property of 'ComboboxlistItemAsSystemObject' list item equals 'True'
         /// </summary>
         public bool ComboboxlistItemAsSystemObjectExists = true;
         
