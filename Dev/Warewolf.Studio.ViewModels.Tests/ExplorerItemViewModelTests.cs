@@ -309,6 +309,69 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestContextMenuDebugCommand()
+        {
+            //arrange
+            _target.ResourceId = Guid.NewGuid();
+
+            //act
+            _target.DebugCommand.Execute(null);
+            Assert.IsTrue(_target.DebugCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.OpenResource(_target.ResourceId, _target.Server));
+            _shellViewModelMock.Verify(it => it.Debug());
+        }
+
+        [TestMethod]
+        public void TestDebugStudioCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.DebugStudioCommand.Execute(null);
+            Assert.IsTrue(_target.DebugStudioCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.StudioDebug(_target.ResourceId, _target.Server));
+        }
+
+        [TestMethod]
+        public void DebugBrowserCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.DebugBrowserCommand.Execute(null);
+            Assert.IsTrue(_target.DebugBrowserCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.BrowserDebug(_target.ResourceId, _target.Server));
+        }
+
+        [TestMethod]
+        public void RunAllTestsCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.RunAllTestsCommand.Execute(null);
+            Assert.IsTrue(_target.RunAllTestsCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.RunAllTests(_target.ResourceId));
+        }
+
+        [TestMethod]
         public void TestViewSwaggerCommand()
         {
             //arrange

@@ -61,9 +61,9 @@
                                     AutomationProperties.AutomationId="{Binding Path=DesignerText}"
                                     cal:Message.Attach="[Event LostKeyboardFocus] = [Action DoWorkspaceSave]">
                 <ig:ContextMenuService.Manager>
-                    <ig:ContextMenuManager OpenMode="RightClick">
+                    <ig:ContextMenuManager>
                         <ig:ContextMenuManager.ContextMenu>
-                            <ig:XamContextMenu x:Name="StartNodeContextMenu" Visibility="Collapsed" >
+                            <ig:XamContextMenu x:Name="StartNodeContextMenu" >
                                 <ig:XamContextMenu.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel Background="{StaticResource WareWolfWhiteBrush}" Orientation="Vertical" />
@@ -103,7 +103,20 @@
                                 <ig:XamMenuItem Name="Schedule"
                                                 Command="{Binding ScheduleCommand}"
                                                 Header="Schedule"
-                                                ToolTip="{x:Static languages:Core.StartNodeScheduleToolTip}">
+                                                ToolTipService.ShowOnDisabled="True"
+                                                IsEnabled="{Binding IsCommandEnabled}">
+                                    <ig:XamMenuItem.Style>
+                                        <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="{x:Type ig:XamMenuItem}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="True">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeScheduleToolTip}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ig:XamMenuItem.Style>
                                     <ig:XamMenuItem.Icon>
                                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
                                     </ig:XamMenuItem.Icon>
@@ -114,7 +127,20 @@
                                 <ig:XamMenuItem Name="TestEditor"
                                                 Command="{Binding TestEditorCommand}"
                                                 Header="Test Editor"
-                                                ToolTip="{x:Static languages:Core.MenuDeployToolTip}">
+                                                ToolTipService.ShowOnDisabled="True"
+                                                IsEnabled="{Binding IsCommandEnabled}">
+                                    <ig:XamMenuItem.Style>
+                                        <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="{x:Type ig:XamMenuItem}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="True">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeTestEditorToolTip}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ig:XamMenuItem.Style>
                                     <ig:XamMenuItem.Icon>
                                         <fa:FontAwesome Margin="0,2,0,0" FontSize="14" FontWeight="Light" Icon="Flask" />
                                     </ig:XamMenuItem.Icon>
@@ -123,7 +149,20 @@
                                 <ig:XamMenuItem Name="RunAllTests"
                                                 Command="{Binding RunAllTestsCommand}"
                                                 Header="Run All Tests"
-                                                ToolTip="{x:Static languages:Core.MenuDeployToolTip}">
+                                                ToolTipService.ShowOnDisabled="True"
+                                                IsEnabled="{Binding IsCommandEnabled}">
+                                    <ig:XamMenuItem.Style>
+                                        <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="{x:Type ig:XamMenuItem}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="True">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeRunAllTestsToolTip}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ig:XamMenuItem.Style>
                                 </ig:XamMenuItem>
 
                                 <ig:XamMenuSeparator />
@@ -131,7 +170,20 @@
                                 <ig:XamMenuItem Name="Duplicate"
                                                 Command="{Binding DuplicateCommand}"
                                                 Header="Duplicate"
-                                                ToolTip="{x:Static languages:Core.MenuDeployToolTip}">
+                                                ToolTipService.ShowOnDisabled="True"
+                                                IsEnabled="{Binding IsCommandEnabled}">
+                                    <ig:XamMenuItem.Style>
+                                        <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="{x:Type ig:XamMenuItem}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="True">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDuplicateToolTip}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ig:XamMenuItem.Style>
                                     <ig:XamMenuItem.Icon>
                                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Clone" />
                                     </ig:XamMenuItem.Icon>
@@ -140,7 +192,20 @@
                                 <ig:XamMenuItem Name="Deploy"
                                                 Command="{Binding DeployCommand}"
                                                 Header="Deploy"
-                                                ToolTip="{x:Static languages:Core.StartNodeDeployToolTip}">
+                                                ToolTipService.ShowOnDisabled="True"
+                                                IsEnabled="{Binding IsCommandEnabled}">
+                                    <ig:XamMenuItem.Style>
+                                        <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="{x:Type ig:XamMenuItem}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="True">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDeployToolTip}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ig:XamMenuItem.Style>
                                     <ig:XamMenuItem.Icon>
                                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
                                     </ig:XamMenuItem.Icon>
@@ -150,9 +215,21 @@
 
                                 <ig:XamMenuItem Name="Dependencies"
                                                 Command="{Binding ShowDependenciesCommand}"
-                                                CommandParameter="{Binding Data}"
                                                 Header="Show Dependencies"
-                                                ToolTip="{x:Static languages:Core.StartNodeDependenciesToolTip}">
+                                                ToolTipService.ShowOnDisabled="True"
+                                                IsEnabled="{Binding IsCommandEnabled}">
+                                    <ig:XamMenuItem.Style>
+                                        <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="{x:Type ig:XamMenuItem}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="True">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDependenciesToolTip}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ig:XamMenuItem.Style>
                                     <ig:XamMenuItem.Icon>
                                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Sitemap" />
                                     </ig:XamMenuItem.Icon>
@@ -161,7 +238,20 @@
                                 <ig:XamMenuItem Name="ViewSwagger"
                                                 Command="{Binding ViewSwaggerCommand}"
                                                 Header="View Swagger" 
-                                                ToolTip="{x:Static languages:Core.StartNodeViewSwaggerToolTip}">
+                                                ToolTipService.ShowOnDisabled="True"
+                                                IsEnabled="{Binding IsCommandEnabled}">
+                                    <ig:XamMenuItem.Style>
+                                        <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="{x:Type ig:XamMenuItem}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="True">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeViewSwaggerToolTip}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ig:XamMenuItem.Style>
                                     <ig:XamMenuItem.Icon>
                                         <Image Style="{StaticResource ViewSwaggerIcon}" Margin="-2,-2,0,0"/>
                                     </ig:XamMenuItem.Icon>
@@ -172,7 +262,20 @@
                                 <ig:XamMenuItem Name="CopyUrl"
                                                 Command="{Binding CopyUrlCommand}"
                                                 Header="Copy URL to Clipboard"
-                                                ToolTip="{x:Static languages:Core.StartNodeCopyUrlToolTip}">
+                                                ToolTipService.ShowOnDisabled="True"
+                                                IsEnabled="{Binding IsCommandEnabled}">
+                                    <ig:XamMenuItem.Style>
+                                        <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="{x:Type ig:XamMenuItem}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="True">
+                                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeCopyUrlToolTip}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ig:XamMenuItem.Style>
                                 </ig:XamMenuItem>
 
                             </ig:XamContextMenu>

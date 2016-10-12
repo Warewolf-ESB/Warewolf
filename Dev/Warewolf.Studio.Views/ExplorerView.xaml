@@ -592,6 +592,41 @@
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
+                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanViewSwagger, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    
+                                                    <ig:XamMenuItem Name="DebugInputs"
+                                                                    Command="{Binding Path=Data.DebugCommand}"
+                                                                    Header="Debug Inputs"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeDebugInputsToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
+                                                    <ig:XamMenuItem Name="DebugStudio"
+                                                                    Command="{Binding Path=Data.DebugStudioCommand}"
+                                                                    Header="Debug Studio"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeDebugStudioToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
+                                                    <ig:XamMenuItem Name="DebugBrowser"
+                                                                    Command="{Binding Path=Data.DebugBrowserCommand}"
+                                                                    Header="Debug Browser"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeDebugBrowserToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanCreateSource, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                                                     <ig:XamMenuItem Name="NewFolderFromItem"
@@ -657,7 +692,15 @@
                                                     </ig:XamMenuItem.Icon>
                                                   </ig:XamMenuItem>
 
-                                                  <ig:XamMenuItem Name="Deploy"
+                                                    <ig:XamMenuItem Name="RunAllTests"
+                                                                    Command="{Binding Path=Data.RunAllTestsCommand}"
+                                                                    Header="Run All Tests"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeRunAllTestsToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    </ig:XamMenuItem>
+
+                                                    <ig:XamMenuItem Name="Deploy"
                                                                     Command="{Binding Path=Data.DeployCommand}"
                                                                     CommandParameter="{Binding Path=Data}"
                                                                     InputGestureText="[Ctrl+D]"
@@ -707,6 +750,13 @@
 
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
 
+                                                    <!--<ig:XamMenuItem Name="CopyUrl"
+                                                                    Command="{Binding Path=Data.CopyUrlCommand}"
+                                                                    Header="Copy URL to Clipboard"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeCopyUrlToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    </ig:XamMenuItem>-->
                                                     <ig:XamMenuItem Name="ShowHideVersions"
                                                                     Command="{Binding Path=Data.ShowVersionHistory}"
                                                                     Header="{Binding Path=Data.VersionHeader}"

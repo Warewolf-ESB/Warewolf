@@ -55,6 +55,26 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.NewService(resourcePath);
         }
 
+        public void DebugStudioCommand(Guid resourceId, IServer server)
+        {
+            _shellViewModel.StudioDebug(resourceId, server);
+        }
+
+        public void DebugBrowserCommand(Guid resourceId, IServer server)
+        {
+            _shellViewModel.BrowserDebug(resourceId, server);
+        }
+
+        public void RunAllTestsCommand(Guid resourceId)
+        {
+            _shellViewModel.RunAllTests(resourceId);
+        }
+
+        public void CopyUrlCommand(Guid resourceId, IServer server)
+        {
+            _shellViewModel.CopyUrlLink(resourceId, server);
+        }
+
         public void NewDropboxSourceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);
