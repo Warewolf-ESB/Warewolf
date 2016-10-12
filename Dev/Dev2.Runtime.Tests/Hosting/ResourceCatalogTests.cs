@@ -42,6 +42,7 @@ using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
+using Dev2.Utilities;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -2246,7 +2247,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }, saveToWSPath);
         }
 
-        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs)
+        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs, bool createWorDef=false)
         {
             lock (syncRoot)
             {
@@ -2262,6 +2263,13 @@ namespace Dev2.Tests.Runtime.Hosting
                         {
                             xml.Add(new XAttribute("ID", resourceIDs[count]));
                         }
+                    }
+                    if (createWorDef)
+                    {
+                        var workflowHelper = new WorkflowHelper();
+                        var builder = workflowHelper.CreateWorkflow(resourceName);
+                        var workflowXaml = workflowHelper.GetXamlDefinition(builder);
+                        xml.Add(workflowXaml);
                     }
 
                     var contents = xml.ToString(SaveOptions.DisableFormatting);
@@ -2296,6 +2304,7 @@ namespace Dev2.Tests.Runtime.Hosting
                     }
                     result.Add(res);
                     count++;
+                   
                 }
                 return result;
             }
@@ -3039,6 +3048,45 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithValidArgs_ExpectNewDisplayName()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }, true);
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            var xElement = oldResource.ToXml();
+
+            var containsOrgName = xElement.ToString(SaveOptions.DisableFormatting).Contains(resourceName);
+            Assert.IsTrue(containsOrgName);
+
+            //------------Execute Test---------------------------
+            const string destinationPath = "SomeName";
+            ResourceCatalogResult resourceCatalogResult = rc.DuplicateResource(oldResource.ResourceID, oldResource.GetResourcePath(workspaceID), destinationPath);
+            //------------Assert Results-------------------------
+             result = rc.GetResources(workspaceID);
+            IResource dupResource = result.FirstOrDefault(resource => resource.ResourceName == destinationPath);
+            Assert.IsNotNull(dupResource);
+            var dupXelement = dupResource.ToXml();
+             var newNamecontains = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(destinationPath);
+              containsOrgName = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(resourceName);
+            Assert.IsTrue(newNamecontains);
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+            Assert.IsFalse(containsOrgName);
         }
 
 

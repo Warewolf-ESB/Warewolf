@@ -374,7 +374,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             IResource foundResource = null;
             try
             {
-                lock (_workspaceLock)
+                //lock (_workspaceLock)
                 {
                     List<IResource> resources;
                     if (_workspaceResources.TryGetValue(workspaceID, out resources))
@@ -406,7 +406,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             IResource foundResource = null;
 
-            lock (_workspaceLock)
+            //lock (_workspaceLock)
             {
                 List<IResource> resources;
                 if (_workspaceResources.TryGetValue(workspaceID, out resources))

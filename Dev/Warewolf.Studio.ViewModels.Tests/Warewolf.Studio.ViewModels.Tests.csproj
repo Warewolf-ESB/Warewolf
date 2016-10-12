@@ -152,6 +152,7 @@
     <Compile Include="SharepointServerSourceModelTests.cs" />
     <Compile Include="SharepointServerSourceViewModelTests.cs" />
     <Compile Include="SingleEnvironmentExplorerViewModelTests.cs" />
+    <Compile Include="SingleExplorerDeployViewModelTests.cs" />
     <Compile Include="SplashViewModelTests.cs" />
     <Compile Include="ServiceTestCommandHandlerModelTests.cs" />
     <Compile Include="ServiceTestViewModelTests.cs" />
