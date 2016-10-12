@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Threading;
 using Dev2.Runtime.WebServer.TransferObjects;
 
@@ -28,10 +27,10 @@ namespace Dev2.Runtime.WebServer.Handlers
             var serviceName = GetServiceName(ctx);
             var workspaceID = GetWorkspaceID(ctx);
 
-            var requestTO = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority) };
+            var requestTO = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}" };
             var data = GetPostData(ctx);
 
-            if(!String.IsNullOrEmpty(data))
+            if(!string.IsNullOrEmpty(data))
             {
                 requestTO.RawRequestPayload = data;
             }
