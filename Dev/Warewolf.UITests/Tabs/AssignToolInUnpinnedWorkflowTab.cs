@@ -75,7 +75,7 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.CloseHangingDialogs();
 #endif
             UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             UIMap.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface();
         }
 
