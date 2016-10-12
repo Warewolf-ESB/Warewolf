@@ -11,8 +11,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Dev2.Interfaces;
-using Dev2.Studio.ViewModels.Workflow;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views.Workflow
