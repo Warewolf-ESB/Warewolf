@@ -356,6 +356,7 @@ namespace Warewolf.Studio.ViewModels
                     TestPassed = false;
                 }
                 OnPropertyChanged(() => TestInvalid);
+               
             }
         }
 

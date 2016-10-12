@@ -96,12 +96,28 @@ namespace Dev2.Runtime
         private void UpdateStepOutputsForTest(IServiceTestModelTO serviceTestModelTo)
         {
             var testRunResult = new TestRunResult { RunTestResult = RunResult.TestInvalid };
-            foreach (var serviceTestStep in serviceTestModelTo.TestSteps)
+            if(serviceTestModelTo.TestSteps != null)
             {
-                serviceTestStep.Result = testRunResult;
-                foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                foreach (var serviceTestStep in serviceTestModelTo.TestSteps)
                 {
-                    serviceTestOutput.Result = testRunResult;
+                    if(serviceTestStep.Children != null)
+                    {
+                        var childs = serviceTestStep.Children.Flatten(step => step.Children);
+                        foreach (var child in childs)
+                        {
+                            child.Result = testRunResult;
+                            foreach (var serviceTestOutput in child.StepOutputs)
+                            {
+                                serviceTestOutput.Result = testRunResult;
+                            }
+                        }
+                    }
+                    serviceTestStep.Result = testRunResult;
+                    foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                    {
+                        serviceTestOutput.Result = testRunResult;
+                    }
+
                 }
             }
         }
@@ -363,10 +379,10 @@ namespace Dev2.Runtime
         public void DeleteAllTests(List<string> testsToIgnore)
         {
             var info = new DirectoryInfo(EnvironmentVariables.TestPath);
-            if(!info.Exists)
+            if (!info.Exists)
                 return;
             var fileInfos = info.GetDirectories();
-            foreach(var fileInfo in fileInfos.Where(fileInfo => !testsToIgnore.Contains(fileInfo.Name.ToUpper())))
+            foreach (var fileInfo in fileInfos.Where(fileInfo => !testsToIgnore.Contains(fileInfo.Name.ToUpper())))
             {
                 DirectoryHelper.CleanUp(fileInfo.FullName);
             }
