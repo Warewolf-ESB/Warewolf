@@ -381,6 +381,10 @@ namespace Dev2.UI
 
         private void ValidateText(string text)
         {
+            if (!HasError)
+            {
+                _originalToolTip = ToolTip;
+            }
             var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
             if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
             {
@@ -399,8 +403,16 @@ namespace Dev2.UI
             }
             else
             {
-                ToolTip = error.Item2 != string.Empty ? error.Item2 : ToolTip ?? string.Empty;
-                HasError = error.Item2 != string.Empty;
+                if (error.Item2 != string.Empty)
+                {
+                    ToolTip = error.Item2;
+                    HasError = true;
+                }
+                else
+                {
+                    ToolTip = _originalToolTip;
+                    HasError = false;
+                }
             }
         }
 
@@ -822,6 +834,7 @@ namespace Dev2.UI
         private readonly ToolTip _toolTip;
         private List<IntellisenseProviderResult> _intellisenseResults;
         private IntellisenseDesiredResultSet _desiredResultSet;
+        private object _originalToolTip;
 
         [ExcludeFromCodeCoverage]
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
