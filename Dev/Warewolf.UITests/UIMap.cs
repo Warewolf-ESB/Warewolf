@@ -1687,19 +1687,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field2.Exists, "rec().b does not exist in the variable explorer");
         }
 
-        public void Enter_Text_Into_Debug_Input_Row1_Value_Textbox_With_Special_Test_For_Textbox_Height(string text)
-        {
-            var varValue = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
-
-            var heightBeforeEnterClick = varValue.Height;
-            varValue.Text = text;
-            Keyboard.SendKeys(varValue, "{Enter}", ModifierKeys.None);
-            Assert.IsTrue(varValue.Height > heightBeforeEnterClick, "Debug input dialog does not resize after adding second line.");
-
-            Keyboard.SendKeys(varValue, "{Back}", ModifierKeys.None);
-            Assert.AreEqual(heightBeforeEnterClick, varValue.Height, "Debug input dialog value textbox does not resize after deleting second line.");
-        }
-
         public void Press_F5_To_Debug()
         {
             Keyboard.SendKeys(MainStudioWindow, "{F5}", ModifierKeys.None);
