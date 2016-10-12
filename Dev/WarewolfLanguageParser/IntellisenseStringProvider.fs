@@ -43,7 +43,7 @@ type FilterOption =
     | RecordSetNames
     | All
 
-let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression * string = 
+let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression * string =     
     if (lang.Contains "[[") then 
         try 
             let lexbuf = LexBuffer<string>.FromString lang
@@ -52,7 +52,7 @@ let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression 
             match res with
             | RecordSetExpression e -> (res, validateRecordsetIndex e.Index)
             | RecordSetNameExpression e -> (res, validateRecordsetIndex e.Index)
-            | ScalarExpression _ -> (res, "")
+            | ScalarExpression _ -> (res, validateScalar res)
             | ComplexExpression x -> verifyComplexExpression (x)
             | WarewolfAtomExpression _ -> (res, "")
             | JsonIdentifierExpression _ -> (res, "")
@@ -73,6 +73,14 @@ let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression 
                 (WarewolfAtomExpression(DataStorage.DataString lang), ex.Message)
     else (WarewolfAtomExpression(parseAtom lang), "")
 
+and validateScalar (lang: LanguageExpression) =
+    let stringValue = languageExpressionToString lang
+    if (stringValue.Length > 2) then 
+       let startswithNum, _ = System.Int32.TryParse(stringValue.[2].ToString())
+       match startswithNum with
+       | true -> "Variable name " + stringValue + " begins with a number"
+       | false -> ""
+    else ""    
 and checkForInvalidVariables (lang : LanguageExpression list) = 
     let updateLanguageExpression (a : LanguageExpression) = 
         match a with
