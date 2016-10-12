@@ -593,6 +593,11 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void NewSchedule(Guid resourceId)
+        {
+            CreateNewSchedule(resourceId);
+        }
+
         public void BrowserDebug(Guid resourceId, IServer server)
         {
             OpenBrowser(resourceId, server.EnvironmentID);
@@ -603,6 +608,7 @@ namespace Dev2.Studio.ViewModels
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
             if (contextualResourceModel != null)
             {
+                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
                 QuickViewInBrowserCommand.Execute(contextualResourceModel);
             }
         }
