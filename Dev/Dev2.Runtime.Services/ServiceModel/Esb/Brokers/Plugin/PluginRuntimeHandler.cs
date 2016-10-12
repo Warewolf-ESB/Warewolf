@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -57,7 +56,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             Assembly loadedAssembly;
             _assemblyLocation = setupInfo.AssemblyLocation;
-            SetAppDomainConfiguration(_assemblyLocation);
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
             {
@@ -76,14 +74,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return pluginResult;
         }
 
-        private void SetAppDomainConfiguration(string assemblyLocation)
-        {
-            System.Configuration.Configuration conf = ConfigurationManager.OpenExeConfiguration(assemblyLocation);
-            if (File.Exists(conf.FilePath))
-            {
-                AppDomain.CurrentDomain.SetupInformation.ConfigurationFile = conf.FilePath;
-            }
-        }
+        
 
         public IOutputDescription Test(PluginInvokeArgs setupInfo,out string jsonResult)
         {
@@ -92,7 +83,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 Assembly loadedAssembly;
                 jsonResult = null;
                 _assemblyLocation = setupInfo.AssemblyLocation;
-                SetAppDomainConfiguration(_assemblyLocation);
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
                 if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
                 {
@@ -183,7 +173,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var directoryName = Path.GetDirectoryName(_assemblyLocation);
             var path = Path.Combine(new[] { directoryName, tokens[0] + ".dll" });
             var assembly = Assembly.LoadFile(path);
-            SetAppDomainConfiguration(path);
             return assembly;
         }
         /// <summary>
