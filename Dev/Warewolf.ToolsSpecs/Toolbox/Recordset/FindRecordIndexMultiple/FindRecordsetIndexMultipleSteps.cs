@@ -65,6 +65,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
                     RequireAllFieldsToMatch = requireAllFieldsToMatch,
                     Result = ResultVariable
                 };
+            string updatedResultField;
+            if(scenarioContext.TryGetValue("specifiedResult",out updatedResultField))
+            {
+                if (!string.IsNullOrEmpty(updatedResultField))
+                {
+                    findRecordsMultipleIndex.Result = updatedResultField;
+                }
+            }
 
             TestStartNode = new FlowStep
                 {
@@ -72,6 +80,13 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
                 };
             scenarioContext.Add("activity", findRecordsMultipleIndex);
         }
+
+        [Then(@"the find records index multiple result should is ""(.*)""")]
+        public void ThenTheFindRecordsIndexMultipleResultShouldIs(string resultVar)
+        {
+            scenarioContext.Add("specifiedResult", resultVar);
+        }
+
 
         [Given(@"I have the following recordset to search for multiple criteria")]
         public void GivenIHaveTheFollowingRecordsetToSearchForMultipleCriteria(Table table)
