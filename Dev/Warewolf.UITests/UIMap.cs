@@ -1701,7 +1701,7 @@ namespace Warewolf.UITests
             #endregion
 
             // Verify that the 'Exists' property of 'New' button equals 'True'
-            Assert.AreEqual(this.Click_AddNew_Web_Source_From_toolParams.NewSourceButtonExists, newSourceButton.Exists, "New Source Button does not exist");
+            Assert.IsTrue(newSourceButton.Exists, "New Source Button does not exist");
 
             // Click 'New' button
             Mouse.Click(newSourceButton, new Point(30, 4));
