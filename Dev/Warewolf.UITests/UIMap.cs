@@ -49,11 +49,13 @@ namespace Warewolf.UITests
         public void CloseHangingDialogs()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+#if !DEBUG
             TryClickMessageBoxOK();
             TryCloseHangingDebugInputDialog();
             TryCloseHangingSaveDialog();
             TryCloseHangingServicePickerDialog();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner); 
+#endif
         }
 
         private void TryCloseHangingServicePickerDialog()
@@ -817,7 +819,7 @@ namespace Warewolf.UITests
                 }
             }
         }
-
+        
         [When("I Click New Workflow Ribbon Button")]
         public void Click_New_Workflow_Ribbon_Button()
         {
