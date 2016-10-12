@@ -356,6 +356,22 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void ScheduleCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.ScheduleCommand.Execute(null);
+            Assert.IsTrue(_target.ScheduleCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.NewSchedule(_target.ResourceId));
+        }
+
+        [TestMethod]
         public void RunAllTestsCommand()
         {
             //arrange

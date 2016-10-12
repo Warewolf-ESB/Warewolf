@@ -67,5 +67,6 @@ namespace Dev2.Common.Interfaces
         void BrowserDebug(Guid resourceId, IServer server);
         void StudioDebug(Guid resourceId, IServer server);
         void CopyUrlLink(Guid resourceId, IServer server);
+        void NewSchedule(Guid resourceId);
     }
 }
