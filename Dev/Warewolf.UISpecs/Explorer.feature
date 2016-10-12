@@ -29,27 +29,20 @@ Scenario: Explorer Context Menu Items
 	And I Click Close Dependecy Tab 
 	And I Click View Api From Context Menu
 
-Scenario: Drag on Remote Subworkflow from Explorer And Check Permissions Icons
+Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
-	And I Select NewRemoteServer From Explorer Server Dropdownlist
-	And I Create Remote Server Source As "ServerSourceName" with address "ServerAddress"
-	And I Select "TSTCIREMOTE" From Explorer Remote Server Dropdown List
+	And I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
 	And I Click Explorer RemoteServer Connect Button
 	And I Wait For Spinner "ExplorerTree.FirstRemoteServer"
 	And I Filter the Explorer with "workflow1"
-	And I Wait For Spinner "ExplorerTree.FirstRemoteServer"
-	And I Refresh Explorer
 	And I Drag Explorer Remote workflow1 Onto Workflow Design Surface
-	And I Save With Ribbon Button And Dialog As "workflow1"
+	And I Save With Ribbon Button And Dialog As "LocalWorkflowWithRemoteSubworkflow"
+	And I DoubleClick Explorer Localhost First Item
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
 	And I Click Debug Output Workflow1 Name
-	And I Filter the Explorer with "workflow1"
-	And I Wait For Spinner "ExplorerTree.Localhost"
-	And I Select Show Dependencies In Explorer Context Menu for service "workflow1"
-	And I Set Resource Permissions For "workflow1" to Group "Domain Users" and Permissions for View to "true" and Contribute to "true" and Execute to "false"
-	And I Click Deploy Ribbon Button
+	And I Select Show Dependencies In Explorer Context Menu for service "LocalWorkflowWithRemoteSubworkflow"
 	
 Scenario: Deploy and Reverse Deploy View Only Workflow
 	Given The Warewolf Studio is running
