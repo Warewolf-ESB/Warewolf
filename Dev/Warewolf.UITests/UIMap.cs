@@ -373,7 +373,7 @@ namespace Warewolf.UITests
         public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
         {
             #region Variable Declarations
-            Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
+            var row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
             WpfCheckBox executeCheckBox = FindExecutePermissionsCheckbox(row1);
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
@@ -386,7 +386,7 @@ namespace Warewolf.UITests
         public void Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox()
         {
             #region Variable Declarations
-            Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
+            var row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
             WpfCheckBox viewCheckBox = FindViewPermissionsCheckbox(row1);
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
@@ -399,7 +399,7 @@ namespace Warewolf.UITests
         public void Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox()
         {
             #region Variable Declarations
-            Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
+            var row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
             WpfCheckBox contributeCheckBox = FindContributePermissionsCheckbox(row1);
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
