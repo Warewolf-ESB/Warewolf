@@ -328,7 +328,7 @@ namespace Warewolf.Studio.ViewModels
             else if (parent.ActivityType == typeof(DsfSequenceActivity).Name)
             {
                 var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
-                var sequence = model.GetCurrentValue() as DsfSequenceActivity;
+                var sequence = model?.GetCurrentValue() as DsfSequenceActivity;
                 if (sequence != null)
                 {
                     parent.UniqueId = Guid.Parse(sequence.UniqueID);
@@ -1477,10 +1477,67 @@ namespace Warewolf.Studio.ViewModels
         {
             foreach(var serviceTestModel in serviceTestModels)
             {
-                serviceTestModel.TestFailing = false;
-                serviceTestModel.TestInvalid = false;
-                serviceTestModel.TestPassed = false;
                 serviceTestModel.TestPending = true;
+                if(serviceTestModel.TestSteps != null)
+                {
+                    foreach(var serviceTestStep in serviceTestModel.TestSteps)
+                    {
+                        MarkChildrenPending(serviceTestStep);
+                        if(serviceTestStep.Children != null)
+                        {
+                            var testSteps = serviceTestStep.Children.Flatten(step => step.Children);
+                            foreach(var testStep in testSteps)
+                            {
+                                MarkChildrenPending(testStep);
+                            }
+                        }
+                    }
+                }
+
+                if(serviceTestModel.Outputs != null)
+                {
+                    foreach(var serviceTestOutput in serviceTestModel.Outputs)
+                    {
+                        var testOutput = serviceTestOutput as ServiceTestOutput;
+                        if(testOutput != null)
+                        {
+                            testOutput.TestPending = true;
+                            if(testOutput.Result != null)
+                            {
+                                testOutput.Result.RunTestResult = RunResult.TestPending;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void MarkChildrenPending(IServiceTestStep serviceTestStep)
+        {
+            var step = serviceTestStep as ServiceTestStep;
+            if(step != null)
+            {
+                step.TestPending = true;
+                if(step.Result != null)
+                {
+                    step.Result.RunTestResult = RunResult.TestPending;
+                }
+
+                if(step.StepOutputs != null)
+                {
+                    foreach(var serviceTestOutput in step.StepOutputs)
+                    {
+                        var stepOutput = serviceTestOutput as ServiceTestOutput;
+                        if(stepOutput != null)
+                        {
+                            stepOutput.TestPending = true;
+                            if(stepOutput.Result != null)
+                            {
+                                stepOutput.Result.RunTestResult = RunResult.TestPending;
+                            }
+                        }
+                    }
+                }
             }
         }
 

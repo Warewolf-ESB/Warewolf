@@ -17,6 +17,7 @@ namespace Dev2.Common.Interfaces
         TestFailed,
         TestInvalid,
         TestResourceDeleted,
-        TestResourcePathUpdated
+        TestResourcePathUpdated,
+        TestPending
     }
 }
