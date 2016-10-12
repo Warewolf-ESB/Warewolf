@@ -9856,7 +9856,7 @@
       <ParameterName />
       <PropertyName>SelectedItem</PropertyName>
       <ExpectedValue>{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}</ExpectedValue>
-      <MessageOnValidationFailure>System.Random is not selected in DotNet DLL tool large view namespace combobox.</MessageOnValidationFailure>
+      <MessageOnValidationFailure>System.Object is not selected in DotNet DLL tool large view namespace combobox.</MessageOnValidationFailure>
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
@@ -17454,7 +17454,7 @@
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants>
-                                                                        <UIObject ControlType="ListItem" Id="ComboboxlistItemAsSystemObject" FriendlyName="{&quot;AssemblyLocation&quot;:&quot;C:\\Windows\\Microsoft.NET\\F..." SpecialControlType="None">
+                                                                        <UIObject ControlType="ListItem" Id="ComboboxlistItemAsSystemObject" FriendlyName="ComboboxlistItemAsSystemObject" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf</WindowTitle>
