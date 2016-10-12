@@ -27,7 +27,7 @@ namespace Warewolf.UITests
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_Select_Resource_Button_From_Resource_Permissions();
             UIMap.Select_Service_From_Service_Picker(Dice);
-            Assert.AreEqual(Dice, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+            Assert.AreEqual(Dice, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
             UIMap.Enter_Public_As_Windows_Group();
             UIMap.Check_Resource_Contribute();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();

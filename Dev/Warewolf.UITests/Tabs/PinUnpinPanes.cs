@@ -20,7 +20,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinNewWorkflowTab()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
@@ -28,7 +28,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinSettingsTab()
         {
             UIMap.Click_Settings_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
@@ -36,7 +36,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinServerSourceWizardTab()
         {
             UIMap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
@@ -44,7 +44,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinDBSourceWizardTab()
         {
             UIMap.Click_New_Database_Source_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
@@ -52,7 +52,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinPluginSourceWizardTab()
         {
             UIMap.Click_NewPluginSource_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.PluginSourceWizardTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
@@ -60,7 +60,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinWebSourceWizardTab()
         {
             UIMap.Click_New_Web_Source_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
@@ -68,7 +68,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinDeployTab()
         {
             UIMap.Click_Deploy_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
@@ -76,7 +76,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinDependencyGraphTab()
         {
             UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
@@ -85,7 +85,7 @@ namespace Warewolf.UITests.Tabs
         {
             UIMap.Filter_Explorer("Hello World");
             UIMap.Open_Explorer_First_Item_Tests_With_Context_Menu();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
@@ -93,7 +93,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinSchedulerTab()
         {
             UIMap.Click_Scheduler_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
         }
 
