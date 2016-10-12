@@ -7,6 +7,7 @@ namespace Warewolf.UITests.Tools
     public class HttpWebDelete
     {
         const string WebSourceName = "UITestingWebSource";
+        const string WebDeleteName = "UITestingWebDeleteSource";
 
         [TestMethod]
         [TestCategory("Tools")]
@@ -16,9 +17,10 @@ namespace Warewolf.UITests.Tools
             Uimap.Open_DeleteWeb_Tool_Large_View();
             Uimap.Click_AddNew_Web_Source_From_tool();
             Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
+            Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName, true);
             Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
-            Uimap.Open_DeleteWeb_Tool_Large_View();
+            Uimap.Save_With_Ribbon_Button_And_Dialog(WebDeleteName, true);
+            Uimap.Click_Workflow_ExpandAll();
             Uimap.Select_UITestingSource_From_Web_Server_Large_View_Source_Combobox();
             Uimap.Click_DeleteWeb_Generate_Outputs();
         }
@@ -33,6 +35,13 @@ namespace Warewolf.UITests.Tools
             Uimap.CloseHangingDialogs();
 #endif
             Uimap.InitializeABlankWorkflow();
+        }
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            Uimap.TryRemoveFromExplorer(WebSourceName);
+            Uimap.TryRemoveFromExplorer(WebDeleteName);
         }
 
         /// <summary>

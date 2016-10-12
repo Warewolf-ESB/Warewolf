@@ -10,6 +10,8 @@ namespace Warewolf.UITests.Tools.Utility
 		[TestCategory("Tools")]
         public void RabbitMQConsumeToolUITest()
         {
+            UIMap.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurface();
+            
         }
 
         #region Additional test attributes
@@ -23,7 +25,12 @@ namespace Warewolf.UITests.Tools.Utility
 #endif
             UIMap.InitializeABlankWorkflow();
         }
-
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         UIMap UIMap
         {
             get

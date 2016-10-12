@@ -6,7 +6,7 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class HttpWebGet
     {
-        const string WebSourceName = "UITestingWebSourceFromTool";
+        const string WebSourceName = "UITestingWebSource";
 
         [TestMethod]
 		[TestCategory("Tools")]

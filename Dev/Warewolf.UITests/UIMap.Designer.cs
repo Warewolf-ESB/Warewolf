@@ -34,550 +34,6 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethod1")]
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfComboBox typeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.SmallViewContentCustom.SmallDataGridTable.Row1.TypeCell.TypeComboBox;
-            WpfComboBox variableComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.SmallViewContentCustom.SmallDataGridTable.Row1.VariableCell.VariableComboBox;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.DoneButton;
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI__Row1_FromTypecbx_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.TypeComboBoxExists, typeComboBox.Exists, "Type combobox does not exist after dragging Gather System information tool on to " +
-                    "design surface");
-
-            // Verify that the 'Exists' property of 'UI__Row1_FromExpressiontxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.VariableComboBoxExists, variableComboBox.Exists, "Variable combobox does not exist after dragging Gather System information tool on" +
-                    " to design surface");
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.DoneButtonExists, doneButton.Exists, "Done button  does not exist after opening Gather System information tool large vi" +
-                    "ew");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "OnError group  does not exist after opening Gather System information tool large " +
-                    "view");
-        }
-        
-        /// <summary>
-        /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethod2")]
-        public void AssertMethod2()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.DoneButton;
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.LargeViewContentCustom.ResultComboBox;
-            WpfComboBox addTimeTypeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.LargeViewContentCustom.AddTimeTypeComboBox;
-            WpfComboBox inputComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.LargeViewContentCustom.InputComboBox;
-            WpfComboBox resultComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.ResultComboBox;
-            WpfComboBox addTimeTypeComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.AddTimeTypeComboBox;
-            WpfComboBox inputComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.InputComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist after oping DateTime tool large view");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "On Error group does not exist after oping DateTime tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after oping DateTime tool large view");
-
-            // Verify that the 'Exists' property of 'UI__AddTimeTypecbx_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.AddTimeTypeComboBoxExists, addTimeTypeComboBox.Exists, "Add Time combobox does not exist after oping DateTime tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.InputComboBoxExists, inputComboBox.Exists, "Input combobox does not exist after oping DateTime tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.ResultComboBoxExists1, resultComboBox1.Exists, "Results combobox does not exist after dragging DateTime tool on to design surface" +
-                    "");
-
-            // Verify that the 'Exists' property of 'UI__AddTimeTypecbx_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.AddTimeTypeComboBoxExists1, addTimeTypeComboBox1.Exists, "AddTime combobox does not exist after dragging DateTime tool on to design surface" +
-                    "");
-
-            // Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.InputComboBoxExists1, inputComboBox1.Exists, "Input combobox does not exist after dragging DateTime tool on to design surface");
-        }
-        
-        /// <summary>
-        /// AssertMethod3 - Use 'AssertMethod3ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethod3")]
-        public void AssertMethod3()
-        {
-            #region Variable Declarations
-            WpfListItem uITesting = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.SourcesComboBox.UITesting;
-            #endregion
-
-            // Verify that the 'ControlType' property of list item numbered 11 in 'SourcesComboBox' combo box equals 'ListItem'
-            Assert.AreEqual(this.AssertMethod3ExpectedValues.UITestingControlType, uITesting.ControlType.ToString(), "uitesting does not exist in the combo ox");
-        }
-        
-        /// <summary>
-        /// AssertMethodAggregateCalculate - Use 'AssertMethodAggregateCalculateExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethodAggregateCalculate")]
-        public void AssertMethodAggregateCalculate()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.DoneButton;
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.ResultComboBox;
-            WpfComboBox fxComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.fxComboBox;
-            WpfComboBox resultComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.SmallViewContentCustom.ResultComboBox;
-            WpfComboBox fxComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.SmallViewContentCustom.fxComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethodAggregateCalculateExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Aggregate Calculate tool large view");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethodAggregateCalculateExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "On Error group does not exist after opening Aggregate Calculate tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodAggregateCalculateExpectedValues.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after opening Aggregate Calculate tool large view" +
-                    "");
-
-            // Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodAggregateCalculateExpectedValues.fxComboBoxExists, fxComboBox.Exists, "fx combobox does not exist after opening Aggregate Calculate tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodAggregateCalculateExpectedValues.ResultComboBoxExists1, resultComboBox1.Exists, "Results combobox does not exist after opening Aggregate Calculate tool large view" +
-                    "");
-
-            // Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodAggregateCalculateExpectedValues.fxComboBoxExists1, fxComboBox1.Exists, "fx combobox does not exist after dragging Aggregate Calculate tool onto design su" +
-                    "rface");
-        }
-        
-        /// <summary>
-        /// AssertMethodCalculate - Use 'AssertMethodCalculateExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethodCalculate")]
-        public void AssertMethodCalculate()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.DoneButton;
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeViewContentCustom.ResultComboBox;
-            WpfComboBox fxComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeViewContentCustom.fxComboBox;
-            WpfComboBox resultComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallViewContentCustom.ResultComboBox;
-            WpfComboBox fxComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallViewContentCustom.fxComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethodCalculateExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Calculate tool large view ");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethodCalculateExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after opening Create json tool large view ");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethodCalculateExpectedValues.OnErrorGroupExists1, onErrorGroup.Exists, "OnError group does not exist after opening Calculate tool large view ");
-
-            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodCalculateExpectedValues.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after opening Calculate tool large view ");
-
-            // Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodCalculateExpectedValues.fxComboBoxExists, fxComboBox.Exists, "fx combobox does not exist after opening Calculate tool large view ");
-
-            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodCalculateExpectedValues.ResultComboBoxExists1, resultComboBox1.Exists, "Result combobox does not exist after dragging Calculate tool onto design surface");
-
-            // Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodCalculateExpectedValues.fxComboBoxExists1, fxComboBox1.Exists, "fx combobox does not exist after dragging Calculate tool onto design surface");
-        }
-        
-        /// <summary>
-        /// AssertMethodComment - Use 'AssertMethodCommentExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethodComment")]
-        public void AssertMethodComment()
-        {
-            #region Variable Declarations
-            WpfComboBox commentComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI__Commenttxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodCommentExpectedValues.CommentComboBoxExists, commentComboBox.Exists, "Comment combobox does not exist after dragging Comment tool onto design surface");
-        }
-        
-        /// <summary>
-        /// AssertMethodCreateJson - Use 'AssertMethodCreateJsonExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethodCreateJson")]
-        public void AssertMethodCreateJson()
-        {
-            #region Variable Declarations
-            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.SmallViewContentCustom.ResultComboBox;
-            WpfComboBox sourceNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.SmallViewContentCustom.SmallDataGridTable.Row1.SourceNameCell.SourceNameComboBox;
-            WpfComboBox destinationComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.SmallViewContentCustom.SmallDataGridTable.Row1.DestinationCell.DestinationComboBox;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.DoneButton;
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfComboBox sourceNameComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.LargeViewContentCustom.LargeDataGridTable.Row1.SourceNameCell.SourceNameComboBox;
-            WpfComboBox destinationComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.LargeViewContentCustom.LargeDataGridTable.Row1.DestinationCell.DestinationComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI__JsonString_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodCreateJsonExpectedValues.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after draggin Create json tool onto design surfac" +
-                    "e");
-
-            // Verify that the 'Exists' property of 'UI__Row1_SourceName_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodCreateJsonExpectedValues.SourceNameComboBoxExists, sourceNameComboBox.Exists, "SourceName combobox does not exist after draggin Create json tool onto design sur" +
-                    "face");
-
-            // Verify that the 'Exists' property of 'UI__Row1_DestinationName_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodCreateJsonExpectedValues.DestinationComboBoxExists, destinationComboBox.Exists, "Destination combobox does not exist after draggin Create json tool onto design su" +
-                    "rface");
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethodCreateJsonExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Create json tool large view ");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethodCreateJsonExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "On Error group does not exist after opening Create json tool large view ");
-
-            // Verify that the 'Exists' property of 'UI__Row1_SourceName_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodCreateJsonExpectedValues.SourceNameComboBoxExists1, sourceNameComboBox1.Exists, "Data combobox does not exist after opening Create json tool large view ");
-
-            // Verify that the 'Exists' property of 'UI__Row1_DestinationName_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodCreateJsonExpectedValues.DestinationComboBoxExists1, destinationComboBox1.Exists, "Name combobox does not exist after opening Create json tool large view ");
-        }
-        
-        /// <summary>
-        /// AssertMethodDateTimeDiff - Use 'AssertMethodDateTimeDiffExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethodDateTimeDiff")]
-        public void AssertMethodDateTimeDiff()
-        {
-            #region Variable Declarations
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.DoneButton;
-            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.LargeViewContentCustom.ResultComboBox;
-            WpfComboBox inputFormatComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.LargeViewContentCustom.InputFormatComboBox;
-            WpfComboBox input2ComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.LargeViewContentCustom.Input2ComboBox;
-            WpfComboBox input1ComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.LargeViewContentCustom.Input1ComboBox;
-            WpfComboBox resultComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.ResultComboBox;
-            WpfComboBox inputFormatComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.InputFormatComboBox;
-            WpfComboBox input2ComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.Input2ComboBox;
-            WpfComboBox input1ComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.Input1ComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethodDateTimeDiffExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after opening DateTime diff tool large view ");
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethodDateTimeDiffExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening DateTime diff tool large view ");
-
-            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodDateTimeDiffExpectedValues.ResultComboBoxExists, resultComboBox.Exists, "Result combobox does not exist after opening DateTime diff tool large view ");
-
-            // Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodDateTimeDiffExpectedValues.InputFormatComboBoxExists, inputFormatComboBox.Exists, "InputFormat combobox does not exist after opening DateTime diff tool large view ");
-
-            // Verify that the 'Exists' property of 'UI__Input2txt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodDateTimeDiffExpectedValues.Input2ComboBoxExists, input2ComboBox.Exists, "Input2 combobox does not exist after opening DateTime diff tool large view ");
-
-            // Verify that the 'Exists' property of 'UI__Input1txt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodDateTimeDiffExpectedValues.Input1ComboBoxExists, input1ComboBox.Exists, "Input1 combobox does not exist after opening DateTime diff tool large view ");
-
-            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodDateTimeDiffExpectedValues.ResultComboBoxExists1, resultComboBox1.Exists, "Result combobox does not exist after dragging DateTime diff tool onto design surf" +
-                    "ace");
-
-            // Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodDateTimeDiffExpectedValues.InputFormatComboBoxExists1, inputFormatComboBox1.Exists, "InputFormat combobox does not exist after dragging DateTime diff tool onto design" +
-                    " surface");
-
-            // Verify that the 'Exists' property of 'UI__Input2txt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodDateTimeDiffExpectedValues.Input2ComboBoxExists1, input2ComboBox1.Exists, "Input2 combobox does not exist after dragging DateTime diff tool onto design surf" +
-                    "ace");
-
-            // Verify that the 'Exists' property of 'UI__Input1txt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodDateTimeDiffExpectedValues.Input1ComboBoxExists1, input1ComboBox1.Exists, "Input1 combobox does not exist after dragging DateTime diff tool onto design surf" +
-                    "ace");
-        }
-        
-        /// <summary>
-        /// AssertMethodFormatNumber - Use 'AssertMethodFormatNumberExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethodFormatNumber")]
-        public void AssertMethodFormatNumber()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.DoneButton;
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfComboBox resultInputComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.ResultInputComboBox;
-            WpfComboBox decimalsToShowComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.DecimalsToShowComboBox;
-            WpfComboBox roundingComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox;
-            WpfComboBox numberInputComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.NumberInputComboBox;
-            WpfComboBox resultInputComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.SmallViewContentCustom.ResultInputComboBox;
-            WpfComboBox decimalsToShowComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.SmallViewContentCustom.DecimalsToShowComboBox;
-            WpfComboBox numberInputComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.SmallViewContentCustom.NumberInputComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethodFormatNumberExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening  Format Number tool large view");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethodFormatNumberExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "On Error group does not exist after opening  Format Number tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Result_Inputtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodFormatNumberExpectedValues.ResultInputComboBoxExists, resultInputComboBox.Exists, "Reult combobox does not exist after opening  Format Number tool large view");
-
-            // Verify that the 'Exists' property of 'UI__DecimalsToShow_Inputtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodFormatNumberExpectedValues.DecimalsToShowComboBoxExists, decimalsToShowComboBox.Exists, "DecimalToShow combobox does not exist after opening  Format Number tool large vie" +
-                    "w");
-
-            // Verify that the 'Exists' property of 'How would you like to round the number? None: No r...' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodFormatNumberExpectedValues.RoundingComboBoxExists, roundingComboBox.Exists, "Rounding combobox does not exist after opening  Format Number tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Number_Inputtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodFormatNumberExpectedValues.NumberInputComboBoxExists, numberInputComboBox.Exists, "NumberInput combobox does not exist after opening  Format Number tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Result_Inputtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodFormatNumberExpectedValues.ResultInputComboBoxExists1, resultInputComboBox1.Exists, "Result combobox does not exist after dragging Format Number tool onto design surf" +
-                    "ace");
-
-            // Verify that the 'Exists' property of 'UI__DecimalsToShow_Inputtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodFormatNumberExpectedValues.DecimalsToShowComboBoxExists1, decimalsToShowComboBox1.Exists, "DecimalToShow combobox does not exist after dragging Format Number tool onto desi" +
-                    "gn surface");
-
-            // Verify that the 'Exists' property of 'UI__Number_Inputtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodFormatNumberExpectedValues.NumberInputComboBoxExists1, numberInputComboBox1.Exists, "NumberInput combobox does not exist after dragging Format Number tool onto design" +
-                    " surface");
-        }
-        
-        /// <summary>
-        /// AssertMethodRabbitMqConsume - Use 'AssertMethodRabbitMqConsumeExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethodRabbitMqConsume")]
-        public void AssertMethodRabbitMqConsume()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.DoneButton;
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfComboBox resultsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.ResultsComboBox;
-            WpfComboBox responseComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.ResponseComboBox;
-            WpfComboBox sourceComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.SourceComboBox;
-            WpfCheckBox reQueueCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.ReQueueCheckBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqConsumeExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist after dragging RabbitMq tool onto the design surface");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqConsumeExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after dragging RabbitMq tool onto the design surface" +
-                    "");
-
-            // Verify that the 'Exists' property of 'UI__Resultstxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqConsumeExpectedValues.ResultsComboBoxExists, resultsComboBox.Exists, "Results combobox does not exist after dragging RabbitMq tool onto the design surf" +
-                    "ace");
-
-            // Verify that the 'Exists' property of 'UI__tostxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqConsumeExpectedValues.ResponseComboBoxExists, responseComboBox.Exists, "Response combobox does not exist after dragging RabbitMq tool onto the design sur" +
-                    "face");
-
-            // Verify that the 'Exists' property of 'InitialFocusElement' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqConsumeExpectedValues.SourceComboBoxExists, sourceComboBox.Exists, "Source combobox does not exist after dragging RabbitMq tool onto the design surfa" +
-                    "ce");
-
-            // Verify that the 'Exists' property of 'ReQueue' check box equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqConsumeExpectedValues.ReQueueCheckBoxExists, reQueueCheckBox.Exists, "ReQueue checkbox does not exist after dragging RabbitMq tool onto the design surf" +
-                    "ace");
-        }
-        
-        /// <summary>
-        /// AssertMethodRabbitMqPublish - Use 'AssertMethodRabbitMqPublishExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethodRabbitMqPublish")]
-        public void AssertMethodRabbitMqPublish()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.DoneButton;
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfComboBox resultsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.ResultsComboBox;
-            WpfComboBox messageComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.MessageComboBox;
-            WpfCheckBox exclusiveCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.ExclusiveCheckBox;
-            WpfComboBox queueNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.QueueNameComboBox;
-            WpfComboBox sourceComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.SourceComboBox;
-            WpfButton newSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.NewSourceButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqPublishExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist after dragging RabbitMq tool onto the design surface");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqPublishExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after dragging RabbitMq tool onto the design surface" +
-                    "");
-
-            // Verify that the 'Exists' property of 'UI__Resultstxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqPublishExpectedValues.ResultsComboBoxExists, resultsComboBox.Exists, "Results combobox does not exist after dragging RabbitMq tool onto the design surf" +
-                    "ace");
-
-            // Verify that the 'Exists' property of 'UI__bodytxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqPublishExpectedValues.MessageComboBoxExists, messageComboBox.Exists, "Mesage combobox does not exist after dragging RabbitMq tool onto the design surfa" +
-                    "ce");
-
-            // Verify that the 'Exists' property of 'Exclusive' check box equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqPublishExpectedValues.ExclusiveCheckBoxExists, exclusiveCheckBox.Exists, "Exlusive checkbox does not exist after dragging RabbitMq tool onto the design sur" +
-                    "face");
-
-            // Verify that the 'Exists' property of 'UI__tostxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqPublishExpectedValues.QueueNameComboBoxExists, queueNameComboBox.Exists, "QueueName combobox does not exist after dragging RabbitMq tool onto the design su" +
-                    "rface");
-
-            // Verify that the 'Exists' property of 'InitialFocusElement' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqPublishExpectedValues.SourceComboBoxExists, sourceComboBox.Exists, "Source combobox does not exist after dragging RabbitMq tool onto the design surfa" +
-                    "ce");
-
-            // Verify that the 'Exists' property of 'New' button equals 'True'
-            Assert.AreEqual(this.AssertMethodRabbitMqPublishExpectedValues.NewSourceButtonExists, newSourceButton.Exists, "New Source button does not exist after dragging RabbitMq tool onto the design sur" +
-                    "face");
-        }
-        
-        /// <summary>
-        /// AssertMethodRandom - Use 'AssertMethodRandomExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethodRandom")]
-        public void AssertMethodRandom()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.DoneButton;
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.ResultComboBox;
-            WpfComboBox toComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.ToComboBox;
-            WpfComboBox fromComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.FromComboBox;
-            WpfComboBox resultComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.ResultComboBox;
-            WpfComboBox toComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.ToComboBox;
-            WpfComboBox fromComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.FromComboBox;
-            WpfComboBox typeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethodRandomExpectedValues.DoneButtonExists, doneButton.Exists, "Done Button combobox does not exist after opening Random tool large view");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethodRandomExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after opening Random tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRandomExpectedValues.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after opening Random tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRandomExpectedValues.ToComboBoxExists, toComboBox.Exists, "Tocombobox does not exist after opening Random tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRandomExpectedValues.FromComboBoxExists, fromComboBox.Exists, "FromCombobox does not exist after opening Random tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRandomExpectedValues.ResultComboBoxExists1, resultComboBox1.Exists, "Results combobox does not exist after dragging Random tool onto design surface");
-
-            // Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRandomExpectedValues.ToComboBoxExists1, toComboBox1.Exists, "ToCombobox does not exist after dragging Random tool onto design surface");
-
-            // Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRandomExpectedValues.FromComboBoxExists1, fromComboBox1.Exists, "FromCombobox does not exist after dragging Random tool onto design surface");
-
-            // Verify that the 'Exists' property of 'UI__Wherecbx_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodRandomExpectedValues.TypeComboBoxExists, typeComboBox.Exists, "TypeCombobox does not exist after dragging Random tool onto design surface");
-        }
-        
-        /// <summary>
-        /// AssertMethodWebRquest - Use 'AssertMethodWebRquestExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethodWebRquest")]
-        public void AssertMethodWebRquest()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.DoneButton;
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfGroup previewGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.PreviewCustom.PreviewGroup;
-            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.ResultComboBox;
-            WpfComboBox timeOutComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.TimeOutComboBox;
-            WpfComboBox headerComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.HeaderComboBox;
-            WpfComboBox inputComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.InputComboBox;
-            WpfComboBox resultComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.SmallViewContentCustom.ResultComboBox;
-            WpfComboBox inputComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.SmallViewContentCustom.InputComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethodWebRquestExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Web Request tool large view");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethodWebRquestExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after opening Web Request tool large view");
-
-            // Verify that the 'Exists' property of 'Preview' group equals 'True'
-            Assert.AreEqual(this.AssertMethodWebRquestExpectedValues.PreviewGroupExists, previewGroup.Exists, "Preview group does not exist after opening Web Request tool large view");
-
-            // Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodWebRquestExpectedValues.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after opening Web Request tool large view");
-
-            // Verify that the 'Exists' property of 'The length of time to wait for a web request to co...' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodWebRquestExpectedValues.TimeOutComboBoxExists, timeOutComboBox.Exists, "TimeOut combobox does not exist after opening Web Request tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodWebRquestExpectedValues.HeaderComboBoxExists, headerComboBox.Exists, "Header combobox does not exist after opening Web Request tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodWebRquestExpectedValues.InputComboBoxExists, inputComboBox.Exists, "URL combobox does not exist after opening Web Request tool large view");
-
-            // Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodWebRquestExpectedValues.ResultComboBoxExists1, resultComboBox1.Exists, "Results combobox does not exist after dragging Web Request tool onto design surfa" +
-                    "ce");
-
-            // Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodWebRquestExpectedValues.InputComboBoxExists1, inputComboBox1.Exists, "Url combobox does not exist after dragging Web Request tool onto design surface");
-        }
-        
-        /// <summary>
-        /// AssertMethodXpath - Use 'AssertMethodXpathExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethodXpath")]
-        public void AssertMethodXpath()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.DoneButton;
-            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfComboBox variableComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.LargeDataGridTable.Row1.VariableCell.VariableComboBox;
-            WpfComboBox xpathComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.LargeDataGridTable.Row1.XpathCell.XpathComboBox;
-            WpfComboBox sourceStringComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.SourceStringComboBox;
-            WpfComboBox xpathComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.SmallViewContentCustom.SmallDataGridTable.Row1.XpathCell.XpathComboBox;
-            WpfComboBox variableComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.SmallViewContentCustom.SmallDataGridTable.Row1.VariableCell.VariableComboBox;
-            WpfComboBox sourceStringComboBox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.SmallViewContentCustom.SourceStringComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.AssertMethodXpathExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Xpath tool large view");
-
-            // Verify that the 'Exists' property of 'On Error' group equals 'True'
-            Assert.AreEqual(this.AssertMethodXpathExpectedValues.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after opening Xpath tool large view");
-
-            // Verify that the 'Exists' property of 'UI__Row1_OutputVariable_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodXpathExpectedValues.VariableComboBoxExists, variableComboBox.Exists, "Variable combobox does not exist after opening Xpath tool large view");
-
-            // Verify that the 'Exists' property of 'UI__At_Row1_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodXpathExpectedValues.XpathComboBoxExists, xpathComboBox.Exists, "Xpath combobox does not exist after opening Xpath tool large view");
-
-            // Verify that the 'Exists' property of 'UI__SourceStringtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodXpathExpectedValues.SourceStringComboBoxExists, sourceStringComboBox.Exists, "Xml combobox does not exist after opening Xpath tool large view");
-
-            // Verify that the 'Exists' property of 'UI__At_Row1_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodXpathExpectedValues.XpathComboBoxExists1, xpathComboBox1.Exists, "Xpath combobox does not exist after dragging Xpath tool onto design surface");
-
-            // Verify that the 'Exists' property of 'UI__Row1_OutputVariable_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodXpathExpectedValues.VariableComboBoxExists1, variableComboBox1.Exists, "Variable combobox does not exist after dragging Xpath tool onto design surface");
-
-            // Verify that the 'Exists' property of 'UI__SourceStringtxt_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.AssertMethodXpathExpectedValues.SourceStringComboBoxExists1, sourceStringComboBox1.Exists, "Xml combobox does not exist after dragging Xpath tool onto design surface");
-        }
-        
-        /// <summary>
         /// Assign_Recordset_value - Use 'Assign_Recordset_valueParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Assign Recordset value")]
@@ -706,27 +162,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Workflow_ExpandAll - Use 'Click_Workflow_ExpandAllParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Click Workflow ExpandAll")]
-        public void Click_Workflow_ExpandAll()
-        {
-            #region Variable Declarations
-            WpfToggleButton expandAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton;
-            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-            #endregion
-
-            // Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
-            Assert.AreEqual(this.Click_Workflow_ExpandAllParams.ExpandAllToggleButtonExists, expandAllToggleButton.Exists, "Expand all button does not exist");
-
-            // Set to 'Pressed' state 'ExpandAll' toggle button
-            expandAllToggleButton.Pressed = this.Click_Workflow_ExpandAllParams.ExpandAllToggleButtonPressed;
-
-            // Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
-            Assert.AreEqual(this.Click_Workflow_ExpandAllParams.MultiAssignExists, multiAssign.Exists, "Assign tool large view on the design surface does not exist");
-        }
-        
-        /// <summary>
         /// Click_Assign_Tool_Large_View_Done_Button - Use 'Click_Assign_Tool_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click Assign Tool Large View Done Button")]
@@ -751,6 +186,34 @@ namespace Warewolf.UITests
             // Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
             Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.OpenQuickVariableInpToggleButtonExists, openQuickVariableInpToggleButton.Exists, "QVI toggle button does not exist in assign tool small view after clicking done bu" +
                     "tton on large view.");
+        }
+        
+        /// <summary>
+        /// Click_WebRequest_Tool_Large_View_Done_Button
+        /// </summary>
+        [When(@"I Click WebRequest Tool Large View Done Button")]
+        public void Click_WebRequest_Tool_Large_View_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.DoneButton;
+            #endregion
+
+            // Double-Click 'Done' button
+            Mouse.DoubleClick(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
+        /// Click_XPath_Tool_Large_View_Done_Button
+        /// </summary>
+        [When(@"I Click XPath Tool Large View Done Button")]
+        public void Click_XPath_Tool_Large_View_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.DoneButton;
+            #endregion
+
+            // Double-Click 'Done' button
+            Mouse.DoubleClick(doneButton, new Point(35, 6));
         }
         
         /// <summary>
@@ -805,6 +268,20 @@ namespace Warewolf.UITests
 
             // Verify that the 'Text' property of 'UI__Row1_FromExpressiontxt_AutoID' text box equals 'SomeData'
             Assert.AreEqual(this.Click_Base_Convert_Large_View_Done_ButtonParams.ValueTextboxText, valueTextbox.Text, "Base convert small view row1 variable textbox does not contain text SomeData.");
+        }
+        
+        /// <summary>
+        /// Click_FormatNumber_Done_Button
+        /// </summary>
+        [When(@"I Click FormatNumber Done Button")]
+        public void Click_FormatNumber_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(36, 11));
         }
         
         /// <summary>
@@ -1333,16 +810,12 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton;
-            WpfTable inputDataGridTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.InputDataGridTable;
             WpfButton pasteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.PasteButton;
             WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.TestButton;
             #endregion
 
             // Click 'Generate Outputs' button
             Mouse.Click(generateOutputsButton, new Point(85, 10));
-
-            // Verify that the 'Exists' property of 'LargeDataGrid' table equals 'True'
-            Assert.AreEqual(this.Click_DeleteWeb_Generate_OutputsParams.InputDataGridTableExists, inputDataGridTable.Exists, "Inputs grid does not exist after clicking generate outputs.");
 
             // Verify that the 'Exists' property of '?' button equals 'True'
             Assert.AreEqual(this.Click_DeleteWeb_Generate_OutputsParams.PasteButtonExists, pasteButton.Exists, "Paste button does not exist after clicking generate outputs.");
@@ -2707,6 +2180,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_System_Information_Tool_Done_Button
+        /// </summary>
+        [When(@"I Click System Information Tool Done Button")]
+        public void Click_System_Information_Tool_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
         /// Click_UnDock_Explorer
         /// </summary>
         [When(@"I Click UnDock Explorer")]
@@ -2885,6 +2372,23 @@ namespace Warewolf.UITests
 
             // Set to 'Pressed' state 'CollapseAll' toggle button
             collapseAllToggleButton.Pressed = this.Click_Workflow_CollapseAllParams.CollapseAllToggleButtonPressed;
+        }
+        
+        /// <summary>
+        /// Click_Workflow_ExpandAll - Use 'Click_Workflow_ExpandAllParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Click Workflow ExpandAll")]
+        public void Click_Workflow_ExpandAll()
+        {
+            #region Variable Declarations
+            WpfToggleButton expandAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
+            Assert.AreEqual(this.Click_Workflow_ExpandAllParams.ExpandAllToggleButtonExists, expandAllToggleButton.Exists, "Expand all button does not exist");
+
+            // Set to 'Pressed' state 'ExpandAll' toggle button
+            expandAllToggleButton.Pressed = this.Click_Workflow_ExpandAllParams.ExpandAllToggleButtonPressed;
         }
         
         /// <summary>
@@ -3294,6 +2798,32 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Drag_Toolbox_AggregateCalculate_Onto_DesignSurface - Use 'Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Drag Toolbox AggregateCalculate Onto DesignSurface")]
+        public void Drag_Toolbox_AggregateCalculate_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem aggregateCalculate = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.AggregateCalculate;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfComboBox fxComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.SmallViewContentCustom.fxComboBox;
+            #endregion
+
+            // Type 'Aggregate Calculate' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(aggregateCalculate, new Point(13, 17));
+            Mouse.StopDragging(flowchart, new Point(307, 128));
+
+            // Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams.fxComboBoxExists, fxComboBox.Exists, "fx combobox does not exist after dragging Aggregate Calculate tool onto design su" +
+                    "rface");
+        }
+        
+        /// <summary>
         /// Drag_Toolbox_AssignObject_Onto_DesignSurface - Use 'Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Drag Toolbox AssignObject Onto DesignSurface")]
@@ -3362,6 +2892,8 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom calculate1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallViewContentCustom.ResultComboBox;
+            WpfComboBox fxComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallViewContentCustom.fxComboBox;
             #endregion
 
             // Type 'Calculate' in 'SearchTextBox' text box
@@ -3377,6 +2909,12 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfCalculateActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Calculate_Onto_DesignSurfaceParams.CalculateExists, calculate1.Exists, "Calculate tool on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Calculate_Onto_DesignSurfaceParams.ResultComboBoxExists, resultComboBox.Exists, "Result combobox does not exist after dragging Calculate tool onto design surface");
+
+            // Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Calculate_Onto_DesignSurfaceParams.fxComboBoxExists, fxComboBox.Exists, "fx combobox does not exist after dragging Calculate tool onto design surface");
         }
         
         /// <summary>
@@ -3567,6 +3105,38 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Drag_Toolbox_CreateJson_Onto_DesignSurface - Use 'Drag_Toolbox_CreateJson_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Drag Toolbox CreateJson Onto DesignSurface")]
+        public void Drag_Toolbox_CreateJson_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfListItem createJSON = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.CreateJSON;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.SmallViewContentCustom.ResultComboBox;
+            WpfComboBox sourceNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.SmallViewContentCustom.SmallDataGridTable.Row1.SourceNameCell.SourceNameComboBox;
+            WpfComboBox destinationComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.SmallViewContentCustom.SmallDataGridTable.Row1.DestinationCell.DestinationComboBox;
+            #endregion
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(310, 129));
+            Mouse.StartDragging(createJSON, new Point(19, -3));
+            Mouse.StopDragging(flowchart, new Point(310, 129));
+
+            // Verify that the 'Exists' property of 'UI__JsonString_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_CreateJson_Onto_DesignSurfaceParams.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after draggin Create json tool onto design surfac" +
+                    "e");
+
+            // Verify that the 'Exists' property of 'UI__Row1_SourceName_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_CreateJson_Onto_DesignSurfaceParams.SourceNameComboBoxExists, sourceNameComboBox.Exists, "SourceName combobox does not exist after draggin Create json tool onto design sur" +
+                    "face");
+
+            // Verify that the 'Exists' property of 'UI__Row1_DestinationName_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_CreateJson_Onto_DesignSurfaceParams.DestinationComboBoxExists, destinationComboBox.Exists, "Destination combobox does not exist after draggin Create json tool onto design su" +
+                    "rface");
+        }
+        
+        /// <summary>
         /// Drag_Toolbox_Data_Merge_Onto_DesignSurface - Use 'Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Drag Toolbox Data Merge Onto DesignSurface")]
@@ -3665,6 +3235,10 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom dateTimeDifference1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.ResultComboBox;
+            WpfComboBox inputFormatComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.InputFormatComboBox;
+            WpfComboBox input2ComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.Input2ComboBox;
+            WpfComboBox input1ComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.Input1ComboBox;
             #endregion
 
             // Type 'Date Time Diff' in 'SearchTextBox' text box
@@ -3680,6 +3254,22 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfDateTimeDifferenceActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.DateTimeDifferenceExists, dateTimeDifference1.Exists, "Date And Time Difference tool on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.ResultComboBoxExists, resultComboBox.Exists, "Result combobox does not exist after dragging DateTime diff tool onto design surf" +
+                    "ace");
+
+            // Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.InputFormatComboBoxExists, inputFormatComboBox.Exists, "InputFormat combobox does not exist after dragging DateTime diff tool onto design" +
+                    " surface");
+
+            // Verify that the 'Exists' property of 'UI__Input2txt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.Input2ComboBoxExists, input2ComboBox.Exists, "Input2 combobox does not exist after dragging DateTime diff tool onto design surf" +
+                    "ace");
+
+            // Verify that the 'Exists' property of 'UI__Input1txt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.Input1ComboBoxExists, input1ComboBox.Exists, "Input1 combobox does not exist after dragging DateTime diff tool onto design surf" +
+                    "ace");
         }
         
         /// <summary>
@@ -3970,6 +3560,9 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom formatNumber1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
+            WpfComboBox resultInputComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.SmallViewContentCustom.ResultInputComboBox;
+            WpfComboBox decimalsToShowComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.SmallViewContentCustom.DecimalsToShowComboBox;
+            WpfComboBox numberInputComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.SmallViewContentCustom.NumberInputComboBox;
             #endregion
 
             // Type 'Format Number' in 'SearchTextBox' text box
@@ -3985,6 +3578,18 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfNumberFormatActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.FormatNumberExists, formatNumber1.Exists, "Format Number tool on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__Result_Inputtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.ResultInputComboBoxExists, resultInputComboBox.Exists, "Result combobox does not exist after dragging Format Number tool onto design surf" +
+                    "ace");
+
+            // Verify that the 'Exists' property of 'UI__DecimalsToShow_Inputtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.DecimalsToShowComboBoxExists, decimalsToShowComboBox.Exists, "DecimalToShow combobox does not exist after dragging Format Number tool onto desi" +
+                    "gn surface");
+
+            // Verify that the 'Exists' property of 'UI__Number_Inputtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.NumberInputComboBoxExists, numberInputComboBox.Exists, "NumberInput combobox does not exist after dragging Format Number tool onto design" +
+                    " surface");
         }
         
         /// <summary>
@@ -4218,6 +3823,116 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Drag_Toolbox_RabbitMqConsume_Onto_DesignSurface - Use 'Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Drag Toolbox RabbitMqConsume Onto DesignSurface")]
+        public void Drag_Toolbox_RabbitMqConsume_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem rabbitMQConsume = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.RabbitMQConsume;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.DoneButton;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            WpfComboBox resultsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.ResultsComboBox;
+            WpfComboBox responseComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.ResponseComboBox;
+            WpfComboBox sourceComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.SourceComboBox;
+            WpfCheckBox reQueueCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.ReQueueCheckBox;
+            #endregion
+
+            // Type 'RabbitMq Consume' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(309, 128));
+            Mouse.StartDragging(rabbitMQConsume, new Point(16, 11));
+            Mouse.StopDragging(flowchart, new Point(309, 128));
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after dragging RabbitMq tool onto the design surface");
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after dragging RabbitMq tool onto the design surface" +
+                    "");
+
+            // Verify that the 'Exists' property of 'UI__Resultstxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.ResultsComboBoxExists, resultsComboBox.Exists, "Results combobox does not exist after dragging RabbitMq tool onto the design surf" +
+                    "ace");
+
+            // Verify that the 'Exists' property of 'UI__tostxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.ResponseComboBoxExists, responseComboBox.Exists, "Response combobox does not exist after dragging RabbitMq tool onto the design sur" +
+                    "face");
+
+            // Verify that the 'Exists' property of 'InitialFocusElement' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.SourceComboBoxExists, sourceComboBox.Exists, "Source combobox does not exist after dragging RabbitMq tool onto the design surfa" +
+                    "ce");
+
+            // Verify that the 'Exists' property of 'ReQueue' check box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.ReQueueCheckBoxExists, reQueueCheckBox.Exists, "ReQueue checkbox does not exist after dragging RabbitMq tool onto the design surf" +
+                    "ace");
+        }
+        
+        /// <summary>
+        /// Drag_Toolbox_RabbitMqPublish_Onto_DesignSurface - Use 'Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Drag Toolbox RabbitMqPublish Onto DesignSurface")]
+        public void Drag_Toolbox_RabbitMqPublish_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem rabbitMQPublish = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.RabbitMQPublish;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.DoneButton;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            WpfComboBox resultsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.ResultsComboBox;
+            WpfComboBox messageComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.MessageComboBox;
+            WpfCheckBox exclusiveCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.ExclusiveCheckBox;
+            WpfComboBox queueNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.QueueNameComboBox;
+            WpfComboBox sourceComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.SourceComboBox;
+            WpfButton newSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.NewSourceButton;
+            #endregion
+
+            // Type 'RabbitMq Publish' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(309, 128));
+            Mouse.StartDragging(rabbitMQPublish, new Point(16, 11));
+            Mouse.StopDragging(flowchart, new Point(309, 128));
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after dragging RabbitMq tool onto the design surface");
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after dragging RabbitMq tool onto the design surface" +
+                    "");
+
+            // Verify that the 'Exists' property of 'UI__Resultstxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.ResultsComboBoxExists, resultsComboBox.Exists, "Results combobox does not exist after dragging RabbitMq tool onto the design surf" +
+                    "ace");
+
+            // Verify that the 'Exists' property of 'UI__bodytxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.MessageComboBoxExists, messageComboBox.Exists, "Mesage combobox does not exist after dragging RabbitMq tool onto the design surfa" +
+                    "ce");
+
+            // Verify that the 'Exists' property of 'Exclusive' check box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.ExclusiveCheckBoxExists, exclusiveCheckBox.Exists, "Exlusive checkbox does not exist after dragging RabbitMq tool onto the design sur" +
+                    "face");
+
+            // Verify that the 'Exists' property of 'UI__tostxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.QueueNameComboBoxExists, queueNameComboBox.Exists, "QueueName combobox does not exist after dragging RabbitMq tool onto the design su" +
+                    "rface");
+
+            // Verify that the 'Exists' property of 'InitialFocusElement' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.SourceComboBoxExists, sourceComboBox.Exists, "Source combobox does not exist after dragging RabbitMq tool onto the design surfa" +
+                    "ce");
+
+            // Verify that the 'Exists' property of 'New' button equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.NewSourceButtonExists, newSourceButton.Exists, "New Source button does not exist after dragging RabbitMq tool onto the design sur" +
+                    "face");
+        }
+        
+        /// <summary>
         /// Drag_Toolbox_Random_Onto_DesignSurface - Use 'Drag_Toolbox_Random_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Drag Toolbox Random Onto DesignSurface")]
@@ -4229,6 +3944,10 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom random1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.ResultComboBox;
+            WpfComboBox toComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.ToComboBox;
+            WpfComboBox fromComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.FromComboBox;
+            WpfComboBox typeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox;
             #endregion
 
             // Type 'Random' in 'SearchTextBox' text box
@@ -4244,6 +3963,18 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfRandomActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Random_Onto_DesignSurfaceParams.RandomExists, random1.Exists, "Random tool on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Random_Onto_DesignSurfaceParams.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after dragging Random tool onto design surface");
+
+            // Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Random_Onto_DesignSurfaceParams.ToComboBoxExists, toComboBox.Exists, "ToCombobox does not exist after dragging Random tool onto design surface");
+
+            // Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Random_Onto_DesignSurfaceParams.FromComboBoxExists, fromComboBox.Exists, "FromCombobox does not exist after dragging Random tool onto design surface");
+
+            // Verify that the 'Exists' property of 'UI__Wherecbx_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Random_Onto_DesignSurfaceParams.TypeComboBoxExists, typeComboBox.Exists, "TypeCombobox does not exist after dragging Random tool onto design surface");
         }
         
         /// <summary>
@@ -4872,6 +4603,8 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
+            WpfComboBox typeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.SmallViewContentCustom.SmallDataGridTable.Row1.TypeCell.TypeComboBox;
+            WpfComboBox variableComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.SmallViewContentCustom.SmallDataGridTable.Row1.VariableCell.VariableComboBox;
             #endregion
 
             // Type 'Sys Info' in 'SearchTextBox' text box
@@ -4887,6 +4620,14 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_System_Information_Onto_DesignSurfaceParams.GatherSystemInfoExists, gatherSystemInfo.Exists, "System Info tool on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__Row1_FromTypecbx_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_System_Information_Onto_DesignSurfaceParams.TypeComboBoxExists, typeComboBox.Exists, "Type combobox does not exist after dragging Gather System information tool on to " +
+                    "design surface");
+
+            // Verify that the 'Exists' property of 'UI__Row1_FromExpressiontxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_System_Information_Onto_DesignSurfaceParams.VariableComboBoxExists, variableComboBox.Exists, "Variable combobox does not exist after dragging Gather System information tool on" +
+                    " to design surface");
         }
         
         /// <summary>
@@ -4970,6 +4711,8 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom webRequest1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.SmallViewContentCustom.ResultComboBox;
+            WpfComboBox inputComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.SmallViewContentCustom.InputComboBox;
             #endregion
 
             // Type 'Web Request' in 'SearchTextBox' text box
@@ -4985,6 +4728,13 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Web_Request_Onto_DesignSurfaceParams.WebRequestExists, webRequest1.Exists, "Web Request on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Web_Request_Onto_DesignSurfaceParams.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after dragging Web Request tool onto design surfa" +
+                    "ce");
+
+            // Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Web_Request_Onto_DesignSurfaceParams.InputComboBoxExists, inputComboBox.Exists, "Url combobox does not exist after dragging Web Request tool onto design surface");
         }
         
         /// <summary>
@@ -5028,6 +4778,9 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom xPath1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            WpfComboBox xpathComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.SmallViewContentCustom.SmallDataGridTable.Row1.XpathCell.XpathComboBox;
+            WpfComboBox variableComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.SmallViewContentCustom.SmallDataGridTable.Row1.VariableCell.VariableComboBox;
+            WpfComboBox sourceStringComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.SmallViewContentCustom.SourceStringComboBox;
             #endregion
 
             // Type 'XPath' in 'SearchTextBox' text box
@@ -5043,6 +4796,15 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_XPath_Onto_DesignSurfaceParams.XPathExists, xPath1.Exists, "XPath tool on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__At_Row1_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_XPath_Onto_DesignSurfaceParams.XpathComboBoxExists, xpathComboBox.Exists, "Xpath combobox does not exist after dragging Xpath tool onto design surface");
+
+            // Verify that the 'Exists' property of 'UI__Row1_OutputVariable_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_XPath_Onto_DesignSurfaceParams.VariableComboBoxExists, variableComboBox.Exists, "Variable combobox does not exist after dragging Xpath tool onto design surface");
+
+            // Verify that the 'Exists' property of 'UI__SourceStringtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_XPath_Onto_DesignSurfaceParams.SourceStringComboBoxExists, sourceStringComboBox.Exists, "Xml combobox does not exist after dragging Xpath tool onto design surface");
         }
         
         /// <summary>
@@ -5580,6 +5342,37 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_AggregateCalculate_Tool_large_view - Use 'Open_AggregateCalculate_Tool_large_viewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open AggregateCalculate Tool large view")]
+        public void Open_AggregateCalculate_Tool_large_view()
+        {
+            #region Variable Declarations
+            WpfCustom aggregateCalculat = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.DoneButton;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.ResultComboBox;
+            WpfComboBox fxComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.fxComboBox;
+            #endregion
+
+            // Double-Click 'DsfAggregateCalculateActivity' custom control
+            Mouse.DoubleClick(aggregateCalculat, new Point(136, 13));
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_AggregateCalculate_Tool_large_viewParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Aggregate Calculate tool large view");
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Open_AggregateCalculate_Tool_large_viewParams.OnErrorGroupExists, onErrorGroup.Exists, "On Error group does not exist after opening Aggregate Calculate tool large view");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_AggregateCalculate_Tool_large_viewParams.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after opening Aggregate Calculate tool large view" +
+                    "");
+
+            // Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_AggregateCalculate_Tool_large_viewParams.fxComboBoxExists, fxComboBox.Exists, "fx combobox does not exist after opening Aggregate Calculate tool large view");
+        }
+        
+        /// <summary>
         /// Open_Assign_Tool_Large_View - Use 'Open_Assign_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Open Assign Tool Large View")]
@@ -5700,6 +5493,10 @@ namespace Warewolf.UITests
             WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView;
             WpfControl listbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox;
             WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox.FunctionTextbox;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeViewContentCustom.ResultComboBox;
+            WpfComboBox fxComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeViewContentCustom.fxComboBox;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.DoneButton;
             #endregion
 
             // Double-Click 'DsfCalculateActivity' custom control
@@ -5713,6 +5510,18 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'FunctionTextbox' text box equals 'True'
             Assert.AreEqual(this.Open_Calculate_Tool_Large_ViewParams.FunctionTextboxExists, functionTextbox.Exists, "Function textbox does not exist on calculate tool large view.");
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Open_Calculate_Tool_Large_ViewParams.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after opening Calculate tool large view ");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Calculate_Tool_Large_ViewParams.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after opening Calculate tool large view ");
+
+            // Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Calculate_Tool_Large_ViewParams.fxComboBoxExists, fxComboBox.Exists, "fx combobox does not exist after opening Calculate tool large view ");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Calculate_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Calculate tool large view ");
         }
         
         /// <summary>
@@ -5845,17 +5654,33 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Open_Create_JSON_Large_View
+        /// Open_Create_JSON_Large_View - Use 'Open_Create_JSON_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Open Create JSON Large View")]
         public void Open_Create_JSON_Large_View()
         {
             #region Variable Declarations
             WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.DoneButton;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            WpfComboBox sourceNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.LargeViewContentCustom.LargeDataGridTable.Row1.SourceNameCell.SourceNameComboBox;
+            WpfComboBox destinationComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.LargeViewContentCustom.LargeDataGridTable.Row1.DestinationCell.DestinationComboBox;
             #endregion
 
             // Double-Click 'DsfCreateJsonActivity' custom control
             Mouse.DoubleClick(createJson, new Point(124, 9));
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Create_JSON_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Create json tool large view ");
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Open_Create_JSON_Large_ViewParams.OnErrorGroupExists, onErrorGroup.Exists, "On Error group does not exist after opening Create json tool large view ");
+
+            // Verify that the 'Exists' property of 'UI__Row1_SourceName_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Create_JSON_Large_ViewParams.SourceNameComboBoxExists, sourceNameComboBox.Exists, "Data combobox does not exist after opening Create json tool large view ");
+
+            // Verify that the 'Exists' property of 'UI__Row1_DestinationName_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Create_JSON_Large_ViewParams.DestinationComboBoxExists, destinationComboBox.Exists, "Name combobox does not exist after opening Create json tool large view ");
         }
         
         /// <summary>
@@ -5983,6 +5808,78 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
             Assert.AreEqual(this.Open_Data_Split_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on DataSplit is not open");
+        }
+        
+        /// <summary>
+        /// Open_DateTime_Difference_Large_View - Use 'Open_DateTime_Difference_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open DateTime Difference Large View")]
+        public void Open_DateTime_Difference_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom dateTimeDifference = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.DoneButton;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.LargeViewContentCustom.ResultComboBox;
+            WpfComboBox inputFormatComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.LargeViewContentCustom.InputFormatComboBox;
+            WpfComboBox input2ComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.LargeViewContentCustom.Input2ComboBox;
+            WpfComboBox input1ComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.LargeViewContentCustom.Input1ComboBox;
+            #endregion
+
+            // Double-Click 'DsfDateTimeDifferenceActivity' custom control
+            Mouse.DoubleClick(dateTimeDifference, new Point(89, 7));
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Open_DateTime_Difference_Large_ViewParams.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after opening DateTime diff tool large view ");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_DateTime_Difference_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening DateTime diff tool large view ");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_DateTime_Difference_Large_ViewParams.ResultComboBoxExists, resultComboBox.Exists, "Result combobox does not exist after opening DateTime diff tool large view ");
+
+            // Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_DateTime_Difference_Large_ViewParams.InputFormatComboBoxExists, inputFormatComboBox.Exists, "InputFormat combobox does not exist after opening DateTime diff tool large view ");
+
+            // Verify that the 'Exists' property of 'UI__Input2txt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_DateTime_Difference_Large_ViewParams.Input2ComboBoxExists, input2ComboBox.Exists, "Input2 combobox does not exist after opening DateTime diff tool large view ");
+
+            // Verify that the 'Exists' property of 'UI__Input1txt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_DateTime_Difference_Large_ViewParams.Input1ComboBoxExists, input1ComboBox.Exists, "Input1 combobox does not exist after opening DateTime diff tool large view ");
+        }
+        
+        /// <summary>
+        /// Open_DateTime_Large_View - Use 'Open_DateTime_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open DateTime Large View")]
+        public void Open_DateTime_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom dateTime = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.DoneButton;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.LargeViewContentCustom.ResultComboBox;
+            WpfComboBox addTimeTypeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.LargeViewContentCustom.AddTimeTypeComboBox;
+            WpfComboBox inputComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.LargeViewContentCustom.InputComboBox;
+            #endregion
+
+            // Double-Click 'DsfDateTimeActivity' custom control
+            Mouse.DoubleClick(dateTime, new Point(89, 7));
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_DateTime_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after oping DateTime tool large view");
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Open_DateTime_Large_ViewParams.OnErrorGroupExists, onErrorGroup.Exists, "On Error group does not exist after oping DateTime tool large view");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_DateTime_Large_ViewParams.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after oping DateTime tool large view");
+
+            // Verify that the 'Exists' property of 'UI__AddTimeTypecbx_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_DateTime_Large_ViewParams.AddTimeTypeComboBoxExists, addTimeTypeComboBox.Exists, "Add Time combobox does not exist after oping DateTime tool large view");
+
+            // Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_DateTime_Large_ViewParams.InputComboBoxExists, inputComboBox.Exists, "Input combobox does not exist after oping DateTime tool large view");
         }
         
         /// <summary>
@@ -6554,6 +6451,45 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_NumberFormat_Toolbox_Large_View - Use 'Open_NumberFormat_Toolbox_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open NumberFormat Toolbox Large View")]
+        public void Open_NumberFormat_Toolbox_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom formatNumber = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.DoneButton;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            WpfComboBox resultInputComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.ResultInputComboBox;
+            WpfComboBox decimalsToShowComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.DecimalsToShowComboBox;
+            WpfComboBox roundingComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox;
+            WpfComboBox numberInputComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.NumberInputComboBox;
+            #endregion
+
+            // Double-Click 'DsfNumberFormatActivity' custom control
+            Mouse.DoubleClick(formatNumber, new Point(145, 5));
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_NumberFormat_Toolbox_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening  Format Number tool large view");
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Open_NumberFormat_Toolbox_Large_ViewParams.OnErrorGroupExists, onErrorGroup.Exists, "On Error group does not exist after opening  Format Number tool large view");
+
+            // Verify that the 'Exists' property of 'UI__Result_Inputtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_NumberFormat_Toolbox_Large_ViewParams.ResultInputComboBoxExists, resultInputComboBox.Exists, "Reult combobox does not exist after opening  Format Number tool large view");
+
+            // Verify that the 'Exists' property of 'UI__DecimalsToShow_Inputtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_NumberFormat_Toolbox_Large_ViewParams.DecimalsToShowComboBoxExists, decimalsToShowComboBox.Exists, "DecimalToShow combobox does not exist after opening  Format Number tool large vie" +
+                    "w");
+
+            // Verify that the 'Exists' property of 'How would you like to round the number? None: No r...' combo box equals 'True'
+            Assert.AreEqual(this.Open_NumberFormat_Toolbox_Large_ViewParams.RoundingComboBoxExists, roundingComboBox.Exists, "Rounding combobox does not exist after opening  Format Number tool large view");
+
+            // Verify that the 'Exists' property of 'UI__Number_Inputtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_NumberFormat_Toolbox_Large_ViewParams.NumberInputComboBoxExists, numberInputComboBox.Exists, "NumberInput combobox does not exist after opening  Format Number tool large view");
+        }
+        
+        /// <summary>
         /// Open_PostWeb_RequestTool_Large_View - Use 'Open_PostWeb_RequestTool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Open PostWeb RequestTool Large View")]
@@ -6631,6 +6567,40 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
             Assert.AreEqual(this.Open_Python_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Python Done button does not exist after openning large view with a double click.");
+        }
+        
+        /// <summary>
+        /// Open_Random_Tool_large_view - Use 'Open_Random_Tool_large_viewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Random Tool large view")]
+        public void Open_Random_Tool_large_view()
+        {
+            #region Variable Declarations
+            WpfCustom random = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.DoneButton;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.ResultComboBox;
+            WpfComboBox toComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.ToComboBox;
+            WpfComboBox fromComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.FromComboBox;
+            #endregion
+
+            // Double-Click 'DsfRandomActivity' custom control
+            Mouse.DoubleClick(random, new Point(145, 5));
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Random_Tool_large_viewParams.DoneButtonExists, doneButton.Exists, "Done Button combobox does not exist after opening Random tool large view");
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Open_Random_Tool_large_viewParams.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after opening Random tool large view");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Random_Tool_large_viewParams.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after opening Random tool large view");
+
+            // Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Random_Tool_large_viewParams.ToComboBoxExists, toComboBox.Exists, "Tocombobox does not exist after opening Random tool large view");
+
+            // Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Random_Tool_large_viewParams.FromComboBoxExists, fromComboBox.Exists, "FromCombobox does not exist after opening Random tool large view");
         }
         
         /// <summary>
@@ -7090,6 +7060,35 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_System_Information_Tool_Large_View - Use 'Open_System_Information_Tool_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open System Information Tool Large View")]
+        public void Open_System_Information_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
+            WpfTable smallDataGridTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.SmallDataGridTable;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.DoneButton;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            #endregion
+
+            // Double-Click 'DsfGatherSystemInformationActivity' custom control
+            Mouse.DoubleClick(gatherSystemInfo, new Point(145, 5));
+
+            // Verify that the 'Exists' property of 'SmallDataGrid' table equals 'True'
+            Assert.AreEqual(this.Open_System_Information_Tool_Large_ViewParams.SmallDataGridTableExists, smallDataGridTable.Exists, "Variable Grid does not exist after opening Gather System information tool large v" +
+                    "iew");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_System_Information_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Done button  does not exist after opening Gather System information tool large vi" +
+                    "ew");
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Open_System_Information_Tool_Large_ViewParams.OnErrorGroupExists, onErrorGroup.Exists, "OnError group  does not exist after opening Gather System information tool large " +
+                    "view");
+        }
+        
+        /// <summary>
         /// Open_System_Information_Tool_Qvi_Large_View - Use 'Open_System_Information_Tool_Qvi_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Open System Information Tool Qvi Large View")]
@@ -7167,6 +7166,13 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeView;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.DoneButton;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            WpfGroup previewGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.PreviewCustom.PreviewGroup;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.ResultComboBox;
+            WpfComboBox timeOutComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.TimeOutComboBox;
+            WpfComboBox headerComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.HeaderComboBox;
+            WpfComboBox inputComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.InputComboBox;
             #endregion
 
             // Double-Click 'DsfWebRequestActivity' custom control
@@ -7174,6 +7180,27 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
             Assert.AreEqual(this.Open_WebRequest_LargeViewParams.LargeViewExists, largeView.Exists, "Web request large view does not exist on design surface.");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_WebRequest_LargeViewParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Web Request tool large view");
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Open_WebRequest_LargeViewParams.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after opening Web Request tool large view");
+
+            // Verify that the 'Exists' property of 'Preview' group equals 'True'
+            Assert.AreEqual(this.Open_WebRequest_LargeViewParams.PreviewGroupExists, previewGroup.Exists, "Preview group does not exist after opening Web Request tool large view");
+
+            // Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_WebRequest_LargeViewParams.ResultComboBoxExists, resultComboBox.Exists, "Results combobox does not exist after opening Web Request tool large view");
+
+            // Verify that the 'Exists' property of 'The length of time to wait for a web request to co...' combo box equals 'True'
+            Assert.AreEqual(this.Open_WebRequest_LargeViewParams.TimeOutComboBoxExists, timeOutComboBox.Exists, "TimeOut combobox does not exist after opening Web Request tool large view");
+
+            // Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_WebRequest_LargeViewParams.HeaderComboBoxExists, headerComboBox.Exists, "Header combobox does not exist after opening Web Request tool large view");
+
+            // Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_WebRequest_LargeViewParams.InputComboBoxExists, inputComboBox.Exists, "URL combobox does not exist after opening Web Request tool large view");
         }
         
         /// <summary>
@@ -7201,6 +7228,11 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.DoneButton;
+            WpfGroup onErrorGroup = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
+            WpfComboBox variableComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.LargeDataGridTable.Row1.VariableCell.VariableComboBox;
+            WpfComboBox xpathComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.LargeDataGridTable.Row1.XpathCell.XpathComboBox;
+            WpfComboBox sourceStringComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.SourceStringComboBox;
             #endregion
 
             // Double-Click 'DsfXPathActivity' custom control
@@ -7208,6 +7240,21 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
             Assert.AreEqual(this.Open_Xpath_Tool_Large_ViewParams.XPathExists, xPath.Exists, "Xpath large view does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Xpath_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Xpath tool large view");
+
+            // Verify that the 'Exists' property of 'On Error' group equals 'True'
+            Assert.AreEqual(this.Open_Xpath_Tool_Large_ViewParams.OnErrorGroupExists, onErrorGroup.Exists, "OnError group does not exist after opening Xpath tool large view");
+
+            // Verify that the 'Exists' property of 'UI__Row1_OutputVariable_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Xpath_Tool_Large_ViewParams.VariableComboBoxExists, variableComboBox.Exists, "Variable combobox does not exist after opening Xpath tool large view");
+
+            // Verify that the 'Exists' property of 'UI__At_Row1_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Xpath_Tool_Large_ViewParams.XpathComboBoxExists, xpathComboBox.Exists, "Xpath combobox does not exist after opening Xpath tool large view");
+
+            // Verify that the 'Exists' property of 'UI__SourceStringtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Xpath_Tool_Large_ViewParams.SourceStringComboBoxExists, sourceStringComboBox.Exists, "Xml combobox does not exist after opening Xpath tool large view");
         }
         
         /// <summary>
@@ -8093,6 +8140,24 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_OutputIn_Days
+        /// </summary>
+        [When(@"I Select OutputIn Days")]
+        public void Select_OutputIn_Days()
+        {
+            #region Variable Declarations
+            WpfComboBox outputInComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.OutputInComboBox;
+            WpfListItem days = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.OutputInComboBox.Days;
+            #endregion
+
+            // Click 'UI__OutputIncbx_AutoID' combo box
+            Mouse.Click(outputInComboBox, new Point(119, 7));
+
+            // Click 'Days' list item
+            Mouse.Click(days, new Point(114, 13));
+        }
+        
+        /// <summary>
         /// Select_AcceptanceTestin_create
         /// </summary>
         [When(@"I Select AcceptanceTestin create")]
@@ -8108,6 +8173,24 @@ namespace Warewolf.UITests
 
             // Click 'AcceptanceTesting_Create' list item
             Mouse.Click(uIAcceptanceTesting_CrListItem, new Point(114, 13));
+        }
+        
+        /// <summary>
+        /// Select_Round_Up
+        /// </summary>
+        [When(@"I Select Round Up")]
+        public void Select_Round_Up()
+        {
+            #region Variable Declarations
+            WpfComboBox roundingComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox;
+            WpfListItem roungUP = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.RoungUP;
+            #endregion
+
+            // Click 'How would you like to round the number? None: No r...' combo box
+            Mouse.Click(roundingComboBox, new Point(119, 7));
+
+            // Click 'Up' list item
+            Mouse.Click(roungUP, new Point(114, 13));
         }
         
         /// <summary>
@@ -8276,6 +8359,24 @@ namespace Warewolf.UITests
 
             // Click 'Dev2.Common.Interfaces.Core.PluginSourceDefinition' list item
             Mouse.Click(listItem1, new Point(163, 17));
+        }
+        
+        /// <summary>
+        /// Select_Months_From_AddTime_Type
+        /// </summary>
+        [When(@"I Select Months From AddTime Type")]
+        public void Select_Months_From_AddTime_Type()
+        {
+            #region Variable Declarations
+            WpfComboBox addTimeTypeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.AddTimeTypeComboBox;
+            WpfListItem months = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.AddTimeTypeComboBox.Months;
+            #endregion
+
+            // Click 'UI__AddTimeTypecbx_AutoID' combo box
+            Mouse.Click(addTimeTypeComboBox, new Point(175, 9));
+
+            // Click 'Months' list item
+            Mouse.Click(months, new Point(163, 17));
         }
         
         /// <summary>
@@ -9184,7 +9285,6 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.SourcesComboBox;
             WpfListItem uITesting = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.SourcesComboBox.UITesting;
-            WpfComboBox sourcesCombobox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox;
             WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.EditSourceButton;
             WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton;
             #endregion
@@ -9192,12 +9292,8 @@ namespace Warewolf.UITests
             // Click 'SourcesComboBox' combo box
             Mouse.Click(sourcesComboBox, new Point(216, 7));
 
-            // Click list item numbered 11 in 'SourcesComboBox' combo box
+            // Click list item numbered 10 in 'SourcesComboBox' combo box
             Mouse.Click(uITesting, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'SourcesComboBox' combo box equals 'UITestingWebSource'
-            Assert.AreEqual(this.Select_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams.SourcesComboboxSelectedItem, sourcesCombobox1.SelectedItem, "Delete Web large view source combobox selected item is not equal to UITestingWebS" +
-                    "ource.");
 
             // Verify that the 'Enabled' property of '...' button equals 'True'
             Assert.AreEqual(this.Select_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams.EditSourceButtonEnabled, editSourceButton.Enabled, "Delete Web large view source combobox EDIT button is disabled.");
@@ -9303,175 +9399,47 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
+        /// <summary>
+        /// Select_Letters_From_Random_Type_Combobox - Use 'Select_Letters_From_Random_Type_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select Letters From Random Type Combobox")]
+        public void Select_Letters_From_Random_Type_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox typeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox;
+            WpfListItem letters = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox.Letters;
+            WpfComboBox lengthComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.LengthComboBox;
+            #endregion
+
+            // Click 'UI__Wherecbx_AutoID' combo box
+            Mouse.Click(typeComboBox, new Point(133, 10));
+
+            // Click 'Letters' list item
+            Mouse.Click(letters, new Point(31, 16));
+
+            // Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Select_Letters_From_Random_Type_ComboboxParams.LengthComboBoxExists, lengthComboBox.Exists, "Length combobox does not exist after selecting Letters as Random Type");
+        }
+        
+        /// <summary>
+        /// Select_GUID_From_Random_Type_Combobox
+        /// </summary>
+        [When(@"I Select GUID From Random Type Combobox")]
+        public void Select_GUID_From_Random_Type_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox typeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox;
+            WpfListItem gUID = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox.GUID;
+            #endregion
+
+            // Click 'UI__Wherecbx_AutoID' combo box
+            Mouse.Click(typeComboBox, new Point(133, 10));
+
+            // Click 'GUID' list item
+            Mouse.Click(gUID, new Point(31, 16));
+        }
+        
         #region Properties
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod2ExpectedValues == null))
-                {
-                    this.mAssertMethod2ExpectedValues = new AssertMethod2ExpectedValues();
-                }
-                return this.mAssertMethod2ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod3ExpectedValues AssertMethod3ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod3ExpectedValues == null))
-                {
-                    this.mAssertMethod3ExpectedValues = new AssertMethod3ExpectedValues();
-                }
-                return this.mAssertMethod3ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethodAggregateCalculateExpectedValues AssertMethodAggregateCalculateExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethodAggregateCalculateExpectedValues == null))
-                {
-                    this.mAssertMethodAggregateCalculateExpectedValues = new AssertMethodAggregateCalculateExpectedValues();
-                }
-                return this.mAssertMethodAggregateCalculateExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethodCalculateExpectedValues AssertMethodCalculateExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethodCalculateExpectedValues == null))
-                {
-                    this.mAssertMethodCalculateExpectedValues = new AssertMethodCalculateExpectedValues();
-                }
-                return this.mAssertMethodCalculateExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethodCommentExpectedValues AssertMethodCommentExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethodCommentExpectedValues == null))
-                {
-                    this.mAssertMethodCommentExpectedValues = new AssertMethodCommentExpectedValues();
-                }
-                return this.mAssertMethodCommentExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethodCreateJsonExpectedValues AssertMethodCreateJsonExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethodCreateJsonExpectedValues == null))
-                {
-                    this.mAssertMethodCreateJsonExpectedValues = new AssertMethodCreateJsonExpectedValues();
-                }
-                return this.mAssertMethodCreateJsonExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethodDateTimeDiffExpectedValues AssertMethodDateTimeDiffExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethodDateTimeDiffExpectedValues == null))
-                {
-                    this.mAssertMethodDateTimeDiffExpectedValues = new AssertMethodDateTimeDiffExpectedValues();
-                }
-                return this.mAssertMethodDateTimeDiffExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethodFormatNumberExpectedValues AssertMethodFormatNumberExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethodFormatNumberExpectedValues == null))
-                {
-                    this.mAssertMethodFormatNumberExpectedValues = new AssertMethodFormatNumberExpectedValues();
-                }
-                return this.mAssertMethodFormatNumberExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethodRabbitMqConsumeExpectedValues AssertMethodRabbitMqConsumeExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethodRabbitMqConsumeExpectedValues == null))
-                {
-                    this.mAssertMethodRabbitMqConsumeExpectedValues = new AssertMethodRabbitMqConsumeExpectedValues();
-                }
-                return this.mAssertMethodRabbitMqConsumeExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethodRabbitMqPublishExpectedValues AssertMethodRabbitMqPublishExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethodRabbitMqPublishExpectedValues == null))
-                {
-                    this.mAssertMethodRabbitMqPublishExpectedValues = new AssertMethodRabbitMqPublishExpectedValues();
-                }
-                return this.mAssertMethodRabbitMqPublishExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethodRandomExpectedValues AssertMethodRandomExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethodRandomExpectedValues == null))
-                {
-                    this.mAssertMethodRandomExpectedValues = new AssertMethodRandomExpectedValues();
-                }
-                return this.mAssertMethodRandomExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethodWebRquestExpectedValues AssertMethodWebRquestExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethodWebRquestExpectedValues == null))
-                {
-                    this.mAssertMethodWebRquestExpectedValues = new AssertMethodWebRquestExpectedValues();
-                }
-                return this.mAssertMethodWebRquestExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethodXpathExpectedValues AssertMethodXpathExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethodXpathExpectedValues == null))
-                {
-                    this.mAssertMethodXpathExpectedValues = new AssertMethodXpathExpectedValues();
-                }
-                return this.mAssertMethodXpathExpectedValues;
-            }
-        }
-        
         public virtual Assign_Recordset_valueParams Assign_Recordset_valueParams
         {
             get
@@ -9553,18 +9521,6 @@ namespace Warewolf.UITests
                     this.mClick_Assign_Tool_CollapseAllParams = new Click_Assign_Tool_CollapseAllParams();
                 }
                 return this.mClick_Assign_Tool_CollapseAllParams;
-            }
-        }
-        
-        public virtual Click_Workflow_ExpandAllParams Click_Workflow_ExpandAllParams
-        {
-            get
-            {
-                if ((this.mClick_Workflow_ExpandAllParams == null))
-                {
-                    this.mClick_Workflow_ExpandAllParams = new Click_Workflow_ExpandAllParams();
-                }
-                return this.mClick_Workflow_ExpandAllParams;
             }
         }
         
@@ -10264,6 +10220,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_Workflow_ExpandAllParams Click_Workflow_ExpandAllParams
+        {
+            get
+            {
+                if ((this.mClick_Workflow_ExpandAllParams == null))
+                {
+                    this.mClick_Workflow_ExpandAllParams = new Click_Workflow_ExpandAllParams();
+                }
+                return this.mClick_Workflow_ExpandAllParams;
+            }
+        }
+        
         public virtual Create_SubFolder_In_Folder1Params Create_SubFolder_In_Folder1Params
         {
             get
@@ -10408,6 +10376,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams = new Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams;
+            }
+        }
+        
         public virtual Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams
         {
             get
@@ -10513,6 +10493,18 @@ namespace Warewolf.UITests
                     this.mDrag_Toolbox_Create_Onto_DesignSurfaceParams = new Drag_Toolbox_Create_Onto_DesignSurfaceParams();
                 }
                 return this.mDrag_Toolbox_Create_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_CreateJson_Onto_DesignSurfaceParams Drag_Toolbox_CreateJson_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_CreateJson_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_CreateJson_Onto_DesignSurfaceParams = new Drag_Toolbox_CreateJson_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_CreateJson_Onto_DesignSurfaceParams;
             }
         }
         
@@ -10765,6 +10757,30 @@ namespace Warewolf.UITests
                     this.mDrag_Toolbox_Python_Onto_DesignSurfaceParams = new Drag_Toolbox_Python_Onto_DesignSurfaceParams();
                 }
                 return this.mDrag_Toolbox_Python_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams = new Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams = new Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams;
             }
         }
         
@@ -11440,6 +11456,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Open_AggregateCalculate_Tool_large_viewParams Open_AggregateCalculate_Tool_large_viewParams
+        {
+            get
+            {
+                if ((this.mOpen_AggregateCalculate_Tool_large_viewParams == null))
+                {
+                    this.mOpen_AggregateCalculate_Tool_large_viewParams = new Open_AggregateCalculate_Tool_large_viewParams();
+                }
+                return this.mOpen_AggregateCalculate_Tool_large_viewParams;
+            }
+        }
+        
         public virtual Open_Assign_Tool_Large_ViewParams Open_Assign_Tool_Large_ViewParams
         {
             get
@@ -11560,6 +11588,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Open_Create_JSON_Large_ViewParams Open_Create_JSON_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_Create_JSON_Large_ViewParams == null))
+                {
+                    this.mOpen_Create_JSON_Large_ViewParams = new Open_Create_JSON_Large_ViewParams();
+                }
+                return this.mOpen_Create_JSON_Large_ViewParams;
+            }
+        }
+        
         public virtual Open_Create_Tool_Large_ViewParams Open_Create_Tool_Large_ViewParams
         {
             get
@@ -11617,6 +11657,30 @@ namespace Warewolf.UITests
                     this.mOpen_Data_Split_Tool_Qvi_Large_ViewParams = new Open_Data_Split_Tool_Qvi_Large_ViewParams();
                 }
                 return this.mOpen_Data_Split_Tool_Qvi_Large_ViewParams;
+            }
+        }
+        
+        public virtual Open_DateTime_Difference_Large_ViewParams Open_DateTime_Difference_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_DateTime_Difference_Large_ViewParams == null))
+                {
+                    this.mOpen_DateTime_Difference_Large_ViewParams = new Open_DateTime_Difference_Large_ViewParams();
+                }
+                return this.mOpen_DateTime_Difference_Large_ViewParams;
+            }
+        }
+        
+        public virtual Open_DateTime_Large_ViewParams Open_DateTime_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_DateTime_Large_ViewParams == null))
+                {
+                    this.mOpen_DateTime_Large_ViewParams = new Open_DateTime_Large_ViewParams();
+                }
+                return this.mOpen_DateTime_Large_ViewParams;
             }
         }
         
@@ -11824,6 +11888,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Open_NumberFormat_Toolbox_Large_ViewParams Open_NumberFormat_Toolbox_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_NumberFormat_Toolbox_Large_ViewParams == null))
+                {
+                    this.mOpen_NumberFormat_Toolbox_Large_ViewParams = new Open_NumberFormat_Toolbox_Large_ViewParams();
+                }
+                return this.mOpen_NumberFormat_Toolbox_Large_ViewParams;
+            }
+        }
+        
         public virtual Open_PostWeb_RequestTool_Large_ViewParams Open_PostWeb_RequestTool_Large_ViewParams
         {
             get
@@ -11845,6 +11921,18 @@ namespace Warewolf.UITests
                     this.mOpen_Python_Large_ViewParams = new Open_Python_Large_ViewParams();
                 }
                 return this.mOpen_Python_Large_ViewParams;
+            }
+        }
+        
+        public virtual Open_Random_Tool_large_viewParams Open_Random_Tool_large_viewParams
+        {
+            get
+            {
+                if ((this.mOpen_Random_Tool_large_viewParams == null))
+                {
+                    this.mOpen_Random_Tool_large_viewParams = new Open_Random_Tool_large_viewParams();
+                }
+                return this.mOpen_Random_Tool_large_viewParams;
             }
         }
         
@@ -12013,6 +12101,18 @@ namespace Warewolf.UITests
                     this.mOpen_Switch_Tool_Large_ViewParams = new Open_Switch_Tool_Large_ViewParams();
                 }
                 return this.mOpen_Switch_Tool_Large_ViewParams;
+            }
+        }
+        
+        public virtual Open_System_Information_Tool_Large_ViewParams Open_System_Information_Tool_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_System_Information_Tool_Large_ViewParams == null))
+                {
+                    this.mOpen_System_Information_Tool_Large_ViewParams = new Open_System_Information_Tool_Large_ViewParams();
+                }
+                return this.mOpen_System_Information_Tool_Large_ViewParams;
             }
         }
         
@@ -12628,6 +12728,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_Letters_From_Random_Type_ComboboxParams Select_Letters_From_Random_Type_ComboboxParams
+        {
+            get
+            {
+                if ((this.mSelect_Letters_From_Random_Type_ComboboxParams == null))
+                {
+                    this.mSelect_Letters_From_Random_Type_ComboboxParams = new Select_Letters_From_Random_Type_ComboboxParams();
+                }
+                return this.mSelect_Letters_From_Random_Type_ComboboxParams;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -12723,37 +12835,21 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
-        private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
-        
-        private AssertMethod3ExpectedValues mAssertMethod3ExpectedValues;
-        
-        private AssertMethodAggregateCalculateExpectedValues mAssertMethodAggregateCalculateExpectedValues;
-        
-        private AssertMethodCalculateExpectedValues mAssertMethodCalculateExpectedValues;
-        
-        private AssertMethodCommentExpectedValues mAssertMethodCommentExpectedValues;
-        
-        private AssertMethodCreateJsonExpectedValues mAssertMethodCreateJsonExpectedValues;
-        
-        private AssertMethodDateTimeDiffExpectedValues mAssertMethodDateTimeDiffExpectedValues;
-        
-        private AssertMethodFormatNumberExpectedValues mAssertMethodFormatNumberExpectedValues;
-        
-        private AssertMethodRabbitMqConsumeExpectedValues mAssertMethodRabbitMqConsumeExpectedValues;
-        
-        private AssertMethodRabbitMqPublishExpectedValues mAssertMethodRabbitMqPublishExpectedValues;
-        
-        private AssertMethodRandomExpectedValues mAssertMethodRandomExpectedValues;
-        
-        private AssertMethodWebRquestExpectedValues mAssertMethodWebRquestExpectedValues;
-        
-        private AssertMethodXpathExpectedValues mAssertMethodXpathExpectedValues;
-        
         private Assign_Recordset_valueParams mAssign_Recordset_valueParams;
         
         private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params;
@@ -12767,8 +12863,6 @@ namespace Warewolf.UITests
         private Click_AddNew_Web_Source_From_toolParams mClick_AddNew_Web_Source_From_toolParams;
         
         private Click_Assign_Tool_CollapseAllParams mClick_Assign_Tool_CollapseAllParams;
-        
-        private Click_Workflow_ExpandAllParams mClick_Workflow_ExpandAllParams;
         
         private Click_Assign_Tool_Large_View_Done_ButtonParams mClick_Assign_Tool_Large_View_Done_ButtonParams;
         
@@ -12886,6 +12980,8 @@ namespace Warewolf.UITests
         
         private Click_Workflow_CollapseAllParams mClick_Workflow_CollapseAllParams;
         
+        private Click_Workflow_ExpandAllParams mClick_Workflow_ExpandAllParams;
+        
         private Create_SubFolder_In_Folder1Params mCreate_SubFolder_In_Folder1Params;
         
         private Drag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams mDrag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams;
@@ -12910,6 +13006,8 @@ namespace Warewolf.UITests
         
         private Drag_PutWeb_Tool_Onto_DesignSurfaceParams mDrag_PutWeb_Tool_Onto_DesignSurfaceParams;
         
+        private Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams mDrag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams;
+        
         private Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams mDrag_Toolbox_AssignObject_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams mDrag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams;
@@ -12927,6 +13025,8 @@ namespace Warewolf.UITests
         private Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams mDrag_Toolbox_Count_Records_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Create_Onto_DesignSurfaceParams mDrag_Toolbox_Create_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_CreateJson_Onto_DesignSurfaceParams mDrag_Toolbox_CreateJson_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams mDrag_Toolbox_Data_Merge_Onto_DesignSurfaceParams;
         
@@ -12969,6 +13069,10 @@ namespace Warewolf.UITests
         private Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams mDrag_Toolbox_MySql_Database_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Python_Onto_DesignSurfaceParams mDrag_Toolbox_Python_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams mDrag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams mDrag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Random_Onto_DesignSurfaceParams mDrag_Toolbox_Random_Onto_DesignSurfaceParams;
         
@@ -13082,6 +13186,8 @@ namespace Warewolf.UITests
         
         private Filter_variablesParams mFilter_variablesParams;
         
+        private Open_AggregateCalculate_Tool_large_viewParams mOpen_AggregateCalculate_Tool_large_viewParams;
+        
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
         
         private Open_Assign_Tool_Qvi_Large_ViewParams mOpen_Assign_Tool_Qvi_Large_ViewParams;
@@ -13102,6 +13208,8 @@ namespace Warewolf.UITests
         
         private Open_CountRecords_Large_ViewParams mOpen_CountRecords_Large_ViewParams;
         
+        private Open_Create_JSON_Large_ViewParams mOpen_Create_JSON_Large_ViewParams;
+        
         private Open_Create_Tool_Large_ViewParams mOpen_Create_Tool_Large_ViewParams;
         
         private Open_Data_Merge_Large_ViewParams mOpen_Data_Merge_Large_ViewParams;
@@ -13111,6 +13219,10 @@ namespace Warewolf.UITests
         private Open_Data_Split_Large_ViewParams mOpen_Data_Split_Large_ViewParams;
         
         private Open_Data_Split_Tool_Qvi_Large_ViewParams mOpen_Data_Split_Tool_Qvi_Large_ViewParams;
+        
+        private Open_DateTime_Difference_Large_ViewParams mOpen_DateTime_Difference_Large_ViewParams;
+        
+        private Open_DateTime_Large_ViewParams mOpen_DateTime_Large_ViewParams;
         
         private Open_Decision_Large_ViewParams mOpen_Decision_Large_ViewParams;
         
@@ -13146,9 +13258,13 @@ namespace Warewolf.UITests
         
         private Open_Move_Tool_Large_ViewParams mOpen_Move_Tool_Large_ViewParams;
         
+        private Open_NumberFormat_Toolbox_Large_ViewParams mOpen_NumberFormat_Toolbox_Large_ViewParams;
+        
         private Open_PostWeb_RequestTool_Large_ViewParams mOpen_PostWeb_RequestTool_Large_ViewParams;
         
         private Open_Python_Large_ViewParams mOpen_Python_Large_ViewParams;
+        
+        private Open_Random_Tool_large_viewParams mOpen_Random_Tool_large_viewParams;
         
         private Open_Read_File_Tool_Large_ViewParams mOpen_Read_File_Tool_Large_ViewParams;
         
@@ -13177,6 +13293,8 @@ namespace Warewolf.UITests
         private Open_Sql_Server_Tool_Large_ViewExpectedValues mOpen_Sql_Server_Tool_Large_ViewExpectedValues;
         
         private Open_Switch_Tool_Large_ViewParams mOpen_Switch_Tool_Large_ViewParams;
+        
+        private Open_System_Information_Tool_Large_ViewParams mOpen_System_Information_Tool_Large_ViewParams;
         
         private Open_System_Information_Tool_Qvi_Large_ViewParams mOpen_System_Information_Tool_Qvi_Large_ViewParams;
         
@@ -13280,6 +13398,8 @@ namespace Warewolf.UITests
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
+        private Select_Letters_From_Random_Type_ComboboxParams mSelect_Letters_From_Random_Type_ComboboxParams;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -13295,611 +13415,8 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
         
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_FromTypecbx_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool TypeComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_FromExpressiontxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool VariableComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod2'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod2ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__AddTimeTypecbx_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool AddTimeTypeComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool InputComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__AddTimeTypecbx_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool AddTimeTypeComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool InputComboBoxExists1 = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod3'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod3ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of list item numbered 11 in 'SourcesComboBox' combo box equals 'ListItem'
-        /// </summary>
-        public string UITestingControlType = "ListItem";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethodAggregateCalculate'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethodAggregateCalculateExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool fxComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool fxComboBoxExists1 = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethodCalculate'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethodCalculateExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool fxComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool fxComboBoxExists1 = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethodComment'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethodCommentExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Commenttxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool CommentComboBoxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethodCreateJson'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethodCreateJsonExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__JsonString_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_SourceName_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool SourceNameComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_DestinationName_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool DestinationComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_SourceName_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool SourceNameComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_DestinationName_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool DestinationComboBoxExists1 = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethodDateTimeDiff'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethodDateTimeDiffExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool InputFormatComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Input2txt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool Input2ComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Input1txt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool Input1ComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool InputFormatComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Input2txt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool Input2ComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Input1txt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool Input1ComboBoxExists1 = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethodFormatNumber'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethodFormatNumberExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Result_Inputtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultInputComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__DecimalsToShow_Inputtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool DecimalsToShowComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'How would you like to round the number? None: No r...' combo box equals 'True'
-        /// </summary>
-        public bool RoundingComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Number_Inputtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool NumberInputComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Result_Inputtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultInputComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__DecimalsToShow_Inputtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool DecimalsToShowComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Number_Inputtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool NumberInputComboBoxExists1 = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethodRabbitMqConsume'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethodRabbitMqConsumeExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resultstxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultsComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__tostxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResponseComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'InitialFocusElement' combo box equals 'True'
-        /// </summary>
-        public bool SourceComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ReQueue' check box equals 'True'
-        /// </summary>
-        public bool ReQueueCheckBoxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethodRabbitMqPublish'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethodRabbitMqPublishExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resultstxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultsComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__bodytxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool MessageComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Exclusive' check box equals 'True'
-        /// </summary>
-        public bool ExclusiveCheckBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__tostxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool QueueNameComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'InitialFocusElement' combo box equals 'True'
-        /// </summary>
-        public bool SourceComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'New' button equals 'True'
-        /// </summary>
-        public bool NewSourceButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethodRandom'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethodRandomExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ToComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool FromComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ToComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool FromComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Wherecbx_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool TypeComboBoxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethodWebRquest'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethodWebRquestExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Preview' group equals 'True'
-        /// </summary>
-        public bool PreviewGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'The length of time to wait for a web request to co...' combo box equals 'True'
-        /// </summary>
-        public bool TimeOutComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool HeaderComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool InputComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool ResultComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool InputComboBoxExists1 = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethodXpath'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethodXpathExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
-        /// </summary>
-        public bool OnErrorGroupExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_OutputVariable_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool VariableComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__At_Row1_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool XpathComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__SourceStringtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool SourceStringComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__At_Row1_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool XpathComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_OutputVariable_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool VariableComboBoxExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__SourceStringtxt_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool SourceStringComboBoxExists1 = true;
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -14040,31 +13557,6 @@ namespace Warewolf.UITests
         /// Set to 'Pressed' state 'CollapseAll' toggle button
         /// </summary>
         public bool CollapseAllToggleButtonPressed = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Workflow_ExpandAll'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Workflow_ExpandAllParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
-        /// </summary>
-        public bool ExpandAllToggleButtonExists = true;
-        
-        /// <summary>
-        /// Set to 'Pressed' state 'ExpandAll' toggle button
-        /// </summary>
-        public bool ExpandAllToggleButtonPressed = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
-        /// </summary>
-        public bool MultiAssignExists = true;
         #endregion
     }
     
@@ -14434,11 +13926,6 @@ namespace Warewolf.UITests
     {
         
         #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'LargeDataGrid' table equals 'True'
-        /// </summary>
-        public bool InputDataGridTableExists = true;
-        
         /// <summary>
         /// Verify that the 'Exists' property of '?' button equals 'True'
         /// </summary>
@@ -15232,6 +14719,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_Workflow_ExpandAll'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Workflow_ExpandAllParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
+        /// </summary>
+        public bool ExpandAllToggleButtonExists = true;
+        
+        /// <summary>
+        /// Set to 'Pressed' state 'ExpandAll' toggle button
+        /// </summary>
+        public bool ExpandAllToggleButtonPressed = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Create_SubFolder_In_Folder1'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15492,6 +14999,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_AggregateCalculate_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Aggregate Calculate' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Aggregate Calculate";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool fxComboBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_AssignObject_Onto_DesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15563,6 +15090,16 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfCalculateActivity' custom control equals 'True'
         /// </summary>
         public bool CalculateExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool fxComboBoxExists = true;
         #endregion
     }
     
@@ -15732,6 +15269,31 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_CreateJson_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_CreateJson_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__JsonString_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_SourceName_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool SourceNameComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_DestinationName_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool DestinationComboBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_Data_Merge_Onto_DesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15828,6 +15390,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfDateTimeDifferenceActivity' custom control equals 'True'
         /// </summary>
         public bool DateTimeDifferenceExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool InputFormatComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Input2txt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool Input2ComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Input1txt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool Input1ComboBoxExists = true;
         #endregion
     }
     
@@ -16093,6 +15675,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfNumberFormatActivity' custom control equals 'True'
         /// </summary>
         public bool FormatNumberExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Result_Inputtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultInputComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__DecimalsToShow_Inputtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool DecimalsToShowComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Number_Inputtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool NumberInputComboBoxExists = true;
         #endregion
     }
     
@@ -16302,6 +15899,106 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_RabbitMqConsume_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'RabbitMq Consume' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "RabbitMq Consume";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resultstxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultsComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__tostxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResponseComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'InitialFocusElement' combo box equals 'True'
+        /// </summary>
+        public bool SourceComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ReQueue' check box equals 'True'
+        /// </summary>
+        public bool ReQueueCheckBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_RabbitMqPublish_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'RabbitMq Publish' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "RabbitMq Publish";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resultstxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultsComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__bodytxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool MessageComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Exclusive' check box equals 'True'
+        /// </summary>
+        public bool ExclusiveCheckBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__tostxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool QueueNameComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'InitialFocusElement' combo box equals 'True'
+        /// </summary>
+        public bool SourceComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New' button equals 'True'
+        /// </summary>
+        public bool NewSourceButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_Random_Onto_DesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -16323,6 +16020,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfRandomActivity' custom control equals 'True'
         /// </summary>
         public bool RandomExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ToComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool FromComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Wherecbx_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool TypeComboBoxExists = true;
         #endregion
     }
     
@@ -16873,6 +16590,16 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
         /// </summary>
         public bool GatherSystemInfoExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_FromTypecbx_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool TypeComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_FromExpressiontxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool VariableComboBoxExists = true;
         #endregion
     }
     
@@ -16958,6 +16685,16 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
         /// </summary>
         public bool WebRequestExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool InputComboBoxExists = true;
         #endregion
     }
     
@@ -17008,6 +16745,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
         /// </summary>
         public bool XPathExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__At_Row1_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool XpathComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_OutputVariable_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool VariableComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__SourceStringtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool SourceStringComboBoxExists = true;
         #endregion
     }
     
@@ -17543,6 +17295,36 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Open_AggregateCalculate_Tool_large_view'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_AggregateCalculate_Tool_large_viewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool fxComboBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Open_Assign_Tool_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -17674,6 +17456,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'FunctionTextbox' text box equals 'True'
         /// </summary>
         public bool FunctionTextboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__fxtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool fxComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -17789,6 +17591,36 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'UI__Recorsettxt_AutoID' combo box equals 'True'
         /// </summary>
         public bool RecorsetComboBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Create_JSON_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Create_JSON_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_SourceName_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool SourceNameComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_DestinationName_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool DestinationComboBoxExists = true;
         #endregion
     }
     
@@ -17924,6 +17756,81 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
         /// </summary>
         public bool QuickVariableInputContentExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_DateTime_Difference_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_DateTime_Difference_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool InputFormatComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Input2txt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool Input2ComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Input1txt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool Input1ComboBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_DateTime_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_DateTime_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__AddTimeTypecbx_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool AddTimeTypeComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool InputComboBoxExists = true;
         #endregion
     }
     
@@ -18383,6 +18290,46 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Open_NumberFormat_Toolbox_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_NumberFormat_Toolbox_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Result_Inputtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultInputComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__DecimalsToShow_Inputtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool DecimalsToShowComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'How would you like to round the number? None: No r...' combo box equals 'True'
+        /// </summary>
+        public bool RoundingComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Number_Inputtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool NumberInputComboBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Open_PostWeb_RequestTool_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -18439,6 +18386,41 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Done' button equals 'True'
         /// </summary>
         public bool DoneButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Random_Tool_large_view'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Random_Tool_large_viewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ToComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool FromComboBoxExists = true;
         #endregion
     }
     
@@ -18743,6 +18725,31 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Open_System_Information_Tool_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_System_Information_Tool_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SmallDataGrid' table equals 'True'
+        /// </summary>
+        public bool SmallDataGridTableExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Open_System_Information_Tool_Qvi_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -18824,6 +18831,41 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
         /// </summary>
         public bool LargeViewExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Preview' group equals 'True'
+        /// </summary>
+        public bool PreviewGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__InputFormattxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'The length of time to wait for a web request to co...' combo box equals 'True'
+        /// </summary>
+        public bool TimeOutComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool HeaderComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Inputtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool InputComboBoxExists = true;
         #endregion
     }
     
@@ -18854,6 +18896,31 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
         /// </summary>
         public bool XPathExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' group equals 'True'
+        /// </summary>
+        public bool OnErrorGroupExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_OutputVariable_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool VariableComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__At_Row1_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool XpathComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__SourceStringtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool SourceStringComboBoxExists = true;
         #endregion
     }
     
@@ -19565,11 +19632,6 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'SelectedItem' property of 'SourcesComboBox' combo box equals 'UITestingWebSource'
-        /// </summary>
-        public string SourcesComboboxSelectedItem = "UITestingWebSource";
-        
-        /// <summary>
         /// Verify that the 'Enabled' property of '...' button equals 'True'
         /// </summary>
         public bool EditSourceButtonEnabled = true;
@@ -19688,6 +19750,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_Letters_From_Random_Type_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_Letters_From_Random_Type_ComboboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Lengthstxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool LengthComboBoxExists = true;
         #endregion
     }
     
@@ -26667,6 +26744,38 @@ namespace Warewolf.UITests
                 return this.mXPath;
             }
         }
+        
+        public WpfListItem RabbitMQConsume
+        {
+            get
+            {
+                if ((this.mRabbitMQConsume == null))
+                {
+                    this.mRabbitMQConsume = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mRabbitMQConsume.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "RabbitMQ Consume";
+                    this.mRabbitMQConsume.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRabbitMQConsume;
+            }
+        }
+        
+        public WpfListItem RabbitMQPublish
+        {
+            get
+            {
+                if ((this.mRabbitMQPublish == null))
+                {
+                    this.mRabbitMQPublish = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mRabbitMQPublish.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "RabbitMQ Publish";
+                    this.mRabbitMQPublish.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRabbitMQPublish;
+            }
+        }
         #endregion
         
         #region Fields
@@ -26693,6 +26802,10 @@ namespace Warewolf.UITests
         private Comment mComment;
         
         private XPath mXPath;
+        
+        private WpfListItem mRabbitMQConsume;
+        
+        private WpfListItem mRabbitMQPublish;
         #endregion
     }
     
@@ -48882,17 +48995,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfComboBox AddTimeTypeComboBox
+        public AddTimeTypeComboBox AddTimeTypeComboBox
         {
             get
             {
                 if ((this.mAddTimeTypeComboBox == null))
                 {
-                    this.mAddTimeTypeComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mAddTimeTypeComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__AddTimeTypecbx_AutoID";
-                    this.mAddTimeTypeComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mAddTimeTypeComboBox = new AddTimeTypeComboBox(this);
                 }
                 return this.mAddTimeTypeComboBox;
             }
@@ -48940,7 +49049,7 @@ namespace Warewolf.UITests
         
         private InputFormatComboBox1 mInputFormatComboBox;
         
-        private WpfComboBox mAddTimeTypeComboBox;
+        private AddTimeTypeComboBox mAddTimeTypeComboBox;
         
         private AddTimeAmountComboBox1 mAddTimeAmountComboBox;
         
@@ -49019,6 +49128,42 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AddTimeTypeComboBox : WpfComboBox
+    {
+        
+        public AddTimeTypeComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__AddTimeTypecbx_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem Months
+        {
+            get
+            {
+                if ((this.mMonths == null))
+                {
+                    this.mMonths = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mMonths.SearchProperties[WpfListItem.PropertyNames.Name] = "Months";
+                    this.mMonths.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mMonths;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mMonths;
         #endregion
     }
     
@@ -49666,17 +49811,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfComboBox OutputInComboBox
+        public OutputInComboBox OutputInComboBox
         {
             get
             {
                 if ((this.mOutputInComboBox == null))
                 {
-                    this.mOutputInComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mOutputInComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__OutputIncbx_AutoID";
-                    this.mOutputInComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mOutputInComboBox = new OutputInComboBox(this);
                 }
                 return this.mOutputInComboBox;
             }
@@ -49702,7 +49843,7 @@ namespace Warewolf.UITests
         
         private InputFormatComboBox3 mInputFormatComboBox;
         
-        private WpfComboBox mOutputInComboBox;
+        private OutputInComboBox mOutputInComboBox;
         
         private ResultComboBox17 mResultComboBox;
         #endregion
@@ -49813,6 +49954,42 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OutputInComboBox : WpfComboBox
+    {
+        
+        public OutputInComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__OutputIncbx_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem Days
+        {
+            get
+            {
+                if ((this.mDays == null))
+                {
+                    this.mDays = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mDays.SearchProperties[WpfListItem.PropertyNames.Name] = "Days";
+                    this.mDays.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDays;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mDays;
         #endregion
     }
     
@@ -49980,10 +50157,24 @@ namespace Warewolf.UITests
                 return this.mOnErrorCustom;
             }
         }
+        
+        public SmallDataGridTable4 SmallDataGridTable
+        {
+            get
+            {
+                if ((this.mSmallDataGridTable == null))
+                {
+                    this.mSmallDataGridTable = new SmallDataGridTable4(this);
+                }
+                return this.mSmallDataGridTable;
+            }
+        }
         #endregion
         
         #region Fields
         private OnErrorCustom11 mOnErrorCustom;
+        
+        private SmallDataGridTable4 mSmallDataGridTable;
         #endregion
     }
     
@@ -50153,39 +50344,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextEdit;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SmallViewContentCustom13 : WpfCustom
-    {
-        
-        public SmallViewContentCustom13(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public SmallDataGridTable4 SmallDataGridTable
-        {
-            get
-            {
-                if ((this.mSmallDataGridTable == null))
-                {
-                    this.mSmallDataGridTable = new SmallDataGridTable4(this);
-                }
-                return this.mSmallDataGridTable;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private SmallDataGridTable4 mSmallDataGridTable;
         #endregion
     }
     
@@ -50376,6 +50534,225 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SmallViewContentCustom13 : WpfCustom
+    {
+        
+        public SmallViewContentCustom13(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public SmallDataGridTable5 SmallDataGridTable
+        {
+            get
+            {
+                if ((this.mSmallDataGridTable == null))
+                {
+                    this.mSmallDataGridTable = new SmallDataGridTable5(this);
+                }
+                return this.mSmallDataGridTable;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SmallDataGridTable5 mSmallDataGridTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SmallDataGridTable5 : WpfTable
+    {
+        
+        public SmallDataGridTable5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public Row116 Row1
+        {
+            get
+            {
+                if ((this.mRow1 == null))
+                {
+                    this.mRow1 = new Row116(this);
+                }
+                return this.mRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row116 mRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row116 : WpfRow
+    {
+        
+        public Row116(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public VariableCell3 VariableCell
+        {
+            get
+            {
+                if ((this.mVariableCell == null))
+                {
+                    this.mVariableCell = new VariableCell3(this);
+                }
+                return this.mVariableCell;
+            }
+        }
+        
+        public TypeCell2 TypeCell
+        {
+            get
+            {
+                if ((this.mTypeCell == null))
+                {
+                    this.mTypeCell = new TypeCell2(this);
+                }
+                return this.mTypeCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private VariableCell3 mVariableCell;
+        
+        private TypeCell2 mTypeCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class VariableCell3 : WpfCell
+    {
+        
+        public VariableCell3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public VariableComboBox3 VariableComboBox
+        {
+            get
+            {
+                if ((this.mVariableComboBox == null))
+                {
+                    this.mVariableComboBox = new VariableComboBox3(this);
+                }
+                return this.mVariableComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private VariableComboBox3 mVariableComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class VariableComboBox3 : WpfComboBox
+    {
+        
+        public VariableComboBox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_FromExpressiontxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TypeCell2 : WpfCell
+    {
+        
+        public TypeCell2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox TypeComboBox
+        {
+            get
+            {
+                if ((this.mTypeComboBox == null))
+                {
+                    this.mTypeComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mTypeComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_FromTypecbx_AutoID";
+                    this.mTypeComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTypeComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mTypeComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FormatNumber1 : WpfCustom
     {
         
@@ -50467,19 +50844,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfComboBox RoundingComboBox
+        public RoundingComboBox RoundingComboBox
         {
             get
             {
                 if ((this.mRoundingComboBox == null))
                 {
-                    this.mRoundingComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mRoundingComboBox.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "How would you like to round the number?\r\nNone: No rounding is done\r\nNormal: 5,6,7" +
-                        ",8,9 round up & 1,2,3,4 round down\r\nUp: 1-9 all round up\r\nDown: 1-9 all round do" +
-                        "wn";
-                    this.mRoundingComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mRoundingComboBox = new RoundingComboBox(this);
                 }
                 return this.mRoundingComboBox;
             }
@@ -50525,7 +50896,7 @@ namespace Warewolf.UITests
         #region Fields
         private NumberInputComboBox mNumberInputComboBox;
         
-        private WpfComboBox mRoundingComboBox;
+        private RoundingComboBox mRoundingComboBox;
         
         private DecimalsToShowComboBox mDecimalsToShowComboBox;
         
@@ -50568,6 +50939,44 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RoundingComboBox : WpfComboBox
+    {
+        
+        public RoundingComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "How would you like to round the number?\r\nNone: No rounding is done\r\nNormal: 5,6,7" +
+                ",8,9 round up & 1,2,3,4 round down\r\nUp: 1-9 all round up\r\nDown: 1-9 all round do" +
+                "wn";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem RoungUP
+        {
+            get
+            {
+                if ((this.mRoungUP == null))
+                {
+                    this.mRoungUP = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mRoungUP.SearchProperties[WpfListItem.PropertyNames.Name] = "Up";
+                    this.mRoungUP.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRoungUP;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mRoungUP;
         #endregion
     }
     
@@ -51586,17 +51995,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfComboBox TypeComboBox
+        public TypeComboBox TypeComboBox
         {
             get
             {
                 if ((this.mTypeComboBox == null))
                 {
-                    this.mTypeComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mTypeComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Wherecbx_AutoID";
-                    this.mTypeComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mTypeComboBox = new TypeComboBox(this);
                 }
                 return this.mTypeComboBox;
             }
@@ -51637,16 +52042,84 @@ namespace Warewolf.UITests
                 return this.mResultComboBox;
             }
         }
+        
+        public LengthComboBox LengthComboBox
+        {
+            get
+            {
+                if ((this.mLengthComboBox == null))
+                {
+                    this.mLengthComboBox = new LengthComboBox(this);
+                }
+                return this.mLengthComboBox;
+            }
+        }
         #endregion
         
         #region Fields
-        private WpfComboBox mTypeComboBox;
+        private TypeComboBox mTypeComboBox;
         
         private FromComboBox1 mFromComboBox;
         
         private ToComboBox1 mToComboBox;
         
         private ResultComboBox19 mResultComboBox;
+        
+        private LengthComboBox mLengthComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TypeComboBox : WpfComboBox
+    {
+        
+        public TypeComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Wherecbx_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem Letters
+        {
+            get
+            {
+                if ((this.mLetters == null))
+                {
+                    this.mLetters = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mLetters.SearchProperties[WpfListItem.PropertyNames.Name] = "Letters";
+                    this.mLetters.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mLetters;
+            }
+        }
+        
+        public WpfListItem GUID
+        {
+            get
+            {
+                if ((this.mGUID == null))
+                {
+                    this.mGUID = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mGUID.SearchProperties[WpfListItem.PropertyNames.Name] = "GUID";
+                    this.mGUID.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mGUID;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mLetters;
+        
+        private WpfListItem mGUID;
         #endregion
     }
     
@@ -51732,6 +52205,43 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LengthComboBox : WpfComboBox
+    {
+        
+        public LengthComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Lengthstxt_AutoID";
+            this.SearchProperties[WpfComboBox.PropertyNames.Instance] = "2";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
@@ -52150,13 +52660,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row116 Row1
+        public Row117 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row116(this);
+                    this.mRow1 = new Row117(this);
                 }
                 return this.mRow1;
             }
@@ -52164,15 +52674,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row116 mRow1;
+        private Row117 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row116 : WpfRow
+    public class Row117 : WpfRow
     {
         
-        public Row116(UITestControl searchLimitContainer) : 
+        public Row117(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -52182,13 +52692,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableCell3 VariableCell
+        public VariableCell4 VariableCell
         {
             get
             {
                 if ((this.mVariableCell == null))
                 {
-                    this.mVariableCell = new VariableCell3(this);
+                    this.mVariableCell = new VariableCell4(this);
                 }
                 return this.mVariableCell;
             }
@@ -52208,17 +52718,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableCell3 mVariableCell;
+        private VariableCell4 mVariableCell;
         
         private XpathCell mXpathCell;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableCell3 : WpfCell
+    public class VariableCell4 : WpfCell
     {
         
-        public VariableCell3(UITestControl searchLimitContainer) : 
+        public VariableCell4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -52229,13 +52739,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableComboBox3 VariableComboBox
+        public VariableComboBox4 VariableComboBox
         {
             get
             {
                 if ((this.mVariableComboBox == null))
                 {
-                    this.mVariableComboBox = new VariableComboBox3(this);
+                    this.mVariableComboBox = new VariableComboBox4(this);
                 }
                 return this.mVariableComboBox;
             }
@@ -52243,15 +52753,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableComboBox3 mVariableComboBox;
+        private VariableComboBox4 mVariableComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableComboBox3 : WpfComboBox
+    public class VariableComboBox4 : WpfComboBox
     {
         
-        public VariableComboBox3(UITestControl searchLimitContainer) : 
+        public VariableComboBox4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -52548,13 +53058,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public SmallDataGridTable5 SmallDataGridTable
+        public SmallDataGridTable6 SmallDataGridTable
         {
             get
             {
                 if ((this.mSmallDataGridTable == null))
                 {
-                    this.mSmallDataGridTable = new SmallDataGridTable5(this);
+                    this.mSmallDataGridTable = new SmallDataGridTable6(this);
                 }
                 return this.mSmallDataGridTable;
             }
@@ -52564,7 +53074,7 @@ namespace Warewolf.UITests
         #region Fields
         private SourceStringComboBox3 mSourceStringComboBox;
         
-        private SmallDataGridTable5 mSmallDataGridTable;
+        private SmallDataGridTable6 mSmallDataGridTable;
         #endregion
     }
     
@@ -52605,10 +53115,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SmallDataGridTable5 : WpfTable
+    public class SmallDataGridTable6 : WpfTable
     {
         
-        public SmallDataGridTable5(UITestControl searchLimitContainer) : 
+        public SmallDataGridTable6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -52618,13 +53128,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row117 Row1
+        public Row118 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row117(this);
+                    this.mRow1 = new Row118(this);
                 }
                 return this.mRow1;
             }
@@ -52632,15 +53142,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row117 mRow1;
+        private Row118 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row117 : WpfRow
+    public class Row118 : WpfRow
     {
         
-        public Row117(UITestControl searchLimitContainer) : 
+        public Row118(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -52650,13 +53160,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableCell4 VariableCell
+        public VariableCell5 VariableCell
         {
             get
             {
                 if ((this.mVariableCell == null))
                 {
-                    this.mVariableCell = new VariableCell4(this);
+                    this.mVariableCell = new VariableCell5(this);
                 }
                 return this.mVariableCell;
             }
@@ -52676,17 +53186,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableCell4 mVariableCell;
+        private VariableCell5 mVariableCell;
         
         private XpathCell1 mXpathCell;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableCell4 : WpfCell
+    public class VariableCell5 : WpfCell
     {
         
-        public VariableCell4(UITestControl searchLimitContainer) : 
+        public VariableCell5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -52698,13 +53208,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableComboBox4 VariableComboBox
+        public VariableComboBox5 VariableComboBox
         {
             get
             {
                 if ((this.mVariableComboBox == null))
                 {
-                    this.mVariableComboBox = new VariableComboBox4(this);
+                    this.mVariableComboBox = new VariableComboBox5(this);
                 }
                 return this.mVariableComboBox;
             }
@@ -52712,15 +53222,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableComboBox4 mVariableComboBox;
+        private VariableComboBox5 mVariableComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableComboBox4 : WpfComboBox
+    public class VariableComboBox5 : WpfComboBox
     {
         
-        public VariableComboBox4(UITestControl searchLimitContainer) : 
+        public VariableComboBox5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -54638,13 +55148,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row118 Row1
+        public Row119 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row118(this);
+                    this.mRow1 = new Row119(this);
                 }
                 return this.mRow1;
             }
@@ -54676,7 +55186,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row118 mRow1;
+        private Row119 mRow1;
         
         private Row23 mRow2;
         
@@ -54685,10 +55195,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row118 : WpfRow
+    public class Row119 : WpfRow
     {
         
-        public Row118(UITestControl searchLimitContainer) : 
+        public Row119(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -54699,13 +55209,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableCell5 VariableCell
+        public VariableCell6 VariableCell
         {
             get
             {
                 if ((this.mVariableCell == null))
                 {
-                    this.mVariableCell = new VariableCell5(this);
+                    this.mVariableCell = new VariableCell6(this);
                 }
                 return this.mVariableCell;
             }
@@ -54737,7 +55247,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableCell5 mVariableCell;
+        private VariableCell6 mVariableCell;
         
         private ValueCell9 mValueCell;
         
@@ -54746,10 +55256,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableCell5 : WpfCell
+    public class VariableCell6 : WpfCell
     {
         
-        public VariableCell5(UITestControl searchLimitContainer) : 
+        public VariableCell6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -54986,13 +55496,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableCell6 VariableCell
+        public VariableCell7 VariableCell
         {
             get
             {
                 if ((this.mVariableCell == null))
                 {
-                    this.mVariableCell = new VariableCell6(this);
+                    this.mVariableCell = new VariableCell7(this);
                 }
                 return this.mVariableCell;
             }
@@ -55024,7 +55534,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableCell6 mVariableCell;
+        private VariableCell7 mVariableCell;
         
         private ValueCell10 mValueCell;
         
@@ -55033,10 +55543,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableCell6 : WpfCell
+    public class VariableCell7 : WpfCell
     {
         
-        public VariableCell6(UITestControl searchLimitContainer) : 
+        public VariableCell7(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -55272,13 +55782,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableCell7 VariableCell
+        public VariableCell8 VariableCell
         {
             get
             {
                 if ((this.mVariableCell == null))
                 {
-                    this.mVariableCell = new VariableCell7(this);
+                    this.mVariableCell = new VariableCell8(this);
                 }
                 return this.mVariableCell;
             }
@@ -55310,7 +55820,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableCell7 mVariableCell;
+        private VariableCell8 mVariableCell;
         
         private ValueCell11 mValueCell;
         
@@ -55319,10 +55829,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableCell7 : WpfCell
+    public class VariableCell8 : WpfCell
     {
         
-        public VariableCell7(UITestControl searchLimitContainer) : 
+        public VariableCell8(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -55590,13 +56100,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row119 Row1
+        public Row120 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row119(this);
+                    this.mRow1 = new Row120(this);
                 }
                 return this.mRow1;
             }
@@ -55640,7 +56150,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row119 mRow1;
+        private Row120 mRow1;
         
         private Row24 mRow2;
         
@@ -55651,10 +56161,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row119 : WpfRow
+    public class Row120 : WpfRow
     {
         
-        public Row119(UITestControl searchLimitContainer) : 
+        public Row120(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -55665,13 +56175,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableCell8 VariableCell
+        public VariableCell9 VariableCell
         {
             get
             {
                 if ((this.mVariableCell == null))
                 {
-                    this.mVariableCell = new VariableCell8(this);
+                    this.mVariableCell = new VariableCell9(this);
                 }
                 return this.mVariableCell;
             }
@@ -55691,17 +56201,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableCell8 mVariableCell;
+        private VariableCell9 mVariableCell;
         
         private ValueCell12 mValueCell;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableCell8 : WpfCell
+    public class VariableCell9 : WpfCell
     {
         
-        public VariableCell8(UITestControl searchLimitContainer) : 
+        public VariableCell9(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -55850,13 +56360,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableCell9 VariableCell
+        public VariableCell10 VariableCell
         {
             get
             {
                 if ((this.mVariableCell == null))
                 {
-                    this.mVariableCell = new VariableCell9(this);
+                    this.mVariableCell = new VariableCell10(this);
                 }
                 return this.mVariableCell;
             }
@@ -55876,17 +56386,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableCell9 mVariableCell;
+        private VariableCell10 mVariableCell;
         
         private ValueCell13 mValueCell;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableCell9 : WpfCell
+    public class VariableCell10 : WpfCell
     {
         
-        public VariableCell9(UITestControl searchLimitContainer) : 
+        public VariableCell10(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -56035,13 +56545,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableCell10 VariableCell
+        public VariableCell11 VariableCell
         {
             get
             {
                 if ((this.mVariableCell == null))
                 {
-                    this.mVariableCell = new VariableCell10(this);
+                    this.mVariableCell = new VariableCell11(this);
                 }
                 return this.mVariableCell;
             }
@@ -56061,17 +56571,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableCell10 mVariableCell;
+        private VariableCell11 mVariableCell;
         
         private ValueCell14 mValueCell;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableCell10 : WpfCell
+    public class VariableCell11 : WpfCell
     {
         
-        public VariableCell10(UITestControl searchLimitContainer) : 
+        public VariableCell11(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -56220,13 +56730,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableCell11 VariableCell
+        public VariableCell12 VariableCell
         {
             get
             {
                 if ((this.mVariableCell == null))
                 {
-                    this.mVariableCell = new VariableCell11(this);
+                    this.mVariableCell = new VariableCell12(this);
                 }
                 return this.mVariableCell;
             }
@@ -56246,17 +56756,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableCell11 mVariableCell;
+        private VariableCell12 mVariableCell;
         
         private ValueCell15 mValueCell;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableCell11 : WpfCell
+    public class VariableCell12 : WpfCell
     {
         
-        public VariableCell11(UITestControl searchLimitContainer) : 
+        public VariableCell12(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -58503,6 +59013,7 @@ namespace Warewolf.UITests
                     this.mPasteButton = new WpfButton(this);
                     #region Search Criteria
                     this.mPasteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "PasteButton";
+                    this.mPasteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Paste a customized response instead";
                     this.mPasteButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -58651,6 +59162,7 @@ namespace Warewolf.UITests
                     this.mTestButton = new WpfButton(this);
                     #region Search Criteria
                     this.mTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
+                    this.mTestButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Test the procedure or function";
                     this.mTestButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -58929,7 +59441,7 @@ namespace Warewolf.UITests
                 {
                     this.mUITesting = new WpfListItem(this);
                     #region Search Criteria
-                    this.mUITesting.SearchProperties[WpfListItem.PropertyNames.Instance] = "11";
+                    this.mUITesting.SearchProperties[WpfListItem.PropertyNames.Instance] = "10";
                     this.mUITesting.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -66933,13 +67445,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row120 Row1
+        public Row121 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row120(this);
+                    this.mRow1 = new Row121(this);
                 }
                 return this.mRow1;
             }
@@ -66947,15 +67459,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row120 mRow1;
+        private Row121 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row120 : WpfRow
+    public class Row121 : WpfRow
     {
         
-        public Row120(UITestControl searchLimitContainer) : 
+        public Row121(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -67067,13 +67579,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row121 Row1
+        public Row122 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row121(this);
+                    this.mRow1 = new Row122(this);
                 }
                 return this.mRow1;
             }
@@ -67081,15 +67593,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row121 mRow1;
+        private Row122 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row121 : WpfRow
+    public class Row122 : WpfRow
     {
         
-        public Row121(UITestControl searchLimitContainer) : 
+        public Row122(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -72324,13 +72836,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row122 Row1
+        public Row123 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row122(this);
+                    this.mRow1 = new Row123(this);
                 }
                 return this.mRow1;
             }
@@ -72350,17 +72862,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row122 mRow1;
+        private Row123 mRow1;
         
         private Row25 mRow2;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row122 : WpfPane
+    public class Row123 : WpfPane
     {
         
-        public Row122(UITestControl searchLimitContainer) : 
+        public Row123(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -74525,13 +75037,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableCombobox5 VariableCombobox
+        public VariableCombobox6 VariableCombobox
         {
             get
             {
                 if ((this.mVariableCombobox == null))
                 {
-                    this.mVariableCombobox = new VariableCombobox5(this);
+                    this.mVariableCombobox = new VariableCombobox6(this);
                 }
                 return this.mVariableCombobox;
             }
@@ -74555,17 +75067,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableCombobox5 mVariableCombobox;
+        private VariableCombobox6 mVariableCombobox;
         
         private WpfEdit mDisplayTextEdit;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableCombobox5 : WpfComboBox
+    public class VariableCombobox6 : WpfComboBox
     {
         
-        public VariableCombobox5(UITestControl searchLimitContainer) : 
+        public VariableCombobox6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -74594,6 +75106,468 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsTabPage UIDev2StudioViewModelsTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsTabPage == null))
+                {
+                    this.mUIDev2StudioViewModelsTabPage = new UIDev2StudioViewModelsTabPage(this);
+                }
+                return this.mUIDev2StudioViewModelsTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsTabPage mUIDev2StudioViewModelsTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsTabPage : WpfTabPage
+    {
+        
+        public UIDev2StudioViewModelsTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsCustom : WpfCustom
+    {
+        
+        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_WorkflowDesigner_Custom UIUI_WorkflowDesigner_Custom
+        {
+            get
+            {
+                if ((this.mUIUI_WorkflowDesigner_Custom == null))
+                {
+                    this.mUIUI_WorkflowDesigner_Custom = new UIUI_WorkflowDesigner_Custom(this);
+                }
+                return this.mUIUI_WorkflowDesigner_Custom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_WorkflowDesigner_Custom mUIUI_WorkflowDesigner_Custom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_WorkflowDesigner_Custom : WpfCustom
+    {
+        
+        public UIUI_WorkflowDesigner_Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_WorkflowDesigner_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUserControl_1Custom UIUserControl_1Custom
+        {
+            get
+            {
+                if ((this.mUIUserControl_1Custom == null))
+                {
+                    this.mUIUserControl_1Custom = new UIUserControl_1Custom(this);
+                }
+                return this.mUIUserControl_1Custom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUserControl_1Custom mUIUserControl_1Custom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUserControl_1Custom : WpfCustom
+    {
+        
+        public UIUserControl_1Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DesignerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UserControl_1";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIScrollViewerPane UIScrollViewerPane
+        {
+            get
+            {
+                if ((this.mUIScrollViewerPane == null))
+                {
+                    this.mUIScrollViewerPane = new UIScrollViewerPane(this);
+                }
+                return this.mUIScrollViewerPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIScrollViewerPane mUIScrollViewerPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIScrollViewerPane : WpfPane
+    {
+        
+        public UIScrollViewerPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "scrollViewer";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIActivityBuilderCustom UIActivityBuilderCustom
+        {
+            get
+            {
+                if ((this.mUIActivityBuilderCustom == null))
+                {
+                    this.mUIActivityBuilderCustom = new UIActivityBuilderCustom(this);
+                }
+                return this.mUIActivityBuilderCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIActivityBuilderCustom mUIActivityBuilderCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIActivityBuilderCustom : WpfCustom
+    {
+        
+        public UIActivityBuilderCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActivityTypeDesigner";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
+        {
+            get
+            {
+                if ((this.mUIWorkflowItemPresenteCustom == null))
+                {
+                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
+                }
+                return this.mUIWorkflowItemPresenteCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWorkflowItemPresenteCustom : WpfCustom
+    {
+        
+        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIFlowchartCustom UIFlowchartCustom
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom == null))
+                {
+                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
+                }
+                return this.mUIFlowchartCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIFlowchartCustom mUIFlowchartCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIFlowchartCustom : WpfCustom
+    {
+        
+        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDsfRandomActivityCustom UIDsfRandomActivityCustom
+        {
+            get
+            {
+                if ((this.mUIDsfRandomActivityCustom == null))
+                {
+                    this.mUIDsfRandomActivityCustom = new UIDsfRandomActivityCustom(this);
+                }
+                return this.mUIDsfRandomActivityCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDsfRandomActivityCustom mUIDsfRandomActivityCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDsfRandomActivityCustom : WpfCustom
+    {
+        
+        public UIDsfRandomActivityCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.RandomDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Random(RandomDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UISmallViewContentCustom UISmallViewContentCustom
+        {
+            get
+            {
+                if ((this.mUISmallViewContentCustom == null))
+                {
+                    this.mUISmallViewContentCustom = new UISmallViewContentCustom(this);
+                }
+                return this.mUISmallViewContentCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UISmallViewContentCustom mUISmallViewContentCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISmallViewContentCustom : WpfCustom
+    {
+        
+        public UISmallViewContentCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI__Wherecbx_AutoIDComboBox UIUI__Wherecbx_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Wherecbx_AutoIDComboBox == null))
+                {
+                    this.mUIUI__Wherecbx_AutoIDComboBox = new UIUI__Wherecbx_AutoIDComboBox(this);
+                }
+                return this.mUIUI__Wherecbx_AutoIDComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI__Wherecbx_AutoIDComboBox mUIUI__Wherecbx_AutoIDComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI__Wherecbx_AutoIDComboBox : WpfComboBox
+    {
+        
+        public UIUI__Wherecbx_AutoIDComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Wherecbx_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem UILettersListItem
+        {
+            get
+            {
+                if ((this.mUILettersListItem == null))
+                {
+                    this.mUILettersListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUILettersListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Letters";
+                    this.mUILettersListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUILettersListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mUILettersListItem;
         #endregion
     }
 }

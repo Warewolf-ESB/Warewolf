@@ -11,6 +11,12 @@ namespace Warewolf.UITests.Tools.Utility
         public void DateTimeToolUITest()
         {
             UIMap.Drag_Toolbox_Date_And_Time_Onto_DesignSurface();
+            UIMap.Enter_Text_Into_DateTime_Input();
+            UIMap.Select_Months_From_AddTime_Type();
+            UIMap.Enter_Text_Into_DateTime_AddTime_Amount();
+            UIMap.Enter_Result_Variable_Into_DateTime();
+            UIMap.Press_F6();
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
         #region Additional test attributes
@@ -24,7 +30,12 @@ namespace Warewolf.UITests.Tools.Utility
 #endif
             UIMap.InitializeABlankWorkflow();
         }
-
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.

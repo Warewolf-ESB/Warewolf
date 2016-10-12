@@ -11,7 +11,9 @@ namespace Warewolf.UITests.Tools
         public void XpathToolUITest()
         {
             UIMap.Drag_Toolbox_XPath_Onto_DesignSurface();
+            UIMap.Enter_Text_Into_Xpath_Tool();
             UIMap.Open_Xpath_Tool_Large_View();
+            UIMap.Press_F6();
             UIMap.Open_Xpath_Tool_Qvi_Large_View();
         }
 
@@ -26,7 +28,12 @@ namespace Warewolf.UITests.Tools
 #endif
             UIMap.InitializeABlankWorkflow();
         }
-
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
