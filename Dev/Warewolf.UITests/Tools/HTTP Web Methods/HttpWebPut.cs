@@ -42,7 +42,9 @@ namespace Warewolf.UITests.Tools
         [TestCleanup]
         public void MyTestCleanup()
         {
-            //Uimap.TryRemoveFromExplorer(WebPutName);
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
+            Uimap.TryRemoveFromExplorer(WebPutName);            
         }
         /// <summary>
         ///Gets or sets the test context which provides
