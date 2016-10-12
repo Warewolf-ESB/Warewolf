@@ -7230,6 +7230,63 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.AssertMethod1ExpectedValues.RunAllTestsMenuItemExists, runAllTestsMenuItem.Exists, "Run All Tests does not exist on the Explorer context menu");
         }
         
+        /// <summary>
+        /// ShowStartNodeContextMenu - Use 'ShowStartNodeContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        public void ShowStartNodeContextMenu()
+        {
+            #region Variable Declarations
+            WpfTabPage workflowTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab;
+            WpfMenuItem debugInputsMenuItem = this.MainStudioWindow.StartNodeContextMenuMenu.DebugInputsMenuItem;
+            WpfMenuItem debugStudioMenuItem = this.MainStudioWindow.StartNodeContextMenuMenu.DebugStudioMenuItem;
+            WpfMenuItem debugBrowserMenuItem = this.MainStudioWindow.StartNodeContextMenuMenu.DebugBrowserMenuItem;
+            WpfMenuItem scheduleMenuItem = this.MainStudioWindow.StartNodeContextMenuMenu.ScheduleMenuItem;
+            WpfMenuItem testEditorMenuItem = this.MainStudioWindow.StartNodeContextMenuMenu.TestEditorMenuItem;
+            WpfMenuItem runAllTestsMenuItem = this.MainStudioWindow.StartNodeContextMenuMenu.RunAllTestsMenuItem;
+            WpfMenuItem duplicateMenuItem = this.MainStudioWindow.StartNodeContextMenuMenu.DuplicateMenuItem;
+            WpfMenuItem deployMenuItem = this.MainStudioWindow.StartNodeContextMenuMenu.DeployMenuItem;
+            WpfMenuItem showDependenciesMenuItem = this.MainStudioWindow.StartNodeContextMenuMenu.ShowDependenciesMenuItem;
+            WpfMenuItem viewSwaggerMenuItem = this.MainStudioWindow.StartNodeContextMenuMenu.ViewSwaggerMenuItem;
+            WpfMenuItem copyURLtoClipboardMenuItem = this.MainStudioWindow.StartNodeContextMenuMenu.CopyURLtoClipboardMenuItem;
+            #endregion
+
+            // Right-Click 'Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi...' tab
+            Mouse.Click(workflowTab, MouseButtons.Right, ModifierKeys.None, new Point(179, 31));
+
+            // Verify that the 'Exists' property of 'Debug Inputs' menu item equals 'True'
+            Assert.AreEqual(this.ShowStartNodeContextMenuParams.DebugInputsMenuItemExists, debugInputsMenuItem.Exists, "Debug Inputs does not exist on the context menu");
+
+            // Verify that the 'Exists' property of 'Debug Studio' menu item equals 'True'
+            Assert.AreEqual(this.ShowStartNodeContextMenuParams.DebugStudioMenuItemExists, debugStudioMenuItem.Exists, "Debug Studio does not exist on the context menu");
+
+            // Verify that the 'Exists' property of 'Debug Browser' menu item equals 'True'
+            Assert.AreEqual(this.ShowStartNodeContextMenuParams.DebugBrowserMenuItemExists, debugBrowserMenuItem.Exists, "Debug Browser does not exist on the context menu");
+
+            // Verify that the 'Exists' property of 'Schedule' menu item equals 'True'
+            Assert.AreEqual(this.ShowStartNodeContextMenuParams.ScheduleMenuItemExists, scheduleMenuItem.Exists, "Schedule does not exist on the context menu");
+
+            // Verify that the 'Exists' property of 'Test Editor' menu item equals 'True'
+            Assert.AreEqual(this.ShowStartNodeContextMenuParams.TestEditorMenuItemExists, testEditorMenuItem.Exists, "Test Editor does not exist on the context menu");
+
+            // Verify that the 'Exists' property of 'Run All Tests' menu item equals 'True'
+            Assert.AreEqual(this.ShowStartNodeContextMenuParams.RunAllTestsMenuItemExists, runAllTestsMenuItem.Exists, "Run All Tests does not exist on the context menu");
+
+            // Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+            Assert.AreEqual(this.ShowStartNodeContextMenuParams.DuplicateMenuItemExists, duplicateMenuItem.Exists, "Duplicate does not exist on the context menu");
+
+            // Verify that the 'Exists' property of 'Deploy' menu item equals 'True'
+            Assert.AreEqual(this.ShowStartNodeContextMenuParams.DeployMenuItemExists, deployMenuItem.Exists, "Deploy does not exist on the context menu");
+
+            // Verify that the 'Exists' property of 'Show Dependencies' menu item equals 'True'
+            Assert.AreEqual(this.ShowStartNodeContextMenuParams.ShowDependenciesMenuItemExists, showDependenciesMenuItem.Exists, "Show Dependencies does not exist on the context menu");
+
+            // Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
+            Assert.AreEqual(this.ShowStartNodeContextMenuParams.ViewSwaggerMenuItemExists, viewSwaggerMenuItem.Exists, "View Swagger does not exist on the context menu");
+
+            // Verify that the 'Exists' property of 'Copy URL to Clipboard' menu item equals 'True'
+            Assert.AreEqual(this.ShowStartNodeContextMenuParams.CopyURLtoClipboardMenuItemExists, copyURLtoClipboardMenuItem.Exists, "Copy URL to Clipboard does not exist on the context menu");
+        }
+        
         #region Properties
         public virtual Click_Unpinned_Workflow_ExpandAllParams Click_Unpinned_Workflow_ExpandAllParams
         {
@@ -9979,6 +10036,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual ShowStartNodeContextMenuParams ShowStartNodeContextMenuParams
+        {
+            get
+            {
+                if ((this.mShowStartNodeContextMenuParams == null))
+                {
+                    this.mShowStartNodeContextMenuParams = new ShowStartNodeContextMenuParams();
+                }
+                return this.mShowStartNodeContextMenuParams;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -10558,6 +10627,8 @@ namespace Warewolf.UITests
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
         private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
+        private ShowStartNodeContextMenuParams mShowStartNodeContextMenuParams;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -15579,6 +15650,71 @@ namespace Warewolf.UITests
         #endregion
     }
     
+    /// <summary>
+    /// Parameters to be passed into 'ShowStartNodeContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ShowStartNodeContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Debug Inputs' menu item equals 'True'
+        /// </summary>
+        public bool DebugInputsMenuItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Debug Studio' menu item equals 'True'
+        /// </summary>
+        public bool DebugStudioMenuItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Debug Browser' menu item equals 'True'
+        /// </summary>
+        public bool DebugBrowserMenuItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Schedule' menu item equals 'True'
+        /// </summary>
+        public bool ScheduleMenuItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Test Editor' menu item equals 'True'
+        /// </summary>
+        public bool TestEditorMenuItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Run All Tests' menu item equals 'True'
+        /// </summary>
+        public bool RunAllTestsMenuItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+        /// </summary>
+        public bool DuplicateMenuItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Deploy' menu item equals 'True'
+        /// </summary>
+        public bool DeployMenuItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Show Dependencies' menu item equals 'True'
+        /// </summary>
+        public bool ShowDependenciesMenuItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
+        /// </summary>
+        public bool ViewSwaggerMenuItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Copy URL to Clipboard' menu item equals 'True'
+        /// </summary>
+        public bool CopyURLtoClipboardMenuItemExists = true;
+        #endregion
+    }
+    
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MainStudioWindow : WpfWindow
     {
@@ -16246,6 +16382,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public StartNodeContextMenuMenu StartNodeContextMenuMenu
+        {
+            get
+            {
+                if ((this.mStartNodeContextMenuMenu == null))
+                {
+                    this.mStartNodeContextMenuMenu = new StartNodeContextMenuMenu(this);
+                }
+                return this.mStartNodeContextMenuMenu;
+            }
+        }
+        
         public UnpinnedTab UnpinnedTab
         {
             get
@@ -16357,6 +16505,8 @@ namespace Warewolf.UITests
         private WpfListItem mComboBoxListItemAsForEachInRecordset;
         
         private WpfListItem mComboBoxListItemAsForEachNoofExecutes;
+        
+        private StartNodeContextMenuMenu mStartNodeContextMenuMenu;
         
         private UnpinnedTab mUnpinnedTab;
         
@@ -47775,6 +47925,222 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mMySqlDatabaseText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class StartNodeContextMenuMenu : WpfMenu
+    {
+        
+        public StartNodeContextMenuMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "StartNodeContextMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem DebugInputsMenuItem
+        {
+            get
+            {
+                if ((this.mDebugInputsMenuItem == null))
+                {
+                    this.mDebugInputsMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDebugInputsMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "DebugInputs";
+                    this.mDebugInputsMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mDebugInputsMenuItem;
+            }
+        }
+        
+        public WpfMenuItem DebugStudioMenuItem
+        {
+            get
+            {
+                if ((this.mDebugStudioMenuItem == null))
+                {
+                    this.mDebugStudioMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDebugStudioMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "DebugStudio";
+                    this.mDebugStudioMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mDebugStudioMenuItem;
+            }
+        }
+        
+        public WpfMenuItem DebugBrowserMenuItem
+        {
+            get
+            {
+                if ((this.mDebugBrowserMenuItem == null))
+                {
+                    this.mDebugBrowserMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDebugBrowserMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "DebugBrowser";
+                    this.mDebugBrowserMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mDebugBrowserMenuItem;
+            }
+        }
+        
+        public WpfMenuItem ScheduleMenuItem
+        {
+            get
+            {
+                if ((this.mScheduleMenuItem == null))
+                {
+                    this.mScheduleMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mScheduleMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Schedule";
+                    this.mScheduleMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mScheduleMenuItem;
+            }
+        }
+        
+        public WpfMenuItem TestEditorMenuItem
+        {
+            get
+            {
+                if ((this.mTestEditorMenuItem == null))
+                {
+                    this.mTestEditorMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mTestEditorMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "TestEditor";
+                    this.mTestEditorMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mTestEditorMenuItem;
+            }
+        }
+        
+        public WpfMenuItem RunAllTestsMenuItem
+        {
+            get
+            {
+                if ((this.mRunAllTestsMenuItem == null))
+                {
+                    this.mRunAllTestsMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mRunAllTestsMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "RunAllTests";
+                    this.mRunAllTestsMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mRunAllTestsMenuItem;
+            }
+        }
+        
+        public WpfMenuItem DuplicateMenuItem
+        {
+            get
+            {
+                if ((this.mDuplicateMenuItem == null))
+                {
+                    this.mDuplicateMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDuplicateMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Duplicate";
+                    this.mDuplicateMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mDuplicateMenuItem;
+            }
+        }
+        
+        public WpfMenuItem DeployMenuItem
+        {
+            get
+            {
+                if ((this.mDeployMenuItem == null))
+                {
+                    this.mDeployMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDeployMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Deploy";
+                    this.mDeployMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mDeployMenuItem;
+            }
+        }
+        
+        public WpfMenuItem ShowDependenciesMenuItem
+        {
+            get
+            {
+                if ((this.mShowDependenciesMenuItem == null))
+                {
+                    this.mShowDependenciesMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mShowDependenciesMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Dependencies";
+                    this.mShowDependenciesMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mShowDependenciesMenuItem;
+            }
+        }
+        
+        public WpfMenuItem ViewSwaggerMenuItem
+        {
+            get
+            {
+                if ((this.mViewSwaggerMenuItem == null))
+                {
+                    this.mViewSwaggerMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mViewSwaggerMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewSwagger";
+                    this.mViewSwaggerMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mViewSwaggerMenuItem;
+            }
+        }
+        
+        public WpfMenuItem CopyURLtoClipboardMenuItem
+        {
+            get
+            {
+                if ((this.mCopyURLtoClipboardMenuItem == null))
+                {
+                    this.mCopyURLtoClipboardMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mCopyURLtoClipboardMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "CopyUrl";
+                    this.mCopyURLtoClipboardMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mCopyURLtoClipboardMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mDebugInputsMenuItem;
+        
+        private WpfMenuItem mDebugStudioMenuItem;
+        
+        private WpfMenuItem mDebugBrowserMenuItem;
+        
+        private WpfMenuItem mScheduleMenuItem;
+        
+        private WpfMenuItem mTestEditorMenuItem;
+        
+        private WpfMenuItem mRunAllTestsMenuItem;
+        
+        private WpfMenuItem mDuplicateMenuItem;
+        
+        private WpfMenuItem mDeployMenuItem;
+        
+        private WpfMenuItem mShowDependenciesMenuItem;
+        
+        private WpfMenuItem mViewSwaggerMenuItem;
+        
+        private WpfMenuItem mCopyURLtoClipboardMenuItem;
         #endregion
     }
     
