@@ -154,8 +154,8 @@ namespace Warewolf.UITests
         public void Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
-            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.Listbox.TextEdit;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.Listbox.TextEdit;
             #endregion
 
             // Type '[[SomeVariable]]' in 'UI_TextBox_AutoID' text box
@@ -172,8 +172,8 @@ namespace Warewolf.UITests
         public void Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.VariableCell.Listbox.Textbox;
-            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.ValueCell.Listbox.TextEdit;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.VariableCell.Listbox.Textbox;
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.ValueCell.Listbox.TextEdit;
             #endregion
 
             // Type '[[SomeOtherVariable]]' in 'UI_TextBox_AutoID' text box
@@ -190,9 +190,9 @@ namespace Warewolf.UITests
         public void Check_Public_Administrator()
         {
             #region Variable Declarations
-            WpfCheckBox public_AdministratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox;
-            WpfCheckBox public_DeployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox;
-            WpfCheckBox public_DeployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox;
+            WpfCheckBox public_AdministratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox;
+            WpfCheckBox public_DeployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox;
+            WpfCheckBox public_DeployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox;
             #endregion
 
             // Select 'UI_Public_AdministratorPermissionCheckBox_AutoID' check box
@@ -212,7 +212,7 @@ namespace Warewolf.UITests
         public void Click_AddNew_Web_Source_From_tool()
         {
             #region Variable Declarations
-            WpfButton newButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.NewButton;
+            WpfButton newButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.NewButton;
             #endregion
 
             // Verify that the 'Exists' property of 'New' button equals 'True'
@@ -229,7 +229,7 @@ namespace Warewolf.UITests
         public void Click_Assign_Tool_CollapseAll()
         {
             #region Variable Declarations
-            WpfToggleButton collapseAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton;
+            WpfToggleButton collapseAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton;
             #endregion
 
             // Verify that the 'Exists' property of 'CollapseAll' toggle button equals 'True'
@@ -240,16 +240,37 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Assign_Tool_ExpandAll - Use 'Click_Assign_Tool_ExpandAllParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Click Assign Tool ExpandAll")]
+        public void Click_Assign_Tool_ExpandAll()
+        {
+            #region Variable Declarations
+            WpfToggleButton expandAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton;
+            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            #endregion
+
+            // Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_ExpandAllParams.ExpandAllToggleButtonExists, expandAllToggleButton.Exists, "Expand all button does not exist");
+
+            // Set to 'Pressed' state 'ExpandAll' toggle button
+            expandAllToggleButton.Pressed = this.Click_Assign_Tool_ExpandAllParams.ExpandAllToggleButtonPressed;
+
+            // Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_ExpandAllParams.MultiAssignExists, multiAssign.Exists, "Assign tool large view on the design surface does not exist");
+        }
+        
+        /// <summary>
         /// Click_Assign_Tool_Large_View_Done_Button - Use 'Click_Assign_Tool_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click Assign Tool Large View Done Button")]
         public void Click_Assign_Tool_Large_View_Done_Button()
         {
             #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
             WpfEdit nameTextbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox;
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.OpenQuickVariableInpToggleButton;
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.OpenQuickVariableInpToggleButton;
             #endregion
 
             // Click 'Done' button
@@ -302,8 +323,8 @@ namespace Warewolf.UITests
         public void Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName()
         {
             #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton;
-            WpfHyperlink hyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Error1.Hyperlink;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton;
+            WpfHyperlink hyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Error1.Hyperlink;
             WpfEdit nameTextbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox;
             #endregion
 
@@ -346,8 +367,8 @@ namespace Warewolf.UITests
         public void Click_Base_Convert_Large_View_Done_Button()
         {
             #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.DoneButton;
-            WpfEdit valueTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Row1.Cell.Listbox.ValueTextbox;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.DoneButton;
+            WpfEdit valueTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Row1.Cell.Listbox.ValueTextbox;
             #endregion
 
             // Click 'Done' button
@@ -364,8 +385,8 @@ namespace Warewolf.UITests
         public void Click_Calculate_Large_View_Done_Button()
         {
             #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.DoneButton;
-            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.Listbox.FunctionTextbox;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.DoneButton;
+            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.Listbox.FunctionTextbox;
             #endregion
 
             // Click 'Done' button
@@ -413,7 +434,7 @@ namespace Warewolf.UITests
         public void Click_Close_DB_Source_Wizard_Tab_Button()
         {
             #region Variable Declarations
-            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.CloseButton;
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.CloseButton;
             #endregion
 
             // Click '?' button
@@ -427,7 +448,7 @@ namespace Warewolf.UITests
         public void Click_Close_Dependecy_Tab()
         {
             #region Variable Declarations
-            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.CloseButton;
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.CloseButton;
             #endregion
 
             // Click '?' button
@@ -441,7 +462,7 @@ namespace Warewolf.UITests
         public void Click_Close_Deploy_Tab_Button()
         {
             #region Variable Declarations
-            WpfButton tabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.TabCloseButton;
+            WpfButton tabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TabCloseButton;
             #endregion
 
             // Verify that the 'Exists' property of '?' button equals 'True'
@@ -472,7 +493,7 @@ namespace Warewolf.UITests
         public void Click_Close_Plugin_Source_Wizard_Tab_Button()
         {
             #region Variable Declarations
-            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.CloseButton;
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.PluginSourceWizardTab.CloseButton;
             #endregion
 
             // Click '?' button
@@ -486,7 +507,7 @@ namespace Warewolf.UITests
         public void Click_Close_Server_Source_Wizard_Tab_Button()
         {
             #region Variable Declarations
-            WpfButton tabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.TabCloseButton;
+            WpfButton tabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.TabCloseButton;
             #endregion
 
             // Click '?' button
@@ -500,7 +521,7 @@ namespace Warewolf.UITests
         public void Click_Close_Settings_Tab_Button()
         {
             #region Variable Declarations
-            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.CloseButton;
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.CloseButton;
             #endregion
 
             // Verify that the 'Exists' property of '?' button equals 'True'
@@ -517,7 +538,7 @@ namespace Warewolf.UITests
         public void Click_Close_SharepointSource_Tab_Button()
         {
             #region Variable Declarations
-            WpfButton sharepointSourceTabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SharepointServerSourceTab.SharepointSourceTabCloseButton;
+            WpfButton sharepointSourceTabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointSourceTabCloseButton;
             #endregion
 
             // Click '?' button
@@ -559,7 +580,7 @@ namespace Warewolf.UITests
         public void Click_Close_Tests_Tab()
         {
             #region Variable Declarations
-            WpfButton closeTestTabButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.CloseTestTabButton;
+            WpfButton closeTestTabButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.CloseTestTabButton;
             #endregion
 
             // Click '?' button
@@ -573,7 +594,7 @@ namespace Warewolf.UITests
         public void Click_Close_Web_Source_Wizard_Tab_Button()
         {
             #region Variable Declarations
-            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.CloseButton;
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.CloseButton;
             #endregion
 
             // Click '?' button
@@ -587,7 +608,7 @@ namespace Warewolf.UITests
         public void Click_Close_Workflow_Tab_Button()
         {
             #region Variable Declarations
-            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton;
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton;
             #endregion
 
             // Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
@@ -619,18 +640,18 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton configureSettingsButton = this.MainStudioWindow.SideMenuBar.ConfigureSettingsButton;
-            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
-            WpfText sECURITY = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SECURITY;
-            WpfTable serverPermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions;
-            WpfPane warewolfAdminROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW;
-            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeleteCell.DeleteButton;
-            WpfCheckBox deployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployToCell.DeployToCheckBox;
-            WpfCheckBox deployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployFromCell.DeployFromCheckBox;
-            WpfCheckBox administratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.AdministratorCell.AdministratorCheckBox;
-            WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ExecuteCell.ExecuteCheckBox;
-            WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell.ViewCheckBox;
-            WpfCheckBox contributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell.ContributeCheckBox;
-            WpfPane publicROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW;
+            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
+            WpfText sECURITY = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SECURITY;
+            WpfTable serverPermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions;
+            WpfPane warewolfAdminROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW;
+            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeleteCell.DeleteButton;
+            WpfCheckBox deployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployToCell.DeployToCheckBox;
+            WpfCheckBox deployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployFromCell.DeployFromCheckBox;
+            WpfCheckBox administratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.AdministratorCell.AdministratorCheckBox;
+            WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ExecuteCell.ExecuteCheckBox;
+            WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell.ViewCheckBox;
+            WpfCheckBox contributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell.ContributeCheckBox;
+            WpfPane publicROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW;
             #endregion
 
             // Click 'Configure settings' button
@@ -701,7 +722,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfText variableTextbox = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox;
             WpfButton assign1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.Assign1Button;
-            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
             #endregion
 
             // Verify that the 'DisplayText' property of '[[SomeVariable]]' label equals '[[SomeVariable]]'
@@ -722,7 +743,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton baseConversion1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.BaseConversion1Button;
-            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
+            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
             #endregion
 
             // Click 'Base Conversion (1)' button
@@ -740,7 +761,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton calculateButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.CalculateButton;
-            WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
+            WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
             #endregion
 
             // Click 'Calculate' button
@@ -758,7 +779,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton workflow1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.ServiceTreeItem.Workflow1Button;
-            WpfText workflow1ciremoteText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.Workflow1ciremoteText;
+            WpfText workflow1ciremoteText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Workflow1ciremoteText;
             #endregion
 
             // Click 'workflow1' button
@@ -847,8 +868,8 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton doneButton = this.DecisionOrSwitchDialog.DoneButton;
-            WpfCustom decision = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom decision = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Click 'Done' button
@@ -868,7 +889,7 @@ namespace Warewolf.UITests
         public void Click_Deploy_Tab_Destination_Server_Combobox()
         {
             #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
             WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
             #endregion
 
@@ -886,7 +907,7 @@ namespace Warewolf.UITests
         public void Click_Deploy_Tab_Destination_Server_Connect_Button()
         {
             #region Variable Declarations
-            WpfButton connectDestinationButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.ConnectDestinationButton;
+            WpfButton connectDestinationButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.ConnectDestinationButton;
             #endregion
 
             // Click 'UI_DestinationServerConnectbtn_AutoID' button
@@ -914,7 +935,7 @@ namespace Warewolf.UITests
         public void Click_Deploy_Tab_Source_Server_Combobox()
         {
             #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
             WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
             #endregion
 
@@ -946,8 +967,8 @@ namespace Warewolf.UITests
         public void Click_DotNet_DLL_Large_View_Done_Button()
         {
             #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.DoneButton;
-            WpfCustom smallView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.SmallView;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.DoneButton;
+            WpfCustom smallView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.SmallView;
             #endregion
 
             // Click 'Done' button
@@ -964,7 +985,7 @@ namespace Warewolf.UITests
         public void Click_DotNet_DLL_Large_View_Test_Inputs_Button()
         {
             #region Variable Declarations
-            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.TestButton;
+            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.TestButton;
             #endregion
 
             // Click 'Test' button
@@ -978,7 +999,7 @@ namespace Warewolf.UITests
         public void Click_DotNet_DLL_Large_View_Test_Inputs_Done_Button()
         {
             #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton;
             #endregion
 
             // Wait for 1 seconds for user delay between actions; Click 'Done' button
@@ -1054,6 +1075,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Explorer_Remote_Server_Dropdown_List
+        /// </summary>
+        [When(@"I Click Explorer Remote Server Dropdown List")]
+        public void Click_Explorer_Remote_Server_Dropdown_List()
+        {
+            #region Variable Declarations
+            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(serverListComboBox, new Point(167, 10));
+        }
+        
+        /// <summary>
         /// Click_Explorer_RemoteServer_Connect_Button - Use 'Click_Explorer_RemoteServer_Connect_ButtonParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click Explorer RemoteServer Connect Button")]
@@ -1107,8 +1142,8 @@ namespace Warewolf.UITests
         public void Click_GET_Web_Large_View_Done_Button()
         {
             #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.DoneButton;
-            WpfCustom smallView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.SmallView;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.DoneButton;
+            WpfCustom smallView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.SmallView;
             #endregion
 
             // Click 'Done' button
@@ -1125,9 +1160,9 @@ namespace Warewolf.UITests
         public void Click_GET_Web_Large_View_Generate_Outputs()
         {
             #region Variable Declarations
-            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton;
-            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.TestButton;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.DoneButton;
+            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton;
+            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.TestButton;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.DoneButton;
             #endregion
 
             // Click 'Generate Outputs' button
@@ -1148,7 +1183,7 @@ namespace Warewolf.UITests
         public void Click_GET_Web_Large_View_Test_Inputs_Button()
         {
             #region Variable Declarations
-            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.TestButton;
+            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.TestButton;
             #endregion
 
             // Click 'Test' button
@@ -1162,7 +1197,7 @@ namespace Warewolf.UITests
         public void Click_GET_Web_Large_View_Test_Inputs_Done_Button()
         {
             #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.DoneButton;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.DoneButton;
             #endregion
 
             // Click 'Done' button
@@ -1320,7 +1355,7 @@ namespace Warewolf.UITests
         public void Click_New_Workflow_Tab()
         {
             #region Variable Declarations
-            WpfTabPage workflowTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab;
+            WpfTabPage workflowTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab;
             #endregion
 
             // Click 'Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi...' tab
@@ -1335,8 +1370,8 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton pluginSourceButton = this.MainStudioWindow.SideMenuBar.PluginSourceButton;
-            WpfTree tree = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.NewPluginSourceWizard.ScrollViewer.Tree;
-            WpfEdit assemblyNameTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox;
+            WpfTree tree = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.PluginSourceWizardTab.WorkSurfaceContext.NewPluginSourceWizard.ScrollViewer.Tree;
+            WpfEdit assemblyNameTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox;
             #endregion
 
             // Click 'Create a new plugin source' button
@@ -1475,7 +1510,7 @@ namespace Warewolf.UITests
         public void Click_Position_Button()
         {
             #region Variable Declarations
-            WpfMenuItem positionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.FilesMenu.PositionButton;
+            WpfMenuItem positionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.FilesMenu.PositionButton;
             #endregion
 
             // Click 'PART_FilesMenuItem' menu item
@@ -1489,7 +1524,7 @@ namespace Warewolf.UITests
         public void Click_Reset_Perfomance_Counter()
         {
             #region Variable Declarations
-            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResetCounter.ItemHyperlink;
+            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResetCounter.ItemHyperlink;
             WpfWindow messageBoxWindow = this.MessageBoxWindow;
             WpfButton oKButton = this.MessageBoxWindow.OKButton;
             #endregion
@@ -1630,11 +1665,11 @@ namespace Warewolf.UITests
         public void Click_Scheduler_Create_New_Task_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfButton newTaskButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton;
-            WpfText triggerText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.TriggerText;
-            WpfRadioButton enabledRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EnabledRadioButton;
-            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton;
-            WpfButton editTriggerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton;
+            WpfButton newTaskButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton;
+            WpfText triggerText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.TriggerText;
+            WpfRadioButton enabledRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EnabledRadioButton;
+            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton;
+            WpfButton editTriggerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton;
             #endregion
 
             // Click first button next to '?' button
@@ -1660,7 +1695,7 @@ namespace Warewolf.UITests
         public void Click_Scheduler_Delete_Task()
         {
             #region Variable Declarations
-            WpfButton deleteTaskButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.DeleteTaskButton;
+            WpfButton deleteTaskButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.DeleteTaskButton;
             #endregion
 
             // Click '...' button
@@ -1674,7 +1709,7 @@ namespace Warewolf.UITests
         public void Click_Scheduler_Disable_Task_Radio_Button()
         {
             #region Variable Declarations
-            WpfRadioButton disabledRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.DisabledRadioButton;
+            WpfRadioButton disabledRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.DisabledRadioButton;
             #endregion
 
             // Select 'Disabled' radio button
@@ -1688,7 +1723,7 @@ namespace Warewolf.UITests
         public void Click_Scheduler_EditTrigger_Button()
         {
             #region Variable Declarations
-            WpfButton editTriggerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton;
+            WpfButton editTriggerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton;
             #endregion
 
             // Click '?' button
@@ -1702,7 +1737,7 @@ namespace Warewolf.UITests
         public void Click_Scheduler_Enable_Task_Radio_Button()
         {
             #region Variable Declarations
-            WpfCheckBox statusCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox;
+            WpfCheckBox statusCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox;
             #endregion
 
             // Select check box
@@ -1716,7 +1751,7 @@ namespace Warewolf.UITests
         public void Click_Scheduler_ResourcePicker_Button()
         {
             #region Variable Declarations
-            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton;
+            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton;
             #endregion
 
             // Click '...' button
@@ -1730,7 +1765,7 @@ namespace Warewolf.UITests
         public void Click_Scheduler_RunTask()
         {
             #region Variable Declarations
-            WpfCheckBox runTaskCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.RunTaskCheckBox;
+            WpfCheckBox runTaskCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.RunTaskCheckBox;
             #endregion
 
             // Select 'Run task as soon as possible after a scheduled sta...' check box
@@ -1744,7 +1779,7 @@ namespace Warewolf.UITests
         public void Click_Select_Resource_Button()
         {
             #region Variable Declarations
-            WpfButton resourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton;
+            WpfButton resourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton;
             #endregion
 
             // Click '...' button
@@ -1758,7 +1793,7 @@ namespace Warewolf.UITests
         public void Click_Select_Resource_Button_From_Resource_Permissions()
         {
             #region Variable Declarations
-            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
+            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
             WpfWindow servicePickerDialog = this.ServicePickerDialog;
             #endregion
 
@@ -1807,7 +1842,7 @@ namespace Warewolf.UITests
         public void Click_Server_Log_File_Button()
         {
             #region Variable Declarations
-            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.ServerLogs.ServerLogFile.ItemHyperlink;
+            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.ServerLogs.ServerLogFile.ItemHyperlink;
             #endregion
 
             // Click link
@@ -1821,7 +1856,7 @@ namespace Warewolf.UITests
         public void Click_Server_Source_Wizard_Address_Protocol_Dropdown()
         {
             #region Variable Declarations
-            WpfButton toggleDropdown = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
+            WpfButton toggleDropdown = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
             WpfCustom comboboxListItemAsHttp = this.MainStudioWindow.ComboboxListItemAsHttp;
             #endregion
 
@@ -1839,7 +1874,7 @@ namespace Warewolf.UITests
         public void Click_Server_Source_Wizard_Test_Connection_Button()
         {
             #region Variable Declarations
-            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton;
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton;
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
 
@@ -1872,7 +1907,7 @@ namespace Warewolf.UITests
         public void Click_Settings_Security_Resource_Permissions_Add_Resource_Button()
         {
             #region Variable Declarations
-            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
+            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
             #endregion
 
             // Click '...' button
@@ -1887,10 +1922,10 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfMenuItem showDependencies = this.MainStudioWindow.ExplorerContextMenu.ShowDependencies;
-            WpfRadioButton showwhatdependsonthisRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox;
-            WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
-            WpfText text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
+            WpfRadioButton showwhatdependsonthisRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox;
+            WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
+            WpfText text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
             #endregion
 
             // Click 'Show Dependencies' menu item
@@ -1930,7 +1965,7 @@ namespace Warewolf.UITests
         public void Click_SQL_Server_Large_View_Done_Button()
         {
             #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.DoneButton;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.DoneButton;
             #endregion
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
@@ -1947,8 +1982,8 @@ namespace Warewolf.UITests
         public void Click_SQL_Server_Large_View_Generate_Outputs()
         {
             #region Variable Declarations
-            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton;
-            WpfEdit testDataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox;
+            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton;
+            WpfEdit testDataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox;
             #endregion
 
             // Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
@@ -1968,7 +2003,7 @@ namespace Warewolf.UITests
         public void Click_SQL_Server_Large_View_Test_Inputs_Button()
         {
             #region Variable Declarations
-            WpfButton testInputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsButton;
+            WpfButton testInputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsButton;
             #endregion
 
             // Click 'Test' button
@@ -1982,7 +2017,7 @@ namespace Warewolf.UITests
         public void Click_SQL_Server_Large_View_Test_Inputs_Done_Button()
         {
             #region Variable Declarations
-            WpfButton testInputsDoneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsDoneButton;
+            WpfButton testInputsDoneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsDoneButton;
             #endregion
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
@@ -1999,7 +2034,7 @@ namespace Warewolf.UITests
         public void Click_Start_Node()
         {
             #region Variable Declarations
-            WpfCustom startNode = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
+            WpfCustom startNode = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
             #endregion
 
             // Click 'StartNode' custom control
@@ -2013,7 +2048,7 @@ namespace Warewolf.UITests
         public void Click_Studio_Log_File()
         {
             #region Variable Declarations
-            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink;
+            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink;
             #endregion
 
             // Click link
@@ -2028,8 +2063,8 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton doneButton = this.DecisionOrSwitchDialog.DoneButton;
-            WpfCustom switch1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom switch1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Click 'Done' button
@@ -2199,7 +2234,7 @@ namespace Warewolf.UITests
         public void Click_Workflow_CollapseAll()
         {
             #region Variable Declarations
-            WpfToggleButton collapseAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton;
+            WpfToggleButton collapseAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton;
             #endregion
 
             // Verify that the 'Exists' property of 'CollapseAll' toggle button equals 'True'
@@ -2216,8 +2251,8 @@ namespace Warewolf.UITests
         public void Click_Workflow_ExpandAll()
         {
             #region Variable Declarations
-            WpfToggleButton expandAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton;
-            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            WpfToggleButton expandAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton;
+            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
             #endregion
 
             // Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
@@ -2280,9 +2315,9 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfTreeItem firstSubItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector2;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector2;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton;
             #endregion
 
             // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
@@ -2306,9 +2341,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem dotNetDLL = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLL;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom dotNetDll1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom dotNetDll1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
             #endregion
 
             // Type 'DotNet DLL' in 'SearchTextBox' text box
@@ -2334,8 +2369,8 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
@@ -2361,8 +2396,8 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfTreeItem firstSubItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
@@ -2388,8 +2423,8 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfTreeItem firstSubItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
@@ -2415,9 +2450,9 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
             #endregion
 
             // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
@@ -2447,8 +2482,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem gET = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.GET;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom webGet = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom webGet = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
             #endregion
 
             // Type 'GET' in 'SearchTextBox' text box
@@ -2473,9 +2508,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem webRequest = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom webRequest1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom webRequest1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
             // Type 'Web Request' in 'SearchTextBox' text box
@@ -2502,9 +2537,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem pOST = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.POST;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom webPost = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom webPost = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
             #endregion
 
             // Type 'POST' in 'SearchTextBox' text box
@@ -2531,9 +2566,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem baseConvert = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.BaseConvert;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom baseConvert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom baseConvert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
             #endregion
 
             // Type 'Base Convert' in 'SearchTextBox' text box
@@ -2560,9 +2595,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem calculate = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Calculate;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom calculate1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom calculate1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
             #endregion
 
             // Type 'Calculate' in 'SearchTextBox' text box
@@ -2589,9 +2624,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem caseConvert = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.CaseConvert;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom caseConvert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom caseConvert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
             #endregion
 
             // Type 'Case Convert' in 'SearchTextBox' text box
@@ -2618,11 +2653,11 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem cMDScript = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.CMDScript;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
-            WpfComboBox scriptIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ScriptIntellisenseTextbox;
-            WpfComboBox resultIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ResultIntellisenseTextbox;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
+            WpfComboBox scriptIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ScriptIntellisenseTextbox;
+            WpfComboBox resultIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ResultIntellisenseTextbox;
             #endregion
 
             // Type 'CMD Script' in 'SearchTextBox' text box
@@ -2655,9 +2690,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem comment = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom comment1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom comment1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
             #endregion
 
             // Type 'Comment' in 'SearchTextBox' text box
@@ -2684,9 +2719,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem copy = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Copy;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom pathCopy = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom pathCopy = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
             #endregion
 
             // Type 'Copy' in 'SearchTextBox' text box
@@ -2713,8 +2748,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem count = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Count;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'Count' in 'SearchTextBox' text box
@@ -2738,9 +2773,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem create = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Create;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom pathCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom pathCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
             #endregion
 
             // Type 'Create' in 'SearchTextBox' text box
@@ -2767,9 +2802,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem dataMerge = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataMerge;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom dataMerge1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom dataMerge1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
             #endregion
 
             // Type 'Data Merge' in 'SearchTextBox' text box
@@ -2796,9 +2831,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem dataSplit = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataSplit;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom dataSplit1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom dataSplit1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
             #endregion
 
             // Type 'Data Split' in 'SearchTextBox' text box
@@ -2825,9 +2860,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem dateTime = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTime;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom dateTime1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom dateTime1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
             #endregion
 
             // Type 'Date Time' in 'SearchTextBox' text box
@@ -2854,9 +2889,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem dateTimeDifference = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTimeDifference;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom dateTimeDifference1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom dateTimeDifference1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
             #endregion
 
             // Type 'Date Time Diff' in 'SearchTextBox' text box
@@ -2883,7 +2918,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem decision = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfButton doneButton = this.DecisionOrSwitchDialog.DoneButton;
             #endregion
 
@@ -2908,9 +2943,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem delete = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Delete;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom pathDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom pathDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
             #endregion
 
             // Type 'Delete' in 'SearchTextBox' text box
@@ -2937,8 +2972,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem delete = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Delete;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'Delete' in 'SearchTextBox' text box
@@ -2962,8 +2997,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem download = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Download;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'Download' in 'SearchTextBox' text box
@@ -2987,8 +3022,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem upload = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Upload;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'Upload' in 'SearchTextBox' text box
@@ -3012,8 +3047,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem exchangeSend = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.ExchangeSend;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'Exchange Email' in 'SearchTextBox' text box
@@ -3037,9 +3072,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem findIndex = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.FindIndex;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom findIndex1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom findIndex1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
             #endregion
 
             // Type 'Find Index' in 'SearchTextBox' text box
@@ -3066,8 +3101,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem findRecords = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.FindRecords;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'Find Records' in 'SearchTextBox' text box
@@ -3091,13 +3126,13 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem forEach = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.ForEach;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom forEach1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
-            WpfComboBox forEachTypeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ForEachTypeComboBox;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.FromIntellisenseTextbox.Textbox;
-            WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHere;
-            WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ToIntellisenseTextbox.Textbox;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom forEach1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
+            WpfComboBox forEachTypeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ForEachTypeComboBox;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.FromIntellisenseTextbox.Textbox;
+            WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHere;
+            WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ToIntellisenseTextbox.Textbox;
             #endregion
 
             // Type 'ForEach' in 'SearchTextBox' text box
@@ -3136,9 +3171,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem formatNumber = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.FormatNumber;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom formatNumber1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom formatNumber1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
             #endregion
 
             // Type 'Format Number' in 'SearchTextBox' text box
@@ -3165,11 +3200,11 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem javaScript = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.JavaScript;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom javascript1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript;
-            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.SmallView.ScriptIntellisenseCombobox;
-            WpfComboBox resultsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.SmallView.ResultsIntellisenseCombobox;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom javascript1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.SmallView.ScriptIntellisenseCombobox;
+            WpfComboBox resultsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.SmallView.ResultsIntellisenseCombobox;
             #endregion
 
             // Type 'Javascript' in 'SearchTextBox' text box
@@ -3204,9 +3239,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem createJSON = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.CreateJSON;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom createJson1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom createJson1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
             #endregion
 
             // Type 'Create JSON' in 'SearchTextBox' text box
@@ -3233,9 +3268,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem length = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Length;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom length1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom length1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
             #endregion
 
             // Type 'Length' in 'SearchTextBox' text box
@@ -3262,9 +3297,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem move = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Move;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom pathMove = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom pathMove = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
             #endregion
 
             // Type 'Move' in 'SearchTextBox' text box
@@ -3291,9 +3326,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
             #endregion
 
             // Type 'Assign' in 'SearchTextBox' text box
@@ -3345,8 +3380,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem mySQL = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.MySQL;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'MySQL' in 'SearchTextBox' text box
@@ -3370,11 +3405,11 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem python = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Python;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom python1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python;
-            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ScriptIntellisenseCombobox;
-            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ResultIntellisenseCombobox;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom python1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ScriptIntellisenseCombobox;
+            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ResultIntellisenseCombobox;
             #endregion
 
             // Type 'Python' in 'SearchTextBox' text box
@@ -3407,9 +3442,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem random = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Random;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom random1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom random1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
             #endregion
 
             // Type 'Random' in 'SearchTextBox' text box
@@ -3436,9 +3471,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem readFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFile;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom fileRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom fileRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
             #endregion
 
             // Type 'Read File' in 'SearchTextBox' text box
@@ -3465,9 +3500,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem readFolder = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFolder;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom folderRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom folderRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
             #endregion
 
             // Type 'Read Folder' in 'SearchTextBox' text box
@@ -3494,9 +3529,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem rename = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Rename;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom pathRename = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom pathRename = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
             #endregion
 
             // Type 'Rename' in 'SearchTextBox' text box
@@ -3523,9 +3558,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem replace = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.Replace;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom replace1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom replace1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
             #endregion
 
             // Type 'Replace' in 'SearchTextBox' text box
@@ -3552,11 +3587,11 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem ruby = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Ruby;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom ruby1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby;
-            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ScriptIntellisenseCombobox;
-            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ResultIntellisenseCombobox;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom ruby1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ScriptIntellisenseCombobox;
+            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ResultIntellisenseCombobox;
             #endregion
 
             // Type 'Ruby' in 'SearchTextBox' text box
@@ -3589,12 +3624,12 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem selectandapply = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.Selectandapply;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom selectAndApply1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply;
-            WpfComboBox selectFromIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.SelectFromIntellisenseTextbox;
-            WpfComboBox aliasIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.AliasIntellisenseTextbox;
-            WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.DropActivityHere;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom selectAndApply1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply;
+            WpfComboBox selectFromIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.SelectFromIntellisenseTextbox;
+            WpfComboBox aliasIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.AliasIntellisenseTextbox;
+            WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.DropActivityHere;
             #endregion
 
             // Type 'Select and apply' in 'SearchTextBox' text box
@@ -3633,9 +3668,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem sequence = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Sequence;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom sequence1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom sequence1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
             #endregion
 
             // Type 'Sequence' in 'SearchTextBox' text box
@@ -3662,7 +3697,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem service = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.Service;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfButton cancel = this.ServicePickerDialog.Cancel;
             #endregion
 
@@ -3687,10 +3722,10 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem createListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CreateListItems;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
-            WpfComboBox list = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.List;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
+            WpfComboBox list = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.List;
             #endregion
 
             // Type 'Create List Item' in 'SearchTextBox' text box
@@ -3720,8 +3755,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem deleteListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.DeleteListItems;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'Delete List Item' in 'SearchTextBox' text box
@@ -3745,8 +3780,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem readListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.ReadListItems;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'Read List Item' in 'SearchTextBox' text box
@@ -3770,8 +3805,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem updateListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.UpdateListItems;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'Update List Item' in 'SearchTextBox' text box
@@ -3795,9 +3830,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem sMTPSend = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.SMTPSend;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
             #endregion
 
             // Type 'SMTP Send' in 'SearchTextBox' text box
@@ -3824,8 +3859,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem sort = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Sort;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'Sort' in 'SearchTextBox' text box
@@ -3849,9 +3884,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem sQLBulkInsert = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLBulkInsert;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom sqlBulkInsert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom sqlBulkInsert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
             #endregion
 
             // Type 'SQL Bulk Insert' in 'SearchTextBox' text box
@@ -3878,8 +3913,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem sQLServer = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLServer;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'SQL Server' in 'SearchTextBox' text box
@@ -3903,7 +3938,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem switch1 = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfButton doneButton = this.DecisionOrSwitchDialog.DoneButton;
             #endregion
 
@@ -3928,9 +3963,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem sysInfo = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.SysInfo;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
             #endregion
 
             // Type 'Sys Info' in 'SearchTextBox' text box
@@ -3957,8 +3992,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem uniqueRecords = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.UniqueRecords;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Type 'Unique' in 'SearchTextBox' text box
@@ -3982,9 +4017,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem unZip = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.UnZip;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom unZip1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom unZip1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
             #endregion
 
             // Type 'Unzip' in 'SearchTextBox' text box
@@ -4011,9 +4046,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem webRequest = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom webRequest1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom webRequest1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
             // Type 'Web Request' in 'SearchTextBox' text box
@@ -4040,9 +4075,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem writeFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.WriteFile;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
             #endregion
 
             // Type 'Write File' in 'SearchTextBox' text box
@@ -4069,9 +4104,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem xPath = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.XPath;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom xPath1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom xPath1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
             #endregion
 
             // Type 'XPath' in 'SearchTextBox' text box
@@ -4098,9 +4133,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem zip = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Zip;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom zip1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom zip1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
             #endregion
 
             // Type 'Zip' in 'SearchTextBox' text box
@@ -4151,9 +4186,9 @@ namespace Warewolf.UITests
         public void Enter_DeployViewOnly_Into_Deploy_Source_Filter()
         {
             #region Variable Declarations
-            WpfEdit searchTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.SearchTextbox;
-            WpfTreeItem firstExplorerTreeItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem;
-            WpfCheckBox checkBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox;
+            WpfEdit searchTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.SearchTextbox;
+            WpfTreeItem firstExplorerTreeItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem;
+            WpfCheckBox checkBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox;
             #endregion
 
             // Type 'DeployViewOnly' in 'SearchTextBox' text box
@@ -4173,8 +4208,8 @@ namespace Warewolf.UITests
         public void Enter_Dice_Roll_Values()
         {
             #region Variable Declarations
-            WpfEdit fromTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.From.FromTextEdit;
-            WpfEdit toTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.To.ToTextEdit;
+            WpfEdit fromTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.From.FromTextEdit;
+            WpfEdit toTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.To.ToTextEdit;
             #endregion
 
             // Verify that the 'Exists' property of 'Text' text box equals 'True'
@@ -4232,8 +4267,8 @@ namespace Warewolf.UITests
         public void Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab()
         {
             #region Variable Declarations
-            WpfEdit userNameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit;
-            WpfEdit passwordTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox;
+            WpfEdit userNameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit;
+            WpfEdit passwordTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox;
             #endregion
 
             // Type 'LocalSchedulerAdmin' in 'UI_UserNameTextBox' text box
@@ -4250,7 +4285,7 @@ namespace Warewolf.UITests
         public void Enter_Public_As_Windows_Group()
         {
             #region Variable Declarations
-            WpfEdit addWindowsGroupsEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.WindowsGroupCell.AddWindowsGroupsEdit;
+            WpfEdit addWindowsGroupsEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.WindowsGroupCell.AddWindowsGroupsEdit;
             #endregion
 
             // Type 'Public' in 'UI__AddWindowsGroupsTextBox_AutoID' text box
@@ -4264,8 +4299,8 @@ namespace Warewolf.UITests
         public void Enter_RunAsUser_Username_And_Password()
         {
             #region Variable Declarations
-            WpfEdit usernameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UsernameTextBoxEdit;
-            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.PasswordTextBoxEdit;
+            WpfEdit usernameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UsernameTextBoxEdit;
+            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.PasswordTextBoxEdit;
             #endregion
 
             // Type 'testuser' in 'UsernameTextBox' text box
@@ -4285,7 +4320,7 @@ namespace Warewolf.UITests
         public void Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox()
         {
             #region Variable Declarations
-            WpfEdit valueTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox;
+            WpfEdit valueTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox;
             #endregion
 
             // Type 'SomeData' in 'UI__Row1_FromExpressiontxt_AutoID' text box
@@ -4299,7 +4334,7 @@ namespace Warewolf.UITests
         public void Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox()
         {
             #region Variable Declarations
-            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox.FunctionTextbox;
+            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox.FunctionTextbox;
             #endregion
 
             // Type '[[SomeVariable]]' in 'FunctionTextbox' text box
@@ -4316,7 +4351,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
             #endregion
 
             // Type '[[Some$Invalid%Variable]]' in 'UI__Row1_FieldName_AutoID' text box
@@ -4352,7 +4387,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
             #endregion
 
             // Type '[[Some{Down}{Enter}Variable]]' in 'UI__Row1_FieldName_AutoID' text box
@@ -4388,8 +4423,8 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
-            WpfListItem listItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.ListItem;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfListItem listItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.ListItem;
             #endregion
 
             // Type '[[' in 'UI_TextBox_AutoID' text box
@@ -4410,7 +4445,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
             #endregion
 
             // Type '[[{Down}{Enter}' in 'UI_TextBox_AutoID' text box
@@ -4428,7 +4463,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
             #endregion
 
             // Type 'Helo User' in 'Text' text box
@@ -4446,7 +4481,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
             #endregion
 
             // Type 'User' in 'Text' text box
@@ -4502,8 +4537,8 @@ namespace Warewolf.UITests
         public void Open_Assign_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
             #endregion
 
             // Double-Click 'DsfMultiAssignActivity' custom control
@@ -4545,8 +4580,8 @@ namespace Warewolf.UITests
         public void Open_Assign_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.OpenQuickVariableInpToggleButton;
-            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent;
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.OpenQuickVariableInpToggleButton;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4563,8 +4598,8 @@ namespace Warewolf.UITests
         public void Open_Base_Conversion_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
-            WpfEdit valueTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox;
+            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
+            WpfEdit valueTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox;
             #endregion
 
             // Double-Click 'DsfBaseConvertActivity' custom control
@@ -4581,9 +4616,9 @@ namespace Warewolf.UITests
         public void Open_Base_Conversion_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.OpenQuickVariableInpToggleButton;
-            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
-            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.QuickVariableInputContent;
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.OpenQuickVariableInpToggleButton;
+            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4606,10 +4641,10 @@ namespace Warewolf.UITests
         public void Open_Calculate_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView;
-            WpfControl listbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox;
-            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox.FunctionTextbox;
+            WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView;
+            WpfControl listbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox;
+            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox.FunctionTextbox;
             #endregion
 
             // Double-Click 'DsfCalculateActivity' custom control
@@ -4632,9 +4667,9 @@ namespace Warewolf.UITests
         public void Open_Case_Conversion_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.OpenQuickVariableInpToggleButton;
-            WpfCustom caseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
-            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.QuickVariableInputContent;
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.OpenQuickVariableInpToggleButton;
+            WpfCustom caseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4654,12 +4689,12 @@ namespace Warewolf.UITests
         public void Open_CMD_Line_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
-            WpfComboBox scriptIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.ScriptIntellisenseTextbox;
-            WpfComboBox priorityComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.PriorityComboBox;
-            WpfComboBox resultIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.ResultIntellisenseTextbox;
-            WpfCustom onError = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.OnError;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.DoneButton;
+            WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
+            WpfComboBox scriptIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.ScriptIntellisenseTextbox;
+            WpfComboBox priorityComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.PriorityComboBox;
+            WpfComboBox resultIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.ResultIntellisenseTextbox;
+            WpfCustom onError = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.OnError;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.DoneButton;
             #endregion
 
             // Double-Click 'DsfExecuteCommandLineActivity' custom control
@@ -4696,7 +4731,7 @@ namespace Warewolf.UITests
         public void Open_Context_Menu_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Right-Click 'Flowchart' custom control
@@ -4710,7 +4745,7 @@ namespace Warewolf.UITests
         public void Open_Copy_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom pathCopy = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
+            WpfCustom pathCopy = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
             #endregion
 
             // Double-Click 'DsfPathCopy' custom control
@@ -4727,7 +4762,7 @@ namespace Warewolf.UITests
         public void Open_CountRecords_Large_View()
         {
             #region Variable Declarations
-            WpfCustom countRecordset = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset;
+            WpfCustom countRecordset = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset;
             #endregion
 
             // Double-Click 'DsfCountRecordsetActivity' custom control
@@ -4741,7 +4776,7 @@ namespace Warewolf.UITests
         public void Open_Create_JSON_Large_View()
         {
             #region Variable Declarations
-            WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
+            WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
             #endregion
 
             // Double-Click 'DsfCreateJsonActivity' custom control
@@ -4755,7 +4790,7 @@ namespace Warewolf.UITests
         public void Open_Create_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom pathCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
+            WpfCustom pathCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
             #endregion
 
             // Double-Click 'DsfPathCreate' custom control
@@ -4772,7 +4807,7 @@ namespace Warewolf.UITests
         public void Open_Data_Merge_Large_View()
         {
             #region Variable Declarations
-            WpfCustom dataMerge = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
+            WpfCustom dataMerge = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
             #endregion
 
             // Double-Click 'DsfDataMergeActivity' custom control
@@ -4789,9 +4824,9 @@ namespace Warewolf.UITests
         public void Open_Data_Merge_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.OpenQuickVariableInpToggleButton;
-            WpfCustom dataMerge = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
-            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.QuickVariableInputContent;
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.OpenQuickVariableInpToggleButton;
+            WpfCustom dataMerge = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4811,7 +4846,7 @@ namespace Warewolf.UITests
         public void Open_Data_Split_Large_View()
         {
             #region Variable Declarations
-            WpfCustom dataSplit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
+            WpfCustom dataSplit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
             #endregion
 
             // Double-Click 'DsfDataSplitActivity' custom control
@@ -4828,9 +4863,9 @@ namespace Warewolf.UITests
         public void Open_Data_Split_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.OpenQuickVariableInpToggleButton;
-            WpfCustom dataSplit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
-            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.QuickVariableInputContent;
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.OpenQuickVariableInpToggleButton;
+            WpfCustom dataSplit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4850,7 +4885,7 @@ namespace Warewolf.UITests
         public void Open_Delete_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom pathDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
+            WpfCustom pathDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
             #endregion
 
             // Double-Click 'DsfPathDelete' custom control
@@ -4867,12 +4902,12 @@ namespace Warewolf.UITests
         public void Open_DotNet_DLL_Connector_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom dotNetDll = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView;
-            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton;
-            WpfTable inputsTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.InputsTable;
+            WpfCustom dotNetDll = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView;
+            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
+            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
+            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton;
+            WpfTable inputsTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.InputsTable;
             #endregion
 
             // Double-Click 'DsfDotNetDllActivity' custom control
@@ -4901,7 +4936,7 @@ namespace Warewolf.UITests
         public void Open_DropboxFileOperation_Large_View()
         {
             #region Variable Declarations
-            WpfCustom dropBox_DOWNLOAD = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD;
+            WpfCustom dropBox_DOWNLOAD = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD;
             #endregion
 
             // Double-Click 'DsfDropBoxFileActivity' custom control
@@ -4915,7 +4950,7 @@ namespace Warewolf.UITests
         public void Open_Exchange_Email_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom exchangeEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail;
+            WpfCustom exchangeEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail;
             #endregion
 
             // Double-Click 'DsfSendEmailActivity' custom control
@@ -4929,7 +4964,7 @@ namespace Warewolf.UITests
         public void Open_ExecuteCommandline_LargeView()
         {
             #region Variable Declarations
-            WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
+            WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
             #endregion
 
             // Double-Click 'DsfExecuteCommandLineActivity' custom control
@@ -4959,31 +4994,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
             Assert.AreEqual(this.Open_Explorer_First_Item_Dependancies_With_Context_MenuParams.ViewSwaggerEnabled, viewSwagger.Enabled, "View swagger is disabled");
-        }
-        
-        /// <summary>
-        /// Open_Explorer_First_Item_Tests_With_Context_Menu - Use 'Open_Explorer_First_Item_Tests_With_Context_MenuParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Open Explorer First Item Tests With Context Menu")]
-        public void Open_Explorer_First_Item_Tests_With_Context_Menu()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
-            WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-
-            // Verify that the 'Exists' property of 'Tests' menu item equals 'True'
-            Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.TestsExists, tests.Exists, "View tests does not exist in explorer context menu.");
-
-            // Click 'Tests' menu item
-            Mouse.Click(tests, new Point(30, 11));
-
-            // Verify that the 'Exists' property of 'Run All' button equals 'True'
-            Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.RunAllButtonExists, runAllButton.Exists, "Run all button does not exist on tests tab");
         }
         
         /// <summary>
@@ -5032,7 +5042,7 @@ namespace Warewolf.UITests
         public void Open_Find_Record_Index_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom findRecordsIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex;
+            WpfCustom findRecordsIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex;
             #endregion
 
             // Double-Click 'DsfFindRecordsMultipleCriteriaActivity' custom control
@@ -5046,13 +5056,13 @@ namespace Warewolf.UITests
         public void Open_ForEach_Large_View()
         {
             #region Variable Declarations
-            WpfCustom forEach = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
-            WpfComboBox typeCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.TypeCombobox;
-            WpfComboBox forEachFromIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.ForEachFromIntellisenseTextbox;
-            WpfComboBox toIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.ToIntellisenseTextbox;
-            WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.DropActivityHere;
-            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.OnErrorPane;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.DoneButton;
+            WpfCustom forEach = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
+            WpfComboBox typeCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.TypeCombobox;
+            WpfComboBox forEachFromIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.ForEachFromIntellisenseTextbox;
+            WpfComboBox toIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.ToIntellisenseTextbox;
+            WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.DropActivityHere;
+            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.OnErrorPane;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.DoneButton;
             #endregion
 
             // Double-Click 'DsfForEachActivity' custom control
@@ -5087,10 +5097,10 @@ namespace Warewolf.UITests
         public void Open_GET_Web_Connector_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom webGet = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
-            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox;
-            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.DoneButton;
+            WpfCustom webGet = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
+            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox;
+            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.DoneButton;
             #endregion
 
             // Double-Click 'DsfWebGetActivity' custom control
@@ -5113,7 +5123,7 @@ namespace Warewolf.UITests
         public void Open_GetWeb_RequestTool_small_View()
         {
             #region Variable Declarations
-            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
+            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
             // Double-Click 'DsfWebRequestActivity' custom control
@@ -5127,14 +5137,14 @@ namespace Warewolf.UITests
         public void Open_Javascript_Large_View()
         {
             #region Variable Declarations
-            WpfCustom javascript = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript;
-            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.ScriptIntellisenseCombobox;
-            WpfComboBox attachmentsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.AttachmentsIntellisenseCombobox;
-            WpfButton attachFileButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.AttachFileButton;
-            WpfCheckBox escapesequencesCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.EscapesequencesCheckBox;
-            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.ResultIntellisenseCombobox;
-            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.OnErrorPane;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.DoneButton;
+            WpfCustom javascript = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.ScriptIntellisenseCombobox;
+            WpfComboBox attachmentsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.AttachmentsIntellisenseCombobox;
+            WpfButton attachFileButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.AttachFileButton;
+            WpfCheckBox escapesequencesCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.EscapesequencesCheckBox;
+            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.ResultIntellisenseCombobox;
+            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.OnErrorPane;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.DoneButton;
             #endregion
 
             // Double-Click 'DsfJavascriptActivity' custom control
@@ -5176,7 +5186,7 @@ namespace Warewolf.UITests
         public void Open_Json_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
+            WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
             #endregion
 
             // Double-Click 'DsfCreateJsonActivity' custom control
@@ -5193,8 +5203,8 @@ namespace Warewolf.UITests
         public void Open_Json_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.OpenQuickVariableInpToggleButton;
-            WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.OpenQuickVariableInpToggleButton;
+            WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -5211,7 +5221,7 @@ namespace Warewolf.UITests
         public void Open_Move_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom pathMove = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
+            WpfCustom pathMove = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
             #endregion
 
             // Double-Click 'DsfPathMove' custom control
@@ -5228,7 +5238,7 @@ namespace Warewolf.UITests
         public void Open_MySql_Database_Tool_Small_View()
         {
             #region Variable Declarations
-            WpfCustom mySqlDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase;
+            WpfCustom mySqlDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase;
             #endregion
 
             // Double-Click 'DsfMySqlDatabaseActivity' custom control
@@ -5242,8 +5252,8 @@ namespace Warewolf.UITests
         public void Open_PostWeb_RequestTool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom webPost = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView;
+            WpfCustom webPost = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView;
             #endregion
 
             // Double-Click 'DsfWebPostActivity' custom control
@@ -5260,14 +5270,14 @@ namespace Warewolf.UITests
         public void Open_Python_Large_View()
         {
             #region Variable Declarations
-            WpfCustom python = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python;
-            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.ScriptIntellisenseCombobox;
-            WpfComboBox attachmentsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachmentsIntellisenseCombobox;
-            WpfButton attachFileButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachFileButton;
-            WpfCheckBox escapesequencesCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.EscapesequencesCheckBox;
-            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.ResultIntellisenseCombobox;
-            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.OnErrorPane;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.DoneButton;
+            WpfCustom python = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.ScriptIntellisenseCombobox;
+            WpfComboBox attachmentsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachmentsIntellisenseCombobox;
+            WpfButton attachFileButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachFileButton;
+            WpfCheckBox escapesequencesCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.EscapesequencesCheckBox;
+            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.ResultIntellisenseCombobox;
+            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.OnErrorPane;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.DoneButton;
             #endregion
 
             // Double-Click 'DsfPythonActivity' custom control
@@ -5308,7 +5318,7 @@ namespace Warewolf.UITests
         public void Open_Read_File_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom fileRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
+            WpfCustom fileRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
             #endregion
 
             // Double-Click 'DsfFileRead' custom control
@@ -5325,7 +5335,7 @@ namespace Warewolf.UITests
         public void Open_Read_Folder_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom folderRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
+            WpfCustom folderRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
             #endregion
 
             // Double-Click 'DsfFolderRead' custom control
@@ -5342,7 +5352,7 @@ namespace Warewolf.UITests
         public void Open_Rename_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom pathRename = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
+            WpfCustom pathRename = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
             #endregion
 
             // Double-Click 'DsfPathRename' custom control
@@ -5359,14 +5369,14 @@ namespace Warewolf.UITests
         public void Open_Ruby_Large_View()
         {
             #region Variable Declarations
-            WpfCustom ruby = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby;
-            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.ScriptIntellisenseCombobox;
-            WpfComboBox attachmentsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.AttachmentsIntellisenseCombobox;
-            WpfButton attachFileButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.AttachFileButton;
-            WpfCheckBox escapesequencesCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.EscapesequencesCheckBox;
-            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.ResultIntellisenseCombobox;
-            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.OnErrorPane;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.DoneButton;
+            WpfCustom ruby = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby;
+            WpfComboBox scriptIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.ScriptIntellisenseCombobox;
+            WpfComboBox attachmentsIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.AttachmentsIntellisenseCombobox;
+            WpfButton attachFileButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.AttachFileButton;
+            WpfCheckBox escapesequencesCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.EscapesequencesCheckBox;
+            WpfComboBox resultIntellisenseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.ResultIntellisenseCombobox;
+            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.OnErrorPane;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.DoneButton;
             #endregion
 
             // Double-Click 'DsfRubyActivity' custom control
@@ -5406,12 +5416,12 @@ namespace Warewolf.UITests
         public void Open_Selectandapply_Large_View()
         {
             #region Variable Declarations
-            WpfCustom selectAndApply = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.DoneButton;
-            WpfComboBox selectFromIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.SelectFromIntellisenseTextbox;
-            WpfComboBox aliasIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.AliasIntellisenseTextbox;
-            WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.DropActivityHere;
-            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.OnErrorPane;
+            WpfCustom selectAndApply = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.DoneButton;
+            WpfComboBox selectFromIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.SelectFromIntellisenseTextbox;
+            WpfComboBox aliasIntellisenseTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.AliasIntellisenseTextbox;
+            WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.DropActivityHere;
+            WpfCustom onErrorPane = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.OnErrorPane;
             #endregion
 
             // Double-Click 'DsfSelectAndApplyActivity' custom control
@@ -5445,7 +5455,7 @@ namespace Warewolf.UITests
         public void Open_Sharepoint_Create_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom sharepointCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate;
+            WpfCustom sharepointCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate;
             #endregion
 
             // Double-Click 'SharepointCreateListItemActivity' custom control
@@ -5459,7 +5469,7 @@ namespace Warewolf.UITests
         public void Open_Sharepoint_Delete_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom sharepointDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete;
+            WpfCustom sharepointDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete;
             #endregion
 
             // Double-Click 'SharepointDeleteListItemActivity' custom control
@@ -5473,7 +5483,7 @@ namespace Warewolf.UITests
         public void Open_Sharepoint_Read_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom sharepointRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead;
+            WpfCustom sharepointRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead;
             #endregion
 
             // Double-Click 'SharepointReadListActivity' custom control
@@ -5487,7 +5497,7 @@ namespace Warewolf.UITests
         public void Open_Sharepoint_Update_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom sharepointUpdate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate;
+            WpfCustom sharepointUpdate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate;
             #endregion
 
             // Double-Click 'SharepointUpdateListItemActivity' custom control
@@ -5501,8 +5511,8 @@ namespace Warewolf.UITests
         public void Open_SMTP_Email_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeView;
+            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeView;
             #endregion
 
             // Double-Click 'DsfSendEmailActivity' custom control
@@ -5519,7 +5529,7 @@ namespace Warewolf.UITests
         public void Open_SortRecords_Large_View()
         {
             #region Variable Declarations
-            WpfCustom sortRecords = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
+            WpfCustom sortRecords = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
             #endregion
 
             // Double-Click 'DsfSortRecordsActivity' custom control
@@ -5533,7 +5543,7 @@ namespace Warewolf.UITests
         public void Open_SQL_Bulk_Insert_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
+            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
             #endregion
 
             // Double-Click 'DsfSqlBulkInsertActivity' custom control
@@ -5550,8 +5560,8 @@ namespace Warewolf.UITests
         public void Open_SQL_Bulk_Insert_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.OpenQuickVariableInpToggleButton;
-            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.OpenQuickVariableInpToggleButton;
+            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -5568,9 +5578,9 @@ namespace Warewolf.UITests
         public void Open_SQL_Large_View_FromContextMenu()
         {
             #region Variable Declarations
-            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
             WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
-            WpfButton newDbSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
+            WpfButton newDbSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
             #endregion
 
             // Right-Click 'DsfSqlServerDatabaseActivity' custom control
@@ -5590,8 +5600,8 @@ namespace Warewolf.UITests
         public void Open_Sql_Server_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView;
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView;
             #endregion
 
             // Double-Click 'DsfSqlServerDatabaseActivity' custom control
@@ -5608,7 +5618,7 @@ namespace Warewolf.UITests
         public void Open_Sql_Server_Tool_small_View()
         {
             #region Variable Declarations
-            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
             #endregion
 
             // Double-Click 'DsfSqlServerDatabaseActivity' custom control
@@ -5622,8 +5632,8 @@ namespace Warewolf.UITests
         public void Open_System_Information_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.OpenQuickVariableInpToggleButton;
-            WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.OpenQuickVariableInpToggleButton;
+            WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -5640,7 +5650,7 @@ namespace Warewolf.UITests
         public void Open_UniqueRecords_Large_View()
         {
             #region Variable Declarations
-            WpfCustom unique = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique;
+            WpfCustom unique = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique;
             #endregion
 
             // Double-Click 'DsfUniqueActivity' custom control
@@ -5654,7 +5664,7 @@ namespace Warewolf.UITests
         public void Open_Unzip_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom unZip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
+            WpfCustom unZip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
             #endregion
 
             // Double-Click 'DsfUnZip' custom control
@@ -5671,8 +5681,8 @@ namespace Warewolf.UITests
         public void Open_WebRequest_LargeView()
         {
             #region Variable Declarations
-            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeView;
+            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeView;
             #endregion
 
             // Double-Click 'DsfWebRequestActivity' custom control
@@ -5689,7 +5699,7 @@ namespace Warewolf.UITests
         public void Open_Write_File_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
+            WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
             #endregion
 
             // Double-Click 'DsfFileWrite' custom control
@@ -5706,7 +5716,7 @@ namespace Warewolf.UITests
         public void Open_Xpath_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
             #endregion
 
             // Double-Click 'DsfXPathActivity' custom control
@@ -5723,9 +5733,9 @@ namespace Warewolf.UITests
         public void Open_Xpath_Tool_Qvi_Large_View()
         {
             #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.OpenQuickVariableInpToggleButton;
-            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
-            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.QuickVariableInputContent;
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.OpenQuickVariableInpToggleButton;
+            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -5745,7 +5755,7 @@ namespace Warewolf.UITests
         public void Open_Zip_Tool_Large_View()
         {
             #region Variable Declarations
-            WpfCustom zip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
+            WpfCustom zip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
             #endregion
 
             // Double-Click 'DsfZip' custom control
@@ -5879,7 +5889,7 @@ namespace Warewolf.UITests
         public void Right_Click_Help_Tab()
         {
             #region Variable Declarations
-            WpfTabPage helpTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.HelpTab;
+            WpfTabPage helpTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.HelpTab;
             #endregion
 
             // Right-Click 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab
@@ -5893,7 +5903,7 @@ namespace Warewolf.UITests
         public void RightClick_BaseConvert_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
+            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
             #endregion
 
             // Right-Click 'DsfBaseConvertActivity' custom control
@@ -5907,7 +5917,7 @@ namespace Warewolf.UITests
         public void RightClick_Calculate_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
+            WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
             #endregion
 
             // Right-Click 'DsfCalculateActivity' custom control
@@ -5921,7 +5931,7 @@ namespace Warewolf.UITests
         public void RightClick_CaseConvert_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom caseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
+            WpfCustom caseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
             #endregion
 
             // Right-Click 'DsfCaseConvertActivity' custom control
@@ -5935,7 +5945,7 @@ namespace Warewolf.UITests
         public void RightClick_Comment_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom comment = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
+            WpfCustom comment = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
             #endregion
 
             // Right-Click 'DsfCommentActivity' custom control
@@ -5949,7 +5959,7 @@ namespace Warewolf.UITests
         public void RightClick_Copy_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom pathCopy = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
+            WpfCustom pathCopy = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
             #endregion
 
             // Right-Click 'DsfPathCopy' custom control
@@ -5963,7 +5973,7 @@ namespace Warewolf.UITests
         public void RightClick_CountRecords_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom countRecordset = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset;
+            WpfCustom countRecordset = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset;
             #endregion
 
             // Right-Click 'DsfCountRecordsetActivity' custom control
@@ -5977,7 +5987,7 @@ namespace Warewolf.UITests
         public void RightClick_CreateJSON_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
+            WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
             #endregion
 
             // Right-Click 'DsfCreateJsonActivity' custom control
@@ -5991,7 +6001,7 @@ namespace Warewolf.UITests
         public void RightClick_CreateTool_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom pathCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
+            WpfCustom pathCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
             #endregion
 
             // Right-Click 'DsfPathCreate' custom control
@@ -6005,7 +6015,7 @@ namespace Warewolf.UITests
         public void RightClick_DataMerge_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom dataMerge = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
+            WpfCustom dataMerge = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
             #endregion
 
             // Right-Click 'DsfDataMergeActivity' custom control
@@ -6019,7 +6029,7 @@ namespace Warewolf.UITests
         public void RightClick_DataSplit_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom dataSplit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
+            WpfCustom dataSplit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
             #endregion
 
             // Right-Click 'DsfDataSplitActivity' custom control
@@ -6033,7 +6043,7 @@ namespace Warewolf.UITests
         public void RightClick_DateTime_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom dateTime = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
+            WpfCustom dateTime = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
             #endregion
 
             // Right-Click 'DsfDateTimeActivity' custom control
@@ -6047,7 +6057,7 @@ namespace Warewolf.UITests
         public void RightClick_DateTimeDifference_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom dateTimeDifference = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
+            WpfCustom dateTimeDifference = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
             #endregion
 
             // Right-Click 'DsfDateTimeDifferenceActivity' custom control
@@ -6061,7 +6071,7 @@ namespace Warewolf.UITests
         public void RightClick_Decision_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom decision = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision;
+            WpfCustom decision = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision;
             #endregion
 
             // Right-Click 'FlowDecision' custom control
@@ -6075,7 +6085,7 @@ namespace Warewolf.UITests
         public void RightClick_Delete_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom pathDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
+            WpfCustom pathDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
             #endregion
 
             // Right-Click 'DsfPathDelete' custom control
@@ -6089,7 +6099,7 @@ namespace Warewolf.UITests
         public void RightClick_DeleteRecord_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom deleteRecord = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord;
+            WpfCustom deleteRecord = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord;
             #endregion
 
             // Right-Click 'DsfDeleteRecordActivity' custom control
@@ -6103,7 +6113,7 @@ namespace Warewolf.UITests
         public void RightClick_DotNetDllConnector_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom dotNetDll = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
+            WpfCustom dotNetDll = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
             #endregion
 
             // Right-Click 'DsfDotNetDllActivity' custom control
@@ -6117,7 +6127,7 @@ namespace Warewolf.UITests
         public void RightClick_DropboxFileOperation_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom dropBox_DOWNLOAD = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD;
+            WpfCustom dropBox_DOWNLOAD = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD;
             #endregion
 
             // Right-Click 'DsfDropBoxFileActivity' custom control
@@ -6131,7 +6141,7 @@ namespace Warewolf.UITests
         public void RightClick_Email_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
+            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
             #endregion
 
             // Right-Click 'DsfSendEmailActivity' custom control
@@ -6145,7 +6155,7 @@ namespace Warewolf.UITests
         public void RightClick_ExecuteCommandLine_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
+            WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
             #endregion
 
             // Right-Click 'DsfExecuteCommandLineActivity' custom control
@@ -6199,7 +6209,7 @@ namespace Warewolf.UITests
         public void RightClick_FindIndex_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom findIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
+            WpfCustom findIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
             #endregion
 
             // Right-Click 'DsfIndexActivity' custom control
@@ -6213,7 +6223,7 @@ namespace Warewolf.UITests
         public void RightClick_FindRecordIndex_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom findRecordsIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex;
+            WpfCustom findRecordsIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex;
             #endregion
 
             // Right-Click 'DsfFindRecordsMultipleCriteriaActivity' custom control
@@ -6227,7 +6237,7 @@ namespace Warewolf.UITests
         public void RightClick_ForEach_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom forEach = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
+            WpfCustom forEach = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
             #endregion
 
             // Right-Click 'DsfForEachActivity' custom control
@@ -6241,7 +6251,7 @@ namespace Warewolf.UITests
         public void RightClick_FormatNumber_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom formatNumber = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
+            WpfCustom formatNumber = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
             #endregion
 
             // Right-Click 'DsfNumberFormatActivity' custom control
@@ -6255,7 +6265,7 @@ namespace Warewolf.UITests
         public void RightClick_Length_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom length = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
+            WpfCustom length = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
             #endregion
 
             // Right-Click 'DsfRecordsetLengthActivity' custom control
@@ -6269,7 +6279,7 @@ namespace Warewolf.UITests
         public void RightClick_Move_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom pathMove = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
+            WpfCustom pathMove = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
             #endregion
 
             // Right-Click 'DsfPathMove' custom control
@@ -6283,7 +6293,7 @@ namespace Warewolf.UITests
         public void RightClick_MySQLConnector_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom mySqlDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase;
+            WpfCustom mySqlDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase;
             #endregion
 
             // Right-Click 'DsfMySqlDatabaseActivity' custom control
@@ -6297,7 +6307,7 @@ namespace Warewolf.UITests
         public void RightClick_New_Workflow_Tab()
         {
             #region Variable Declarations
-            WpfTabPage workflowTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab;
+            WpfTabPage workflowTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab;
             #endregion
 
             // Right-Click 'Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi...' tab
@@ -6311,7 +6321,7 @@ namespace Warewolf.UITests
         public void RightClick_Random_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom random = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
+            WpfCustom random = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
             #endregion
 
             // Right-Click 'DsfRandomActivity' custom control
@@ -6325,7 +6335,7 @@ namespace Warewolf.UITests
         public void RightClick_ReadFile_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom fileRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
+            WpfCustom fileRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
             #endregion
 
             // Right-Click 'DsfFileRead' custom control
@@ -6339,7 +6349,7 @@ namespace Warewolf.UITests
         public void RightClick_ReadFolder_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom folderRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
+            WpfCustom folderRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
             #endregion
 
             // Right-Click 'DsfFolderRead' custom control
@@ -6353,7 +6363,7 @@ namespace Warewolf.UITests
         public void RightClick_Rename_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom pathRename = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
+            WpfCustom pathRename = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
             #endregion
 
             // Right-Click 'DsfPathRename' custom control
@@ -6367,7 +6377,7 @@ namespace Warewolf.UITests
         public void RightClick_Replace_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom replace = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
+            WpfCustom replace = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
             #endregion
 
             // Right-Click 'DsfReplaceActivity' custom control
@@ -6381,7 +6391,7 @@ namespace Warewolf.UITests
         public void RightClick_Sequence_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
+            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
             #endregion
 
             // Right-Click 'DsfSequenceActivity' custom control
@@ -6395,7 +6405,7 @@ namespace Warewolf.UITests
         public void RightClick_SharepointCreateListItem_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sharepointCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate;
+            WpfCustom sharepointCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate;
             #endregion
 
             // Right-Click 'SharepointCreateListItemActivity' custom control
@@ -6409,7 +6419,7 @@ namespace Warewolf.UITests
         public void RightClick_SharepointDelete_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sharepointDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete;
+            WpfCustom sharepointDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete;
             #endregion
 
             // Right-Click 'SharepointDeleteListItemActivity' custom control
@@ -6423,7 +6433,7 @@ namespace Warewolf.UITests
         public void RightClick_SharepointRead_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sharepointRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead;
+            WpfCustom sharepointRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead;
             #endregion
 
             // Right-Click 'SharepointReadListActivity' custom control
@@ -6437,7 +6447,7 @@ namespace Warewolf.UITests
         public void RightClick_SharepointUpdate_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sharepointUpdate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate;
+            WpfCustom sharepointUpdate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate;
             #endregion
 
             // Right-Click 'SharepointUpdateListItemActivity' custom control
@@ -6451,7 +6461,7 @@ namespace Warewolf.UITests
         public void RightClick_SortRecords_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sortRecords = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
+            WpfCustom sortRecords = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
             #endregion
 
             // Right-Click 'DsfSortRecordsActivity' custom control
@@ -6465,7 +6475,7 @@ namespace Warewolf.UITests
         public void RightClick_SQLConnector_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
+            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
             #endregion
 
             // Right-Click 'DsfSqlBulkInsertActivity' custom control
@@ -6479,7 +6489,7 @@ namespace Warewolf.UITests
         public void RightClick_SqlServerConnector_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
             #endregion
 
             // Right-Click 'DsfSqlServerDatabaseActivity' custom control
@@ -6493,7 +6503,7 @@ namespace Warewolf.UITests
         public void RightClick_Switch_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom switch1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
+            WpfCustom switch1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
             #endregion
 
             // Right-Click 'FlowSwitch`1[String]' custom control
@@ -6507,7 +6517,7 @@ namespace Warewolf.UITests
         public void RightClick_SystemInformation_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
+            WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
             #endregion
 
             // Right-Click 'DsfGatherSystemInformationActivity' custom control
@@ -6521,7 +6531,7 @@ namespace Warewolf.UITests
         public void RightClick_UniqueRecords_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom unique = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique;
+            WpfCustom unique = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique;
             #endregion
 
             // Right-Click 'DsfUniqueActivity' custom control
@@ -6535,7 +6545,7 @@ namespace Warewolf.UITests
         public void RightClick_Unzip_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom unZip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
+            WpfCustom unZip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
             #endregion
 
             // Right-Click 'DsfUnZip' custom control
@@ -6549,7 +6559,7 @@ namespace Warewolf.UITests
         public void RightClick_WebRequest_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
+            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
             // Right-Click 'DsfWebRequestActivity' custom control
@@ -6563,7 +6573,7 @@ namespace Warewolf.UITests
         public void RightClick_WriteFile_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
+            WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
             #endregion
 
             // Right-Click 'DsfFileWrite' custom control
@@ -6577,7 +6587,7 @@ namespace Warewolf.UITests
         public void RightClick_XPath_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
             #endregion
 
             // Right-Click 'DsfXPathActivity' custom control
@@ -6591,7 +6601,7 @@ namespace Warewolf.UITests
         public void RightClick_Zip_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom zip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
+            WpfCustom zip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
             #endregion
 
             // Right-Click 'DsfZip' custom control
@@ -6722,7 +6732,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfMenuItem deploy = this.MainStudioWindow.ExplorerContextMenu.Deploy;
-            WpfTabPage deployTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab;
+            WpfTabPage deployTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab;
             #endregion
 
             // Click 'Deploy' menu item
@@ -6739,9 +6749,9 @@ namespace Warewolf.UITests
         public void Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox()
         {
             #region Variable Declarations
-            WpfCustom databaseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox;
+            WpfCustom databaseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox;
             WpfCustom comboboxListItemAsDev2TestingDB = this.MainStudioWindow.ComboboxListItemAsDev2TestingDB;
-            WpfText uIDev2TestingDBText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIDev2TestingDBText;
+            WpfText uIDev2TestingDBText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIDev2TestingDBText;
             #endregion
 
             // Click 'DatabaseComboxBox' custom control
@@ -6761,8 +6771,8 @@ namespace Warewolf.UITests
         public void Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox()
         {
             #region Variable Declarations
-            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox;
-            WpfListItem listItem1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.ListItem1;
+            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox;
+            WpfListItem listItem1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.ListItem1;
             #endregion
 
             // Click 'SourcesComboBox' combo box
@@ -6779,8 +6789,8 @@ namespace Warewolf.UITests
         public void Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox()
         {
             #region Variable Declarations
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
+            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
+            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
             #endregion
 
             // Click 'ActionsComboBox' combo box
@@ -6800,8 +6810,8 @@ namespace Warewolf.UITests
         public void Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox()
         {
             #region Variable Declarations
-            WpfComboBox actionsCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox;
-            WpfListItem getCountriesListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox.GetCountriesListItem;
+            WpfComboBox actionsCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox;
+            WpfListItem getCountriesListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox.GetCountriesListItem;
             #endregion
 
             // Click 'ActionsComboBox' combo box
@@ -6821,10 +6831,10 @@ namespace Warewolf.UITests
         public void Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown()
         {
             #region Variable Declarations
-            WpfButton toggleDropdown = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
+            WpfButton toggleDropdown = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
             WpfCustom comboboxListItemAsHttp = this.MainStudioWindow.ComboboxListItemAsHttp;
-            WpfText httpSelectedItemText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.HttpSelectedItemText;
-            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
+            WpfText httpSelectedItemText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.HttpSelectedItemText;
+            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
             #endregion
 
             // Click 'ToggleButton' button
@@ -6864,10 +6874,10 @@ namespace Warewolf.UITests
         public void Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox()
         {
             #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
             WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
             WpfCustom comboboxListItemAsLocalhostConnected = this.MainStudioWindow.ComboboxListItemAsLocalhostConnected;
-            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
             #endregion
 
             // Click 'ToggleButton' button
@@ -6894,7 +6904,7 @@ namespace Warewolf.UITests
         public void Select_LoggingTab()
         {
             #region Variable Declarations
-            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
+            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
             #endregion
 
             // Click 'System.Windows.Controls.TabItem Header: Content:' tab
@@ -6908,9 +6918,9 @@ namespace Warewolf.UITests
         public void Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown()
         {
             #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.ToggleButton;
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.ToggleButton;
             WpfText microsoftSQLServerText = this.MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText;
-            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
+            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
             #endregion
 
             // Click 'ToggleButton' button
@@ -6948,10 +6958,10 @@ namespace Warewolf.UITests
         public void Select_NewDatabaseSource_FromSqlServerTool()
         {
             #region Variable Declarations
-            WpfButton newDbSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
-            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
-            WpfEdit userNameTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox;
-            WpfEdit passwordTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox;
+            WpfButton newDbSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
+            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
+            WpfEdit userNameTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox;
+            WpfEdit passwordTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox;
             #endregion
 
             // Click 'New' button
@@ -7058,7 +7068,7 @@ namespace Warewolf.UITests
         public void Select_NewSharepointSource_FromServer_Lookup()
         {
             #region Variable Declarations
-            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
             #endregion
 
             // Click 'UI__Database_AutoID' combo box
@@ -7124,8 +7134,8 @@ namespace Warewolf.UITests
         public void Select_Next_From_DotNet_DLL_Large_View_Action_Combobox()
         {
             #region Variable Declarations
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem nextListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.NextListItem;
+            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
+            WpfListItem nextListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.NextListItem;
             #endregion
 
             // Click 'ActionsComboBox' combo box
@@ -7173,7 +7183,7 @@ namespace Warewolf.UITests
         public void Select_PerfomanceCounterTab()
         {
             #region Variable Declarations
-            WpfTabPage perfomanceCounterTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab;
+            WpfTabPage perfomanceCounterTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab;
             #endregion
 
             // Click 'System.Windows.Controls.TabItem Header: Content:' tab
@@ -7187,10 +7197,10 @@ namespace Warewolf.UITests
         public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
         {
             #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
             WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
             WpfCustom comboboxListItemAsRemoteConnectionIntegration = this.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
-            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText;
             #endregion
 
             // Click 'ToggleButton' button
@@ -7217,10 +7227,10 @@ namespace Warewolf.UITests
         public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
         {
             #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
             WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
             WpfCustom comboboxListItemAsRemoteConnectionIntegration = this.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
-            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
             #endregion
 
             // Click 'ToggleButton' button
@@ -7247,10 +7257,10 @@ namespace Warewolf.UITests
         public void Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox()
         {
             #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
             WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
             WpfCustom comboboxListItemAsRemoteConnectionIntegrationConnected = this.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected;
-            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
             #endregion
 
             // Click 'ToggleButton' button
@@ -7277,8 +7287,8 @@ namespace Warewolf.UITests
         public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
         {
             #region Variable Declarations
-            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
+            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
             #endregion
 
             // Click 'RSAKLFSVRGENDEV' list item
@@ -7309,7 +7319,7 @@ namespace Warewolf.UITests
         public void Select_SecurityTab()
         {
             #region Variable Declarations
-            WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab;
+            WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab;
             #endregion
 
             // Click 'System.Windows.Controls.TabItem Header: Content:' tab
@@ -7337,8 +7347,8 @@ namespace Warewolf.UITests
         public void Select_SharepointTestServer()
         {
             #region Variable Declarations
-            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
-            WpfListItem sharepointTestServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server.SharepointTestServer;
+            WpfComboBox server = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server;
+            WpfListItem sharepointTestServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate.Server.SharepointTestServer;
             #endregion
 
             // Click 'UI__Database_AutoID' combo box
@@ -7369,8 +7379,8 @@ namespace Warewolf.UITests
         public void Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox()
         {
             #region Variable Declarations
-            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfListItem comboboxlistItemAsSystemObject = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject;
+            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
+            WpfListItem comboboxlistItemAsSystemObject = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject;
             #endregion
 
             // Click 'NamespaceComboBox' combo box
@@ -7393,8 +7403,8 @@ namespace Warewolf.UITests
         public void Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox()
         {
             #region Variable Declarations
-            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfListItem systemRandomListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem;
+            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
+            WpfListItem systemRandomListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem;
             #endregion
 
             // Click 'NamespaceComboBox' combo box
@@ -7415,7 +7425,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
-            WpfTabPage testsTabPage = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage;
+            WpfTabPage testsTabPage = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage;
             #endregion
 
             // Click 'Tests' menu item
@@ -7433,8 +7443,8 @@ namespace Warewolf.UITests
         public void Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox()
         {
             #region Variable Declarations
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
+            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
+            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
             #endregion
 
             // Click 'ActionsComboBox' combo box
@@ -7454,9 +7464,9 @@ namespace Warewolf.UITests
         public void Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist()
         {
             #region Variable Declarations
-            WpfListItem tSTCIREMOTE = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE;
-            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
-            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton;
+            WpfListItem tSTCIREMOTE = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE;
+            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton;
             #endregion
 
             // Click 'TST-CI-REMOTE' list item
@@ -7476,8 +7486,8 @@ namespace Warewolf.UITests
         public void Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox()
         {
             #region Variable Declarations
-            WpfComboBox sourcesCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox;
-            WpfListItem uITestingDBSourceListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox.UITestingDBSourceListItem;
+            WpfComboBox sourcesCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox;
+            WpfListItem uITestingDBSourceListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox.UITestingDBSourceListItem;
             #endregion
 
             // Click 'SourcesComboBox' combo box
@@ -7498,9 +7508,9 @@ namespace Warewolf.UITests
         public void Select_User_From_RunTestAs()
         {
             #region Variable Declarations
-            WpfRadioButton userRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UserRadioButton;
-            WpfEdit usernameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UsernameTextBoxEdit;
-            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.PasswordTextBoxEdit;
+            WpfRadioButton userRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UserRadioButton;
+            WpfEdit usernameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UsernameTextBoxEdit;
+            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.PasswordTextBoxEdit;
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
 
@@ -7518,13 +7528,39 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Show_Explorer_First_Item_Tests_With_Context_Menu - Use 'Show_Explorer_First_Item_Tests_With_Context_MenuParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Show Explorer First Item Tests With Context Menu")]
+        public void Show_Explorer_First_Item_Tests_With_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
+            WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+
+            // Verify that the 'Exists' property of 'Tests' menu item equals 'True'
+            Assert.AreEqual(this.Show_Explorer_First_Item_Tests_With_Context_MenuParams.TestsExists, tests.Exists, "View tests does not exist in explorer context menu.");
+
+            // Click 'Tests' menu item
+            Mouse.Click(tests, new Point(30, 11));
+
+            // Verify that the 'Exists' property of 'Create a new test' button equals 'True'
+            Assert.AreEqual(this.Show_Explorer_First_Item_Tests_With_Context_MenuParams.CreateTestButtonExists, createTestButton.Exists, "Create new test button does not exist on tests tab after openning it with the exp" +
+                    "lorer context menu.");
+        }
+        
+        /// <summary>
         /// Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox - Use 'Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues' to pass parameters into this method.
         /// </summary>
         [When(@"I Type 0 Into SQL Server Large View Inputs Row1 Data Textbox")]
         public void Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox()
         {
             #region Variable Declarations
-            WpfEdit dataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox;
+            WpfEdit dataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox;
             #endregion
 
             // Type '0' in 'Text' text box
@@ -7541,7 +7577,7 @@ namespace Warewolf.UITests
         public void Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox()
         {
             #region Variable Declarations
-            WpfEdit testDataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox;
+            WpfEdit testDataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox;
             #endregion
 
             // Type '0' in 'Text' text box
@@ -7558,8 +7594,8 @@ namespace Warewolf.UITests
         public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
-            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
+            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
             #endregion
 
             // Type 'rsaklfsvrgen' in 'Text' text box
@@ -7576,8 +7612,8 @@ namespace Warewolf.UITests
         public void Type_TestSite_into_Web_Source_Wizard_Address_Textbox()
         {
             #region Variable Declarations
-            WpfEdit addressTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox;
-            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton;
+            WpfEdit addressTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox;
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton;
             #endregion
 
             // Type 'http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx' in 'ServerTextBox' text box
@@ -7718,6 +7754,18 @@ namespace Warewolf.UITests
                     this.mClick_Assign_Tool_CollapseAllParams = new Click_Assign_Tool_CollapseAllParams();
                 }
                 return this.mClick_Assign_Tool_CollapseAllParams;
+            }
+        }
+        
+        public virtual Click_Assign_Tool_ExpandAllParams Click_Assign_Tool_ExpandAllParams
+        {
+            get
+            {
+                if ((this.mClick_Assign_Tool_ExpandAllParams == null))
+                {
+                    this.mClick_Assign_Tool_ExpandAllParams = new Click_Assign_Tool_ExpandAllParams();
+                }
+                return this.mClick_Assign_Tool_ExpandAllParams;
             }
         }
         
@@ -9581,18 +9629,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Open_Explorer_First_Item_Tests_With_Context_MenuParams Open_Explorer_First_Item_Tests_With_Context_MenuParams
-        {
-            get
-            {
-                if ((this.mOpen_Explorer_First_Item_Tests_With_Context_MenuParams == null))
-                {
-                    this.mOpen_Explorer_First_Item_Tests_With_Context_MenuParams = new Open_Explorer_First_Item_Tests_With_Context_MenuParams();
-                }
-                return this.mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
-            }
-        }
-        
         public virtual Open_Explorer_First_Item_With_Context_MenuParams Open_Explorer_First_Item_With_Context_MenuParams
         {
             get
@@ -10277,6 +10313,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Show_Explorer_First_Item_Tests_With_Context_MenuParams Show_Explorer_First_Item_Tests_With_Context_MenuParams
+        {
+            get
+            {
+                if ((this.mShow_Explorer_First_Item_Tests_With_Context_MenuParams == null))
+                {
+                    this.mShow_Explorer_First_Item_Tests_With_Context_MenuParams = new Show_Explorer_First_Item_Tests_With_Context_MenuParams();
+                }
+                return this.mShow_Explorer_First_Item_Tests_With_Context_MenuParams;
+            }
+        }
+        
         public virtual Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues
         {
             get
@@ -10456,6 +10504,8 @@ namespace Warewolf.UITests
         private Click_AddNew_Web_Source_From_toolParams mClick_AddNew_Web_Source_From_toolParams;
         
         private Click_Assign_Tool_CollapseAllParams mClick_Assign_Tool_CollapseAllParams;
+        
+        private Click_Assign_Tool_ExpandAllParams mClick_Assign_Tool_ExpandAllParams;
         
         private Click_Assign_Tool_Large_View_Done_ButtonParams mClick_Assign_Tool_Large_View_Done_ButtonParams;
         
@@ -10767,8 +10817,6 @@ namespace Warewolf.UITests
         
         private Open_Explorer_First_Item_Dependancies_With_Context_MenuParams mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams;
         
-        private Open_Explorer_First_Item_Tests_With_Context_MenuParams mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
-        
         private Open_Explorer_First_Item_With_Context_MenuParams mOpen_Explorer_First_Item_With_Context_MenuParams;
         
         private Open_ForEach_Large_ViewParams mOpen_ForEach_Large_ViewParams;
@@ -10882,6 +10930,8 @@ namespace Warewolf.UITests
         private Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams;
         
         private Select_User_From_RunTestAsParams mSelect_User_From_RunTestAsParams;
+        
+        private Show_Explorer_First_Item_Tests_With_Context_MenuParams mShow_Explorer_First_Item_Tests_With_Context_MenuParams;
         
         private Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
         
@@ -11134,6 +11184,31 @@ namespace Warewolf.UITests
         /// Set to 'Pressed' state 'CollapseAll' toggle button
         /// </summary>
         public bool CollapseAllToggleButtonPressed = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Assign_Tool_ExpandAll'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Assign_Tool_ExpandAllParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
+        /// </summary>
+        public bool ExpandAllToggleButtonExists = true;
+        
+        /// <summary>
+        /// Set to 'Pressed' state 'ExpandAll' toggle button
+        /// </summary>
+        public bool ExpandAllToggleButtonPressed = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+        /// </summary>
+        public bool MultiAssignExists = true;
         #endregion
     }
     
@@ -14611,26 +14686,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Open_Explorer_First_Item_Tests_With_Context_Menu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Explorer_First_Item_Tests_With_Context_MenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Tests' menu item equals 'True'
-        /// </summary>
-        public bool TestsExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Run All' button equals 'True'
-        /// </summary>
-        public bool RunAllButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Open_Explorer_First_Item_With_Context_Menu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15800,6 +15855,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Show_Explorer_First_Item_Tests_With_Context_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Show_Explorer_First_Item_Tests_With_Context_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Tests' menu item equals 'True'
+        /// </summary>
+        public bool TestsExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Create a new test' button equals 'True'
+        /// </summary>
+        public bool CreateTestButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -16129,18 +16204,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom ComboboxListItemAsRemoteConnectionIntegration
+        public ComboboxListItemAsRemoteConnectionIntegration ComboboxListItemAsRemoteConnectionIntegration
         {
             get
             {
                 if ((this.mComboboxListItemAsRemoteConnectionIntegration == null))
                 {
-                    this.mComboboxListItemAsRemoteConnectionIntegration = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mComboboxListItemAsRemoteConnectionIntegration.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mComboboxListItemAsRemoteConnectionIntegration.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
-                    this.mComboboxListItemAsRemoteConnectionIntegration.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mComboboxListItemAsRemoteConnectionIntegration = new ComboboxListItemAsRemoteConnectionIntegration(this);
                 }
                 return this.mComboboxListItemAsRemoteConnectionIntegration;
             }
@@ -16606,7 +16676,7 @@ namespace Warewolf.UITests
         
         private WpfText mComboboxListItemAsLocalhost;
         
-        private WpfCustom mComboboxListItemAsRemoteConnectionIntegration;
+        private ComboboxListItemAsRemoteConnectionIntegration mComboboxListItemAsRemoteConnectionIntegration;
         
         private WpfCustom mComboboxListItemAsLocalhostConnected;
         
@@ -23257,6 +23327,41 @@ namespace Warewolf.UITests
     {
         
         public SplitPaneMiddle(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
+            this.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public TabManSplitPane TabManSplitPane
+        {
+            get
+            {
+                if ((this.mTabManSplitPane == null))
+                {
+                    this.mTabManSplitPane = new TabManSplitPane(this);
+                }
+                return this.mTabManSplitPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TabManSplitPane mTabManSplitPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TabManSplitPane : WpfCustom
+    {
+        
+        public TabManSplitPane(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40524,18 +40629,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public ServiceTestView ServiceTestView
-        {
-            get
-            {
-                if ((this.mServiceTestView == null))
-                {
-                    this.mServiceTestView = new ServiceTestView(this);
-                }
-                return this.mServiceTestView;
-            }
-        }
-        
         public WpfButton CloseTestTabButton
         {
             get
@@ -40551,14 +40644,59 @@ namespace Warewolf.UITests
                 return this.mCloseTestTabButton;
             }
         }
+        
+        public WorkSurfaceContext9 WorkSurfaceContext
+        {
+            get
+            {
+                if ((this.mWorkSurfaceContext == null))
+                {
+                    this.mWorkSurfaceContext = new WorkSurfaceContext9(this);
+                }
+                return this.mWorkSurfaceContext;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfText mTabDescription;
         
-        private ServiceTestView mServiceTestView;
-        
         private WpfButton mCloseTestTabButton;
+        
+        private WorkSurfaceContext9 mWorkSurfaceContext;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WorkSurfaceContext9 : WpfCustom
+    {
+        
+        public WorkSurfaceContext9(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public ServiceTestView ServiceTestView
+        {
+            get
+            {
+                if ((this.mServiceTestView == null))
+                {
+                    this.mServiceTestView = new ServiceTestView(this);
+                }
+                return this.mServiceTestView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ServiceTestView mServiceTestView;
         #endregion
     }
     
@@ -40625,7 +40763,6 @@ namespace Warewolf.UITests
                 {
                     this.mDuplicateButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mDuplicateButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
                     this.mDuplicateButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -40934,6 +41071,30 @@ namespace Warewolf.UITests
                 return this.mTest3;
             }
         }
+        
+        public Test4 Test4
+        {
+            get
+            {
+                if ((this.mTest4 == null))
+                {
+                    this.mTest4 = new Test4(this);
+                }
+                return this.mTest4;
+            }
+        }
+        
+        public Test5 Test5
+        {
+            get
+            {
+                if ((this.mTest5 == null))
+                {
+                    this.mTest5 = new Test5(this);
+                }
+                return this.mTest5;
+            }
+        }
         #endregion
         
         #region Fields
@@ -40944,6 +41105,10 @@ namespace Warewolf.UITests
         private Test2 mTest2;
         
         private Test3 mTest3;
+        
+        private Test4 mTest4;
+        
+        private Test5 mTest5;
         #endregion
     }
     
@@ -40992,6 +41157,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ServiceTestModel";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -41224,6 +41390,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ServiceTestModel";
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -41458,6 +41625,472 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ServiceTestModel";
             this.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox TestEnabledSelector
+        {
+            get
+            {
+                if ((this.mTestEnabledSelector == null))
+                {
+                    this.mTestEnabledSelector = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mTestEnabledSelector.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Enable or Ignore this test";
+                    this.mTestEnabledSelector.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestEnabledSelector;
+            }
+        }
+        
+        public WpfButton RunButton
+        {
+            get
+            {
+                if ((this.mRunButton == null))
+                {
+                    this.mRunButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
+                    this.mRunButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mRunButton;
+            }
+        }
+        
+        public WpfButton StopButton
+        {
+            get
+            {
+                if ((this.mStopButton == null))
+                {
+                    this.mStopButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mStopButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Stop this test";
+                    this.mStopButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mStopButton;
+            }
+        }
+        
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this test";
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        
+        public WpfButton DisabledDeleteButton
+        {
+            get
+            {
+                if ((this.mDisabledDeleteButton == null))
+                {
+                    this.mDisabledDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDisabledDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Cannot delete an enabled test";
+                    this.mDisabledDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDisabledDeleteButton;
+            }
+        }
+        
+        public WpfText TestNameDisplay
+        {
+            get
+            {
+                if ((this.mTestNameDisplay == null))
+                {
+                    this.mTestNameDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mTestNameDisplay.SearchProperties[WpfText.PropertyNames.HelpText] = "Test Name";
+                    this.mTestNameDisplay.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestNameDisplay;
+            }
+        }
+        
+        public WpfText Pending
+        {
+            get
+            {
+                if ((this.mPending == null))
+                {
+                    this.mPending = new WpfText(this);
+                    #region Search Criteria
+                    this.mPending.SearchProperties[WpfText.PropertyNames.HelpText] = "Pending";
+                    this.mPending.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mPending;
+            }
+        }
+        
+        public WpfText Passing
+        {
+            get
+            {
+                if ((this.mPassing == null))
+                {
+                    this.mPassing = new WpfText(this);
+                    #region Search Criteria
+                    this.mPassing.SearchProperties[WpfText.PropertyNames.HelpText] = "Passed";
+                    this.mPassing.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mPassing;
+            }
+        }
+        
+        public WpfText Failing
+        {
+            get
+            {
+                if ((this.mFailing == null))
+                {
+                    this.mFailing = new WpfText(this);
+                    #region Search Criteria
+                    this.mFailing.SearchProperties[WpfText.PropertyNames.HelpText] = "Failed";
+                    this.mFailing.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mFailing;
+            }
+        }
+        
+        public WpfText Invalid
+        {
+            get
+            {
+                if ((this.mInvalid == null))
+                {
+                    this.mInvalid = new WpfText(this);
+                    #region Search Criteria
+                    this.mInvalid.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInvalid;
+            }
+        }
+        
+        public WpfText NeverRunDisplay
+        {
+            get
+            {
+                if ((this.mNeverRunDisplay == null))
+                {
+                    this.mNeverRunDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mNeverRunDisplay.SearchProperties[WpfText.PropertyNames.Name] = "Never run";
+                    this.mNeverRunDisplay.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mNeverRunDisplay;
+            }
+        }
+        
+        public WpfText RunTimeDisplay
+        {
+            get
+            {
+                if ((this.mRunTimeDisplay == null))
+                {
+                    this.mRunTimeDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mRunTimeDisplay.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mRunTimeDisplay;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mTestEnabledSelector;
+        
+        private WpfButton mRunButton;
+        
+        private WpfButton mStopButton;
+        
+        private WpfButton mDeleteButton;
+        
+        private WpfButton mDisabledDeleteButton;
+        
+        private WpfText mTestNameDisplay;
+        
+        private WpfText mPending;
+        
+        private WpfText mPassing;
+        
+        private WpfText mFailing;
+        
+        private WpfText mInvalid;
+        
+        private WpfText mNeverRunDisplay;
+        
+        private WpfText mRunTimeDisplay;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Test4 : WpfListItem
+    {
+        
+        public Test4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ServiceTestModel";
+            this.SearchProperties[WpfListItem.PropertyNames.Instance] = "4";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox TestEnabledSelector
+        {
+            get
+            {
+                if ((this.mTestEnabledSelector == null))
+                {
+                    this.mTestEnabledSelector = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mTestEnabledSelector.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Enable or Ignore this test";
+                    this.mTestEnabledSelector.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestEnabledSelector;
+            }
+        }
+        
+        public WpfButton RunButton
+        {
+            get
+            {
+                if ((this.mRunButton == null))
+                {
+                    this.mRunButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
+                    this.mRunButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mRunButton;
+            }
+        }
+        
+        public WpfButton StopButton
+        {
+            get
+            {
+                if ((this.mStopButton == null))
+                {
+                    this.mStopButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mStopButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Stop this test";
+                    this.mStopButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mStopButton;
+            }
+        }
+        
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this test";
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        
+        public WpfButton DisabledDeleteButton
+        {
+            get
+            {
+                if ((this.mDisabledDeleteButton == null))
+                {
+                    this.mDisabledDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDisabledDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Cannot delete an enabled test";
+                    this.mDisabledDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDisabledDeleteButton;
+            }
+        }
+        
+        public WpfText TestNameDisplay
+        {
+            get
+            {
+                if ((this.mTestNameDisplay == null))
+                {
+                    this.mTestNameDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mTestNameDisplay.SearchProperties[WpfText.PropertyNames.HelpText] = "Test Name";
+                    this.mTestNameDisplay.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestNameDisplay;
+            }
+        }
+        
+        public WpfText Pending
+        {
+            get
+            {
+                if ((this.mPending == null))
+                {
+                    this.mPending = new WpfText(this);
+                    #region Search Criteria
+                    this.mPending.SearchProperties[WpfText.PropertyNames.HelpText] = "Pending";
+                    this.mPending.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mPending;
+            }
+        }
+        
+        public WpfText Passing
+        {
+            get
+            {
+                if ((this.mPassing == null))
+                {
+                    this.mPassing = new WpfText(this);
+                    #region Search Criteria
+                    this.mPassing.SearchProperties[WpfText.PropertyNames.HelpText] = "Passed";
+                    this.mPassing.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mPassing;
+            }
+        }
+        
+        public WpfText Failing
+        {
+            get
+            {
+                if ((this.mFailing == null))
+                {
+                    this.mFailing = new WpfText(this);
+                    #region Search Criteria
+                    this.mFailing.SearchProperties[WpfText.PropertyNames.HelpText] = "Failed";
+                    this.mFailing.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mFailing;
+            }
+        }
+        
+        public WpfText Invalid
+        {
+            get
+            {
+                if ((this.mInvalid == null))
+                {
+                    this.mInvalid = new WpfText(this);
+                    #region Search Criteria
+                    this.mInvalid.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInvalid;
+            }
+        }
+        
+        public WpfText NeverRunDisplay
+        {
+            get
+            {
+                if ((this.mNeverRunDisplay == null))
+                {
+                    this.mNeverRunDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mNeverRunDisplay.SearchProperties[WpfText.PropertyNames.Name] = "Never run";
+                    this.mNeverRunDisplay.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mNeverRunDisplay;
+            }
+        }
+        
+        public WpfText RunTimeDisplay
+        {
+            get
+            {
+                if ((this.mRunTimeDisplay == null))
+                {
+                    this.mRunTimeDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mRunTimeDisplay.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mRunTimeDisplay;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mTestEnabledSelector;
+        
+        private WpfButton mRunButton;
+        
+        private WpfButton mStopButton;
+        
+        private WpfButton mDeleteButton;
+        
+        private WpfButton mDisabledDeleteButton;
+        
+        private WpfText mTestNameDisplay;
+        
+        private WpfText mPending;
+        
+        private WpfText mPassing;
+        
+        private WpfText mFailing;
+        
+        private WpfText mInvalid;
+        
+        private WpfText mNeverRunDisplay;
+        
+        private WpfText mRunTimeDisplay;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Test5 : WpfListItem
+    {
+        
+        public Test5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ServiceTestModel";
+            this.SearchProperties[WpfListItem.PropertyNames.Instance] = "5";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -41963,13 +42596,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WorkSurfaceContext9 WorkSurfaceContext
+        public WorkSurfaceContext10 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext9(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext10(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -41977,15 +42610,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WorkSurfaceContext9 mWorkSurfaceContext;
+        private WorkSurfaceContext10 mWorkSurfaceContext;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorkSurfaceContext9 : WpfCustom
+    public class WorkSurfaceContext10 : WpfCustom
     {
         
-        public WorkSurfaceContext9(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext10(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47333,6 +47966,43 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ComboboxListItemAsRemoteConnectionIntegration : WpfCustom
+    {
+        
+        public ComboboxListItemAsRemoteConnectionIntegration(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsMicrosoftSQLServer : WpfCustom
     {
         
@@ -47526,13 +48196,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WorkSurfaceContext10 WorkSurfaceContext
+        public WorkSurfaceContext11 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext10(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext11(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -47540,15 +48210,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WorkSurfaceContext10 mWorkSurfaceContext;
+        private WorkSurfaceContext11 mWorkSurfaceContext;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorkSurfaceContext10 : WpfCustom
+    public class WorkSurfaceContext11 : WpfCustom
     {
         
-        public WorkSurfaceContext10(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext11(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
