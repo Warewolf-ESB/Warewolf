@@ -33,6 +33,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5176818D-D7C0-454B-BC12-FD619C57811C}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
+		TestScripts\Tests\CodedUITestBuilder.config.bat = TestScripts\Tests\CodedUITestBuilder.config.bat
 		TestScripts\Tests\Compile All Tests.bat = TestScripts\Tests\Compile All Tests.bat
 		TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat = TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat
 		TestScripts\Tests\Run-All-Acceptance-Tests.ps1 = TestScripts\Tests\Run-All-Acceptance-Tests.ps1

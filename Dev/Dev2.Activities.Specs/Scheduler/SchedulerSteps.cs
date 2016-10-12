@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Principal;
@@ -67,25 +66,6 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)"" and group ""(.*)""")]
         public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password, string groupName)
         {
-            const string Localscheduleradmin = "LocalSchedulerAdmin";
-            if (AccountExists(Localscheduleradmin))
-            {
-                DirectoryEntry localDirectory = new DirectoryEntry("WinNT://" + Environment.MachineName);
-                DirectoryEntries users = localDirectory.Children;
-                DirectoryEntry user = users.Find(Localscheduleradmin);
-                users.Remove(user);
-
-            }
-            CreateLocalWindowsAccount(Localscheduleradmin, "987Sched#@!", "Warewolf Administrators");
-            try
-            {
-                Dev2LocalSecurityWrapper lsa = new Dev2LocalSecurityWrapper();
-                lsa.SetRight(Localscheduleradmin, "SeBatchLogonRight");
-            }
-            catch (Exception)
-            {
-                //
-            }
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", password);
         }
@@ -93,36 +73,16 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)""")]
         public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password)
         {
-            //const string Localscheduleradmin = "LocalSchedulerAdmin";
-            string groupname = "";
             if (userName.Contains('\\'))
             {
                 var strings = userName.Split('\\');
-                groupname = strings.First();
                 userName = strings.Last();
 
-            }
-            if (AccountExists(userName))
-            {
-                DirectoryEntry localDirectory = new DirectoryEntry("WinNT://" + Environment.MachineName);
-                DirectoryEntries users = localDirectory.Children;
-                DirectoryEntry user = users.Find(userName);
-                users.Remove(user);
-
-            }
-            CreateLocalWindowsAccount(userName, password, groupname);
-            try
-            {
-                Dev2LocalSecurityWrapper lsa = new Dev2LocalSecurityWrapper();
-                lsa.SetRight(userName, "SeBatchLogonRight");
-            }
-            catch (Exception)
-            {
-                //
             }
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", password);
         }
+        
 
         [Given(@"""(.*)"" has a Schedule of")]
         public void GivenHasAScheduleOf(string scheduleName, Table table)
