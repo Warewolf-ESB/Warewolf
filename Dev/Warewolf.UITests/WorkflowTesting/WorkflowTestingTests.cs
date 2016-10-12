@@ -10,100 +10,80 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class WorkflowTestingTests
     {
-        const string TestName = "HelloWorld_Test";
-        const string DuplicateTestName = "2nd_HelloWorld_Test";
-        const string Testing123 = "Testing123";
         const string HelloWorld = "Hello World";
 
         [TestMethod]
-        public void Create_And_Run_New_Failing_Test()
+        public void Run_Failing_Test()
         {
-            UIMap.TryCloseWorkflowTab();
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            UIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Exists, "No tests on workflow testing tab after clicking new tests button.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TabDescription.DisplayText.Contains("*"), "Test tab title does not contain unsaved star.");
-            UIMap.Click_First_Test_Run_Button();
+            Assert.AreEqual("Blank Input", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestNameDisplay.DisplayText, "First 'Hello World' test is not 'Blank Input' as expected.");
+            UIMap.Click_Test_Run_Button(1);
             Point point;
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), "Test passing icon is not displayed after running a passing test.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Failing.TryGetClickablePoint(out point), "Test failing icon is not displayed after running a failing test.");
         }
 
         [TestMethod]
-        public void Create_And_Run_New_Passing_Test()
+        public void Run_Passing_Test()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            UIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Exists, "No tests on workflow testing tab after clicking new tests button.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TabDescription.DisplayText.Contains("*"), "Test tab title does not contain unsaved star.");
-            UIMap.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest();
-            UIMap.Enter_Text_Into_Workflow_Tests_Output_Row1_Value_Textbox_As_CodedUITest();
-            UIMap.Click_First_Test_Run_Button();
+            Assert.AreEqual("Valid Input", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.TestNameDisplay.DisplayText, "Third 'Hello World' test is not 'Valid Input' as expected.");
+            UIMap.Click_Test_Run_Button(3);
             Point point;
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), "Test failing icon is not displayed after running a failing test.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Passing.TryGetClickablePoint(out point), "Test passing icon is not displayed after running a passing test.");
         }
 
         [TestMethod]
         public void Show_Duplicate_Test_Dialog()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
+            Assert.AreEqual("Blank Input", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestNameDisplay.DisplayText, "First 'Hello World' test is not 'Blank Input' as expected.");
             UIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Exists, "No first test on workflow testing tab.");
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            UIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2.Exists, "No second test on workflow testing tab.");
-            UIMap.Update_Test_Name("Test 1");
+            UIMap.Update_Test_Name("Blank Input");
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No duplicate test error dialog when saving a test with the name of an existing test.");
+            UIMap.Click_MessageBox_OK();
         }
 
         [TestMethod]
-        public void Save_Before_Running_Tests_Dialog()
+        public void Show_Save_Before_Running_Tests_Dialog()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             UIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Exists, "No first test on workflow testing tab.");
             UIMap.Click_Workflow_Testing_Tab_Run_All_Button();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No save before running tests error dialog when clicking run all button while a test is unsaved.");
+            UIMap.Click_MessageBox_OK();
         }
 
         [TestMethod]
         public void RunTestAsSpecificUser()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            UIMap.Click_Create_New_Tests(true);
-            UIMap.Update_Test_Name(TestName);
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "This test expects 'Hello World' to have at least 1 existing test.");
+            UIMap.Select_First_Test();
             UIMap.Select_User_From_RunTestAs();
             UIMap.Enter_RunAsUser_Username_And_Password();
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            UIMap.Click_RunAll_Button();
+            UIMap.Click_Run_Test_Button(TestResultEnum.Pass);
         }
 
         [TestMethod]
         public void Delete_Test()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4), "This test expects 'Hello World' to have just 3 existing tests.");
             UIMap.Click_Create_New_Tests(true);
-            UIMap.Click_EnableDisable_This_Test_CheckBox(true);
+            UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             UIMap.Click_Delete_Test_Button();
             UIMap.Click_Yes_On_The_Confirm_Delete();
         }
 
         [TestMethod]
-        public void RunTestsWithDuplicatedName()
+        public void Click_Duplicate_Test_Button()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            UIMap.Click_Create_New_Tests(true);
-            UIMap.Update_Test_Name(TestName);
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4), "This test expects 'Hello World' to have just 3 existing tests.");
+            UIMap.Select_First_Test();
             UIMap.Click_Duplicate_Test_Button();
-            UIMap.Update_Test_Name(TestName);
-            UIMap.Select_Test(2);
-            UIMap.Click_Run_Test_Button(expectedTestResultEnum: TestResultEnum.Fail, instance: 2);
-            UIMap.Click_MessageBox_OK();
-            UIMap.Update_Test_Name(DuplicateTestName);
-            UIMap.Select_Test(2);
-            UIMap.Click_Run_Test_Button(instance: 2);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
         }
         
         #region Additional test attributes
@@ -115,15 +95,6 @@ namespace Warewolf.UITests
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-        }
-
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= UIMap.OnError;
-            UIMap.TryRemoveTests();
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
-            File.Delete(resourcesFolder + @"\" + Testing123 + ".xml");
         }
 
         UIMap UIMap
