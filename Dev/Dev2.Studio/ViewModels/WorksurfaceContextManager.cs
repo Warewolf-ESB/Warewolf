@@ -44,6 +44,7 @@ using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.ViewModels;
 using Infragistics.Windows.DockManager.Events;
+using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 // ReSharper disable InconsistentNaming
@@ -100,7 +101,7 @@ namespace Dev2.Studio.ViewModels
         void AddSettingsWorkSurface();
 
         void AddSchedulerWorkSurface();
-        void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
+        void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel);
 
         void AddWorkspaceItem(IContextualResourceModel model);
 
@@ -894,11 +895,41 @@ namespace Dev2.Studio.ViewModels
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 
-        public void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null)
+        public void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
         {
-            var schedulerViewModel = ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
-            schedulerViewModel.CreateNewTask();
-            schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
+            if (resourceModel != null)
+            {
+                WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateEnvKey(WorkSurfaceContext.Scheduler, ActiveServer.EnvironmentID) as WorkSurfaceKey;
+                var workSurfaceContextViewModel = FindWorkSurfaceContextViewModel(key);
+                if (workSurfaceContextViewModel != null)
+                {
+                    var workSurfaceViewModel = workSurfaceContextViewModel.WorkSurfaceViewModel;
+                    if (workSurfaceViewModel != null)
+                    {
+                        var findWorkSurfaceContextViewModel = (SchedulerViewModel) workSurfaceViewModel;
+                        
+                        if (findWorkSurfaceContextViewModel.IsDirty)
+                        {
+                            _mainViewModel.PopupProvider.Show(Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskMessage, 
+                                Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskHeader, 
+                                MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                            ActivateAndReturnWorkSurfaceIfPresent(key);
+                        }
+                        else
+                        {
+                            ActivateAndReturnWorkSurfaceIfPresent(key);
+                            findWorkSurfaceContextViewModel.CreateNewTask();
+                            findWorkSurfaceContextViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
+                        }
+                    }
+                }
+                else
+                {
+                    var schedulerViewModel = ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
+                    schedulerViewModel.CreateNewTask();
+                    schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
+                }
+            }
         }
 
         public void AddWorkspaceItem(IContextualResourceModel model)

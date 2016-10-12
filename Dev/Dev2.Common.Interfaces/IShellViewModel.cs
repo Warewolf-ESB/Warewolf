@@ -64,5 +64,8 @@ namespace Dev2.Common.Interfaces
         void CreateTest(Guid resourceId);
         void RunAllTests(Guid resourceId);
         void CloseResourceTestView(Guid resourceId, Guid serverId, Guid environmentId);
+        void BrowserDebug(Guid resourceId, IServer server);
+        void StudioDebug(Guid resourceId, IServer server);
+        void CopyUrlLink(Guid resourceId, IServer server);
     }
 }
