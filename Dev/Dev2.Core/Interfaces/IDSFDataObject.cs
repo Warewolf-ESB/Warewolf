@@ -104,5 +104,6 @@ namespace Dev2.Interfaces
         bool RemoteNonDebugInvoke { get; set; }
         bool StopExecution { get; set; }
         IServiceTestModelTO ServiceTest { get; set; }
+        List<Guid> TestsResourceIds { get; set; }
     }
 }

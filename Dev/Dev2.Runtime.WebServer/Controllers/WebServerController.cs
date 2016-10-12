@@ -64,8 +64,8 @@ namespace Dev2.Runtime.WebServer.Controllers
             // DO NOT replace {folder} with {type} in route mapping --> {type} is a query string parameter!
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", string.Format("{0}/{1}", folder, file) }
+                { "website", website },
+                { "path", $"{folder}/{file}" }
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
@@ -78,7 +78,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             // DO NOT replace {folder} with {type} in route mapping --> {type} is a query string parameter!
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
+                { "website", website },
                 { "path", path }
             };
 
@@ -91,8 +91,8 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", string.Format("content/{0}", file) }
+                { "website", website },
+                { "path", $"content/{file}" }
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
@@ -104,8 +104,8 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", string.Format("images/{0}", file) }
+                { "website", website },
+                { "path", $"images/{file}" }
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
@@ -117,8 +117,8 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", string.Format("scripts/{0}", file) }
+                { "website", website },
+                { "path", $"scripts/{file}" }
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
@@ -130,8 +130,8 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", string.Format("views/{0}", file) }
+                { "website", website },
+                { "path", $"views/{file}" }
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
@@ -144,7 +144,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             // DO NOT replace {method} with {action} in route mapping --> {action} is a reserved placeholder!
             var requestVariables = new NameValueCollection
             {
-                { "website", __website__ }, 
+                { "website", __website__ },
                 { "path", __path__ },
                 { "name", __name__ },
                 { "action", __method__ },
@@ -160,20 +160,20 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             return ExecuteWorkflow(__name__, false);
         }
-        
-        private HttpResponseMessage ExecuteWorkflow(string __name__,bool isPublic)
+
+        private HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic)
         {
 
-            if(__name__.EndsWith("apis.json"))
+            if (__name__.EndsWith("apis.json"))
             {
-                var path = __name__.Split(new []{"/apis.json"},StringSplitOptions.RemoveEmptyEntries);
-                if(path.Any())
+                var path = __name__.Split(new[] { "/apis.json" }, StringSplitOptions.RemoveEmptyEntries);
+                if (path.Any())
                 {
                     if (path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
                     {
                         path[0] = null;
                     }
-                    
+
                 }
                 var requestVar = new NameValueCollection
                 {
@@ -186,31 +186,57 @@ namespace Dev2.Runtime.WebServer.Controllers
             {
                 { "servicename", __name__ }
             };
-            
+
 
             return Request.Method == HttpMethod.Post
                 ? ProcessRequest<WebPostRequestHandler>(requestVariables)
                 : ProcessRequest<WebGetRequestHandler>(requestVariables);
-        } 
-        
+        }
+
+        private HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
+        {
+
+            var requestVariables = new NameValueCollection
+            {
+                { "path", __url__ },
+                {"isPublic",isPublic.ToString()},
+                {"servicename","*" }
+            };
+
+            var httpResponseMessage = ProcessRequest<WebGetRequestHandler>(requestVariables);
+            return httpResponseMessage;
+        }
+
 
         [HttpGet]
         [HttpPost]
         [Route("Secure/{*__name__}")]
         public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
         {
-          return ExecuteWorkflow(__name__,false);
-        }  
-        
-        
+            if (Request?.RequestUri != null)
+            {
+                var requestUri = Request.RequestUri;
+                if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase))
+                    return ExecuteFolderTests(requestUri.ToString(), false);
+            }
+            return ExecuteWorkflow(__name__, false);
+        }
+
+
         [HttpGet]
         [HttpPost]
         [Route("Public/{*__name__}")]
         public HttpResponseMessage ExecutePublicWorkflow(string __name__)
         {
-          return ExecuteWorkflow(__name__,true);
+            if (Request?.RequestUri != null)
+            {
+                var requestUri = Request.RequestUri;
+                if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase))
+                    return ExecuteFolderTests(requestUri.ToString(), true);
+            }
+            return ExecuteWorkflow(__name__, true);
         }
-        
+
         [HttpGet]
         [HttpPost]
         [Route("internal/getlogfile")]
@@ -226,7 +252,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var requestVariables = new NameValueCollection();
             return ProcessRequest<GetApisJsonServiceHandler>(requestVariables);
-        } 
+        }
 
     }
 }
