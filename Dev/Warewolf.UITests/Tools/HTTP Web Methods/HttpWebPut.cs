@@ -7,6 +7,7 @@ namespace Warewolf.UITests.Tools
     public class HttpWebPut
     {
         const string WebSourceName = "UITestingWebSource";
+        const string WebPutName = "UITestingWebPutService";
 
         [TestMethod]
 		[TestCategory("Tools")]
@@ -18,7 +19,9 @@ namespace Warewolf.UITests.Tools
             Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
             Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
             Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
+            Uimap.Save_With_Ribbon_Button_And_Dialog(WebPutName);
             Uimap.Click_Workflow_ExpandAll();
+
             //Uimap.Click_PutWeb_GenerateOutputs_Button();
             //Uimap.Click_PutWeb_Paste_Response_Button();
             //Uimap.Click_PutWeb_Cancel_Button();
@@ -36,6 +39,11 @@ namespace Warewolf.UITests.Tools
             Uimap.InitializeABlankWorkflow();
         }
 
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            //Uimap.TryRemoveFromExplorer(WebPutName);
+        }
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.

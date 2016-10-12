@@ -11,6 +11,10 @@ namespace Warewolf.UITests.Tools
         public void SysInfoToolUITest()
         {
             UIMap.Drag_Toolbox_System_Information_Onto_DesignSurface();
+            UIMap.Open_System_Information_Tool_Large_View();
+            UIMap.Enter_Variable_On_System_Information_Tool_Large_View();
+            UIMap.Click_System_Information_Tool_Done_Button();
+            UIMap.Press_F6();
             UIMap.Open_System_Information_Tool_Qvi_Large_View();
         }
 
@@ -25,7 +29,12 @@ namespace Warewolf.UITests.Tools
 #endif
             UIMap.InitializeABlankWorkflow();
         }
-        
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         public TestContext TestContext
         {
             get

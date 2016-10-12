@@ -6,7 +6,8 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class HttpWebPost
     {
-        const string WebSourceName = "UITestingWebSourceFromTool";
+        const string WebSourceName = "UITestingWebSource";
+        const string WebPostName = "UITestingWebPostSource";
 
         [TestMethod]
 		[TestCategory("Tools")]
@@ -17,6 +18,10 @@ namespace Warewolf.UITests.Tools
             Uimap.Click_AddNew_Web_Source_From_tool();
             Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
             Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
+            Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
+            Uimap.Save_With_Ribbon_Button_And_Dialog(WebPostName);
+            Uimap.Click_Workflow_ExpandAll();
+
             Uimap.Click_PostWeb_GenerateOutputs_Button();
             Uimap.Click_PostWeb_Paste_Response_Button();
             Uimap.Click_PostWeb_Cancel_Button();
