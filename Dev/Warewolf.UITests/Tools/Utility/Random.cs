@@ -14,9 +14,11 @@ namespace Warewolf.UITests.Tools
             UIMap.Enter_Dice_Roll_Values();
             UIMap.Enter_Result_Variable_On_Random_Tool();
             UIMap.Press_F6();
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             UIMap.Select_Letters_From_Random_Type_Combobox();
             UIMap.Enter_Text_Into_Random_Length();
             UIMap.Press_F6();
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             UIMap.Select_GUID_From_Random_Type_Combobox();
         }
 
