@@ -65,6 +65,11 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.BrowserDebug(resourceId, server);
         }
 
+        public void ScheduleCommand(Guid resourceId)
+        {
+            _shellViewModel.NewSchedule(resourceId);
+        }
+
         public void RunAllTestsCommand(Guid resourceId)
         {
             _shellViewModel.RunAllTests(resourceId);

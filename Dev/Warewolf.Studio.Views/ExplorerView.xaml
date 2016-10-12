@@ -627,6 +627,18 @@
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
+                                                    <ig:XamMenuItem Name="Schedule"
+                                                                    Command="{Binding Path=Data.ScheduleCommand}"
+                                                                    Header="Schedule"
+                                                                    IsEnabled="{Binding IsCommandEnabled}"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeScheduleToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanCreateSource, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                                                     <ig:XamMenuItem Name="NewFolderFromItem"

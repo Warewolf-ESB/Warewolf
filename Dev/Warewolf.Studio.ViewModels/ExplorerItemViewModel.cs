@@ -272,6 +272,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 _explorerItemViewModelCommandController.DebugBrowserCommand(ResourceId, Server);
             });
+            ScheduleCommand = new DelegateCommand<string>(type =>
+            {
+                _explorerItemViewModelCommandController.ScheduleCommand(ResourceId);
+            });
             RunAllTestsCommand = new DelegateCommand<string>(type =>
             {
                 _explorerItemViewModelCommandController.RunAllTestsCommand(ResourceId);
@@ -780,6 +784,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand DebugStudioCommand { get; set; }
         public ICommand DebugBrowserCommand { get; set; }
+        public ICommand ScheduleCommand { get; set; }
         public ICommand RunAllTestsCommand { get; set; }
         public ICommand CopyUrlCommand { get; set; }
 
