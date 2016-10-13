@@ -34,6 +34,25 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
+        /// Click_HTTP_Post_Web_Tool_New_Button - Use 'Click_HTTP_Post_Web_Tool_New_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Click HTTP Post Web Tool New Button")]
+        public void Click_HTTP_Post_Web_Tool_New_Button()
+        {
+            #region Variable Declarations
+            WpfButton newSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.NewSourceButton;
+            WpfTabPage webSourceWizardTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab;
+            #endregion
+
+            // Click 'New' button
+            Mouse.Click(newSourceButton, new Point(17, 11));
+
+            // Verify that the 'Exists' property of 'Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte...' tab equals 'True'
+            Assert.AreEqual(this.Click_HTTP_Post_Web_Tool_New_ButtonParams.WebSourceWizardTabExists, webSourceWizardTab.Exists, "New web source wizard tab is not open after clicking create new web source from p" +
+                    "ost tool on the design surface.");
+        }
+        
+        /// <summary>
         /// Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1 - Use 'Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params' to pass parameters into this method.
         /// </summary>
         [When(@"I Assign Value To Variable With Assign Tool Small View Row 1")]
@@ -8994,6 +9013,18 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public virtual Click_HTTP_Post_Web_Tool_New_ButtonParams Click_HTTP_Post_Web_Tool_New_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_HTTP_Post_Web_Tool_New_ButtonParams == null))
+                {
+                    this.mClick_HTTP_Post_Web_Tool_New_ButtonParams = new Click_HTTP_Post_Web_Tool_New_ButtonParams();
+                }
+                return this.mClick_HTTP_Post_Web_Tool_New_ButtonParams;
+            }
+        }
+        
         public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
         {
             get
@@ -12212,6 +12243,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private Click_HTTP_Post_Web_Tool_New_ButtonParams mClick_HTTP_Post_Web_Tool_New_ButtonParams;
+        
         private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params;
         
         private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params;
@@ -12747,6 +12780,21 @@ namespace Warewolf.UITests
         private SwitchCaseDialog mSwitchCaseDialog;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_HTTP_Post_Web_Tool_New_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_HTTP_Post_Web_Tool_New_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte...' tab equals 'True'
+        /// </summary>
+        public bool WebSourceWizardTabExists = true;
         #endregion
     }
     
