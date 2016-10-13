@@ -13,6 +13,10 @@ namespace Warewolf.UITests.Tools
         {
             UIMap.Drag_Toolbox_Read_Folder_Onto_DesignSurface();
             UIMap.Open_Read_Folder_Tool_Large_View();
+            UIMap.Enter_Text_Into_Read_Tool();
+            UIMap.Press_F6();
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            UIMap.Click_Read_Done_Button();
         }
 
         #region Additional test attributes
@@ -26,7 +30,12 @@ namespace Warewolf.UITests.Tools
 #endif
             UIMap.InitializeABlankWorkflow();
         }
-        
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         public TestContext TestContext
         {
             get

@@ -12,6 +12,10 @@ namespace Warewolf.UITests.Tools
         {
             UIMap.Drag_Toolbox_Delete_Onto_DesignSurface();
             UIMap.Open_Delete_Tool_Large_View();
+            UIMap.Enter_Text_Into_Delete_Tool();
+            UIMap.Press_F6();
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            UIMap.Click_Delete_Done_Button();
         }
 
         #region Additional test attributes
@@ -25,7 +29,12 @@ namespace Warewolf.UITests.Tools
 #endif
             UIMap.InitializeABlankWorkflow();
         }
-
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
