@@ -34,17 +34,17 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
-        /// Click_Deploy_Tab_Source_Server_Connect_Button
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
         /// </summary>
-        [When(@"I Click Deploy Tab Source Server Connect Button")]
-        public void Click_Deploy_Tab_Source_Server_Connect_Button()
+        [When(@"I AssertMethod1")]
+        public void AssertMethod1()
         {
             #region Variable Declarations
-            WpfButton connectSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceConnectControl.ConnectSourceButton;
+            WpfCustom helloWorldWorkFlow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow;
             #endregion
 
-            // Click 'UI_SourceConnectServerbtn_AutoID' button
-            Mouse.Click(connectSourceButton, new Point(13, 8));
+            // Verify that the 'Exists' property of 'DsfWorkflowActivity' custom control equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.HelloWorldWorkFlowExists, helloWorldWorkFlow.Exists, "Hello World work flow does not exist after selecting OK from Service Picker");
         }
         
         /// <summary>
@@ -106,20 +106,37 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_AddNew_Web_Source_From_PostWeb_tool - Use 'Click_AddNew_Web_Source_From_PostWeb_toolParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Click AddNew Web Source From PostWeb tool")]
+        public void Click_AddNew_Web_Source_From_PostWeb_tool()
+        {
+            #region Variable Declarations
+            WpfButton newSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.NewSourceButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'New' button equals 'True'
+            Assert.AreEqual(this.Click_AddNew_Web_Source_From_PostWeb_toolParams.NewSourceButtonExists, newSourceButton.Exists, "NewButton does not exist");
+
+            // Click 'New' button
+            Mouse.Click(newSourceButton, new Point(30, 4));
+        }
+        
+        /// <summary>
         /// Click_AddNew_Web_Source_From_tool - Use 'Click_AddNew_Web_Source_From_toolParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click AddNew Web Source From tool")]
         public void Click_AddNew_Web_Source_From_tool()
         {
             #region Variable Declarations
-            WpfButton newButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.NewButton;
+            WpfButton newSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.NewSourceButton;
             #endregion
 
             // Verify that the 'Exists' property of 'New' button equals 'True'
-            Assert.AreEqual(this.Click_AddNew_Web_Source_From_toolParams.NewButtonExists, newButton.Exists, "NewButton does not exist");
+            Assert.AreEqual(this.Click_AddNew_Web_Source_From_toolParams.NewSourceButtonExists, newSourceButton.Exists, "NewButton does not exist");
 
             // Click 'New' button
-            Mouse.Click(newButton, new Point(30, 4));
+            Mouse.Click(newSourceButton, new Point(30, 4));
         }
         
         /// <summary>
@@ -843,6 +860,20 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
             Assert.AreEqual(this.Click_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Source server combobox.");
+        }
+        
+        /// <summary>
+        /// Click_Deploy_Tab_Source_Server_Connect_Button
+        /// </summary>
+        [When(@"I Click Deploy Tab Source Server Connect Button")]
+        public void Click_Deploy_Tab_Source_Server_Connect_Button()
+        {
+            #region Variable Declarations
+            WpfButton connectSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceConnectControl.ConnectSourceButton;
+            #endregion
+
+            // Click 'UI_SourceConnectServerbtn_AutoID' button
+            Mouse.Click(connectSourceButton, new Point(13, 8));
         }
         
         /// <summary>
@@ -8730,21 +8761,19 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethod1")]
-        public void AssertMethod1()
+        #region Properties
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
         {
-            #region Variable Declarations
-            WpfCustom helloWorldWorkFlow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'DsfWorkflowActivity' custom control equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.HelloWorldWorkFlowExists, helloWorldWorkFlow.Exists, "Hello World work flow does not exist after selecting OK from Service Picker");
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
         }
         
-        #region Properties
         public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
         {
             get
@@ -8778,6 +8807,18 @@ namespace Warewolf.UITests
                     this.mCheck_Public_AdministratorParams = new Check_Public_AdministratorParams();
                 }
                 return this.mCheck_Public_AdministratorParams;
+            }
+        }
+        
+        public virtual Click_AddNew_Web_Source_From_PostWeb_toolParams Click_AddNew_Web_Source_From_PostWeb_toolParams
+        {
+            get
+            {
+                if ((this.mClick_AddNew_Web_Source_From_PostWeb_toolParams == null))
+                {
+                    this.mClick_AddNew_Web_Source_From_PostWeb_toolParams = new Click_AddNew_Web_Source_From_PostWeb_toolParams();
+                }
+                return this.mClick_AddNew_Web_Source_From_PostWeb_toolParams;
             }
         }
         
@@ -11805,18 +11846,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -11927,11 +11956,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
         private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params;
         
         private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params;
         
         private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
+        
+        private Click_AddNew_Web_Source_From_PostWeb_toolParams mClick_AddNew_Web_Source_From_PostWeb_toolParams;
         
         private Click_AddNew_Web_Source_From_toolParams mClick_AddNew_Web_Source_From_toolParams;
         
@@ -12437,8 +12470,6 @@ namespace Warewolf.UITests
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -12456,6 +12487,21 @@ namespace Warewolf.UITests
         private SwitchCaseDialog mSwitchCaseDialog;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfWorkflowActivity' custom control equals 'True'
+        /// </summary>
+        public bool HelloWorldWorkFlowExists = true;
         #endregion
     }
     
@@ -12525,6 +12571,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_AddNew_Web_Source_From_PostWeb_tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_AddNew_Web_Source_From_PostWeb_toolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New' button equals 'True'
+        /// </summary>
+        public bool NewSourceButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_AddNew_Web_Source_From_tool'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12535,7 +12596,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Verify that the 'Exists' property of 'New' button equals 'True'
         /// </summary>
-        public bool NewButtonExists = true;
+        public bool NewSourceButtonExists = true;
         #endregion
     }
     
@@ -18034,21 +18095,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfWorkflowActivity' custom control equals 'True'
-        /// </summary>
-        public bool HelloWorldWorkFlowExists = true;
         #endregion
     }
     
@@ -64866,18 +64912,30 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfCustom LargeView
+        public WpfEdit ResponseTextbox
+        {
+            get
+            {
+                if ((this.mResponseTextbox == null))
+                {
+                    this.mResponseTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mResponseTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "ResponseTextbox";
+                    this.mResponseTextbox.SearchProperties[WpfEdit.PropertyNames.Instance] = "2";
+                    this.mResponseTextbox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mResponseTextbox;
+            }
+        }
+        
+        public LargeView10 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-                    this.mLargeView.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mLargeView = new LargeView10(this);
                 }
                 return this.mLargeView;
             }
@@ -64885,7 +64943,509 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfCustom mLargeView;
+        private WpfEdit mResponseTextbox;
+        
+        private LargeView10 mLargeView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LargeView10 : WpfCustom
+    {
+        
+        public LargeView10(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton CancelButton
+        {
+            get
+            {
+                if ((this.mCancelButton == null))
+                {
+                    this.mCancelButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCancelButton.SearchProperties[WpfButton.PropertyNames.Name] = "Cancel";
+                    this.mCancelButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCancelButton;
+            }
+        }
+        
+        public WpfButton PasteButton
+        {
+            get
+            {
+                if ((this.mPasteButton == null))
+                {
+                    this.mPasteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mPasteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "PasteButton";
+                    this.mPasteButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPasteButton;
+            }
+        }
+        
+        public Table2 Table
+        {
+            get
+            {
+                if ((this.mTable == null))
+                {
+                    this.mTable = new Table2(this);
+                }
+                return this.mTable;
+            }
+        }
+        
+        public WpfButton EditSourceButton
+        {
+            get
+            {
+                if ((this.mEditSourceButton == null))
+                {
+                    this.mEditSourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEditSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceEditButton";
+                    this.mEditSourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEditSourceButton;
+            }
+        }
+        
+        public WpfButton NewSourceButton
+        {
+            get
+            {
+                if ((this.mNewSourceButton == null))
+                {
+                    this.mNewSourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mNewSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceNewButton";
+                    this.mNewSourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewSourceButton;
+            }
+        }
+        
+        public WpfComboBox SourcesComboBox
+        {
+            get
+            {
+                if ((this.mSourcesComboBox == null))
+                {
+                    this.mSourcesComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mSourcesComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+                    this.mSourcesComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSourcesComboBox;
+            }
+        }
+        
+        public WpfButton GenerateOutputsButton
+        {
+            get
+            {
+                if ((this.mGenerateOutputsButton == null))
+                {
+                    this.mGenerateOutputsButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mGenerateOutputsButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestInputButton";
+                    this.mGenerateOutputsButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mGenerateOutputsButton;
+            }
+        }
+        
+        public WpfCheckBox OutputtoObjectCheckBox
+        {
+            get
+            {
+                if ((this.mOutputtoObjectCheckBox == null))
+                {
+                    this.mOutputtoObjectCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputtoObjectCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "IsObjectCheckBox";
+                    this.mOutputtoObjectCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mOutputtoObjectCheckBox;
+            }
+        }
+        
+        public QueryStringText2 QueryStringText
+        {
+            get
+            {
+                if ((this.mQueryStringText == null))
+                {
+                    this.mQueryStringText = new QueryStringText2(this);
+                }
+                return this.mQueryStringText;
+            }
+        }
+        
+        public WpfEdit RequestBody
+        {
+            get
+            {
+                if ((this.mRequestBody == null))
+                {
+                    this.mRequestBody = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mRequestBody.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "RequestBody";
+                    this.mRequestBody.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRequestBody;
+            }
+        }
+        
+        public WpfTable OutputsGridTable
+        {
+            get
+            {
+                if ((this.mOutputsGridTable == null))
+                {
+                    this.mOutputsGridTable = new WpfTable(this);
+                    #region Search Criteria
+                    this.mOutputsGridTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "OutputsMappingDataGrid";
+                    this.mOutputsGridTable.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mOutputsGridTable;
+            }
+        }
+        
+        public WpfEdit RecordSetTextBox
+        {
+            get
+            {
+                if ((this.mRecordSetTextBox == null))
+                {
+                    this.mRecordSetTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mRecordSetTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "RecordSetTextBox";
+                    this.mRecordSetTextBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRecordSetTextBox;
+            }
+        }
+        
+        public WpfTable InputDataGridTable
+        {
+            get
+            {
+                if ((this.mInputDataGridTable == null))
+                {
+                    this.mInputDataGridTable = new WpfTable(this);
+                    #region Search Criteria
+                    this.mInputDataGridTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+                    this.mInputDataGridTable.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mInputDataGridTable;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mCancelButton;
+        
+        private WpfButton mPasteButton;
+        
+        private Table2 mTable;
+        
+        private WpfButton mEditSourceButton;
+        
+        private WpfButton mNewSourceButton;
+        
+        private WpfComboBox mSourcesComboBox;
+        
+        private WpfButton mGenerateOutputsButton;
+        
+        private WpfCheckBox mOutputtoObjectCheckBox;
+        
+        private QueryStringText2 mQueryStringText;
+        
+        private WpfEdit mRequestBody;
+        
+        private WpfTable mOutputsGridTable;
+        
+        private WpfEdit mRecordSetTextBox;
+        
+        private WpfTable mInputDataGridTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Table2 : WpfTable
+    {
+        
+        public Table2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "Headers";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemRow17 ItemRow1
+        {
+            get
+            {
+                if ((this.mItemRow1 == null))
+                {
+                    this.mItemRow1 = new ItemRow17(this);
+                }
+                return this.mItemRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemRow17 mItemRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ItemRow17 : WpfRow
+    {
+        
+        public ItemRow17(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Name] = null;
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemValueCell2 ItemValueCell
+        {
+            get
+            {
+                if ((this.mItemValueCell == null))
+                {
+                    this.mItemValueCell = new ItemValueCell2(this);
+                }
+                return this.mItemValueCell;
+            }
+        }
+        
+        public HeaderCell2 HeaderCell
+        {
+            get
+            {
+                if ((this.mHeaderCell == null))
+                {
+                    this.mHeaderCell = new HeaderCell2(this);
+                }
+                return this.mHeaderCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemValueCell2 mItemValueCell;
+        
+        private HeaderCell2 mHeaderCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ItemValueCell2 : WpfCell
+    {
+        
+        public ItemValueCell2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ValueComboBox9 ValueComboBox
+        {
+            get
+            {
+                if ((this.mValueComboBox == null))
+                {
+                    this.mValueComboBox = new ValueComboBox9(this);
+                }
+                return this.mValueComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ValueComboBox9 mValueComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueComboBox9 : WpfComboBox
+    {
+        
+        public ValueComboBox9(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "To supply additional header information in your get request, put the header info " +
+                "in here.";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class HeaderCell2 : WpfCell
+    {
+        
+        public HeaderCell2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Header";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public HeaderComboBox3 HeaderComboBox
+        {
+            get
+            {
+                if ((this.mHeaderComboBox == null))
+                {
+                    this.mHeaderComboBox = new HeaderComboBox3(this);
+                }
+                return this.mHeaderComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private HeaderComboBox3 mHeaderComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class HeaderComboBox3 : WpfComboBox
+    {
+        
+        public HeaderComboBox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "To supply additional header information in your get request, put the header info " +
+                "in here.";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class QueryStringText2 : WpfText
+    {
+        
+        public QueryStringText2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "QueryStringLable";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit ItemEdit
+        {
+            get
+            {
+                if ((this.mItemEdit == null))
+                {
+                    this.mItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mItemEdit;
         #endregion
     }
     
@@ -64939,13 +65499,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public LargeView10 LargeView
+        public LargeView11 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView10(this);
+                    this.mLargeView = new LargeView11(this);
                 }
                 return this.mLargeView;
             }
@@ -64986,7 +65546,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private LargeView10 mLargeView;
+        private LargeView11 mLargeView;
         
         private WpfButton mDoneButton;
         
@@ -64995,10 +65555,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView10 : WpfCustom
+    public class LargeView11 : WpfCustom
     {
         
-        public LargeView10(UITestControl searchLimitContainer) : 
+        public LargeView11(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -65009,35 +65569,19 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfButton GenerateOutputsButton
+        public WpfTable InputDataGridTable
         {
             get
             {
-                if ((this.mGenerateOutputsButton == null))
+                if ((this.mInputDataGridTable == null))
                 {
-                    this.mGenerateOutputsButton = new WpfButton(this);
+                    this.mInputDataGridTable = new WpfTable(this);
                     #region Search Criteria
-                    this.mGenerateOutputsButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestInputButton";
-                    this.mGenerateOutputsButton.WindowTitles.Add("Warewolf");
+                    this.mInputDataGridTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+                    this.mInputDataGridTable.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mGenerateOutputsButton;
-            }
-        }
-        
-        public WpfButton DoneButton
-        {
-            get
-            {
-                if ((this.mDoneButton == null))
-                {
-                    this.mDoneButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "GenerateOutputsDoneButton";
-                    this.mDoneButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDoneButton;
+                return this.mInputDataGridTable;
             }
         }
         
@@ -65057,6 +65601,50 @@ namespace Warewolf.UITests
             }
         }
         
+        public Table3 Table
+        {
+            get
+            {
+                if ((this.mTable == null))
+                {
+                    this.mTable = new Table3(this);
+                }
+                return this.mTable;
+            }
+        }
+        
+        public WpfButton EditSourceButton
+        {
+            get
+            {
+                if ((this.mEditSourceButton == null))
+                {
+                    this.mEditSourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEditSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceEditButton";
+                    this.mEditSourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEditSourceButton;
+            }
+        }
+        
+        public WpfButton NewSourceButton
+        {
+            get
+            {
+                if ((this.mNewSourceButton == null))
+                {
+                    this.mNewSourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mNewSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceNewButton";
+                    this.mNewSourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewSourceButton;
+            }
+        }
+        
         public WpfComboBox SourcesComboBox
         {
             get
@@ -65066,40 +65654,423 @@ namespace Warewolf.UITests
                     this.mSourcesComboBox = new WpfComboBox(this);
                     #region Search Criteria
                     this.mSourcesComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
-                    this.mSourcesComboBox.WindowTitles.Add("Warewolf");
+                    this.mSourcesComboBox.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "Select the webservice host you want to use";
+                    this.mSourcesComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
                 return this.mSourcesComboBox;
             }
         }
         
-        public WpfButton NewButton
+        public WpfButton GenerateOutputsButton
         {
             get
             {
-                if ((this.mNewButton == null))
+                if ((this.mGenerateOutputsButton == null))
                 {
-                    this.mNewButton = new WpfButton(this);
+                    this.mGenerateOutputsButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mNewButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceNewButton";
-                    this.mNewButton.WindowTitles.Add("Warewolf");
+                    this.mGenerateOutputsButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestInputButton";
+                    this.mGenerateOutputsButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mNewButton;
+                return this.mGenerateOutputsButton;
+            }
+        }
+        
+        public WpfCheckBox OutputtoObjectCheckBox
+        {
+            get
+            {
+                if ((this.mOutputtoObjectCheckBox == null))
+                {
+                    this.mOutputtoObjectCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputtoObjectCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "IsObjectCheckBox";
+                    this.mOutputtoObjectCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mOutputtoObjectCheckBox;
+            }
+        }
+        
+        public QueryStringText3 QueryStringText
+        {
+            get
+            {
+                if ((this.mQueryStringText == null))
+                {
+                    this.mQueryStringText = new QueryStringText3(this);
+                }
+                return this.mQueryStringText;
+            }
+        }
+        
+        public WpfTable OutputsGridTable
+        {
+            get
+            {
+                if ((this.mOutputsGridTable == null))
+                {
+                    this.mOutputsGridTable = new WpfTable(this);
+                    #region Search Criteria
+                    this.mOutputsGridTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "OutputsMappingDataGrid";
+                    this.mOutputsGridTable.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mOutputsGridTable;
+            }
+        }
+        
+        public WpfEdit RecordSetTextBox
+        {
+            get
+            {
+                if ((this.mRecordSetTextBox == null))
+                {
+                    this.mRecordSetTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mRecordSetTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "RecordSetTextBox";
+                    this.mRecordSetTextBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRecordSetTextBox;
+            }
+        }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "GenerateOutputsDoneButton";
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Accept these results and continue";
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        
+        public WpfButton CancelButton
+        {
+            get
+            {
+                if ((this.mCancelButton == null))
+                {
+                    this.mCancelButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCancelButton.SearchProperties[WpfButton.PropertyNames.Name] = "Cancel";
+                    this.mCancelButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCancelButton;
+            }
+        }
+        
+        public WpfButton PasteButton
+        {
+            get
+            {
+                if ((this.mPasteButton == null))
+                {
+                    this.mPasteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mPasteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "PasteButton";
+                    this.mPasteButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPasteButton;
             }
         }
         #endregion
         
         #region Fields
-        private WpfButton mGenerateOutputsButton;
-        
-        private WpfButton mDoneButton;
+        private WpfTable mInputDataGridTable;
         
         private WpfButton mTestButton;
         
+        private Table3 mTable;
+        
+        private WpfButton mEditSourceButton;
+        
+        private WpfButton mNewSourceButton;
+        
         private WpfComboBox mSourcesComboBox;
         
-        private WpfButton mNewButton;
+        private WpfButton mGenerateOutputsButton;
+        
+        private WpfCheckBox mOutputtoObjectCheckBox;
+        
+        private QueryStringText3 mQueryStringText;
+        
+        private WpfTable mOutputsGridTable;
+        
+        private WpfEdit mRecordSetTextBox;
+        
+        private WpfButton mDoneButton;
+        
+        private WpfButton mCancelButton;
+        
+        private WpfButton mPasteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Table3 : WpfTable
+    {
+        
+        public Table3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "Headers";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemRow18 ItemRow1
+        {
+            get
+            {
+                if ((this.mItemRow1 == null))
+                {
+                    this.mItemRow1 = new ItemRow18(this);
+                }
+                return this.mItemRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemRow18 mItemRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ItemRow18 : WpfRow
+    {
+        
+        public ItemRow18(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Name] = null;
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemValueCell3 ItemValueCell
+        {
+            get
+            {
+                if ((this.mItemValueCell == null))
+                {
+                    this.mItemValueCell = new ItemValueCell3(this);
+                }
+                return this.mItemValueCell;
+            }
+        }
+        
+        public HeaderCell3 HeaderCell
+        {
+            get
+            {
+                if ((this.mHeaderCell == null))
+                {
+                    this.mHeaderCell = new HeaderCell3(this);
+                }
+                return this.mHeaderCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemValueCell3 mItemValueCell;
+        
+        private HeaderCell3 mHeaderCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ItemValueCell3 : WpfCell
+    {
+        
+        public ItemValueCell3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ValueComboBox10 ValueComboBox
+        {
+            get
+            {
+                if ((this.mValueComboBox == null))
+                {
+                    this.mValueComboBox = new ValueComboBox10(this);
+                }
+                return this.mValueComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ValueComboBox10 mValueComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueComboBox10 : WpfComboBox
+    {
+        
+        public ValueComboBox10(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "To supply additional header information in your get request, put the header info " +
+                "in here.";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class HeaderCell3 : WpfCell
+    {
+        
+        public HeaderCell3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Header";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public HeaderComboBox4 HeaderComboBox
+        {
+            get
+            {
+                if ((this.mHeaderComboBox == null))
+                {
+                    this.mHeaderComboBox = new HeaderComboBox4(this);
+                }
+                return this.mHeaderComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private HeaderComboBox4 mHeaderComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class HeaderComboBox4 : WpfComboBox
+    {
+        
+        public HeaderComboBox4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "To supply additional header information in your get request, put the header info " +
+                "in here.";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class QueryStringText3 : WpfText
+    {
+        
+        public QueryStringText3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "QueryStringLable";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit ItemEdit
+        {
+            get
+            {
+                if ((this.mItemEdit == null))
+                {
+                    this.mItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mItemEdit;
         #endregion
     }
     
@@ -65167,13 +66138,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView11 LargeView
+        public LargeView12 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView11(this);
+                    this.mLargeView = new LargeView12(this);
                 }
                 return this.mLargeView;
             }
@@ -65199,7 +66170,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView7 mSmallView;
         
-        private LargeView11 mLargeView;
+        private LargeView12 mLargeView;
         
         private WpfButton mDoneButton;
         #endregion
@@ -65325,10 +66296,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView11 : WpfCustom
+    public class LargeView12 : WpfCustom
     {
         
-        public LargeView11(UITestControl searchLimitContainer) : 
+        public LargeView12(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -65739,13 +66710,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView12 LargeView
+        public LargeView13 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView12(this);
+                    this.mLargeView = new LargeView13(this);
                 }
                 return this.mLargeView;
             }
@@ -65771,7 +66742,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView8 mSmallView;
         
-        private LargeView12 mLargeView;
+        private LargeView13 mLargeView;
         
         private WpfButton mDoneButton;
         #endregion
@@ -65897,10 +66868,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView12 : WpfCustom
+    public class LargeView13 : WpfCustom
     {
         
-        public LargeView12(UITestControl searchLimitContainer) : 
+        public LargeView13(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -66311,13 +67282,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView13 LargeView
+        public LargeView14 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView13(this);
+                    this.mLargeView = new LargeView14(this);
                 }
                 return this.mLargeView;
             }
@@ -66343,7 +67314,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView9 mSmallView;
         
-        private LargeView13 mLargeView;
+        private LargeView14 mLargeView;
         
         private WpfButton mDoneButton;
         #endregion
@@ -66469,10 +67440,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView13 : WpfCustom
+    public class LargeView14 : WpfCustom
     {
         
-        public LargeView13(UITestControl searchLimitContainer) : 
+        public LargeView14(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -66883,13 +67854,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView14 LargeView
+        public LargeView15 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView14(this);
+                    this.mLargeView = new LargeView15(this);
                 }
                 return this.mLargeView;
             }
@@ -66915,7 +67886,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView10 mSmallView;
         
-        private LargeView14 mLargeView;
+        private LargeView15 mLargeView;
         
         private WpfButton mDoneButton;
         #endregion
@@ -67093,10 +68064,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView14 : WpfCustom
+    public class LargeView15 : WpfCustom
     {
         
-        public LargeView14(UITestControl searchLimitContainer) : 
+        public LargeView15(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
