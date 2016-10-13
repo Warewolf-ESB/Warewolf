@@ -75,6 +75,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     };
                     item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
+                    ResourceCatalog.Instance.Reload();
                 }
             }
             catch(Exception e)
