@@ -8761,17 +8761,18 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
-        #region Properties
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I AssertMethod1")]
+        public void AssertMethod1()
         {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
+            #region Variable Declarations
+            WpfCustom helloWorldWorkFlow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'DsfWorkflowActivity' custom control equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.HelloWorldWorkFlowExists, helloWorldWorkFlow.Exists, "Hello World work flow does not exist after selecting OK from Service Picker");
         }
         
         public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params

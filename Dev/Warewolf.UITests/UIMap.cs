@@ -22,9 +22,9 @@ namespace Warewolf.UITests
 {
     public partial class UIMap
     {
-        const int _lenientSearchTimeout = 9000;
+        const int _lenientSearchTimeout = 30000;
         const int _lenientMaximumRetryCount = 3;
-        const int _strictSearchTimeout = 3000;
+        const int _strictSearchTimeout = 15000;
         const int _strictMaximumRetryCount = 1;
 
         public void SetPlaybackSettings()
@@ -49,11 +49,13 @@ namespace Warewolf.UITests
         public void CloseHangingDialogs()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+#if !DEBUG
             TryClickMessageBoxOK();
             TryCloseHangingDebugInputDialog();
             TryCloseHangingSaveDialog();
             TryCloseHangingServicePickerDialog();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner); 
+#endif
         }
 
         private void TryCloseHangingServicePickerDialog()
@@ -108,11 +110,12 @@ namespace Warewolf.UITests
             if (exceptionSource is UITestControl)
             {
                 UITestControl parent = (exceptionSource as UITestControl).Container;
-                while (parent != null && !parent.Exists)
+                var parentExists = ControlExistsNow(parent);
+                while (parent != null && !parentExists)
                 {
                     parent = parent.Container;
                 }
-                if (parent != null && parent.Exists && parent != MainStudioWindow)
+                if (parent != null && parentExists && parent != MainStudioWindow)
                 {
                     string parentProperties = string.Empty;
                     parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \'" + prop.PropertyValue + "\'\n"; });
@@ -163,8 +166,8 @@ namespace Warewolf.UITests
 
         public bool ControlExistsNow(UITestControl thisControl)
         {
-            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount;
-            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout;
+            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackError -= OnError;
             OnErrorHandlerDisabled = true;
             bool controlExists = false;
@@ -176,8 +179,8 @@ namespace Warewolf.UITests
             {
                 OnErrorHandlerDisabled = false;
                 Playback.PlaybackError += OnError;
-                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
-                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             }
             return controlExists;
         }
@@ -328,6 +331,7 @@ namespace Warewolf.UITests
             }
         }
 
+        [When(@"I Try Remove ""(*.)"" from Explorer")]
         public void TryRemoveFromExplorer(string ResourceName)
         {
             Filter_Explorer(ResourceName);
@@ -833,7 +837,7 @@ namespace Warewolf.UITests
                 }
             }
         }
-
+        
         [When("I Click New Workflow Ribbon Button")]
         public void Click_New_Workflow_Ribbon_Button()
         {
@@ -2398,6 +2402,11 @@ namespace Warewolf.UITests
             fieldValueCell.Text = FieldValueCellValue;
         }
 
+        public void Check_Debug_Input_Dialog_Remember_Inputs_Checkbox()
+        {
+            MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
+        }
+
         /// <summary>
         /// Enter_Person_Name_On_Assign_Object_tool - Use 'Enter_Person_Name_On_Assign_Object_toolParams' to pass parameters into this method.
         /// </summary>
@@ -2580,9 +2589,16 @@ namespace Warewolf.UITests
 
         private Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams mDrag_Toolbox_AssignObject_Onto_Sequence_ToolParams;
 
+        [Then("Deploy Was Successful")]
         public void Assert_Deploy_Was_Successful()
         {
             Assert.AreEqual("Resource Deployed Successfully", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText, "Deploy message text does not equal 'Resource Deployed Successfully'.");
+        }
+
+        [Then("Dice Is Selected InSettings Tab Permissions Row 1")]
+        public void Assert_Dice_Is_Selected_InSettings_Tab_Permissions_Row_1()
+        {
+            Assert.AreEqual("Dice1", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
     }
     /// <summary>
