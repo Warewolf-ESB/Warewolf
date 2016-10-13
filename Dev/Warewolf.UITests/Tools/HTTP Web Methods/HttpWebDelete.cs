@@ -11,58 +11,42 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("Tools")]
-        public void HttpWebDeleteToolUITest()
+        public void HttpWebDeleteToolClickLargeViewDoneButton()
         {
-            Uimap.Drag_DeleteWeb_Toolbox_Onto_Workflow_Surface();
-            Uimap.Open_DeleteWeb_Tool_Large_View();
-            Uimap.Click_AddNew_Web_Source_From_tool();
-            Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName, true);
-            Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WebDeleteName, true);
-            Uimap.Click_Workflow_ExpandAll();
-            Uimap.Select_UITestingSource_From_Web_Server_Large_View_Source_Combobox();
-            Uimap.Click_DeleteWeb_Generate_Outputs();
+            UIMap.Open_DeleteWeb_Tool_Large_View();
         }
-    
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void HttpWebDeleteToolClickAddNewSourceButtonOpensNewSourceWizardTab()
+        {
+            UIMap.Open_DeleteWeb_Tool_Large_View();
+            UIMap.Click_AddNew_Web_Source_From_tool();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void HttpWebDeleteToolClickTestInputsDoneButton()
+        {
+            UIMap.Open_DeleteWeb_Tool_Large_View();
+            UIMap.Select_UITestingSource_From_Web_Server_Large_View_Source_Combobox();
+            UIMap.Click_DeleteWeb_Generate_Outputs();
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
+            UIMap.Drag_DeleteWeb_Toolbox_Onto_Workflow_Surface();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.TryRemoveFromExplorer(WebSourceName);
-            Uimap.TryRemoveFromExplorer(WebDeleteName);
-        }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
-
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {

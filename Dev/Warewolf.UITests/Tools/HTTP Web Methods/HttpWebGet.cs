@@ -6,11 +6,9 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class HttpWebGet
     {
-        const string WebSourceName = "UITestingWebSource";
-
         [TestMethod]
 		[TestCategory("Tools")]
-        public void HttpWebGetToolOpenAndCloseLargeViewWithDoubleClickUITest()
+        public void HttpWebGetToolClickLargeViewDoneButton()
         {
             UIMap.Open_GET_Web_Connector_Tool_Large_View();
             UIMap.Click_GET_Web_Large_View_Done_Button();
@@ -26,7 +24,7 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("Tools")]
-        public void HttpWebGetToolUITest()
+        public void HttpWebGetToolClickTestInputsDoneButton()
         {
             UIMap.Open_GET_Web_Connector_Tool_Large_View();
             UIMap.Select_Second_to_Last_Source_From_GET_Web_Large_View_Source_Combobox();
@@ -46,14 +44,6 @@ namespace Warewolf.UITests.Tools
 #endif
             UIMap.InitializeABlankWorkflow();
             UIMap.Drag_GET_Web_Connector_Onto_DesignSurface();
-        }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-            UIMap.TryRemoveFromExplorer(WebSourceName);
         }
 
         UIMap UIMap
