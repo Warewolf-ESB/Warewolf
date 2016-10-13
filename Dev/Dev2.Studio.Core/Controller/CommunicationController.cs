@@ -9,10 +9,13 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.SignalR.Wrappers;
@@ -101,20 +104,44 @@ namespace Dev2.Controller
             try
             {
                 var executeCommand = ExecuteCommand<T>(connection, workspaceId, Guid.Empty);
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var message = executeCommand as ExecuteMessage;
+                var explorerRepositoryResult = executeCommand as IExplorerRepositoryResult;
+                if (message != null || explorerRepositoryResult != null)
+                {
+                    var executeMessage = message;
+                    var authorizationErrors = new List<string>
+                    {
+                        ErrorResource.NotAuthorizedToCreateException,
+                        ErrorResource.NotAuthorizedToViewException,
+                        ErrorResource.NotAuthorizedToAdministratorException,
+                        ErrorResource.NotAuthorizedToContributeException,
+                        ErrorResource.NotAuthorizedToDeployFromException,
+                        ErrorResource.NotAuthorizedToExecuteException,
+                        ErrorResource.NotAuthorizedToDeployToException,
+                    };
+                    var s = executeMessage?.Message.ToString() ?? explorerRepositoryResult.Message;
+                    var containsAuthorization = authorizationErrors.Any(err => string.Equals(s, err, StringComparison.InvariantCultureIgnoreCase));
+                    if (containsAuthorization)
+                    {
+                        ShowAuthorizationErrorPopup(s);
+                    }
+
+                }
 
                 return executeCommand;
             }
-            catch(ServiceNotAuthorizedException ex)
+            catch (ServiceNotAuthorizedException ex)
             {
-                var popupController = CustomContainer.Get<IPopupController>();
-                popupController?.Show(string.Format(ErrorResource.ServerDissconnected, connection.DisplayName) + Environment.NewLine +
-                                      ex.Message, "ServiceNotAuthorizedException", MessageBoxButton.OK,
-                                      MessageBoxImage.Error, "", false, false, true, false);
+                ShowAuthorizationErrorPopup(ex.Message);
                 return default(T);
-
             }
-            
+        }
+
+        private static void ShowAuthorizationErrorPopup(string ex)
+        {
+            var popupController = CustomContainer.Get<IPopupController>();
+            popupController?.Show(ex, "ServiceNotAuthorizedException", MessageBoxButton.OK,
+                MessageBoxImage.Error, "", false, false, true, false);
         }
 
         /// <summary>
@@ -139,7 +166,7 @@ namespace Dev2.Controller
                         {
                             var popupController = CustomContainer.Get<IPopupController>();
                             popupController?.Show(string.Format(ErrorResource.ServerDissconnected, connection.DisplayName) + Environment.NewLine +
-                                                  "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, 
+                                                  "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK,
                                                   MessageBoxImage.Information, "", false, false, true, false);
                         }
                     }
@@ -194,7 +221,7 @@ namespace Dev2.Controller
                     {
                         var popupController = CustomContainer.Get<IPopupController>();
                         popupController?.Show(string.Format(ErrorResource.ServerDissconnected, connection.DisplayName) + Environment.NewLine +
-                                              "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, 
+                                              "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK,
                                               MessageBoxImage.Information, "", false, false, true, false);
                     }
                 }
@@ -231,7 +258,7 @@ namespace Dev2.Controller
                     {
                         var popupController = CustomContainer.Get<IPopupController>();
                         popupController?.Show(string.Format(ErrorResource.ServerDissconnected, connection.DisplayName) + Environment.NewLine +
-                                              "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, 
+                                              "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK,
                                               MessageBoxImage.Information, "", false, false, true, false);
                     }
                 }
@@ -257,7 +284,7 @@ namespace Dev2.Controller
                 catch (NullReferenceException e)
                 {
                     Dev2Logger.Debug("fallback to non compressed", e);
-                return serializer.Deserialize<T>(payload);
+                    return serializer.Deserialize<T>(payload);
 
                 }
             }
@@ -278,7 +305,7 @@ namespace Dev2.Controller
                     {
                         var popupController = CustomContainer.Get<IPopupController>();
                         popupController?.Show(string.Format(ErrorResource.ServerDissconnected, connection.DisplayName) + Environment.NewLine +
-                                              "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, 
+                                              "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK,
                                               MessageBoxImage.Information, "", false, false, true, false);
                     }
                 }
@@ -297,7 +324,7 @@ namespace Dev2.Controller
                 var payload = connection.ExecuteCommand(toSend, workspaceId);
                 try
                 {
-                    if(payload==null || payload.Length == 0)
+                    if (payload == null || payload.Length == 0)
                     {
                         return default(T);
                     }

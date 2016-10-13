@@ -76,7 +76,7 @@ namespace Dev2.Services.Security
 
         }
 
-        public static string FindGroup(SecurityIdentifier searchSid)
+        private static string FindGroup(SecurityIdentifier searchSid)
         {
             using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
@@ -144,18 +144,12 @@ namespace Dev2.Services.Security
 
         protected virtual void RaisePermissionsChanged()
         {
-            if(PermissionsChanged != null)
-            {
-                PermissionsChanged(this, EventArgs.Empty);
-            }
+            PermissionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         protected virtual void OnPermissionsModified(PermissionsModifiedEventArgs e)
         {
-            if(_permissionsModifedHandler != null)
-            {
-                _permissionsModifedHandler(this, e);
-            }
+            _permissionsModifedHandler?.Invoke(this, e);
         }
 
         protected bool IsAuthorizedToConnect(IPrincipal principal)
@@ -168,7 +162,7 @@ namespace Dev2.Services.Security
             return IsAuthorized(context, () => GetGroupPermissions(principal, resource));
         }
 
-        public void DumpPermissionsOnError(IPrincipal principal)
+        protected void DumpPermissionsOnError(IPrincipal principal)
         {
             // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if(principal.Identity != null)
@@ -322,42 +316,36 @@ namespace Dev2.Services.Security
 
         bool DoFallBackCheck(IPrincipal principal)
         {
-            if (principal != null)
+            var username = principal?.Identity?.Name;
+            if (username != null)
             {
-                if (principal.Identity != null)
+                var theUser = username;
+                var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
+                if (domainChar >= 0)
                 {
-                    var username = principal.Identity.Name;
-                    if (username != null)
+                    theUser = username.Substring(domainChar + 1);
+                }
+                var windowsBuiltInRole = WindowsBuiltInRole.Administrator.ToString();
+                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                {
+                    ad.Children.SchemaFilter.Add("group");
+                    foreach (DirectoryEntry dChildEntry in ad.Children)
                     {
-                        var theUser = username;
-                        var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
-                        if (domainChar >= 0)
+
+                        if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole || dChildEntry.Name=="Administrators" || dChildEntry.Name=="BUILTIN\\Administrators")
                         {
-                            theUser = username.Substring(domainChar + 1);
-                        }
-                        var windowsBuiltInRole = WindowsBuiltInRole.Administrator.ToString();
-                        using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
-                        {
-                            ad.Children.SchemaFilter.Add("group");
-                            foreach (DirectoryEntry dChildEntry in ad.Children)
+                            // Now check group membership ;)
+                            var members = dChildEntry.Invoke("Members");
+
+                            if (members != null)
                             {
-
-                                if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole || dChildEntry.Name=="Administrators" || dChildEntry.Name=="BUILTIN\\Administrators")
+                                foreach (var member in (IEnumerable)members)
                                 {
-                                    // Now check group membership ;)
-                                    var members = dChildEntry.Invoke("Members");
-
-                                    if (members != null)
+                                    using (var memberEntry = new DirectoryEntry(member))
                                     {
-                                        foreach (var member in (IEnumerable)members)
+                                        if (memberEntry.Name == theUser)
                                         {
-                                            using (var memberEntry = new DirectoryEntry(member))
-                                            {
-                                                if (memberEntry.Name == theUser)
-                                                {
-                                                    return true;
-                                                }
-                                            }
+                                            return true;
                                         }
                                     }
                                 }
