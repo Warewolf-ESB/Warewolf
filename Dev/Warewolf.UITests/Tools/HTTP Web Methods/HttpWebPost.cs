@@ -28,8 +28,17 @@ namespace Warewolf.UITests.Tools
             UIMap.Open_PostWeb_RequestTool_Large_View();
             //Uimap.Select_PostWeb_Source();
             //Uimap.Click_PostWeb_GenerateOutputs_Button();
-            //Uimap.Click_PostWeb_Paste_Response_Button();
             //Uimap.Click_PostWeb_Test_Inputs_Done_Button();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void HttpWebPostToolClickPasteResponseButton()
+        {
+            UIMap.Open_PostWeb_RequestTool_Large_View();
+            //Uimap.Select_PostWeb_Source();
+            //Uimap.Click_PostWeb_GenerateOutputs_Button();
+            //Uimap.Click_PostWeb_Paste_Response_Button();
         }
 
         #region Additional test attributes
