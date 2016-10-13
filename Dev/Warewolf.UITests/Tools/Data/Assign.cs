@@ -45,8 +45,6 @@ namespace Warewolf.UITests.Tools.Data
         public void AssignToolQviUITest()
         {
             UIMap.Open_Assign_Tool_Qvi_Large_View();
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
@@ -56,8 +54,6 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
             UIMap.Debug_Workflow_With_Ribbon_Button();
             UIMap.Click_Debug_Output_Assign_Cell();
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
@@ -67,14 +63,12 @@ namespace Warewolf.UITests.Tools.Data
             const string Variable1Name = "SomeVariable";
             const string Variable1Value = "50";
             UIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable1Name + "]]", Variable1Value, 1);
-            Assert.AreEqual(Variable1Name, UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
+            Assert.AreEqual(Variable1Name, UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable " + Variable1Name + " not found in variable list after adding to assign tool row 1.");
             const string Variable2Name = "SomeOtherVariable";
             const string Variable2Value = "100";
             UIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable2Name + "]]", Variable2Value, 2);
-            Assert.AreEqual(Variable2Name, UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 2.");
+            Assert.AreEqual(Variable2Name, UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable " + Variable2Name + " not found in variable list after adding to assign tool row 2.");
             UIMap.Remove_Assign_Row_1_With_Context_Menu();
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
         }
 
         #region Additional test attributes
