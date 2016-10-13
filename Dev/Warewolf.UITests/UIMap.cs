@@ -55,6 +55,7 @@ namespace Warewolf.UITests
             TryCloseHangingSaveDialog();
             TryCloseHangingServicePickerDialog();
             TryPin_Unpinned_Pane_To_Default_Position();
+#endif
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
