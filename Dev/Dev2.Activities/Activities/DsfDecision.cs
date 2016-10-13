@@ -173,10 +173,6 @@ namespace Dev2.Activities
                     _debugOutputs = new List<DebugItem>();
                     DispatchDebugState(dataObject, StateType.Duration, update);
                 }
-                if (dataObject.IsServiceTestExecution && !dataObject.IsDebugMode())
-                {
-                    UpdateWithAssertions(dataObject);
-                }
 
             }
 
