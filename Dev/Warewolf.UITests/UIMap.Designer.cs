@@ -1154,6 +1154,24 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_View - Use 'Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Click GET Web Large View Done Button With Invalid Large View")]
+        public void Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_View()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.DoneButton;
+            WpfText error1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Error1;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(33, 11));
+
+            // Verify that the 'Exists' property of 'Error1' label equals 'True'
+            Assert.AreEqual(this.Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams.Error1Exists, error1.Exists, "Error not exist after clicking large view done button on invalid large view.");
+        }
+        
+        /// <summary>
         /// Click_GET_Web_Large_View_Generate_Outputs - Use 'Click_GET_Web_Large_View_Generate_OutputsExpectedValues' to pass parameters into this method.
         /// </summary>
         [When(@"I Click GET Web Large View Generate Outputs")]
@@ -9170,6 +9188,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mClick_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams == null))
+                {
+                    this.mClick_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams = new Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams();
+                }
+                return this.mClick_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams;
+            }
+        }
+        
         public virtual Click_GET_Web_Large_View_Generate_OutputsExpectedValues Click_GET_Web_Large_View_Generate_OutputsExpectedValues
         {
             get
@@ -12024,6 +12054,8 @@ namespace Warewolf.UITests
         
         private Click_GET_Web_Large_View_Done_ButtonParams mClick_GET_Web_Large_View_Done_ButtonParams;
         
+        private Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams mClick_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams;
+        
         private Click_GET_Web_Large_View_Generate_OutputsExpectedValues mClick_GET_Web_Large_View_Generate_OutputsExpectedValues;
         
         private Click_MessageBox_YesParams mClick_MessageBox_YesParams;
@@ -13160,6 +13192,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'SmallViewContent' custom control equals 'True'
         /// </summary>
         public bool SmallViewExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Error1' label equals 'True'
+        /// </summary>
+        public bool Error1Exists = true;
         #endregion
     }
     
