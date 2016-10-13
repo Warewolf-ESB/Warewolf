@@ -19,6 +19,7 @@ using System.Drawing.Printing;
 using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
+using System.Threading.Tasks;
 
 namespace Warewolf.UITests
 {
@@ -52,10 +53,11 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
 #if !DEBUG
-            TryClickMessageBoxOK();
-            TryCloseHangingDebugInputDialog();
-            TryCloseHangingSaveDialog();
-            TryCloseHangingServicePickerDialog();
+            Task.Run(() => TryClickMessageBoxOK());
+            Task.Run(() => TryCloseHangingDebugInputDialog());
+            Task.Run(() => TryCloseHangingSaveDialog());
+            Task.Run(() => TryCloseHangingServicePickerDialog());
+            Task.Run(() => TryCloseHangingWindowsGroupDialog());
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner); 
 #endif
         }
