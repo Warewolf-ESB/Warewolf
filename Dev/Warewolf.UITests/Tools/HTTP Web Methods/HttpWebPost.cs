@@ -18,7 +18,7 @@ namespace Warewolf.UITests.Tools
         public void HttpWebPostToolClickAddNewSourceButtonOpensNewSourceWizardTab()
         {
             UIMap.Open_PostWeb_RequestTool_Large_View();
-            UIMap.Click_AddNew_Web_Source_From_tool();
+            UIMap.Click_HTTP_Post_Web_Tool_New_Button();
         }
 
         [TestMethod]
