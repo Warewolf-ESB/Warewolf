@@ -13,7 +13,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Dev2.Interfaces;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;

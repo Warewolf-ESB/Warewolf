@@ -21,7 +21,6 @@ using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics;
 using Infragistics.Windows.DockManager;
