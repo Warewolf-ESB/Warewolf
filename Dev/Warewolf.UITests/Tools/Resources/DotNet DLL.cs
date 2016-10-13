@@ -6,17 +6,24 @@ namespace Warewolf.UITests.Tools.Resources
     [CodedUITest]
     public class DotNet_DLL
     {
+        const string DotNetDllSource = "DotNetDllSource";
+        const string DotNetPlugin = "DotNetDll";
+
         [TestMethod]
 		[TestCategory("Tools")]
         public void DotNetDLLToolUITest()
         {
             UIMap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
             UIMap.Open_DotNet_DLL_Connector_Tool_Large_View();
+            UIMap.Add_Dotnet_Dll_Source(DotNetDllSource);
+            UIMap.Save_With_Ribbon_Button_And_Dialog(DotNetPlugin, true);
+            UIMap.Click_Workflow_ExpandAll();
+            UIMap.Select_Source_From_DotnetTool();
         }
 
         #region Additional test attributes
 
-        [TestInitialize]
+       [TestInitialize]
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
@@ -24,6 +31,14 @@ namespace Warewolf.UITests.Tools.Resources
             UIMap.CloseHangingDialogs();
 #endif
             UIMap.InitializeABlankWorkflow();
+        }
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.TryRemoveFromExplorer(DotNetPlugin);
+            UIMap.TryRemoveFromExplorer(DotNetDllSource);
         }
 
         /// <summary>

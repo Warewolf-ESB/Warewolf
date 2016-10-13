@@ -668,7 +668,7 @@ namespace Warewolf.UITests
 
         }
         public void Filter_ServicePicker_Explorer(string FilterText)
-        {            
+        {
             ServicePickerDialog.Explorer.FilterTextbox.Text = FilterText;
             WaitForControlVisible(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1);
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
@@ -837,7 +837,7 @@ namespace Warewolf.UITests
                 }
             }
         }
-        
+
         [When("I Click New Workflow Ribbon Button")]
         public void Click_New_Workflow_Ribbon_Button()
         {
@@ -1435,7 +1435,7 @@ namespace Warewolf.UITests
             }
             return neverRunDisplay;
         }
-        
+
         public void Click_Run_Test_Button(TestResultEnum? expectedTestResultEnum = null, int instance = 1)
         {
             var currentTest = GetCurrentTest(instance);
@@ -1709,7 +1709,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field1.Exists, "rec().a does not exist in the variable explorer");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field2.Exists, "rec().b does not exist in the variable explorer");
         }
-      
+
         public void Click_AddNew_Web_Source_From_PutWebtool()
         {
             #region Variable Declarations
@@ -2214,7 +2214,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.ResultComboBox.TextEdit;
             #endregion
-                        
+
             resultscombobox.Text = "[[results]]";
         }
         public void Enter_Result_Variable_Into_DateTime()
@@ -2222,7 +2222,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.ResultComboBox.TextEdit;
             #endregion
-                        
+
             resultscombobox.Text = "[[results]]";
         }
         public void Enter_Result_Variable_Into_DateTimeDifference()
@@ -2230,15 +2230,15 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.ResultComboBox.TextEdit;
             #endregion
-                        
+
             resultscombobox.Text = "[[results]]";
         }
         public void Enter_Result_Variable_Into_Web_Request()
         {
             #region Variable Declarations
-            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.ResultComboBox.TextEdit;            
+            WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeViewContentCustom.ResultComboBox.TextEdit;
             #endregion
-                        
+
             resultscombobox.Text = "[[results]]";
         }
         public void Enter_Result_Variable()
@@ -2246,7 +2246,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit resultscombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.ResultInputComboBox.TextEdit;
             #endregion
-                        
+
             resultscombobox.Text = "[[results]]";
         }
         public void Enter_Text_Into_Aggregate_Calculate_Large_View()
@@ -2600,6 +2600,48 @@ namespace Warewolf.UITests
         {
             Assert.AreEqual("Dice1", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
+
+        /// <summary>
+        /// Add_Dotnet_Dll_Source - Use 'Add_Dotnet_Dll_SourceParams' to pass parameters into this method.
+        /// </summary>
+        public void Add_Dotnet_Dll_Source(string sourceName)
+        {
+            #region Variable Declarations
+            WpfButton newSourcButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourcButton;
+            WpfEdit searchTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetDllPlugInSource.DotNetPlugInSourceViewModelsCustom.SearchTextBoxEdit;
+            WpfCheckBox expansionIndicatorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetDllPlugInSource.GACTreeItem.ExpansionIndicatorCheckBox;
+            WpfTreeItem firstTreeItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetDllPlugInSource.GACTreeItem.FirstTreeItem;
+            #endregion
+
+            // Click 'New' button
+            Mouse.Click(newSourcButton, new Point(30, 4));
+
+            // Type 'CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=AMD64' in 'SearchTextBox' text box
+            searchTextBoxEdit.Text = this.Add_Dotnet_Dll_SourceParams.SearchTextBoxEditText;
+
+            // Click 'ExpansionIndicator' check box
+            Mouse.Click(expansionIndicatorCheckBox, new Point(30, 4));
+
+            // Click 'GAC' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstTreeItem);
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled);
+            Save_With_Ribbon_Button_And_Dialog(sourceName, true);
+            Click_Close_DotNetDll_Tab();
+        }
+
+        public virtual Add_Dotnet_Dll_SourceParams Add_Dotnet_Dll_SourceParams
+        {
+            get
+            {
+                if ((this.mAdd_Dotnet_Dll_SourceParams == null))
+                {
+                    this.mAdd_Dotnet_Dll_SourceParams = new Add_Dotnet_Dll_SourceParams();
+                }
+                return this.mAdd_Dotnet_Dll_SourceParams;
+            }
+        }
+
+        private Add_Dotnet_Dll_SourceParams mAdd_Dotnet_Dll_SourceParams;
     }
     /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_AssignObject_Onto_Sequence_Tool'
@@ -2613,6 +2655,21 @@ namespace Warewolf.UITests
         /// Type 'Assign Object' in 'SearchTextBox' text box
         /// </summary>
         public string SearchTextBoxText = "Assign Object";
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Add_Dotnet_Dll_Source'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Add_Dotnet_Dll_SourceParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Type 'CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=AMD64' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxEditText = "CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a" +
+            "3a, processorArchitecture=AMD64";
         #endregion
     }
 }
