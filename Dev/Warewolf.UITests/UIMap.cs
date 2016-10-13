@@ -2568,6 +2568,11 @@ namespace Warewolf.UITests
         }
 
         private Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams mDrag_Toolbox_AssignObject_Onto_Sequence_ToolParams;
+
+        public void Assert_Deploy_Was_Successful()
+        {
+            Assert.AreEqual("Resource Deployed Successfully", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText, "Deploy message text does not equal 'Resource Deployed Successfully'.");
+        }
     }
     /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_AssignObject_Onto_Sequence_Tool'
