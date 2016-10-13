@@ -1266,22 +1266,22 @@ Please contact your Windows System Administrator.</value>
     <value>You do not have permission to move this item. Contribute permission is required to move an item.</value>
   </data>
   <data name="NotAuthorizedToAdministratorException" xml:space="preserve">
-    <value>NotAuthorizedToAdministratorException</value>
+    <value>Administrator rights required to perfom this action. Failed.</value>
   </data>
   <data name="NotAuthorizedToContributeException" xml:space="preserve">
-    <value>NotAuthorizedToContributeException</value>
+    <value>Contribute rights required to perfom this action. Failed.</value>
   </data>
   <data name="NotAuthorizedToCreateException" xml:space="preserve">
-    <value>NotAuthorizedToCreateException</value>
+    <value>Create rights required to perfom this action. Failed.</value>
   </data>
   <data name="NotAuthorizedToDeployFromException" xml:space="preserve">
-    <value>NotAuthorizedToDeployFromException</value>
+    <value>DeployFrom  rights required to perfom this action. Failed.</value>
   </data>
   <data name="NotAuthorizedToDeployToException" xml:space="preserve">
-    <value>NotAuthorizedToDeployToException</value>
+    <value>DeployTo rights required to perfom this action. Failed.</value>
   </data>
   <data name="NotAuthorizedToExecuteException" xml:space="preserve">
-    <value>NotAuthorizedToExecuteException</value>
+    <value>Execute rights required to perfom this action. Failed.</value>
   </data>
   <data name="NotAuthorizedToViewException" xml:space="preserve">
     <value>NotAuthorizedToViewException</value>

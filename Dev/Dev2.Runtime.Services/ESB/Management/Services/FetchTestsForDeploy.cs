@@ -22,8 +22,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class FetchTestsForDeploy : IEsbManagementEndpoint
     {
         private ITestCatalog _testCatalog;
-        private readonly IAuthorizer _authorizer;
-        // ReSharper disable once MemberCanBePrivate.Global
+       
+        private IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredViewManagementEndpoint());
+
         public FetchTestsForDeploy(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -31,7 +33,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public FetchTestsForDeploy()
-            :this(new SecuredViewManagementEndpoint())
         {
 
         }
@@ -53,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-                _authorizer.RunPermissions(resourceId);
+                Authorizer.RunPermissions(resourceId);
                 var tests = TestCatalog.Fetch(resourceId);
                 foreach(var serviceTestModelTO in tests.Where(to => !string.IsNullOrEmpty(to.Password)))
                 {

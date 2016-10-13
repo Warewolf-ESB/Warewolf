@@ -805,6 +805,7 @@ namespace Dev2
             MigrateOldResources();
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
+            var ins = ServerAuthorizationService.Instance;
             var catalog = ResourceCatalog.Instance;
             ServerExplorerRepository.Instance.Load(GlobalConstants.ServerWorkspaceID);
             WriteLine("done.");

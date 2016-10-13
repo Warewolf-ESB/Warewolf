@@ -29,15 +29,14 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class DeleteItemService : IEsbManagementEndpoint
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
-        private readonly IAuthorizer _authorizer;
+        private IAuthorizer _authorizer;
         public DeleteItemService(IAuthorizer authorizer)
         {
-            _authorizer = authorizer;
+            Authorizer = authorizer;
         }
 
         // ReSharper disable once MemberCanBeInternal
         public DeleteItemService()
-            : this(new SecuredContributeManagementEndpoint())
         {
 
         }
@@ -73,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
                     if(itemToDelete != null)
-                        _authorizer.RunPermissions(itemToDelete.ResourceId);
+                        Authorizer.RunPermissions(itemToDelete.ResourceId);
                     Dev2Logger.Info("Delete Item Service." + itemToDelete);
                     item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
 
@@ -112,6 +111,17 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
             set { _serverExplorerRepository = value; }
+        }
+        private IAuthorizer Authorizer
+        {
+            get
+            {
+                return _authorizer ?? new SecuredContributeManagementEndpoint();
+            }
+            set
+            {
+                _authorizer = value;
+            }
         }
     }
 }

@@ -29,16 +29,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         private IServerSchedulerFactory _schedulerFactory;
         ISecurityWrapper _securityWrapper;
         private IResourceCatalog _catalog;
-
-        private readonly IAuthorizer _authorizer;
-        public DeleteScheduledResource(IAuthorizer authorizer)
-        {
-            _authorizer = authorizer;
-        }
-
+        
         // ReSharper disable once MemberCanBeInternal
+        // ReSharper disable once EmptyConstructor
         public DeleteScheduledResource()
-            :this(new SecuredContributeManagementEndpoint())
         {
 
         }

@@ -25,7 +25,6 @@ using Dev2.Util;
 using Dev2.Workspaces;
 using Dev2.Common.Utils;
 using System.Text.RegularExpressions;
-using Dev2.Runtime.Exceptions;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 // ReSharper disable NonLocalizedString
@@ -42,16 +41,18 @@ namespace Dev2.Runtime.ESB.Management.Services
         const string PayloadEnd = @"</XamlDefinition>";
         const string AltPayloadStart = @"<Actions>";
         const string AltPayloadEnd = @"</Actions>";
-        private readonly IAuthorizer _authorizer;
-        // ReSharper disable once MemberCanBePrivate.Global
+       
+        private IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
+
         public FetchResourceDefinition(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
         }
 
         // ReSharper disable once MemberCanBeInternal
+        // ReSharper disable once UnusedMember.Global
         public FetchResourceDefinition()
-            :this(new SecuredViewManagementEndpoint())
         {
 
         }
@@ -84,7 +85,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}");
                 try
                 {
-                    _authorizer.RunPermissions(resourceId);
+                    Authorizer.RunPermissions(resourceId);
 
                     var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
                     if (!result.IsNullOrEmpty())

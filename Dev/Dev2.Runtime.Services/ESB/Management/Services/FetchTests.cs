@@ -20,8 +20,11 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchTests : IEsbManagementEndpoint
     {
-        private readonly IAuthorizer _authorizer;
-        // ReSharper disable once MemberCanBePrivate.Global
+       
+
+        private IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredViewManagementEndpoint());
+
         public FetchTests(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -29,7 +32,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public FetchTests()
-            :this(new SecuredViewManagementEndpoint())
         {
 
         }
@@ -53,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-                _authorizer.RunPermissions(resourceId);
+                Authorizer.RunPermissions(resourceId);
                  var tests = TestCatalog.Fetch(resourceId);
                 CompressedExecuteMessage message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(tests));

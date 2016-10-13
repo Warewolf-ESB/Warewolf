@@ -22,7 +22,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private ITestCatalog _testCatalog;
         private IResourceCatalog _resourceCatalog;
-        private readonly IAuthorizer _authorizer;
+
+        private IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
+
         public SaveTests(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -30,7 +33,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public SaveTests()
-            :this(new SecuredCreateEndpoint())
         {
 
         }
@@ -39,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
+                Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save Tests Service");
                 StringBuilder testDefinitionMessage;
                 StringBuilder resourceIdString;

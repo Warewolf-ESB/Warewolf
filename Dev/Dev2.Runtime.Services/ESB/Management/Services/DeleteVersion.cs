@@ -28,7 +28,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         IServerVersionRepository _serverExplorerRepository;
         private readonly IAuthorizer _authorizer;
-        // ReSharper disable once MemberCanBePrivate.Global
+        private IAuthorizer Authorizer => _authorizer ?? new SecuredContributeManagementEndpoint();
+
         public DeleteVersion(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -36,7 +37,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public DeleteVersion()
-            :this(new SecuredContributeManagementEndpoint())
         {
 
         }
@@ -78,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 try
                 {
                     var guid = Guid.Parse(values["resourceId"].ToString());
-                    _authorizer.RunPermissions(guid);
+                    Authorizer.RunPermissions(guid);
                     var version = values["versionNumber"].ToString();
                     Dev2Logger.Info($"Delete Version. ResourceId:{guid} VersionNumber{version}");
                     StringBuilder tmp;

@@ -22,7 +22,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private ITestCatalog _testCatalog;
         private readonly IAuthorizer _authorizer;
-        // ReSharper disable once MemberCanBePrivate.Global
+        private IAuthorizer Authorizer => _authorizer ?? new SecuredContributeManagementEndpoint();
+
         public DeleteTest(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -30,11 +31,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public DeleteTest()
-            :this(new SecuredContributeManagementEndpoint())
         {
 
         }
-
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
@@ -53,7 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-                _authorizer.RunPermissions(resourceId);
+                Authorizer.RunPermissions(resourceId);
                 StringBuilder testName;
                 values.TryGetValue("testName", out testName);
                 if (string.IsNullOrEmpty(testName?.ToString()))

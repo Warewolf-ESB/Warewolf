@@ -20,7 +20,6 @@ using Dev2.Communication;
 using Dev2.Explorer;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Exceptions;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

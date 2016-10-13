@@ -15,6 +15,7 @@ using Dev2.Services.Security;
 using System;
 using System.Collections.Concurrent;
 using System.Security.Claims;
+using System.Threading;
 using System.Web;
 
 namespace Dev2.Runtime.Security
