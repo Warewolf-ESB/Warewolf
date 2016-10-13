@@ -11,7 +11,9 @@ namespace Warewolf.UITests.Tools
         public void ServiceToolUITest()
         {
             UIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
-            UIMap.Click_Service_Picker_Dialog_Cancel();
+            UIMap.Filter_ServicePicker_Explorer("Hello World");
+            UIMap.Select_FirstItem_From_ServicePicker_Tree();
+            UIMap.Click_Service_Picker_Dialog_OK();
         }
 
         #region Additional test attributes
