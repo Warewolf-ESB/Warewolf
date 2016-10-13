@@ -27,7 +27,6 @@ using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
 using Dev2.Studio.ViewModels.Workflow;
-using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics.Windows.DockManager;
 
 // ReSharper disable CheckNamespace
