@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+// ReSharper disable UnusedMemberInSuper.Global
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
@@ -19,12 +20,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
     /// </summary>
     public interface IDebugDispatcher
     {
-        /// <summary>
-        ///     Gets the number of writers.
-        /// </summary>
-        int Count { get; }
 
-        bool IsQueueEmpty { get; }
 
         /// <summary>
         ///     Removes the specified workspace from the dispatcher.

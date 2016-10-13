@@ -22,9 +22,9 @@ namespace Warewolf.UITests
 {
     public partial class UIMap
     {
-        const int _lenientSearchTimeout = 9000;
+        const int _lenientSearchTimeout = 30000;
         const int _lenientMaximumRetryCount = 3;
-        const int _strictSearchTimeout = 3000;
+        const int _strictSearchTimeout = 15000;
         const int _strictMaximumRetryCount = 1;
 
         public void SetPlaybackSettings()
@@ -49,6 +49,7 @@ namespace Warewolf.UITests
         public void CloseHangingDialogs()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+#if !DEBUG
             TryClickMessageBoxOK();
             TryCloseHangingDebugInputDialog();
             TryCloseHangingSaveDialog();
@@ -172,8 +173,8 @@ namespace Warewolf.UITests
 
         public bool ControlExistsNow(UITestControl thisControl)
         {
-            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount;
-            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout;
+            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackError -= OnError;
             OnErrorHandlerDisabled = true;
             bool controlExists = false;
@@ -185,8 +186,8 @@ namespace Warewolf.UITests
             {
                 OnErrorHandlerDisabled = false;
                 Playback.PlaybackError += OnError;
-                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
-                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             }
             return controlExists;
         }
@@ -826,7 +827,7 @@ namespace Warewolf.UITests
                 }
             }
         }
-
+        
         [When("I Click New Workflow Ribbon Button")]
         public void Click_New_Workflow_Ribbon_Button()
         {
@@ -1695,19 +1696,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field2.Exists, "rec().b does not exist in the variable explorer");
         }
 
-        public void Enter_Text_Into_Debug_Input_Row1_Value_Textbox_With_Special_Test_For_Textbox_Height(string text)
-        {
-            var varValue = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
-
-            var heightBeforeEnterClick = varValue.Height;
-            varValue.Text = text;
-            Keyboard.SendKeys(varValue, "{Enter}", ModifierKeys.None);
-            Assert.IsTrue(varValue.Height > heightBeforeEnterClick, "Debug input dialog does not resize after adding second line.");
-
-            Keyboard.SendKeys(varValue, "{Back}", ModifierKeys.None);
-            Assert.AreEqual(heightBeforeEnterClick, varValue.Height, "Debug input dialog value textbox does not resize after deleting second line.");
-        }
-
         public void Press_F5_To_Debug()
         {
             Keyboard.SendKeys(MainStudioWindow, "{F5}", ModifierKeys.None);
@@ -2068,6 +2056,11 @@ namespace Warewolf.UITests
         {
             Mouse.StartDragging(Tab);
             Mouse.StopDragging(25, 40);
+        }
+
+        public void Check_Debug_Input_Dialog_Remember_Inputs_Checkbox()
+        {
+            MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
         }
     }
 }
