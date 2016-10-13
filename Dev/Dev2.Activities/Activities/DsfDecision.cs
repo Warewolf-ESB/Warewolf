@@ -116,6 +116,7 @@ namespace Dev2.Activities
 
             });
             var resultval = And ? res.Aggregate(true, (a, b) => a && b) : res.Any(a => a);
+            Result = GetResultString(resultval.ToString(),Conditions);
             if (dataObject.IsDebugMode())
             {
                 _debugOutputs = GetDebugOutputs(resultval.ToString());
@@ -171,6 +172,10 @@ namespace Dev2.Activities
                     _debugOutputs = new List<DebugItem>();
                     _debugOutputs = new List<DebugItem>();
                     DispatchDebugState(dataObject, StateType.Duration, update);
+                }
+                if (dataObject.IsServiceTestExecution && !dataObject.IsDebugMode())
+                {
+                    UpdateWithAssertions(dataObject);
                 }
 
             }
@@ -283,15 +288,8 @@ namespace Dev2.Activities
             {
 
 
-                if (theResult == "True")
-                {
-                    resultString = dds.TrueArmText;
-                }
-                else if (theResult == "False")
-                {
-                    resultString = dds.FalseArmText;
-                }
-                Result = resultString;
+                resultString = GetResultString(theResult, dds);
+                
                 //AddDebugOutputItem(new DebugItemStaticDataParams(resultString, ""));
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
@@ -313,6 +311,19 @@ namespace Dev2.Activities
             return result;
         }
 
+        private static string GetResultString(string theResult,  Dev2DecisionStack dds)
+        {
+            var resultString = theResult;
+            if(theResult == "True")
+            {
+                resultString = dds.TrueArmText;
+            }
+            else if(theResult == "False")
+            {
+                resultString = dds.FalseArmText;
+            }
+            return resultString;
+        }
 
         void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IExecutionEnvironment env, string expression, out ErrorResultTO error, DebugItem parent = null)
         {
@@ -418,7 +429,7 @@ namespace Dev2.Activities
         {
             var trueArmText = _dsfDecision.Conditions.TrueArmText;
             var falseArmText = _dsfDecision.Conditions.FalseArmText;
-            InitializeDebug(dataObject);            
+            InitializeDebug(dataObject);
             bool hasResult = false;
             if (NameOfArmToReturn == falseArmText)
             {
