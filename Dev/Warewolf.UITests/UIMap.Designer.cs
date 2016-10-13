@@ -3984,7 +3984,8 @@ namespace Warewolf.UITests
             // Type 'Service' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(304, 126));
             Mouse.StartDragging(service, new Point(50, 5));
             Mouse.StopDragging(flowchart, new Point(304, 126));
@@ -8715,6 +8716,20 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I AssertMethod1")]
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfCustom helloWorldWorkFlow = this.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2StudioViewModelsTabPage.UIDev2StudioViewModelsCustom.UIUI_WorkflowDesigner_Custom.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.HelloWorldWorkFlow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'DsfWorkflowActivity' custom control equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.HelloWorldWorkFlowExists, helloWorldWorkFlow.Exists, "Hello World work flow does not exist after selecting OK from Service Picker");
+        }
+        
         #region Properties
         public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
         {
@@ -11776,6 +11791,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -12395,6 +12422,8 @@ namespace Warewolf.UITests
         private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
+        
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -17991,6 +18020,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfWorkflowActivity' custom control equals 'True'
+        /// </summary>
+        public bool HelloWorldWorkFlowExists = true;
         #endregion
     }
     
@@ -78271,10 +78315,29 @@ namespace Warewolf.UITests
                 return this.mUIDsfNumberFormatActivCustom;
             }
         }
+        
+        public WpfCustom HelloWorldWorkFlow
+        {
+            get
+            {
+                if ((this.mHelloWorldWorkFlow == null))
+                {
+                    this.mHelloWorldWorkFlow = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mHelloWorldWorkFlow.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
+                    this.mHelloWorldWorkFlow.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Hello World(ServiceDesigner)";
+                    this.mHelloWorldWorkFlow.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mHelloWorldWorkFlow;
+            }
+        }
         #endregion
         
         #region Fields
         private UIDsfNumberFormatActivCustom mUIDsfNumberFormatActivCustom;
+        
+        private WpfCustom mHelloWorldWorkFlow;
         #endregion
     }
     
