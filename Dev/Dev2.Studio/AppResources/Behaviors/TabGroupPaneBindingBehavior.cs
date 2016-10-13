@@ -106,6 +106,14 @@ namespace Dev2.Studio.AppResources.Behaviors
             var newValue = e.NewValue as WorkSurfaceContextViewModel;
             if (newValue != null)
             {
+                var mvm = Application.Current?.MainWindow?.DataContext as MainViewModel;
+                if (mvm?.ActiveItem != null)
+                {
+                    if (mvm.ActiveItem != newValue)
+                    {
+                        mvm.ActiveItem = newValue;
+                    }
+                }
                 SetActivePane(newValue);
             }
         }
@@ -131,17 +139,18 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         void DocumentHostOnActiveDocumentChanged(object sender, RoutedPropertyChangedEventArgs<ContentPane> routedPropertyChangedEventArgs)
         {
-            if (routedPropertyChangedEventArgs.NewValue != null)
-            {
-                if (_tabGroupPanes == null || _tabGroupPanes.Count <= 0)
-                {
-                    _tabGroupPanes = GetAllTabGroupPanes();
-                }
+            var workSurfaceContextViewModel = routedPropertyChangedEventArgs.NewValue?.DataContext as WorkSurfaceContextViewModel;
 
-                var newValue = routedPropertyChangedEventArgs.NewValue.DataContext as WorkSurfaceContextViewModel;
-                if (newValue != null)
+            if (workSurfaceContextViewModel != null)
+            {
+                var docHost = sender as DocumentContentHost;
+                var mainViewModel = docHost?.DataContext as MainViewModel;
+                if (mainViewModel != null)
                 {
-                    SetActivePane(newValue);
+                    if (mainViewModel.ActiveItem != workSurfaceContextViewModel)
+                    {
+                        mainViewModel.ActiveItem = workSurfaceContextViewModel;
+                    }
                 }
             }
         }
@@ -158,11 +167,6 @@ namespace Dev2.Studio.AppResources.Behaviors
                     select item)
                 {
                     tabGroupPane.SelectedItem = item;
-                    var mainViewModel = CustomContainer.Get<IMainViewModel>() as MainViewModel;
-                    if (mainViewModel?.ActiveItem != newValue)
-                    {
-                        mainViewModel?.ActivateItem(newValue);
-                    }
                     break;
                 }
                 FocusManager.AddGotFocusHandler(tabGroupPane, GotFocusHandler);
