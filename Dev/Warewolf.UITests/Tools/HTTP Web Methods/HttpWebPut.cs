@@ -6,22 +6,27 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class HttpWebPut
     {
-        const string WebSourceName = "UITestingWebSource";
-        const string WebPutName = "UITestingWebPutService";
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void HttpWebPutToolClickLargeViewDoneButton()
+        {
+            UIMap.Open_PutWeb_Tool_large_view();
+        }
 
         [TestMethod]
-		[TestCategory("Tools")]
-        public void HttpWebPutToolUITest()
+        [TestCategory("Tools")]
+        public void HttpWebPutToolClickAddNewSourceButtonOpensNewSourceWizardTab()
         {
-            Uimap.Drag_PutWeb_Tool_Onto_DesignSurface();
-            Uimap.Open_PutWeb_Tool_large_view();
-            Uimap.Click_AddNew_Web_Source_From_PutWebtool();
-            Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
-            Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WebPutName);
-            Uimap.Click_Workflow_ExpandAll();
+            UIMap.Open_PutWeb_Tool_large_view();
+            UIMap.Click_AddNew_Web_Source_From_PutWebtool();
+        }
 
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void HttpWebPutToolClickTestInputsDoneButton()
+        {
+            UIMap.Open_PutWeb_Tool_large_view();
+            //Uimap.Select_WebPut_Source();
             //Uimap.Click_PutWeb_GenerateOutputs_Button();
             //Uimap.Click_PutWeb_Paste_Response_Button();
             //Uimap.Click_PutWeb_Cancel_Button();
@@ -32,38 +37,15 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
+            UIMap.Drag_PutWeb_Tool_Onto_DesignSurface();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.TryRemoveFromExplorer(WebPutName);            
-        }
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
-
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
