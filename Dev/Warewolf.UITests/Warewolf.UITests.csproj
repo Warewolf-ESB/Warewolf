@@ -61,12 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
-    <Compile Include="Recordset\DeleteRecordTest.cs" />
-    <Compile Include="Recordset\UniqueRecordsTests.cs" />
-    <Compile Include="Recordset\SortTest.cs" />
-    <Compile Include="Recordset\CountTest.cs" />
-    <Compile Include="Recordset\LengthTest.cs" />
-    <Compile Include="Recordset\FindRecordIndexTest.cs" />
+    <Compile Include="Tools\Recordset\DeleteRecordTest.cs" />
+    <Compile Include="Tools\Recordset\UniqueRecordsTests.cs" />
+    <Compile Include="Tools\Recordset\SortTest.cs" />
+    <Compile Include="Tools\Recordset\CountTest.cs" />
+    <Compile Include="Tools\Recordset\LengthTest.cs" />
+    <Compile Include="Tools\Recordset\FindRecordIndexTest.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
@@ -101,7 +101,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Control Flow\Sequence.cs" />
     <Compile Include="Tools\Control Flow\Switch.cs" />
-    <Compile Include="Tools\Control Flow\For Each.cs" />
     <Compile Include="Tools\Control Flow\Decision.cs" />
     <Compile Include="Tools\Database\Create_SQL_Server_Source_From_Tool.cs" />
     <Compile Include="Tools\Database\SQL_Bulk_Insert.cs" />
