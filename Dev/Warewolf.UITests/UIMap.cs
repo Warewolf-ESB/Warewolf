@@ -328,6 +328,7 @@ namespace Warewolf.UITests
             }
         }
 
+        [When(@"I Try Remove ""(*.)"" from Explorer")]
         public void TryRemoveFromExplorer(string ResourceName)
         {
             Filter_Explorer(ResourceName);
@@ -2569,9 +2570,16 @@ namespace Warewolf.UITests
 
         private Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams mDrag_Toolbox_AssignObject_Onto_Sequence_ToolParams;
 
+        [Then("Deploy Was Successful")]
         public void Assert_Deploy_Was_Successful()
         {
             Assert.AreEqual("Resource Deployed Successfully", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText, "Deploy message text does not equal 'Resource Deployed Successfully'.");
+        }
+
+        [Then("Dice Is Selected InSettings Tab Permissions Row 1")]
+        public void Assert_Dice_Is_Selected_InSettings_Tab_Permissions_Row_1()
+        {
+            Assert.AreEqual("Dice1", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
     }
     /// <summary>
