@@ -808,9 +808,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             foreach(var debugTreeViewItemViewModel in items.Where(i => i is T))
             {
-                var item = (T)debugTreeViewItemViewModel;
-                processItem(item);
-                IterateItems(item.Children, processItem);
+                var item = (T)debugTreeViewItemViewModel;                
+                if(item is DebugStateTreeViewItemViewModel)
+                {
+                    var actual = item as DebugStateTreeViewItemViewModel;
+                    if (actual.Content.StateType != StateType.End)
+                    {
+                        processItem(item);
+                        IterateItems(item.Children, processItem);
+                    }
+                    
+                }
+                
             }
         }
 
