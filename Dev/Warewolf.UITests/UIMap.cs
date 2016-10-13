@@ -53,18 +53,11 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
 #if !DEBUG
-            var DismissMessageDialog = Task.Run(() => TryClickMessageBoxOK());
-            var DismissSaveDialog = Task.Run(() => TryCloseHangingSaveDialog());
-            var DismissDebugInputDialog = Task.Run(() => TryCloseHangingDebugInputDialog());
-            var DismissServicePickerDialog = Task.Run(() => TryCloseHangingServicePickerDialog());
-            var DismissWindowsGroupDialog = Task.Run(() => TryCloseHangingWindowsGroupDialog());
-
-            DismissMessageDialog.Wait();
-            DismissSaveDialog.Wait();
-            DismissDebugInputDialog.Wait();
-            DismissServicePickerDialog.Wait();
-            DismissWindowsGroupDialog.Wait();
-
+            Task.Run(() => TryClickMessageBoxOK());
+            Task.Run(() => TryCloseHangingDebugInputDialog());
+            Task.Run(() => TryCloseHangingSaveDialog());
+            Task.Run(() => TryCloseHangingServicePickerDialog());
+            Task.Run(() => TryCloseHangingWindowsGroupDialog());
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner); 
 #endif
         }
