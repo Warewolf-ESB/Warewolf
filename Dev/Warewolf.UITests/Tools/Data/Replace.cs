@@ -14,6 +14,7 @@ namespace Warewolf.UITests.Tools
             Uimap.Enter_Values_Into_Replace_Tool_Large_View();
             Uimap.Open_Replace_Tool_Large_View();
             Uimap.Press_F6();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.Click_MessageBox_No();
         }
