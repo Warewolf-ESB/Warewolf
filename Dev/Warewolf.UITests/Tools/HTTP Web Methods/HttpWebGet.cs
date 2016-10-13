@@ -11,7 +11,7 @@ namespace Warewolf.UITests.Tools
         public void HttpWebGetToolClickLargeViewDoneButton()
         {
             UIMap.Open_GET_Web_Connector_Tool_Large_View();
-            UIMap.Click_GET_Web_Large_View_Done_Button();
+            UIMap.Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_View();
         }
 
         [TestMethod]
