@@ -34,25 +34,6 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
-        /// Click_HTTP_Post_Web_Tool_New_Button - Use 'Click_HTTP_Post_Web_Tool_New_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Click HTTP Post Web Tool New Button")]
-        public void Click_HTTP_Post_Web_Tool_New_Button()
-        {
-            #region Variable Declarations
-            WpfButton newSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.NewSourceButton;
-            WpfTabPage webSourceWizardTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab;
-            #endregion
-
-            // Click 'New' button
-            Mouse.Click(newSourceButton, new Point(17, 11));
-
-            // Verify that the 'Exists' property of 'Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte...' tab equals 'True'
-            Assert.AreEqual(this.Click_HTTP_Post_Web_Tool_New_ButtonParams.WebSourceWizardTabExists, webSourceWizardTab.Exists, "New web source wizard tab is not open after clicking create new web source from p" +
-                    "ost tool on the design surface.");
-        }
-        
-        /// <summary>
         /// Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1 - Use 'Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params' to pass parameters into this method.
         /// </summary>
         [When(@"I Assign Value To Variable With Assign Tool Small View Row 1")]
@@ -207,146 +188,6 @@ namespace Warewolf.UITests
             // Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
             Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.OpenQuickVariableInpToggleButtonExists, openQuickVariableInpToggleButton.Exists, "QVI toggle button does not exist in assign tool small view after clicking done bu" +
                     "tton on large view.");
-        }
-        
-        /// <summary>
-        /// Click_Copy_Done_Button
-        /// </summary>
-        [When(@"I Click Copy Done Button")]
-        public void Click_Copy_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
-        }
-        
-        /// <summary>
-        /// Click_Delete_Done_Button
-        /// </summary>
-        [When(@"I Click Delete Done Button")]
-        public void Click_Delete_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
-        }
-        
-        /// <summary>
-        /// Click_Create_Done_Button
-        /// </summary>
-        [When(@"I Click Create Done Button")]
-        public void Click_Create_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
-        }
-        
-        /// <summary>
-        /// Click_Move_Done_Button
-        /// </summary>
-        [When(@"I Click Move Done Button")]
-        public void Click_Move_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
-        }
-        
-        /// <summary>
-        /// Click_Read_Done_Button
-        /// </summary>
-        [When(@"I Click Read Done Button")]
-        public void Click_Read_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
-        }
-        
-        /// <summary>
-        /// Click_Rename_Done_Button
-        /// </summary>
-        [When(@"I Click Rename Done Button")]
-        public void Click_Rename_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
-        }
-        
-        /// <summary>
-        /// Click_Zip_Done_Button
-        /// </summary>
-        [When(@"I Click Zip Done Button")]
-        public void Click_Zip_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
-        }
-        
-        /// <summary>
-        /// Click_UnZip_Done_Button
-        /// </summary>
-        [When(@"I Click UnZip Done Button")]
-        public void Click_UnZip_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
-        }
-        
-        /// <summary>
-        /// Click_Write_Done_Button
-        /// </summary>
-        [When(@"I Click Write Done Button")]
-        public void Click_Write_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
-        }
-        
-        /// <summary>
-        /// Click_ReadFolder_Done_Button
-        /// </summary>
-        [When(@"I Click ReadFolder Done Button")]
-        public void Click_ReadFolder_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
         }
         
         /// <summary>
@@ -753,6 +594,34 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Copy_Done_Button
+        /// </summary>
+        [When(@"I Click Copy Done Button")]
+        public void Click_Copy_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
+        /// Click_Create_Done_Button
+        /// </summary>
+        [When(@"I Click Create Done Button")]
+        public void Click_Create_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
         /// Click_Debug_Output_Assign_Cell - Use 'Click_Debug_Output_Assign_CellParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click Debug Output Assign Cell")]
@@ -933,6 +802,20 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Click_Decision_Dialog_Done_ButtonParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+        }
+        
+        /// <summary>
+        /// Click_Delete_Done_Button
+        /// </summary>
+        [When(@"I Click Delete Done Button")]
+        public void Click_Delete_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
         }
         
         /// <summary>
@@ -1386,6 +1269,25 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_HTTP_Post_Web_Tool_New_Button - Use 'Click_HTTP_Post_Web_Tool_New_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Click HTTP Post Web Tool New Button")]
+        public void Click_HTTP_Post_Web_Tool_New_Button()
+        {
+            #region Variable Declarations
+            WpfButton newSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.NewSourceButton;
+            WpfTabPage webSourceWizardTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab;
+            #endregion
+
+            // Click 'New' button
+            Mouse.Click(newSourceButton, new Point(17, 11));
+
+            // Verify that the 'Exists' property of 'Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte...' tab equals 'True'
+            Assert.AreEqual(this.Click_HTTP_Post_Web_Tool_New_ButtonParams.WebSourceWizardTabExists, webSourceWizardTab.Exists, "New web source wizard tab is not open after clicking create new web source from p" +
+                    "ost tool on the design surface.");
+        }
+        
+        /// <summary>
         /// Click_Knowledge_Ribbon_Button
         /// </summary>
         [When(@"I Click Knowledge Ribbon Button")]
@@ -1499,6 +1401,20 @@ namespace Warewolf.UITests
 
             // Click '?' button
             Mouse.Click(minimizeStudioButton, new Point(6, 14));
+        }
+        
+        /// <summary>
+        /// Click_Move_Done_Button
+        /// </summary>
+        [When(@"I Click Move Done Button")]
+        public void Click_Move_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
         }
         
         /// <summary>
@@ -1696,6 +1612,48 @@ namespace Warewolf.UITests
 
             // Click 'PART_FilesMenuItem' menu item
             Mouse.Click(positionButton, new Point(8, 7));
+        }
+        
+        /// <summary>
+        /// Click_Read_Done_Button
+        /// </summary>
+        [When(@"I Click Read Done Button")]
+        public void Click_Read_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
+        /// Click_ReadFolder_Done_Button
+        /// </summary>
+        [When(@"I Click ReadFolder Done Button")]
+        public void Click_ReadFolder_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
+        /// Click_Rename_Done_Button
+        /// </summary>
+        [When(@"I Click Rename Done Button")]
+        public void Click_Rename_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
         }
         
         /// <summary>
@@ -2329,6 +2287,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_UnZip_Done_Button
+        /// </summary>
+        [When(@"I Click UnZip Done Button")]
+        public void Click_UnZip_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
         /// Click_UpdateDuplicateRelationships - Use 'Click_UpdateDuplicateRelationshipsParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click UpdateDuplicateRelationships")]
@@ -2499,6 +2471,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Write_Done_Button
+        /// </summary>
+        [When(@"I Click Write Done Button")]
+        public void Click_Write_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
         /// Click_Yes_On_The_Confirm_Delete
         /// </summary>
         [When(@"I Click Yes On The Confirm Delete")]
@@ -2510,6 +2496,20 @@ namespace Warewolf.UITests
 
             // Click 'Yes' button
             Mouse.Click(yesButton, new Point(39, 17));
+        }
+        
+        /// <summary>
+        /// Click_Zip_Done_Button
+        /// </summary>
+        [When(@"I Click Zip Done Button")]
+        public void Click_Zip_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
         }
         
         /// <summary>
@@ -3132,7 +3132,8 @@ namespace Warewolf.UITests
             // Type 'Copy' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Copy_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(310, 129));
             Mouse.StartDragging(copy, new Point(19, -3));
             Mouse.StopDragging(flowchart, new Point(310, 129));
@@ -3361,7 +3362,8 @@ namespace Warewolf.UITests
             // Type 'Delete' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Delete_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(306, 125));
             Mouse.StartDragging(delete, new Point(13, 9));
             Mouse.StopDragging(flowchart, new Point(306, 125));
@@ -3720,7 +3722,8 @@ namespace Warewolf.UITests
             // Type 'Move' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Move_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(306, 129));
             Mouse.StartDragging(move, new Point(32, 4));
             Mouse.StopDragging(flowchart, new Point(306, 129));
@@ -3984,7 +3987,8 @@ namespace Warewolf.UITests
             // Type 'Read File' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Read_File_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(304, 125));
             Mouse.StartDragging(readFile, new Point(12, 15));
             Mouse.StopDragging(flowchart, new Point(304, 125));
@@ -4013,7 +4017,8 @@ namespace Warewolf.UITests
             // Type 'Read Folder' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(305, 129));
             Mouse.StartDragging(readFolder, new Point(14, 3));
             Mouse.StopDragging(flowchart, new Point(305, 129));
@@ -4042,7 +4047,8 @@ namespace Warewolf.UITests
             // Type 'Rename' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Rename_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(305, 128));
             Mouse.StartDragging(rename, new Point(6, 11));
             Mouse.StopDragging(flowchart, new Point(305, 128));
@@ -4621,7 +4627,8 @@ namespace Warewolf.UITests
             // Type 'Unzip' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Unzip_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(306, 128));
             Mouse.StartDragging(unZip, new Point(15, 15));
             Mouse.StopDragging(flowchart, new Point(306, 128));
@@ -4679,7 +4686,8 @@ namespace Warewolf.UITests
             // Type 'Write File' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Write_File_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(306, 132));
             Mouse.StartDragging(writeFile, new Point(10, 18));
             Mouse.StopDragging(flowchart, new Point(306, 132));
@@ -4737,7 +4745,8 @@ namespace Warewolf.UITests
             // Type 'Zip' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Zip_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(306, 131));
             Mouse.StartDragging(zip, new Point(16, 4));
             Mouse.StopDragging(flowchart, new Point(306, 131));
@@ -7700,24 +7709,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Zip_Compression
-        /// </summary>
-        [When(@"I Select Zip Compression")]
-        public void Select_Zip_Compression()
-        {
-            #region Variable Declarations
-            WpfComboBox selectedCompressComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.SelectedCompressComboBox;
-            WpfListItem normalDefault = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.SelectedCompressComboBox.NormalDefault;
-            #endregion
-
-            // Click 'UI__SelectedCompressionType_AutoID' combo box
-            Mouse.Click(selectedCompressComboBox, new Point(119, 7));
-
-            // Click 'Normal (Default)' list item
-            Mouse.Click(normalDefault, new Point(114, 13));
-        }
-        
-        /// <summary>
         /// Select_AppData_From_MethodList
         /// </summary>
         [When(@"I Select AppData From MethodList")]
@@ -8916,6 +8907,24 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_Zip_Compression
+        /// </summary>
+        [When(@"I Select Zip Compression")]
+        public void Select_Zip_Compression()
+        {
+            #region Variable Declarations
+            WpfComboBox selectedCompressComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.SelectedCompressComboBox;
+            WpfListItem normalDefault = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.SelectedCompressComboBox.NormalDefault;
+            #endregion
+
+            // Click 'UI__SelectedCompressionType_AutoID' combo box
+            Mouse.Click(selectedCompressComboBox, new Point(119, 7));
+
+            // Click 'Normal (Default)' list item
+            Mouse.Click(normalDefault, new Point(114, 13));
+        }
+        
+        /// <summary>
         /// Show_Explorer_First_Item_Tests_With_Context_Menu - Use 'Show_Explorer_First_Item_Tests_With_Context_MenuParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Show Explorer First Item Tests With Context Menu")]
@@ -9013,18 +9022,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public virtual Click_HTTP_Post_Web_Tool_New_ButtonParams Click_HTTP_Post_Web_Tool_New_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_HTTP_Post_Web_Tool_New_ButtonParams == null))
-                {
-                    this.mClick_HTTP_Post_Web_Tool_New_ButtonParams = new Click_HTTP_Post_Web_Tool_New_ButtonParams();
-                }
-                return this.mClick_HTTP_Post_Web_Tool_New_ButtonParams;
-            }
-        }
-        
         public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
         {
             get
@@ -9454,6 +9451,18 @@ namespace Warewolf.UITests
                     this.mClick_HTTP_Delete_Web_Tool_New_ButtonParams = new Click_HTTP_Delete_Web_Tool_New_ButtonParams();
                 }
                 return this.mClick_HTTP_Delete_Web_Tool_New_ButtonParams;
+            }
+        }
+        
+        public virtual Click_HTTP_Post_Web_Tool_New_ButtonParams Click_HTTP_Post_Web_Tool_New_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_HTTP_Post_Web_Tool_New_ButtonParams == null))
+                {
+                    this.mClick_HTTP_Post_Web_Tool_New_ButtonParams = new Click_HTTP_Post_Web_Tool_New_ButtonParams();
+                }
+                return this.mClick_HTTP_Post_Web_Tool_New_ButtonParams;
             }
         }
         
@@ -12243,8 +12252,6 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Click_HTTP_Post_Web_Tool_New_ButtonParams mClick_HTTP_Post_Web_Tool_New_ButtonParams;
-        
         private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params;
         
         private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params;
@@ -12316,6 +12323,8 @@ namespace Warewolf.UITests
         private Click_GET_Web_Large_View_Generate_OutputsExpectedValues mClick_GET_Web_Large_View_Generate_OutputsExpectedValues;
         
         private Click_HTTP_Delete_Web_Tool_New_ButtonParams mClick_HTTP_Delete_Web_Tool_New_ButtonParams;
+        
+        private Click_HTTP_Post_Web_Tool_New_ButtonParams mClick_HTTP_Post_Web_Tool_New_ButtonParams;
         
         private Click_MessageBox_YesParams mClick_MessageBox_YesParams;
         
@@ -12780,21 +12789,6 @@ namespace Warewolf.UITests
         private SwitchCaseDialog mSwitchCaseDialog;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_HTTP_Post_Web_Tool_New_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_HTTP_Post_Web_Tool_New_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte...' tab equals 'True'
-        /// </summary>
-        public bool WebSourceWizardTabExists = true;
         #endregion
     }
     
@@ -13496,6 +13490,21 @@ namespace Warewolf.UITests
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_HTTP_Delete_Web_Tool_New_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte...' tab equals 'True'
+        /// </summary>
+        public bool WebSourceWizardTabExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_HTTP_Post_Web_Tool_New_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_HTTP_Post_Web_Tool_New_ButtonParams
     {
         
         #region Fields
