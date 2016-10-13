@@ -40,7 +40,7 @@ namespace Warewolf.UITests.Tools
         {
             UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
             UIMap.InitializeABlankWorkflow();
             UIMap.Drag_DeleteWeb_Toolbox_Onto_Workflow_Surface();

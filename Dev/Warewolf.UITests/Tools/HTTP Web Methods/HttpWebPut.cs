@@ -28,8 +28,17 @@ namespace Warewolf.UITests.Tools
             UIMap.Open_PutWeb_Tool_large_view();
             //Uimap.Select_WebPut_Source();
             //Uimap.Click_PutWeb_GenerateOutputs_Button();
+            //Uimap.Click_PutWeb_Test_Inputs_Done_Button();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void HttpWebPutToolClickPasteResponseButton()
+        {
+            UIMap.Open_PutWeb_Tool_large_view();
+            //Uimap.Select_WebPut_Source();
+            //Uimap.Click_PutWeb_GenerateOutputs_Button();
             //Uimap.Click_PutWeb_Paste_Response_Button();
-            //Uimap.Click_PutWeb_Cancel_Button();
         }
 
         #region Additional test attributes
@@ -39,7 +48,7 @@ namespace Warewolf.UITests.Tools
         {
             UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
             UIMap.InitializeABlankWorkflow();
             UIMap.Drag_PutWeb_Tool_Onto_DesignSurface();
