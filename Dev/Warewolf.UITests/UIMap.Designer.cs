@@ -2934,7 +2934,8 @@ namespace Warewolf.UITests
             // Type 'Count' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(307, 125));
             Mouse.StartDragging(count, new Point(13, 18));
             Mouse.StopDragging(flowchart, new Point(307, 125));
@@ -3292,7 +3293,8 @@ namespace Warewolf.UITests
             // Type 'Find Records' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(307, 130));
             Mouse.StartDragging(findRecords, new Point(8, 8));
             Mouse.StopDragging(flowchart, new Point(307, 130));
@@ -3843,7 +3845,8 @@ namespace Warewolf.UITests
             // Type 'Replace' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Replace_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(306, 121));
             Mouse.StartDragging(replace, new Point(16, 10));
             Mouse.StopDragging(flowchart, new Point(306, 121));
@@ -4230,7 +4233,8 @@ namespace Warewolf.UITests
             // Type 'Sort' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(300, 122));
             Mouse.StartDragging(sort, new Point(7, 8));
             Mouse.StopDragging(flowchart, new Point(300, 122));
@@ -4363,7 +4367,8 @@ namespace Warewolf.UITests
             // Type 'Unique' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(304, 133));
             Mouse.StartDragging(uniqueRecords, new Point(43, 6));
             Mouse.StopDragging(flowchart, new Point(304, 133));
@@ -51233,13 +51238,13 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.HelpText] = @"
+            this.SearchProperties.Add(new PropertyExpression(WpfComboBox.PropertyNames.HelpText, @"
                                                                           How would you like to round the number?
                                                                           None: No rounding is done
                                                                           Normal: 5,6,7,8,9 round up & 1,2,3,4 round down
                                                                           Up: 1-9 all round up
                                                                           Down: 1-9 all round down
-                                                                        ";
+                                                                        ", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
