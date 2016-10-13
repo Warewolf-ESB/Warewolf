@@ -24,7 +24,7 @@ namespace Warewolf.UITests
     {
         const int _lenientSearchTimeout = 30000;
         const int _lenientMaximumRetryCount = 3;
-        const int _strictSearchTimeout = 15000;
+        const int _strictSearchTimeout = 3000;
         const int _strictMaximumRetryCount = 1;
 
         public void SetPlaybackSettings()
@@ -36,8 +36,8 @@ namespace Warewolf.UITests
 #else
             Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
 #endif
-            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
+            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
@@ -54,6 +54,7 @@ namespace Warewolf.UITests
             TryCloseHangingDebugInputDialog();
             TryCloseHangingSaveDialog();
             TryCloseHangingServicePickerDialog();
+            TryCloseHangingWindowsGroupDialog();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner); 
 #endif
         }
@@ -165,8 +166,8 @@ namespace Warewolf.UITests
 
         public bool ControlExistsNow(UITestControl thisControl)
         {
-            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount;
+            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout;
             Playback.PlaybackError -= OnError;
             OnErrorHandlerDisabled = true;
             bool controlExists = false;
@@ -178,8 +179,8 @@ namespace Warewolf.UITests
             {
                 OnErrorHandlerDisabled = false;
                 Playback.PlaybackError += OnError;
-                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
             }
             return controlExists;
         }
