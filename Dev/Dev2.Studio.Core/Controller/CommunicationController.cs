@@ -98,7 +98,23 @@ namespace Dev2.Controller
         /// <returns></returns>
         public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId)
         {
-            return ExecuteCommand<T>(connection, workspaceId, Guid.Empty);
+            try
+            {
+                var executeCommand = ExecuteCommand<T>(connection, workspaceId, Guid.Empty);
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+
+                return executeCommand;
+            }
+            catch(ServiceNotAuthorizedException ex)
+            {
+                var popupController = CustomContainer.Get<IPopupController>();
+                popupController?.Show(string.Format(ErrorResource.ServerDissconnected, connection.DisplayName) + Environment.NewLine +
+                                      ex.Message, "ServiceNotAuthorizedException", MessageBoxButton.OK,
+                                      MessageBoxImage.Error, "", false, false, true, false);
+                return default(T);
+
+            }
+            
         }
 
         /// <summary>

@@ -14,9 +14,11 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SavePerformanceCounters : IEsbManagementEndpoint
     {
         private IPerformanceCounterRepository _manager;
-        private readonly IAuthorizer _authorizer;
+        
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        private IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
+
         public SavePerformanceCounters(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -24,7 +26,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public SavePerformanceCounters()
-            :this(new SecuredCreateEndpoint())
         {
 
         }
@@ -46,7 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
+                Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Manager.Save(serializer.Deserialize<IPerformanceCounterTo>(values["PerformanceCounterTo"]));
                 msg.HasError = false;
                 msg.Message = new StringBuilder();

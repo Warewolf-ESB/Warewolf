@@ -33,7 +33,11 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
         IResourceCatalog _resourceCatalogue;
-        private readonly IAuthorizer _authorizer;
+       
+
+        private IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
+
         public SavePluginService(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -41,7 +45,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public SavePluginService()
-            :this(new SecuredCreateEndpoint())
         {
 
         }
@@ -52,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
+                Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save Plugin Service");
                 StringBuilder resourceDefinition;
 

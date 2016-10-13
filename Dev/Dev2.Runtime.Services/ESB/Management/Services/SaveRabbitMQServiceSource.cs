@@ -19,7 +19,11 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SaveRabbitMQServiceSource : IEsbManagementEndpoint
     {
-        private readonly IAuthorizer _authorizer;
+       
+
+        private IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
+
         public SaveRabbitMQServiceSource(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -27,7 +31,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public SaveRabbitMQServiceSource()
-            :this(new SecuredCreateEndpoint())
         {
 
         }
@@ -38,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             try
             {
-                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
+                Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save RabbitMQ Service Source");
                 StringBuilder resourceDefinition;
                 msg.HasError = false;

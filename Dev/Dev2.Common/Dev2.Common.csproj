@@ -152,6 +152,7 @@
     <Compile Include="PropertyApi.cs" />
     <Compile Include="RecordSetSearchPayload.cs" />
     <Compile Include="SaveResult.cs" />
+    <Compile Include="ServiceNotAuthorizedException.cs" />
     <Compile Include="SharepointSourceTo.cs" />
     <Compile Include="SingleApi.cs" />
     <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />

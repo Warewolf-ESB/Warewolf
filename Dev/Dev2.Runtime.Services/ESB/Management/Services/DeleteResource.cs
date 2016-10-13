@@ -18,7 +18,6 @@ using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.Exceptions;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 
@@ -31,6 +30,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class DeleteResource : IEsbManagementEndpoint
     {
         private readonly IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? new SecuredContributeManagementEndpoint();
+
         public DeleteResource(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -38,7 +39,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public DeleteResource()
-            :this(new SecuredContributeManagementEndpoint())
         {
 
         }
@@ -67,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     type = tmp.ToString();
                 }
-                _authorizer.RunPermissions(resourceId);
+                Authorizer.RunPermissions(resourceId);
                 Dev2Logger.Info("Delete Resource Service. Resource:" + resourceId);
                 // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
                 var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceId, type);

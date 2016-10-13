@@ -32,8 +32,9 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FindResource : IEsbManagementEndpoint
     {
-        private readonly IAuthorizer _authorizer;
-        // ReSharper disable once MemberCanBePrivate.Global
+        private IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredViewManagementEndpoint());
+
         public FindResource(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -41,7 +42,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public FindResource()
-            :this(new SecuredViewManagementEndpoint())
         {
 
         }
@@ -78,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    _authorizer.RunPermissions(resourceId.ToGuid());
+                    Authorizer.RunPermissions(resourceId.ToGuid());
                     resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", resourceId }, { "type", type } }).ToList();
                 }
                 Dev2Logger.Info("Find Resource. ResourceName: " + resourceName);

@@ -296,7 +296,6 @@
     <Compile Include="ESB\Management\Services\TestEmailServiceSource.cs" />
     <Compile Include="ESB\Management\Services\TestSharepointServerService.cs" />
     <Compile Include="ESB\Management\Services\TestNetworkService.cs" />
-    <Compile Include="Exceptions\ServiceNotAuthorizedException.cs" />
     <Compile Include="Execution\ExecutionToken.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />
     <Compile Include="Hosting\ExplorerItemFactory.cs" />
@@ -518,6 +517,9 @@
     <Content Include="SSL Generation\makecert.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

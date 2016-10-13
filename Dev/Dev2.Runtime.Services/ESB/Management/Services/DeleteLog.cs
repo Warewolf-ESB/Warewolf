@@ -26,7 +26,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class DeleteLog : IEsbManagementEndpoint
     {
         private readonly IAuthorizer _authorizer;
-        // ReSharper disable once MemberCanBePrivate.Global
+        private IAuthorizer Authorizer => _authorizer ?? new SecuredContributeManagementEndpoint();
+
         public DeleteLog(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -34,7 +35,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public DeleteLog()
-            :this(new SecuredContributeManagementEndpoint())
         {
 
         }
@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 directory = tmp.ToString();
             }
-            _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
+            Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
             if (string.IsNullOrWhiteSpace(filePath))
             {
                 msg.HasError = true;

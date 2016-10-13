@@ -30,6 +30,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class RenameResource : IEsbManagementEndpoint
     {
         private readonly IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? new SecuredContributeManagementEndpoint();
+
         public RenameResource(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -37,7 +39,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public RenameResource()
-            :this(new SecuredContributeManagementEndpoint())
         {
 
         }
@@ -87,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Guid id;
                 Guid.TryParse(resourceId, out id);
-                _authorizer.RunPermissions(id);
+                Authorizer.RunPermissions(id);
                 Dev2Logger.Info($"Rename Resource. ResourceId:{resourceId} NewName:{newName}");
                 var saveToWorkSpaceResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID, id, newName, resourcePath);
                 if (saveToWorkSpaceResult.Status == ExecStatus.Success)

@@ -20,8 +20,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SaveOAuthSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
+        
+        private IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
 
-        private readonly IAuthorizer _authorizer;
         public SaveOAuthSource(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -29,7 +31,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public SaveOAuthSource()
-            :this(new SecuredCreateEndpoint())
         {
 
         }
@@ -57,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
+                Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save OAuth Source");
                 StringBuilder resourceDefinition;
 

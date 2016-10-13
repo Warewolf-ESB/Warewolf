@@ -27,8 +27,11 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class FetchExplorerItems : IEsbManagementEndpoint
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
-        private readonly IAuthorizer _authorizer;
-        // ReSharper disable once MemberCanBePrivate.Global
+      
+
+        private IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
+
         public FetchExplorerItems(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
@@ -36,7 +39,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         // ReSharper disable once MemberCanBeInternal
         public FetchExplorerItems()
-            :this(new SecuredViewManagementEndpoint())
         {
 
         }
@@ -72,7 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         reloadResourceCatalogue = false;
                     }
                 }
-                _authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
+                Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 if (reloadResourceCatalogue)
                 {
                     ResourceCatalog.Instance.Reload();
