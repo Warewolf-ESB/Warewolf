@@ -199,7 +199,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         {
                             contentType = headers.Get("ContentType");
                         }
-                        if (!string.IsNullOrEmpty(contentType))
+                        if (!string.IsNullOrEmpty(contentType) && !dataObject.IsServiceTestExecution)
                         {
                             if (contentType.ToLowerInvariant().Contains("json"))
                             {
@@ -279,7 +279,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     if (dataObject.ReturnType == EmitionTypes.TEST && dataObject.TestName == "*")
                     {
 
-                        if (dataObject.TestsResourceIds.Any())
+                        if (dataObject.TestsResourceIds?.Any() ?? false)
                         {
                             foreach (var testsResourceId in dataObject.TestsResourceIds)
                             {
