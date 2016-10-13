@@ -21,10 +21,6 @@ namespace Warewolf.UITests.Tools
             Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
             Uimap.Save_With_Ribbon_Button_And_Dialog(WebPutName);
             Uimap.Click_Workflow_ExpandAll();
-
-            //Uimap.Click_PutWeb_GenerateOutputs_Button();
-            //Uimap.Click_PutWeb_Paste_Response_Button();
-            //Uimap.Click_PutWeb_Cancel_Button();
         }
 
         #region Additional test attributes
@@ -44,6 +40,7 @@ namespace Warewolf.UITests.Tools
         {
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.TryRemoveFromExplorer(WebPutName);            
+            Uimap.TryRemoveFromExplorer(WebSourceName);            
         }
         /// <summary>
         ///Gets or sets the test context which provides

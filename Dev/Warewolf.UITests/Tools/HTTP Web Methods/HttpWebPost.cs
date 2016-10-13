@@ -15,16 +15,12 @@ namespace Warewolf.UITests.Tools
         {
             Uimap.Drag_PostWeb_RequestTool_Onto_DesignSurface();
             Uimap.Open_PostWeb_RequestTool_Large_View();            
-            Uimap.Click_AddNew_Web_Source_From_tool();
+            Uimap.Click_AddNew_Web_Source_From_PostWeb_tool();
             Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
             Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
             Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
             Uimap.Save_With_Ribbon_Button_And_Dialog(WebPostName);
-            Uimap.Click_Workflow_ExpandAll();
-
-            //Uimap.Click_PostWeb_GenerateOutputs_Button();
-            //Uimap.Click_PostWeb_Paste_Response_Button();
-            //Uimap.Click_PostWeb_Cancel_Button();
+            Uimap.Click_Workflow_ExpandAll();            
         }
 
         #region Additional test attributes
@@ -37,6 +33,14 @@ namespace Warewolf.UITests.Tools
             Uimap.CloseHangingDialogs();
 #endif
             Uimap.InitializeABlankWorkflow();
+        }
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.TryRemoveFromExplorer(WebSourceName);
+            Uimap.TryRemoveFromExplorer(WebPostName);
         }
 
         /// <summary>
