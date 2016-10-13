@@ -9,7 +9,6 @@ namespace Warewolf.UITests
         [TestMethod]
         public void Check_Public_Admin_And_Save()
         {
-            UIMap.Click_ConfigureSetting_From_Menu();
             UIMap.Check_Public_Administrator();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
         }
@@ -23,6 +22,7 @@ namespace Warewolf.UITests
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
+            UIMap.Click_Settings_Ribbon_Button();
         }
 
         UIMap UIMap
