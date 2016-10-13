@@ -6,9 +6,6 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class HttpWebDelete
     {
-        const string WebSourceName = "UITestingWebSource";
-        const string WebDeleteName = "UITestingWebDeleteSource";
-
         [TestMethod]
         [TestCategory("Tools")]
         public void HttpWebDeleteToolClickLargeViewDoneButton()
@@ -21,7 +18,7 @@ namespace Warewolf.UITests.Tools
         public void HttpWebDeleteToolClickAddNewSourceButtonOpensNewSourceWizardTab()
         {
             UIMap.Open_DeleteWeb_Tool_Large_View();
-            UIMap.Click_AddNew_Web_Source_From_tool();
+            UIMap.Click_HTTP_Delete_Web_Tool_New_Button();
         }
 
         [TestMethod]

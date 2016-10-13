@@ -34,20 +34,6 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        [When(@"I AssertMethod1")]
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfCustom helloWorldWorkFlow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'DsfWorkflowActivity' custom control equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.HelloWorldWorkFlowExists, helloWorldWorkFlow.Exists, "Hello World work flow does not exist after selecting OK from Service Picker");
-        }
-        
-        /// <summary>
         /// Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1 - Use 'Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params' to pass parameters into this method.
         /// </summary>
         [When(@"I Assign Value To Variable With Assign Tool Small View Row 1")]
@@ -1220,6 +1206,25 @@ namespace Warewolf.UITests
 
             // Click 'Done' button
             Mouse.Click(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
+        /// Click_HTTP_Delete_Web_Tool_New_Button - Use 'Click_HTTP_Delete_Web_Tool_New_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Click HTTP Delete Web Tool New Button")]
+        public void Click_HTTP_Delete_Web_Tool_New_Button()
+        {
+            #region Variable Declarations
+            WpfButton newSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.NewSourceButton;
+            WpfTabPage webSourceWizardTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab;
+            #endregion
+
+            // Click 'New' button
+            Mouse.Click(newSourceButton, new Point(13, 9));
+
+            // Verify that the 'Exists' property of 'Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte...' tab equals 'True'
+            Assert.AreEqual(this.Click_HTTP_Delete_Web_Tool_New_ButtonParams.WebSourceWizardTabExists, webSourceWizardTab.Exists, "New web source wizard tab is not open after clicking create new web source from d" +
+                    "elete tool.");
         }
         
         /// <summary>
@@ -8780,18 +8785,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
         public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
         {
             get
@@ -9209,6 +9202,18 @@ namespace Warewolf.UITests
                     this.mClick_GET_Web_Large_View_Generate_OutputsExpectedValues = new Click_GET_Web_Large_View_Generate_OutputsExpectedValues();
                 }
                 return this.mClick_GET_Web_Large_View_Generate_OutputsExpectedValues;
+            }
+        }
+        
+        public virtual Click_HTTP_Delete_Web_Tool_New_ButtonParams Click_HTTP_Delete_Web_Tool_New_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_HTTP_Delete_Web_Tool_New_ButtonParams == null))
+                {
+                    this.mClick_HTTP_Delete_Web_Tool_New_ButtonParams = new Click_HTTP_Delete_Web_Tool_New_ButtonParams();
+                }
+                return this.mClick_HTTP_Delete_Web_Tool_New_ButtonParams;
             }
         }
         
@@ -11972,22 +11977,20 @@ namespace Warewolf.UITests
             }
         }
         
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
         {
             get
             {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
                 {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
                 }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
         #endregion
         
         #region Fields
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params;
         
         private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params;
@@ -12057,6 +12060,8 @@ namespace Warewolf.UITests
         private Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams mClick_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams;
         
         private Click_GET_Web_Large_View_Generate_OutputsExpectedValues mClick_GET_Web_Large_View_Generate_OutputsExpectedValues;
+        
+        private Click_HTTP_Delete_Web_Tool_New_ButtonParams mClick_HTTP_Delete_Web_Tool_New_ButtonParams;
         
         private Click_MessageBox_YesParams mClick_MessageBox_YesParams;
         
@@ -12518,22 +12523,7 @@ namespace Warewolf.UITests
         
         private SwitchCaseDialog mSwitchCaseDialog;
         
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfWorkflowActivity' custom control equals 'True'
-        /// </summary>
-        public bool HelloWorldWorkFlowExists = true;
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -13227,6 +13217,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Done' button equals 'True'
         /// </summary>
         public bool DoneButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_HTTP_Delete_Web_Tool_New_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_HTTP_Delete_Web_Tool_New_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte...' tab equals 'True'
+        /// </summary>
+        public bool WebSourceWizardTabExists = true;
         #endregion
     }
     
@@ -79046,15 +79051,15 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
     {
         
-        public UIWarewolfDEV2SANELEMTWindow()
+        public UIWarewolfDEV2ASHLEYLEWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -79087,7 +79092,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -79119,7 +79124,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -79135,10 +79140,29 @@ namespace Warewolf.UITests
                 return this.mUIDev2StudioViewModelsTabPage;
             }
         }
+        
+        public WpfTabPage UIDev2ViewModelsSourceTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2ViewModelsSourceTabPage == null))
+                {
+                    this.mUIDev2ViewModelsSourceTabPage = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mUIDev2ViewModelsSourceTabPage.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.ServerProxyLayer.IWebSer" +
+                        "viceSource]";
+                    this.mUIDev2ViewModelsSourceTabPage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIDev2ViewModelsSourceTabPage;
+            }
+        }
         #endregion
         
         #region Fields
         private UIDev2StudioViewModelsTabPage mUIDev2StudioViewModelsTabPage;
+        
+        private WpfTabPage mUIDev2ViewModelsSourceTabPage;
         #endregion
     }
     
@@ -79151,7 +79175,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -79184,7 +79208,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -79217,7 +79241,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerView";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_WorkflowDesigner_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -79250,7 +79274,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DesignerView";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UserControl_1";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -79283,7 +79307,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "scrollViewer";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -79316,7 +79340,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActivityTypeDesigner";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -79349,7 +79373,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -79381,57 +79405,52 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 2(FlowchartDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public UIDsfNumberFormatActivCustom UIDsfNumberFormatActivCustom
+        public UIDsfWebDeleteActivityCustom UIDsfWebDeleteActivityCustom
         {
             get
             {
-                if ((this.mUIDsfNumberFormatActivCustom == null))
+                if ((this.mUIDsfWebDeleteActivityCustom == null))
                 {
-                    this.mUIDsfNumberFormatActivCustom = new UIDsfNumberFormatActivCustom(this);
+                    this.mUIDsfWebDeleteActivityCustom = new UIDsfWebDeleteActivityCustom(this);
                 }
-                return this.mUIDsfNumberFormatActivCustom;
+                return this.mUIDsfWebDeleteActivityCustom;
             }
         }
         #endregion
         
         #region Fields
-        private UIDsfNumberFormatActivCustom mUIDsfNumberFormatActivCustom;
+        private UIDsfWebDeleteActivityCustom mUIDsfWebDeleteActivityCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDsfNumberFormatActivCustom : WpfCustom
+    public class UIDsfWebDeleteActivityCustom : WpfCustom
     {
         
-        public UIDsfNumberFormatActivCustom(UITestControl searchLimitContainer) : 
+        public UIDsfWebDeleteActivityCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FormatNumberDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Format Number(FormatNumberDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WebServiceDeleteDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DELETE Web Method(WebServiceDeleteDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public WpfCustom UILargeViewContentCustom
+        public UILargeViewContentCustom UILargeViewContentCustom
         {
             get
             {
                 if ((this.mUILargeViewContentCustom == null))
                 {
-                    this.mUILargeViewContentCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-                    this.mUILargeViewContentCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mUILargeViewContentCustom = new UILargeViewContentCustom(this);
                 }
                 return this.mUILargeViewContentCustom;
             }
@@ -79439,7 +79458,44 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfCustom mUILargeViewContentCustom;
+        private UILargeViewContentCustom mUILargeViewContentCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UILargeViewContentCustom : WpfCustom
+    {
+        
+        public UILargeViewContentCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton UINewButton
+        {
+            get
+            {
+                if ((this.mUINewButton == null))
+                {
+                    this.mUINewButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUINewButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceNewButton";
+                    this.mUINewButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUINewButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mUINewButton;
         #endregion
     }
 }
