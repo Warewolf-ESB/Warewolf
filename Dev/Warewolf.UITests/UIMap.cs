@@ -9,11 +9,13 @@ using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
+using System.CodeDom;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
@@ -24,7 +26,7 @@ namespace Warewolf.UITests
     {
         const int _lenientSearchTimeout = 30000;
         const int _lenientMaximumRetryCount = 3;
-        const int _strictSearchTimeout = 15000;
+        const int _strictSearchTimeout = 3000;
         const int _strictMaximumRetryCount = 1;
 
         public void SetPlaybackSettings()
@@ -36,8 +38,8 @@ namespace Warewolf.UITests
 #else
             Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
 #endif
-            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
+            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
@@ -54,6 +56,7 @@ namespace Warewolf.UITests
             TryCloseHangingDebugInputDialog();
             TryCloseHangingSaveDialog();
             TryCloseHangingServicePickerDialog();
+            TryCloseHangingWindowsGroupDialog();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner); 
 #endif
         }
@@ -166,8 +169,8 @@ namespace Warewolf.UITests
 
         public bool ControlExistsNow(UITestControl thisControl)
         {
-            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount;
+            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout;
             Playback.PlaybackError -= OnError;
             OnErrorHandlerDisabled = true;
             bool controlExists = false;
@@ -179,8 +182,8 @@ namespace Warewolf.UITests
             {
                 OnErrorHandlerDisabled = false;
                 Playback.PlaybackError += OnError;
-                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
             }
             return controlExists;
         }
@@ -896,6 +899,60 @@ namespace Warewolf.UITests
             else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem1))
             {
                 Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem1, new Point(163, 17));
+            }
+            else
+            {
+                throw new InvalidOperationException("Cannot select last list item from a list with no items.");
+            }
+        }
+
+        [When(@"I Select Second to Last Source From GET Web Large View Source Combobox")]
+        public void Select_Second_to_Last_Source_From_GET_Web_Large_View_Source_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox, new Point(175, 9));
+            if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem10))
+            {
+                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem9, new Point(163, 17));
+            }
+            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem9))
+            {
+                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem8, new Point(163, 17));
+            }
+            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem8))
+            {
+                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem7, new Point(163, 17));
+            }
+            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem7))
+            {
+                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem6, new Point(163, 17));
+            }
+            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem6))
+            {
+                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem5, new Point(163, 17));
+            }
+            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem5))
+            {
+                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem4, new Point(163, 17));
+            }
+            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem4))
+            {
+                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem3, new Point(163, 17));
+            }
+            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem3))
+            {
+                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem2, new Point(163, 17));
+            }
+            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem2))
+            {
+                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem1, new Point(163, 17));
+            }
+            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem1))
+            {
+                throw new InvalidOperationException("Cannot select second to last list item from a list with only one item.");
+            }
+            else
+            {
+                throw new InvalidOperationException("Cannot select second to last list item from a list with no items.");
             }
         }
 

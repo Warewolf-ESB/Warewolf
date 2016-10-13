@@ -6,29 +6,31 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class HttpWebGet
     {
-        const string WebSourceName = "UITestingWebSource";
-        const string WebGetName = "UITestingWebPostSource";
-
         [TestMethod]
 		[TestCategory("Tools")]
-        public void HttpWebGetToolUITest()
+        public void HttpWebGetToolClickLargeViewDoneButton()
         {
-            Uimap.Drag_GET_Web_Connector_Onto_DesignSurface();
-            Uimap.Open_GET_Web_Connector_Tool_Large_View();
-            Uimap.Click_AddNew_Web_Source_From_tool();
-            Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
-            Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WebGetName);
+            UIMap.Open_GET_Web_Connector_Tool_Large_View();
+            UIMap.Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_View();
+        }
 
-            Uimap.Click_Workflow_ExpandAll();
-            Uimap.Select_Last_Source_From_GET_Web_Large_View_Source_Combobox();
-            Uimap.Click_GET_Web_Large_View_Generate_Outputs();
-            Uimap.Click_GET_Web_Large_View_Test_Inputs_Button();
-            Uimap.Click_GET_Web_Large_View_Test_Inputs_Done_Button();
-            Uimap.Click_GET_Web_Large_View_Done_Button();
-            Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_DebugInput_Debug_Button();
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void HttpWebGetToolClickAddNewSourceButtonOpensNewSourceWizardTab()
+        {
+            UIMap.Open_GET_Web_Connector_Tool_Large_View();
+            UIMap.Click_AddNew_Web_Source_From_tool();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void HttpWebGetToolClickTestInputsDoneButton()
+        {
+            UIMap.Open_GET_Web_Connector_Tool_Large_View();
+            UIMap.Select_Second_to_Last_Source_From_GET_Web_Large_View_Source_Combobox();
+            UIMap.Click_GET_Web_Large_View_Generate_Outputs();
+            UIMap.Click_GET_Web_Large_View_Test_Inputs_Button();
+            UIMap.Click_GET_Web_Large_View_Test_Inputs_Done_Button();
         }
 
         #region Additional test attributes
@@ -36,41 +38,15 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.InitializeABlankWorkflow();
+            UIMap.Drag_GET_Web_Connector_Onto_DesignSurface();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Click_MessageBox_No();
-            Uimap.TryRemoveFromExplorer(WebSourceName);
-            Uimap.TryRemoveFromExplorer(WebGetName);
-        }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
-
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
