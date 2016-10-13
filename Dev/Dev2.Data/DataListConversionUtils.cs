@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
@@ -82,7 +83,7 @@ namespace Dev2.Data
                 singleRes.DisplayValue = item.Name;
                 try
                 {
-                    singleRes.Value = item.Value;
+                    singleRes.Value = item.Value.UnescapeString();
                 }
                 catch (Exception)
                 {
@@ -110,7 +111,7 @@ namespace Dev2.Data
                     singleRes.Recordset = recordSet.Name;
                     singleRes.Field = col.Name;
                     singleRes.Index = column.Key.ToString();
-                    singleRes.Value = col.Value;
+                    singleRes.Value = col.Value.UnescapeString();
                     singleRes.DisplayValue = DataListUtil.CreateRecordsetDisplayValue(recordSet.Name, col.Name, column.Key.ToString());
                     singleRes.Description = col.Description;
                     result.Add(singleRes);

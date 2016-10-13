@@ -669,17 +669,15 @@ namespace Warewolf.Studio.ViewModels
                                 {
                                     if (_resourceName != null)
                                     {
-                                        ResourcePath = ResourcePath.Replace(_resourceName, newName);
+                                        ResourcePath = ResourcePath.Replace(_resourceName, newName);                                                                                
                                     }
                                 }
                                 else
                                 {
-                                    ResourcePath =
-                                        ResourcePath.Substring(0,
-                                            ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) +
-                                        newName;
+                                    ResourcePath = ResourcePath.Substring(0,ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) +newName;
+                                    
                                 }
-
+                                UpdateResourcePaths(this);                                                                
                                 _resourceName = newName;
                             }
                         }
@@ -1217,7 +1215,6 @@ namespace Warewolf.Studio.ViewModels
                 if (!moveResult)
                 {
                     ShowErrorMessage(Resources.Languages.Core.ExplorerMoveFailedMessage, Resources.Languages.Core.ExplorerMoveFailedHeader);
-                    Server.UpdateRepository.FireItemSaved(true);
                     return false;
                 }
                 UpdateResourcePaths(destination);
@@ -1225,7 +1222,6 @@ namespace Warewolf.Studio.ViewModels
             catch (Exception ex)
             {
                 ShowErrorMessage(ex.Message, Resources.Languages.Core.ExplorerMoveFailedHeader);
-                Server.UpdateRepository.FireItemSaved(true);
                 return false;
             }
             finally
