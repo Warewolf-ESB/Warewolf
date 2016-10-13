@@ -84,11 +84,6 @@
                               ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
                               IsEditable="False"
                               SelectedItem="{Binding ActionRegion.SelectedAction}">
-                <ComboBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel />
-                    </ItemsPanelTemplate>
-                </ComboBox.ItemsPanel>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceSelectActionHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>

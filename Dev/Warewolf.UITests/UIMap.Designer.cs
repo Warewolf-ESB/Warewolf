@@ -6634,90 +6634,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Search_And_Select_DiceRoll - Use 'Search_And_Select_DiceRollParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Search And Select DiceRoll")]
-        public void Search_And_Select_DiceRoll()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            #endregion
-
-            // Click 'SearchTextBox' text box
-            Mouse.Click(searchTextBox, new Point(165, 9));
-
-            // Type 'Dice Roll' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Search_And_Select_DiceRollParams.SearchTextBoxText;
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
-        }
-        
-        /// <summary>
-        /// Search_And_Select_HelloWolrd - Use 'Search_And_Select_HelloWolrdParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Search And Select HelloWolrd")]
-        public void Search_And_Select_HelloWolrd()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            #endregion
-
-            // Click 'SearchTextBox' text box
-            Mouse.Click(searchTextBox, new Point(165, 9));
-
-            // Type 'Hello World' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Search_And_Select_HelloWolrdParams.SearchTextBoxText;
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
-        }
-        
-        /// <summary>
-        /// Select_Copy_FromContextMenu
-        /// </summary>
-        [When(@"I Select Copy FromContextMenu")]
-        public void Select_Copy_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem copy = this.MainStudioWindow.DesignSurfaceContextMenu.Copy;
-            #endregion
-
-            // Click 'Copy' menu item
-            Mouse.Click(copy, new Point(27, 18));
-        }
-        
-        /// <summary>
-        /// Select_CopyAsImage_FromContextMenu
-        /// </summary>
-        [When(@"I Select CopyAsImage FromContextMenu")]
-        public void Select_CopyAsImage_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem copyasImage = this.MainStudioWindow.DesignSurfaceContextMenu.CopyasImage;
-            #endregion
-
-            // Click 'Copy as Image' menu item
-            Mouse.Click(copyasImage, new Point(62, 22));
-        }
-        
-        /// <summary>
-        /// Select_Cut_FromContextMenu
-        /// </summary>
-        [When(@"I Select Cut FromContextMenu")]
-        public void Select_Cut_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem cut = this.MainStudioWindow.DesignSurfaceContextMenu.Cut;
-            #endregion
-
-            // Click 'Cut' menu item
-            Mouse.Click(cut, new Point(53, 16));
-        }
-        
-        /// <summary>
         /// Select_Delete_FromExplorerContextMenu - Use 'Select_Delete_FromExplorerContextMenuParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Select Delete FromExplorerContextMenu")]
@@ -6733,38 +6649,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Yes' button equals 'True'
             Assert.AreEqual(this.Select_Delete_FromExplorerContextMenuParams.YesButtonExists, yesButton.Exists, "Message box Yes button does not exist");
-        }
-        
-        /// <summary>
-        /// Select_DeleteRow_FromContextMenu
-        /// </summary>
-        [When(@"I Select DeleteRow FromContextMenu")]
-        public void Select_DeleteRow_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem deleteRow = this.MainStudioWindow.DesignSurfaceContextMenu.DeleteRow;
-            #endregion
-
-            // Click 'Delete Row' menu item
-            Mouse.Click(deleteRow, new Point(74, 9));
-        }
-        
-        /// <summary>
-        /// Select_Deploy_FromExplorerContextMenu - Use 'Select_Deploy_FromExplorerContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Select Deploy FromExplorerContextMenu")]
-        public void Select_Deploy_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem deploy = this.MainStudioWindow.ExplorerContextMenu.Deploy;
-            WpfTabPage deployTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab;
-            #endregion
-
-            // Click 'Deploy' menu item
-            Mouse.Click(deploy, new Point(57, 11));
-
-            // Verify that the 'Exists' property of 'Dev2.ViewModels.DeployWorksurfaceViewModel' tab equals 'True'
-            Assert.AreEqual(this.Select_Deploy_FromExplorerContextMenuParams.DeployTabExists, deployTab.Exists, "DeployTab does not exist after clicking Deploy");
         }
         
         /// <summary>
@@ -6879,20 +6763,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_InsertRow_FromContextMenu
-        /// </summary>
-        [When(@"I Select InsertRow FromContextMenu")]
-        public void Select_InsertRow_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem insertRow = this.MainStudioWindow.DesignSurfaceContextMenu.InsertRow;
-            #endregion
-
-            // Click 'Insert Row' menu item
-            Mouse.Click(insertRow, new Point(66, 19));
-        }
-        
-        /// <summary>
         /// Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox - Use 'Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Select LocalhostConnected From Deploy Tab Destination Server Combobox")]
@@ -6963,20 +6833,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_NewDatabaseSource_FromExplorerContextMenu
-        /// </summary>
-        [When(@"I Select NewDatabaseSource FromExplorerContextMenu")]
-        public void Select_NewDatabaseSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newDatabaseSource = this.MainStudioWindow.ExplorerContextMenu.NewDatabaseSource;
-            #endregion
-
-            // Click 'New Database Source' menu item
-            Mouse.Click(newDatabaseSource, new Point(72, 14));
-        }
-        
-        /// <summary>
         /// Select_NewDatabaseSource_FromSqlServerTool - Use 'Select_NewDatabaseSource_FromSqlServerToolParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Select NewDatabaseSource FromSqlServerTool")]
@@ -7000,90 +6856,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
             Assert.AreEqual(this.Select_NewDatabaseSource_FromSqlServerToolParams.PasswordTextBoxExists, passwordTextBox.Exists, "Password textbox does not exist on database source wizard.");
-        }
-        
-        /// <summary>
-        /// Select_NewDropboxSource_FromExplorerContextMenu
-        /// </summary>
-        [When(@"I Select NewDropboxSource FromExplorerContextMenu")]
-        public void Select_NewDropboxSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newDropboxSource = this.MainStudioWindow.ExplorerContextMenu.NewDropboxSource;
-            #endregion
-
-            // Click 'New Dropbox Source' menu item
-            Mouse.Click(newDropboxSource, new Point(119, 15));
-        }
-        
-        /// <summary>
-        /// Select_NewEmailSource_FromExplorerContextMenu
-        /// </summary>
-        [When(@"I Select NewEmailSource FromExplorerContextMenu")]
-        public void Select_NewEmailSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newEmailSource = this.MainStudioWindow.ExplorerContextMenu.NewEmailSource;
-            #endregion
-
-            // Click 'New Email Source' menu item
-            Mouse.Click(newEmailSource, new Point(101, 13));
-        }
-        
-        /// <summary>
-        /// Select_NewFolder_FromExplorerContextMenu
-        /// </summary>
-        [When(@"I Select NewFolder FromExplorerContextMenu")]
-        public void Select_NewFolder_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newFolder = this.MainStudioWindow.ExplorerContextMenu.NewFolder;
-            #endregion
-
-            // Click 'New Folder' menu item
-            Mouse.Click(newFolder, new Point(87, 14));
-        }
-        
-        /// <summary>
-        /// Select_NewPluginSource_FromExplorerContextMenu
-        /// </summary>
-        [When(@"I Select NewPluginSource FromExplorerContextMenu")]
-        public void Select_NewPluginSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newPluginSource = this.MainStudioWindow.ExplorerContextMenu.NewPluginSource;
-            #endregion
-
-            // Click 'New Plugin Source' menu item
-            Mouse.Click(newPluginSource, new Point(78, 11));
-        }
-        
-        /// <summary>
-        /// Select_NewServerSource_FromExplorerContextMenu
-        /// </summary>
-        [When(@"I Select NewServerSource FromExplorerContextMenu")]
-        public void Select_NewServerSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newServerSource = this.MainStudioWindow.ExplorerContextMenu.NewServerSource;
-            #endregion
-
-            // Click 'New Server Source' menu item
-            Mouse.Click(newServerSource, new Point(44, 13));
-        }
-        
-        /// <summary>
-        /// Select_NewSharepointSource_FromExplorerContextMenu
-        /// </summary>
-        [When(@"I Select NewSharepointSource FromExplorerContextMenu")]
-        public void Select_NewSharepointSource_FromExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newSharepointSource = this.MainStudioWindow.ExplorerContextMenu.NewSharepointSource;
-            #endregion
-
-            // Click 'New Sharepoint Source' menu item
-            Mouse.Click(newSharepointSource, new Point(126, 17));
         }
         
         /// <summary>
@@ -7411,14 +7183,14 @@ namespace Warewolf.UITests
             // Click 'NamespaceComboBox' combo box
             Mouse.Click(classNameComboBox, new Point(216, 7));
 
-            // Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
+            // Verify that the 'Exists' property of 'ComboboxlistItemAsSystemObject' list item equals 'True'
             Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
 
-            // Click '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item
+            // Click 'ComboboxlistItemAsSystemObject' list item
             Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
 
             // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
-            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Object is not selected in DotNet DLL tool large view namespace combobox.");
         }
         
         /// <summary>
@@ -10134,30 +9906,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Search_And_Select_DiceRollParams Search_And_Select_DiceRollParams
-        {
-            get
-            {
-                if ((this.mSearch_And_Select_DiceRollParams == null))
-                {
-                    this.mSearch_And_Select_DiceRollParams = new Search_And_Select_DiceRollParams();
-                }
-                return this.mSearch_And_Select_DiceRollParams;
-            }
-        }
-        
-        public virtual Search_And_Select_HelloWolrdParams Search_And_Select_HelloWolrdParams
-        {
-            get
-            {
-                if ((this.mSearch_And_Select_HelloWolrdParams == null))
-                {
-                    this.mSearch_And_Select_HelloWolrdParams = new Search_And_Select_HelloWolrdParams();
-                }
-                return this.mSearch_And_Select_HelloWolrdParams;
-            }
-        }
-        
         public virtual Select_Delete_FromExplorerContextMenuParams Select_Delete_FromExplorerContextMenuParams
         {
             get
@@ -10167,18 +9915,6 @@ namespace Warewolf.UITests
                     this.mSelect_Delete_FromExplorerContextMenuParams = new Select_Delete_FromExplorerContextMenuParams();
                 }
                 return this.mSelect_Delete_FromExplorerContextMenuParams;
-            }
-        }
-        
-        public virtual Select_Deploy_FromExplorerContextMenuParams Select_Deploy_FromExplorerContextMenuParams
-        {
-            get
-            {
-                if ((this.mSelect_Deploy_FromExplorerContextMenuParams == null))
-                {
-                    this.mSelect_Deploy_FromExplorerContextMenuParams = new Select_Deploy_FromExplorerContextMenuParams();
-                }
-                return this.mSelect_Deploy_FromExplorerContextMenuParams;
             }
         }
         
@@ -11040,13 +10776,7 @@ namespace Warewolf.UITests
         
         private RightClick_Explorer_Localhost_First_ItemParams mRightClick_Explorer_Localhost_First_ItemParams;
         
-        private Search_And_Select_DiceRollParams mSearch_And_Select_DiceRollParams;
-        
-        private Search_And_Select_HelloWolrdParams mSearch_And_Select_HelloWolrdParams;
-        
         private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
-        
-        private Select_Deploy_FromExplorerContextMenuParams mSelect_Deploy_FromExplorerContextMenuParams;
         
         private Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
         
@@ -15571,36 +15301,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Search_And_Select_DiceRoll'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Search_And_Select_DiceRollParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'Dice Roll' in 'SearchTextBox' text box
-        /// </summary>
-        public string SearchTextBoxText = "Dice Roll";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Search_And_Select_HelloWolrd'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Search_And_Select_HelloWolrdParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'Hello World' in 'SearchTextBox' text box
-        /// </summary>
-        public string SearchTextBoxText = "Hello World";
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Select_Delete_FromExplorerContextMenu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15612,21 +15312,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Yes' button equals 'True'
         /// </summary>
         public bool YesButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_Deploy_FromExplorerContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Deploy_FromExplorerContextMenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Dev2.ViewModels.DeployWorksurfaceViewModel' tab equals 'True'
-        /// </summary>
-        public bool DeployTabExists = true;
         #endregion
     }
     
@@ -15914,7 +15599,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
+        /// Verify that the 'Exists' property of 'ComboboxlistItemAsSystemObject' list item equals 'True'
         /// </summary>
         public bool ComboboxlistItemAsSystemObjectExists = true;
         
