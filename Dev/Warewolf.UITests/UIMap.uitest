@@ -29936,7 +29936,7 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="RoundingComboBox" FriendlyName="How would you like to round the number? None: No r..." SpecialControlType="None">
+                                                                    <UIObject ControlType="ComboBox" Id="RoundingComboBox" FriendlyName="RoundingComboBox" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -29944,13 +29944,7 @@
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="HelpText" Operator="Contains">
-                                                                          How would you like to round the number?
-                                                                          None: No rounding is done
-                                                                          Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down
-                                                                          Up: 1-9 all round up
-                                                                          Down: 1-9 all round down
-                                                                        </PropertyCondition>
+                                                                        <PropertyCondition Name="HelpText" Operator="Contains">How would you like to round the number?</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants>
@@ -30167,15 +30161,8 @@
                                                                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                         <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                        <PropertyCondition Name="HelpText">
-                                                                          How would you like to round the number?
-                                                                          None: No rounding is done
-                                                                          Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down
-                                                                          Up: 1-9 all round up
-                                                                          Down: 1-9 all round down
-                                                                        </PropertyCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants />
