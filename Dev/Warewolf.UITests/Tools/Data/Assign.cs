@@ -68,7 +68,6 @@ namespace Warewolf.UITests.Tools.Data
             const string Variable2Value = "100";
             UIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable2Name + "]]", Variable2Value, 2);
             Assert.AreEqual(Variable2Name, UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable " + Variable2Name + " not found in variable list after adding to assign tool row 2.");
-            UIMap.Remove_Assign_Row_1_With_Context_Menu();
         }
 
         #region Additional test attributes
