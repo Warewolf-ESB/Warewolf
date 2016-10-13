@@ -110,11 +110,12 @@ namespace Warewolf.UITests
             if (exceptionSource is UITestControl)
             {
                 UITestControl parent = (exceptionSource as UITestControl).Container;
-                while (parent != null && !parent.Exists)
+                var parentExists = ControlExistsNow(parent);
+                while (parent != null && !parentExists)
                 {
                     parent = parent.Container;
                 }
-                if (parent != null && parent.Exists && parent != MainStudioWindow)
+                if (parent != null && parentExists && parent != MainStudioWindow)
                 {
                     string parentProperties = string.Empty;
                     parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \'" + prop.PropertyValue + "\'\n"; });
