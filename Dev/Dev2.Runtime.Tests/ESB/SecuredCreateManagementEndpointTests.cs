@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.Runtime.ESB.Management;
+using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -30,7 +31,8 @@ namespace Dev2.Tests.Runtime.ESB
         public void RunPermissions_GivenAuthServiceContibuteFalse_ShouldThrow()
         {
             //---------------Set up test pack-------------------
-            var mock = new Mock<IAuthorizationService>();
+            var secutyService = new Mock<ISecurityService>();
+            var mock = new Mock<ServerAuthorizationService>(secutyService.Object);
             var newGuid = Guid.NewGuid();
             mock.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, newGuid.ToString())).Returns(false);
             var managementEndpoint = new SecuredCreateEndpoint(mock.Object);
@@ -140,7 +142,8 @@ namespace Dev2.Tests.Runtime.ESB
         public void RunPermissionsContribute_GivenAuthServiceContibuteFalse_ShouldThrow()
         {
             //---------------Set up test pack-------------------
-            var mock = new Mock<IAuthorizationService>();
+            var secutyService = new Mock<ISecurityService>();
+            var mock = new Mock<ServerAuthorizationService>(secutyService.Object);
             var newGuid = Guid.NewGuid();
             mock.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, newGuid.ToString())).Returns(false);
             var managementEndpoint = new SecuredContributeManagementEndpoint(mock.Object);
@@ -165,7 +168,8 @@ namespace Dev2.Tests.Runtime.ESB
         public void RunPermissionsAdministrator_GivenAuthServiceContibuteFalse_ShouldThrow()
         {
             //---------------Set up test pack-------------------
-            var mock = new Mock<IAuthorizationService>();
+            var secutyService = new Mock<ISecurityService>();
+            var mock = new Mock<ServerAuthorizationService>(secutyService.Object);
             var newGuid = Guid.NewGuid();
             mock.Setup(service => service.IsAuthorized(AuthorizationContext.Administrator, newGuid.ToString())).Returns(false);
             var managementEndpoint = new SecuredAdministratorManagementEndpoint(mock.Object);
@@ -190,7 +194,8 @@ namespace Dev2.Tests.Runtime.ESB
         public void RunPermissionsDeployTo_GivenAuthServiceContibuteFalse_ShouldThrow()
         {
             //---------------Set up test pack-------------------
-            var mock = new Mock<IAuthorizationService>();
+            var secutyService = new Mock<ISecurityService>();
+            var mock = new Mock<ServerAuthorizationService>(secutyService.Object);
             var newGuid = Guid.NewGuid();
             mock.Setup(service => service.IsAuthorized(AuthorizationContext.DeployTo, newGuid.ToString())).Returns(false);
             var managementEndpoint = new SecuredDeployToManagementEndpoint(mock.Object);
@@ -215,7 +220,8 @@ namespace Dev2.Tests.Runtime.ESB
         public void RunPermissionsDeployFrom_GivenAuthServiceContibuteFalse_ShouldThrow()
         {
             //---------------Set up test pack-------------------
-            var mock = new Mock<IAuthorizationService>();
+            var secutyService = new Mock<ISecurityService>();
+            var mock = new Mock<ServerAuthorizationService>(secutyService.Object);
             var newGuid = Guid.NewGuid();
             mock.Setup(service => service.IsAuthorized(AuthorizationContext.DeployFrom, newGuid.ToString())).Returns(false);
             var managementEndpoint = new SecuredDeployFromManagementEndpoint(mock.Object);
@@ -240,7 +246,8 @@ namespace Dev2.Tests.Runtime.ESB
         public void RunPermissionsExecute_GivenAuthServiceContibuteFalse_ShouldThrow()
         {
             //---------------Set up test pack-------------------
-            var mock = new Mock<IAuthorizationService>();
+            var secutyService = new Mock<ISecurityService>();
+            var mock = new Mock<ServerAuthorizationService>(secutyService.Object);
             var newGuid = Guid.NewGuid();
             mock.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, newGuid.ToString())).Returns(false);
             var managementEndpoint = new SecuredExecuteManagementEndpoint(mock.Object);
@@ -265,7 +272,8 @@ namespace Dev2.Tests.Runtime.ESB
         public void RunPermissionsView_GivenAuthServiceContibuteFalse_ShouldThrow()
         {
             //---------------Set up test pack-------------------
-            var mock = new Mock<IAuthorizationService>();
+            var secutyService = new Mock<ISecurityService>();
+            var mock = new Mock<ServerAuthorizationService>(secutyService.Object);
             var newGuid = Guid.NewGuid();
             mock.Setup(service => service.IsAuthorized(AuthorizationContext.View, newGuid.ToString())).Returns(false);
             var managementEndpoint = new SecuredViewManagementEndpoint(mock.Object);

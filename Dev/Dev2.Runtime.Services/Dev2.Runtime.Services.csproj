@@ -299,7 +299,6 @@
     <Compile Include="Execution\ExecutionToken.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />
     <Compile Include="Hosting\ExplorerItemFactory.cs" />
-    <Compile Include="Hosting\ExplorerRepositoryResult.cs" />
     <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
     <Compile Include="Hosting\ResourceCatalogPluginContainer.cs" />
     <Compile Include="Hosting\ResourceCatalogResultBuilder.cs" />

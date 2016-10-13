@@ -15,7 +15,6 @@ using Dev2.Services.Security;
 using System;
 using System.Collections.Concurrent;
 using System.Security.Claims;
-using System.Threading;
 using System.Web;
 
 namespace Dev2.Runtime.Security
@@ -25,9 +24,19 @@ namespace Dev2.Runtime.Security
         private readonly ConcurrentDictionary<Tuple<string, string>, Tuple<bool, DateTime>> _cachedRequests = new ConcurrentDictionary<Tuple<string, string>, Tuple<bool, DateTime>>();
 
         // Singleton instance - lazy initialization is used to ensure that the creation is thread-safe
-        private static readonly Lazy<ServerAuthorizationService> TheInstance = new Lazy<ServerAuthorizationService>(() => new ServerAuthorizationService(new ServerSecurityService()));
+        private static Lazy<ServerAuthorizationService> _theInstance = new Lazy<ServerAuthorizationService>(() => new ServerAuthorizationService(new ServerSecurityService()));
 
-        public static IAuthorizationService Instance => TheInstance.Value;
+        public static IAuthorizationService Instance
+        {
+            get
+            {
+                return _theInstance.Value;
+            }
+            private set
+            {
+                _theInstance = new Lazy<ServerAuthorizationService>(() => (ServerAuthorizationService)value);
+            }
+        }
 
         private readonly TimeSpan _timeOutPeriod;
         private readonly IPerformanceCounter _perfCounter;
@@ -45,6 +54,11 @@ namespace Dev2.Runtime.Security
                 Dev2Logger.Error(e);
             }
         }
+        internal void RefreshPermission()
+        {
+            Instance = new ServerAuthorizationService(new ServerSecurityService());
+        }
+
 
         public int CachedRequestCount => _cachedRequests.Count;
 

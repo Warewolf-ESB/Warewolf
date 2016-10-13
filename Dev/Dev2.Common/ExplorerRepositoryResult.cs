@@ -11,7 +11,7 @@
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 
-namespace Dev2.Runtime.Hosting
+namespace Dev2.Common
 {
     public class ExplorerRepositoryResult : IExplorerRepositoryResult
     {
