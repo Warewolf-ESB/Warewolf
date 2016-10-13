@@ -658,6 +658,18 @@ namespace Warewolf.UITests
                     Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
             }
         }
+        public void Select_FirstItem_From_ServicePicker_Tree()
+        {
+            var firstItem = ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1;
+            Mouse.Click(firstItem);
+
+        }
+        public void Filter_ServicePicker_Explorer(string FilterText)
+        {            
+            ServicePickerDialog.Explorer.FilterTextbox.Text = FilterText;
+            WaitForControlVisible(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+        }
 
         [When(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
@@ -836,7 +848,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton.Exists, "Connect in Explorer does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton.Exists, "Edit Connect control button does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.Exists, "Variable list view does not exist");
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save menu button not enabled for new workflow.");
         }
 
         [When(@"I Select Last Source From GET Web Large View Source Combobox")]
