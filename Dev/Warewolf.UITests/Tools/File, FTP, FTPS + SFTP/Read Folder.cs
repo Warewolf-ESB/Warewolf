@@ -13,10 +13,10 @@ namespace Warewolf.UITests.Tools
         {
             UIMap.Drag_Toolbox_Read_Folder_Onto_DesignSurface();
             UIMap.Open_Read_Folder_Tool_Large_View();
-            UIMap.Enter_Text_Into_Read_Tool();
+            UIMap.Enter_Text_Into_ReadFolder_Tool();
             UIMap.Press_F6();
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            UIMap.Click_Read_Done_Button();
+            UIMap.Click_ReadFolder_Done_Button();
         }
 
         #region Additional test attributes
