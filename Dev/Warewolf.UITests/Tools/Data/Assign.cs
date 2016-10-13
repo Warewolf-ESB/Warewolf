@@ -38,8 +38,6 @@ namespace Warewolf.UITests.Tools.Data
         public void AssignToolUrlUITest()
         {
             UIMap.Click_Assign_Tool_url();
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
