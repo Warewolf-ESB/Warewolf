@@ -6,10 +6,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    public class ItemDragAndDropTest
+    public class DragAndDropService
     {
         [TestMethod]
-        public void ItemDragAndDropUITest()
+        public void DragAndDropServiceFromExplorerUITest()
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests\Acceptance Testing Resources";
             Assert.IsFalse(Directory.Exists(resourcesFolder));

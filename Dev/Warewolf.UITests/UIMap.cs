@@ -22,9 +22,9 @@ namespace Warewolf.UITests
 {
     public partial class UIMap
     {
-        const int _lenientSearchTimeout = 9000;
+        const int _lenientSearchTimeout = 30000;
         const int _lenientMaximumRetryCount = 3;
-        const int _strictSearchTimeout = 3000;
+        const int _strictSearchTimeout = 15000;
         const int _strictMaximumRetryCount = 1;
 
         public void SetPlaybackSettings()
@@ -49,11 +49,13 @@ namespace Warewolf.UITests
         public void CloseHangingDialogs()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+#if !DEBUG
             TryClickMessageBoxOK();
             TryCloseHangingDebugInputDialog();
             TryCloseHangingSaveDialog();
             TryCloseHangingServicePickerDialog();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner); 
+#endif
         }
 
         private void TryCloseHangingServicePickerDialog()
@@ -163,8 +165,8 @@ namespace Warewolf.UITests
 
         public bool ControlExistsNow(UITestControl thisControl)
         {
-            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount;
-            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout;
+            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackError -= OnError;
             OnErrorHandlerDisabled = true;
             bool controlExists = false;
@@ -176,8 +178,8 @@ namespace Warewolf.UITests
             {
                 OnErrorHandlerDisabled = false;
                 Playback.PlaybackError += OnError;
-                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
-                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             }
             return controlExists;
         }
@@ -834,7 +836,7 @@ namespace Warewolf.UITests
                 }
             }
         }
-
+        
         [When("I Click New Workflow Ribbon Button")]
         public void Click_New_Workflow_Ribbon_Button()
         {
@@ -2397,6 +2399,11 @@ namespace Warewolf.UITests
 
             // Type '10' in 'Item: Dev2.TO.AssignObjectDTO, Column Display Inde...' cell
             fieldValueCell.Text = FieldValueCellValue;
+        }
+
+        public void Check_Debug_Input_Dialog_Remember_Inputs_Checkbox()
+        {
+            MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
         }
 
         /// <summary>
