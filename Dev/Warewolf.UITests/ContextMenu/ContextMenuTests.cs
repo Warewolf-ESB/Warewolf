@@ -13,7 +13,7 @@ namespace Warewolf.UITests.ContextMenu
         public void CodedUIShowStartNode()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.ShowStartNodeContextMenu();
+            UIMap.DisplayStartNodeContextMenu();
         }
 
         #region Additional test attributes

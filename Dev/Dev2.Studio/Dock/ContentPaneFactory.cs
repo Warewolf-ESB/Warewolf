@@ -21,6 +21,7 @@ using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics;
 using Infragistics.Windows.DockManager;
@@ -133,7 +134,7 @@ namespace Dev2.Studio.Dock
             {
                 pane.PreviewLostKeyboardFocus += pane_PreviewLostKeyboardFocus;
                 pane.PreviewGotKeyboardFocus += pane_PreviewLostKeyboardFocus;
-
+                pane.PreviewMouseDown+=PaneOnPreviewMouseDown;
                 // always hook the closed
                 pane.Closed += OnPaneClosed;
                 pane.Closing += OnPaneClosing;
@@ -158,6 +159,20 @@ namespace Dev2.Studio.Dock
                     {
                         pane.AllowClose = false;
                     }
+                }
+            }
+        }
+
+        private void PaneOnPreviewMouseDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+            if (mvm?.ActiveItem != null)
+            {
+                var item = sender as ContentPane;
+                var workSurfaceContextViewModel = item?.DataContext as WorkSurfaceContextViewModel;
+                if (mvm.ActiveItem != workSurfaceContextViewModel)
+                {
+                    mvm.ActiveItem = workSurfaceContextViewModel;
                 }
             }
         }
@@ -627,6 +642,7 @@ namespace Dev2.Studio.Dock
             {
                 cp.SetValue(closeProp, oldValue);
             }
+            cp.PreviewMouseDown -= PaneOnPreviewMouseDown;
         }
         #endregion //RemovePane
 

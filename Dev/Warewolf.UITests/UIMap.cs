@@ -839,7 +839,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton.Exists, "Connect in Explorer does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton.Exists, "Edit Connect control button does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.Exists, "Variable list view does not exist");
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save menu button not enabled for new workflow.");
         }
 
         [When(@"I Select Last Source From GET Web Large View Source Combobox")]

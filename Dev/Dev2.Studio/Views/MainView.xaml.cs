@@ -13,6 +13,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -24,6 +26,9 @@ using FontAwesome.WPF;
 using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
+using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.ViewModels.WorkSurface;
+using Infragistics.Windows.DockManager;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views
@@ -350,6 +355,46 @@ namespace Dev2.Studio.Views
                 var window = e.Window;
                 window.UseOSNonClientArea = false;
                 window.Style = style;
+
+                e.Window.PreviewMouseDown += WindowOnPreviewMouseDown;
+            }
+
+            var binding = Infragistics.Windows.Utilities.CreateBindingObject(DataContextProperty, BindingMode.OneWay, sender as XamDockManager);
+            e.Window.SetBinding(DataContextProperty, binding);
+        }
+
+        private void WindowOnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MainViewModel mainViewModel = DataContext as MainViewModel;
+            if (mainViewModel != null)
+            {
+                var paneToolWindow = sender as PaneToolWindow;
+                if (paneToolWindow?.Pane?.Panes.Count > 0)
+                {
+                    var frameworkElement = paneToolWindow.Pane.Panes[0] as TabGroupPane;
+
+                    if (frameworkElement?.Items.Count >= 1)
+                    {
+                        var textBlock = e.OriginalSource as TextBlock;
+                        var border = e.OriginalSource as Border;
+                        if (textBlock != null)
+                        {
+                            var data = textBlock.DataContext as WorkflowDesignerViewModel;
+                            if (data != null)
+                            {
+                                mainViewModel.AddWorkSurfaceContext(data.ResourceModel);
+                            }
+                        }
+                        else if (border != null)
+                        {
+                            var data = border.DataContext as WorkflowDesignerViewModel;
+                            if (data != null)
+                            {
+                                mainViewModel.AddWorkSurfaceContext(data.ResourceModel);
+                            }
+                        }
+                    }
+                }
             }
         }
 
