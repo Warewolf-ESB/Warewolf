@@ -5929,7 +5929,7 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_NumberFormat_Toolbox_Large_ViewParams.DecimalsToShowComboBoxExists, decimalsToShowComboBox.Exists, "DecimalToShow combobox does not exist after opening  Format Number tool large vie" +
                     "w");
 
-            // Verify that the 'Exists' property of 'How would you like to round the number? None: No r...' combo box equals 'True'
+            // Verify that the 'Exists' property of 'RoundingComboBox' combo box equals 'True'
             Assert.AreEqual(this.Open_NumberFormat_Toolbox_Large_ViewParams.RoundingComboBoxExists, roundingComboBox.Exists, "Rounding combobox does not exist after opening  Format Number tool large view");
 
             // Verify that the 'Exists' property of 'UI__Number_Inputtxt_AutoID' combo box equals 'True'
@@ -8294,7 +8294,7 @@ namespace Warewolf.UITests
             WpfListItem roungUP = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.RoungUP;
             #endregion
 
-            // Click 'How would you like to round the number? None: No r...' combo box
+            // Click 'RoundingComboBox' combo box
             Mouse.Click(roundingComboBox, new Point(119, 7));
 
             // Click 'Up' list item
@@ -16729,7 +16729,7 @@ namespace Warewolf.UITests
         public bool DecimalsToShowComboBoxExists = true;
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'How would you like to round the number? None: No r...' combo box equals 'True'
+        /// Verify that the 'Exists' property of 'RoundingComboBox' combo box equals 'True'
         /// </summary>
         public bool RoundingComboBoxExists = true;
         
@@ -51238,13 +51238,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfComboBox.PropertyNames.HelpText, @"
-                                                                          How would you like to round the number?
-                                                                          None: No rounding is done
-                                                                          Normal: 5,6,7,8,9 round up & 1,2,3,4 round down
-                                                                          Up: 1-9 all round up
-                                                                          Down: 1-9 all round down
-                                                                        ", PropertyExpressionOperator.Contains));
+            this.SearchProperties.Add(new PropertyExpression(WpfComboBox.PropertyNames.HelpText, "How would you like to round the number?", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
@@ -51548,13 +51542,6 @@ namespace Warewolf.UITests
                 {
                     this.mRoundingComboBox = new WpfComboBox(this);
                     #region Search Criteria
-                    this.mRoundingComboBox.SearchProperties[WpfComboBox.PropertyNames.HelpText] = @"
-                                                                          How would you like to round the number?
-                                                                          None: No rounding is done
-                                                                          Normal: 5,6,7,8,9 round up & 1,2,3,4 round down
-                                                                          Up: 1-9 all round up
-                                                                          Down: 1-9 all round down
-                                                                        ";
                     this.mRoundingComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
