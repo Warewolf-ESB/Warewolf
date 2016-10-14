@@ -25,7 +25,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -2076,7 +2075,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 new Task(() =>
                 {
-                    Thread.Sleep(2000);
                     BuildWorkflowFields();
                 }).Start();
             }
