@@ -469,9 +469,9 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(AddWorkSurfaceMessage message)
         {
+            IsNewWorkflowSaved = true;
             Dev2Logger.Info(message.GetType().Name);
             _worksurfaceContextManager.AddWorkSurface(message.WorkSurfaceObject);
-
             if (message.ShowDebugWindowOnLoad)
             {
                 if (ActiveItem != null && _canDebug)
@@ -480,6 +480,8 @@ namespace Dev2.Studio.ViewModels
                 }
             }
         }
+
+        public bool IsNewWorkflowSaved { get; set; }
 
         public void Handle(DeleteResourcesMessage message)
         {
@@ -1074,13 +1076,17 @@ namespace Dev2.Studio.ViewModels
                 _previousActive.DebugOutputViewModel.PropertyChanged -= DebugOutputViewModelOnPropertyChanged;
             }
             base.ActivateItem(item);
+            ActiveItemChanged?.Invoke(item);
             if (item?.ContextualResourceModel == null) return;
             if (item.DebugOutputViewModel != null)
             {
                 item.DebugOutputViewModel.PropertyChanged += DebugOutputViewModelOnPropertyChanged;
             }
+            
             SetActiveEnvironment(item.Environment);
         }
+
+        public Action<WorkSurfaceContextViewModel> ActiveItemChanged;
 
         void DebugOutputViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {

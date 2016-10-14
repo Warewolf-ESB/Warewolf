@@ -13,11 +13,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Dev2.Interfaces;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics.Windows.DockManager;
+// ReSharper disable CheckNamespace
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -47,14 +47,24 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion Private Methods
 
-        #region Dependency Properties
 
         #region DocumentHost
 
         // Using a DependencyProperty as the backing store for ItemTemplate.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DocumentHostProperty =
             DependencyProperty.Register("DocumentHost", typeof(DocumentContentHost), typeof(TabGroupPaneBindingBehavior), new PropertyMetadata(null, DocumentHostChangedCallback));
-        public DocumentContentHost DocumentHost { get { return (DocumentContentHost)GetValue(DocumentHostProperty); } set { SetValue(DocumentHostProperty, value); } }
+
+        public DocumentContentHost DocumentHost
+        {
+            get
+            {
+                return (DocumentContentHost) GetValue(DocumentHostProperty);
+            }
+            set
+            {
+                SetValue(DocumentHostProperty, value);
+            }
+        }        
 
         static void DocumentHostChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
@@ -81,42 +91,19 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion DocumentHost
 
-        #region SelectedItem
-
-        // Using a DependencyProperty as the backing store for SelectedItem.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SelectedItemProperty =
-            DependencyProperty.Register("SelectedItem", typeof(object), typeof(TabGroupPaneBindingBehavior), new UIPropertyMetadata(null, SelectedItemChangedCallback));
-
         private static List<TabGroupPane> _tabGroupPanes;
-        public object SelectedItem { get { return GetValue(SelectedItemProperty); } set { SetValue(SelectedItemProperty, value); } }
+        private MainViewModel _mainViewModel;
 
-        static void SelectedItemChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        private void ActiveItemChanged(WorkSurfaceContextViewModel workSurfaceContextViewModel)
         {
-            var itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
-            if (itemsControlBindingBehavior == null)
-            {
-                return;
-            }
-
             if (_tabGroupPanes == null || _tabGroupPanes.Count <= 0)
             {
-                _tabGroupPanes = itemsControlBindingBehavior.GetAllTabGroupPanes();
+                _tabGroupPanes = GetAllTabGroupPanes();
             }
 
-            var newValue = e.NewValue as WorkSurfaceContextViewModel;
-            if (newValue != null)
-            {
-                var mvm = Application.Current?.MainWindow?.DataContext as MainViewModel;
-                if (mvm?.ActiveItem != null)
-                {
-                    if (mvm.ActiveItem != newValue)
-                    {
-                        mvm.ActiveItem = newValue;
-                    }
-                }
-                SetActivePane(newValue);
-            }
+            SetActivePane(workSurfaceContextViewModel);
         }
+        
 
         static void GotFocusHandler(object sender, RoutedEventArgs routedEventArgs)
         {
@@ -131,26 +118,26 @@ namespace Dev2.Studio.AppResources.Behaviors
             vm?.RefreshActiveEnvironment();
         }
 
-        #endregion SelectedItem
-
-        #endregion Dependency Properties
-
         #region Event Handlers
 
         void DocumentHostOnActiveDocumentChanged(object sender, RoutedPropertyChangedEventArgs<ContentPane> routedPropertyChangedEventArgs)
         {
-            var workSurfaceContextViewModel = routedPropertyChangedEventArgs.NewValue?.DataContext as WorkSurfaceContextViewModel;
 
-            if (workSurfaceContextViewModel != null)
+            var mainViewModel = DocumentHost?.DataContext as MainViewModel;
+            if (mainViewModel != null)
             {
-                var docHost = sender as DocumentContentHost;
-                var mainViewModel = docHost?.DataContext as MainViewModel;
-                if (mainViewModel != null)
+                if (_mainViewModel == null)
                 {
-                    if (mainViewModel.ActiveItem != workSurfaceContextViewModel)
-                    {
-                        mainViewModel.ActiveItem = workSurfaceContextViewModel;
-                    }
+                    _mainViewModel = mainViewModel;
+                    _mainViewModel.ActiveItemChanged = ActiveItemChanged;
+                }
+
+                var workSurfaceContextViewModel = routedPropertyChangedEventArgs.NewValue?.DataContext as WorkSurfaceContextViewModel;
+                if (workSurfaceContextViewModel != null)
+                {
+                    _mainViewModel.ActiveItemChanged = null;
+                    _mainViewModel.ActiveItem = workSurfaceContextViewModel;
+                    _mainViewModel.ActiveItemChanged = ActiveItemChanged;
                 }
             }
         }
