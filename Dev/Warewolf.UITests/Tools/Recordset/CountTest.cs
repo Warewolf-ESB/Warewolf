@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class CountTest
     {
         [TestMethod]
+        [TestCategory("Tools")]
         public void CountUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();

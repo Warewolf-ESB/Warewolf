@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class DeleteRecordTest
     {
         [TestMethod]
+        [TestCategory("Tools")]
         public void DeleteRecordUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
