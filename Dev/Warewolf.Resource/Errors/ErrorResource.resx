@@ -1286,4 +1286,7 @@ Please contact your Windows System Administrator.</value>
   <data name="NotAuthorizedToViewException" xml:space="preserve">
     <value>NotAuthorizedToViewException</value>
   </data>
+  <data name="ServiceNotAuthorizedExceptionHeader" xml:space="preserve">
+    <value>ServiceNotAuthorizedException</value>
+  </data>
 </root>

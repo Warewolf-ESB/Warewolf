@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         const string AltPayloadEnd = @"</Actions>";
        
         private IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredViewManagementEndpoint());
 
         public FetchResourceDefinition(IAuthorizer authorizer)
         {

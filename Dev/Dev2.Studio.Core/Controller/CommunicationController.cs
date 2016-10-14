@@ -140,7 +140,7 @@ namespace Dev2.Controller
         private static void ShowAuthorizationErrorPopup(string ex)
         {
             var popupController = CustomContainer.Get<IPopupController>();
-            popupController?.Show(ex, "ServiceNotAuthorizedException", MessageBoxButton.OK,
+            popupController?.Show(ex, ErrorResource.ServiceNotAuthorizedExceptionHeader, MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, false, true, false);
         }
 

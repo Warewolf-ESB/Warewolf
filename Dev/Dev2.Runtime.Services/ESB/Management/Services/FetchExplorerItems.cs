@@ -30,7 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
       
 
         private IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredViewManagementEndpoint());
 
         public FetchExplorerItems(IAuthorizer authorizer)
         {
