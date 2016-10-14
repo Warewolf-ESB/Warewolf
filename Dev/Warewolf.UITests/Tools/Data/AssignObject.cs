@@ -11,13 +11,16 @@ namespace Warewolf.UITests.Tools.Data
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void AssignObjectUITest()
+        public void AssignObject_OpenLargeViewUITest()
         {            
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_AssignObject_Onto_DesignSurface();
             Uimap.Open_AssignObject_Large_Tool();
-            Uimap.Enter_Person_Name_On_Assign_Object_tool();
-            Uimap.click_AssignObject_Done();
+        }
+
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void AssignObject_OpenQIVLargeViewUITest()
+        {
+            Uimap.Open_AssignObject_QVI_LargeView();
         }
 
         #region Additional test attributes
@@ -29,6 +32,8 @@ namespace Warewolf.UITests.Tools.Data
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
+            Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Drag_Toolbox_AssignObject_Onto_DesignSurface();
         }
 
         [TestCleanup]
