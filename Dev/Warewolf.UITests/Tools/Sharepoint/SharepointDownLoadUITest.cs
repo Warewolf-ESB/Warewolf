@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    [TestCategory("Tools")]
     public class SharepointDownLoadUITest
     {
        #region Additional test attributes
