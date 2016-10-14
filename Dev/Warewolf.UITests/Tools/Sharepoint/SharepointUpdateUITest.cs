@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class SharepointUpdateUITest
     {
         [TestMethod]
+        [TestCategory("Tools")]
         public void Sharepoint_Update_UITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
