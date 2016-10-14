@@ -8,10 +8,9 @@ namespace Warewolf.UITests.Tools.Utility
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void RabbitMQConsumeToolUITest()
+        public void RabbitMQConsumeTool_OpenLargeViewUITest()
         {
-            UIMap.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurface();
-            
+            UIMap.Open_RabbitMqConsume_LargeView();
         }
 
         #region Additional test attributes
@@ -23,7 +22,8 @@ namespace Warewolf.UITests.Tools.Utility
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurface();
         }
         [TestCleanup]
         public void MyTestCleanup()

@@ -10,14 +10,7 @@ namespace Warewolf.UITests.Tools.Utility
 		[TestCategory("Tools")]
         public void CalculateToolUITest()
         {
-            UIMap.Drag_Toolbox_Calculate_Onto_DesignSurface();
             UIMap.Open_Calculate_Tool_Large_View();
-            UIMap.Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox();
-            UIMap.Click_Calculate_Large_View_Done_Button();
-            UIMap.Click_Debug_Ribbon_Button();
-            UIMap.Click_DebugInput_Debug_Button();
-            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            UIMap.Click_Debug_Output_Calculate_Cell();
         }
 
         #region Additional test attributes
@@ -29,7 +22,8 @@ namespace Warewolf.UITests.Tools.Utility
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Calculate_Onto_DesignSurface();
         }
 
         [TestCleanup]
