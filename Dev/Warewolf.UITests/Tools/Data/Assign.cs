@@ -79,8 +79,8 @@ namespace Warewolf.UITests.Tools.Data
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            //UIMap.Click_New_Workflow_Ribbon_Button();
+            //UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
         }
 
         UIMap UIMap
