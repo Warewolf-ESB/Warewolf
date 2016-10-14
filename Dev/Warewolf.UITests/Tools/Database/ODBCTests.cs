@@ -9,11 +9,8 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         [TestCategory("Tools")]
         public void ODBCToolUITest()
-        {
-            UIMap.Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurface();
+        {            
             UIMap.Open_ODBC_Tool_Large_View();
-            UIMap.Click_NewSource_Button_FromODBC_Tool();
-            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
         }
 
         #region Additional test attributes
@@ -25,7 +22,8 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurface();
         }
 
         [TestCleanup]

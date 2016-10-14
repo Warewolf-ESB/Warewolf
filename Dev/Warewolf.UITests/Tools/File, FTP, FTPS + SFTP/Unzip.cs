@@ -8,14 +8,9 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void UnzipToolUITest()
-        {
-            UIMap.Drag_Toolbox_Unzip_Onto_DesignSurface();
+        public void UnzipTool_OpenLargeViewUITest()
+        {            
             UIMap.Open_Unzip_Tool_Large_View();
-            UIMap.Enter_Text_Into_UnZip_Tool();
-            UIMap.Press_F6();
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            UIMap.Click_UnZip_Done_Button();
         }
 
         #region Additional test attributes
@@ -27,7 +22,8 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Unzip_Onto_DesignSurface();
         }
         [TestCleanup]
         public void MyTestCleanup()
