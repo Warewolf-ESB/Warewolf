@@ -69,7 +69,7 @@
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Tools\Sharepoint\SharepointCopyFileUITest.cs" />
     <Compile Include="Tools\Sharepoint\SharepointReadUITest.cs" />
-    <Compile Include="Tools\Sharepoint\SharepointDownLoadUITest.cs" />
+    <Compile Include="Tools\Sharepoint\Download_File.cs" />
     <Compile Include="Tools\Sharepoint\SharepointMoveFileUITest.cs" />
     <Compile Include="Tools\Sharepoint\SharepointUpdateUITest.cs" />
     <Compile Include="Tools\Sharepoint\SharepointUploadUITest.cs" />
