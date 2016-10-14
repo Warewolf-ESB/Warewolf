@@ -32,10 +32,6 @@ namespace Dev2.Runtime.Security
             {
                 return _theInstance.Value;
             }
-            private set
-            {
-                _theInstance = new Lazy<ServerAuthorizationService>(() => (ServerAuthorizationService)value);
-            }
         }
 
         private readonly TimeSpan _timeOutPeriod;
@@ -54,11 +50,6 @@ namespace Dev2.Runtime.Security
                 Dev2Logger.Error(e);
             }
         }
-        internal void RefreshPermission()
-        {
-            Instance = new ServerAuthorizationService(new ServerSecurityService());
-        }
-
 
         public int CachedRequestCount => _cachedRequests.Count;
 
@@ -68,7 +59,9 @@ namespace Dev2.Runtime.Security
 
             VerifyArgument.IsNotNull("resource", resource);
 
-            Tuple<string, string> requestKey = new Tuple<string, string>(ClaimsPrincipal.Current.Identity.Name, resource);
+            var user = Common.Utilities.OrginalExecutingUser ?? ClaimsPrincipal.Current;
+
+            Tuple<string, string> requestKey = new Tuple<string, string>(user.Identity.Name, resource);
             Tuple<bool, DateTime> authorizedRequest;
             if (_cachedRequests.TryGetValue(requestKey, out authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod)
             {
@@ -76,12 +69,12 @@ namespace Dev2.Runtime.Security
             }
             else
             {
-                authorized = IsAuthorized(ClaimsPrincipal.Current, context, resource);
+                authorized = IsAuthorized(user, context, resource);
             }
 
             if (!authorized)
             {
-                if (ResultsCache.Instance.ContainsPendingRequestForUser(ClaimsPrincipal.Current.Identity.Name))
+                if (ResultsCache.Instance.ContainsPendingRequestForUser(user.Identity.Name))
                 {
                     authorized = true;
                 }
@@ -94,10 +87,7 @@ namespace Dev2.Runtime.Security
 
             if (!authorized)
             {
-                if (_perfCounter != null)
-                {
-                    _perfCounter.Increment();
-                }
+                _perfCounter?.Increment();
             }
             return authorized;
         }
@@ -134,10 +124,7 @@ namespace Dev2.Runtime.Security
             }
             if (!authorized)
             {
-                if (_perfCounter != null)
-                {
-                    _perfCounter.Increment();
-                }
+                _perfCounter?.Increment();
             }
             return authorized;
         }
@@ -287,10 +274,7 @@ namespace Dev2.Runtime.Security
 
         protected override void OnDisposed()
         {
-            if (SecurityService != null)
-            {
-                SecurityService.Dispose();
-            }
+            SecurityService?.Dispose();
         }
     }
 }

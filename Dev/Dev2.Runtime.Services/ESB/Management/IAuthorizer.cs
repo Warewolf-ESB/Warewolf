@@ -29,7 +29,6 @@ namespace Dev2.Runtime.ESB.Management
 
         public void RunPermissions(Guid resourceId)
         {
-            ((ServerAuthorizationService)_authorizationService).RefreshPermission();
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceId.ToString());
             if (!isAuthorized)
             {
@@ -58,7 +57,6 @@ namespace Dev2.Runtime.ESB.Management
 
         public void RunPermissions(Guid resourceId)
         {
-            ((ServerAuthorizationService)_authorizationService).RefreshPermission();
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.View, resourceId.ToString());
             if (!isAuthorized)
             {
@@ -87,7 +85,6 @@ namespace Dev2.Runtime.ESB.Management
 
         public void RunPermissions(Guid resourceId)
         {
-            ((ServerAuthorizationService)_authorizationService).RefreshPermission();
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceId.ToString());
             if (!isAuthorized)
             {
@@ -117,7 +114,6 @@ namespace Dev2.Runtime.ESB.Management
 
         public void RunPermissions(Guid resourceId)
         {
-            ((ServerAuthorizationService)_authorizationService).RefreshPermission();
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.Execute, resourceId.ToString());
             if (!isAuthorized)
             {
@@ -146,7 +142,6 @@ namespace Dev2.Runtime.ESB.Management
 
         public void RunPermissions(Guid resourceId)
         {
-            ((ServerAuthorizationService)_authorizationService).RefreshPermission();
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resourceId.ToString());
             if (!isAuthorized)
             {
@@ -176,7 +171,6 @@ namespace Dev2.Runtime.ESB.Management
 
         public void RunPermissions(Guid resourceId)
         {
-            ((ServerAuthorizationService)_authorizationService).RefreshPermission();
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resourceId.ToString());
             if (!isAuthorized)
             {
@@ -205,7 +199,6 @@ namespace Dev2.Runtime.ESB.Management
 
         public void RunPermissions(Guid resourceId)
         {
-            ((ServerAuthorizationService)_authorizationService).RefreshPermission();
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.Administrator, resourceId.ToString());
             if (!isAuthorized)
             {
