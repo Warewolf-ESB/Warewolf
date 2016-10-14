@@ -41,7 +41,6 @@ using Dev2.Webs;
 using Dev2.Workspaces;
 using System;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 
@@ -522,7 +521,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (DebugOutputViewModel.IsProcessing)
             {
                 StopExecution();
-                Thread.Sleep(500);
             }
             if (WorkflowDesignerViewModel.ValidatResourceModel(ContextualResourceModel.DataList))
             {
