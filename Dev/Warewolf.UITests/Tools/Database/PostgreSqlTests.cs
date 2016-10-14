@@ -8,13 +8,9 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
         [TestCategory("Tools")]
-        public void PostgreSqlToolUITest()
-        {
-            UIMap.Drag_Toolbox_PostgreSql_Onto_DesignSurface();
+        public void PostgreSqlTool_OpenLargeViewUITest()
+        {            
             UIMap.Open_Postgre_Tool_Large_View();
-            UIMap.Select_Source_From_PostgreTool();
-            UIMap.Select_Action_From_PostgreTool();
-            UIMap.Click_Postgre_Done_Button();
         }
 
         #region Additional test attributes
@@ -26,8 +22,10 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_PostgreSql_Onto_DesignSurface();
         }
+
         [TestCleanup]
         public void MyTestCleanup()
         {

@@ -10,8 +10,13 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Tools")]
         public void SQLBulkInsertToolUITest()
         {
-            UIMap.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface();
-            UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();
+            UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();            
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void SQLBulkInsertTool_OpenQVIUITest()
+        {
             UIMap.Open_SQL_Bulk_Insert_Tool_Qvi_Large_View();
         }
 
@@ -24,9 +29,15 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface();
         }
-
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         UIMap UIMap
         {
             get
