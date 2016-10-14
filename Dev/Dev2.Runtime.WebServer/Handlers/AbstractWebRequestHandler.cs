@@ -38,6 +38,7 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 // ReSharper disable MemberCanBeProtected.Global
@@ -288,10 +289,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                                 var testResults = new List<IServiceTestModelTO>();
                                 foreach (var test in allTests)
                                 {
+                                    dataObject.ResourceID = testsResourceId;
                                     var dataObjectClone = dataObject.Clone();
                                     dataObjectClone.Environment = new ExecutionEnvironment();
                                     dataObjectClone.TestName = test.TestName;
-                                    var lastTask = GetTaskForTestExecution(serviceName, userPrinciple, workspaceGuid, serializer, testResults, dataObjectClone);
+                                    var res = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
+                                    var resourcePath = res.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\","/");
+
+                                    var lastTask = GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid, serializer, testResults, dataObjectClone);
                                     taskList.Add(lastTask);
                                 }
                                 Task.WaitAll(taskList.ToArray());
@@ -309,6 +314,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                                 executePayload = executePayload + Environment.NewLine + serializer.Serialize(objArray);
                             }
+                            dataObject.ResourceID = Guid.Empty;
                         }
                         else
                         {
@@ -491,7 +497,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var pathStartIndex = webServerUrl.IndexOf("secure/", StringComparison.InvariantCultureIgnoreCase);
                 path = webServerUrl.Substring(pathStartIndex).Replace("/.tests", "").Replace("secure", "").Replace("Secure", "").TrimStart('/').TrimEnd('/');
             }
-            return path;
+            return path.Replace("/", "\\");
         }
 
         private static bool IsRunAllTestsRequest(WebRequestTO webRequest, string serviceName)
@@ -512,6 +518,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                     esbEndpointClone.ExecuteRequest(dataObjectToUse, interTestRequest, workspaceGuid, out errs);
                 });
                 var result = serializer.Deserialize<ServiceTestModelTO>(interTestRequest.ExecuteResult);
+                if (result == null)
+                {
+                    if (interTestRequest.ExecuteResult != null)
+                    {
+                        var r = serializer.Deserialize<Dev2.Common.Interfaces.TestRunResult>(interTestRequest.ExecuteResult.ToString());
+                        result = new ServiceTestModelTO() { Result = r, TestName = r.TestName };
+                    }
+                }
                 Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObjectToUse.DataListID);
                 dataObjectToUse.Environment = null;
                 testResults.Add(result);
@@ -534,6 +548,22 @@ namespace Dev2.Runtime.WebServer.Handlers
             else if (result.Result.RunTestResult == RunResult.TestInvalid)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_InvalidResult);
+                resObj.Add("Message", result.Result.Message);
+            }
+            else if (result.Result.RunTestResult == RunResult.TestResourceDeleted)
+            {
+                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_ResourceDeleteResult);
+                resObj.Add("Message", result.Result.Message);
+            }
+            else if (result.Result.RunTestResult == RunResult.TestResourcePathUpdated)
+            {
+                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_ResourcpathUpdatedResult);
+                resObj.Add("Message", result.Result.Message);
+            }
+
+            else if (result.Result.RunTestResult == RunResult.TestPending)
+            {
+                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_PendingResult);
                 resObj.Add("Message", result.Result.Message);
             }
             return resObj;

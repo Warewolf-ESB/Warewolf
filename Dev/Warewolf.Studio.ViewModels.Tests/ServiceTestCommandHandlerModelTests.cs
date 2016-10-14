@@ -313,6 +313,41 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(selectedServiceTest.TestInvalid);
             Assert.IsNotNull(selectedServiceTest.DebugForTest);
         }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ServiceTestCommandHandler_RunSelectedTestCommand")]
+        public void ServiceTestCommandHandler_RunSelectedTestCommand_ResourceModelTest_ShouldUpdateTestWithPendingResult()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
+
+            var testRunResult = new TestRunResult();
+            testRunResult.DebugForTest = new List<IDebugState>();
+            testRunResult.RunTestResult = RunResult.TestPending;
+            var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
+            mockSelectedServiceTestModelTO.Setup(a => a.TestSteps).Returns(new List<IServiceTestStep>());
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            
+            mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(mockSelectedServiceTestModelTO.Object);
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            selectedServiceTest.Enabled = true;
+            //------------Execute Test---------------------------
+            serviceTestCommandHandler.RunSelectedTest(selectedServiceTest, mockResourceModel.Object, new SynchronousAsyncWorker());
+            //------------Assert Results-------------------------
+            mockResourceRepo.Verify(repository => repository.ExecuteTest(It.IsAny<IContextualResourceModel>(), It.IsAny<string>()));
+            Assert.IsFalse(selectedServiceTest.TestPassed);
+            Assert.IsFalse(selectedServiceTest.TestFailing);
+            Assert.IsTrue(selectedServiceTest.TestPending);
+            Assert.IsFalse(selectedServiceTest.TestInvalid);
+            Assert.IsNotNull(selectedServiceTest.DebugForTest);
+        }
+
+       
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

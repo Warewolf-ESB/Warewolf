@@ -364,8 +364,7 @@ namespace Dev2.Runtime.ESB.Execution
                             if (test.Outputs != null)
                             {
                                 var dev2DecisionFactory = Dev2DecisionFactory.Instance();
-                                var res = test.Outputs.SelectMany(output => GetTestRunResults(dataObject, output, dev2DecisionFactory));
-                                var testRunResults = res as IList<TestRunResult> ?? res.ToList();
+                                var testRunResults = test.Outputs.SelectMany(output => GetTestRunResults(dataObject, output, dev2DecisionFactory)).ToList();
                                 testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
                             }
                         }
@@ -426,8 +425,9 @@ namespace Dev2.Runtime.ESB.Execution
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
         {
-            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
-            var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
+            var expressionType = output.AssertOp??string.Empty;
+            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(expressionType);
+            var decisionType = DecisionDisplayHelper.GetValue(expressionType);
 
             if (decisionType == enDecisionType.IsError)
             {
