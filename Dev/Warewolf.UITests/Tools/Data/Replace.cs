@@ -8,15 +8,9 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void ReplaceToolUITest()
-        {            
-            Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();
-            Uimap.Enter_Values_Into_Replace_Tool_Large_View();
+        public void ReplaceTool_OpenLargeViewUITest()
+        {                        
             Uimap.Open_Replace_Tool_Large_View();
-            Uimap.Press_F6();
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Click_MessageBox_No();
         }
 
         #region Additional test attributes
@@ -28,9 +22,15 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();
         }
-        
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
+        }
         public TestContext TestContext
         {
             get
