@@ -627,7 +627,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var isRemote = environmentId != Guid.Empty;
                 if (isRemote)
                 {
-                    Thread.Sleep(500);
                     var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
                     if (remoteEnvironmentModel != null)
                     {

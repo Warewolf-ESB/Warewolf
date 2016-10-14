@@ -2076,7 +2076,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 new Task(() =>
                 {
-                    Thread.Sleep(2000);
                     BuildWorkflowFields();
                 }).Start();
             }

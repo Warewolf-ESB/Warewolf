@@ -522,7 +522,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (DebugOutputViewModel.IsProcessing)
             {
                 StopExecution();
-                Thread.Sleep(500);
             }
             if (WorkflowDesignerViewModel.ValidatResourceModel(ContextualResourceModel.DataList))
             {
