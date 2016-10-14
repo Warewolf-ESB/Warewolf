@@ -27,7 +27,7 @@
                 <MenuItem Name="DebugInputs"
                                 Command="{Binding DebugInputsCommand}"
                                 Header="Debug Inputs"
-                                InputGestureText="F5" >
+                                InputGestureText="[F5]" >
                     <MenuItem.Style>
                         <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
                             <Style.Triggers>
@@ -48,7 +48,7 @@
                 <MenuItem Name="DebugStudio"
                                 Command="{Binding DebugStudioCommand}"
                                 Header="Debug Studio"
-                                InputGestureText="F6">
+                                InputGestureText="[F6]">
                     <MenuItem.Style>
                         <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
                             <Style.Triggers>
@@ -69,7 +69,7 @@
                 <MenuItem Name="DebugBrowser"
                                 Command="{Binding DebugBrowserCommand}"
                                 Header="Debug Browser"
-                                InputGestureText="F7">
+                                InputGestureText="[F7]">
                     <MenuItem.Style>
                         <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
                             <Style.Triggers>
