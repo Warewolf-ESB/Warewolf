@@ -76,6 +76,11 @@
     <Compile Include="Sharepoint\SharepointDeleteUITest.cs" />
     <Compile Include="Explorer\DragAndDropService.cs" />
     <Compile Include="Sharepoint\SharepointCreateUITest.cs" />
+    <Compile Include="Tools\Database\ODBCTests.cs" />
+    <Compile Include="Tools\Database\OracleDatabaseTests.cs" />
+    <Compile Include="Tools\Database\PostgreSqlTests.cs" />
+    <Compile Include="Tools\Database\MySqlTests.cs" />
+    <Compile Include="Tools\Database\SqlServerTests.cs" />
     <Compile Include="Tools\Data\AssignObject.cs" />
     <Compile Include="Tools\Data\FindIndex.cs" />
     <Compile Include="Tools\HTTP Web Methods\HttpWebGet.cs" />
