@@ -22,14 +22,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
             if(!wso.DoesWarewolfGroupExist())
             {
                 wso.AddWarewolfGroup();
-            }
-            else
-            {
-                wso.DeleteWarewolfGroup();
-                wso.AddWarewolfGroup();
-            }
-
-            //AddCurrentUserToWarewolfGroup();
+            }            
             AddAdministratorsToWarewolfGroup();
         }
 
