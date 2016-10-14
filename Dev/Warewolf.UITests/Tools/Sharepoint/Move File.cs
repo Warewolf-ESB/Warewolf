@@ -4,24 +4,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    public class SharepointMoveFileUITest
+    public class Move_File
     {
         [TestMethod]
         [TestCategory("Tools")]
         public void Sharepoint_Move_UITest()
         {
-            UIMap.Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_Tool();
-            UIMap.Enter_Sharepoint_ServerSource_ServerName();
-            UIMap.Click_UserButton_OnSharepointSource();
-            UIMap.Enter_Sharepoint_ServerSource_User_Credentials();
-            UIMap.Click_Sharepoint_Server_Source_TestConnection();
-            UIMap.Click_Close_SharepointSource_Tab_Button();
             UIMap.Open_Sharepoint_MoveFile_Tool_Large_View();
-            UIMap.Enter_Sharepoint_Server_Path_From_OnMoveFile_Tool();
-            UIMap.Enter_Sharepoint_Server_Path_To_OnMoveFile_Tool();
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
         }
+
         #region Additional test attributes
 
         [TestInitialize()]
