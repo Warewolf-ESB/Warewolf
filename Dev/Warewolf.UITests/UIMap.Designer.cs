@@ -2295,17 +2295,17 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom startNode = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
-            WpfMenuItem debugInputsMenuItem = this.StartNodePopupWindow.StartNodeItemMenu.DebugInputsMenuItem;
-            WpfMenuItem debugStudioMenuItem = this.StartNodePopupWindow.StartNodeItemMenu.DebugStudioMenuItem;
-            WpfMenuItem debugBrowserMenuItem = this.StartNodePopupWindow.StartNodeItemMenu.DebugBrowserMenuItem;
-            WpfMenuItem scheduleMenuItem = this.StartNodePopupWindow.StartNodeItemMenu.ScheduleMenuItem;
-            WpfMenuItem testEditorMenuItem = this.StartNodePopupWindow.StartNodeItemMenu.TestEditorMenuItem;
-            WpfMenuItem runAllTestsMenuItem = this.StartNodePopupWindow.StartNodeItemMenu.RunAllTestsMenuItem;
-            WpfMenuItem duplicateMenuItem = this.StartNodePopupWindow.StartNodeItemMenu.DuplicateMenuItem;
-            WpfMenuItem deployMenuItem = this.StartNodePopupWindow.StartNodeItemMenu.DeployMenuItem;
-            WpfMenuItem showDependenciesMenuItem = this.StartNodePopupWindow.StartNodeItemMenu.ShowDependenciesMenuItem;
-            WpfMenuItem viewSwaggerMenuItem = this.StartNodePopupWindow.StartNodeItemMenu.ViewSwaggerMenuItem;
-            WpfMenuItem copyURLtoClipboardMenuItem = this.StartNodePopupWindow.StartNodeItemMenu.CopyURLtoClipboardMenuItem;
+            WpfMenuItem debugInputsMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DebugInputsMenuItem;
+            WpfMenuItem debugStudioMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DebugStudioMenuItem;
+            WpfMenuItem debugBrowserMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DebugBrowserMenuItem;
+            WpfMenuItem scheduleMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.ScheduleMenuItem;
+            WpfMenuItem testEditorMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.TestEditorMenuItem;
+            WpfMenuItem runAllTestsMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.RunAllTestsMenuItem;
+            WpfMenuItem duplicateMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DuplicateMenuItem;
+            WpfMenuItem deployMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DeployMenuItem;
+            WpfMenuItem showDependenciesMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.ShowDependenciesMenuItem;
+            WpfMenuItem viewSwaggerMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.ViewSwaggerMenuItem;
+            WpfMenuItem copyURLtoClipboardMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.CopyURLtoClipboardMenuItem;
             #endregion
 
             // Right-Click 'StartNode' custom control
@@ -10647,30 +10647,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
-                {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
-                }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow;
-            }
-        }
-        
-        public UIWarewolfDEV2PIETERTEWindow UIWarewolfDEV2PIETERTEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2PIETERTEWindow == null))
-                {
-                    this.mUIWarewolfDEV2PIETERTEWindow = new UIWarewolfDEV2PIETERTEWindow();
-                }
-                return this.mUIWarewolfDEV2PIETERTEWindow;
-            }
-        }
-        
         public StartNodePopupWindow StartNodePopupWindow
         {
             get
@@ -11164,10 +11140,6 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
-        
-        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
-        
-        private UIWarewolfDEV2PIETERTEWindow mUIWarewolfDEV2PIETERTEWindow;
         
         private StartNodePopupWindow mStartNodePopupWindow;
         #endregion
@@ -52396,160 +52368,6 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2ASHLEYLEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemMenu1 UIItemMenu
-        {
-            get
-            {
-                if ((this.mUIItemMenu == null))
-                {
-                    this.mUIItemMenu = new UIItemMenu1(this);
-                }
-                return this.mUIItemMenu;
-            }
-        }
-        
-        public WpfCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIItemCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolWindow";
-                    this.mUIItemCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIItemCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemMenu1 mUIItemMenu;
-        
-        private WpfCustom mUIItemCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemMenu1 : WpfMenu
-    {
-        
-        public UIItemMenu1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfMenuItem UITabbedDocumentMenuItem
-        {
-            get
-            {
-                if ((this.mUITabbedDocumentMenuItem == null))
-                {
-                    this.mUITabbedDocumentMenuItem = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mUITabbedDocumentMenuItem.SearchProperties[WpfMenuItem.PropertyNames.Name] = "Tabbed Document";
-                    this.mUITabbedDocumentMenuItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUITabbedDocumentMenuItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfMenuItem mUITabbedDocumentMenuItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2PIETERTEWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2PIETERTEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\PIETER.TERBLANCHE)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemMenu2 UIItemMenu
-        {
-            get
-            {
-                if ((this.mUIItemMenu == null))
-                {
-                    this.mUIItemMenu = new UIItemMenu2(this);
-                }
-                return this.mUIItemMenu;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemMenu2 mUIItemMenu;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemMenu2 : WpfMenu
-    {
-        
-        public UIItemMenu2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfMenuItem UIDebugInputsMenuItem
-        {
-            get
-            {
-                if ((this.mUIDebugInputsMenuItem == null))
-                {
-                    this.mUIDebugInputsMenuItem = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mUIDebugInputsMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "DebugInputs";
-                    this.mUIDebugInputsMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mUIDebugInputsMenuItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfMenuItem mUIDebugInputsMenuItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StartNodePopupWindow : WpfWindow
     {
         
@@ -52558,6 +52376,34 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
             #endregion
+        }
+        
+        #region Properties
+        public UIItemWindow1 UIItemWindow1
+        {
+            get
+            {
+                if ((this.mUIItemWindow1 == null))
+                {
+                    this.mUIItemWindow1 = new UIItemWindow1(this);
+                }
+                return this.mUIItemWindow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemWindow1 mUIItemWindow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemWindow1 : WpfWindow
+    {
+        
+        public UIItemWindow1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
         }
         
         #region Properties
