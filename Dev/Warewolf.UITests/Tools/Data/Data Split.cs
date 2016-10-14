@@ -8,14 +8,16 @@ namespace Warewolf.UITests.Tools.Data
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void DataSplitToolUITest()
+        public void DataSplitTool_OpenLargeViewUITest()
         {
-            Uimap.Drag_Toolbox_Data_Split_Onto_DesignSurface();
-            Uimap.Enter_Values_Into_Data_Split_Tool();
             Uimap.Open_Data_Split_Large_View();
-            Uimap.Press_F6();
-            Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Click_MessageBox_No();
+        }
+
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void DataSplitTool_OpenQVIUITest()
+        {
+            Uimap.Open_Data_Split_Tool_Qvi_Large_View();
         }
 
         #region Additional test attributes
@@ -27,9 +29,16 @@ namespace Warewolf.UITests.Tools.Data
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Drag_Toolbox_Data_Split_Onto_DesignSurface();
         }
-        
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
+        }
         public TestContext TestContext
         {
             get

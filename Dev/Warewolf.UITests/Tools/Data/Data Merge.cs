@@ -8,16 +8,16 @@ namespace Warewolf.UITests.Tools.Data
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void DataMergeUITest()
-        {
-            UIMap.Drag_Toolbox_Data_Merge_Onto_DesignSurface();
+        public void DataMergeTool_OpenLargeViewUITest()
+        {            
             UIMap.Open_Data_Merge_Large_View();
-            //UIMap.Enter_Values_Into_Data_Merge_Tool_Large_View();
-            //UIMap.Click_Data_Merge_Tool_Large_View_Done_Button();
+        }
+
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void DataMergeTool_OpenQVIUITest()
+        {
             UIMap.Open_Data_Merge_Tool_Qvi_Large_View();
-            //UIMap.Click_Debug_Bibbon_Button();
-            //UIMap.Click_Debug_Input_Dialog_Debug_ButtonParams.DataMergeToolDebugOutputExists = true;
-            //UIMap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
         #region Additional test attributes
@@ -29,7 +29,8 @@ namespace Warewolf.UITests.Tools.Data
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Data_Merge_Onto_DesignSurface();
         }
 
         [TestCleanup]
