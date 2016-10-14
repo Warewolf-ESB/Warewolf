@@ -6,17 +6,11 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class SqlServerTests
     {
-
-        //Todo:Now, generate the Missing drag actions
-        //Todo:Put more test steps (Dont forget asserts)        
-        
         [TestMethod]
         [TestCategory("Tools")]
         public void SqlServerToolUITest()
-        {
-            UIMap.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface();
+        {            
             UIMap.Open_Sql_Server_Tool_Large_View();
-            
         }
         #region Additional test attributes
 
@@ -27,7 +21,8 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface();
         }
         [TestCleanup]
         public void MyTestCleanup()

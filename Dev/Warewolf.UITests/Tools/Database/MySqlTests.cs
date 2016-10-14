@@ -9,8 +9,7 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         [TestCategory("Tools")]
         public void MySqlToolUITest()
-        {
-            UIMap.Drag_Toolbox_MySql_Database_Onto_DesignSurface();
+        {            
             UIMap.Open_MySql_Database_Tool_Small_View();
         }
 
@@ -23,7 +22,8 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_MySql_Database_Onto_DesignSurface();
         }
         [TestCleanup]
         public void MyTestCleanup()

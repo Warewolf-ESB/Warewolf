@@ -5683,6 +5683,11 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom pathCopy = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.DoneButton;
+            WpfComboBox fileOrFolderComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.FileOrFolderComboBox;
+            WpfComboBox destinationComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.DestinationComboBox;
+            WpfCustom onErrorCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.OnErrorCustom;
+            WpfCheckBox overwriteCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.OverwriteCheckBox;
             #endregion
 
             // Double-Click 'DsfPathCopy' custom control
@@ -5690,6 +5695,21 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfPathCopy' custom control equals 'True'
             Assert.AreEqual(this.Open_Copy_Tool_Large_ViewParams.PathCopyExists, pathCopy.Exists, "Copy Tool large view on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Copy_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__FileOrFoldertxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Copy_Tool_Large_ViewParams.FileOrFolderComboBoxExists, fileOrFolderComboBox.Exists, "FileOrFolderComboBox on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__Destinationtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Copy_Tool_Large_ViewParams.DestinationComboBoxExists, destinationComboBox.Exists, "DestinationComboBox on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Copy_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom group on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+            Assert.AreEqual(this.Open_Copy_Tool_Large_ViewParams.OverwriteCheckBoxExists, overwriteCheckBox.Exists, "OverwriteCheckBox on the design surface does not exist");
         }
         
         /// <summary>
@@ -5728,6 +5748,10 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom pathCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
+            WpfComboBox fileNameoComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.LargeViewContentCustom.FileNameoComboBox;
+            WpfCheckBox overwriteCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.LargeViewContentCustom.OverwriteCheckBox;
+            WpfCustom onErrorCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.LargeViewContentCustom.OnErrorCustom;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.DoneButton;
             #endregion
 
             // Double-Click 'DsfPathCreate' custom control
@@ -5735,6 +5759,18 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfPathCreate' custom control equals 'True'
             Assert.AreEqual(this.Open_Create_Tool_Large_ViewParams.PathCreateExists, pathCreate.Exists, "Create Path large view on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Create_Tool_Large_ViewParams.FileNameoComboBoxExists, fileNameoComboBox.Exists, "FileNameoComboBox on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+            Assert.AreEqual(this.Open_Create_Tool_Large_ViewParams.OverwriteCheckBoxExists, overwriteCheckBox.Exists, "OverwriteCheckBox on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Create_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom group on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Create_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton on the design surface does not exist");
         }
         
         /// <summary>
@@ -5841,6 +5877,9 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom pathDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
+            WpfComboBox fileNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.LargeViewContentCustom.FileNameComboBox;
+            WpfCustom onErrorCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.LargeViewContentCustom.OnErrorCustom;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.DoneButton;
             #endregion
 
             // Double-Click 'DsfPathDelete' custom control
@@ -5848,6 +5887,15 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfPathDelete' custom control equals 'True'
             Assert.AreEqual(this.Open_Delete_Tool_Large_ViewParams.PathDeleteExists, pathDelete.Exists, "Delete Path large view on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Delete_Tool_Large_ViewParams.FileNameComboBoxExists, fileNameComboBox.Exists, "FileNameComboBox on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Delete_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Delete_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton on the design surface does not exist");
         }
         
         /// <summary>
@@ -6305,6 +6353,10 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom pathMove = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
+            WpfCustom onErrorCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.LargeViewContentCustom.OnErrorCustom;
+            WpfComboBox destinationComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.LargeViewContentCustom.DestinationComboBox;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.DoneButton;
+            WpfCheckBox overwriteCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.LargeViewContentCustom.OverwriteCheckBox;
             #endregion
 
             // Double-Click 'DsfPathMove' custom control
@@ -6312,6 +6364,18 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfPathMove' custom control equals 'True'
             Assert.AreEqual(this.Open_Move_Tool_Large_ViewParams.PathMoveExists, pathMove.Exists, "Move tool large view does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Move_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom group does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'UI__Destinationtxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Move_Tool_Large_ViewParams.DestinationComboBoxExists, destinationComboBox.Exists, "DestinationComboBox does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Move_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+            Assert.AreEqual(this.Open_Move_Tool_Large_ViewParams.OverwriteCheckBoxExists, overwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
         }
         
         /// <summary>
@@ -6509,13 +6573,29 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom fileRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.ResultComboBox;
+            WpfCustom onErrorCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.OnErrorCustom;
+            WpfComboBox fileNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.FileNameComboBox;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.DoneButton;
             #endregion
 
             // Double-Click 'DsfFileRead' custom control
             Mouse.DoubleClick(fileRead, new Point(120, 5));
 
             // Verify that the 'Exists' property of 'DsfFileRead' custom control equals 'True'
-            Assert.AreEqual(this.Open_Read_File_Tool_Large_ViewParams.FileReadExists, fileRead.Exists, "Read file large view on the design surface does not exist");
+            Assert.AreEqual(this.Open_Read_File_Tool_Large_ViewParams.FileReadExists, fileRead.Exists, "Read file large view does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Read_File_Tool_Large_ViewParams.ResultComboBoxExists, resultComboBox.Exists, "ResultComboBox does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Read_File_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Read_File_Tool_Large_ViewParams.FileNameComboBoxExists, fileNameComboBox.Exists, "FileNameComboBox does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Read_File_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the design surface");
         }
         
         /// <summary>
@@ -6526,6 +6606,10 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom folderRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
+            WpfRadioButton filesFoldersRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.FilesFoldersRadioButton;
+            WpfCustom onErrorCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.OnErrorCustom;
+            WpfComboBox directoryComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.DirectoryComboBox;
+            WpfComboBox resultComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.ResultComboBox;
             #endregion
 
             // Double-Click 'DsfFolderRead' custom control
@@ -6533,6 +6617,18 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfFolderRead' custom control equals 'True'
             Assert.AreEqual(this.Open_Read_Folder_Tool_Large_ViewParams.FolderReadExists, folderRead.Exists, "Read Folder large view does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'Files & Folders' radio button equals 'True'
+            Assert.AreEqual(this.Open_Read_Folder_Tool_Large_ViewParams.FilesFoldersRadioButtonExists, filesFoldersRadioButton.Exists, "FilesFoldersRadioButton does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Read_Folder_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom group does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'UI__Directorytxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Read_Folder_Tool_Large_ViewParams.DirectoryComboBoxExists, directoryComboBox.Exists, "DirectoryComboBox does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Read_Folder_Tool_Large_ViewParams.ResultComboBoxExists, resultComboBox.Exists, "Read Folder large view does not exist on the design surface");
         }
         
         /// <summary>
@@ -6543,6 +6639,10 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom pathRename = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
+            WpfCustom onErrorCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.LargeViewContentCustom.OnErrorCustom;
+            WpfCheckBox overwriteCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.LargeViewContentCustom.OverwriteCheckBox;
+            WpfComboBox fileOrFolderComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.LargeViewContentCustom.FileOrFolderComboBox;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.DoneButton;
             #endregion
 
             // Double-Click 'DsfPathRename' custom control
@@ -6550,6 +6650,18 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfPathRename' custom control equals 'True'
             Assert.AreEqual(this.Open_Rename_Tool_Large_ViewParams.PathRenameExists, pathRename.Exists, "Rename tool large view on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Rename_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+            Assert.AreEqual(this.Open_Rename_Tool_Large_ViewParams.OverwriteCheckBoxExists, overwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'UI__FileOrFoldertxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Rename_Tool_Large_ViewParams.FileOrFolderComboBoxExists, fileOrFolderComboBox.Exists, "FileOrFolderComboBox does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Rename_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the design surface");
         }
         
         /// <summary>
@@ -7010,6 +7122,9 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom unZip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
+            WpfCheckBox overwriteCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.LargeViewContentCustom.OverwriteCheckBox;
+            WpfComboBox unZipNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.LargeViewContentCustom.UnZipNameComboBox;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.DoneButton;
             #endregion
 
             // Double-Click 'DsfUnZip' custom control
@@ -7017,6 +7132,15 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfUnZip' custom control equals 'True'
             Assert.AreEqual(this.Open_Unzip_Tool_Large_ViewParams.UnZipExists, unZip.Exists, "Unzip large view on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+            Assert.AreEqual(this.Open_Unzip_Tool_Large_ViewParams.OverwriteCheckBoxExists, overwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'UI__ZipNametxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Unzip_Tool_Large_ViewParams.UnZipNameComboBoxExists, unZipNameComboBox.Exists, "UnZipNameComboBox does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Unzip_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the design surface");
         }
         
         /// <summary>
@@ -7045,6 +7169,10 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
+            WpfCustom onErrorCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.LargeViewContentCustom.OnErrorCustom;
+            WpfComboBox contentsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.LargeViewContentCustom.ContentsComboBox;
+            WpfRadioButton overwriteRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.LargeViewContentCustom.OverwriteRadioButton;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.DoneButton;
             #endregion
 
             // Double-Click 'DsfFileWrite' custom control
@@ -7052,6 +7180,18 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfFileWrite' custom control equals 'True'
             Assert.AreEqual(this.Open_Write_File_Tool_Large_ViewParams.FileWriteExists, fileWrite.Exists, "Write file large view on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Write_File_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'UI__Contentstxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Write_File_Tool_Large_ViewParams.ContentsComboBoxExists, contentsComboBox.Exists, "ContentsComboBox does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'Overwrite' radio button equals 'True'
+            Assert.AreEqual(this.Open_Write_File_Tool_Large_ViewParams.OverwriteRadioButtonExists, overwriteRadioButton.Exists, "OverwriteRadioButton does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Open_Write_File_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the design surface");
         }
         
         /// <summary>
@@ -7101,6 +7241,10 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom zip = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
+            WpfComboBox selectedCompressComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.SelectedCompressComboBox;
+            WpfCustom onErrorCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.OnErrorCustom;
+            WpfCheckBox overwriteCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.OverwriteCheckBox;
+            WpfComboBox fileOrFolderComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.FileOrFolderComboBox;
             #endregion
 
             // Double-Click 'DsfZip' custom control
@@ -7108,6 +7252,18 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfZip' custom control equals 'True'
             Assert.AreEqual(this.Open_Zip_Tool_Large_ViewParams.ZipExists, zip.Exists, "Zip large view on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__SelectedCompressionType_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Zip_Tool_Large_ViewParams.SelectedCompressComboBoxExists, selectedCompressComboBox.Exists, "SelectedCompressComboBox does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+            Assert.AreEqual(this.Open_Zip_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+            Assert.AreEqual(this.Open_Zip_Tool_Large_ViewParams.OverwriteCheckBoxExists, overwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'UI__FileOrFoldertxt_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Open_Zip_Tool_Large_ViewParams.FileOrFolderComboBoxExists, fileOrFolderComboBox.Exists, "FileOrFolderComboBox does not exist on the design surface");
         }
         
         /// <summary>
@@ -17271,6 +17427,31 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfPathCopy' custom control equals 'True'
         /// </summary>
         public bool PathCopyExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__FileOrFoldertxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool FileOrFolderComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Destinationtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool DestinationComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorCustomExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+        /// </summary>
+        public bool OverwriteCheckBoxExists = true;
         #endregion
     }
     
@@ -17286,6 +17467,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfPathCreate' custom control equals 'True'
         /// </summary>
         public bool PathCreateExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool FileNameoComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+        /// </summary>
+        public bool OverwriteCheckBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorCustomExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -17396,6 +17597,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfPathDelete' custom control equals 'True'
         /// </summary>
         public bool PathDeleteExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool FileNameComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorCustomExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -17756,6 +17972,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfPathMove' custom control equals 'True'
         /// </summary>
         public bool PathMoveExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorCustomExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Destinationtxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool DestinationComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+        /// </summary>
+        public bool OverwriteCheckBoxExists = true;
         #endregion
     }
     
@@ -17916,6 +18152,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfFileRead' custom control equals 'True'
         /// </summary>
         public bool FileReadExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorCustomExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__FileNametxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool FileNameComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -17931,6 +18187,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfFolderRead' custom control equals 'True'
         /// </summary>
         public bool FolderReadExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Files & Folders' radio button equals 'True'
+        /// </summary>
+        public bool FilesFoldersRadioButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorCustomExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Directorytxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool DirectoryComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ResultComboBoxExists = true;
         #endregion
     }
     
@@ -17946,6 +18222,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfPathRename' custom control equals 'True'
         /// </summary>
         public bool PathRenameExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorCustomExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+        /// </summary>
+        public bool OverwriteCheckBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__FileOrFoldertxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool FileOrFolderComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -18231,6 +18527,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfUnZip' custom control equals 'True'
         /// </summary>
         public bool UnZipExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+        /// </summary>
+        public bool OverwriteCheckBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__ZipNametxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool UnZipNameComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -18261,6 +18572,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfFileWrite' custom control equals 'True'
         /// </summary>
         public bool FileWriteExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorCustomExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Contentstxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ContentsComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Overwrite' radio button equals 'True'
+        /// </summary>
+        public bool OverwriteRadioButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -18316,6 +18647,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfZip' custom control equals 'True'
         /// </summary>
         public bool ZipExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__SelectedCompressionType_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool SelectedCompressComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'On Error' custom control equals 'True'
+        /// </summary>
+        public bool OnErrorCustomExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Overwrite' check box equals 'True'
+        /// </summary>
+        public bool OverwriteCheckBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__FileOrFoldertxt_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool FileOrFolderComboBoxExists = true;
         #endregion
     }
     
