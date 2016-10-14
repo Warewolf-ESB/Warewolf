@@ -8,18 +8,9 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void RandomToolUITest()
+        public void RandomTool_OpenLargeViewUITest()
         {
-            UIMap.Drag_Toolbox_Random_Onto_DesignSurface();
-            UIMap.Enter_Dice_Roll_Values();
-            UIMap.Enter_Result_Variable_On_Random_Tool();
-            UIMap.Press_F6();
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            UIMap.Select_Letters_From_Random_Type_Combobox();
-            UIMap.Enter_Text_Into_Random_Length();
-            UIMap.Press_F6();
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            UIMap.Select_GUID_From_Random_Type_Combobox();
+            UIMap.Open_Random_Large_Tool();
         }
 
         #region Additional test attributes
@@ -31,7 +22,8 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Random_Onto_DesignSurface();
         }
         [TestCleanup]
         public void MyTestCleanup()

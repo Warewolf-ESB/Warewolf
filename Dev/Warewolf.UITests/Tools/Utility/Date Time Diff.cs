@@ -8,13 +8,9 @@ namespace Warewolf.UITests.Tools.Utility
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void DateTimeDiffToolUITest()
+        public void DateTimeDiffTool_OpenLargeViewUITest()
         {
-            UIMap.Drag_Toolbox_DateTime_Difference_Onto_DesignSurface();
-            UIMap.Enter_Text_Into_DateTimeDiffetence_Tool();
-            UIMap.Enter_Result_Variable_Into_DateTimeDifference();
-            UIMap.Select_OutputIn_Days();
-            UIMap.Press_F6();
+            UIMap.Open_DateTimeDiff_LargeView();
         }
 
         #region Additional test attributes
@@ -26,7 +22,8 @@ namespace Warewolf.UITests.Tools.Utility
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_DateTime_Difference_Onto_DesignSurface();
         }
 
         [TestCleanup]

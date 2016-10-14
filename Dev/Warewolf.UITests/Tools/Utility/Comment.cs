@@ -8,11 +8,9 @@ namespace Warewolf.UITests.Tools.Utility
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void CommentToolUITest()
+        public void CommentTool_OpenLargeViewUITest()
         {
             UIMap.Drag_Toolbox_Comment_Onto_DesignSurface();
-            UIMap.Enter_Text_On_Comment_Tool();
-            UIMap.Press_F6();
         }
 
         #region Additional test attributes
@@ -24,7 +22,7 @@ namespace Warewolf.UITests.Tools.Utility
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();            
         }
 
 

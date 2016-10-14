@@ -8,12 +8,9 @@ namespace Warewolf.UITests.Tools.Utility
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void AggregateCalculateToolUITest()
-        {
-            UIMap.Drag_Toolbox_AggregateCalculate_Onto_DesignSurface();
+        public void AggregateCalculateTool_OpenLargeViewUITest()
+        {            
             UIMap.Open_AggregateCalculate_Tool_large_view();
-            UIMap.Enter_Text_Into_Aggregate_Calculate_Large_View();
-            UIMap.Press_F6();
         }
 
         #region Additional test attributes
@@ -25,7 +22,8 @@ namespace Warewolf.UITests.Tools.Utility
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_AggregateCalculate_Onto_DesignSurface();
         }
 
         [TestCleanup]
