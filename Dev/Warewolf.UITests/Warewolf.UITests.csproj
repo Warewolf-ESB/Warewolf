@@ -75,7 +75,6 @@
     <Compile Include="Tools\Sharepoint\SharepointUploadUITest.cs" />
     <Compile Include="Tools\Sharepoint\SharepointDeleteUITest.cs" />
     <Compile Include="Explorer\DragAndDropService.cs" />
-    <Compile Include="Sharepoint\SharepointCreateUITest.cs" />
     <Compile Include="Tools\Database\ODBCTests.cs" />
     <Compile Include="Tools\Database\OracleDatabaseTests.cs" />
     <Compile Include="Tools\Database\PostgreSqlTests.cs" />
