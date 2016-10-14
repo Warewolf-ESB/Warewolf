@@ -67,6 +67,11 @@
     <Compile Include="ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsLoggingTests.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
+    <Compile Include="Tools\Recordset\CountTest.cs" />
+    <Compile Include="Tools\Recordset\DeleteRecordTest.cs" />
+    <Compile Include="Tools\Recordset\LengthTest.cs" />
+    <Compile Include="Tools\Recordset\SortTest.cs" />
+    <Compile Include="Tools\Recordset\UniqueRecordsTests.cs" />
     <Compile Include="Tools\Sharepoint\Copy File.cs" />
     <Compile Include="Tools\Sharepoint\Delete File.cs" />
     <Compile Include="Tools\Sharepoint\Read List Item.cs" />

@@ -8,9 +8,9 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void FindRecordsToolUITest()
-        {
-            UIMap.Drag_Toolbox_Find_Index_Onto_DesignSurface();
+        public void FindRecordsTool__OpenLargeViewUITest()
+        {            
+            UIMap.Open_Find_Record_Index_Tool_Large_View();
         }
 
         #region Additional test attributes
@@ -22,7 +22,14 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Find_Record_Index_Onto_DesignSurface();
+        }
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
         /// <summary>
