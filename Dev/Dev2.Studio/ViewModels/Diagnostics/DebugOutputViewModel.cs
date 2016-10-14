@@ -14,7 +14,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Common;
@@ -627,7 +626,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var isRemote = environmentId != Guid.Empty;
                 if (isRemote)
                 {
-                    Thread.Sleep(500);
                     var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
                     if (remoteEnvironmentModel != null)
                     {
