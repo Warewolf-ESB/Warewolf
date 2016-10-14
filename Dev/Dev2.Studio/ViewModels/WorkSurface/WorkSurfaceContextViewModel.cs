@@ -41,7 +41,6 @@ using Dev2.Webs;
 using Dev2.Workspaces;
 using System;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 
