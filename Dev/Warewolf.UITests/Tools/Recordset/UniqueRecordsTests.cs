@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class UniqueRecordsTests
     {
         [TestMethod]
+        [TestCategory("Tools")]
         public void UniqueRecordsUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
