@@ -9331,7 +9331,7 @@ namespace Warewolf.UITests
             // Click 'SourcesComboBox' combo box
             Mouse.Click(sourcesComboBox, new Point(216, 7));
 
-            // Click list item numbered 10 in 'SourcesComboBox' combo box
+            // Click list item numbered 8 in 'SourcesComboBox' combo box
             Mouse.Click(uITesting, new Point(137, 7));
 
             // Verify that the 'Enabled' property of '...' button equals 'True'
@@ -35585,7 +35585,7 @@ namespace Warewolf.UITests
                 {
                     this.mUITesting = new WpfListItem(this);
                     #region Search Criteria
-                    this.mUITesting.SearchProperties[WpfListItem.PropertyNames.Instance] = "10";
+                    this.mUITesting.SearchProperties[WpfListItem.PropertyNames.Instance] = "8";
                     this.mUITesting.WindowTitles.Add("Warewolf");
                     #endregion
                 }
