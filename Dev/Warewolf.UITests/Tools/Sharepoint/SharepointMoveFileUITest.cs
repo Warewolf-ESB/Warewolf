@@ -10,8 +10,6 @@ namespace Warewolf.UITests
         [TestCategory("Tools")]
         public void Sharepoint_Move_UITest()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurface();
             UIMap.Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_Tool();
             UIMap.Enter_Sharepoint_ServerSource_ServerName();
             UIMap.Click_UserButton_OnSharepointSource();
@@ -33,6 +31,8 @@ namespace Warewolf.UITests
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurface();
         }      
 
         UIMap UIMap
