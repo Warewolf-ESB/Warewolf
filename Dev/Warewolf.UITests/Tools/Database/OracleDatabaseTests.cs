@@ -9,11 +9,8 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         [TestCategory("Tools")]
         public void OracleDatabaseToolUITest()
-        {
-            UIMap.Drag_Toolbox_Oracle_Database_Onto_DesignSurface();
+        {            
             UIMap.Open_Oracle_Tool_Large_View();
-            UIMap.Click_NewSource_Button_FromOracle_Tool();
-            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
         }
 
         #region Additional test attributes
@@ -25,7 +22,8 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Oracle_Database_Onto_DesignSurface();
         }
         [TestCleanup]
         public void MyTestCleanup()
