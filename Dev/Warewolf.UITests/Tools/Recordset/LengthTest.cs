@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class LengthTest
     {
         [TestMethod]
+        [TestCategory("Tools")]
         public void LengthUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();

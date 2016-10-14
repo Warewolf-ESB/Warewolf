@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class SharepointCreateUITest
     {
         [TestMethod]
+        [TestCategory("Tools")]
         public void Sharepoint_CreateNewSource_UITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
@@ -18,6 +19,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Tools")]
         public void Sharepoint_Create_UITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();

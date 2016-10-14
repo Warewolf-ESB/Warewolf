@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class SharepointDeleteUITest
     {
         [TestMethod]
+        [TestCategory("Tools")]
         public void Sharepoint_Delete_UITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();

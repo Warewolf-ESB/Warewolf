@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class SortTest
     {
         [TestMethod]
+        [TestCategory("Tools")]
         public void SortUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
