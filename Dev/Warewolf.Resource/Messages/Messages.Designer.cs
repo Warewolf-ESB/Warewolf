@@ -437,5 +437,32 @@ namespace Warewolf.Resource.Messages {
                 return ResourceManager.GetString("Test_PassedResult", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending.
+        /// </summary>
+        public static string Test_PendingResult {
+            get {
+                return ResourceManager.GetString("Test_PendingResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ResourceDelete.
+        /// </summary>
+        public static string Test_ResourceDeleteResult {
+            get {
+                return ResourceManager.GetString("Test_ResourceDeleteResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ResourcpathUpdated.
+        /// </summary>
+        public static string Test_ResourcpathUpdatedResult {
+            get {
+                return ResourceManager.GetString("Test_ResourcpathUpdatedResult", resourceCulture);
+            }
+        }
     }
 }

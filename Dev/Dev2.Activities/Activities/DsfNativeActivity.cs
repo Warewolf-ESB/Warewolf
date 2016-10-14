@@ -21,6 +21,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -775,12 +776,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        protected void UpdateWithAssertions(IDSFDataObject dataObject)
+        private void UpdateWithAssertions(IDSFDataObject dataObject)
         {
             if (dataObject.IsServiceTestExecution)
             {
-                var assertPassed = false;
-                var serviceTestSteps = dataObject.ServiceTest?.TestSteps.Flatten(step => step.Children);
+                bool assertPassed;
+                var serviceTestSteps = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children?? new List<IServiceTestStep>().ToObservableCollection());
                 var assertSteps = serviceTestSteps?.Where(step => step.Type == StepType.Assert
                                                                              && step.UniqueId == Guid.Parse(UniqueID)
                                                                              && step.ActivityType != typeof(DsfForEachActivity).Name

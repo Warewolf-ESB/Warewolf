@@ -243,4 +243,13 @@
   <data name="Test_PassedResult" xml:space="preserve">
     <value>Passed</value>
   </data>
+  <data name="Test_PendingResult" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Test_ResourceDeleteResult" xml:space="preserve">
+    <value>ResourceDelete</value>
+  </data>
+  <data name="Test_ResourcpathUpdatedResult" xml:space="preserve">
+    <value>ResourcpathUpdated</value>
+  </data>
 </root>
