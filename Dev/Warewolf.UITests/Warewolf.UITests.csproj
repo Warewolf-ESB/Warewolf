@@ -85,6 +85,7 @@
     <Compile Include="Tools\Loop Constructs\ForEach.cs" />
     <Compile Include="Tools\Scripting\Ruby.cs" />
     <Compile Include="Tools\Scripting\Python.cs" />
+    <Compile Include="Tools\Storage Dropbox\Download.cs" />
     <Compile Include="Tools\Utility\RabbitMQPublish.cs" />
     <Compile Include="Tools\Utility\RabbitMQConsume.cs" />
     <Compile Include="Tools\Utility\AggregateCalculate.cs" />
@@ -148,9 +149,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tools\Storage Dropbox\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Properties\DefaultWorkspaceLayout.xml" />
     <Content Include="Tools\ToolUITestTemplate.txt" />
