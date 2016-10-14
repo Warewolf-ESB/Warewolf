@@ -84,6 +84,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SettingsTab.feature</DependentUpon>
     </Compile>
+    <Compile Include="SharepointConnectors.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharepointConnectors.feature</DependentUpon>
+    </Compile>
     <Compile Include="WebConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -119,6 +124,10 @@
     <None Include="SettingsTab.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SettingsTab.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SharepointConnectors.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SharepointConnectors.feature.cs</LastGenOutput>
     </None>
     <None Include="WebConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
