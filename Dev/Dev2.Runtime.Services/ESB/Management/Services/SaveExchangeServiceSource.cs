@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ServiceUserAuthorizations;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

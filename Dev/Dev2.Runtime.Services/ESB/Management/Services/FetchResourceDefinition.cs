@@ -25,6 +25,8 @@ using Dev2.Util;
 using Dev2.Workspaces;
 using Dev2.Common.Utils;
 using System.Text.RegularExpressions;
+using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ServiceUserAuthorizations;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 // ReSharper disable NonLocalizedString
