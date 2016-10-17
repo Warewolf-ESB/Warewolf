@@ -2248,7 +2248,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administrator rights required to perfom this action. Failed..
+        ///   Looks up a localized string similar to Administrator rights required to perfom this action. Failed. .
         /// </summary>
         public static string NotAuthorizedToAdministratorException {
             get {
@@ -2302,7 +2302,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NotAuthorizedToViewException.
+        ///   Looks up a localized string similar to View rights required to perfom this action. Failed.{0} Resource: {1}..
         /// </summary>
         public static string NotAuthorizedToViewException {
             get {

@@ -29,6 +29,7 @@ namespace Dev2.Runtime.ESB.Management
 
         public void RunPermissions(Guid resourceId)
         {
+            _authorizationService.ClearCaches();
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceId.ToString());
             if (!isAuthorized)
             {
@@ -57,10 +58,11 @@ namespace Dev2.Runtime.ESB.Management
 
         public void RunPermissions(Guid resourceId)
         {
+            _authorizationService.ClearCaches();
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.View, resourceId.ToString());
             if (!isAuthorized)
             {
-                throw new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToViewException);
+                throw new ServiceNotAuthorizedException(string.Format(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToViewException, Environment.NewLine, resourceId));
             }
         }
 
@@ -85,6 +87,7 @@ namespace Dev2.Runtime.ESB.Management
 
         public void RunPermissions(Guid resourceId)
         {
+            _authorizationService.ClearCaches();
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceId.ToString());
             if (!isAuthorized)
             {
