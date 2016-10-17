@@ -2250,6 +2250,26 @@ namespace Warewolf.UITests
             //Assert.IsFalse(uIRemoteConnectionInteText.DisplayText.Contains("*"), "Remote Connection Intergration Tab does not contain the star");
         }
 
+        public void Enter_Text_Into_EmailSource_Tab()
+        {
+            #region Variable Declarations
+            WpfEdit hostTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.HostTextBoxEdit;
+            WpfEdit userNameTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.UserNameTextBoxEdit;
+            WpfEdit passwordTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.PasswordTextBoxEdit;
+            WpfEdit portTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.PortTextBoxEdit;
+            WpfEdit timeoutTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.TimeoutTextBoxEdit;
+            WpfEdit fromTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.FromTextBoxEdit;
+            WpfEdit toTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.ToTextBoxEdit;
+            #endregion
+
+            hostTextBoxEdit.Text = "localhost";
+            userNameTextBoxEdit.Text = "test";
+            passwordTextBoxEdit.Text = "test";
+            portTextBoxEdit.Text = "2";
+            fromTextBoxEdit.Text = "AThorLocal@norsegods.com";
+            toTextBoxEdit.Text = "dev2warewolf@gmail.com";
+        }
+
         public void Enter_Number_To_Format()
         {
             #region Variable Declarations
