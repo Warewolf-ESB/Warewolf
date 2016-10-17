@@ -129,7 +129,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
             var effectedResources = new List<IResourceModel>();
 
-            if(toReloadResources != null)
+            if (toReloadResources != null)
             {
                 foreach (var serializableResource in toReloadResources)
                 {
@@ -525,7 +525,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 if (fetchXaml)
                 {
                     var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, id, prepairForDeployment);
-                    resource.WorkflowXaml = msg.Message;
+                    if (msg != null)
+                    {
+                        resource.WorkflowXaml = msg.Message;
+                    }
                 }
 
                 if (isNewWorkflow)
@@ -660,7 +663,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-       
+
 
         /// <summary>
         /// Stops the execution.
@@ -907,7 +910,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var result = comsController.ExecuteCommand<ExecuteMessage>(targetEnv.Connection, workspaceId);
 
             // log the trace for fetch ;)
-            Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}");
+            if (result != null)
+                Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}");
 
             return result;
         }
