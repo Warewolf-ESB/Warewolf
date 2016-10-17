@@ -18,7 +18,6 @@ using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
-using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
