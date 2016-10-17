@@ -84502,6 +84502,38 @@ namespace Warewolf.UITests
                 return this.mUIThefollowingerroroccText;
             }
         }
+        
+        public WpfText TheSwitchtoolcannotbText
+        {
+            get
+            {
+                if ((this.mTheSwitchtoolcannotbText == null))
+                {
+                    this.mTheSwitchtoolcannotbText = new WpfText(this);
+                    #region Search Criteria
+                    this.mTheSwitchtoolcannotbText.SearchProperties[WpfText.PropertyNames.Name] = "The Switch tool cannot be dropped onto this tool.";
+                    this.mTheSwitchtoolcannotbText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mTheSwitchtoolcannotbText;
+            }
+        }
+        
+        public WpfText DropnotallowedText
+        {
+            get
+            {
+                if ((this.mDropnotallowedText == null))
+                {
+                    this.mDropnotallowedText = new WpfText(this);
+                    #region Search Criteria
+                    this.mDropnotallowedText.SearchProperties[WpfText.PropertyNames.Name] = "Drop not allowed";
+                    this.mDropnotallowedText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mDropnotallowedText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -84516,6 +84548,10 @@ namespace Warewolf.UITests
         private WpfText mUIPleasesavecurrentlyeText;
         
         private WpfText mUIThefollowingerroroccText;
+        
+        private WpfText mTheSwitchtoolcannotbText;
+        
+        private WpfText mDropnotallowedText;
         #endregion
     }
     

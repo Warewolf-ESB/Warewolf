@@ -2767,7 +2767,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Drag_Toolbox_AssignObject_Onto_Sequence_Tool - Use 'Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams' to pass parameters into this method.
         /// </summary>
-        public void Drag_Toolbox_AssignObject_Onto_Sequence_Tool()
+        public void Drag_Toolbox_AssignObject_Onto_Sequence_LargeTool()
         {
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
@@ -2781,6 +2781,101 @@ namespace Warewolf.UITests
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             sequence.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(assignObject, new Point(13, 17));
+            Mouse.StopDragging(sequence);
+        }
+
+        /// <summary>
+        /// Drag_Toolbox_AssignObject_Onto_Sequence_Tool - Use 'Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Toolbox_AssignObject_Onto_Sequence_SmallTool()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem assignObject = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject;
+            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
+            #endregion
+
+            // Type 'Assign Object' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams.SearchTextBoxText;
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            sequence.EnsureClickable(new Point(155, 22));
+            Mouse.StartDragging(assignObject, new Point(13, 17));
+            Mouse.StopDragging(sequence);
+        }
+
+        /// <summary>
+        /// Drag_Toolbox_AssignObject_Onto_Sequence_Tool - Use 'Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Toolbox_Decision_Onto_Sequence_SmallTool()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem decision = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision;
+            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
+            #endregion
+
+            // Type 'Assign Object' in 'SearchTextBox' text box
+            searchTextBox.Text = "Decision";
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            sequence.EnsureClickable(new Point(155, 22));
+            Mouse.StartDragging(decision, new Point(13, 17));
+            Mouse.StopDragging(sequence);
+        }
+        /// <summary>
+        /// Drag_Toolbox_AssignObject_Onto_Sequence_Tool - Use 'Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Toolbox_Switch_Onto_Sequence_SmallTool()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem switchTool = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch;
+            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
+            #endregion
+
+            searchTextBox.Text = "Switch";
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            sequence.EnsureClickable(new Point(155, 22));
+            Mouse.StartDragging(switchTool, new Point(13, 17));
+            Mouse.StopDragging(sequence);
+        }
+        /// <summary>
+        /// Drag_Toolbox_AssignObject_Onto_Sequence_Tool - Use 'Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Toolbox_Switch_Onto_Sequence_LargeTool()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem switchTool = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch;
+            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity;
+            #endregion
+
+            searchTextBox.Text = "Switch";
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            sequence.EnsureClickable(new Point(155, 22));
+            Mouse.StartDragging(switchTool, new Point(13, 17));
+            Mouse.StopDragging(sequence);
+        }
+
+        /// <summary>
+        /// Drag_Toolbox_AssignObject_Onto_Sequence_Tool - Use 'Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Toolbox_Decision_Onto_Sequence_LargeTool()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem decision = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision;
+            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity;
+            #endregion
+
+            searchTextBox.Text = "Decision";
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            sequence.EnsureClickable(new Point(155, 22));
+            Mouse.StartDragging(decision, new Point(13, 17));
             Mouse.StopDragging(sequence);
         }
 
