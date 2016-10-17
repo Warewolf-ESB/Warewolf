@@ -132,6 +132,11 @@ namespace Dev2.Services.Security
             }
         }
 
+        public virtual void ClearCaches()
+        {
+           
+        }
+
         public virtual void Remove(Guid resourceId)
         {
             _securityService.Remove(resourceId);

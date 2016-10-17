@@ -129,20 +129,23 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
             var effectedResources = new List<IResourceModel>();
 
-            foreach (var serializableResource in toReloadResources)
+            if(toReloadResources != null)
             {
-                IResourceModel resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, fetchXaml);
-                var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
+                foreach (var serializableResource in toReloadResources)
+                {
+                    IResourceModel resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, fetchXaml);
+                    var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
 
-                if (resourceToUpdate != null)
-                {
-                    resourceToUpdate.Update(resource);
-                    effectedResources.Add(resourceToUpdate);
-                }
-                else
-                {
-                    effectedResources.Add(resource);
-                    _resourceModels.Add(resource);
+                    if (resourceToUpdate != null)
+                    {
+                        resourceToUpdate.Update(resource);
+                        effectedResources.Add(resourceToUpdate);
+                    }
+                    else
+                    {
+                        effectedResources.Add(resource);
+                        _resourceModels.Add(resource);
+                    }
                 }
             }
             return effectedResources;

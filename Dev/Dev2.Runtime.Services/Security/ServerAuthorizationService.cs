@@ -53,6 +53,11 @@ namespace Dev2.Runtime.Security
 
         public int CachedRequestCount => _cachedRequests.Count;
 
+        public  override void ClearCaches()
+        {
+            _cachedRequests.Clear();
+        }
+
         public override bool IsAuthorized(AuthorizationContext context, string resource)
         {
             bool authorized;

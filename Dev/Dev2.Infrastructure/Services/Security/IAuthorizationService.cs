@@ -29,5 +29,6 @@ namespace Dev2.Services.Security
         void Remove(Guid resourceId);
 
         List<WindowsGroupPermission> GetPermissions(IPrincipal user);
+        void ClearCaches();
     }
 }
