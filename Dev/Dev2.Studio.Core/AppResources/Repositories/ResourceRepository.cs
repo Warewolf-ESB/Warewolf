@@ -219,9 +219,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 var serializableResource = toReloadResources[0];
                 var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, true, true);
-                var contextualResourceModel = new ResourceModel(_environmentModel);
-                contextualResourceModel.Update(resource);
-                return contextualResourceModel;
+                if (resource != null)
+                {
+                    var contextualResourceModel = new ResourceModel(_environmentModel);
+                    contextualResourceModel.Update(resource);
+                    return contextualResourceModel;
+                }
             }
             Dev2Logger.Error(string.Format(ErrorResource.MultipleResourcesFound, resourceId));
             return null;
@@ -525,10 +528,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 if (fetchXaml)
                 {
                     var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, id, prepairForDeployment);
-                    if (msg != null)
-                    {
-                        resource.WorkflowXaml = msg.Message;
-                    }
+                    if(msg == null)
+                        return null;
+                    resource.WorkflowXaml = msg.Message;
                 }
 
                 if (isNewWorkflow)

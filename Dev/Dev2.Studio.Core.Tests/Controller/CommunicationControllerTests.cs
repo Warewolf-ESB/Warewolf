@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,7 +33,7 @@ namespace Dev2.Core.Tests.Controller
             connection.Setup(environmentConnection => environmentConnection.IsConnected).Returns(true);
             connection.Setup(environmentConnection => environmentConnection.ExecuteCommand(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID))
                 .Throws(new ServiceNotAuthorizedException(ErrorResource.NotAuthorizedToCreateException));
-            CommunicationController controller = new CommunicationController();
+            var controller = new CommunicationController();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
 
@@ -53,15 +52,15 @@ namespace Dev2.Core.Tests.Controller
             CustomContainer.Register(mock.Object);
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(environmentConnection => environmentConnection.IsConnected).Returns(true);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            ExecuteMessage message = new ExecuteMessage
+            var serializer = new Dev2JsonSerializer();
+            var message = new ExecuteMessage
             {
                 HasError = true,
                 Message = ErrorResource.NotAuthorizedToCreateException.ToStringBuilder()
             };
             connection.Setup(environmentConnection => environmentConnection.ExecuteCommand(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID))
                 .Returns(serializer.SerializeToBuilder(message));
-            CommunicationController controller = new CommunicationController();
+            var controller = new CommunicationController();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
 
@@ -80,14 +79,14 @@ namespace Dev2.Core.Tests.Controller
             CustomContainer.Register(mock.Object);
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(environmentConnection => environmentConnection.IsConnected).Returns(true);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
-            ExplorerRepositoryResult message = new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.NotAuthorizedToCreateException);
+            var message = new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.NotAuthorizedToCreateException);
 
             var serializeToBuilder = serializer.SerializeToBuilder(message);
             connection.Setup(environmentConnection => environmentConnection.ExecuteCommand(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID))
                 .Returns(serializeToBuilder);
-            CommunicationController controller = new CommunicationController();
+            var controller = new CommunicationController();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
 
@@ -106,14 +105,14 @@ namespace Dev2.Core.Tests.Controller
             CustomContainer.Register(mock.Object);
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(environmentConnection => environmentConnection.IsConnected).Returns(true);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
-            ExplorerRepositoryResult message = new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.NotAuthorizedToCreateException);
+            var message = new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.NotAuthorizedToCreateException);
 
             var serializeToBuilder = serializer.SerializeToBuilder(message);
             connection.Setup(environmentConnection => environmentConnection.ExecuteCommandAsync(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID))
                 .Returns(Task.FromResult(serializeToBuilder));
-            CommunicationController controller = new CommunicationController();
+            var controller = new CommunicationController();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
 
@@ -134,7 +133,7 @@ namespace Dev2.Core.Tests.Controller
             connection.Setup(environmentConnection => environmentConnection.IsConnected).Returns(true);
             connection.Setup(environmentConnection => environmentConnection.ExecuteCommandAsync(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID))
                 .Throws(new ServiceNotAuthorizedException(ErrorResource.NotAuthorizedToCreateException));
-            CommunicationController controller = new CommunicationController();
+            var controller = new CommunicationController();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
 
@@ -161,7 +160,7 @@ namespace Dev2.Core.Tests.Controller
             
             connection.Setup(environmentConnection => environmentConnection.ExecuteCommandAsync(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID))
                 .Throws(aggregateException);
-            CommunicationController controller = new CommunicationController();
+            var controller = new CommunicationController();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
 

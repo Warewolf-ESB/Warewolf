@@ -1266,7 +1266,7 @@ Please contact your Windows System Administrator.</value>
     <value>You do not have permission to move this item. Contribute permission is required to move an item.</value>
   </data>
   <data name="NotAuthorizedToAdministratorException" xml:space="preserve">
-    <value>Administrator rights required to perfom this action. Failed.</value>
+    <value>Administrator rights required to perfom this action. Failed. </value>
   </data>
   <data name="NotAuthorizedToContributeException" xml:space="preserve">
     <value>Contribute rights required to perfom this action. Failed.</value>
@@ -1284,7 +1284,7 @@ Please contact your Windows System Administrator.</value>
     <value>Execute rights required to perfom this action. Failed.</value>
   </data>
   <data name="NotAuthorizedToViewException" xml:space="preserve">
-    <value>NotAuthorizedToViewException</value>
+    <value>View rights required to perfom this action. Failed.{0} Resource: {1}.</value>
   </data>
   <data name="ServiceNotAuthorizedExceptionHeader" xml:space="preserve">
     <value>ServiceNotAuthorizedException</value>

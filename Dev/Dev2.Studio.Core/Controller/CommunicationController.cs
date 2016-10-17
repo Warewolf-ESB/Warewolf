@@ -129,6 +129,7 @@ namespace Dev2.Controller
 
         private static string ContainsAuthorizationError<T>(ExecuteMessage message, IExplorerRepositoryResult explorerRepositoryResult, out bool containsAuthorization)
         {
+            containsAuthorization = false;
             var executeMessage = message;
             var authorizationErrors = new List<string>
             {
@@ -140,9 +141,14 @@ namespace Dev2.Controller
                 ErrorResource.NotAuthorizedToExecuteException,
                 ErrorResource.NotAuthorizedToDeployToException,
             };
-            var s = executeMessage?.Message.ToString() ?? explorerRepositoryResult.Message;
-            containsAuthorization = authorizationErrors.Any(err => string.Equals(s, err, StringComparison.InvariantCultureIgnoreCase));
-            return s;
+            var authorizationError = executeMessage?.Message.ToString() ?? explorerRepositoryResult.Message;
+            var firstUniquePartOfTheMsg = authorizationError.Split('.').First();
+            if(!string.IsNullOrEmpty(firstUniquePartOfTheMsg))
+            {
+                containsAuthorization = authorizationErrors.Any(err => err.Split('.').First().ToUpper().Contains(firstUniquePartOfTheMsg.ToUpper()));
+            }
+           
+            return authorizationError;
         }
 
         private static void ShowAuthorizationErrorPopup(string ex)
