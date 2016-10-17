@@ -11,6 +11,7 @@ namespace Warewolf.UITests
         public void UniqueRecords_OpenLargeViewUITest()
         {            
             UIMap.Open_UniqueRecords_Large_View();
+
         }
 
         #region Additional test attributes

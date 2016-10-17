@@ -322,6 +322,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Close_EmailSource_Tab
+        /// </summary>
+        [When(@"I Click Close EmailSource Tab")]
+        public void Click_Close_EmailSource_Tab()
+        {
+            #region Variable Declarations
+            WpfButton emailSourceTabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.EmailSourceTabCloseButton;
+            #endregion
+
+            // Click '?' button
+            Mouse.Click(emailSourceTabCloseButton, new Point(13, 10));
+        }
+        
+        /// <summary>
         /// Click_Close_Deploy_Tab_Button - Use 'Click_Close_Deploy_Tab_ButtonParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click Close Deploy Tab Button")]
@@ -2115,6 +2129,24 @@ namespace Warewolf.UITests
 
             // Click 'Test Connection' button
             Mouse.Click(testConnectionButton, new Point(58, 16));
+        }
+        
+        /// <summary>
+        /// Click_EmailSource_TestConnection_Button - Use 'Click_EmailSource_TestConnection_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Click EmailSource TestConnection Button")]
+        public void Click_EmailSource_TestConnection_Button()
+        {
+            #region Variable Declarations
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.TestConnectionButton;
+            WpfText passedText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.PassedText;
+            #endregion
+
+            // Click 'Test Connection' button
+            Mouse.Click(testConnectionButton, new Point(58, 16));
+
+            // Verify that the 'Exists' property of 'Passed' label equals 'True'
+            Assert.AreEqual(this.Click_EmailSource_TestConnection_ButtonParams.PassedTextExists, passedText.Exists, "Connection test Failed");
         }
         
         /// <summary>
@@ -8672,14 +8704,22 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_NewEmailSource_FromExplorerContextMenu
+        /// Select_NewEmailSource_FromExplorerContextMenu - Use 'Select_NewEmailSource_FromExplorerContextMenuParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Select NewEmailSource FromExplorerContextMenu")]
         public void Select_NewEmailSource_FromExplorerContextMenu()
         {
             #region Variable Declarations
-            WpfMenuItem newEmailSource = this.MainStudioWindow.ExplorerContextMenu.NewEmailSource;
+            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            WpfMenu explorerEnvironmentContextMenu = this.MainStudioWindow.ExplorerEnvironmentContextMenu;
+            WpfMenuItem newEmailSource = this.MainStudioWindow.ExplorerEnvironmentContextMenu.NewEmailSource;
             #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
+
+            // Verify that the 'Exists' property of 'ExplorerMenu' popup menu equals 'True'
+            Assert.AreEqual(this.Select_NewEmailSource_FromExplorerContextMenuParams.ExplorerEnvironmentContextMenuExists, explorerEnvironmentContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
 
             // Click 'New Email Source' menu item
             Mouse.Click(newEmailSource, new Point(101, 13));
@@ -9570,6 +9610,66 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
+        /// <summary>
+        /// EmailSourceAsserts - Use 'EmailSourceAssertsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I EmailSourceAsserts")]
+        public void EmailSourceAsserts()
+        {
+            #region Variable Declarations
+            WpfEdit hostTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.HostTextBoxEdit;
+            WpfEdit userNameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.UserNameTextBoxEdit;
+            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.PasswordTextBoxEdit;
+            WpfEdit portTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.PortTextBoxEdit;
+            WpfEdit timeoutTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.TimeoutTextBoxEdit;
+            #endregion
+
+            // Verify that the 'Exists' property of 'HostTextBox' text box equals 'True'
+            Assert.AreEqual(this.EmailSourceAssertsExpectedValues.HostTextBoxEditExists, hostTextBoxEdit.Exists, "Host textbox does not exist after opening Email source tab");
+
+            // Verify that the 'Exists' property of 'UserNameTextBox' text box equals 'True'
+            Assert.AreEqual(this.EmailSourceAssertsExpectedValues.UserNameTextBoxEditExists, userNameTextBoxEdit.Exists, "Username textbox does not exist after opening Email source tab");
+
+            // Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
+            Assert.AreEqual(this.EmailSourceAssertsExpectedValues.PasswordTextBoxEditExists, passwordTextBoxEdit.Exists, "Password textbox does not exist after opening Email source tab");
+
+            // Verify that the 'Exists' property of 'PortTextBox' text box equals 'True'
+            Assert.AreEqual(this.EmailSourceAssertsExpectedValues.PortTextBoxEditExists, portTextBoxEdit.Exists, "Port textbox does not exist after opening Email source tab");
+
+            // Verify that the 'Exists' property of 'TimeoutTextBox' text box equals 'True'
+            Assert.AreEqual(this.EmailSourceAssertsExpectedValues.TimeoutTextBoxEditExists, timeoutTextBoxEdit.Exists, "Timeout textbox does not exist after opening Email source tab");
+        }
+        
+        /// <summary>
+        /// RabbitMqAsserts - Use 'RabbitMqAssertsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I RabbitMqAsserts")]
+        public void RabbitMqAsserts()
+        {
+            #region Variable Declarations
+            WpfEdit virtualHostTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.VirtualHostTextBoxEdit;
+            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.PasswordTextBoxEdit;
+            WpfEdit userNameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.UserNameTextBoxEdit;
+            WpfEdit hostTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.HostTextBoxEdit;
+            WpfEdit portTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.PortTextBoxEdit;
+            #endregion
+
+            // Verify that the 'Exists' property of 'VirtualHostTextBox' text box equals 'True'
+            Assert.AreEqual(this.RabbitMqAssertsExpectedValues.VirtualHostTextBoxEditExists, virtualHostTextBoxEdit.Exists, "VirtualHoast textbox does not exist after opening RabbitMq Source tab");
+
+            // Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
+            Assert.AreEqual(this.RabbitMqAssertsExpectedValues.PasswordTextBoxEditExists, passwordTextBoxEdit.Exists, "Password textbox does not exist after opening RabbitMq Source");
+
+            // Verify that the 'Exists' property of 'UserNameTextBox' text box equals 'True'
+            Assert.AreEqual(this.RabbitMqAssertsExpectedValues.UserNameTextBoxEditExists, userNameTextBoxEdit.Exists, "Username textbox does not exist after opening RabbitMq Source");
+
+            // Verify that the 'Exists' property of 'HostTextBox' text box equals 'True'
+            Assert.AreEqual(this.RabbitMqAssertsExpectedValues.HostTextBoxEditExists, hostTextBoxEdit.Exists, "Host textbox does not exist after opening RabbitMq Source");
+
+            // Verify that the 'Exists' property of 'PortTextBox' text box equals 'True'
+            Assert.AreEqual(this.RabbitMqAssertsExpectedValues.PortTextBoxEditExists, portTextBoxEdit.Exists, "Port textbox does not exist after opening RabbitMq Source");
+        }
+        
         #region Properties
         public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
         {
@@ -10228,6 +10328,18 @@ namespace Warewolf.UITests
                     this.mClick_Server_Source_Wizard_Test_Connection_ButtonParams = new Click_Server_Source_Wizard_Test_Connection_ButtonParams();
                 }
                 return this.mClick_Server_Source_Wizard_Test_Connection_ButtonParams;
+            }
+        }
+        
+        public virtual Click_EmailSource_TestConnection_ButtonParams Click_EmailSource_TestConnection_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_EmailSource_TestConnection_ButtonParams == null))
+                {
+                    this.mClick_EmailSource_TestConnection_ButtonParams = new Click_EmailSource_TestConnection_ButtonParams();
+                }
+                return this.mClick_EmailSource_TestConnection_ButtonParams;
             }
         }
         
@@ -12583,6 +12695,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_NewEmailSource_FromExplorerContextMenuParams Select_NewEmailSource_FromExplorerContextMenuParams
+        {
+            get
+            {
+                if ((this.mSelect_NewEmailSource_FromExplorerContextMenuParams == null))
+                {
+                    this.mSelect_NewEmailSource_FromExplorerContextMenuParams = new Select_NewEmailSource_FromExplorerContextMenuParams();
+                }
+                return this.mSelect_NewEmailSource_FromExplorerContextMenuParams;
+            }
+        }
+        
         public virtual Select_NewSharepointSource_FromServer_LookupParams Select_NewSharepointSource_FromServer_LookupParams
         {
             get
@@ -12907,6 +13031,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual EmailSourceAssertsExpectedValues EmailSourceAssertsExpectedValues
+        {
+            get
+            {
+                if ((this.mEmailSourceAssertsExpectedValues == null))
+                {
+                    this.mEmailSourceAssertsExpectedValues = new EmailSourceAssertsExpectedValues();
+                }
+                return this.mEmailSourceAssertsExpectedValues;
+            }
+        }
+        
+        public virtual RabbitMqAssertsExpectedValues RabbitMqAssertsExpectedValues
+        {
+            get
+            {
+                if ((this.mRabbitMqAssertsExpectedValues == null))
+                {
+                    this.mRabbitMqAssertsExpectedValues = new RabbitMqAssertsExpectedValues();
+                }
+                return this.mRabbitMqAssertsExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -13138,6 +13286,8 @@ namespace Warewolf.UITests
         private Click_Server_Source_Wizard_Address_Protocol_DropdownParams mClick_Server_Source_Wizard_Address_Protocol_DropdownParams;
         
         private Click_Server_Source_Wizard_Test_Connection_ButtonParams mClick_Server_Source_Wizard_Test_Connection_ButtonParams;
+        
+        private Click_EmailSource_TestConnection_ButtonParams mClick_EmailSource_TestConnection_ButtonParams;
         
         private Click_Show_Dependencies_In_Explorer_Context_MenuParams mClick_Show_Dependencies_In_Explorer_Context_MenuParams;
         
@@ -13531,6 +13681,8 @@ namespace Warewolf.UITests
         
         private Select_NewDatabaseSource_FromSqlServerToolParams mSelect_NewDatabaseSource_FromSqlServerToolParams;
         
+        private Select_NewEmailSource_FromExplorerContextMenuParams mSelect_NewEmailSource_FromExplorerContextMenuParams;
+        
         private Select_NewSharepointSource_FromServer_LookupParams mSelect_NewSharepointSource_FromServer_LookupParams;
         
         private Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams;
@@ -13584,6 +13736,10 @@ namespace Warewolf.UITests
         private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
+        
+        private EmailSourceAssertsExpectedValues mEmailSourceAssertsExpectedValues;
+        
+        private RabbitMqAssertsExpectedValues mRabbitMqAssertsExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -14712,6 +14868,21 @@ namespace Warewolf.UITests
         /// Wait for 3 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_EmailSource_TestConnection_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_EmailSource_TestConnection_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Passed' label equals 'True'
+        /// </summary>
+        public bool PassedTextExists = true;
         #endregion
     }
     
@@ -19277,6 +19448,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_NewEmailSource_FromExplorerContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_NewEmailSource_FromExplorerContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ExplorerMenu' popup menu equals 'True'
+        /// </summary>
+        public bool ExplorerEnvironmentContextMenuExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_NewSharepointSource_FromServer_Lookup'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -19782,6 +19968,76 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'EmailSourceAsserts'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class EmailSourceAssertsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'HostTextBox' text box equals 'True'
+        /// </summary>
+        public bool HostTextBoxEditExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UserNameTextBox' text box equals 'True'
+        /// </summary>
+        public bool UserNameTextBoxEditExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
+        /// </summary>
+        public bool PasswordTextBoxEditExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'PortTextBox' text box equals 'True'
+        /// </summary>
+        public bool PortTextBoxEditExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'TimeoutTextBox' text box equals 'True'
+        /// </summary>
+        public bool TimeoutTextBoxEditExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'RabbitMqAsserts'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RabbitMqAssertsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'VirtualHostTextBox' text box equals 'True'
+        /// </summary>
+        public bool VirtualHostTextBoxEditExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
+        /// </summary>
+        public bool PasswordTextBoxEditExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UserNameTextBox' text box equals 'True'
+        /// </summary>
+        public bool UserNameTextBoxEditExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'HostTextBox' text box equals 'True'
+        /// </summary>
+        public bool HostTextBoxEditExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'PortTextBox' text box equals 'True'
+        /// </summary>
+        public bool PortTextBoxEditExists = true;
         #endregion
     }
     
@@ -27744,6 +28000,30 @@ namespace Warewolf.UITests
                 return this.mDotNetDllPlugInSource;
             }
         }
+        
+        public RabbitMqSourceTabPage RabbitMqSourceTabPage
+        {
+            get
+            {
+                if ((this.mRabbitMqSourceTabPage == null))
+                {
+                    this.mRabbitMqSourceTabPage = new RabbitMqSourceTabPage(this);
+                }
+                return this.mRabbitMqSourceTabPage;
+            }
+        }
+        
+        public EmailSourceTabPage EmailSourceTabPage
+        {
+            get
+            {
+                if ((this.mEmailSourceTabPage == null))
+                {
+                    this.mEmailSourceTabPage = new EmailSourceTabPage(this);
+                }
+                return this.mEmailSourceTabPage;
+            }
+        }
         #endregion
         
         #region Fields
@@ -27778,6 +28058,10 @@ namespace Warewolf.UITests
         private SharepointServerSourceTab mSharepointServerSourceTab;
         
         private DotNetDllPlugInSource mDotNetDllPlugInSource;
+        
+        private RabbitMqSourceTabPage mRabbitMqSourceTabPage;
+        
+        private EmailSourceTabPage mEmailSourceTabPage;
         #endregion
     }
     
@@ -79528,6 +79812,433 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RabbitMqSourceTabPage : WpfTabPage
+    {
+        
+        public RabbitMqSourceTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.IRabbitMQServiceSourceDe" +
+                "finition]";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public RabbitMQSourceCustom RabbitMQSourceCustom
+        {
+            get
+            {
+                if ((this.mRabbitMQSourceCustom == null))
+                {
+                    this.mRabbitMQSourceCustom = new RabbitMQSourceCustom(this);
+                }
+                return this.mRabbitMQSourceCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private RabbitMQSourceCustom mRabbitMQSourceCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RabbitMQSourceCustom : WpfCustom
+    {
+        
+        public RabbitMQSourceCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit HostTextBoxEdit
+        {
+            get
+            {
+                if ((this.mHostTextBoxEdit == null))
+                {
+                    this.mHostTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mHostTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "HostTextBox";
+                    this.mHostTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mHostTextBoxEdit;
+            }
+        }
+        
+        public WpfEdit PortTextBoxEdit
+        {
+            get
+            {
+                if ((this.mPortTextBoxEdit == null))
+                {
+                    this.mPortTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mPortTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "PortTextBox";
+                    this.mPortTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPortTextBoxEdit;
+            }
+        }
+        
+        public WpfEdit UserNameTextBoxEdit
+        {
+            get
+            {
+                if ((this.mUserNameTextBoxEdit == null))
+                {
+                    this.mUserNameTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUserNameTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UserNameTextBox";
+                    this.mUserNameTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUserNameTextBoxEdit;
+            }
+        }
+        
+        public WpfEdit PasswordTextBoxEdit
+        {
+            get
+            {
+                if ((this.mPasswordTextBoxEdit == null))
+                {
+                    this.mPasswordTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mPasswordTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "PasswordTextBox";
+                    this.mPasswordTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPasswordTextBoxEdit;
+            }
+        }
+        
+        public WpfEdit VirtualHostTextBoxEdit
+        {
+            get
+            {
+                if ((this.mVirtualHostTextBoxEdit == null))
+                {
+                    this.mVirtualHostTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mVirtualHostTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "VirtualHostTextBox";
+                    this.mVirtualHostTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mVirtualHostTextBoxEdit;
+            }
+        }
+        
+        public WpfButton TestConnectionButton
+        {
+            get
+            {
+                if ((this.mTestConnectionButton == null))
+                {
+                    this.mTestConnectionButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestConnectionButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestPublishCommand";
+                    this.mTestConnectionButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTestConnectionButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mHostTextBoxEdit;
+        
+        private WpfEdit mPortTextBoxEdit;
+        
+        private WpfEdit mUserNameTextBoxEdit;
+        
+        private WpfEdit mPasswordTextBoxEdit;
+        
+        private WpfEdit mVirtualHostTextBoxEdit;
+        
+        private WpfButton mTestConnectionButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class EmailSourceTabPage : WpfTabPage
+    {
+        
+        public EmailSourceTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.IEmailServiceSource]";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public SendTestModelsCustom SendTestModelsCustom
+        {
+            get
+            {
+                if ((this.mSendTestModelsCustom == null))
+                {
+                    this.mSendTestModelsCustom = new SendTestModelsCustom(this);
+                }
+                return this.mSendTestModelsCustom;
+            }
+        }
+        
+        public WpfButton EmailSourceTabCloseButton
+        {
+            get
+            {
+                if ((this.mEmailSourceTabCloseButton == null))
+                {
+                    this.mEmailSourceTabCloseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEmailSourceTabCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mEmailSourceTabCloseButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEmailSourceTabCloseButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SendTestModelsCustom mSendTestModelsCustom;
+        
+        private WpfButton mEmailSourceTabCloseButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SendTestModelsCustom : WpfCustom
+    {
+        
+        public SendTestModelsCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit FromTextBoxEdit
+        {
+            get
+            {
+                if ((this.mFromTextBoxEdit == null))
+                {
+                    this.mFromTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mFromTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "FromTextBox";
+                    this.mFromTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFromTextBoxEdit;
+            }
+        }
+        
+        public WpfEdit ToTextBoxEdit
+        {
+            get
+            {
+                if ((this.mToTextBoxEdit == null))
+                {
+                    this.mToTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mToTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "ToTextBox";
+                    this.mToTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mToTextBoxEdit;
+            }
+        }
+        
+        public WpfButton TestConnectionButton
+        {
+            get
+            {
+                if ((this.mTestConnectionButton == null))
+                {
+                    this.mTestConnectionButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestConnectionButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestSendCommand";
+                    this.mTestConnectionButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTestConnectionButton;
+            }
+        }
+        
+        public WpfEdit TimeoutTextBoxEdit
+        {
+            get
+            {
+                if ((this.mTimeoutTextBoxEdit == null))
+                {
+                    this.mTimeoutTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTimeoutTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "TimeoutTextBox";
+                    this.mTimeoutTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTimeoutTextBoxEdit;
+            }
+        }
+        
+        public WpfEdit PortTextBoxEdit
+        {
+            get
+            {
+                if ((this.mPortTextBoxEdit == null))
+                {
+                    this.mPortTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mPortTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "PortTextBox";
+                    this.mPortTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPortTextBoxEdit;
+            }
+        }
+        
+        public WpfRadioButton EnableSSLYesRadioButton
+        {
+            get
+            {
+                if ((this.mEnableSSLYesRadioButton == null))
+                {
+                    this.mEnableSSLYesRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mEnableSSLYesRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "EnableSslYes";
+                    this.mEnableSSLYesRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEnableSSLYesRadioButton;
+            }
+        }
+        
+        public WpfRadioButton EnableSSLNORadioButton
+        {
+            get
+            {
+                if ((this.mEnableSSLNORadioButton == null))
+                {
+                    this.mEnableSSLNORadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mEnableSSLNORadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "EnableSslNo";
+                    this.mEnableSSLNORadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEnableSSLNORadioButton;
+            }
+        }
+        
+        public WpfEdit PasswordTextBoxEdit
+        {
+            get
+            {
+                if ((this.mPasswordTextBoxEdit == null))
+                {
+                    this.mPasswordTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mPasswordTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "PasswordTextBox";
+                    this.mPasswordTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPasswordTextBoxEdit;
+            }
+        }
+        
+        public WpfEdit UserNameTextBoxEdit
+        {
+            get
+            {
+                if ((this.mUserNameTextBoxEdit == null))
+                {
+                    this.mUserNameTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUserNameTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UserNameTextBox";
+                    this.mUserNameTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUserNameTextBoxEdit;
+            }
+        }
+        
+        public WpfEdit HostTextBoxEdit
+        {
+            get
+            {
+                if ((this.mHostTextBoxEdit == null))
+                {
+                    this.mHostTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mHostTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "HostTextBox";
+                    this.mHostTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mHostTextBoxEdit;
+            }
+        }
+        
+        public WpfText PassedText
+        {
+            get
+            {
+                if ((this.mPassedText == null))
+                {
+                    this.mPassedText = new WpfText(this);
+                    #region Search Criteria
+                    this.mPassedText.SearchProperties[WpfText.PropertyNames.Name] = "Passed";
+                    this.mPassedText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPassedText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mFromTextBoxEdit;
+        
+        private WpfEdit mToTextBoxEdit;
+        
+        private WpfButton mTestConnectionButton;
+        
+        private WpfEdit mTimeoutTextBoxEdit;
+        
+        private WpfEdit mPortTextBoxEdit;
+        
+        private WpfRadioButton mEnableSSLYesRadioButton;
+        
+        private WpfRadioButton mEnableSSLNORadioButton;
+        
+        private WpfEdit mPasswordTextBoxEdit;
+        
+        private WpfEdit mUserNameTextBoxEdit;
+        
+        private WpfEdit mHostTextBoxEdit;
+        
+        private WpfText mPassedText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitPaneRight : WpfCustom
     {
         
@@ -84310,6 +85021,38 @@ namespace Warewolf.UITests
                 return this.mUIThefollowingerroroccText;
             }
         }
+        
+        public WpfText TheSwitchtoolcannotbText
+        {
+            get
+            {
+                if ((this.mTheSwitchtoolcannotbText == null))
+                {
+                    this.mTheSwitchtoolcannotbText = new WpfText(this);
+                    #region Search Criteria
+                    this.mTheSwitchtoolcannotbText.SearchProperties[WpfText.PropertyNames.Name] = "The Switch tool cannot be dropped onto this tool.";
+                    this.mTheSwitchtoolcannotbText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mTheSwitchtoolcannotbText;
+            }
+        }
+        
+        public WpfText DropnotallowedText
+        {
+            get
+            {
+                if ((this.mDropnotallowedText == null))
+                {
+                    this.mDropnotallowedText = new WpfText(this);
+                    #region Search Criteria
+                    this.mDropnotallowedText.SearchProperties[WpfText.PropertyNames.Name] = "Drop not allowed";
+                    this.mDropnotallowedText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mDropnotallowedText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -84324,6 +85067,10 @@ namespace Warewolf.UITests
         private WpfText mUIPleasesavecurrentlyeText;
         
         private WpfText mUIThefollowingerroroccText;
+        
+        private WpfText mTheSwitchtoolcannotbText;
+        
+        private WpfText mDropnotallowedText;
         #endregion
     }
     
@@ -85557,10 +86304,24 @@ namespace Warewolf.UITests
                 return this.mUIUI_SplitPane_AutoIDCustom;
             }
         }
+        
+        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ExplorerControl_ACustom == null))
+                {
+                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
+                }
+                return this.mUIUI_ExplorerControl_ACustom;
+            }
+        }
         #endregion
         
         #region Fields
         private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        
+        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
         #endregion
     }
     
@@ -85611,45 +86372,50 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public UIDev2StudioViewModelsTabPage UIDev2StudioViewModelsTabPage
+        public UIDev2ViewModelsSourceTabPage UIDev2ViewModelsSourceTabPage
         {
             get
             {
-                if ((this.mUIDev2StudioViewModelsTabPage == null))
+                if ((this.mUIDev2ViewModelsSourceTabPage == null))
                 {
-                    this.mUIDev2StudioViewModelsTabPage = new UIDev2StudioViewModelsTabPage(this);
+                    this.mUIDev2ViewModelsSourceTabPage = new UIDev2ViewModelsSourceTabPage(this);
                 }
-                return this.mUIDev2StudioViewModelsTabPage;
+                return this.mUIDev2ViewModelsSourceTabPage;
             }
         }
         #endregion
         
         #region Fields
-        private UIDev2StudioViewModelsTabPage mUIDev2StudioViewModelsTabPage;
+        private UIDev2ViewModelsSourceTabPage mUIDev2ViewModelsSourceTabPage;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDev2StudioViewModelsTabPage : WpfTabPage
+    public class UIDev2ViewModelsSourceTabPage : WpfTabPage
     {
         
-        public UIDev2StudioViewModelsTabPage(UITestControl searchLimitContainer) : 
+        public UIDev2ViewModelsSourceTabPage(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.IEmailServiceSource]";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
+        public WpfCustom UIDev2StudioViewModelsCustom
         {
             get
             {
                 if ((this.mUIDev2StudioViewModelsCustom == null))
                 {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
+                    this.mUIDev2StudioViewModelsCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIDev2StudioViewModelsCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+                    this.mUIDev2StudioViewModelsCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+                    this.mUIDev2StudioViewModelsCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
                 }
                 return this.mUIDev2StudioViewModelsCustom;
             }
@@ -85657,262 +86423,76 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
+        private WpfCustom mUIDev2StudioViewModelsCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDev2StudioViewModelsCustom : WpfCustom
+    public class UIUI_ExplorerControl_ACustom : WpfCustom
     {
         
-        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
+        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIUI_WorkflowDesigner_Custom UIUI_WorkflowDesigner_Custom
+        public UIExplorerTreeTree UIExplorerTreeTree
         {
             get
             {
-                if ((this.mUIUI_WorkflowDesigner_Custom == null))
+                if ((this.mUIExplorerTreeTree == null))
                 {
-                    this.mUIUI_WorkflowDesigner_Custom = new UIUI_WorkflowDesigner_Custom(this);
+                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
                 }
-                return this.mUIUI_WorkflowDesigner_Custom;
+                return this.mUIExplorerTreeTree;
             }
         }
         #endregion
         
         #region Fields
-        private UIUI_WorkflowDesigner_Custom mUIUI_WorkflowDesigner_Custom;
+        private UIExplorerTreeTree mUIExplorerTreeTree;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_WorkflowDesigner_Custom : WpfCustom
+    public class UIExplorerTreeTree : WpfTree
     {
         
-        public UIUI_WorkflowDesigner_Custom(UITestControl searchLimitContainer) : 
+        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_WorkflowDesigner_AutoID";
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIUserControl_1Custom UIUserControl_1Custom
+        public WpfTreeItem UIInfragisticsControlsTreeItem
         {
             get
             {
-                if ((this.mUIUserControl_1Custom == null))
+                if ((this.mUIInfragisticsControlsTreeItem == null))
                 {
-                    this.mUIUserControl_1Custom = new UIUserControl_1Custom(this);
-                }
-                return this.mUIUserControl_1Custom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUserControl_1Custom mUIUserControl_1Custom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUserControl_1Custom : WpfCustom
-    {
-        
-        public UIUserControl_1Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DesignerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UserControl_1";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIScrollViewerPane UIScrollViewerPane
-        {
-            get
-            {
-                if ((this.mUIScrollViewerPane == null))
-                {
-                    this.mUIScrollViewerPane = new UIScrollViewerPane(this);
-                }
-                return this.mUIScrollViewerPane;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIScrollViewerPane mUIScrollViewerPane;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIScrollViewerPane : WpfPane
-    {
-        
-        public UIScrollViewerPane(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "scrollViewer";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIActivityBuilderCustom UIActivityBuilderCustom
-        {
-            get
-            {
-                if ((this.mUIActivityBuilderCustom == null))
-                {
-                    this.mUIActivityBuilderCustom = new UIActivityBuilderCustom(this);
-                }
-                return this.mUIActivityBuilderCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIActivityBuilderCustom mUIActivityBuilderCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIActivityBuilderCustom : WpfCustom
-    {
-        
-        public UIActivityBuilderCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActivityTypeDesigner";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
-        {
-            get
-            {
-                if ((this.mUIWorkflowItemPresenteCustom == null))
-                {
-                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
-                }
-                return this.mUIWorkflowItemPresenteCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWorkflowItemPresenteCustom : WpfCustom
-    {
-        
-        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIFlowchartCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIFlowchartCustom mUIFlowchartCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIFlowchartCustom : WpfCustom
-    {
-        
-        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 2(FlowchartDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIDsfConsumeRabbitMQAcCustom
-        {
-            get
-            {
-                if ((this.mUIDsfConsumeRabbitMQAcCustom == null))
-                {
-                    this.mUIDsfConsumeRabbitMQAcCustom = new WpfCustom(this);
+                    this.mUIInfragisticsControlsTreeItem = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mUIDsfConsumeRabbitMQAcCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.RabbitMQConsumeDesigner";
-                    this.mUIDsfConsumeRabbitMQAcCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "RabbitMQ Consume(RabbitMQConsumeDesigner)";
-                    this.mUIDsfConsumeRabbitMQAcCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mUIInfragisticsControlsTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mUIInfragisticsControlsTreeItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mUIDsfConsumeRabbitMQAcCustom;
-            }
-        }
-        
-        public WpfCustom UIDsfPublishRabbitMQAcCustom
-        {
-            get
-            {
-                if ((this.mUIDsfPublishRabbitMQAcCustom == null))
-                {
-                    this.mUIDsfPublishRabbitMQAcCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDsfPublishRabbitMQAcCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.RabbitMQPublishDesigner";
-                    this.mUIDsfPublishRabbitMQAcCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "RabbitMQ Publish(RabbitMQPublishDesigner)";
-                    this.mUIDsfPublishRabbitMQAcCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIDsfPublishRabbitMQAcCustom;
+                return this.mUIInfragisticsControlsTreeItem;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCustom mUIDsfConsumeRabbitMQAcCustom;
-        
-        private WpfCustom mUIDsfPublishRabbitMQAcCustom;
+        private WpfTreeItem mUIInfragisticsControlsTreeItem;
         #endregion
     }
     

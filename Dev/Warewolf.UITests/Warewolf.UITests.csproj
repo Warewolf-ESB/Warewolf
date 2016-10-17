@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
+    <Compile Include="EmailSource\EmailSourceTests.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
