@@ -124,6 +124,7 @@ namespace Dev2.Controller
                     if (containsAuthorization)
                     {
                         ShowAuthorizationErrorPopup(s);
+                        return default(T);
                     }
 
                 }

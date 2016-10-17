@@ -18,6 +18,7 @@ using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.TransferObjects;
@@ -29,7 +30,19 @@ namespace Dev2.Runtime.WebServer.Handlers
     public class InternalServiceRequestHandler : AbstractWebRequestHandler
     {
         public IPrincipal ExecutingUser { private get; set; }
+        private IAuthorizer _authorizer;
+        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredExecuteManagementEndpoint());
 
+        // ReSharper disable once UnusedMember.Global
+        public InternalServiceRequestHandler(IAuthorizer authorizer)
+        {
+            _authorizer = authorizer;
+        }
+
+        public InternalServiceRequestHandler()
+        {
+
+        }
         public override void ProcessRequest(ICommunicationContext ctx)
         {
             var serviceName = GetServiceName(ctx);
@@ -41,7 +54,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             var xml = GetPostData(ctx);
 
-            if(!String.IsNullOrEmpty(xml))
+            if (!string.IsNullOrEmpty(xml))
             {
                 formData.RawRequestPayload = xml;
             }
@@ -50,9 +63,9 @@ namespace Dev2.Runtime.WebServer.Handlers
             formData.InstanceID = instanceId;
             formData.Bookmark = bookmark;
             formData.WebServerUrl = ctx.Request.Uri.ToString();
-            formData.Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
+            formData.Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}";
 
-            if(ExecutingUser == null)
+            if (ExecutingUser == null)
             {
                 throw new Exception(ErrorResource.NullExecutingUser);
             }
@@ -64,7 +77,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     Thread.CurrentPrincipal = ExecutingUser;
 
-                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders(),ctx.Request.User);
+                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders(), ctx.Request.User);
                     ctx.Send(responseWriter);
                 });
 
@@ -72,7 +85,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 t.Join();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 // ReSharper disable InvokeAsExtensionMethod
                 Dev2Logger.Error(this, e);
@@ -103,7 +116,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     isDebug = false;
                 }
             }
-
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
             if (isDebug)
             {
@@ -114,9 +127,30 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.ServiceName = request.ServiceName;
 
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
+
             var isManagementResource = false;
             if (resource != null)
             {
+                try
+                {
+                    if (ServerAuthorizationService.Instance != null)
+                    {
+                        // ReSharper disable once UnusedVariable
+                        var service = ServerAuthorizationService.Instance;
+                        service.ClearCaches();
+                        Authorizer.RunPermissions(resource.ResourceID);
+                    }
+
+                    
+                }
+                catch (ServiceNotAuthorizedException ex)
+                {
+                    var message = new ExecuteMessage { HasError = true };
+                    message.SetMessage(ex.Message);
+                    return serializer.SerializeToBuilder(message);
+                }
+
+
                 dataObject.ResourceID = resource.ResourceID;
                 if (!string.IsNullOrEmpty(request.TestName))
                 {
@@ -125,7 +159,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
             }
-            
+
             dataObject.ClientID = Guid.Parse(connectionId);
             Common.Utilities.OrginalExecutingUser = ExecutingUser;
             dataObject.ExecutingUser = ExecutingUser;
@@ -186,10 +220,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return new StringBuilder();
             }
 
-            ExecuteMessage msg = new ExecuteMessage {HasError = true};
-            msg.SetMessage(String.Join(Environment.NewLine, dataObject.Environment.Errors));
+            ExecuteMessage msg = new ExecuteMessage { HasError = true };
+            msg.SetMessage(string.Join(Environment.NewLine, dataObject.Environment.Errors));
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(msg);
         }
     }
