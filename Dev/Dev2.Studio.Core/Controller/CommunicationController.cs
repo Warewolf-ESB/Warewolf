@@ -108,19 +108,8 @@ namespace Dev2.Controller
                 var explorerRepositoryResult = executeCommand as IExplorerRepositoryResult;
                 if (message != null || explorerRepositoryResult != null)
                 {
-                    var executeMessage = message;
-                    var authorizationErrors = new List<string>
-                    {
-                        ErrorResource.NotAuthorizedToCreateException,
-                        ErrorResource.NotAuthorizedToViewException,
-                        ErrorResource.NotAuthorizedToAdministratorException,
-                        ErrorResource.NotAuthorizedToContributeException,
-                        ErrorResource.NotAuthorizedToDeployFromException,
-                        ErrorResource.NotAuthorizedToExecuteException,
-                        ErrorResource.NotAuthorizedToDeployToException,
-                    };
-                    var s = executeMessage?.Message.ToString() ?? explorerRepositoryResult.Message;
-                    var containsAuthorization = authorizationErrors.Any(err => string.Equals(s, err, StringComparison.InvariantCultureIgnoreCase));
+                    bool containsAuthorization;
+                    var s = ContainsAuthorizationError<T>(message, explorerRepositoryResult, out containsAuthorization);
                     if (containsAuthorization)
                     {
                         ShowAuthorizationErrorPopup(s);
@@ -136,6 +125,24 @@ namespace Dev2.Controller
                 ShowAuthorizationErrorPopup(ex.Message);
                 return default(T);
             }
+        }
+
+        private static string ContainsAuthorizationError<T>(ExecuteMessage message, IExplorerRepositoryResult explorerRepositoryResult, out bool containsAuthorization)
+        {
+            var executeMessage = message;
+            var authorizationErrors = new List<string>
+            {
+                ErrorResource.NotAuthorizedToCreateException,
+                ErrorResource.NotAuthorizedToViewException,
+                ErrorResource.NotAuthorizedToAdministratorException,
+                ErrorResource.NotAuthorizedToContributeException,
+                ErrorResource.NotAuthorizedToDeployFromException,
+                ErrorResource.NotAuthorizedToExecuteException,
+                ErrorResource.NotAuthorizedToDeployToException,
+            };
+            var s = executeMessage?.Message.ToString() ?? explorerRepositoryResult.Message;
+            containsAuthorization = authorizationErrors.Any(err => string.Equals(s, err, StringComparison.InvariantCultureIgnoreCase));
+            return s;
         }
 
         private static void ShowAuthorizationErrorPopup(string ex)
@@ -229,22 +236,54 @@ namespace Dev2.Controller
             }
             else
             {
-
-                // now bundle it up into a nice string builder ;)
-                if (ServicePayload == null)
+                try
                 {
-                    ServicePayload = new EsbExecuteRequest();
+                            // now bundle it up into a nice string builder ;)
+                            if (ServicePayload == null)
+                            {
+                                ServicePayload = new EsbExecuteRequest();
+                            }
+
+                            ServicePayload.ServiceName = ServiceName;
+                            StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
+                            var payload = await connection.ExecuteCommandAsync(toSend, workspaceId);
+                            var executeCommand = serializer.Deserialize<T>(payload);
+                            var message = executeCommand as ExecuteMessage;
+                            var explorerRepositoryResult = executeCommand as IExplorerRepositoryResult;
+                            if (message != null || explorerRepositoryResult != null)
+                            {
+                                bool containsAuthorization;
+                                var s = ContainsAuthorizationError<T>(message, explorerRepositoryResult, out containsAuthorization);
+                                if (containsAuthorization)
+                                {
+                                    ShowAuthorizationErrorPopup(s);
+                                    return default(T);
+                                }
+                            }
+
+                            return executeCommand;
+
                 }
-
-                ServicePayload.ServiceName = ServiceName;
-                StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                var payload = await connection.ExecuteCommandAsync(toSend, workspaceId);
-
-                return serializer.Deserialize<T>(payload);
+                catch (ServiceNotAuthorizedException ex)
+                {
+                    ShowAuthorizationErrorPopup(ex.Message);
+                    return default(T);
+                }
+                catch (AggregateException ex)
+                {
+                    var aggregateException = ex.Flatten();
+                    var baseException = aggregateException.GetBaseException();
+                    var isAuthorizationError = baseException is ServiceNotAuthorizedException;
+                    if (isAuthorizationError)
+                    {
+                        ShowAuthorizationErrorPopup(ex.Message);
+                        return default(T);
+                    }
+                  
+                }
             }
             return default(T);
         }
-
 
         public async Task<T> ExecuteCompressedCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId)
         {
