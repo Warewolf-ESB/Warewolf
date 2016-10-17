@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
+    <Compile Include="ContextMenu\ContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
@@ -69,6 +70,8 @@
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Explorer\DragAndDropService.cs" />
     <Compile Include="Sharepoint\SharepointCreateUITest.cs" />
+    <Compile Include="Tabs\AssignToolInUnpinnedWorkflowTab.cs" />
+    <Compile Include="Tabs\PinUnpinPanes.cs" />
     <Compile Include="Tools\Loop Constructs\Selectandapply.cs" />
     <Compile Include="Tools\Loop Constructs\ForEach.cs" />
     <Compile Include="Tools\Scripting\Ruby.cs" />

@@ -507,7 +507,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(_target.Servers.Contains(serverConnectionMock.Object));
             Assert.IsFalse(_target.IsConnected);
-            Assert.IsTrue(serverDisconnectedRaised);
+            Assert.IsFalse(serverDisconnectedRaised);
             serverConnectionMock.VerifySet(it => it.DisplayName = "My display name");
         }
 

@@ -25,7 +25,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -69,6 +68,7 @@ using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -245,7 +245,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public string GetWorkflowLink()
+        public string GetWorkflowLink(bool addWorkflowId = true)
         {
             if (_workflowInputDataViewModel != null)
             {
@@ -258,7 +258,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _workflowInputDataViewModel.LoadWorkflowInputs();
                 _workflowInputDataViewModel.SetXmlData(true);
                 var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
-                var workflowUri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.Json);
+                var workflowUri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.Json, addWorkflowId);
                 if (workflowUri != null)
                 {
                     _workflowLink = workflowUri.ToString();
@@ -380,6 +380,213 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
 
                     }
+                }));
+            }
+        }
+
+        public ICommand DebugInputsCommand
+        {
+            get
+            {
+                return _debugInputsCommand ?? (_debugInputsCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            mvm.DebugCommand.Execute(mvm.ActiveItem);
+                        }
+                    }
+                }));
+            }
+        }
+
+        public ICommand DebugStudioCommand
+        {
+            get
+            {
+                return _debugStudioCommand ?? (_debugStudioCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            mvm.QuickDebugCommand.Execute(mvm.ActiveItem);
+                        }
+                    }
+                }));
+            }
+        }
+
+        public ICommand DebugBrowserCommand
+        {
+            get
+            {
+                return _debugBrowserCommand ?? (_debugBrowserCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            mvm.QuickViewInBrowserCommand.Execute(mvm.ActiveItem);
+                        }
+                    }
+                }));
+            }
+        }
+
+        public ICommand ScheduleCommand
+        {
+            get
+            {
+                return _scheduleCommand ?? (_scheduleCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            mvm.CreateNewSchedule(mvm.ActiveItem.ContextualResourceModel.ID);
+                        }
+                    }
+                }));
+            }
+        }
+
+        public bool IsCommandEnabled => ResourceModel != null && !ResourceModel.IsNewWorkflow;
+
+        public ICommand TestEditorCommand
+        {
+            get
+            {
+                return _testEditorCommand ?? (_testEditorCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            mvm.CreateTest(mvm.ActiveItem.ContextualResourceModel.ID);
+                        }
+                    }
+                }));
+            }
+        }
+
+        public ICommand RunAllTestsCommand
+        {
+            get
+            {
+                return _runAllTestsCommand ?? (_runAllTestsCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            mvm.RunAllTests(mvm.ActiveItem.ContextualResourceModel.ID);
+                        }
+                    }
+                }));
+            }
+        }
+
+        public ICommand DuplicateCommand
+        {
+            get
+            {
+                return _duplicateCommand ?? (_duplicateCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            IExplorerItemViewModel explorerItem = null;
+                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
+                            foreach (var environmentViewModel in environmentViewModels)
+                            {
+                                explorerItem = environmentViewModel.Children.FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                            }
+                            
+                            mvm.DuplicateResource(explorerItem);
+                        }
+                    }
+                }));
+            }
+        }
+
+        public ICommand DeployCommand
+        {
+            get
+            {
+                return _deployCommand ?? (_deployCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            IExplorerItemViewModel explorerItem = null;
+                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
+                            foreach (var environmentViewModel in environmentViewModels)
+                            {
+                                explorerItem = environmentViewModel.Children.FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                            }
+                            if (explorerItem != null)
+                                mvm.AddDeploySurface(explorerItem.AsList().Union(new[] {explorerItem}));
+                        }
+                    }
+                }));
+            }
+        }
+
+        public ICommand ShowDependenciesCommand
+        {
+            get
+            {
+                return _showDependenciesCommand ?? (_showDependenciesCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            mvm.ShowDependencies(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer);
+                        }
+                    }
+                }));
+            }
+        }
+
+        public ICommand ViewSwaggerCommand
+        {
+            get
+            {
+                return _viewSwaggerCommand ?? (_viewSwaggerCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            mvm.ViewSwagger(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer);
+                        }
+                    }
+                }));
+            }
+        }
+
+        public ICommand CopyUrlCommand
+        {
+            get
+            {
+                return _copyUrlCommand ?? (_copyUrlCommand = new DelegateCommand(param =>
+                {
+                    Clipboard.SetText(GetWorkflowLink(false));
                 }));
             }
         }
@@ -704,6 +911,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             workflowFields.AddRange(GetDecisionElements(((dynamic) activity).ExpressionText, DataListSingleton.ActiveDataList));
                         }
+                    }
+                    else
+                    {
+                        var activity = property.ComputedValue;
+                        if (activity != null)
+                        {
+                            workflowFields.AddRange(GetDecisionElements(((dynamic)activity).ExpressionText, DataListSingleton.ActiveDataList));
+                        }
                     }                                     
                 }
                 else
@@ -733,14 +948,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                         for (var i = 0; i < 3; i++)
                         {
                             var getCol = getCols[i];
-                            var parsed = GetParsedRegions(getCol, datalistModel);
-                            if (!DataListUtil.IsValueRecordset(getCol) && parsed.Any(DataListUtil.IsValueRecordset))
+                            if (datalistModel != null)
                             {
-                                IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
-                                decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                                var parsed = GetParsedRegions(getCol, datalistModel);
+                                if (!DataListUtil.IsValueRecordset(getCol) && parsed.Any(DataListUtil.IsValueRecordset))
+                                {
+                                    IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
+                                    decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                                }
+                                else
+                                    decisionFields = decisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
                             }
-                            else
-                                decisionFields = decisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
                         }
                     }
                 }
@@ -753,9 +971,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                     else
                     {
-                        IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
-                            DataListSingleton.ActiveDataList.WriteToResourceModel(), true);
-                        decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                        if(DataListSingleton.ActiveDataList != null)
+                        {
+                            IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue, DataListSingleton.ActiveDataList.WriteToResourceModel(), true);
+                            decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                        }
                     }
 
                 }
@@ -926,6 +1146,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.Measure(new Size(2000, 2000));
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
+                _wd.View.MouseEnter+=ViewOnMouseEnter;
                 _wd.View.PreviewKeyDown += ViewOnKeyDown;
                 _wd.View.LostFocus += OnViewOnLostFocus;
 
@@ -960,6 +1181,21 @@ namespace Dev2.Studio.ViewModels.Workflow
                 WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNode-Icon") as DrawingBrush;
                 SubscribeToDebugSelectionChanged();
             }
+        }
+
+        private void ViewOnMouseEnter(object sender, MouseEventArgs mouseEventArgs)
+        {
+            var senderAsFrameworkElement = ModelService.Root.View as FrameworkElement;
+            var freePormPanel = senderAsFrameworkElement?.FindChildren<AdornerLayer>(layer => layer.IsEnabled);
+            if (freePormPanel != null)
+            {
+                var ad = freePormPanel.FirstOrDefault();
+                if (ad != null)
+                {
+                    
+                }
+            }
+            
         }
 
         private void SetHashTable()
@@ -1293,7 +1529,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     break;
                 }
             }
-        }
+        }        
 
         protected void WdOnModelChanged(object sender, EventArgs eventArgs)
         {
@@ -1475,7 +1711,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         private bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
         {
             if (HandleDoubleClick(leftButtonState, clickCount, dp, designerView))
+            {
                 return true;
+            }
 
             if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
             {
@@ -1484,6 +1722,28 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     mvm.RefreshActiveEnvironment();
                 }
+            }
+
+            var dp1 = dp as Run;
+            if (dp1?.Parent is TextBlock && dp1.DataContext.GetType().Name.Contains("FlowchartDesigner"))
+            {
+                var selectedModelItem = ModelService.Find(ModelService.Root, typeof(Flowchart)).FirstOrDefault();
+                if (selectedModelItem != null)
+                {
+                    SelectSingleModelItem(selectedModelItem);
+                }
+                return true;
+            }
+
+            var dp2 = dp as TextBlock;
+            if (dp2 != null && dp2.DataContext.GetType().Name.Contains("FlowchartDesigner"))
+            {
+                var selectedModelItem = ModelService.Find(ModelService.Root, typeof(Flowchart)).FirstOrDefault();
+                if (selectedModelItem != null)
+                {
+                    SelectSingleModelItem(selectedModelItem);
+                }
+                return true;
             }
 
             return false;
@@ -1677,6 +1937,17 @@ namespace Dev2.Studio.ViewModels.Workflow
         private readonly IAsyncWorker _asyncWorker;
         private readonly IExternalProcessExecutor _executor;
         private string _expressionString;
+        private ICommand _debugInputsCommand;
+        private ICommand _debugStudioCommand;
+        private ICommand _debugBrowserCommand;
+        private ICommand _scheduleCommand;
+        private ICommand _testEditorCommand;
+        private ICommand _runAllTestsCommand;
+        private ICommand _duplicateCommand;
+        private ICommand _deployCommand;
+        private ICommand _showDependenciesCommand;
+        private ICommand _viewSwaggerCommand;
+        private ICommand _copyUrlCommand;
 
         /// <summary>
         /// Models the service model changed.
@@ -1804,7 +2075,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 new Task(() =>
                 {
-                    Thread.Sleep(2000);
                     BuildWorkflowFields();
                 }).Start();
             }
