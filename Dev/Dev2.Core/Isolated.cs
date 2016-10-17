@@ -12,12 +12,7 @@ namespace Dev2
         public Isolated()
         {
             var appDomainSetup = new AppDomainSetup();
-            System.Configuration.Configuration conf = ConfigurationManager.OpenExeConfiguration("D:\\Ambledown\\DLLs\\Ambledown.Neo.Integration.Services.dll");
-            if (File.Exists(conf.FilePath))
-            {
-                appDomainSetup.ConfigurationFile = conf.FilePath;
-            }
-
+           
             
             _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
                 null, appDomainSetup);

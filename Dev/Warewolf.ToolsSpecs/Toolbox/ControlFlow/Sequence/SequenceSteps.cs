@@ -510,12 +510,12 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             DebugDispatcher.Instance.Add(Guid.Empty, testDebugWriter);
             IDSFDataObject result = ExecuteProcess(isDebug: true, channel: esbChannel, throwException: false);
             Thread.Sleep(2000);
-            var debugStates = testDebugWriter.DebugStates.Where(a=>a.StateType!=StateType.Duration).ToList();
-            var duration = testDebugWriter.DebugStates.Where(a => a.StateType == StateType.Duration).ToList();
+            var states = testDebugWriter.DebugStates;
+            var debugStates = states.Where(a=>a.StateType!=StateType.Duration).ToList();
+            var duration = states.Where(a => a.StateType == StateType.Duration).ToList();
             scenarioContext.Add("duration", duration);
             scenarioContext.Add("result", result);
             CheckDebugStates(debugStates);
-            testDebugWriter.DebugStates.Clear();
             try
             {
                 DebugDispatcher.Instance.Remove(Guid.Empty);
@@ -634,16 +634,14 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
     internal class TestDebugWriter : IDebugWriter
     {
-        readonly List<IDebugState> _debugStates;
-        public List<IDebugState> DebugStates => _debugStates;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public TestDebugWriter()
+        public List<IDebugState> DebugStates
         {
-            _debugStates = new List<IDebugState>();
+            get
+            {
+                return DebugMessageRepo.Instance.FetchDebugItems(Guid.Empty, Guid.Empty).ToList();
+            }
         }
+
 
         #region Implementation of IDebugWriter
 
@@ -666,6 +664,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             Write(debugState);
         }
 
+        
         #endregion
     }
 }
