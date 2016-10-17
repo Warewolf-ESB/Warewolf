@@ -20,6 +20,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.ServiceUserAuthorizations;
 using Dev2.Scheduler;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;

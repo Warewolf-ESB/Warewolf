@@ -185,7 +185,6 @@
     <Compile Include="DynamicProxy\DynamicProxyException.cs" />
     <Compile Include="DynamicProxy\DynamicProxyFactory.cs" />
     <Compile Include="DynamicProxy\DynamicProxyFactoryOptions.cs" />
-    <Compile Include="ESB\Management\IPermissionAuthorizer.cs" />
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\ComDllLoaderHandler.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
@@ -310,6 +309,7 @@
     <Compile Include="Hosting\UpgradePath.cs" />
     <Compile Include="Hosting\VersionStrategy.cs" />
     <Compile Include="Hosting\ServerExplorerRepository.cs" />
+    <Compile Include="Interfaces\IAuthorizer.cs" />
     <Compile Include="Interfaces\IEsbManagementServiceLocator.cs" />
     <Compile Include="Interfaces\IPluginBroker.cs" />
     <Compile Include="Interfaces\IResourceCatalog.cs" />
@@ -423,6 +423,13 @@
     <Compile Include="Configuration\SettingsProvider.cs" />
     <Compile Include="ServiceModel\RabbitMQSources.cs" />
     <Compile Include="ServiceModel\WebSources.cs" />
+    <Compile Include="ServiceUserAuthorizations\SecuredAdministratorManagementEndpoint.cs" />
+    <Compile Include="ServiceUserAuthorizations\SecuredContributeManagementEndpoint.cs" />
+    <Compile Include="ServiceUserAuthorizations\SecuredCreateEndpoint.cs" />
+    <Compile Include="ServiceUserAuthorizations\SecuredDeployFromManagementEndpoint.cs" />
+    <Compile Include="ServiceUserAuthorizations\SecuredDeployToManagementEndpoint.cs" />
+    <Compile Include="ServiceUserAuthorizations\SecuredExecuteManagementEndpoint.cs" />
+    <Compile Include="ServiceUserAuthorizations\SecuredViewManagementEndpoint.cs" />
     <Compile Include="TestCatalog.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Workspaces\Workspace.cs" />

@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ServiceUserAuthorizations;
 
 // ReSharper disable InconsistentNaming
 
