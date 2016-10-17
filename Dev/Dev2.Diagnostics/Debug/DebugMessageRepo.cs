@@ -22,7 +22,7 @@ namespace Dev2.Diagnostics.Debug
         
         public void AddDebugItem(Guid clientId,Guid sessionId, IDebugState ds)
         {
-            if(clientId != Guid.Empty)
+            //if(clientId != Guid.Empty)
             {
                 lock(Lock)
                 {
