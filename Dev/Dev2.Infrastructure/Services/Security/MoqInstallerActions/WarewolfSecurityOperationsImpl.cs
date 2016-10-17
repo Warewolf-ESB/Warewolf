@@ -138,7 +138,14 @@ namespace Dev2.Services.Security.MoqInstallerActions
                     if (dChildEntry.Name == WarewolfGroup)
                     {
                         const string Entry = "WinNT://./" + AdministratorsGroup;
-                        dChildEntry.Invoke("Add", Entry);
+                        try
+                        {
+                            dChildEntry.Invoke("Add", Entry);
+                        }
+                        catch(Exception)
+                        {
+                            //Already part of the group
+                        }
                     }
                 }
             }
