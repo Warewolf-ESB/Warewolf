@@ -196,6 +196,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             catch(Exception e)
             {
                 //Calls the execution correctly;
+                // ReSharper disable once PossibleNullReferenceException
                 Assert.AreEqual("[Microsoft][ODBC Driver Manager] Data source name not found and no default driver specified", e.InnerException.Message);
                 
             }

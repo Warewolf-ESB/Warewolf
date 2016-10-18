@@ -11,7 +11,6 @@ using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Data.Util;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Models.DataList;
 
 // ReSharper disable ExplicitCallerInfoArgument
 
