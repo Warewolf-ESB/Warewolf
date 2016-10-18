@@ -4326,6 +4326,7 @@ namespace Warewolf.UITests
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem service = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.Service;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfWindow servicePickerDialog = this.ServicePickerDialog;
             WpfButton cancel = this.ServicePickerDialog.Cancel;
             #endregion
 
@@ -4337,6 +4338,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(304, 126));
             Mouse.StartDragging(service, new Point(50, 5));
             Mouse.StopDragging(flowchart, new Point(304, 126));
+
+            // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker does not exist on the Design Surface");
 
             // Verify that the 'Exists' property of 'Cancel' button equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams.CancelExists, cancel.Exists, "Service picker dialog cancel button does not exist");
@@ -16656,6 +16660,11 @@ namespace Warewolf.UITests
         /// Type 'Service' in 'SearchTextBox' text box
         /// </summary>
         public string SearchTextBoxText = "Service";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
+        /// </summary>
+        public bool ServicePickerDialogExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'Cancel' button equals 'True'
