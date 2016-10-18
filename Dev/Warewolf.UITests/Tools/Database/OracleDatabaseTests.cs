@@ -8,7 +8,7 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
         [TestCategory("Tools")]
-        public void OracleDatabaseToolUITest()
+        public void OracleDatabaseTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Oracle_Tool_Large_View();
         }

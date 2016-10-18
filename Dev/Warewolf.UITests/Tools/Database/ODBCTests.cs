@@ -8,7 +8,7 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
         [TestCategory("Tools")]
-        public void ODBCToolUITest()
+        public void ODBCTool_OpenLargeViewUITest()
         {            
             UIMap.Open_ODBC_Tool_Large_View();
         }
