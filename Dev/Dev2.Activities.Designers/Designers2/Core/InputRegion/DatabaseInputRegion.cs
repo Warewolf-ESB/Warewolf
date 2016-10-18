@@ -8,12 +8,16 @@ using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
+using Dev2.Data.Util;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Models.DataList;
+
 // ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
-    public class DatabaseInputRegion : IDatabaseInputRegion
+    public sealed class DatabaseInputRegion : IDatabaseInputRegion
     {
         private readonly ModelItem _modelItem;
         private readonly IActionToolRegion<IDbAction> _action;
@@ -34,10 +38,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
             var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("Inputs");
-            Inputs = new List<IServiceInput>(inputsFromModel??new List<IServiceInput>());
-            if(inputsFromModel == null)
+            Inputs = new List<IServiceInput>(inputsFromModel ?? new List<IServiceInput>());
+            if (inputsFromModel == null)
                 UpdateOnActionSelection();
-            IsEnabled = _action != null && _action.SelectedAction != null;
+            IsEnabled = _action?.SelectedAction != null;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -45,7 +49,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             try
             {
                 Errors.Clear();
-                
+
                 // ReSharper disable once ExplicitCallerInfoArgument
                 UpdateOnActionSelection();
                 // ReSharper disable once ExplicitCallerInfoArgument
@@ -64,23 +68,51 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void CallErrorsEventHandler()
         {
-            if(ErrorsHandler != null)
-            {
-                ErrorsHandler(this, new List<string>(Errors));
-            }
+            ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
         private void UpdateOnActionSelection()
         {
-            Inputs= new List<IServiceInput>();
+            Inputs = new List<IServiceInput>();
             IsEnabled = false;
-            if(_action != null && _action.SelectedAction != null)
+            if (_action?.SelectedAction != null)
             {
                 Inputs = _action.SelectedAction.Inputs;
+                UpdateActiveDatalistWithInputs();
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
             }
             OnPropertyChanged("Inputs");
+        }
+
+        private void UpdateActiveDatalistWithInputs()
+        {
+            if (Inputs != null)
+            {
+                foreach (var serviceInput in Inputs)
+                {
+
+                    if (DataListSingleton.ActiveDataList != null)
+                    {
+                        if (DataListSingleton.ActiveDataList.ScalarCollection != null)
+                        {
+                            var alreadyExists = DataListSingleton.ActiveDataList.ScalarCollection.Count(model => model.Name.Equals(serviceInput.Name, StringComparison.InvariantCulture));
+                            if (alreadyExists < 1)
+                            {
+                                var variable = DataListUtil.AddBracketsToValueIfNotExist(serviceInput.Name);
+                                serviceInput.Value = variable;
+                            }
+                            else
+                            {
+                                var variable = DataListUtil.AddBracketsToValueIfNotExist(serviceInput.Name);
+                                serviceInput.Value = variable;
+                            }
+                        }
+                    }
+
+               
+                }
+            }
         }
 
         public bool IsInputsEmptyRows
@@ -156,7 +188,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
             set
             {
-                ErrorsHandler.Invoke(this,new List<string>(value));
+                ErrorsHandler.Invoke(this, new List<string>(value));
             }
         }
 
@@ -164,13 +196,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #region Implementation of IDatabaseInputRegion
@@ -185,7 +214,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             {
                 _inputs = value;
                 OnPropertyChanged();
-                _modelItem.SetProperty("Inputs",value);
+                _modelItem.SetProperty("Inputs", value);
                 OnPropertyChanged();
             }
         }
