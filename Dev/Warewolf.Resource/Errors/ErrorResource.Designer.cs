@@ -3078,7 +3078,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceNotAuthorizedException.
+        ///   Looks up a localized string similar to Not Authorized.
         /// </summary>
         public static string ServiceNotAuthorizedExceptionHeader {
             get {
