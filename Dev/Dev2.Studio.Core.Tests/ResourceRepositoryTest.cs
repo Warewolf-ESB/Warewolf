@@ -2220,6 +2220,11 @@ namespace BusinessDesignStudio.Unit.Tests
 
         }
 
+        private void Marshal(System.Action action)
+        {
+            
+        }
+
         #endregion
 
         #region DeployResource

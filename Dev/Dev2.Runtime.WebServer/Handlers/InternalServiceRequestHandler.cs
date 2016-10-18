@@ -132,25 +132,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var isManagementResource = false;
             if (resource != null)
             {
-                try
-                {
-                    if (ServerAuthorizationService.Instance != null)
-                    {
-                        // ReSharper disable once UnusedVariable
-                        var service = ServerAuthorizationService.Instance;
-                        service.ClearCaches();
-                        Authorizer.RunPermissions(resource.ResourceID);
-                    }
-
-                    
-                }
-                catch (ServiceNotAuthorizedException ex)
-                {
-                    var message = new ExecuteMessage { HasError = true };
-                    message.SetMessage(ex.Message);
-                    return serializer.SerializeToBuilder(message);
-                }
-
+        
 
                 dataObject.ResourceID = resource.ResourceID;
                 if (!string.IsNullOrEmpty(request.TestName))
@@ -159,6 +141,25 @@ namespace Dev2.Runtime.WebServer.Handlers
                     dataObject.IsServiceTestExecution = true;
                 }
                 isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
+                if (!isManagementResource)
+                {
+                    try
+                    {
+                        if (ServerAuthorizationService.Instance != null)
+                        {
+                            // ReSharper disable once UnusedVariable
+                            var service = ServerAuthorizationService.Instance;
+                            Authorizer.RunPermissions(resource.ResourceID);
+                        }
+                    }
+                    catch (ServiceNotAuthorizedException ex)
+                    {
+                        var message = new ExecuteMessage { HasError = true };
+                        message.SetMessage(ex.Message);
+                        return serializer.SerializeToBuilder(message);
+                    }
+                }
+
             }
 
             dataObject.ClientID = Guid.Parse(connectionId);

@@ -1,6 +1,5 @@
 using System;
 using Dev2.Common;
-using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
@@ -25,7 +24,6 @@ namespace Dev2.Runtime.ServiceUserAuthorizations
 
         public void RunPermissions(Guid resourceId)
         {
-            _authorizationService.ClearCaches();
             var isAuthorized = _authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceId.ToString());
             if (!isAuthorized)
             {

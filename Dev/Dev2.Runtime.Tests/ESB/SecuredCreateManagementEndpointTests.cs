@@ -1,11 +1,10 @@
 ﻿using System;
-using Dev2.Runtime.ESB.Management;
+using System.Linq;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceUserAuthorizations;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using ServiceStack.Common.Extensions;
 
 // ReSharper disable InconsistentNaming
 
@@ -289,7 +288,7 @@ namespace Dev2.Tests.Runtime.ESB
             catch (Exception ex)
             {
                 var first = Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToViewException.Split('.').First();
-                var o = ex.Message.Split('.').First().ToString();
+                var o = ex.Message.Split('.').First();
                 Assert.AreEqual(first, o);
                 mock.Verify(service => service.IsAuthorized(AuthorizationContext.View, newGuid.ToString()));
             }
