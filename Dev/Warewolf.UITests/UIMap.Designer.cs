@@ -1622,6 +1622,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Remove_Unused_Variables
+        /// </summary>
+        public void Click_Remove_Unused_Variables()
+        {
+            #region Variable Declarations
+            WpfButton removeUnused = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused;
+            #endregion
+
+            // Click '?' button
+            Mouse.Click(removeUnused, new Point(30, 4));
+        }
+        
+        /// <summary>
         /// Click_Rename_Done_Button
         /// </summary>
         public void Click_Rename_Done_Button()
@@ -5055,6 +5068,45 @@ namespace Warewolf.UITests
             // Verify that the 'Text' property of 'Text' text box equals 'User'
             Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests row 1 value textbox text does not equal User after typing that in." +
                     "");
+        }
+        
+        /// <summary>
+        /// Enter_Vaiablelist_Items - Use 'Enter_Vaiablelist_ItemsParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Vaiablelist_Items()
+        {
+            #region Variable Declarations
+            WpfEdit nameTextbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox;
+            WpfEdit nameTextbox1 = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox;
+            WpfEdit nameTextbox2 = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem3.ScrollViewerPane.NameTextbox;
+            #endregion
+
+            // Click 'UI_NameTextBox_AutoID' text box
+            Mouse.Click(nameTextbox, new Point(62, 3));
+
+            // Type 'varableA' in 'UI_NameTextBox_AutoID' text box
+            nameTextbox.Text = this.Enter_Vaiablelist_ItemsParams.NameTextboxText;
+
+            // Type '{CapsLock}' in 'UI_NameTextBox_AutoID' text box
+            Keyboard.SendKeys(nameTextbox, this.Enter_Vaiablelist_ItemsParams.NameTextboxSendKeys, ModifierKeys.None);
+
+            // Click 'UI_NameTextBox_AutoID' text box
+            Mouse.Click(nameTextbox1, new Point(82, 2));
+
+            // Type '{CapsLock}' in 'UI_NameTextBox_AutoID' text box
+            Keyboard.SendKeys(nameTextbox1, this.Enter_Vaiablelist_ItemsParams.NameTextboxSendKeys1, ModifierKeys.None);
+
+            // Type 'variableB' in 'UI_NameTextBox_AutoID' text box
+            nameTextbox1.Text = this.Enter_Vaiablelist_ItemsParams.NameTextboxText1;
+
+            // Click 'UI_NameTextBox_AutoID' text box
+            Mouse.Click(nameTextbox2, new Point(84, 2));
+
+            // Type 'VariableC' in 'UI_NameTextBox_AutoID' text box
+            nameTextbox2.Text = this.Enter_Vaiablelist_ItemsParams.NameTextboxText2;
+
+            // Type '{CapsLock}' in 'UI_NameTextBox_AutoID' text box
+            Keyboard.SendKeys(nameTextbox2, this.Enter_Vaiablelist_ItemsParams.NameTextboxSendKeys2, ModifierKeys.None);
         }
         
         /// <summary>
@@ -11283,6 +11335,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_Vaiablelist_ItemsParams Enter_Vaiablelist_ItemsParams
+        {
+            get
+            {
+                if ((this.mEnter_Vaiablelist_ItemsParams == null))
+                {
+                    this.mEnter_Vaiablelist_ItemsParams = new Enter_Vaiablelist_ItemsParams();
+                }
+                return this.mEnter_Vaiablelist_ItemsParams;
+            }
+        }
+        
         public virtual Filter_variablesParams Filter_variablesParams
         {
             get
@@ -13076,6 +13140,8 @@ namespace Warewolf.UITests
         private Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams;
         
         private Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
+        
+        private Enter_Vaiablelist_ItemsParams mEnter_Vaiablelist_ItemsParams;
         
         private Filter_variablesParams mFilter_variablesParams;
         
@@ -16977,6 +17043,46 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'Text' text box equals 'User'
         /// </summary>
         public string TextboxText = "User";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Vaiablelist_Items'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Vaiablelist_ItemsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'varableA' in 'UI_NameTextBox_AutoID' text box
+        /// </summary>
+        public string NameTextboxText = "varableA";
+        
+        /// <summary>
+        /// Type '{CapsLock}' in 'UI_NameTextBox_AutoID' text box
+        /// </summary>
+        public string NameTextboxSendKeys = "{CapsLock}";
+        
+        /// <summary>
+        /// Type '{CapsLock}' in 'UI_NameTextBox_AutoID' text box
+        /// </summary>
+        public string NameTextboxSendKeys1 = "{CapsLock}";
+        
+        /// <summary>
+        /// Type 'variableB' in 'UI_NameTextBox_AutoID' text box
+        /// </summary>
+        public string NameTextboxText1 = "variableB";
+        
+        /// <summary>
+        /// Type 'VariableC' in 'UI_NameTextBox_AutoID' text box
+        /// </summary>
+        public string NameTextboxText2 = "VariableC";
+        
+        /// <summary>
+        /// Type '{CapsLock}' in 'UI_NameTextBox_AutoID' text box
+        /// </summary>
+        public string NameTextboxSendKeys2 = "{CapsLock}";
         #endregion
     }
     
