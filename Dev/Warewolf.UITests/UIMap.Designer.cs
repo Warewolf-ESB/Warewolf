@@ -83984,6 +83984,18 @@ namespace Warewolf.UITests
                 return this.mStatusBar;
             }
         }
+        
+        public CommentTreeItem CommentTreeItem
+        {
+            get
+            {
+                if ((this.mCommentTreeItem == null))
+                {
+                    this.mCommentTreeItem = new CommentTreeItem(this);
+                }
+                return this.mCommentTreeItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -83998,6 +84010,8 @@ namespace Warewolf.UITests
         private DebugOutputTree mDebugOutputTree;
         
         private StatusBar mStatusBar;
+        
+        private CommentTreeItem mCommentTreeItem;
         #endregion
     }
     
@@ -84297,6 +84311,43 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCustom mSpinner;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CommentTreeItem : WpfTreeItem
+    {
+        
+        public CommentTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton CommentButton
+        {
+            get
+            {
+                if ((this.mCommentButton == null))
+                {
+                    this.mCommentButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCommentButton.SearchProperties[WpfButton.PropertyNames.Name] = "Comment";
+                    this.mCommentButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCommentButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCommentButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mCommentButton;
         #endregion
     }
     
@@ -86429,10 +86480,24 @@ namespace Warewolf.UITests
                 return this.mUIUI_SplitPane_AutoIDCustom;
             }
         }
+        
+        public UIDebugOutputCustom UIDebugOutputCustom
+        {
+            get
+            {
+                if ((this.mUIDebugOutputCustom == null))
+                {
+                    this.mUIDebugOutputCustom = new UIDebugOutputCustom(this);
+                }
+                return this.mUIDebugOutputCustom;
+            }
+        }
         #endregion
         
         #region Fields
         private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        
+        private UIDebugOutputCustom mUIDebugOutputCustom;
         #endregion
     }
     
@@ -86799,6 +86864,43 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCustom mUILargeViewContentCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDebugOutputCustom : WpfCustom
+    {
+        
+        public UIDebugOutputCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DebugOutputView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DebugOutput";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTree DebugOutputTreeTree
+        {
+            get
+            {
+                if ((this.mDebugOutputTreeTree == null))
+                {
+                    this.mDebugOutputTreeTree = new WpfTree(this);
+                    #region Search Criteria
+                    this.mDebugOutputTreeTree.SearchProperties[WpfTree.PropertyNames.AutomationId] = "DebugOutputTree";
+                    this.mDebugOutputTreeTree.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDebugOutputTreeTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTree mDebugOutputTreeTree;
         #endregion
     }
 }
