@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
