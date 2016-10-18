@@ -9,14 +9,17 @@ namespace Dev2
 
         public Isolated()
         {
+            var appDomainSetup = new AppDomainSetup();
+           
+            
             _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
-                null, AppDomain.CurrentDomain.SetupInformation);
+                null, appDomainSetup);
 
             Type type = typeof(T);
 
             _value = (T)_domain.CreateInstanceAndUnwrap(type.Assembly.FullName, type.FullName);
         }
-
+        
         public T Value => _value;
 
         public void Dispose()
