@@ -89,6 +89,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SharepointConnectors.feature</DependentUpon>
     </Compile>
+    <Compile Include="SwitchTool.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SwitchTool.feature</DependentUpon>
+    </Compile>
     <Compile Include="WebConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -128,6 +133,10 @@
     <None Include="SharepointConnectors.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SharepointConnectors.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SwitchTool.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SwitchTool.feature.cs</LastGenOutput>
     </None>
     <None Include="WebConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

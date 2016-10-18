@@ -11,11 +11,8 @@ namespace Warewolf.UITests.Tools.Control_Flow
         public void SwitchToolUITest()
         {
             Uimap.Drag_Toolbox_Switch_Onto_DesignSurface();
+            Assert.IsTrue(Uimap.DecisionOrSwitchDialog.Exists, "Switch dialog does not exist after dragging switch tool in from the toolbox.");
             Uimap.Click_Switch_Dialog_Done_Button();
-            Uimap.First_Drag_Toolbox_Comment_Onto_Switch_Left_Arm_On_DesignSurface();
-            Uimap.Open_Switch_Tool_Large_View();
-            Uimap.Click_Switch_Dialog_Done_Button();
-            Uimap.Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurface();
         }
 
         #region Additional test attributes
@@ -28,13 +25,6 @@ namespace Warewolf.UITests.Tools.Control_Flow
             Uimap.CloseHangingDialogs();
 #endif
             Uimap.InitializeABlankWorkflow();
-        }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Click_MessageBox_No();
         }
 
         UIMap Uimap
