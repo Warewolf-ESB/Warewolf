@@ -50,8 +50,8 @@ namespace Warewolf.UITests.Tools
         [TestCleanup]
         public void MyTestCleanup()
         {
-        //    UIMap.Click_Close_Workflow_Tab_Button();
-        //    UIMap.Click_MessageBox_No();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
         /// <summary>
         ///Gets or sets the test context which provides
