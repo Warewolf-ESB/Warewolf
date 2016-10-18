@@ -2966,6 +2966,12 @@ namespace Warewolf.UITests
         }
 
         private Add_Dotnet_Dll_SourceParams mAdd_Dotnet_Dll_SourceParams;
+
+        [Then(@"The Case Dialog Must Be Open")]
+        public void ThenTheCaseDialogMustBeOpen()
+        {
+            Assert.IsTrue(SwitchCaseDialog.Exists, "Switch case dialog does not exist after dropped onto a switch case arm autoconnector.");
+        }
     }
     /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_AssignObject_Onto_Sequence_Tool'
