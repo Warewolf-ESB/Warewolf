@@ -115,6 +115,7 @@ namespace Dev2.Diagnostics.Debug
                 {
                     item.WorkspaceID = debugState.WorkspaceID;
                     item.OriginatingResourceID = debugState.OriginatingResourceID;
+                    item.ClientID = debugState.ClientID;
                     Guid remoteEnvironmentId;
                     if(Guid.TryParse(remoteInvokerId, out remoteEnvironmentId))
                     {
