@@ -11,6 +11,7 @@
 using Dev2.Common.Common;
 using Dev2.Common.DependencyVisualization;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -34,6 +35,7 @@ namespace Dev2.Common
         /// <param name="height">The height.</param>
         /// <param name="nestingLevel">How deep should the graph show.</param>
         /// <returns></returns>
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public Graph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
         {
             if (xmlData == null || xmlData.Length == 0)
@@ -52,7 +54,6 @@ namespace Dev2.Common
 
             try
             {
-                // ReSharper disable once PossibleNullReferenceException
                 string title = graphElem.Attribute("title").Value;
                 var graph = new Graph(title);
                 double count = 0;
@@ -63,7 +64,6 @@ namespace Dev2.Common
                 foreach (XElement nodeElem in nodeElems)
                 {
                     // build the graph position data
-                    // ReSharper disable once PossibleNullReferenceException
                     string id = nodeElem.Attribute("id").Value;
                     var node = CreateNode(nodeElem, modelName, width, height, ref count);
 
@@ -97,12 +97,10 @@ namespace Dev2.Common
                 }
                 foreach (Node node in graph.Nodes)
                 {
-                    // ReSharper disable once PossibleNullReferenceException
                     var nodeElem = nodeElems.First(elem => elem.Attribute("id").Value == node.ID);
                     var dependencyElems = nodeElem.Elements("dependency");
                     foreach (XElement dependencyElem in dependencyElems)
                     {
-                        // ReSharper disable once PossibleNullReferenceException
                         string depID = dependencyElem.Attribute("id").Value;
 
                         var dependency = graph.Nodes.FirstOrDefault(n => n.ID == depID);
@@ -147,46 +145,43 @@ namespace Dev2.Common
             double.TryParse(tmpX, out x);
             double.TryParse(tmpY, out y);
 
-            var xAttribute = nodeElm.Attribute("id");
-            if(xAttribute != null)
+            // ReSharper disable once PossibleNullReferenceException
+            string id = nodeElm.Attribute("id").Value;
+            bool isTarget = id == resourceName;
+            // ReSharper disable once PossibleNullReferenceException
+            bool broken = String.Equals(nodeElm.Attribute("broken").Value, "true", StringComparison.OrdinalIgnoreCase);
+
+            if (isTarget)
             {
-                string id = xAttribute.Value;
-                bool isTarget = id == resourceName;
-                var attribute = nodeElm.Attribute("broken");
-                bool broken = attribute != null && string.Equals(attribute.Value, "true", StringComparison.OrdinalIgnoreCase);
-
-                if (isTarget)
-                {
-                    x = centerX;
-                    y = centerY;
-                }
-                else
-                {
-                    if (count > Distance)
-                    {
-                        count = 1.5;
-                    }
-
-                    int xCoOrd = (int)Math.Round(centerPoint.X - Distance * Math.Sin(count));
-                    int yCoOrd = (int)Math.Round(centerPoint.Y - Distance * Math.Cos(count));
-
-                    if (xCoOrd >= maxX)
-                    {
-                        xCoOrd = maxX;
-                    }
-
-                    if (yCoOrd >= maxY)
-                    {
-                        yCoOrd = maxY;
-                    }
-
-                    x = xCoOrd;
-                    y = yCoOrd;
-                    count++;
-                }
-
-                return new Node(id, x, y, isTarget, broken);
+                x = centerX;
+                y = centerY;
             }
+            else
+            {
+                if (count > Distance)
+                {
+                    count = 1.5;
+                }
+
+                int xCoOrd = (int)Math.Round(centerPoint.X - Distance * Math.Sin(count));
+                int yCoOrd = (int)Math.Round(centerPoint.Y - Distance * Math.Cos(count));
+
+                if (xCoOrd >= maxX)
+                {
+                    xCoOrd = maxX;
+                }
+
+                if (yCoOrd >= maxY)
+                {
+                    yCoOrd = maxY;
+                }
+
+                x = xCoOrd;
+                y = yCoOrd;
+                count++;
+            }
+
+            return new Node(id, x, y, isTarget, broken);
         }
     }
 }
