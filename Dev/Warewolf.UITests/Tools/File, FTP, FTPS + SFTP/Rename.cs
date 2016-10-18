@@ -9,7 +9,7 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
 		[TestCategory("Tools")]
         public void RenameTool_OpenLargeViewUITest()
-        {            
+        {
             UIMap.Open_Rename_Tool_Large_View();
         }
 
