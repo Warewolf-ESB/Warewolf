@@ -8,7 +8,7 @@ namespace Warewolf.UITests
     {
         [TestMethod]
         [TestCategory("Tools")]
-        public void Sharepoint_Download_File_Small_View_UITest()
+        public void Sharepoint_Move_File_Small_View_UITest()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.SmallView.Server.Exists, "Server combobox does not exist on small view after tool has been dragged from the toolbox.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.SmallView.EditSourceButton.Exists, "Edit Source Button does not exist on small view after tool has been dragged from the toolbox.");
@@ -18,7 +18,7 @@ namespace Warewolf.UITests
 
         [TestMethod]
         [TestCategory("Tools")]
-        public void Sharepoint_Move_UITest()
+        public void Sharepoint_Move_File_Large_View_UITest()
         {
             UIMap.Open_Sharepoint_MoveFile_Tool_Large_View();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.LargeView.Server.Exists, "Server combobox does not exist on tool large view after openning the large view with a double click.");
