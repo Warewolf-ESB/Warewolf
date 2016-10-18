@@ -150,11 +150,13 @@ namespace Dev2.Services.Security
         protected virtual void RaisePermissionsChanged()
         {
             PermissionsChanged?.Invoke(this, EventArgs.Empty);
+            ClearCaches();
         }
 
         protected virtual void OnPermissionsModified(PermissionsModifiedEventArgs e)
         {
             _permissionsModifedHandler?.Invoke(this, e);
+            ClearCaches();
         }
 
         protected bool IsAuthorizedToConnect(IPrincipal principal)

@@ -881,6 +881,7 @@ namespace Warewolf.Studio.ViewModels
                 var existingItem = parent?.Children?.FirstOrDefault(model => model.ResourcePath.ToLowerInvariant() == explorerItem.ResourcePath.ToLower());
                 if (existingItem != null)
                 {
+                    existingItem.SetPermissions(explorerItem.Permissions, isDeploy);
                     CreateExplorerItemsSync(explorerItem.Children, server, existingItem, isDialog, isDeploy);
                     explorerItemModels.Add(existingItem);
                 }

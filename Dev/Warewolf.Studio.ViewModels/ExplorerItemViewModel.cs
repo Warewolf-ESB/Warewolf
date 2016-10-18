@@ -547,6 +547,28 @@ namespace Warewolf.Studio.ViewModels
                 SetAdministratorPermissions();
             }
 
+            if (permission.HasFlag(Permissions.None))
+            {
+                SetNonePermissions();
+            }
+        }
+
+        private void SetNonePermissions()
+        {
+            CanRename = false;
+            CanEdit = false;
+            CanDuplicate = false;
+            CanCreateTest = false;
+            CanDelete = false;
+            CanCreateFolder = false;
+            CanDeploy = false;
+            CanCreateWorkflowService = false;
+            CanCreateSource = false;
+            CanView = false;
+            CanViewApisJson = false;
+            CanMove = false;
+            CanViewSwagger = false;
+            CanShowVersions = false;
         }
 
         private void SetAdministratorPermissions()
