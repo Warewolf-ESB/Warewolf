@@ -4493,7 +4493,7 @@ namespace Warewolf.UITests
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
-            // Type 'Read Folder' in 'SearchTextBox' text box
+            // Type 'Read' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams.SearchTextBoxText;
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
@@ -16788,9 +16788,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Type 'Read Folder' in 'SearchTextBox' text box
+        /// Type 'Read' in 'SearchTextBox' text box
         /// </summary>
-        public string SearchTextBoxText = "Read Folder";
+        public string SearchTextBoxText = "Read";
         
         /// <summary>
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
