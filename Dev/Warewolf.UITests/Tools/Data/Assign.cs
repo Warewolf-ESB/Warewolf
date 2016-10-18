@@ -70,6 +70,14 @@ namespace Warewolf.UITests.Tools.Data
 
         [TestMethod]
         [TestCategory("Tools")]
+        public void ResizeAdornerMappings_Expected_AdornerMappingIsResized_UITest()
+        {
+            UIMap.Open_Assign_Tool_Large_View();
+            UIMap.Resize_Assign_LargeTool();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
         public void AssignToolQviUITest()
         {
             UIMap.Open_Assign_Tool_Qvi_Large_View();
