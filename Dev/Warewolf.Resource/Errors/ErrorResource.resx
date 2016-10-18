@@ -1287,6 +1287,6 @@ Please contact your Windows System Administrator.</value>
     <value>View rights required to perfom this action. Failed.{0} Resource: {1}.</value>
   </data>
   <data name="ServiceNotAuthorizedExceptionHeader" xml:space="preserve">
-    <value>ServiceNotAuthorizedException</value>
+    <value>Not Authorized</value>
   </data>
 </root>
