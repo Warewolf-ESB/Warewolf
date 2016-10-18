@@ -212,7 +212,6 @@ namespace Dev2.Tests.Runtime.WF
                 debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
 
                 debugState = new DebugState { StateType = StateType.End };
-                debugDispatcher.Setup(dispatcher => dispatcher.IsQueueEmpty).Returns(true);
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.End, false, string.Empty, out error);
 
                 debugDispatcher.Verify(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));

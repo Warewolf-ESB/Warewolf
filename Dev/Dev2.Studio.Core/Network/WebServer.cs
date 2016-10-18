@@ -109,7 +109,7 @@ namespace Dev2.Studio.Core.Network
             }
         }
 
-        public static Uri GetWorkflowUri(IContextualResourceModel resourceModel, string xmlData, UrlType urlType)
+        public static Uri GetWorkflowUri(IContextualResourceModel resourceModel, string xmlData, UrlType urlType, bool addworkflowId = true)
         {
             if (resourceModel?.Environment?.Connection == null || !resourceModel.Environment.IsConnected)
             {
@@ -146,7 +146,10 @@ namespace Dev2.Studio.Core.Network
             if (urlType != UrlType.API && urlType != UrlType.Tests)
             {
                 relativeUrl += "?"+xmlData;
-                relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
+                if (addworkflowId)
+                {
+                    relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
+                }
             }
             Uri url;
             Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out url);

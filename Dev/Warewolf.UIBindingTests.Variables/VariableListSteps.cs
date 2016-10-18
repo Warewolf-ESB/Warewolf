@@ -24,7 +24,7 @@ namespace Warewolf.UIBindingTests.Variables
         {
             Utils.SetupResourceDictionary();
             var mockEventAggregator = new Mock<IEventAggregator>();
-            IView manageVariableListViewControl = new DataListView(mockEventAggregator.Object);
+            IView manageVariableListViewControl = new DataListView();
             var viewModel = new DataListViewModel(mockEventAggregator.Object);
             viewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
             manageVariableListViewControl.DataContext = viewModel;
