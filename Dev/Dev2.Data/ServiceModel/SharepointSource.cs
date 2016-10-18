@@ -71,16 +71,16 @@ namespace Dev2.Data.ServiceModel
         {
             var result = base.ToXml();
             var connectionString = string.Join(";",
-                string.Format("Server={0}", Server),
-                string.Format("AuthenticationType={0}", AuthenticationType)
+                $"Server={Server}",
+                $"AuthenticationType={AuthenticationType}"
                 );
 
             if (AuthenticationType == AuthenticationType.User)
             {
                 connectionString = string.Join(";",
                     connectionString,
-                    string.Format("UserName={0}", UserName),
-                    string.Format("Password={0}", Password)
+                    $"UserName={UserName}",
+                    $"Password={Password}"
                     );
             }
 

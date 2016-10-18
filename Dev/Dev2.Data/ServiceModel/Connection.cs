@@ -119,16 +119,16 @@ namespace Dev2.Data.ServiceModel
         {
             var result = base.ToXml();
             var connectionString = string.Join(";",
-                string.Format("AppServerUri={0}", Address),
-                string.Format("WebServerPort={0}", WebServerPort),
-                string.Format("AuthenticationType={0}", AuthenticationType)
+                $"AppServerUri={Address}",
+                $"WebServerPort={WebServerPort}",
+                $"AuthenticationType={AuthenticationType}"
                 );
             if(AuthenticationType == AuthenticationType.User)
             {
                 connectionString = string.Join(";",
                     connectionString,
-                    string.Format("UserName={0}", UserName),
-                    string.Format("Password={0}", Password)
+                    $"UserName={UserName}",
+                    $"Password={Password}"
                     );
             }
 

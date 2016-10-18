@@ -33,7 +33,7 @@ namespace Dev2.ScheduleExecutor
     internal class Program
     {
         private const string WarewolfTaskSchedulerPath = "\\warewolf\\";
-        private static readonly string OutputPath = string.Format("{0}\\{1}", Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
+        private static readonly string OutputPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}\\{GlobalConstants.SchedulerDebugPath}";
         private static readonly string SchedulerLogDirectory = OutputPath + "SchedulerLogs";
         private static readonly Stopwatch Stopwatch = new Stopwatch();
         private static readonly DateTime StartTime = DateTime.Now.Subtract(new TimeSpan(0, 0, 5));
@@ -61,9 +61,9 @@ namespace Dev2.ScheduleExecutor
                     string[] singleParameters = args[i].Split(':');
 
                     paramters.Add(singleParameters[0],
-                                  singleParameters.Skip(1).Aggregate((a, b) => String.Format("{0}:{1}", a, b)));
+                                  singleParameters.Skip(1).Aggregate((a, b) => $"{a}:{b}"));
                 }
-                Log("Info", string.Format("Start execution of {0}", paramters["Workflow"]));
+                Log("Info", $"Start execution of {paramters["Workflow"]}");
                 try
                 {
                     if (paramters.ContainsKey("ResourceId"))
@@ -82,7 +82,7 @@ namespace Dev2.ScheduleExecutor
             }
             catch (Exception e)
             {
-                Log("Error", string.Format("Error from execution: {0}{1}", e.Message, e.StackTrace));
+                Log("Error", $"Error from execution: {e.Message}{e.StackTrace}");
 
                 Environment.Exit(1);
             }
@@ -90,8 +90,8 @@ namespace Dev2.ScheduleExecutor
 
         public static string PostDataToWebserverAsRemoteAgent(string workflowName, string taskName, Guid requestID)
         {
-            string postUrl = string.Format("http://localhost:3142/services/{0}", workflowName);
-            Log("Info", string.Format("Executing as {0}", CredentialCache.DefaultNetworkCredentials.UserName));
+            string postUrl = $"http://localhost:3142/services/{workflowName}";
+            Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
             int len = postUrl.Split('?').Count();
             if (len == 1)
             {
@@ -116,11 +116,11 @@ namespace Dev2.ScheduleExecutor
 
                             if (response.StatusCode != HttpStatusCode.OK)
                             {
-                                Log("Error", string.Format("Error from execution: {0}", result));
+                                Log("Error", $"Error from execution: {result}");
                             }
                             else
                             {
-                                Log("Info", string.Format("Completed execution. Output: {0}", result));
+                                Log("Info", $"Completed execution. Output: {result}");
 
                                 WriteDebugItems(workflowName, taskName, result);
                             }
@@ -145,8 +145,8 @@ namespace Dev2.ScheduleExecutor
 
         public static string PostDataToWebserverAsRemoteAgent(string workflowName, string taskName, Guid requestID, string resourceId)
         {
-            string postUrl = string.Format("http://localhost:3142/services/{0}.xml?Name=&wid={1}", workflowName, resourceId);
-            Log("Info", string.Format("Executing as {0}", CredentialCache.DefaultNetworkCredentials.UserName));
+            string postUrl = $"http://localhost:3142/services/{workflowName}.xml?Name=&wid={resourceId}";
+            Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
             int len = postUrl.Split('?').Count();
             if (len == 2)
             {
@@ -171,11 +171,11 @@ namespace Dev2.ScheduleExecutor
 
                             if (response.StatusCode != HttpStatusCode.OK)
                             {
-                                Log("Error", string.Format("Error from execution: {0}", result));
+                                Log("Error", $"Error from execution: {result}");
                             }
                             else
                             {
-                                Log("Info", string.Format("Completed execution. Output: {0}", result));
+                                Log("Info", $"Completed execution. Output: {result}");
 
                                 WriteDebugItems(workflowName, taskName, result);
                             }
@@ -205,10 +205,10 @@ namespace Dev2.ScheduleExecutor
             {
                 HasError = true,
                 ID = Guid.NewGuid(),
-                Message = string.Format("{0}", result),
+                Message = $"{result}",
                 StartTime = StartTime,
                 EndTime = DateTime.Now,
-                ErrorMessage = string.Format("{0}", result),
+                ErrorMessage = $"{result}",
                 DisplayName = workflowName
             };
             var debug = new DebugItem();
@@ -225,8 +225,7 @@ namespace Dev2.ScheduleExecutor
             if (!Directory.Exists(OutputPath))
                 Directory.CreateDirectory(OutputPath);
             File.WriteAllText(
-                string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName.Replace("\\", "_"),
-                              DateTime.Now.ToString("yyyy-MM-dd"), correlation, user),
+                $"{OutputPath}DebugItems_{workflowName.Replace("\\", "_")}_{DateTime.Now.ToString("yyyy-MM-dd")}_{correlation}_{user}.txt",
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());
         }
 
@@ -320,8 +319,7 @@ namespace Dev2.ScheduleExecutor
             if (!Directory.Exists(OutputPath))
                 Directory.CreateDirectory(OutputPath);
             File.WriteAllText(
-                string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName.Replace("\\", "_"),
-                    DateTime.Now.ToString("yyyy-MM-dd"), correlation, user),
+                $"{OutputPath}DebugItems_{workflowName.Replace("\\", "_")}_{DateTime.Now.ToString("yyyy-MM-dd")}_{correlation}_{user}.txt",
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());
 
         }
@@ -330,19 +328,23 @@ namespace Dev2.ScheduleExecutor
         {
             var processRecordSet = new List<IDebugItemResult>();
             var recSetName = recordSetElement.Name.LocalName;
-            var index = recordSetElement.Attribute("Index").Value;
-            foreach (var xElement in elements)
+            var xAttribute = recordSetElement.Attribute("Index");
+            if(xAttribute != null)
             {
-                var debugItemResult = new DebugItemResult
+                var index = xAttribute.Value;
+                foreach (var xElement in elements)
                 {
-                    GroupName = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(recSetName, true)),
-                    Value = xElement.Value,
-                    GroupIndex = int.Parse(index),
-                    Variable = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(recSetName, xElement.Name.LocalName, index)),
-                    Operator = "=",
-                    Type = DebugItemResultType.Variable
-                };
-                processRecordSet.Add(debugItemResult);
+                    var debugItemResult = new DebugItemResult
+                    {
+                        GroupName = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(recSetName, true)),
+                        Value = xElement.Value,
+                        GroupIndex = int.Parse(index),
+                        Variable = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(recSetName, xElement.Name.LocalName, index)),
+                        Operator = "=",
+                        Type = DebugItemResultType.Variable
+                    };
+                    processRecordSet.Add(debugItemResult);
+                }
             }
             return processRecordSet;
         }

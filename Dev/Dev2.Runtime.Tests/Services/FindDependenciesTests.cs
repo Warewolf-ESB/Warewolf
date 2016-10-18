@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -104,6 +105,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public void FindDependencies_Execute_GetDependsOnMe_ShouldReturnDependantsRecursive()
         {
             //------------Setup for test--------------------------
@@ -161,6 +163,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public void FindDependencies_Execute_GetDependsOnMeFalse_ShouldReturnDependenciesRecursive()
         {
             //------------Setup for test--------------------------
@@ -219,6 +222,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public void FindDependencies_Execute_GetDependsOnMe_WhenCircular_ShouldReturnDependantsRecursive()
         {
             //------------Setup for test--------------------------
