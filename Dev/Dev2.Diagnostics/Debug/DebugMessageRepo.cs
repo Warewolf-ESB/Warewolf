@@ -22,28 +22,24 @@ namespace Dev2.Diagnostics.Debug
         
         public void AddDebugItem(Guid clientId,Guid sessionId, IDebugState ds)
         {
-            //if(clientId != Guid.Empty)
+            lock(Lock)
             {
-                lock(Lock)
+                IList<IDebugState> list;
+                var key = new Tuple<Guid, Guid>(clientId, sessionId);
+                if(_data.TryGetValue(key, out list))
                 {
-                    IList<IDebugState> list;
-                    var key = new Tuple<Guid, Guid>(clientId,sessionId);
-                    if(_data.TryGetValue(key, out list))
-                    {
-                        list.Add(ds);
-                    }
-                    else
-                    {
-                        list = new List<IDebugState> { ds };
-                        _data[key] = list;
-                    }
+                    list.Add(ds);
+                }
+                else
+                {
+                    list = new List<IDebugState> { ds };
+                    _data[key] = list;
                 }
             }
         }
-        
+
         public IList<IDebugState> FetchDebugItems(Guid clientId,Guid sessionId)
         {
-
             lock(Lock)
             {
                 var key = new Tuple<Guid, Guid>(clientId, sessionId);
