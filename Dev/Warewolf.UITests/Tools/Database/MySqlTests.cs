@@ -8,9 +8,10 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
         [TestCategory("Tools")]
-        public void MySqlToolUITest()
+        public void MySqlTool_OpenSmallViewUITest()
         {            
-            UIMap.Open_MySql_Database_Tool_Small_View();
+            UIMap.Open_MySql_Database_Tool_Large_View();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.DoneButton.Exists);
         }
 
         #region Additional test attributes
