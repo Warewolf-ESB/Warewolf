@@ -25,6 +25,8 @@ namespace Warewolf.UITests.Tools
         public void ToolDesigners_XpathlargeView_TabbingToDone_FocusIsSetToDone()
         {
             UIMap.Open_Xpath_Tool_Large_View();
+            UIMap.Click_EndThisWF_On_XPath_LargeView();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.DoneButton.HasFocus);
         }
 
         #region Additional test attributes

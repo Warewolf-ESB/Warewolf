@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows.Forms;
+using System.Windows.Input;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,6 +13,15 @@ namespace Warewolf.UITests.Tools
         public void FindRecordsTool__OpenLargeViewUITest()
         {            
             UIMap.Open_Find_Record_Index_Tool_Large_View();
+        }
+
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void ToolDesigners_FindRecordslargeView_TabbingToResultBox_FocusIsSetToResultBox_UITest()
+        {            
+            UIMap.Open_Find_Record_Index_Tool_Large_View();
+            UIMap.Click_RequireAllFieldsToMatch_CheckBox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex.LargeViewContentCustom.ResultComboBox.HasFocus, "Focus is not set to Result combobox after tabbing from RequireAllFieldsToMatchCheckBox");
         }
 
         [TestMethod]
