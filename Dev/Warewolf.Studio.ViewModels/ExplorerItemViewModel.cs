@@ -678,10 +678,7 @@ namespace Warewolf.Studio.ViewModels
                                     }
                                     else
                                     {
-                                        ResourcePath =
-                                            ResourcePath.Substring(0,
-                                                ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) +
-                                            newName;
+                                        ResourcePath = ResourcePath.Substring(0, ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) + newName;
                                     }
                                     UpdateResourcePaths(this);
                                     _resourceName = newName;

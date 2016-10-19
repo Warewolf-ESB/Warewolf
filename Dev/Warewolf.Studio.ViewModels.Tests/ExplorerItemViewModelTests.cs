@@ -8,8 +8,11 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
+using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
@@ -1250,13 +1253,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestResourceNameWithoutSlashes()
         {
             //arrange
+            CustomContainer.Register<IAsyncWorker>(new SynchronousAsyncWorker());
             var isResourceNameFired = false;
             _target.PropertyChanged += (sender, e) =>
             {
                 isResourceNameFired = e.PropertyName == "ResourceName";
             };
-            _explorerTreeItemMock.SetupGet(it => it.Children)
-                .Returns(new ObservableCollection<IExplorerItemViewModel>());
+            _explorerTreeItemMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             var newName = "SomeNewName";
             _target.IsRenaming = false;
             _target.ResourcePath = "someResPath";
@@ -1277,13 +1280,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestResourceNameWithSlashes()
         {
             //arrange
+            CustomContainer.Register<IAsyncWorker>(new SynchronousAsyncWorker());
             var isResourceNameFired = false;
             _target.PropertyChanged += (sender, e) =>
             {
                 isResourceNameFired = e.PropertyName == "ResourceName";
             };
-            _explorerTreeItemMock.SetupGet(it => it.Children)
-                .Returns(new ObservableCollection<IExplorerItemViewModel>());
+            _explorerTreeItemMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             var newName = "SomeNewName";
             _target.IsRenaming = false;
             _target.ResourcePath = "Some\\someResPath";
