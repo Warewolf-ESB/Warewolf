@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using System.Text;
-using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Activities.Designers2.Core.InputRegion;
@@ -13,15 +11,9 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
-using Dev2.Core.Tests;
-using Dev2.Data;
-using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
@@ -169,21 +161,10 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
         public void UpdateOnActionSelection_GivenHasInputs_ShouldWriteToActiveDatalist()
         {
             //---------------Set up test pack-------------------
-            var eventAggregator = new Mock<IEventAggregator>();
-
-            var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
-
-            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
-            var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
-
-            dataListItems.Add(dataListItem);
-            dataListItems.Add(secondDataListItem);
-
-            DataListSingleton.SetDataList(dataListViewModel);
-
+            var mock = new Mock<IDataListViewModel>();
+            mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
+            if (DataListSingleton.ActiveDataList == null)
+                DataListSingleton.SetDataList(mock.Object);
 
 
 
@@ -195,8 +176,9 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //---------------Assert Precondition----------------
 
+            // ReSharper disable once PossibleNullReferenceException
             var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
-            Assert.AreEqual(4, countBefore);
+            Assert.AreEqual(0, countBefore);
             //---------------Execute Test ----------------------
             var inputRegion = new DatabaseInputRegion(modelItem, actionRegion.Object);
 
@@ -211,22 +193,10 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
         public void UpdateOnActionSelection_GivenHasInputs_ShouldWriteToActiveDatalistAndPopulatesInputValues()
         {
             //---------------Set up test pack-------------------
-            var eventAggregator = new Mock<IEventAggregator>();
-
-            var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
-
-            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
-            var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
-
-            dataListItems.Add(dataListItem);
-            dataListItems.Add(secondDataListItem);
-
-            DataListSingleton.SetDataList(dataListViewModel);
-
-
+            var mock = new Mock<IDataListViewModel>();
+            mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
+            if (DataListSingleton.ActiveDataList == null)
+                DataListSingleton.SetDataList(mock.Object);
 
 
             var id = Guid.NewGuid();
@@ -237,8 +207,9 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //---------------Assert Precondition----------------
 
+            // ReSharper disable once PossibleNullReferenceException
             var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
-            Assert.AreEqual(4, countBefore);
+            Assert.AreEqual(0, countBefore);
             //---------------Execute Test ----------------------
             var inputRegion = new DatabaseInputRegion(modelItem, actionRegion.Object);
 
@@ -263,69 +234,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
                 },
                 SourceId = Guid.NewGuid()
             };
-        }
-
-        static IDataListViewModel CreateDataListViewModel(Mock<IContextualResourceModel> mockResourceModel, IEventAggregator eventAggregator = null)
-        {
-            var dataListViewModel = new DataListViewModel(eventAggregator ?? new Mock<IEventAggregator>().Object);
-            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
-            return dataListViewModel;
-        }
-
-        StringBuilder WorkflowXAMLForTest()
-        {
-            return new StringBuilder(@"<Activity mc:Ignorable=""sap"" x:Class=""ServiceToBindFrom"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006"" xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" xmlns:s=""clr-namespace:System;assembly=mscorlib"" xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"" xmlns:uf=""clr-namespace:Unlimited.Framework;assembly=Dev2.Core"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
-  <x:Members>
-    <x:Property Name=""AmbientDataList"" Type=""InOutArgument(scg:List(x:String))"" />
-    <x:Property Name=""ParentWorkflowInstanceId"" Type=""InOutArgument(s:Guid)"" />
-    <x:Property Name=""ParentServiceName"" Type=""InOutArgument(x:String)"" />
-  </x:Members>
-  <sap:VirtualizedContainerService.HintSize>778,1014</sap:VirtualizedContainerService.HintSize>
-  <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
-  <Flowchart sap:VirtualizedContainerService.HintSize=""738,974"" mva:VisualBasic.Settings=""Assembly references and imported namespaces serialized as XML namespaces"">
-    <Flowchart.Variables>
-      <Variable x:TypeArguments=""scg:List(x:String)"" Name=""InstructionList"" />
-      <Variable x:TypeArguments=""x:String"" Name=""LastResult"" />
-      <Variable x:TypeArguments=""x:Boolean"" Name=""HasError"" />
-      <Variable x:TypeArguments=""x:String"" Name=""ExplicitDataList"" />
-      <Variable x:TypeArguments=""x:Boolean"" Name=""IsValid"" />
-      <Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" />
-      <Variable x:TypeArguments=""uaba:Util"" Name=""t"" />
-    </Flowchart.Variables>
-    <sap:WorkflowViewStateService.ViewState>
-      <scg:Dictionary x:TypeArguments=""x:String, x:Object"">
-        <x:Boolean x:Key=""IsExpanded"">False</x:Boolean>
-        <av:Point x:Key=""ShapeLocation"">270,2.5</av:Point>
-        <av:Size x:Key=""ShapeSize"">60,75</av:Size>
-        <av:PointCollection x:Key=""ConnectorLocation"">300,77.5 300,107.5 150,107.5 150,276</av:PointCollection>
-        <x:Double x:Key=""Height"">938.5</x:Double>
-        <x:Double x:Key=""Width"">724</x:Double>
-      </scg:Dictionary>
-    </sap:WorkflowViewStateService.ViewState>
-    <Flowchart.StartNode>
-      <FlowStep x:Name=""__ReferenceID0"">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments=""x:String, x:Object"">
-            <av:Point x:Key=""ShapeLocation"">20.5,276</av:Point>
-            <av:Size x:Key=""ShapeSize"">259,443</av:Size>
-            <av:PointCollection x:Key=""ConnectorLocation"">271.5,280 301.5,280 301.5,342 450,342 450,372</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <uaba:DsfAssignActivity CurrentResult=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" AddMode=""True"" AmbientDataList=""[AmbientDataList]"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign"" FieldName=""[[result]]"" FieldValue=""{}{{&#xA;     var max = &quot;[[max]]&quot;;&#xA;&#xA;     if(max.length &lt; 1){&#xA;&#x9;max = 10;&#xA;     }&#xA;     var i = 0;&#xA;     var id = &quot;&lt;Data&gt;&quot;;&#xA;     var value = new Array();&#xA;     for(var i  = 0; i &lt;= max; i++){&#xA;        id += &quot;&lt;regions&gt;&quot;;&#xA;        id += &quot;&lt;id&gt;&quot;+i+&quot;&lt;/id&gt;&quot;;&#xA;        id += &quot;&lt;name&gt;region&quot;+i + &quot;&lt;/name&gt;&quot;;&#xA;        id += &quot;&lt;/regions&gt;&quot;;&#xA;       }&#xA;  id += &quot;&lt;/Data&gt;&quot;;&#xA;}}"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""259,443"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" UpdateAllOccurrences=""True"" />
-      </FlowStep>
-    </Flowchart.StartNode>
-    <x:Reference>__ReferenceID0</x:Reference>
-    <FlowStep>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments=""x:String, x:Object"">
-          <av:Point x:Key=""ShapeLocation"">393.5,33</av:Point>
-          <av:Size x:Key=""ShapeSize"">200,22</av:Size>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <uaba:DsfCommentActivity DisplayName=""DEF"" sap:VirtualizedContainerService.HintSize=""200,22"" Text=""01-02-2012 : Travis.Frisinger@dev2.co.za&#xA;&#xA;A testing service used to ensure&#xA;databinding works for both datagrid&#xA;and radio button, checkbox, and drop down."" />
-    </FlowStep>
-  </Flowchart>
-</Activity>");
         }
     }
 }
