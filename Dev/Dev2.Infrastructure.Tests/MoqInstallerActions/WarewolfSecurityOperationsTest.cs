@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Reflection;
 using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -120,25 +119,6 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
-        [ExpectedException(typeof(TargetInvocationException))]
-        public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenAlreadyMember_ExpectException()
-        {
-
-            //------------Setup for test--------------------------
-            var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
-
-            // Delete warewolf if already a member...
-            warewolfGroupOps.DeleteWarewolfGroup();
-            warewolfGroupOps.AddWarewolfGroup();
-            warewolfGroupOps.AddAdministratorsGroupToWarewolf();
-
-            //------------Execute Test---------------------------
-            warewolfGroupOps.AddAdministratorsGroupToWarewolf();
         }
         
         [TestMethod]

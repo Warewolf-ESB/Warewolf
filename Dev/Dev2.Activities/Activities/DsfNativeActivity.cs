@@ -475,7 +475,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (_debugState != null)
                 {
-                    // Bug 8595 - Juries
                     var type = GetType();
                     var instance = Activator.CreateInstance(type);
                     var activity = instance as Activity;
@@ -484,7 +483,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         _debugState.Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription();
                     }
                     var act = instance as DsfActivity;
-                    //End Bug 8595
                     try
                     {
                         var debugInputs = GetDebugInputs(dataObject.Environment, update);
@@ -539,8 +537,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     _debugState.StateType = stateType;
                         if (endTime != null)
                         {
-
-
                             _debugState.StartTime = startTime ?? DateTime.Now;
                             _debugState.EndTime = endTime.Value;
                         }
@@ -588,7 +584,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
 
-            // We know that if a if it is not a workflow it must be a service ;)
             if(dataObject.RemoteServiceType != "Workflow" && !String.IsNullOrWhiteSpace(dataObject.RemoteServiceType))
             {
                 if(_debugState != null)
@@ -599,26 +594,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(_debugState != null)
             {
-                if(remoteID == Guid.Empty)
-                {
-                    switch(_debugState.StateType)
-                    {
-                        case StateType.Before:
-                            _debugState.Outputs.Clear();
-                            break;
-                        case StateType.After:
-                            _debugState.Inputs.Clear();
-                            break;
-                    }
-                }
-
                 _debugState.ClientID = dataObject.ClientID;
                 _debugState.OriginatingResourceID = dataObject.ResourceID;
                 _debugDispatcher.Write(_debugState, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
 
                 if(stateType == StateType.After )
                 {
-                    // Free up debug state
                     _debugState = null;
                 }
             }

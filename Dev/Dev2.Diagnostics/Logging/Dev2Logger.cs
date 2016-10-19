@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -129,6 +130,7 @@ namespace Dev2.Common
             return 0;
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile,string applicationNameForEventLog)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
@@ -151,6 +153,7 @@ namespace Dev2.Common
             }
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public static void AddEventLogging(string settingsConfigFile,string applicationNameForEventLog)
         {
              var settingsDocument = XDocument.Load(settingsConfigFile);
@@ -174,6 +177,7 @@ namespace Dev2.Common
         }
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private static void UpdateFileSizeForFileLogAppender(string maxLogSize, IList<XElement> appenders)
         {
             // ReSharper disable once PossibleNullReferenceException

@@ -349,7 +349,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             if(debugState.IsFinalStep() && debugState.DisplayName.Equals(workflowName))
             {
-                _resetEvt.Set();
+                //_resetEvt.Set();
             }
 
         }
@@ -1160,9 +1160,18 @@ namespace Dev2.Activities.Specs.Composition
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            var outputState = toolSpecificDebug.FirstOrDefault();
+            if (toolSpecificDebug.Count > 1)
+            {
+                if(toolSpecificDebug.Any(state => state.StateType == StateType.End))
+                {
+                    outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
+                }
+            }
+
             
-            _commonSteps.ThenTheDebugOutputAs(table, toolSpecificDebug
-                                                    .SelectMany(s => s.Outputs)
+            // ReSharper disable once PossibleNullReferenceException
+            _commonSteps.ThenTheDebugOutputAs(table, outputState.Outputs
                                                     .SelectMany(s => s.ResultsList).ToList(), isDataMergeDebug);
         }
 
@@ -1333,7 +1342,7 @@ namespace Dev2.Activities.Specs.Composition
                 dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
                 WebServer.Send(resourceModel, dataList.ToString(), new SynchronousAsyncWorker());
-                _resetEvt.WaitOne(120000);
+                //_resetEvt.WaitOne(12);
             }
         }
 
@@ -1548,7 +1557,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             if(_resetEvt != null)
             {
-                _resetEvt.Close();
+                //_resetEvt.Close();
             }
         }
 

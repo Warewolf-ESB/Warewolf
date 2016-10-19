@@ -1290,26 +1290,31 @@ namespace Dev2.Activities.Specs.TestFramework
                             var expression = activity.ExpressionText;
                             if (expression != null)
                             {
-                                var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression);
-
-                                if (!string.IsNullOrEmpty(eval))
+                                var condition = decisionNode.Condition;
+                                var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfFlowNodeActivity<bool>)condition;
+                                var expression = activity.ExpressionText;
+                                if (expression != null)
                                 {
-                                    Dev2JsonSerializer ser = new Dev2JsonSerializer();
-                                    var dds = ser.Deserialize<Dev2DecisionStack>(eval);
-                                    var armToUse = tableRow["Output Value"];
-                                    if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
+                                    var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression);
+
+                                    if (!string.IsNullOrEmpty(eval))
                                     {
-                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText) };
-                                        test.AddTestStep(activity.UniqueID, typeof(DsfDecision).Name, serviceTestOutputs);
-                                    }
-                                    else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
-                                    {
-                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText) };
-                                        test.AddTestStep(activity.UniqueID, typeof(DsfDecision).Name, serviceTestOutputs);
+                                        Dev2JsonSerializer ser = new Dev2JsonSerializer();
+                                        var dds = ser.Deserialize<Dev2DecisionStack>(eval);
+                                        var armToUse = tableRow["Output Value"];
+                                        if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
+                                        {
+                                            var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText) };
+                                            test.AddTestStep(activity.UniqueID, typeof(DsfDecision).Name, serviceTestOutputs);
+                                        }
+                                        else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
+                                        {
+                                            var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText) };
+                                            test.AddTestStep(activity.UniqueID, typeof(DsfDecision).Name, serviceTestOutputs);
+                                        }
                                     }
                                 }
                             }
-
                         }
                     }
                     else
@@ -1324,14 +1329,16 @@ namespace Dev2.Activities.Specs.TestFramework
                             return false;
                         });
                         var decisionNode = foundNode as FlowStep;
-                        // ReSharper disable once PossibleNullReferenceException
-                        var action = decisionNode.Action;
-                        var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
-                        var var = tableRow["Output Variable"];
-                        var value = tableRow["Output Value"];
-                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput(var, value) };
-                        var type = activity.GetType();
-                        test.AddTestStep(activity.UniqueID, type.Name, serviceTestOutputs);
+                        if(decisionNode != null)
+                        {
+                            var action = decisionNode.Action;
+                            var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
+                            var var = tableRow["Output Variable"];
+                            var value = tableRow["Output Value"];
+                            var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput(var, value) };
+                            var type = activity.GetType();
+                            test.AddTestStep(activity.UniqueID, type.Name, serviceTestOutputs);
+                        }
                     }
                 }
             }

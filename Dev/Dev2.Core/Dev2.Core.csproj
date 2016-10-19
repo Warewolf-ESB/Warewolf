@@ -208,7 +208,6 @@
     <Compile Include="Interfaces\IDSFDataObject.cs" />
     <Compile Include="Interfaces\IEsbChannel.cs" />
     <Compile Include="Interfaces\IEsbWorkspaceChannel.cs" />
-    <Compile Include="Isolated.cs" />
     <Compile Include="PathOperations\FileRepository.cs" />
     <Compile Include="Reflection\NullableHelper.cs" />
     <Compile Include="Session\Debug\DebugTO.cs" />
@@ -246,7 +245,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Dynamic Services.cd" />
     <None Include="packages.config" />
     <None Include="Simulation\Simulation.cd" />

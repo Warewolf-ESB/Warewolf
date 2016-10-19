@@ -227,7 +227,6 @@
     <EmbeddedResource Include="Server Test\Workspace\XML\ServerConnection2.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\TestDecisionUnsigned.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\WorkspaceItem.xml" />
-    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Resources\DeleteWorkflowTest.xml" />
     <EmbeddedResource Include="TestData\Test.zip">

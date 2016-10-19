@@ -191,48 +191,50 @@ namespace Dev2.Services.Execution
                     {
                         foreach (var serviceOutputMapping in Outputs)
                         {
-                            var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
-                            var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
-                            var rs = serviceOutputMapping.RecordSetName;
 
-                            if (environment.HasRecordSet(rs))
+                            if (!string.IsNullOrEmpty(serviceOutputMapping.MappedTo))
                             {
-                                if (started)
+                                var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
+                                var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
+                                var rs = serviceOutputMapping.RecordSetName;
+
+                                if(environment.HasRecordSet(rs))
                                 {
-                                    rowIdx = environment.GetLength(rs) + 1;
+                                    if(started)
+                                    {
+                                        rowIdx = environment.GetLength(rs) + 1;
+                                        started = false;
+                                    }
+                                }
+                                else
+                                {
+                                    environment.AssignDataShape(serviceOutputMapping.MappedTo);
+                                }
+                                if(rsType == enRecordsetIndexType.Star && started)
+                                {
+                                    rowIdx = 1;
                                     started = false;
                                 }
-                            }
-                            else
-                            {
-                                environment.AssignDataShape(serviceOutputMapping.MappedTo);
-                            }
-                            if (rsType == enRecordsetIndexType.Star && started)
-                            {
-                                rowIdx = 1;
-                                started = false;
-                            }
-                            if (rsType == enRecordsetIndexType.Numeric)
-                            {
-                                rowIdx = int.Parse(rowIndex);
-                            }
-                            if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
-                            {
-                                continue;
-                            }
-                            var value = row[serviceOutputMapping.MappedFrom];
-                            {
-                                if (update != 0)
+                                if(rsType == enRecordsetIndexType.Numeric)
+                                {
+                                    rowIdx = int.Parse(rowIndex);
+                                }
+                                if(!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
+                                {
+                                    continue;
+                                }
+                                var value = row[serviceOutputMapping.MappedFrom];
+                                if(update != 0)
                                 {
                                     rowIdx = update;
                                 }
                                 var displayExpression = DataListUtil.ReplaceRecordsetBlankWithIndex(DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo), rowIdx);
-                                if (rsType == enRecordsetIndexType.Star)
+                                if(rsType == enRecordsetIndexType.Star)
                                 {
                                     displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
                                 }
                                 environment.Assign(displayExpression, value.ToString(), update);
-                            }
+                            }                            
                         }
                         rowIdx++;
                     }
