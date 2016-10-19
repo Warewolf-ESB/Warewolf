@@ -146,8 +146,10 @@ namespace Dev2.Common
             double.TryParse(tmpX, out x);
             double.TryParse(tmpY, out y);
 
+            // ReSharper disable once PossibleNullReferenceException
             string id = nodeElm.Attribute("id").Value;
             bool isTarget = id == resourceName;
+            // ReSharper disable once PossibleNullReferenceException
             bool broken = String.Equals(nodeElm.Attribute("broken").Value, "true", StringComparison.OrdinalIgnoreCase);
 
             if (isTarget)
