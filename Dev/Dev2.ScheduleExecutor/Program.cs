@@ -56,7 +56,7 @@ namespace Dev2.ScheduleExecutor
                     return;
                 }
                 var paramters = new Dictionary<string, string>();
-                for (int i = 0; i < args.Count(); i++)
+                for (int i = 0; i < args.Length; i++)
                 {
                     string[] singleParameters = args[i].Split(':');
 
@@ -92,7 +92,7 @@ namespace Dev2.ScheduleExecutor
         {
             string postUrl = $"http://localhost:3142/services/{workflowName}";
             Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
-            int len = postUrl.Split('?').Count();
+            int len = postUrl.Split('?').Length;
             if (len == 1)
             {
                 string result = string.Empty;
@@ -147,7 +147,7 @@ namespace Dev2.ScheduleExecutor
         {
             string postUrl = $"http://localhost:3142/services/{workflowName}.xml?Name=&wid={resourceId}";
             Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
-            int len = postUrl.Split('?').Count();
+            int len = postUrl.Split('?').Length;
             if (len == 2)
             {
                 string result = string.Empty;
@@ -324,6 +324,7 @@ namespace Dev2.ScheduleExecutor
 
         }
 
+        // ReSharper disable once ReturnTypeCanBeEnumerable.Local
         private static List<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
         {
             var processRecordSet = new List<IDebugItemResult>();
@@ -332,6 +333,7 @@ namespace Dev2.ScheduleExecutor
             if(xAttribute != null)
             {
                 var index = xAttribute.Value;
+                // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var xElement in elements)
                 {
                     var debugItemResult = new DebugItemResult

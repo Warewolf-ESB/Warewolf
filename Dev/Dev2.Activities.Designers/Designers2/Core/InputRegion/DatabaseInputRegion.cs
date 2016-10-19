@@ -8,8 +8,6 @@ using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
-using Dev2.Data.Util;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 
 // ReSharper disable ExplicitCallerInfoArgument
@@ -18,6 +16,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public sealed class DatabaseInputRegion : IDatabaseInputRegion
     {
+        private readonly IActionInputDatatalistMapper _datatalistMapper;
         private readonly ModelItem _modelItem;
         private readonly IActionToolRegion<IDbAction> _action;
         bool _isEnabled;
@@ -30,7 +29,9 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             ToolRegionName = "DatabaseInputRegion";
         }
 
+
         public DatabaseInputRegion(ModelItem modelItem, IActionToolRegion<IDbAction> action)
+            :this(new ActionInputDatatalistMapper())
         {
             ToolRegionName = "DatabaseInputRegion";
             _modelItem = modelItem;
@@ -41,6 +42,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             if (inputsFromModel == null)
                 UpdateOnActionSelection();
             IsEnabled = _action?.SelectedAction != null;
+        }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        public DatabaseInputRegion(IActionInputDatatalistMapper datatalistMapper)
+        {
+            _datatalistMapper = datatalistMapper;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -77,41 +84,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             if (_action?.SelectedAction != null)
             {
                 Inputs = _action.SelectedAction.Inputs;
-                UpdateActiveDatalistWithInputs();
+                _datatalistMapper.MappInputsToDatalist(Inputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
             }
             OnPropertyChanged("Inputs");
-        }
-
-        private void UpdateActiveDatalistWithInputs()
-        {
-            if (Inputs != null)
-            {
-                foreach (var serviceInput in Inputs)
-                {
-
-                    if (DataListSingleton.ActiveDataList != null)
-                    {
-                        if (DataListSingleton.ActiveDataList.ScalarCollection != null)
-                        {
-                            var alreadyExists = DataListSingleton.ActiveDataList.ScalarCollection.Count(model => model.Name.Equals(serviceInput.Name, StringComparison.InvariantCulture));
-                            if (alreadyExists < 1)
-                            {
-                                var variable = DataListUtil.AddBracketsToValueIfNotExist(serviceInput.Name);
-                                serviceInput.Value = variable;
-                            }
-                            else
-                            {
-                                var variable = DataListUtil.AddBracketsToValueIfNotExist(serviceInput.Name);
-                                serviceInput.Value = variable;
-                            }
-                        }
-                    }
-
-               
-                }
-            }
         }
 
         public bool IsInputsEmptyRows

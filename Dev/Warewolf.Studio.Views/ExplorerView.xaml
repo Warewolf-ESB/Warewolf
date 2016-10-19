@@ -602,7 +602,6 @@
                                                     <ig:XamMenuItem Name="DebugInputs"
                                                                     Command="{Binding Path=Data.DebugCommand}"
                                                                     Header="Debug Inputs"
-                                                                    InputGestureText="[F5]"
                                                                     ToolTip="{x:Static languages:Core.StartNodeDebugInputsToolTip}"
                                                                     Visibility="{Binding Path=Data.CanViewSwagger,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
@@ -614,7 +613,6 @@
                                                     <ig:XamMenuItem Name="DebugStudio"
                                                                     Command="{Binding Path=Data.DebugStudioCommand}"
                                                                     Header="Debug Studio"
-                                                                    InputGestureText="[F6]"
                                                                     ToolTip="{x:Static languages:Core.StartNodeDebugStudioToolTip}"
                                                                     Visibility="{Binding Path=Data.CanViewSwagger,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
@@ -626,7 +624,6 @@
                                                     <ig:XamMenuItem Name="DebugBrowser"
                                                                     Command="{Binding Path=Data.DebugBrowserCommand}"
                                                                     Header="Debug Browser"
-                                                                    InputGestureText="[F7]"
                                                                     ToolTip="{x:Static languages:Core.StartNodeDebugBrowserToolTip}"
                                                                     Visibility="{Binding Path=Data.CanViewSwagger,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">

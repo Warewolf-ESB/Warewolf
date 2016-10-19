@@ -1,6 +1,6 @@
 using System;
 
-namespace Dev2
+namespace Dev2.Runtime
 {
     public sealed class Isolated<T> : IDisposable where T : MarshalByRefObject
     {
@@ -9,11 +9,8 @@ namespace Dev2
 
         public Isolated()
         {
-            var appDomainSetup = new AppDomainSetup();
-           
-            
-            _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
-                null, appDomainSetup);
+           _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
+                null, AppDomain.CurrentDomain.SetupInformation);
 
             Type type = typeof(T);
 

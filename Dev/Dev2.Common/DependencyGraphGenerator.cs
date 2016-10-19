@@ -126,6 +126,7 @@ namespace Dev2.Common
             }
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private Node CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
             double screenWidth = width;
