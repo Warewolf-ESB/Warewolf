@@ -4528,10 +4528,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurface()
         {
             #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem downloadFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.DownloadFile;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom smallView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView;
             #endregion
+
+            // Type 'Download' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams.SearchTextBoxText;
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 129));
@@ -13438,6 +13442,18 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -14028,6 +14044,8 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -16882,6 +16900,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Type 'Download' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Download";
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'SmallViewContent' custom control equals 'True'
         /// </summary>
@@ -26945,17 +26968,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfListItem DownloadFile
+        public DownloadFile DownloadFile
         {
             get
             {
                 if ((this.mDownloadFile == null))
                 {
-                    this.mDownloadFile = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mDownloadFile.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Download File";
-                    this.mDownloadFile.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mDownloadFile = new DownloadFile(this);
                 }
                 return this.mDownloadFile;
             }
@@ -27001,7 +27020,7 @@ namespace Warewolf.UITests
         
         private UpdateListItems mUpdateListItems;
         
-        private WpfListItem mDownloadFile;
+        private DownloadFile mDownloadFile;
         
         private DeleteFile mDeleteFile;
         
@@ -27158,14 +27177,15 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DeleteFile : WpfListItem
+    public class DownloadFile : WpfListItem
     {
         
-        public DeleteFile(UITestControl searchLimitContainer) : 
+        public DownloadFile(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Delete File";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Download File";
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -27211,7 +27231,7 @@ namespace Warewolf.UITests
                 {
                     this.mImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Delete File";
+                    this.mImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Download File";
                     this.mImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
@@ -27226,14 +27246,14 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ReadFolder1 : WpfListItem
+    public class DeleteFile : WpfListItem
     {
         
-        public ReadFolder1(UITestControl searchLimitContainer) : 
+        public DeleteFile(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Read Folder";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Delete File";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -27262,6 +27282,74 @@ namespace Warewolf.UITests
     {
         
         public ImageText1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ToolButtonImage";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage Image
+        {
+            get
+            {
+                if ((this.mImage == null))
+                {
+                    this.mImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Delete File";
+                    this.mImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ReadFolder1 : WpfListItem
+    {
+        
+        public ReadFolder1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Read Folder";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public ImageText2 ImageText
+        {
+            get
+            {
+                if ((this.mImageText == null))
+                {
+                    this.mImageText = new ImageText2(this);
+                }
+                return this.mImageText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ImageText2 mImageText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ImageText2 : WpfText
+    {
+        
+        public ImageText2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -92283,6 +92371,107 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_ToolboxControl_AuCustom UIUI_ToolboxControl_AuCustom
+        {
+            get
+            {
+                if ((this.mUIUI_ToolboxControl_AuCustom == null))
+                {
+                    this.mUIUI_ToolboxControl_AuCustom = new UIUI_ToolboxControl_AuCustom(this);
+                }
+                return this.mUIUI_ToolboxControl_AuCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_ToolboxControl_AuCustom mUIUI_ToolboxControl_AuCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_ToolboxControl_AuCustom : WpfCustom
+    {
+        
+        public UIUI_ToolboxControl_AuCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolboxView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ToolboxControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIBackedupToolListBoxList UIBackedupToolListBoxList
+        {
+            get
+            {
+                if ((this.mUIBackedupToolListBoxList == null))
+                {
+                    this.mUIBackedupToolListBoxList = new UIBackedupToolListBoxList(this);
+                }
+                return this.mUIBackedupToolListBoxList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIBackedupToolListBoxList mUIBackedupToolListBoxList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIBackedupToolListBoxList : WpfList
+    {
+        
+        public UIBackedupToolListBoxList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "BackedupToolListBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfGroup UISharepointGroup
+        {
+            get
+            {
+                if ((this.mUISharepointGroup == null))
+                {
+                    this.mUISharepointGroup = new WpfGroup(this);
+                    #region Search Criteria
+                    this.mUISharepointGroup.SearchProperties[WpfGroup.PropertyNames.Name] = "Sharepoint";
+                    this.mUISharepointGroup.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUISharepointGroup;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfGroup mUISharepointGroup;
         #endregion
     }
 }
