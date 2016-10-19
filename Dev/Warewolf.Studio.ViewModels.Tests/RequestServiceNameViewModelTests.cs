@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
 
@@ -358,6 +363,31 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("RequestServiceNameViewModel_CancelCommand")]
+        public async Task RequestServiceNameViewModel_HasLoadedFalse_CanDuplicateFalse()
+        {
+            //------------Setup for test--------------------------
+            var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
+            mockRequestServiceNameView.Setup(view => view.RequestClose()).Verifiable();
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
+           
+            var fieldInfo = typeof(RequestServiceNameViewModel).GetField("_selectedPath", BindingFlags.NonPublic | BindingFlags.Instance);
+            // ReSharper disable once PossibleNullReferenceException
+            fieldInfo.SetValue(requestServiceNameViewModel, "Hello World");
+            requestServiceNameViewModel.ShowSaveDialog();
+            requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments = new ObservableCollection<IEnvironmentViewModel>();
+            //------------Execute Test---------------------------
+            requestServiceNameViewModel.Name = "Test";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("", requestServiceNameViewModel.ErrorMessage);
+            var canExecute = requestServiceNameViewModel.DuplicateCommand.CanExecute(null);
+            Assert.IsFalse(canExecute);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void FixReferences_GivenIsNew_ShouldBeFalse()
         {
             //---------------Set up test pack-------------------
@@ -389,7 +419,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             item.Setup(model => model.ResourceName).Returns("name");
             selectedItemMock.Setup(sitem => sitem.SelectedItem).Returns(item.Object);
             var viewModel = RequestServiceNameViewModel.CreateAsync(envModel.Object, "", "", itemObj.Object).Result;
-            
+
 
             controller.Setup(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
             controller.Setup(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
@@ -421,7 +451,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             controller.Verify(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
             controller.Verify(communicationController => communicationController.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CallDuplicateCommand_GivenNoItemPassed_ShouldSetCanExecuteFalse()
@@ -499,18 +529,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             selectedItem.SetValue(viewModel, selectedItemMock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(viewModel);
-           
-            
+
+
             //---------------Execute Test ----------------------
             var canExecute = viewModel.DuplicateCommand.CanExecute(null);
             try
             {
                 viewModel.DuplicateCommand.Execute(null);
-               
+
             }
-            catch(Exception f) when(f is NullReferenceException)
+            catch (Exception f) when (f is NullReferenceException)
             {
-               // Console.WriteLine(e);
+                // Console.WriteLine(e);
             }
             catch (Exception)
             {
