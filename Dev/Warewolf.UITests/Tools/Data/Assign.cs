@@ -73,12 +73,26 @@ namespace Warewolf.UITests.Tools.Data
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized_UITest()
         {
             UIMap.Open_Assign_Tool_Large_View();
+            var heightBefore = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Height;
             UIMap.Resize_Assign_LargeTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Height > heightBefore);            
         }
 
         [TestMethod]
         [TestCategory("Tools")]
-        public void AssignToolQviUITest()
+        public void QuickVariableInputFromListTest()
+        {
+            UIMap.Open_Assign_Tool_Qvi_Large_View();
+            UIMap.Enter_Text_Into_Assign_QviLarge_View();
+            UIMap.Click_Assign_Tool_QviLarge_Preview();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PrefixcontainsinvaliText.Exists);
+            UIMap.Click_PrefixContainsInvalidText_Hyperlink();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.PrefixEdit.HasFocus);
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void AssignTool_OpenQviUITest()
         {
             UIMap.Open_Assign_Tool_Qvi_Large_View();
         }

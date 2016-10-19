@@ -109,6 +109,34 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Assign_Tool_QviLarge_Preview
+        /// </summary>
+        [When(@"I Click Assign Tool QviLarge Preview")]
+        public void Click_Assign_Tool_QviLarge_Preview()
+        {
+            #region Variable Declarations
+            WpfButton previewButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.PreviewCustom.PreviewGroup.PreviewButton;
+            #endregion
+
+            // Click 'Preview' button
+            Mouse.Click(previewButton, new Point(30, 4));
+        }
+        
+        /// <summary>
+        /// Click_PrefixContainsInvalidText_Hyperlink
+        /// </summary>
+        [When(@"I Click PrefixContainsInvalidText Hyperlink")]
+        public void Click_PrefixContainsInvalidText_Hyperlink()
+        {
+            #region Variable Declarations
+            WpfHyperlink prefixcontainsinvaliHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PrefixcontainsinvaliText.PrefixcontainsinvaliHyperlink;
+            #endregion
+
+            // Click 'Prefix contains invalid characters' link
+            Mouse.Click(prefixcontainsinvaliHyperlink, new Point(30, 4));
+        }
+        
+        /// <summary>
         /// Click_AddNew_Web_Source_From_tool - Use 'Click_AddNew_Web_Source_From_toolParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click AddNew Web Source From tool")]
@@ -9846,20 +9874,6 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
-        }
-        
-        /// <summary>
-        /// RecordedMethod1
-        /// </summary>
-        [When(@"I RecordedMethod1")]
-        public void RecordedMethod1()
-        {
-            #region Variable Declarations
-            WpfCustom uIFlowchartCustom = this.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2StudioViewModelsTabPage.UIDev2StudioViewModelsCustom.UIUI_WorkflowDesigner_Custom.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom;
-            #endregion
-
-            // Click 'Flowchart' custom control
-            Mouse.Click(uIFlowchartCustom, new Point(500, 562));
         }
         
         #region Properties
@@ -34055,6 +34069,18 @@ namespace Warewolf.UITests
                 return this.mErrors;
             }
         }
+        
+        public PrefixcontainsinvaliText PrefixcontainsinvaliText
+        {
+            get
+            {
+                if ((this.mPrefixcontainsinvaliText == null))
+                {
+                    this.mPrefixcontainsinvaliText = new PrefixcontainsinvaliText(this);
+                }
+                return this.mPrefixcontainsinvaliText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -34223,6 +34249,8 @@ namespace Warewolf.UITests
         private PostgreSqlActivitCustom mPostgreSqlActivitCustom;
         
         private WpfText mErrors;
+        
+        private PrefixcontainsinvaliText mPrefixcontainsinvaliText;
         #endregion
     }
     
@@ -73661,20 +73689,31 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom QuickVariableInputContent
+        public QuickVariableInputContent3 QuickVariableInputContent
         {
             get
             {
                 if ((this.mQuickVariableInputContent == null))
                 {
-                    this.mQuickVariableInputContent = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
-                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
-                    this.mQuickVariableInputContent.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mQuickVariableInputContent = new QuickVariableInputContent3(this);
                 }
                 return this.mQuickVariableInputContent;
+            }
+        }
+        
+        public WpfButton AddButton
+        {
+            get
+            {
+                if ((this.mAddButton == null))
+                {
+                    this.mAddButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mAddButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "AddModeButton";
+                    this.mAddButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mAddButton;
             }
         }
         #endregion
@@ -73688,7 +73727,9 @@ namespace Warewolf.UITests
         
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
         
-        private WpfCustom mQuickVariableInputContent;
+        private QuickVariableInputContent3 mQuickVariableInputContent;
+        
+        private WpfButton mAddButton;
         #endregion
     }
     
@@ -75708,6 +75749,234 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfControl mItemIndicator;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class QuickVariableInputContent3 : WpfCustom
+    {
+        
+        public QuickVariableInputContent3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit QviSplitOnCharacterEdit
+        {
+            get
+            {
+                if ((this.mQviSplitOnCharacterEdit == null))
+                {
+                    this.mQviSplitOnCharacterEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mQviSplitOnCharacterEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "QviSplitOnCharacter";
+                    this.mQviSplitOnCharacterEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mQviSplitOnCharacterEdit;
+            }
+        }
+        
+        public WpfComboBox QviSplitOnCombobox
+        {
+            get
+            {
+                if ((this.mQviSplitOnCombobox == null))
+                {
+                    this.mQviSplitOnCombobox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mQviSplitOnCombobox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "QviSplitOnCombobox";
+                    this.mQviSplitOnCombobox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mQviSplitOnCombobox;
+            }
+        }
+        
+        public WpfEdit QviVariableListBoxEdit
+        {
+            get
+            {
+                if ((this.mQviVariableListBoxEdit == null))
+                {
+                    this.mQviVariableListBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mQviVariableListBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "QviVariableListBox";
+                    this.mQviVariableListBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mQviVariableListBoxEdit;
+            }
+        }
+        
+        public WpfRadioButton ReplaceRadioButton
+        {
+            get
+            {
+                if ((this.mReplaceRadioButton == null))
+                {
+                    this.mReplaceRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mReplaceRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "ReplaceOption";
+                    this.mReplaceRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mReplaceRadioButton;
+            }
+        }
+        
+        public WpfRadioButton AppendRadioButton
+        {
+            get
+            {
+                if ((this.mAppendRadioButton == null))
+                {
+                    this.mAppendRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mAppendRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "AppendOption";
+                    this.mAppendRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mAppendRadioButton;
+            }
+        }
+        
+        public WpfEdit PrefixEdit
+        {
+            get
+            {
+                if ((this.mPrefixEdit == null))
+                {
+                    this.mPrefixEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mPrefixEdit.SearchProperties[WpfEdit.PropertyNames.HelpText] = "Adds this to the front of the variables";
+                    this.mPrefixEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPrefixEdit;
+            }
+        }
+        
+        public WpfEdit SuffixEdit
+        {
+            get
+            {
+                if ((this.mSuffixEdit == null))
+                {
+                    this.mSuffixEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mSuffixEdit.SearchProperties[WpfEdit.PropertyNames.HelpText] = "Adds this to end of the variables";
+                    this.mSuffixEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSuffixEdit;
+            }
+        }
+        
+        public PreviewCustom4 PreviewCustom
+        {
+            get
+            {
+                if ((this.mPreviewCustom == null))
+                {
+                    this.mPreviewCustom = new PreviewCustom4(this);
+                }
+                return this.mPreviewCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mQviSplitOnCharacterEdit;
+        
+        private WpfComboBox mQviSplitOnCombobox;
+        
+        private WpfEdit mQviVariableListBoxEdit;
+        
+        private WpfRadioButton mReplaceRadioButton;
+        
+        private WpfRadioButton mAppendRadioButton;
+        
+        private WpfEdit mPrefixEdit;
+        
+        private WpfEdit mSuffixEdit;
+        
+        private PreviewCustom4 mPreviewCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PreviewCustom4 : WpfCustom
+    {
+        
+        public PreviewCustom4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.PreviewView";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Preview";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public PreviewGroup4 PreviewGroup
+        {
+            get
+            {
+                if ((this.mPreviewGroup == null))
+                {
+                    this.mPreviewGroup = new PreviewGroup4(this);
+                }
+                return this.mPreviewGroup;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private PreviewGroup4 mPreviewGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PreviewGroup4 : WpfGroup
+    {
+        
+        public PreviewGroup4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.AutomationId] = "PreviewGroupBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton PreviewButton
+        {
+            get
+            {
+                if ((this.mPreviewButton == null))
+                {
+                    this.mPreviewButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mPreviewButton.SearchProperties[WpfButton.PropertyNames.Name] = "Preview";
+                    this.mPreviewButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPreviewButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mPreviewButton;
         #endregion
     }
     
@@ -80533,6 +80802,42 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PrefixcontainsinvaliText : WpfText
+    {
+        
+        public PrefixcontainsinvaliText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_Error0_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink PrefixcontainsinvaliHyperlink
+        {
+            get
+            {
+                if ((this.mPrefixcontainsinvaliHyperlink == null))
+                {
+                    this.mPrefixcontainsinvaliHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mPrefixcontainsinvaliHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "Prefix contains invalid characters";
+                    this.mPrefixcontainsinvaliHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPrefixcontainsinvaliHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mPrefixcontainsinvaliHyperlink;
         #endregion
     }
     
@@ -92228,7 +92533,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 3(FlowchartDesigner)";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
@@ -92267,25 +92572,26 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfButton UIDoneButton
+        public WpfCustom UIQuickVariableInputCoCustom
         {
             get
             {
-                if ((this.mUIDoneButton == null))
+                if ((this.mUIQuickVariableInputCoCustom == null))
                 {
-                    this.mUIDoneButton = new WpfButton(this);
+                    this.mUIQuickVariableInputCoCustom = new WpfCustom(this);
                     #region Search Criteria
-                    this.mUIDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
-                    this.mUIDoneButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mUIQuickVariableInputCoCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
+                    this.mUIQuickVariableInputCoCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
+                    this.mUIQuickVariableInputCoCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mUIDoneButton;
+                return this.mUIQuickVariableInputCoCustom;
             }
         }
         #endregion
         
         #region Fields
-        private WpfButton mUIDoneButton;
+        private WpfCustom mUIQuickVariableInputCoCustom;
         #endregion
     }
 }
