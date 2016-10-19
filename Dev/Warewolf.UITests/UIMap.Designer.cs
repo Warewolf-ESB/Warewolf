@@ -978,27 +978,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Duplicate_From_Duplicate_Dialog - Use 'Click_Duplicate_From_Duplicate_DialogParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Click Duplicate From Duplicate Dialog")]
-        public void Click_Duplicate_From_Duplicate_Dialog()
-        {
-            #region Variable Declarations
-            WpfButton duplicateButton = this.SaveDialogWindow.DuplicateButton;
-            WpfWindow saveDialogWindow = this.SaveDialogWindow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Duplicate' button equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_Duplicate_DialogParams.DuplicateButtonExists, duplicateButton.Exists, "Duplicate button does not exist");
-
-            // Click 'Duplicate' button
-            Mouse.Click(duplicateButton, new Point(26, 10));
-
-            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_Duplicate_DialogParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
-        }
-        
-        /// <summary>
         /// Click_ExpandAndStepIn_NestedWorkflow - Use 'Click_ExpandAndStepIn_NestedWorkflowParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click ExpandAndStepIn NestedWorkflow")]
@@ -8189,18 +8168,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Duplicate_From_Duplicate_DialogParams Click_Duplicate_From_Duplicate_DialogParams
-        {
-            get
-            {
-                if ((this.mClick_Duplicate_From_Duplicate_DialogParams == null))
-                {
-                    this.mClick_Duplicate_From_Duplicate_DialogParams = new Click_Duplicate_From_Duplicate_DialogParams();
-                }
-                return this.mClick_Duplicate_From_Duplicate_DialogParams;
-            }
-        }
-        
         public virtual Click_ExpandAndStepIn_NestedWorkflowParams Click_ExpandAndStepIn_NestedWorkflowParams
         {
             get
@@ -10809,8 +10776,6 @@ namespace Warewolf.UITests
         
         private Click_DotNet_DLL_Large_View_Done_ButtonParams mClick_DotNet_DLL_Large_View_Done_ButtonParams;
         
-        private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
-        
         private Click_ExpandAndStepIn_NestedWorkflowParams mClick_ExpandAndStepIn_NestedWorkflowParams;
         
         private Click_Explorer_Filter_Clear_ButtonParams mClick_Explorer_Filter_Clear_ButtonParams;
@@ -11898,26 +11863,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'SmallViewContent' custom control equals 'True'
         /// </summary>
         public bool SmallViewExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Duplicate_From_Duplicate_Dialog'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Duplicate_From_Duplicate_DialogParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Duplicate' button equals 'True'
-        /// </summary>
-        public bool DuplicateButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-        /// </summary>
-        public bool SaveDialogWindowExists = true;
         #endregion
     }
     
