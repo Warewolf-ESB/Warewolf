@@ -81,11 +81,11 @@ namespace Dev2.Data.ServiceModel
         {
             var result = base.ToXml();
             var connectionString = string.Join(";",
-                string.Format("HostName={0}", HostName),
-                string.Format("Port={0}", Port),
-                string.Format("UserName={0}", UserName),
-                string.Format("Password={0}", Password),
-                string.Format("VirtualHost={0}", VirtualHost)
+                $"HostName={HostName}",
+                $"Port={Port}",
+                $"UserName={UserName}",
+                $"Password={Password}",
+                $"VirtualHost={VirtualHost}"
                 );
 
             result.Add(
