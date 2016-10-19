@@ -68,6 +68,7 @@
     <Compile Include="ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsLoggingTests.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
+    <Compile Include="Tools\StudioTooling.cs" />
     <Compile Include="Tools\Recordset\CountTest.cs" />
     <Compile Include="Tools\Recordset\DeleteRecordTest.cs" />
     <Compile Include="Tools\Recordset\LengthTest.cs" />
