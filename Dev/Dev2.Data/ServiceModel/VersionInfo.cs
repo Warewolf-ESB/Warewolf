@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public override string ToString()
         {
-            return String.Format("ResourceId:{0} Version:{1} ",ResourceId,VersionId);
+            return $"ResourceId:{ResourceId} Version:{VersionId} ";
         }
 
         #endregion

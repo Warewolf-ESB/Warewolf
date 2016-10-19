@@ -19,6 +19,7 @@ using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable PossibleNullReferenceException
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {

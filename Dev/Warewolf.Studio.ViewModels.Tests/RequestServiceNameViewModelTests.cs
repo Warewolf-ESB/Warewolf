@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Dev2;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
 

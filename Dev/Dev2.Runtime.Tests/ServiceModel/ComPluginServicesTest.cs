@@ -8,6 +8,7 @@ using Dev2.Tests.Runtime.JSON;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
+// ReSharper disable PossibleNullReferenceException
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
