@@ -2271,6 +2271,7 @@ namespace Warewolf.UITests
             prefixEdit.Text = "some(<).";
             suffixEdit.Text = "_suf";
         }
+
         public void Enter_Text_Into_EmailSource_Tab()
         {
             #region Variable Declarations
