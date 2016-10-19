@@ -111,10 +111,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void CallErrorsEventHandler()
         {
-            if (ErrorsHandler != null)
-            {
-                ErrorsHandler(this, new List<string>(Errors));
-            }
+            ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
         IWcfAction Method
@@ -361,19 +358,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
+            handler?.Invoke(this, args);
         }
     }
 
@@ -437,20 +428,14 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
+            handler?.Invoke(this, args);
         }
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

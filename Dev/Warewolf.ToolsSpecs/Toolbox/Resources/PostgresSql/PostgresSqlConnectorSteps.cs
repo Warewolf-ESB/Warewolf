@@ -10,8 +10,10 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -40,12 +42,12 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var postgresActivity = new DsfPostgreSqlActivity();
             var modelItem = ModelItemUtils.CreateModelItem(postgresActivity);
-          
+
             var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-           
+
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
             mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
@@ -64,18 +66,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             };
 
             var dbSources = new ObservableCollection<IDbSource> { _postgresSqlSource };
-            
+
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(_postgresSqlSource));
             mockServiceInputViewModel.SetupAllProperties();
-          
+
             var postgresDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
-            
+
             scenarioContext.Add("viewModel", postgresDesignerViewModel);
             scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
-        
+
         [When(@"I select ""(.*)"" as the source")]
         public void WhenISelectedAsTheSource(string sourceName)
         {
@@ -98,7 +100,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 dataTable.Columns.Add(new DataColumn("name"));
                 dataTable.Columns.Add(new DataColumn("salary"));
                 dataTable.Columns.Add(new DataColumn("age"));
-                dataTable.ImportRow(dataTable.LoadDataRow(new object[] { "Bill",4200,45 }, true));
+                dataTable.ImportRow(dataTable.LoadDataRow(new object[] { "Bill", 4200, 45 }, true));
                 GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
                 GetViewModel().ActionRegion.SelectedAction = _selectedAction;
             }
@@ -196,7 +198,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             };
 
             var postgresActivity = new DsfPostgreSqlActivity();
-            
+
             var modelItem = ModelItemUtils.CreateModelItem(postgresActivity);
             var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
@@ -317,6 +319,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         Mock<IDbServiceModel> GetDbServiceModel()
         {
             return scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+        }
+
+        [BeforeScenario("@OpeningSavedWorkflowWithPostgresServerTool", "@ChangeTheSourceOnExistingPostgresql", "@ChangeTheActionOnExistingPostgresql", "@ChangeTheRecordsetOnExistingPostgresqlTool")]
+        public void InitChangingFunction()
+        {
+            var mock = new Mock<IDataListViewModel>();
+            mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
+            if (DataListSingleton.ActiveDataList == null)
+                DataListSingleton.SetDataList(mock.Object);
         }
     }
 }
