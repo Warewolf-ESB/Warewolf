@@ -73378,7 +73378,8 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConfigureSwitch";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowSwitchDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "FlowSwitchDesigner";
             this.WindowTitles.Add("ActivityDefaultWindow");
             #endregion
         }
