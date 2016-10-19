@@ -9,6 +9,7 @@
 */
 
 using System;
+using Dev2.Runtime;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using DummyNamespaceForTest;
@@ -38,8 +39,9 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
             var source = CreatePluginSource();
             //------------Execute Test---------------------------
-            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            //using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
+                
                 var result = PluginServiceExecutionFactory.GetNamespaces(source);
                 //------------Assert Results-------------------------
                 Assert.IsTrue(result.Count > 0);

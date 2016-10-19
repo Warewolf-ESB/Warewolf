@@ -13,6 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Dev2.Runtime;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using DummyNamespaceForTest;
@@ -29,12 +30,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class PluginRuntimeHandlerTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        public TestContext TestContext { get; set; }
+
 
         #region FetchNamespaceListObject
 
