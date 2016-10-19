@@ -18,6 +18,7 @@ using Dev2.Runtime.Security;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable PossibleNullReferenceException
 
 namespace Dev2.Tests.Runtime.Services
 {
