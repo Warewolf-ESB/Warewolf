@@ -623,6 +623,13 @@ namespace Warewolf.UITests
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
         }
 
+        [When(@"I Click Duplicate From Duplicate Dialog")]
+        public void WhenIClickDuplicateFromDuplicateDialog()
+        {
+            Click_Duplicate_From_Duplicate_Dialog();
+        }
+
+
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
         {
@@ -830,7 +837,7 @@ namespace Warewolf.UITests
                 }
             }
         }
-        
+
         [When("I Click New Workflow Ribbon Button")]
         public void Click_New_Workflow_Ribbon_Button()
         {
@@ -1424,7 +1431,7 @@ namespace Warewolf.UITests
             }
             return neverRunDisplay;
         }
-        
+
         public void Click_Run_Test_Button(TestResultEnum? expectedTestResultEnum = null, int instance = 1)
         {
             var currentTest = GetCurrentTest(instance);
@@ -2065,5 +2072,60 @@ namespace Warewolf.UITests
         {
             MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
         }
+
+        /// <summary>
+        /// Click_Duplicate_From_Duplicate_Dialog - Use 'Click_Duplicate_From_Duplicate_DialogParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Duplicate_From_Duplicate_Dialog()
+        {
+            #region Variable Declarations
+            WpfButton duplicateButton = this.SaveDialogWindow.DuplicateButton;
+            WpfWindow saveDialogWindow = this.SaveDialogWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Duplicate' button equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_Duplicate_DialogParams.DuplicateButtonExists, duplicateButton.Exists, "Duplicate button does not exist");
+
+            // Click 'Duplicate' button
+            Mouse.Click(duplicateButton, new Point(26, 10));
+
+            Point point;
+            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+            Assert.IsFalse(saveDialogWindow.TryGetClickablePoint(out point), "Save Dialog does not exist after clicking Duplicate button");
+            
+        }
+
+        public virtual Click_Duplicate_From_Duplicate_DialogParams Click_Duplicate_From_Duplicate_DialogParams
+        {
+            get
+            {
+                if ((this.mClick_Duplicate_From_Duplicate_DialogParams == null))
+                {
+                    this.mClick_Duplicate_From_Duplicate_DialogParams = new Click_Duplicate_From_Duplicate_DialogParams();
+                }
+                return this.mClick_Duplicate_From_Duplicate_DialogParams;
+            }
+        }
+
+        private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Click_Duplicate_From_Duplicate_Dialog'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Duplicate_From_Duplicate_DialogParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Duplicate' button equals 'True'
+        /// </summary>
+        public bool DuplicateButtonExists = true;
+
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+        /// </summary>
+        public bool SaveDialogWindowExists = true;
+        #endregion
     }
 }
