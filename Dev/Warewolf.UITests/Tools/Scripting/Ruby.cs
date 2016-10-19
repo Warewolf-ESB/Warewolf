@@ -9,8 +9,7 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
 		[TestCategory("Tools")]
         public void RubyScriptToolUITest()
-        {
-            UIMap.Drag_Toolbox_Ruby_Onto_DesignSurface();
+        {            
             UIMap.Open_Ruby_Large_View();
         }
 
@@ -23,9 +22,16 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Ruby_Onto_DesignSurface();
         }
 
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
