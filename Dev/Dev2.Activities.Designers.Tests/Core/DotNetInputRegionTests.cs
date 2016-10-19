@@ -257,6 +257,51 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void UpdateOnActionSelection_GivenHasInputsWithDataTypes_ShouldWriteToActiveDatalistAndPopulatesInputValues()
+        {
+            //---------------Set up test pack-------------------
+            var eventAggregator = new Mock<IEventAggregator>();
+
+            var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
+
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
+            var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+
+            dataListItems.Add(dataListItem);
+            dataListItems.Add(secondDataListItem);
+
+            DataListSingleton.SetDataList(dataListViewModel);
+
+
+
+
+            var id = Guid.NewGuid();
+            var act = new DsfDotNetDllActivity() { SourceId = id };
+            var modelItem = ModelItemUtils.CreateModelItem(act);
+            var actionRegion = new Mock<IActionToolRegion<IPluginAction>>();
+            actionRegion.Setup(region => region.SelectedAction).Returns(ValueFunctionWithTypes);
+
+            //---------------Assert Precondition----------------
+
+            var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
+            Assert.AreEqual(4, countBefore);
+            //---------------Execute Test ----------------------
+            var inputRegion = new DotNetInputRegion(modelItem, actionRegion.Object);
+
+            var methodInfo = typeof(DotNetInputRegion).GetMethod("UpdateOnActionSelection", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.IsNotNull(methodInfo);
+            methodInfo.Invoke(inputRegion, new object[] { });
+            //---------------Test Result -----------------------
+            Assert.AreEqual("[[name]]", inputRegion.Inputs[0].Value);
+            Assert.AreEqual("[[surname]]", inputRegion.Inputs[1].Value);
+
+        }
+
         private IPluginAction ValueFunction()
         {
             return new PluginAction()
@@ -266,6 +311,19 @@ namespace Dev2.Activities.Designers.Tests.Core
                 {
                     new ServiceInput("name",""),
                     new ServiceInput("surname",""),
+                },
+            };
+        }
+
+        private IPluginAction ValueFunctionWithTypes()
+        {
+            return new PluginAction()
+            {
+                FullName = "PrintName",
+                Inputs = new List<IServiceInput>
+                {
+                    new ServiceInput("name (Int32)",""),
+                    new ServiceInput("surname (Double)",""),
                 },
             };
         }

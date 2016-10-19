@@ -22,16 +22,21 @@ namespace Dev2.Activities.Designers2.Core
                     {
                         if (DataListSingleton.ActiveDataList.ScalarCollection != null)
                         {
-                            var alreadyExists = DataListSingleton.ActiveDataList.ScalarCollection.Count(model => model.Name.Equals(serviceInput.Name, StringComparison.InvariantCulture));
-                            if (alreadyExists < 1)
+                            var value = serviceInput?.Name;
+                            if(value != null)
                             {
-                                var variable = DataListUtil.AddBracketsToValueIfNotExist(serviceInput.Name);
-                                serviceInput.Value = variable;
-                            }
-                            else
-                            {
-                                var variable = DataListUtil.AddBracketsToValueIfNotExist(serviceInput.Name);
-                                serviceInput.Value = variable;
+                                value = value.Split('(').First().TrimEnd(' ');
+                                var alreadyExists = DataListSingleton.ActiveDataList.ScalarCollection.Count(model => model.Name.Equals(value, StringComparison.InvariantCulture));
+                                if (alreadyExists < 1)
+                                {
+                                    var variable = DataListUtil.AddBracketsToValueIfNotExist(value);
+                                    serviceInput.Value = variable;
+                                }
+                                else
+                                {
+                                    var variable = DataListUtil.AddBracketsToValueIfNotExist(value);
+                                    serviceInput.Value = variable;
+                                }
                             }
                         }
                     }
