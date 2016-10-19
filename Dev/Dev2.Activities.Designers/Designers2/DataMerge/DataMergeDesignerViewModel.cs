@@ -31,6 +31,7 @@ namespace Dev2.Activities.Designers2.DataMerge
         public DataMergeDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+
             AddTitleBarLargeToggle();
             AddTitleBarQuickVariableInputToggle();
 
@@ -40,13 +41,11 @@ namespace Dev2.Activities.Designers2.DataMerge
 
             dynamic mi = ModelItem;
             InitializeItems(mi.MergeCollection);
-
-            for(var i = 0; i < mi.MergeCollection.Count; i++)
+            for (var i = 0; i < mi.MergeCollection.Count; i++)
             {
                 OnMergeTypeChanged(i);
             }
         }
-
         public override string CollectionName => "MergeCollection";
 
         public ICommand MergeTypeUpdatedCommand { get; private set; }
@@ -111,6 +110,11 @@ namespace Dev2.Activities.Designers2.DataMerge
             {
                 yield return error;
             }
+        }
+
+        protected override void RunValidation(int index)
+        {
+            OnMergeTypeChanged(index);
         }
 
         protected override void OnDispose()
