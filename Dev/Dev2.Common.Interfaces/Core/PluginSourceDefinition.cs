@@ -8,6 +8,7 @@ namespace Dev2.Common.Interfaces.Core
 
         public bool Equals(IPluginSource other)
         {
+            // ReSharper disable once PossibleNullReferenceException
             return string.Equals(Name, other.Name) && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(Path, other.Path);
         }
 
