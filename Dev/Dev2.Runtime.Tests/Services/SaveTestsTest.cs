@@ -7,7 +7,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data;
-using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;

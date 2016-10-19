@@ -1285,11 +1285,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         {
                             var decisionNode = foundNode as FlowDecision;
                             // ReSharper disable once PossibleNullReferenceException
-                            var condition = decisionNode.Condition;
-                            var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfFlowNodeActivity<bool>)condition;
-                            var expression = activity.ExpressionText;
-                            if (expression != null)
-                            {
+                            
                                 var condition = decisionNode.Condition;
                                 var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfFlowNodeActivity<bool>)condition;
                                 var expression = activity.ExpressionText;
@@ -1313,7 +1309,7 @@ namespace Dev2.Activities.Specs.TestFramework
                                             test.AddTestStep(activity.UniqueID, typeof(DsfDecision).Name, serviceTestOutputs);
                                         }
                                     }
-                                }
+                                
                             }
                         }
                     }
