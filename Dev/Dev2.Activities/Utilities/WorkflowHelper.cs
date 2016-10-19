@@ -157,7 +157,6 @@ namespace Dev2.Utilities
         void EnsureImplementation(ActivityBuilder builder, Flowchart chart)
         {
             FixExpressions(chart);
-            SetVariables(chart.Variables);
             SetNamespaces(builder);
         }
 
@@ -168,30 +167,6 @@ namespace Dev2.Utilities
         public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = GlobalConstants.Resultscache;
        
  
-        #endregion
-
-
-        
-
-        #region SetVariables
-
-        public void SetVariables(Collection<Variable> variables)
-        {
-            if(variables == null)
-            {
-                throw new ArgumentNullException(nameof(variables));
-            }
-
-            variables.Clear();
-            variables.Add(new Variable<List<string>> { Name = "InstructionList" });
-            variables.Add(new Variable<string> { Name = "LastResult" });
-            variables.Add(new Variable<bool> { Name = "HasError" });
-            variables.Add(new Variable<string> { Name = "ExplicitDataList" });
-            variables.Add(new Variable<bool> { Name = "IsValid" });
-            variables.Add(new Variable<Unlimited.Applications.BusinessDesignStudio.Activities.Util> { Name = "t" });
-            variables.Add(new Variable<Dev2DataListDecisionHandler> { Name = "Dev2DecisionHandler" });
-        }
-
         #endregion
 
         #region SetNamespaces
