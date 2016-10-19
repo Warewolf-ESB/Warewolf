@@ -11,6 +11,7 @@
 using Dev2.Common.Common;
 using Dev2.Common.DependencyVisualization;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -34,6 +35,7 @@ namespace Dev2.Common
         /// <param name="height">The height.</param>
         /// <param name="nestingLevel">How deep should the graph show.</param>
         /// <returns></returns>
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public Graph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
         {
             if (xmlData == null || xmlData.Length == 0)
@@ -41,7 +43,7 @@ namespace Dev2.Common
                 return new Graph(ErrorResource.DependencyMissing);
             }
 
-            var xe = xmlData.ToXElement();
+            XElement xe = xmlData.ToXElement();
 
             // Create a graph.
             var graphElem = xe.AncestorsAndSelf("graph").FirstOrDefault();
@@ -52,23 +54,21 @@ namespace Dev2.Common
 
             try
             {
-                // ReSharper disable once PossibleNullReferenceException
-                var title = graphElem.Attribute("title").Value;
+                string title = graphElem.Attribute("title").Value;
                 var graph = new Graph(title);
                 double count = 0;
 
                 var nodeElems = graphElem.Elements("node").ToList();
 
                 // Create all of the nodes and add them to the graph.
-                foreach (var nodeElem in nodeElems)
+                foreach (XElement nodeElem in nodeElems)
                 {
                     // build the graph position data
-                    // ReSharper disable once PossibleNullReferenceException
-                    var id = nodeElem.Attribute("id").Value;
+                    string id = nodeElem.Attribute("id").Value;
                     var node = CreateNode(nodeElem, modelName, width, height, ref count);
 
-                    var alreadyAdded = false;
-                    foreach (var n in graph.Nodes)
+                    bool alreadyAdded = false;
+                    foreach (Node n in graph.Nodes)
                     {
                         if (n.ID == id)
                         {
@@ -83,10 +83,10 @@ namespace Dev2.Common
                 }
 
                 // Associate each node with its dependencies.
-                var graphCount = graph.Nodes.Count - 1;
+                int graphCount = graph.Nodes.Count - 1;
                 if (nestingLevel > 0)
                 {
-                    for (var i = 0; i <= nestingLevel; i++)
+                    for (int i = 0; i <= nestingLevel; i++)
                     {
                         if (nestingLevel < graphCount)
                         {
@@ -95,15 +95,13 @@ namespace Dev2.Common
                         }
                     }
                 }
-                foreach (var node in graph.Nodes)
+                foreach (Node node in graph.Nodes)
                 {
-                    // ReSharper disable once PossibleNullReferenceException
                     var nodeElem = nodeElems.First(elem => elem.Attribute("id").Value == node.ID);
                     var dependencyElems = nodeElem.Elements("dependency");
-                    foreach (var dependencyElem in dependencyElems)
+                    foreach (XElement dependencyElem in dependencyElems)
                     {
-                        // ReSharper disable once PossibleNullReferenceException
-                        var depID = dependencyElem.Attribute("id").Value;
+                        string depID = dependencyElem.Attribute("id").Value;
 
                         var dependency = graph.Nodes.FirstOrDefault(n => n.ID == depID);
                         if (dependency != null)
@@ -128,16 +126,17 @@ namespace Dev2.Common
             }
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private Node CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
-            var screenWidth = width;
-            var screenHeight = height - 150;
-            var centerX = Convert.ToInt32(screenWidth / 2);
-            var centerY = Convert.ToInt32(screenHeight / 2);
-            var maxX = Convert.ToInt32(screenWidth);
-            var maxY = Convert.ToInt32(screenHeight);
+            double screenWidth = width;
+            double screenHeight = height - 150;
+            int centerX = Convert.ToInt32(screenWidth / 2);
+            int centerY = Convert.ToInt32(screenHeight / 2);
+            int maxX = Convert.ToInt32(screenWidth);
+            int maxY = Convert.ToInt32(screenHeight);
             const int Distance = 300;
-            var centerPoint = new Point(centerX, centerY);
+            Point centerPoint = new Point(centerX, centerY);
 
             double x;
             double y;
@@ -148,10 +147,10 @@ namespace Dev2.Common
             double.TryParse(tmpY, out y);
 
             // ReSharper disable once PossibleNullReferenceException
-            var id = nodeElm.Attribute("id").Value;
-            var isTarget = id == resourceName;
+            string id = nodeElm.Attribute("id").Value;
+            bool isTarget = id == resourceName;
             // ReSharper disable once PossibleNullReferenceException
-            var broken = string.Equals(nodeElm.Attribute("broken").Value, "true", StringComparison.OrdinalIgnoreCase);
+            bool broken = String.Equals(nodeElm.Attribute("broken").Value, "true", StringComparison.OrdinalIgnoreCase);
 
             if (isTarget)
             {
@@ -165,8 +164,8 @@ namespace Dev2.Common
                     count = 1.5;
                 }
 
-                var xCoOrd = (int)Math.Round(centerPoint.X - Distance * Math.Sin(count));
-                var yCoOrd = (int)Math.Round(centerPoint.Y - Distance * Math.Cos(count));
+                int xCoOrd = (int)Math.Round(centerPoint.X - Distance * Math.Sin(count));
+                int yCoOrd = (int)Math.Round(centerPoint.Y - Distance * Math.Cos(count));
 
                 if (xCoOrd >= maxX)
                 {

@@ -30,8 +30,11 @@ if ($TestList.StartsWith(",")) {
 
 # Create assemblies list.
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Tests.dll, Warewolf.*.Tests.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
-    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
+foreach ($file in Get-ChildItem $SolutionDir -Filter Warewolf.*.Tests ) {
+    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
+}
+foreach ($file in Get-ChildItem $SolutionDir -Filter Dev2.*.Tests ) {
+    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
 }
 
 # Create full VSTest argument string.

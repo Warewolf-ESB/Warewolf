@@ -36,6 +36,7 @@ namespace Dev2.FindMissingStrategies
         /// </summary>
         /// <param name="activity">The activity that the fields will be retrieved from</param>
         /// <returns>Returns all the fields in a list of strings</returns>
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public List<string> GetActivityFields(object activity)
         {
             List<string> results = new List<string>();

@@ -117,6 +117,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v15.1.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
@@ -296,7 +300,6 @@
     </Compile>
     <Compile Include="ActivityDesigners\ActivityDesignerHelper.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
-    <Compile Include="AppResources\Behaviors\ActivityDesignerAugmentationBehavior.cs" />
     <Compile Include="AppResources\Behaviors\ButtonPopupWorkaroundBehavior.cs" />
     <Compile Include="AppResources\Behaviors\PopupBuildVisualTreeOnLoad.cs" />
     <Compile Include="AppResources\Behaviors\TabGroupPaneBindingBehavior.cs" />
@@ -735,14 +738,15 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
-    <None Include="app.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="app.manifest" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Warewolf Studio.exe.config">
+    <None Include="userStudioSettings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </None>
     <None Include="Properties\licenses.licx" />
     <None Include="Properties\Settings.settings">

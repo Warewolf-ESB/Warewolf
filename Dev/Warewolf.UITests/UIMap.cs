@@ -22,7 +22,7 @@ namespace Warewolf.UITests
 {
     public partial class UIMap
     {
-        const int _lenientSearchTimeout = 9000;
+        const int _lenientSearchTimeout = 30000;
         const int _lenientMaximumRetryCount = 3;
         const int _strictSearchTimeout = 3000;
         const int _strictMaximumRetryCount = 1;
@@ -36,8 +36,8 @@ namespace Warewolf.UITests
 #else
             Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
 #endif
-            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
+            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
@@ -54,8 +54,19 @@ namespace Warewolf.UITests
             TryCloseHangingDebugInputDialog();
             TryCloseHangingSaveDialog();
             TryCloseHangingServicePickerDialog();
+            TryCloseHangingWindowsGroupDialog();
+            TryPin_Unpinned_Pane_To_Default_Position();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner); 
 #endif
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+        }
+
+        public void TryPin_Unpinned_Pane_To_Default_Position()
+        {
+            if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
+            {
+                Restore_Unpinned_Tab_Using_Context_Menu();
+            }
         }
 
         private void TryCloseHangingServicePickerDialog()
@@ -605,12 +616,19 @@ namespace Warewolf.UITests
         {
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, true, false, SaveOrDuplicate.Duplicate);
         }
-        
+
         [When(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Duplicate_Dialog(string ServiceName)
         {
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
         }
+
+        [When(@"I Click Duplicate From Duplicate Dialog")]
+        public void WhenIClickDuplicateFromDuplicateDialog()
+        {
+            Click_Duplicate_From_Duplicate_Dialog();
+        }
+
 
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
@@ -819,7 +837,7 @@ namespace Warewolf.UITests
                 }
             }
         }
-        
+
         [When("I Click New Workflow Ribbon Button")]
         public void Click_New_Workflow_Ribbon_Button()
         {
@@ -832,7 +850,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton.Exists, "Connect in Explorer does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton.Exists, "Edit Connect control button does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.Exists, "Variable list view does not exist");
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save menu button not enabled for new workflow.");
         }
 
         [When(@"I Select Last Source From GET Web Large View Source Combobox")]
@@ -1217,6 +1234,8 @@ namespace Warewolf.UITests
             WpfText text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
             #endregion
 
+            Filter_Explorer(ServiceName);
+            RightClick_Explorer_Localhost_First_Item();
             Mouse.Click(showDependencies, new Point(50, 15));
             Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
             Assert.IsTrue(textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
@@ -1412,7 +1431,7 @@ namespace Warewolf.UITests
             }
             return neverRunDisplay;
         }
-        
+
         public void Click_Run_Test_Button(TestResultEnum? expectedTestResultEnum = null, int instance = 1)
         {
             var currentTest = GetCurrentTest(instance);
@@ -1687,19 +1706,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field2.Exists, "rec().b does not exist in the variable explorer");
         }
 
-        public void Enter_Text_Into_Debug_Input_Row1_Value_Textbox_With_Special_Test_For_Textbox_Height(string text)
-        {
-            var varValue = MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
-
-            var heightBeforeEnterClick = varValue.Height;
-            varValue.Text = text;
-            Keyboard.SendKeys(varValue, "{Enter}", ModifierKeys.None);
-            Assert.IsTrue(varValue.Height > heightBeforeEnterClick, "Debug input dialog does not resize after adding second line.");
-
-            Keyboard.SendKeys(varValue, "{Back}", ModifierKeys.None);
-            Assert.AreEqual(heightBeforeEnterClick, varValue.Height, "Debug input dialog value textbox does not resize after deleting second line.");
-        }
-
         public void Press_F5_To_Debug()
         {
             Keyboard.SendKeys(MainStudioWindow, "{F5}", ModifierKeys.None);
@@ -1776,8 +1782,15 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink.Exists, "Url hyperlink does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink, new Point(201, 10));
-            Assert.IsTrue(MessageBoxWindow.Exists, "Did you know popup does not exis");
-            Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Ok button does not exist on the DidYouKnow button");
+            Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Did you know popup does not exist after clicking workflow hyperlink.");
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
+        }
+
+        public void Click_Assign_Tool_url_On_Unpinned_Tab()
+        {
+            Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink.Exists, "Url hyperlink does not exist on unpinned tab.");
+            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink, new Point(201, 10));
+            Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Did you know popup does not exist after clicking workflow hyperlink on unpinned tab.");
             Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
         }
 
@@ -1967,12 +1980,19 @@ namespace Warewolf.UITests
             Point point;
             Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
         }
-        
+
         public void Delete_Assign_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Delete, new Point(27, 18));
             Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView), "Assign tool still exists on design surface after deleting with context menu.");
+        }
+
+        public void Delete_Assign_With_Context_Menu_On_Unpinned_Tab()
+        {
+            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Delete, new Point(27, 18));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView), "Assign tool still exists on unpinned design surface after deleting with context menu.");
         }
 
         public void Debug_Workflow_With_Ribbon_Button()
@@ -1987,6 +2007,13 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRowMenuItem, MouseButtons.Left, ModifierKeys.None, new Point(6, 6));
             Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1.");
+        }
+
+        public void Remove_Assign_Row_1_With_Context_Menu_On_Unpinned_Tab()
+        {
+            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRowMenuItem, MouseButtons.Left, ModifierKeys.None, new Point(6, 6));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1 on unpinned tab.");
         }
 
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
@@ -2008,5 +2035,97 @@ namespace Warewolf.UITests
                     break;
             }
         }
+
+        [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1 on unpinned tab")]
+        public void Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab(string VariableText, string ValueText, int RowNumber)
+        {
+            switch (RowNumber)
+            {
+                case 2:
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextboxText = VariableText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextEditText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tab();
+                    Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2 on unpinned tab.");
+                    break;
+                default:
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextboxText = VariableText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextEditText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tab();
+                    Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1 on unpinned tab.");
+                    break;
+            }
+        }
+
+        public void Pin_Unpinned_Pane_To_Default_Position()
+        {
+            Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
+            Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
+        }
+
+        public void Unpin_Tab_With_Drag(UITestControl Tab)
+        {
+            Mouse.StartDragging(Tab);
+            Mouse.StopDragging(25, 40);
+        }
+
+        public void Check_Debug_Input_Dialog_Remember_Inputs_Checkbox()
+        {
+            MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
+        }
+
+        /// <summary>
+        /// Click_Duplicate_From_Duplicate_Dialog - Use 'Click_Duplicate_From_Duplicate_DialogParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Duplicate_From_Duplicate_Dialog()
+        {
+            #region Variable Declarations
+            WpfButton duplicateButton = this.SaveDialogWindow.DuplicateButton;
+            WpfWindow saveDialogWindow = this.SaveDialogWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Duplicate' button equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_Duplicate_DialogParams.DuplicateButtonExists, duplicateButton.Exists, "Duplicate button does not exist");
+
+            // Click 'Duplicate' button
+            Mouse.Click(duplicateButton, new Point(26, 10));
+
+            Point point;
+            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+            Assert.IsFalse(saveDialogWindow.TryGetClickablePoint(out point), "Save Dialog does not exist after clicking Duplicate button");
+            
+        }
+
+        public virtual Click_Duplicate_From_Duplicate_DialogParams Click_Duplicate_From_Duplicate_DialogParams
+        {
+            get
+            {
+                if ((this.mClick_Duplicate_From_Duplicate_DialogParams == null))
+                {
+                    this.mClick_Duplicate_From_Duplicate_DialogParams = new Click_Duplicate_From_Duplicate_DialogParams();
+                }
+                return this.mClick_Duplicate_From_Duplicate_DialogParams;
+            }
+        }
+
+        private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Click_Duplicate_From_Duplicate_Dialog'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Duplicate_From_Duplicate_DialogParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Duplicate' button equals 'True'
+        /// </summary>
+        public bool DuplicateButtonExists = true;
+
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+        /// </summary>
+        public bool SaveDialogWindowExists = true;
+        #endregion
     }
 }

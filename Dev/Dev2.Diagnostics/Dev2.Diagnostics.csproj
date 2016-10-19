@@ -77,6 +77,7 @@
     <Compile Include="Debug\DebugDispatcher.cs" />
     <Compile Include="Debug\DebugItem.cs" />
     <Compile Include="Debug\DebugItemResult.cs" />
+    <Compile Include="Debug\DebugMessageRepo.cs" />
     <Compile Include="Debug\DebugState.cs" />
     <Compile Include="Debug\DirectoryPath.cs" />
     <Compile Include="Debug\FilePath.cs" />
@@ -106,7 +107,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

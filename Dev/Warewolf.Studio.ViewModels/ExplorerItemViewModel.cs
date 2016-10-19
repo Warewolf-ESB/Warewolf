@@ -264,6 +264,26 @@ namespace Warewolf.Studio.ViewModels
             {
                 _explorerItemViewModelCommandController.NewServiceCommand(ResourcePath, Server);
             });
+            DebugStudioCommand = new DelegateCommand<string>(type =>
+            {
+                _explorerItemViewModelCommandController.DebugStudioCommand(ResourceId, Server);
+            });
+            DebugBrowserCommand = new DelegateCommand<string>(type =>
+            {
+                _explorerItemViewModelCommandController.DebugBrowserCommand(ResourceId, Server);
+            });
+            ScheduleCommand = new DelegateCommand<string>(type =>
+            {
+                _explorerItemViewModelCommandController.ScheduleCommand(ResourceId);
+            });
+            RunAllTestsCommand = new DelegateCommand<string>(type =>
+            {
+                _explorerItemViewModelCommandController.RunAllTestsCommand(ResourceId);
+            });
+            CopyUrlCommand = new DelegateCommand<string>(type =>
+            {
+                _explorerItemViewModelCommandController.CopyUrlCommand(ResourceId, Server);
+            });
             ShowDependenciesCommand = new DelegateCommand(ShowDependencies);
             ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
             DeleteCommand = new DelegateCommand(Delete);
@@ -671,17 +691,15 @@ namespace Warewolf.Studio.ViewModels
                                 {
                                     if (_resourceName != null)
                                     {
-                                        ResourcePath = ResourcePath.Replace(_resourceName, newName);
+                                        ResourcePath = ResourcePath.Replace(_resourceName, newName);                                                                                
                                     }
                                 }
                                 else
                                 {
-                                    ResourcePath =
-                                        ResourcePath.Substring(0,
-                                            ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) +
-                                        newName;
+                                    ResourcePath = ResourcePath.Substring(0,ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) +newName;
+                                    
                                 }
-
+                                UpdateResourcePaths(this);                                                                
                                 _resourceName = newName;
                             }
                         }
@@ -783,6 +801,12 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewSharepointSourceSourceCommand { get; set; }
         public ICommand NewDropboxSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
+
+        public ICommand DebugStudioCommand { get; set; }
+        public ICommand DebugBrowserCommand { get; set; }
+        public ICommand ScheduleCommand { get; set; }
+        public ICommand RunAllTestsCommand { get; set; }
+        public ICommand CopyUrlCommand { get; set; }
 
         public bool ForcedRefresh
         {
@@ -1213,7 +1237,6 @@ namespace Warewolf.Studio.ViewModels
                 if (!moveResult)
                 {
                     ShowErrorMessage(Resources.Languages.Core.ExplorerMoveFailedMessage, Resources.Languages.Core.ExplorerMoveFailedHeader);
-                    Server.UpdateRepository.FireItemSaved(true);
                     return false;
                 }
                 UpdateResourcePaths(destination);
@@ -1221,7 +1244,6 @@ namespace Warewolf.Studio.ViewModels
             catch (Exception ex)
             {
                 ShowErrorMessage(ex.Message, Resources.Languages.Core.ExplorerMoveFailedHeader);
-                Server.UpdateRepository.FireItemSaved(true);
                 return false;
             }
             finally
