@@ -10,8 +10,10 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -461,6 +463,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(true);
         }
        
+        [BeforeScenario("@ChangingSqlServerFunctions")]
+        public void InitChangingFunction()
+        {
+            var mock = new Mock<IDataListViewModel>();
+            mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
+            if (DataListSingleton.ActiveDataList == null)
+                DataListSingleton.SetDataList(mock.Object);
+        }
+
         #region Private Methods
 
         SqlServerDatabaseDesignerViewModel GetViewModel()
