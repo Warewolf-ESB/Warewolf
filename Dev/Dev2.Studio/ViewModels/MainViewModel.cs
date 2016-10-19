@@ -614,6 +614,12 @@ namespace Dev2.Studio.ViewModels
                 QuickViewInBrowserCommand.Execute(contextualResourceModel);
             }
         }
+
+        public void SetRefreshExplorerState(bool refresh)
+        {
+            ExplorerViewModel.IsRefreshing = refresh;
+        }
+
         public void OpenResource(Guid resourceId, IServer server)
         {
             OpenResource(resourceId, server.EnvironmentID);

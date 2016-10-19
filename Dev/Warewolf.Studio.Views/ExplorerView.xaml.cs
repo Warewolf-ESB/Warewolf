@@ -602,28 +602,15 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ExplorerTree_OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            XamDataTree dataTree = sender as XamDataTree;
-            var source = e.Source;
-            if (dataTree != null && source != null)
-            {
-                var activeNode = dataTree.ActiveNode;
-                var activeDataItem = dataTree.ActiveDataItem;
-                
-            }
-        }
-
         private void XamContextMenu_Opening(object sender, OpeningEventArgs e)
         {
             var node = ((XamDataTreeNodeDataContext)((ContentPresenter)((FrameworkElement)sender).TemplatedParent).Content).Node;
 
             if (node?.NodeLayout?.Tree != null)
             {
-                var clickedNode = node;                
+                var clickedNode = node;
                 clickedNode.IsActive = true;
             }
         }
-
     }
 }
