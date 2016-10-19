@@ -2256,6 +2256,21 @@ namespace Warewolf.UITests
             //Assert.IsFalse(uIRemoteConnectionInteText.DisplayText.Contains("*"), "Remote Connection Intergration Tab does not contain the star");
         }
 
+        public void Enter_Text_Into_Assign_QviLarge_View()
+        {
+            #region Variable Declarations
+                        
+            var qviVariableListBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.QviVariableListBoxEdit;
+            var qviSplitOnCharacterEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.QviSplitOnCharacterEdit;
+            var prefixEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.PrefixEdit;
+            var suffixEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.SuffixEdit;
+            #endregion
+
+            qviVariableListBoxEdit.Text = "varOne,varTwo,varThree";
+            qviSplitOnCharacterEdit.Text = ",";
+            prefixEdit.Text = "some(<).";
+            suffixEdit.Text = "_suf";
+        }
         public void Enter_Text_Into_EmailSource_Tab()
         {
             #region Variable Declarations
