@@ -845,7 +845,6 @@ namespace Warewolf.UITests
         public void Click_New_Workflow_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(3, 8));
-            //Playback.Wait(500);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "New Workflow Tab Does Not Exist after clicking new workflow ribbon button.");
         }
 
