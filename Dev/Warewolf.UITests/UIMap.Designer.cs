@@ -2295,17 +2295,17 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom startNode = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
-            WpfMenuItem debugInputsMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DebugInputsMenuItem;
-            WpfMenuItem debugStudioMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DebugStudioMenuItem;
-            WpfMenuItem debugBrowserMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DebugBrowserMenuItem;
-            WpfMenuItem scheduleMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.ScheduleMenuItem;
-            WpfMenuItem testEditorMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.TestEditorMenuItem;
-            WpfMenuItem runAllTestsMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.RunAllTestsMenuItem;
-            WpfMenuItem duplicateMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DuplicateMenuItem;
-            WpfMenuItem deployMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DeployMenuItem;
-            WpfMenuItem showDependenciesMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.ShowDependenciesMenuItem;
-            WpfMenuItem viewSwaggerMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.ViewSwaggerMenuItem;
-            WpfMenuItem copyURLtoClipboardMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.CopyURLtoClipboardMenuItem;
+            WpfMenuItem debugInputsMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugInputsMenuItem;
+            WpfMenuItem debugStudioMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugStudioMenuItem;
+            WpfMenuItem debugBrowserMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugBrowserMenuItem;
+            WpfMenuItem scheduleMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ScheduleMenuItem;
+            WpfMenuItem testEditorMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.TestEditorMenuItem;
+            WpfMenuItem runAllTestsMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.RunAllTestsMenuItem;
+            WpfMenuItem duplicateMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DuplicateMenuItem;
+            WpfMenuItem deployMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DeployMenuItem;
+            WpfMenuItem showDependenciesMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ShowDependenciesMenuItem;
+            WpfMenuItem viewSwaggerMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ViewSwaggerMenuItem;
+            WpfMenuItem copyURLtoClipboardMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.CopyURLtoClipboardMenuItem;
             #endregion
 
             // Right-Click 'StartNode' custom control
@@ -5955,6 +5955,56 @@ namespace Warewolf.UITests
 
             // Verify that the 'Enabled' property of 'Save' button equals 'False'
             Assert.AreEqual(this.Remove_WorkflowName_From_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save button on the Save dialog is enabled");
+        }
+        
+        /// <summary>
+        /// Rename_FolderItem_ToNewFolderItem - Use 'Rename_FolderItem_ToNewFolderItemParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Rename FolderItem ToNewFolderItem")]
+        public void Rename_FolderItem_ToNewFolderItem()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstSubItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem;
+            WpfMenuItem rename = this.MainStudioWindow.ExplorerContextMenu.Rename;
+            WpfEdit itemEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+
+            // Click 'Rename' menu item
+            Mouse.Click(rename, new Point(27, 18));
+
+            // Type 'Control Flow - Decision2' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            itemEdit.Text = this.Rename_FolderItem_ToNewFolderItemParams.ItemEditText;
+
+            // Type '{Enter}' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Keyboard.SendKeys(itemEdit, this.Rename_FolderItem_ToNewFolderItemParams.ItemEditSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// Rename_LocalFolder_To_SecondFolder - Use 'Rename_LocalFolder_To_SecondFolderParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Rename LocalFolder To SecondFolder")]
+        public void Rename_LocalFolder_To_SecondFolder()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem rename = this.MainStudioWindow.ExplorerContextMenu.Rename;
+            WpfEdit itemEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+
+            // Click 'Rename' menu item
+            Mouse.Click(rename, new Point(27, 18));
+
+            // Type 'Example' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            itemEdit.Text = this.Rename_LocalFolder_To_SecondFolderParams.ItemEditText;
+
+            // Type '{Enter}' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Keyboard.SendKeys(itemEdit, this.Rename_LocalFolder_To_SecondFolderParams.ItemEditSendKeys, ModifierKeys.None);
         }
         
         /// <summary>
@@ -10155,6 +10205,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Rename_FolderItem_ToNewFolderItemParams Rename_FolderItem_ToNewFolderItemParams
+        {
+            get
+            {
+                if ((this.mRename_FolderItem_ToNewFolderItemParams == null))
+                {
+                    this.mRename_FolderItem_ToNewFolderItemParams = new Rename_FolderItem_ToNewFolderItemParams();
+                }
+                return this.mRename_FolderItem_ToNewFolderItemParams;
+            }
+        }
+        
+        public virtual Rename_LocalFolder_To_SecondFolderParams Rename_LocalFolder_To_SecondFolderParams
+        {
+            get
+            {
+                if ((this.mRename_LocalFolder_To_SecondFolderParams == null))
+                {
+                    this.mRename_LocalFolder_To_SecondFolderParams = new Rename_LocalFolder_To_SecondFolderParams();
+                }
+                return this.mRename_LocalFolder_To_SecondFolderParams;
+            }
+        }
+        
         public virtual Rename_LocalWorkflow_To_SecodWorkFlowParams Rename_LocalWorkflow_To_SecodWorkFlowParams
         {
             get
@@ -10658,6 +10732,18 @@ namespace Warewolf.UITests
                 return this.mStartNodePopupWindow;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -11059,6 +11145,10 @@ namespace Warewolf.UITests
         
         private Remove_WorkflowName_From_Save_DialogParams mRemove_WorkflowName_From_Save_DialogParams;
         
+        private Rename_FolderItem_ToNewFolderItemParams mRename_FolderItem_ToNewFolderItemParams;
+        
+        private Rename_LocalFolder_To_SecondFolderParams mRename_LocalFolder_To_SecondFolderParams;
+        
         private Rename_LocalWorkflow_To_SecodWorkFlowParams mRename_LocalWorkflow_To_SecodWorkFlowParams;
         
         private Restore_Unpinned_Tab_Using_Context_MenuExpectedValues mRestore_Unpinned_Tab_Using_Context_MenuExpectedValues;
@@ -11142,6 +11232,8 @@ namespace Warewolf.UITests
         private SwitchCaseDialog mSwitchCaseDialog;
         
         private StartNodePopupWindow mStartNodePopupWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -15655,6 +15747,46 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Rename_FolderItem_ToNewFolderItem'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Rename_FolderItem_ToNewFolderItemParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Control Flow - Decision2' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+        /// </summary>
+        public string ItemEditText = "Control Flow - Decision2";
+        
+        /// <summary>
+        /// Type '{Enter}' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+        /// </summary>
+        public string ItemEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Rename_LocalFolder_To_SecondFolder'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Rename_LocalFolder_To_SecondFolderParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Example' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+        /// </summary>
+        public string ItemEditText = "Example";
+        
+        /// <summary>
+        /// Type '{Enter}' in first text box next to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+        /// </summary>
+        public string ItemEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Rename_LocalWorkflow_To_SecodWorkFlow'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -19441,12 +19573,31 @@ namespace Warewolf.UITests
                 return this.mItemEdit;
             }
         }
+        
+        public WpfText ResourceNameTextBlock
+        {
+            get
+            {
+                if ((this.mResourceNameTextBlock == null))
+                {
+                    this.mResourceNameTextBlock = new WpfText(this);
+                    #region Search Criteria
+                    this.mResourceNameTextBlock.SearchProperties[WpfText.PropertyNames.AutomationId] = "ResourceNameTextBlock";
+                    this.mResourceNameTextBlock.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mResourceNameTextBlock.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mResourceNameTextBlock;
+            }
+        }
         #endregion
         
         #region Fields
         private ResourceImageImage1 mResourceImageImage;
         
         private WpfEdit mItemEdit;
+        
+        private WpfText mResourceNameTextBlock;
         #endregion
     }
     
@@ -52379,29 +52530,29 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public UIItemWindow1 UIItemWindow1
+        public CustomWindow CustomWindow
         {
             get
             {
-                if ((this.mUIItemWindow1 == null))
+                if ((this.mCustomWindow == null))
                 {
-                    this.mUIItemWindow1 = new UIItemWindow1(this);
+                    this.mCustomWindow = new CustomWindow(this);
                 }
-                return this.mUIItemWindow1;
+                return this.mCustomWindow;
             }
         }
         #endregion
         
         #region Fields
-        private UIItemWindow1 mUIItemWindow1;
+        private CustomWindow mCustomWindow;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemWindow1 : WpfWindow
+    public class CustomWindow : WpfWindow
     {
         
-        public UIItemWindow1(UITestControl searchLimitContainer) : 
+        public CustomWindow(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
         }
@@ -52626,6 +52777,175 @@ namespace Warewolf.UITests
         private WpfMenuItem mViewSwaggerMenuItem;
         
         private WpfMenuItem mCopyURLtoClipboardMenuItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ExplorerControl_ACustom == null))
+                {
+                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
+                }
+                return this.mUIUI_ExplorerControl_ACustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_ExplorerControl_ACustom : WpfCustom
+    {
+        
+        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIExplorerTreeTree UIExplorerTreeTree
+        {
+            get
+            {
+                if ((this.mUIExplorerTreeTree == null))
+                {
+                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
+                }
+                return this.mUIExplorerTreeTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIExplorerTreeTree mUIExplorerTreeTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIExplorerTreeTree : WpfTree
+    {
+        
+        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIInfragisticsControlsTreeItem UIInfragisticsControlsTreeItem
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem = new UIInfragisticsControlsTreeItem(this);
+                }
+                return this.mUIInfragisticsControlsTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIInfragisticsControlsTreeItem mUIInfragisticsControlsTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIInfragisticsControlsTreeItem : WpfTreeItem
+    {
+        
+        public UIInfragisticsControlsTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIInfragisticsControlsTreeItem1 UIInfragisticsControlsTreeItem1
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem1 == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem1 = new UIInfragisticsControlsTreeItem1(this);
+                }
+                return this.mUIInfragisticsControlsTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIInfragisticsControlsTreeItem1 mUIInfragisticsControlsTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIInfragisticsControlsTreeItem1 : WpfTreeItem
+    {
+        
+        public UIInfragisticsControlsTreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem UIInfragisticsControlsTreeItem
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIInfragisticsControlsTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mUIInfragisticsControlsTreeItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIInfragisticsControlsTreeItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mUIInfragisticsControlsTreeItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIInfragisticsControlsTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mUIInfragisticsControlsTreeItem;
         #endregion
     }
 }
