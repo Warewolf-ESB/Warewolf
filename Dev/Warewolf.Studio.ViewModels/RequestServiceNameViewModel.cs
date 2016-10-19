@@ -253,9 +253,10 @@ namespace Warewolf.Studio.ViewModels
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
             _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a =>
             {
-                if (!string.IsNullOrEmpty(_selectedPath))
+
+                try
                 {
-                    try
+                    if (!string.IsNullOrEmpty(_selectedPath))
                     {
                         _environmentViewModel.SelectItem(_selectedPath, b =>
                         {
@@ -263,16 +264,17 @@ namespace Warewolf.Studio.ViewModels
                             b.IsSelected = true;
                         });
                     }
-                    catch (Exception)
-                    {
-                        //
-                    }
-                    finally
-                    {
-                        HasLoaded = a.Result;
-                    }
-
                 }
+                catch (Exception)
+                {
+                    //
+                }
+                finally
+                {
+                    HasLoaded = a.Result;
+                }
+
+
 
                 ValidateName();
             }, TaskContinuationOptions.ExecuteSynchronously);
