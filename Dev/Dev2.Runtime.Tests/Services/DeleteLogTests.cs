@@ -15,7 +15,6 @@ using System.Text;
 using System.Threading;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
-using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;

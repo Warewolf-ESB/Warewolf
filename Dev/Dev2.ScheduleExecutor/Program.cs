@@ -326,7 +326,6 @@ namespace Dev2.ScheduleExecutor
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        private static IEnumerable<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
         // ReSharper disable once ReturnTypeCanBeEnumerable.Local
         private static List<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
         {
