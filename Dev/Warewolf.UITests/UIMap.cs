@@ -60,26 +60,76 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
+        [When(@"I Try Click Message Box OK")]
+        public void TryClickMessageBoxOK()
+        {
+            if (ControlExistsNow(MessageBoxWindow.OKButton))
+            {
+                Click_MessageBox_OK();
+            }
+            else
+            {
+                Console.WriteLine("No hanging message box to clean up.");
+            }
+        }
+
+        public void TryCloseHangingDebugInputDialog()
+        {
+            if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
+            {
+                Click_DebugInput_Cancel_Button();
+            }
+            else
+            {
+                Console.WriteLine("No hanging debug input dialog to clean up.");
+            }
+        }
+
+        public void TryCloseHangingSaveDialog()
+        {
+            if (ControlExistsNow(SaveDialogWindow.CancelButton))
+            {
+                Click_SaveDialog_CancelButton();
+            }
+            else
+            {
+                Console.WriteLine("No hanging save dialog to clean up.");
+            }
+        }
+
         public void TryPin_Unpinned_Pane_To_Default_Position()
         {
             if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
             {
                 Restore_Unpinned_Tab_Using_Context_Menu();
             }
+			else
+			{
+				Console.WriteLine("No hanging unpinned pane to clean up.");
+			}
         }
 
         private void TryCloseHangingServicePickerDialog()
         {
-            try
+			if (ControlExistsNow(ServicePickerDialog.Cancel))
+			{
+				Click_Service_Picker_Dialog_Cancel();
+			}
+			else
+			{
+				Console.WriteLine("No hanging service picker dialog to clean up.");
+			}
+        }
+
+        public void TryCloseHangingWindowsGroupDialog()
+        {
+            if (ControlExistsNow(SelectWindowsGroupDialog))
             {
-                if (ControlExistsNow(ServicePickerDialog.Cancel))
-                {
-                    Click_Service_Picker_Dialog_Cancel();
-                }
+                Click_Select_Windows_Group_Cancel_Button();
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine("No hanging service picker dialog to clean up.\n" + e.Message);
+                Console.WriteLine("No hanging select windows group dialog to clean up.");
             }
         }
 
@@ -194,15 +244,6 @@ namespace Warewolf.UITests
             return controlExists;
         }
 
-        [When(@"I Try Click Message Box OK")]
-        public void TryClickMessageBoxOK()
-        {
-            if (ControlExistsNow(MessageBoxWindow.OKButton))
-            {
-                Click_MessageBox_OK();
-            }
-        }
-
         public void InitializeABlankWorkflow()
         {
             Click_New_Workflow_Ribbon_Button();
@@ -290,21 +331,6 @@ namespace Warewolf.UITests
             return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
         }
 
-        public void TryCloseHangingSaveDialog()
-        {
-            try
-            {
-                if (ControlExistsNow(SaveDialogWindow.CancelButton))
-                {
-                    Click_SaveDialog_CancelButton();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup threw an unhandled exception trying to remove hanging save dialog. Test may have crashed without leaving a hanging dialog.\n" + e.Message);
-            }
-        }
-
         public void TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(string SourceName)
         {
             try
@@ -364,21 +390,6 @@ namespace Warewolf.UITests
             finally
             {
                 TryClearExplorerFilter();
-            }
-        }
-
-        public void TryCloseHangingWindowsGroupDialog()
-        {
-            try
-            {
-                if (ControlExistsNow(SelectWindowsGroupDialog))
-                {
-                    Click_Select_Windows_Group_Cancel_Button();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
             }
         }
 
@@ -699,21 +710,6 @@ namespace Warewolf.UITests
             Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1, new Point(91, 9));
             Assert.IsTrue(ServicePickerDialog.OK.Enabled, "Service picker dialog OK button is not enabled.");
             Click_Service_Picker_Dialog_OK();
-        }
-
-        public void TryCloseHangingDebugInputDialog()
-        {
-            try
-            {
-                if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
-                {
-                    Click_DebugInput_Cancel_Button();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
-            }
         }
 
         public void TryRefreshExplorerUntilOneItemOnly(int retries = 3)
