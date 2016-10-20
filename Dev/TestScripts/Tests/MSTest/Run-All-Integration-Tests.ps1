@@ -52,7 +52,7 @@ foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.IntegrationTests.dll 
 }
 
 # Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + " /resultsfile:IntegrationTestResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\IntegrationTestResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
