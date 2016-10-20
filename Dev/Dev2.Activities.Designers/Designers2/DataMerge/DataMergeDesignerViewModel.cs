@@ -27,11 +27,10 @@ namespace Dev2.Activities.Designers2.DataMerge
         public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public IList<string> ItemsList { get; private set; }
         public IList<string> AlignmentTypes { get; private set; }
-
+        
         public DataMergeDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
-        {
-
+        {            
             AddTitleBarLargeToggle();
             AddTitleBarQuickVariableInputToggle();
 
@@ -114,6 +113,8 @@ namespace Dev2.Activities.Designers2.DataMerge
 
         protected override void RunValidation(int index)
         {
+            if (index == -1)
+                return;
             OnMergeTypeChanged(index);
         }
 

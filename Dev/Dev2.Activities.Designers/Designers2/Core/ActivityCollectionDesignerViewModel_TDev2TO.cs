@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         protected void InitializeItems(ModelItemCollection modelItemCollection)
-        {
+        {            
             ModelItemCollection = modelItemCollection;
             BindingOperations.EnableCollectionSynchronization(ModelItemCollection, _syncLock);
             // Do this before, because AddDTO() also attaches events
@@ -181,7 +181,7 @@ namespace Dev2.Activities.Designers2.Core
             UpdateDisplayName();
         }
 
-        protected override void AddToCollection(IEnumerable<string> source, bool overwrite)
+        protected override void AddToCollection(IEnumerable<string> sources, bool overwrite)
         {
             if (ModelItemCollection != null)
             {
@@ -195,7 +195,7 @@ namespace Dev2.Activities.Designers2.Core
             var indexNumber = GetIndexForAdd(overwrite);
 
             // Always insert items before blank row
-            foreach (var s in source.Where(s => !string.IsNullOrWhiteSpace(s)))
+            foreach (var s in sources.Where(s => !string.IsNullOrWhiteSpace(s)))
             {
                 AddDto(indexNumber, s);
                 indexNumber++;
@@ -303,6 +303,7 @@ namespace Dev2.Activities.Designers2.Core
                 if (ModelItemCollection != null)
                 {
                     ModelItemCollection.Insert(idx, dto);
+                    RunValidation(idx);
                 }
             }
         }
