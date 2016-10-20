@@ -140,6 +140,11 @@ namespace Dev2.Runtime.Hosting
                 return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
             }
             ResourceCatalogResult result = ResourceCatalogue.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName, itemToRename.ResourcePath);
+            if (result.Status == ExecStatus.Success)
+            {
+                ResourceCatalog.Instance.Reload();
+                Load(workSpaceId, true);
+            }
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
@@ -155,6 +160,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     Directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
                     MoveVersionFolder(path, newPath);
+                    ResourceCatalog.Instance.Reload();
                     Load(workSpaceId, true);
                 }
                 else
