@@ -1,7 +1,7 @@
 ﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
-$SolutionDir = (Get-Item $PSScriptRoot ).parent.parent.FullName
+$SolutionDir = (Get-Item $PSScriptRoot ).parent.parent.parent.FullName
 # Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
@@ -29,16 +29,16 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
+$TestSettingsFile = "$PSScriptRoot\ExampleWorkflowExecutionSpecs.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
-  name="ExampleWorkflowExecutionSpecs"
-  enableDefaultDataCollectors="false"
+  name=`"ExampleWorkflowExecutionSpecs`"
+  enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>Run example workflow execution specs.</Description>
-  <Deployment enabled="false" />
+  <Deployment enabled=`"false`" />
   <Execution>
     <Timeouts testTimeout=`"180000`" />
   </Execution>
@@ -47,24 +47,32 @@ $TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
 
 # Create assemblies list.
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Specs.dll, Warewolf.*.Specs.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
-    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
+foreach ($file in Get-ChildItem $SolutionDir -Filter Warewolf.*.Specs ) {
+    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
+}
+foreach ($file in Get-ChildItem $SolutionDir -Filter Dev2.*.Specs ) {
+    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
 }
 
-# Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"TestCategory=SubworkflowExecution`""
+if ($TestList -eq "") {
+	# Create full VSTest argument string.
+	$FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=ExampleWorkflowExecution`""
+} else {
+	# Create full VSTest argument string.
+	$FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+}
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
 # Start server under test
-cmd.exe /c '$SolutionDir\TestScripts\Studio\Startup.bat'
+cmd.exe /c $SolutionDir\TestScripts\Server\Service\Startup.bat
 
 # Run VSTest with full argument string.
 Start-Process -FilePath "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
 
 # Stop server under test
-cmd.exe /c '$SolutionDir\TestScripts\Studio\Cleanup.bat'
+cmd.exe /c $SolutionDir\TestScripts\Server\Service\Cleanup.bat
 
 # Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"

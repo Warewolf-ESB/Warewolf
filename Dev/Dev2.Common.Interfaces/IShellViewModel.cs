@@ -68,5 +68,6 @@ namespace Dev2.Common.Interfaces
         void StudioDebug(Guid resourceId, IServer server);
         void CopyUrlLink(Guid resourceId, IServer server);
         void NewSchedule(Guid resourceId);
+        void SetRefreshExplorerState(bool refresh);
     }
 }
