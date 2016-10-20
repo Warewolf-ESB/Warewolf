@@ -85,7 +85,7 @@ namespace Warewolf.Studio.Views
 
         public void AddNewFolder(string folder, string server)
         {
-            ExplorerViewTestClass.PerformFolderAdd(server, folder);
+            ExplorerViewTestClass.PerformFolderAdd(folder, server);
         }
 
         public void VerifyItemExists(string path)
