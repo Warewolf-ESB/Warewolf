@@ -17,7 +17,7 @@ Scenario: Creating Oracle Server Connector
 	Then Inputs is Enable 
 	And Inputs appear az 
 	| Input     | Value | Empty is Null |
-	| EID		|       | false         |
+	| EID		|  [[EID]]     | false         |
 	And Validate is Enable
 	When I click Validat
 	And Test Inputs appear az
@@ -41,8 +41,8 @@ Scenario: Opening Saved workflow with Oracle Server tool
 	And Action iss "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
 	Then Inputs appear az
-	| Input | Value | Empty is Null |
-	| Prefix | [[Prefix]]    | false         | 
+	| Input  | Value      | Empty is Null |
+	| Prefix | [[Prefix]] | false         |
 	And Validate is Enable
 	Then Outputs appear az
 	| Mapped From | Mapped To                                   | 
@@ -58,8 +58,8 @@ Scenario: Change Source on Existing tool
 	And Action iss "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
 	Then Inputs appear az
-	| Input | Value | Empty is Null |
-	| Prefix | [[Prefix]]    | false         | 
+	| Input  | Value      | Empty is Null |
+	| Prefix | [[Prefix]] | false         |
 	And Validate is Enable
 	Then Outputs appear az
 	| Mapped From | Mapped To                                   | 
@@ -79,8 +79,8 @@ Scenario: Changing Actions
 	And Action iss "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
 	Then Inputs appear az
-	| Input | Value | Empty is Null |
-	| Prefix | [[Prefix]]    | false         | 
+	| Input  | Value      | Empty is Null |
+	| Prefix | [[Prefix]] | false         |
 	And Validate is Enable
 	Then Outputs appear az
 	| Mapped From | Mapped To                                   | 
@@ -90,8 +90,8 @@ Scenario: Changing Actions
 	When Action iz changed from to "dbo.ImportOrder"
 	And Inputs is Enable
 	And Inputs appear az
-	| Input    | Value | Empty is Null |
-	| ProductId |               | false         |	
+	| Input     | Value         | Empty is Null |
+	| ProductId | [[ProductId]] | false         |
 	And Validate is Enable
 
 Scenario: Change Recordset Name
@@ -101,8 +101,8 @@ Scenario: Change Recordset Name
 	And Action iss "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
 	Then Inputs appear az
-	| Input | Value | Empty is Null |
-	| Prefix | [[Prefix]]    | false         | 
+	| Input  | Value      | Empty is Null |
+	| Prefix | [[Prefix]] | false         |
 	And Validate is Enable
 	Then Outputs appear az
 	| Mapped From | Mapped To                                   | 

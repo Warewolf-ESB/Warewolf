@@ -19,6 +19,7 @@ using FontAwesome.WPF;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
+// ReSharper disable PossibleNullReferenceException
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Dialogs
@@ -178,9 +179,17 @@ namespace Dev2.Studio.ViewModels.Dialogs
 
                 foreach(XElement element in XElement.Parse(data).Elements())
                 {
-                    string key = element.Attribute("Key").Value;
-                    MessageBoxResult val = (MessageBoxResult)Enum.Parse(typeof(MessageBoxResult), element.Attribute("Value").Value);
-                    _dontShowAgainOptions.Add(key, val);
+                    var xAttribute = element.Attribute("Key");
+                    if(xAttribute != null)
+                    {
+                        string key = xAttribute.Value;
+                        var attribute = element.Attribute("Value");
+                        if(attribute != null)
+                        {
+                            MessageBoxResult val = (MessageBoxResult)Enum.Parse(typeof(MessageBoxResult), attribute.Value);
+                            _dontShowAgainOptions.Add(key, val);
+                        }
+                    }
                 }
             }
             catch(Exception)
