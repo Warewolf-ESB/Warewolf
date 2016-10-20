@@ -149,12 +149,5 @@ namespace Dev2.Tests.Activities
         }
 
         #endregion
-        
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void WorkflowHelperSetVariablesWithNullExpectedThrowsArgumentNullException()
-        {
-            new WorkflowHelper().SetVariables(null);
-        }
     }
 }

@@ -27,7 +27,7 @@ namespace Warewolf.Studio.ViewModels
         private ResourceName _resourceName;
         private IRequestServiceNameView _view;
 
-        string _selectedPath;
+        private string _selectedPath;
         private bool _hasLoaded;
         string _header;
         private IEnvironmentViewModel _environmentViewModel;
@@ -55,12 +55,18 @@ namespace Warewolf.Studio.ViewModels
             _header = header;
             _explorerItemViewModel = explorerItemViewModel;
             OkCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
-            DuplicateCommand = new DelegateCommand(CallDuplicateService, () => explorerItemViewModel != null && string.IsNullOrEmpty(ErrorMessage) && HasLoaded && !IsDuplicating);
-            CancelCommand = new DelegateCommand(CloseView,CanClose);
+            DuplicateCommand = new DelegateCommand(CallDuplicateService, CanDuplicate);
+            CancelCommand = new DelegateCommand(CloseView, CanClose);
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
             environmentViewModel.CanShowServerVersion = false;
             return this;
+        }
+
+        private bool CanDuplicate()
+        {
+            var b = _explorerItemViewModel != null && string.IsNullOrEmpty(ErrorMessage) && HasLoaded && !IsDuplicating;
+            return b;
         }
 
         private bool CanClose()
@@ -109,7 +115,7 @@ namespace Warewolf.Studio.ViewModels
             catch (Exception)
             {
                 //
-            }            
+            }
             finally
             {
                 IsDuplicating = false;
@@ -247,15 +253,29 @@ namespace Warewolf.Studio.ViewModels
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
             _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a =>
             {
-                if (!string.IsNullOrEmpty(_selectedPath))
+
+                try
                 {
-                    _environmentViewModel.SelectItem(_selectedPath, b =>
+                    if (!string.IsNullOrEmpty(_selectedPath))
                     {
-                        _environmentViewModel.SelectAction(b);
-                        b.IsSelected = true;
-                    });
+                        _environmentViewModel.SelectItem(_selectedPath, b =>
+                        {
+                            _environmentViewModel.SelectAction(b);
+                            b.IsSelected = true;
+                        });
+                    }
                 }
-                HasLoaded = a.Result;
+                catch (Exception)
+                {
+                    //
+                }
+                finally
+                {
+                    HasLoaded = a.Result;
+                }
+
+
+
                 ValidateName();
             }, TaskContinuationOptions.ExecuteSynchronously);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
@@ -374,7 +394,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _isDuplicating = value;
-                OnPropertyChanged(()=>IsDuplicating);
+                OnPropertyChanged(() => IsDuplicating);
                 ViewModelUtils.RaiseCanExecuteChanged(DuplicateCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(CancelCommand);
             }

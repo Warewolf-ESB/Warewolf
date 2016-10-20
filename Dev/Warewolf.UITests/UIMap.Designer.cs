@@ -978,27 +978,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Duplicate_From_Duplicate_Dialog - Use 'Click_Duplicate_From_Duplicate_DialogParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Click Duplicate From Duplicate Dialog")]
-        public void Click_Duplicate_From_Duplicate_Dialog()
-        {
-            #region Variable Declarations
-            WpfButton duplicateButton = this.SaveDialogWindow.DuplicateButton;
-            WpfWindow saveDialogWindow = this.SaveDialogWindow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Duplicate' button equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_Duplicate_DialogParams.DuplicateButtonExists, duplicateButton.Exists, "Duplicate button does not exist");
-
-            // Click 'Duplicate' button
-            Mouse.Click(duplicateButton, new Point(26, 10));
-
-            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_Duplicate_DialogParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
-        }
-        
-        /// <summary>
         /// Click_ExpandAndStepIn_NestedWorkflow - Use 'Click_ExpandAndStepIn_NestedWorkflowParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Click ExpandAndStepIn NestedWorkflow")]
@@ -2295,17 +2274,17 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom startNode = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
-            WpfMenuItem debugInputsMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DebugInputsMenuItem;
-            WpfMenuItem debugStudioMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DebugStudioMenuItem;
-            WpfMenuItem debugBrowserMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DebugBrowserMenuItem;
-            WpfMenuItem scheduleMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.ScheduleMenuItem;
-            WpfMenuItem testEditorMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.TestEditorMenuItem;
-            WpfMenuItem runAllTestsMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.RunAllTestsMenuItem;
-            WpfMenuItem duplicateMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DuplicateMenuItem;
-            WpfMenuItem deployMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.DeployMenuItem;
-            WpfMenuItem showDependenciesMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.ShowDependenciesMenuItem;
-            WpfMenuItem viewSwaggerMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.ViewSwaggerMenuItem;
-            WpfMenuItem copyURLtoClipboardMenuItem = this.StartNodePopupWindow.UIItemWindow1.StartNodeItemMenu.CopyURLtoClipboardMenuItem;
+            WpfMenuItem debugInputsMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugInputsMenuItem;
+            WpfMenuItem debugStudioMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugStudioMenuItem;
+            WpfMenuItem debugBrowserMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugBrowserMenuItem;
+            WpfMenuItem scheduleMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ScheduleMenuItem;
+            WpfMenuItem testEditorMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.TestEditorMenuItem;
+            WpfMenuItem runAllTestsMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.RunAllTestsMenuItem;
+            WpfMenuItem duplicateMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DuplicateMenuItem;
+            WpfMenuItem deployMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DeployMenuItem;
+            WpfMenuItem showDependenciesMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ShowDependenciesMenuItem;
+            WpfMenuItem viewSwaggerMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ViewSwaggerMenuItem;
+            WpfMenuItem copyURLtoClipboardMenuItem = this.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.CopyURLtoClipboardMenuItem;
             #endregion
 
             // Right-Click 'StartNode' custom control
@@ -8139,18 +8118,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Duplicate_From_Duplicate_DialogParams Click_Duplicate_From_Duplicate_DialogParams
-        {
-            get
-            {
-                if ((this.mClick_Duplicate_From_Duplicate_DialogParams == null))
-                {
-                    this.mClick_Duplicate_From_Duplicate_DialogParams = new Click_Duplicate_From_Duplicate_DialogParams();
-                }
-                return this.mClick_Duplicate_From_Duplicate_DialogParams;
-            }
-        }
-        
         public virtual Click_ExpandAndStepIn_NestedWorkflowParams Click_ExpandAndStepIn_NestedWorkflowParams
         {
             get
@@ -10723,8 +10690,6 @@ namespace Warewolf.UITests
         
         private Click_DotNet_DLL_Large_View_Done_ButtonParams mClick_DotNet_DLL_Large_View_Done_ButtonParams;
         
-        private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
-        
         private Click_ExpandAndStepIn_NestedWorkflowParams mClick_ExpandAndStepIn_NestedWorkflowParams;
         
         private Click_Explorer_Filter_Clear_ButtonParams mClick_Explorer_Filter_Clear_ButtonParams;
@@ -11806,26 +11771,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'SmallViewContent' custom control equals 'True'
         /// </summary>
         public bool SmallViewExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Duplicate_From_Duplicate_Dialog'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Duplicate_From_Duplicate_DialogParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Duplicate' button equals 'True'
-        /// </summary>
-        public bool DuplicateButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-        /// </summary>
-        public bool SaveDialogWindowExists = true;
         #endregion
     }
     
@@ -52379,29 +52324,29 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public UIItemWindow1 UIItemWindow1
+        public CustomWindow CustomWindow
         {
             get
             {
-                if ((this.mUIItemWindow1 == null))
+                if ((this.mCustomWindow == null))
                 {
-                    this.mUIItemWindow1 = new UIItemWindow1(this);
+                    this.mCustomWindow = new CustomWindow(this);
                 }
-                return this.mUIItemWindow1;
+                return this.mCustomWindow;
             }
         }
         #endregion
         
         #region Fields
-        private UIItemWindow1 mUIItemWindow1;
+        private CustomWindow mCustomWindow;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemWindow1 : WpfWindow
+    public class CustomWindow : WpfWindow
     {
         
-        public UIItemWindow1(UITestControl searchLimitContainer) : 
+        public CustomWindow(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
         }

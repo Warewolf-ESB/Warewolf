@@ -22,6 +22,7 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -640,10 +641,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string ResourceName
         {
-            get
-            {
-                return _resourceName;
-            }
+            get { return _resourceName; }
             set
             {
                 if (_resourceName != null && Parent != null && Parent.Children.Any(a => a.ResourceName == value) && value != _resourceName)
@@ -659,27 +657,39 @@ namespace Warewolf.Studio.ViewModels
                         if (_resourceName == newName)
                         {
                             IsRenaming = false;
-
                         }
                         else
                         {
-                            if (_explorerRepository.Rename(this, NewName(newName)))
+                            var asyncWorker = CustomContainer.Get<IAsyncWorker>();
+                            asyncWorker?.Start(() =>
                             {
-                                if (!ResourcePath.Contains("\\"))
+                                ShellViewModel.SetRefreshExplorerState(true);
+                                if (_explorerRepository.Rename(this, NewName(newName)))
                                 {
-                                    if (_resourceName != null)
+                                    if (!ResourcePath.Contains("\\"))
                                     {
-                                        ResourcePath = ResourcePath.Replace(_resourceName, newName);                                                                                
+                                        if (_resourceName != null)
+                                        {
+                                            ResourcePath = ResourcePath.Replace(_resourceName, newName);
+                                        }
                                     }
+                                    else
+                                    {
+                                        ResourcePath = ResourcePath.Substring(0, ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) + newName;
+                                    }
+                                    UpdateResourcePaths(this);
+                                    _resourceName = newName;
                                 }
-                                else
+                            }, () =>
+                            {
+                                if (!IsRenaming)
                                 {
-                                    ResourcePath = ResourcePath.Substring(0,ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) +newName;
-                                    
+                                    _resourceName = newName;
                                 }
-                                UpdateResourcePaths(this);                                                                
-                                _resourceName = newName;
-                            }
+                                IsRenaming = false;
+                                OnPropertyChanged(() => ResourceName);
+                                ShellViewModel.SetRefreshExplorerState(false);
+                            });
                         }
                     }
                     if (!IsRenaming)
@@ -687,11 +697,11 @@ namespace Warewolf.Studio.ViewModels
                         _resourceName = newName;
                     }
                     IsRenaming = false;
-
                     OnPropertyChanged(() => ResourceName);
                 }
             }
         }
+
         private string RemoveInvalidCharacters(string name)
         {
             var nameToFix = name.TrimStart(' ').TrimEnd(' ');
