@@ -612,5 +612,15 @@ namespace Warewolf.Studio.Views
                 clickedNode.IsActive = true;
             }
         }
+
+        private void ExplorerTree_OnNodeEnteredEditMode(object sender, TreeEditingNodeEventArgs e)
+        {
+            var dataItem = e.Node.Data as IExplorerItemViewModel;
+            if (dataItem == null)
+            {
+                return;
+            }
+            dataItem.IsRenaming = true;
+        }
     }
 }
