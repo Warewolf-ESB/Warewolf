@@ -927,12 +927,13 @@ namespace Dev2.Studio.ViewModels
             var isActiveEnvironmentConnected = ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute;
             if (ActiveEnvironment.IsConnected)
             {
-                if (ToolboxViewModel.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0)
+                if (ToolboxViewModel != null && (ToolboxViewModel.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0))
                 {
                     ToolboxViewModel.BuildToolsList();
                 }
             }
-            ToolboxViewModel.IsVisible = isActiveEnvironmentConnected;
+            if(ToolboxViewModel != null)
+                ToolboxViewModel.IsVisible = isActiveEnvironmentConnected;
             return isActiveEnvironmentConnected;
         }
 
