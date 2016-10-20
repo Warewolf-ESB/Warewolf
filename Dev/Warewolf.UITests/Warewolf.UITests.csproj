@@ -63,6 +63,7 @@
     <Compile Include="Common\Common.cs" />
     <Compile Include="ContextMenu\ContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
+    <Compile Include="Explorer\Rename.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
