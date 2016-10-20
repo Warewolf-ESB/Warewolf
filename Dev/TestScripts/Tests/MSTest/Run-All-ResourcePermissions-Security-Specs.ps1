@@ -46,7 +46,7 @@ $TestSettingsFile = "$PSScriptRoot\LocalSecuritySpecs.testsettings"
 "@)
 
 # Create full VSTest argument string.
-$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:ResourcePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"ResourcePermissionsSecurity`""
+$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:TestResults\ResourcePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"ResourcePermissionsSecurity`""
 
 # Start server under test
 cmd.exe /c '$SolutionDir\TestScripts\Studio\Startup.bat'

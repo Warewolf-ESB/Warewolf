@@ -46,7 +46,7 @@ $TestSettingsFile = "$PSScriptRoot\LocalSecuritySpecs.testsettings"
 "@)
 
 # Create full VSTest argument string.
-$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:ConflictingPermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"ConflictingPermissionsSecurity`""
+$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:TestResults\ConflictingPermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"ConflictingPermissionsSecurity`""
 
 # Start server under test
 cmd.exe /c '$SolutionDir\TestScripts\Studio\Startup.bat'
