@@ -35,7 +35,7 @@ foreach ($file in Get-ChildItem $SolutionDir -Filter Dev2.*.Tests ) {
 }
 
 # Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + " /resultsfile:UnitTestResults.trx " + $TestList
+$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\UnitTestResults.trx " + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList

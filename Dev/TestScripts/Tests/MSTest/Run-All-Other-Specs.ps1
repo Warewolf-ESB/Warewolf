@@ -52,7 +52,7 @@ foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Specs.dll, Warewolf
 }
 
 # Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + " /resultsfile:OtherSpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"!ExampleWorkflowExecution&!WorkflowExecution&!SubworkflowExecution`""
+$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\OtherSpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"!ExampleWorkflowExecution&!WorkflowExecution&!SubworkflowExecution`""
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
