@@ -1829,10 +1829,10 @@ namespace System.Windows.Controls
             if(!isEnabled)
             {
                 IsDropDownOpen = false;
-                if(TextBox != null)
-                {
-                    TextBox.Text = string.Empty;
-                }
+                //if (TextBox != null)
+                //{
+                //    TextBox.Text = string.Empty;
+                //}
             }
         }
 
