@@ -826,6 +826,7 @@ namespace Dev2
             Write("Loading resource activity cache...  ");
             catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
             WriteLine("done.");
+            SetStarted();
         }
 
         static void MigrateOldResources()
@@ -919,8 +920,7 @@ namespace Dev2
                         foreach (var endpoint in _endpoints)
                         {
                             WriteLine($"Web server listening at {endpoint.Url}");
-                        }
-                        SetStarted();
+                        }                        
                     }
                     catch (Exception e)
                     {

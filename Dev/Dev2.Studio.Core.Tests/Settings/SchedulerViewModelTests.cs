@@ -1617,6 +1617,10 @@ namespace Dev2.Core.Tests.Settings
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
             schedulerViewModel.ScheduledResourceModel = resourceModel.Object;
             schedulerViewModel.Server = svr.Object;
+            if (Application.Current != null)
+            {
+                Application.Current.Shutdown();
+            }
             //------------Execute Test---------------------------
 
             Assert.AreEqual(2, schedulerViewModel.TaskList.Count);
