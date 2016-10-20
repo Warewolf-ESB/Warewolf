@@ -53,7 +53,7 @@ if ($TestList -eq "") {
 	$FullArgsList = "`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 }
 # Start server under test
-cmd.exe /c '$SolutionDir\TestScripts\Studio\Startup.bat'
+cmd.exe /c $SolutionDir\TestScripts\Server\Service\Startup.bat
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
@@ -62,7 +62,7 @@ Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\
 Start-Process -FilePath "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
 
 # Stop server under test
-cmd.exe /c '$SolutionDir\TestScripts\Studio\Cleanup.bat'
+cmd.exe /c $SolutionDir\TestScripts\Server\Service\Cleanup.bat
 
 # Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"
