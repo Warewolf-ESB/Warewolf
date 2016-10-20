@@ -85,6 +85,7 @@
                                 Grid.Row="1"
                                 Margin="{StaticResource ControlBorderTop}"
                                 DefaultText="Account or email address"
+                                AllowUserInsertLine="False"
                                 ToolTip="{x:Static languages:Core.EmailToolTipTo}"
                                 Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
@@ -122,6 +123,7 @@
                                 Text="{Binding ModelItem.Body,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 AcceptsReturn="True"
+                                AllowUserInsertLine="True"
                                 MaxHeight="52"
                                 Height="35"                                
                                 Padding="2,5,2,2"
