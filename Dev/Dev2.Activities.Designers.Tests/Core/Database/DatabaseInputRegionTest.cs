@@ -163,10 +163,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             //---------------Set up test pack-------------------
             var mock = new Mock<IDataListViewModel>();
             mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
-            if (DataListSingleton.ActiveDataList == null)
-                DataListSingleton.SetDataList(mock.Object);
-
-
+            DataListSingleton.SetDataList(mock.Object);
 
             var id = Guid.NewGuid();
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
@@ -195,9 +192,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             //---------------Set up test pack-------------------
             var mock = new Mock<IDataListViewModel>();
             mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
-            if (DataListSingleton.ActiveDataList == null)
-                DataListSingleton.SetDataList(mock.Object);
-
+            DataListSingleton.SetDataList(mock.Object);
 
             var id = Guid.NewGuid();
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
