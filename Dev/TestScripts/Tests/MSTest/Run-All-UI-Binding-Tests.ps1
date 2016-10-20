@@ -35,7 +35,7 @@ foreach ($file in Get-ChildItem $SolutionDir -Include Warewolf.AcceptanceTesting
 }
 
 # Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + " /resultsfile:UIBindingTestResults.trx " + $TestList
+$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\UIBindingTestResults.trx " + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
