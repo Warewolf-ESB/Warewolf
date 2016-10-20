@@ -47,8 +47,11 @@ $TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
 
 # Create assemblies list.
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Specs.dll, Warewolf.*.Specs.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
-    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
+foreach ($file in Get-ChildItem $SolutionDir -Filter Warewolf.*.Specs ) {
+    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
+}
+foreach ($file in Get-ChildItem $SolutionDir -Filter Dev2.*.Specs ) {
+    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
 }
 
 # Create full VSTest argument string.
