@@ -50,6 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     editedItems.AddRange(XElement.Parse(editedItemsXml)
                         .Elements()
+                        // ReSharper disable once PossibleNullReferenceException
                         .Select(x => x.Attribute("ServiceName").Value));
                 }
 

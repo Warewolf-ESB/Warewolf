@@ -243,7 +243,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <CodeAnalysisDictionary Include="Fakes\mscorlib.fakes" />
     <CodeAnalysisDictionary Include="Fakes\System.fakes" />
     <None Include="packages.config" />

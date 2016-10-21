@@ -160,6 +160,10 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -347,6 +351,7 @@
     <Compile Include="Hosting\ServiceDefinitionLoader.cs" />
     <Compile Include="Hosting\ManagementServiceResource.cs" />
     <Compile Include="Hosting\ResourceCatalogResult.cs" />
+    <Compile Include="Isolated.cs" />
     <Compile Include="Network\IStudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -506,7 +511,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="SSL Generation\CreateCertificate.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

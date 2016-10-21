@@ -11,9 +11,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Caliburn.Micro;
 using Dev2.Common.Interfaces;
-using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
@@ -26,19 +24,10 @@ namespace Dev2.Studio.Views.DataList
     /// </summary>
     public partial class DataListView : IView,ICheckControlEnabledView
     {
-        readonly IEventAggregator _eventPublisher;
 
         public DataListView()
-            : this(EventPublishers.Aggregator)
-        {
-        }
-
-        public DataListView(IEventAggregator eventPublisher)
         {
             InitializeComponent();
-
-            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _eventPublisher = eventPublisher;
             KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
         }
 
@@ -57,11 +46,8 @@ namespace Dev2.Studio.Views.DataList
                     {
                         itemThatChanged.IsExpanded = true;
                     }
-                    if(itemThatChanged != null)
-                    {
-                        vm.AddBlankRow(itemThatChanged);
-                    }
                 }
+                vm.AddBlankRow(null);
             }
         }
 
@@ -153,7 +139,11 @@ namespace Dev2.Studio.Views.DataList
 
         private void DataListView_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            WriteToResourceModel();
+//            IDataListViewModel vm = DataContext as IDataListViewModel;
+//            if (vm != null && !vm.IsSorting)
+//            {
+//                vm?.AddBlankRow(null);
+//            }
         }
     }
 }

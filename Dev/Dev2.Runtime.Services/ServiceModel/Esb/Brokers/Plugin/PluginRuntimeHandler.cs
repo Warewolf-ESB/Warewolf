@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -21,6 +20,7 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
@@ -45,6 +45,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         string _assemblyLocation = "";
+        private readonly List<string> _loadedAssemblies = new List<string>();
+
         /// <summary>
         /// Runs the specified setup information.
         /// </summary>
@@ -71,6 +73,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             pluginResult = JsonConvert.SerializeObject(pluginResult);
             return pluginResult;
         }
+
+        
 
         public IOutputDescription Test(PluginInvokeArgs setupInfo,out string jsonResult)
         {
@@ -113,7 +117,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        private MethodInfo ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
+        private MethodBase ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
         {
             var typeList = BuildTypeList(setupInfo.Parameters);
             var type = loadedAssembly.GetType(setupInfo.Fullname);
@@ -139,6 +143,18 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 methodToRun = type.GetMethod(setupInfo.Method);
             }
             object instance = Activator.CreateInstance(type);
+            if (methodToRun == null)
+            {
+                var constructor = type.GetConstructor(typeList.ToArray());
+                if (constructor != null)
+                {
+                    {
+                        pluginResult = constructor.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                        return constructor;
+                    }
+                }
+            }
+            
 
             if(methodToRun != null)
             {
@@ -153,9 +169,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string[] tokens = args.Name.Split(",".ToCharArray());
-            Debug.WriteLine("Resolving : " + args.Name);
+            Dev2Logger.Debug("Resolving : " + args.Name);
             var directoryName = Path.GetDirectoryName(_assemblyLocation);
-            return Assembly.LoadFile(Path.Combine(new[] { directoryName, tokens[0] + ".dll" }));
+            var path = Path.Combine(new[] { directoryName, tokens[0] + ".dll" });
+            var assembly = Assembly.LoadFile(path);
+            return assembly;
         }
         /// <summary>
         /// Lists the namespaces.
@@ -204,6 +222,25 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
+                var constructors = type.GetConstructors();
+
+                constructors.ToList().ForEach(info =>
+                {
+                    var serviceMethod = new ServiceMethod { Name = info.Name };
+                    var parameterInfos = info.GetParameters().ToList();
+                    parameterInfos.ForEach(parameterInfo =>
+                        serviceMethod.Parameters.Add(
+                            new MethodParameter
+                            {
+                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                                EmptyToNull = false,
+                                IsRequired = true,
+                                Name = parameterInfo.Name,
+                                TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
+                            }));
+                    serviceMethodList.Add(serviceMethod);
+                });
+
 
                 methodInfos.ToList().ForEach(info =>
                 {
@@ -213,7 +250,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         serviceMethod.Parameters.Add(
                             new MethodParameter
                             {
-                                DefaultValue = parameterInfo.DefaultValue == null ? string.Empty : parameterInfo.DefaultValue.ToString(),
+                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
                                 EmptyToNull = false,
                                 IsRequired = true,
                                 Name = parameterInfo.Name,
@@ -221,6 +258,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                             }));
                     serviceMethodList.Add(serviceMethod);
                 });
+                
             }
 
             return serviceMethodList;
@@ -246,15 +284,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <param name="pluginResult">The plugin result.</param>
         /// <param name="methodToRun">The method automatic run.</param>
         /// <returns></returns>
-        private object AdjustPluginResult(object pluginResult, MethodInfo methodToRun)
+        private object AdjustPluginResult(object pluginResult, MethodBase methodToRun)
         {
             object result = pluginResult;
+            var method = methodToRun as MethodInfo;
             // When it returns a primitive or string and it is not XML or JSON, make it so ;)
-            if ((methodToRun.ReturnType.IsPrimitive || methodToRun.ReturnType.FullName == "System.String")
-                && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
+            // ReSharper disable once PossibleNullReferenceException
+            if ((method != null && method.ReturnType.IsPrimitive || method.ReturnType.FullName == "System.String") && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
             {
                 // add our special tags ;)
-                result = string.Format("<{0}>{1}</{2}>", GlobalConstants.PrimitiveReturnValueTag, pluginResult, GlobalConstants.PrimitiveReturnValueTag);
+                result = $"<{GlobalConstants.PrimitiveReturnValueTag}>{pluginResult}</{GlobalConstants.PrimitiveReturnValueTag}>";
             }
 
             return result;
@@ -312,94 +351,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return typeList;
         }
 
-        /*
-        /// <summary>
-        /// Tries the load assembly.
-        /// </summary>
-        /// <param name="assemblyLocation">The assembly location.</param>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        /// <param name="loadedAssembly">The loaded assembly.</param>
-        /// <returns></returns>
-        public bool TryLoadAssembly(string assemblyLocation, string assemblyName, out Assembly loadedAssembly)
-        {
-            loadedAssembly = null;
-
-            if (assemblyLocation != null && assemblyLocation.StartsWith(GlobalConstants.GACPrefix))
-            {
-                try
-                {
-                    loadedAssembly = Assembly.Load(assemblyName);
-                    LoadDepencencies(loadedAssembly, assemblyLocation);
-                    return true;
-                }
-                catch (System.BadImageFormatException e)//WOLF-1640
-                {
-                    Dev2Logger.Error(e);
-                    throw;
-
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e.Message);
-                }
-            }
-            else
-            {
-                try
-                {
-                    if (assemblyLocation != null)
-                    {
-                        loadedAssembly = Assembly.LoadFrom(assemblyLocation);
-                        LoadDepencencies(loadedAssembly, assemblyLocation);
-                    }
-                    return true;
-                }
-                catch (System.BadImageFormatException e)//WOLF-1640
-                {
-                    Dev2Logger.Error(e);
-                    throw;
-                }
-                catch
-                {
-                    try
-                    {
-                        if (assemblyLocation != null)
-                        {
-                            loadedAssembly = Assembly.UnsafeLoadFrom(assemblyLocation);
-                            LoadDepencencies(loadedAssembly, assemblyLocation);
-                        }
-                        return true;
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Error(e);
-                    }
-                }
-                try
-                {
-                    if (assemblyLocation != null)
-                    {
-                        var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
-                        var loadedObject = objHAndle.Unwrap();
-                        loadedAssembly = Assembly.GetAssembly(loadedObject.GetType());
-                    }
-                    LoadDepencencies(loadedAssembly, assemblyLocation);
-                    return true;
-                }
-                catch (System.BadImageFormatException e)//WOLF-1640
-                {
-                    Dev2Logger.Error(e);
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e);
-                }
-            }
-            return false;
-        }
-
-
         /// <summary>
         /// Loads the dependencies.
         /// </summary>
@@ -448,6 +399,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 throw new Exception("Could not locate Assembly [ " + assemblyLocation + " ]");
             }
-        }*/
+        }
     }
 }

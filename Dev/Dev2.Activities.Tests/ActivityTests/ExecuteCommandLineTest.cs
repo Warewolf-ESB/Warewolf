@@ -170,7 +170,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             var fetchErrors = result.Environment.FetchErrors();
-            if(fetchErrors == string.Empty)
+            if (fetchErrors == string.Empty)
             {
                 Assert.Fail("no error");
             }
@@ -192,7 +192,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             var fetchErrors = result.Environment.FetchErrors();
-            if(fetchErrors == string.Empty)
+            if (fetchErrors == string.Empty)
             {
                 Assert.Fail("no error");
             }

@@ -702,7 +702,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             _dataListViewModel.WriteToResourceModel();
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual(1, _dataListViewModel.ScalarCollection.Count);
             Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName);
         }
 
@@ -737,7 +737,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             var xmlDataList = _dataListViewModel.WriteToResourceModel();
             //------------Assert Results-------------------------
-            Assert.AreEqual(3, _dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
             Assert.IsTrue(_dataListViewModel.ScalarCollection[0].DisplayName == "Country");
             Assert.IsTrue(_dataListViewModel.ScalarCollection[1].DisplayName == "Country");
             Assert.IsFalse(xmlDataList.Contains("Country"));
@@ -769,7 +769,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             _dataListViewModel.WriteToResourceModel();
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual(1, _dataListViewModel.ScalarCollection.Count);
             Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName);
         }
 
@@ -799,7 +799,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             _dataListViewModel.WriteToResourceModel();
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual(1, _dataListViewModel.ScalarCollection.Count);
             Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName);
         }
 

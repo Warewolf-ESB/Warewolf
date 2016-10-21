@@ -9,6 +9,8 @@
 */
 
 // ReSharper disable once CheckNamespace
+
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces.DataList;
 using System.Collections.ObjectModel;
@@ -18,7 +20,7 @@ namespace Dev2.Studio.Core.Models.DataList
     public class DataListHeaderItemModel : PropertyChangedBase
     {
         private string _displayName;
-        private ObservableCollection<IDataListItemModel> _children;
+        private IEnumerable<IDataListItemModel> _children;
 
         public DataListHeaderItemModel(string displayName)
         {
@@ -38,7 +40,7 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public ObservableCollection<IDataListItemModel> Children
+        public IEnumerable<IDataListItemModel> Children
         {
             get { return _children ?? (_children = new ObservableCollection<IDataListItemModel>()); }
             set

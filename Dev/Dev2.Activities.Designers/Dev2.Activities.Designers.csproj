@@ -235,6 +235,7 @@
     <Compile Include="Designers2\Comment\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Core\ActionInputDatatalistMapper.cs" />
     <Compile Include="Designers2\Core\ActionRegion\ComActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegionODBC.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Designers2\Core\Extensions\ActivityDesignerViewModelExtensions.cs" />
     <Compile Include="Designers2\Core\GenerateInputsRegion.cs" />
     <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
+    <Compile Include="Designers2\Core\IActionInputDatatalistMapper.cs" />
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
@@ -1112,7 +1114,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ActivityResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
