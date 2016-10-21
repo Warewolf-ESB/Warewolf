@@ -1570,6 +1570,10 @@ namespace Warewolf.UITests
                     var test3 = test as Test3;
                     property = test3.TestNameDisplay;
                     break;
+                case 4:
+                    var test4 = test as Test3;
+                    property = test4.TestNameDisplay;
+                    break;
                 default:
                     var test1 = test as Test1;
                     property = test1.TestNameDisplay;
