@@ -22,6 +22,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
@@ -32,6 +33,14 @@ namespace Dev2.Activities.Designers.Tests.Core
     [TestClass]
     public class WcfInputRegionTests
     {
+        const string AppLocalhost = "http://localhost:3142";
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            AppSettings.LocalHost = AppLocalhost;
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("WcfInputRegion_Constructor")]

@@ -10,9 +10,6 @@ namespace Warewolf.UITests.Tools.Data
         public void AssignToolInUnpinnedWorkflowTabOpenAndCloseLargeViewWithDoubleClickUITest()
         {
             UIMap.Open_Assign_Tool_On_Unpinned_Tab_Large_View();
-            UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_Tab();
-            UIMap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_Tab();
-            UIMap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable_On_Unpinned_Tab();
             UIMap.Click_Assign_Tool_Large_View_Done_Button_On_Unpinned_Tab();
         }
 

@@ -13,10 +13,10 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="320"
                                MinWidth="320"
-                               MinHeight="175"
-                               Height="175"
+                               MinHeight="170"
+                               Height="170"
                                MaxWidth="Infinity"
-                               MaxHeight="175"
+                               MaxHeight="170"
                                mc:Ignorable="d"
                                d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:SortRecordsDesignerViewModel}">
