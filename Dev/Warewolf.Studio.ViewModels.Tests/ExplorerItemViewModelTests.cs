@@ -8,8 +8,10 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
@@ -306,6 +308,85 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewService(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestContextMenuDebugCommand()
+        {
+            //arrange
+            _target.ResourceId = Guid.NewGuid();
+
+            //act
+            _target.DebugCommand.Execute(null);
+            Assert.IsTrue(_target.DebugCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.OpenResource(_target.ResourceId, _target.Server));
+            _shellViewModelMock.Verify(it => it.Debug());
+        }
+
+        [TestMethod]
+        public void TestDebugStudioCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.DebugStudioCommand.Execute(null);
+            Assert.IsTrue(_target.DebugStudioCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.StudioDebug(_target.ResourceId, _target.Server));
+        }
+
+        [TestMethod]
+        public void DebugBrowserCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.DebugBrowserCommand.Execute(null);
+            Assert.IsTrue(_target.DebugBrowserCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.BrowserDebug(_target.ResourceId, _target.Server));
+        }
+
+        [TestMethod]
+        public void ScheduleCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.ScheduleCommand.Execute(null);
+            Assert.IsTrue(_target.ScheduleCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.NewSchedule(_target.ResourceId));
+        }
+
+        [TestMethod]
+        public void RunAllTestsCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.RunAllTestsCommand.Execute(null);
+            Assert.IsTrue(_target.RunAllTestsCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.RunAllTests(_target.ResourceId));
         }
 
         [TestMethod]
@@ -1171,13 +1252,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestResourceNameWithoutSlashes()
         {
             //arrange
+            CustomContainer.Register<IAsyncWorker>(new SynchronousAsyncWorker());
             var isResourceNameFired = false;
             _target.PropertyChanged += (sender, e) =>
             {
                 isResourceNameFired = e.PropertyName == "ResourceName";
             };
-            _explorerTreeItemMock.SetupGet(it => it.Children)
-                .Returns(new ObservableCollection<IExplorerItemViewModel>());
+            _explorerTreeItemMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             var newName = "SomeNewName";
             _target.IsRenaming = false;
             _target.ResourcePath = "someResPath";
@@ -1198,13 +1279,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestResourceNameWithSlashes()
         {
             //arrange
+            CustomContainer.Register<IAsyncWorker>(new SynchronousAsyncWorker());
             var isResourceNameFired = false;
             _target.PropertyChanged += (sender, e) =>
             {
                 isResourceNameFired = e.PropertyName == "ResourceName";
             };
-            _explorerTreeItemMock.SetupGet(it => it.Children)
-                .Returns(new ObservableCollection<IExplorerItemViewModel>());
+            _explorerTreeItemMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             var newName = "SomeNewName";
             _target.IsRenaming = false;
             _target.ResourcePath = "Some\\someResPath";

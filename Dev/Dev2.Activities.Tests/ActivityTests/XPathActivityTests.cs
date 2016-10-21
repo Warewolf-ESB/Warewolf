@@ -12,8 +12,10 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using ActivityUnitTests;
 using Dev2.Activities;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -351,6 +353,61 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
+
+
+
+        [TestMethod]
+        public void RecsetWithStarExpectedXPaths_InsideForEach_ShouldRespect_UpdateValueForRecordsetIndex()
+        {
+
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//type/method/@signature", 1));
+
+            const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
+            var act = new DsfXPathActivity { SourceString = Source, ResultsCollection = _resultsCollection };
+
+            CurrentDl = dataSplitPreDataList;
+            TestData = "<root>" + dataSplitPreDataList + "</root>";
+
+            if (CurrentDl == null)
+            {
+                CurrentDl = TestData;
+            }
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = false,
+                EnvironmentID = new Guid(),
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl)
+            };
+
+            if (!string.IsNullOrEmpty(TestData))
+            {
+                ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(dataObject, new StringBuilder(TestData), CurrentDl, 0);
+            }
+
+
+
+            List<string> expected = new List<string> { "void(object)","void(object)",
+                                                        "void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)",
+                                                        "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
+                                };
+            string error;
+
+            for(int i = 1; i < 4; i++)
+            {
+                act.Execute(dataObject, i);
+            }
+
+            List<string> actual = RetrieveAllRecordSetFieldValues(dataObject.Environment, "recset1", "field1", out error);
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(3,actual.Count);
+            Assert.AreEqual("Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)", actual[0]);
+            Assert.AreEqual("Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)", actual[1]);
+            Assert.AreEqual("Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)", actual[2]);
+        }
+
 
         [TestMethod]
         [TestCategory("XPathActivity_Execution")]

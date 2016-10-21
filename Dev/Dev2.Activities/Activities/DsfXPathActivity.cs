@@ -14,7 +14,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
@@ -105,97 +104,17 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                if(!errors.HasErrors())
+                if(_isDebugMode)
                 {
-                    if(_isDebugMode)
-                    {
-                        AddSourceStringDebugInputItem(SourceString, dataObject.Environment, update);
-                        AddResultDebugInputs(ResultsCollection, out errors);
-                        allErrors.MergeErrors(errors);
-                    }
-                    if(!allErrors.HasErrors())
-                    {
-                        var itr = new WarewolfListIterator();
-                        var sourceIterator = new WarewolfIterator(dataObject.Environment.Eval(SourceString, update));
-                        itr.AddVariableToIterateOn(sourceIterator);
-                        while(itr.HasMoreData())
-                        {
-                            var c = itr.FetchNextValue(sourceIterator);
-                            //foreach(IBinaryDataListItem c in cols)
-                            {
-                                for(i = 0; i < ResultsCollection.Count; i++)
-                                {
-                                    if(!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
-                                    {
-                                        var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
-                                        var xpathIterator = new WarewolfIterator(xpathEntry);
-                                        while(xpathIterator.HasMoreData())
-                                        {
-                                            var xpathCol = xpathIterator.GetNextValue();
-                                            //foreach(IBinaryDataListItem xPathCol in xpathCols)
-                                            {
-                                                try
-                                                {
-                                                    List<string> eval = parser.ExecuteXPath(c, xpathCol).ToList();
-
-                                                    //2013.06.03: Ashley Lewis for bug 9498 - handle line breaks in multi assign
-                                                    string[] openParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\[\[");
-                                                    string[] closeParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\]\]");
-                                                    if(openParts.Length == closeParts.Length && openParts.Length > 2 && closeParts.Length > 2)
-                                                    {
-                                                        foreach(var newFieldName in openParts)
-                                                        {
-                                                            if(!string.IsNullOrEmpty(newFieldName))
-                                                            {
-                                                                string cleanFieldName;
-                                                                if(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 < newFieldName.Length)
-                                                                {
-                                                                    cleanFieldName = "[[" + newFieldName.Remove(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2);
-                                                                }
-                                                                else
-                                                                {
-                                                                    cleanFieldName = "[[" + newFieldName;
-                                                                }
-                                                                AssignResult(cleanFieldName, dataObject, eval, update);
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        var variable = ResultsCollection[i].OutputVariable;
-                                                        AssignResult(variable, dataObject, eval, update);
-                                                    }
-                                                }
-                                                catch(Exception e)
-                                                {
-                                                    allErrors.AddError(e.Message);
-                                                    dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            allErrors.MergeErrors(errors);
-                        }
-                    }
-                    if(_isDebugMode && !allErrors.HasErrors())
-                    {
-                        var innerCount = 1;
-                        foreach(var debugOutputTo in ResultsCollection)
-                        {
-                            if (!string.IsNullOrEmpty(debugOutputTo.OutputVariable))
-                            {
-                                var itemToAdd = new DebugItem();
-                                AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                                AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable), "", dataObject.Environment, update), itemToAdd);
-                                _debugOutputs.Add(itemToAdd);
-                                innerCount++;
-                            }
-                        }
-                    }
+                    AddSourceStringDebugInputItem(SourceString, dataObject.Environment, update);
+                    AddResultDebugInputs(ResultsCollection, out errors);
+                    allErrors.MergeErrors(errors);
                 }
+                if(!allErrors.HasErrors())
+                {
+                    i = Process(dataObject, update, i, parser, allErrors, errors);
+                }
+                DoDebug(dataObject, update, allErrors);
             }
             catch(Exception ex)
             {
@@ -203,41 +122,96 @@ namespace Dev2.Activities
             }
             finally
             {
-                // Handle Errors
-
                 var actualIndex = i - 1;
                 var hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                ProcessErrors(dataObject, update, hasErrors, allErrors, actualIndex);
+
+                DispatchDebugState(dataObject, StateType.Before, update);
+                DispatchDebugState(dataObject, StateType.After, update);
+            }
+        }
+
+        private void ProcessErrors(IDSFDataObject dataObject, int update, bool hasErrors, ErrorResultTO allErrors, int actualIndex)
+        {
+            if(hasErrors)
+            {
+                DisplayAndWriteError("DsfXPathActivity", allErrors);
+                var errorString = allErrors.MakeDataListReady();
+                dataObject.Environment.AddError(errorString);
+                if(actualIndex > -1)
                 {
-                    DisplayAndWriteError("DsfXPathActivity", allErrors);
-                    var errorString = allErrors.MakeDataListReady();
-                    dataObject.Environment.AddError(errorString);
-                    if (actualIndex > -1)
-                    {
-                        dataObject.Environment.Assign(ResultsCollection[actualIndex].OutputVariable, null, update);
-                    }
+                    dataObject.Environment.Assign(ResultsCollection[actualIndex].OutputVariable, null, update);
                 }
                 if(_isDebugMode)
                 {
-                    if(hasErrors)
+                    var itemToAdd = new DebugItem();
+                    if(actualIndex < 0)
                     {
-                        if(_isDebugMode)
-                        {
-                            var itemToAdd = new DebugItem();
-                            if (actualIndex < 0)
-                            {
-                                actualIndex = 0;
-                            }
-                            AddDebugItem(new DebugItemStaticDataParams("", (actualIndex + 1).ToString(CultureInfo.InvariantCulture)), itemToAdd);
-
-                            AddDebugItem(new DebugEvalResult(ResultsCollection[actualIndex].OutputVariable, "", dataObject.Environment, update), itemToAdd);
-                            _debugOutputs.Add(itemToAdd);
-                        }
+                        actualIndex = 0;
                     }
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    AddDebugItem(new DebugItemStaticDataParams("", (actualIndex + 1).ToString(CultureInfo.InvariantCulture)), itemToAdd);
+
+                    AddDebugItem(new DebugEvalResult(ResultsCollection[actualIndex].OutputVariable, "", dataObject.Environment, update), itemToAdd);
+                    _debugOutputs.Add(itemToAdd);
+
                 }
             }
+
+        }
+
+        private void DoDebug(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            if(_isDebugMode && !allErrors.HasErrors())
+            {
+                var innerCount = 1;
+                foreach(var debugOutputTo in ResultsCollection)
+                {
+                    if(!string.IsNullOrEmpty(debugOutputTo.OutputVariable))
+                    {
+                        var itemToAdd = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                        AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable), "", dataObject.Environment, update), itemToAdd);
+                        _debugOutputs.Add(itemToAdd);
+                        innerCount++;
+                    }
+                }
+            }
+        }
+
+        private int Process(IDSFDataObject dataObject, int update, int i, XPathParser parser, ErrorResultTO allErrors, ErrorResultTO errors)
+        {
+            var itr = new WarewolfListIterator();
+            var sourceIterator = new WarewolfIterator(dataObject.Environment.Eval(SourceString, update));
+            itr.AddVariableToIterateOn(sourceIterator);
+            while(itr.HasMoreData())
+            {
+                var c = itr.FetchNextValue(sourceIterator);
+                for(i = 0; i < ResultsCollection.Count; i++)
+                {
+                    if(!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
+                    {
+                        var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
+                        var xpathIterator = new WarewolfIterator(xpathEntry);
+                        while(xpathIterator.HasMoreData())
+                        {
+                            var xpathCol = xpathIterator.GetNextValue();
+                            try
+                            {
+                                List<string> eval = parser.ExecuteXPath(c, xpathCol).ToList();
+                                var variable = ResultsCollection[i].OutputVariable;
+                                AssignResult(variable, dataObject, eval, update);
+                            }
+                            catch(Exception e)
+                            {
+                                allErrors.AddError(e.Message);
+                                dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
+                            }
+                        }
+                    }
+                }
+                allErrors.MergeErrors(errors);
+            }
+            return i;
         }
 
         void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval, int update)
@@ -246,7 +220,7 @@ namespace Dev2.Activities
             if(DataListUtil.IsValueScalar(variable))
             {
                 var values = eval as IList<string> ?? eval.ToList();
-                dataObject.Environment.Assign(variable, eval != null ? values.LastOrDefault() : "", update);
+                dataObject.Environment.Assign(variable, values.LastOrDefault(), update);
             }
             else
             {
@@ -254,7 +228,7 @@ namespace Dev2.Activities
                 foreach(var val in eval)
                 {
                     var correctedVariable = variable;
-                    if(DataListUtil.IsValueRecordset(variable) && DataListUtil.IsStarIndex(variable))
+                    if(DataListUtil.IsValueRecordset(variable) && DataListUtil.IsStarIndex(variable) && update==0)
                     {
                         correctedVariable = DataListUtil.ReplaceStarWithFixedIndex(variable, index);
                     }

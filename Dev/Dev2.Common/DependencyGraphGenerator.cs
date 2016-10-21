@@ -11,6 +11,7 @@
 using Dev2.Common.Common;
 using Dev2.Common.DependencyVisualization;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -34,6 +35,7 @@ namespace Dev2.Common
         /// <param name="height">The height.</param>
         /// <param name="nestingLevel">How deep should the graph show.</param>
         /// <returns></returns>
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public Graph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
         {
             if (xmlData == null || xmlData.Length == 0)
@@ -124,6 +126,7 @@ namespace Dev2.Common
             }
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private Node CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
             double screenWidth = width;
@@ -143,8 +146,10 @@ namespace Dev2.Common
             double.TryParse(tmpX, out x);
             double.TryParse(tmpY, out y);
 
+            // ReSharper disable once PossibleNullReferenceException
             string id = nodeElm.Attribute("id").Value;
             bool isTarget = id == resourceName;
+            // ReSharper disable once PossibleNullReferenceException
             bool broken = String.Equals(nodeElm.Attribute("broken").Value, "true", StringComparison.OrdinalIgnoreCase);
 
             if (isTarget)

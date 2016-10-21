@@ -106,7 +106,6 @@
     <Compile Include="PublicFunctions.fs" />
     <Compile Include="WarewolfTestData.fs" />
     <Compile Include="IntellisenseStringProvider.fs" />
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

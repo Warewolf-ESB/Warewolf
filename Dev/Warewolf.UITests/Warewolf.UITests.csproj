@@ -61,8 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
+    <Compile Include="ContextMenu\ContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
     <Compile Include="EmailSource\EmailSourceTests.cs" />
+    <Compile Include="Explorer\Rename.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
     <Compile Include="ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
@@ -95,6 +97,9 @@
     <Compile Include="Tools\HTTP Web Methods\HttpWebGet.cs" />
     <Compile Include="Tools\HTTP Web Methods\HttpWebPut.cs" />
     <Compile Include="Tools\HTTP Web Methods\HttpWebDelete.cs" />
+    <Compile Include="Sharepoint\SharepointCreateUITest.cs" />
+    <Compile Include="Tabs and Panes\AssignToolInUnpinnedWorkflowTab.cs" />
+    <Compile Include="Tabs and Panes\PinUnpinPanes.cs" />
     <Compile Include="Tools\Loop Constructs\Selectandapply.cs" />
     <Compile Include="Tools\Loop Constructs\ForEach.cs" />
     <Compile Include="Tools\Scripting\Ruby.cs" />

@@ -2433,3 +2433,32 @@ Scenario: Find Record using match type as is not Null
 	And when requires all fields to match is "false"
 	When the find records index multiple tool is executed
 	Then the execution has "NO" error
+
+Scenario: Find an index of data in a recordset search type is Not Text multiple results using recordset result
+	Given I have the following recordset to search for multiple criteria
+	| rs         | value |
+	| rs().field | 45    |
+	| rs().field | You   |
+	| rs().field | are   |
+	| rs().field | the   |
+	| rs().field | best  |
+	| rs().field | 741   |
+	| rs().field | user  |
+	And field to search is "[[rs().field]]"
+	And search the recordset with type "Not Text" and criteria is ""
+	Then the find records index multiple result should is "[[res().val]]"
+	When the find records index multiple tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as
+	| #           |                        | # |          |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = 45   |   |          |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = You  |   |          |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = are  |   |          |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = the  |   |          |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = best |   |          |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = 741  |   |          |  |  |     |                             |                                |
+	|             | [[rs(7).field]] = user | 1 | Not Text |  |  |     | NO                          | NO                             |     
+	And the debug output as
+	|                    |
+	| [[res(1).val]] =  1 |
+	| [[res(2).val]] =  6 |

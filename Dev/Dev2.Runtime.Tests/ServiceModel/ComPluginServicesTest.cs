@@ -8,6 +8,7 @@ using Dev2.Tests.Runtime.JSON;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
+// ReSharper disable PossibleNullReferenceException
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -196,6 +197,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             catch(Exception e)
             {
                 //Calls the execution correctly;
+                // ReSharper disable once PossibleNullReferenceException
                 Assert.AreEqual("[Microsoft][ODBC Driver Manager] Data source name not found and no default driver specified", e.InnerException.Message);
                 
             }

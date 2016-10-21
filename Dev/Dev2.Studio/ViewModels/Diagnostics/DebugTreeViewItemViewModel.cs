@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
+// ReSharper disable UnusedMemberInSuper.Global
 
 namespace Dev2.ViewModels.Diagnostics
 {
@@ -77,9 +78,6 @@ namespace Dev2.ViewModels.Diagnostics
 
         protected override void Initialize(IDebugState content)
         {
-            _inputs.Clear();
-            _outputs.Clear();
-
             if(content == null)
             {
                 return;
@@ -89,10 +87,9 @@ namespace Dev2.ViewModels.Diagnostics
             SelectionType = ActivitySelectionType.Add;
             IsSelected = content.ActivityType != ActivityType.Workflow;
 
-            // check for remote server ID ;)
             Guid serverID;
             var isRemote = Guid.TryParse(content.Server, out serverID);
-            if (isRemote|| String.IsNullOrEmpty( content.Server)) //todo:Technical debt. this must be removed on a major upgrade
+            if (isRemote|| String.IsNullOrEmpty( content.Server))
             {
 
 
