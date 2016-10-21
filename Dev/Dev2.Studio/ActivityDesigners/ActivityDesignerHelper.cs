@@ -89,7 +89,10 @@ using Dev2.Activities.Sharepoint;
 using Dev2.Activities.WcfEndPoint;
 using Dev2.Studio.ViewModels.Workflow;
 using System;
+using System.Activities.Presentation;
+using System.Collections;
 using System.Collections.Generic;
+using System.Windows;
 using Dev2.Activities.Designers2.ComDLL;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
@@ -186,6 +189,51 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
             };
+        private static Hashtable _hashTable;
+
+        public static Hashtable GetDesignerHashTable()
+        {
+            if (_hashTable == null)
+            {
+                _hashTable = new Hashtable
+                {
+                    {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
+                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]},
+                    {WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["DesignerBackground"]},
+                    {
+                        WorkflowDesignerColors.WorkflowViewElementBackgroundColorKey,
+                        Application.Current.Resources["WorkflowBackgroundBrush"]
+                    },
+                    {
+                        WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey,
+                        Application.Current.Resources["WorkflowBackgroundBrush"]
+                    },
+                    {
+                        WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey,
+                        Application.Current.Resources["WorkflowSelectedBorderBrush"]
+                    },
+                    {
+                        WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey,
+                        Application.Current.Resources["ShellBarViewBackground"]
+                    },
+                    {
+                        WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey,
+                        Application.Current.Resources["ShellBarViewBackground"]
+                    },
+                    {
+                        WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey,
+                        Application.Current.Resources["ShellBarViewBackground"]
+                    },
+                    {WorkflowDesignerColors.OutlineViewItemSelectedTextColorKey, Application.Current.Resources["SolidWhite"]},
+                    {
+                        WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey,
+                        Application.Current.Resources["DesignerBackground"]
+                    },
+                };
+            }
+            return _hashTable;
+        }
+
         public static void AddDesignerAttributes(WorkflowDesignerViewModel workflowVm, bool liteInit = false)
         {
             workflowVm.InitializeDesigner(DesignerAttributes, liteInit);
