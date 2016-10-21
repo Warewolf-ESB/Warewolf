@@ -257,7 +257,9 @@ namespace Warewolf.Studio.ViewModels
                     var notfolders = explorerTreeItems.Select(a => a.ResourceId).ToList();
                     _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders, Destination.DeployTests);
                     DeploySuccessfull = true;
-                    DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
+                    var message  = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
+                    PopupController.ShowDeploySuccessful(message);
+                    DeploySuccessfull = false;
 
                     await Destination.RefreshSelectedEnvironment();
                     UpdateServerCompareChanged(this, Guid.Empty);
@@ -396,7 +398,7 @@ namespace Warewolf.Studio.ViewModels
 
                 if (Source.SelectedItems == null || Source.SelectedItems.Count <= 0)
                 {
-                    ErrorMessage = Resources.Languages.Core.DeploySourceDestinationAreSame;
+                    ErrorMessage = Resources.Languages.Core.DeployNoResourcesSelected;
                     return false;
                 }
 
@@ -612,7 +614,7 @@ namespace Warewolf.Studio.ViewModels
                 _errorMessage = value;
                 if (!String.IsNullOrEmpty(DeploySuccessMessage) && !String.IsNullOrEmpty(value))
                 {
-                    DeploySuccessMessage = String.Empty;
+                    DeploySuccessMessage = String.Empty;                    
                     DeploySuccessfull = false;
                 }
                 OnPropertyChanged(() => ErrorMessage);
