@@ -2275,13 +2275,13 @@ namespace Warewolf.UITests
             {
                 case 2:
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextboxText = VariableText;
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextEditText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextboxText = ValueText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tab();
                     Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2 on unpinned tab.");
                     break;
                 default:
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextboxText = VariableText;
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextEditText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextboxText = ValueText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tab();
                     Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1 on unpinned tab.");
                     break;
@@ -3088,62 +3088,6 @@ namespace Warewolf.UITests
         /// </summary>
         public string SearchTextBoxEditText = "CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a" +
             "3a, processorArchitecture=AMD64";
-        #endregion
-
-        /// <summary>
-        /// Click_Duplicate_From_Duplicate_Dialog - Use 'Click_Duplicate_From_Duplicate_DialogParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Duplicate_From_Duplicate_Dialog()
-        {
-            #region Variable Declarations
-            WpfButton duplicateButton = this.SaveDialogWindow.DuplicateButton;
-            WpfWindow saveDialogWindow = this.SaveDialogWindow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Duplicate' button equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_Duplicate_DialogParams.DuplicateButtonExists, duplicateButton.Exists, "Duplicate button does not exist");
-
-            // Click 'Duplicate' button
-            Mouse.Click(duplicateButton, new Point(26, 10));
-
-            Point point;
-            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-            Assert.IsFalse(saveDialogWindow.TryGetClickablePoint(out point), "Save Dialog does not exist after clicking Duplicate button");
-            
-        }
-
-        public virtual Click_Duplicate_From_Duplicate_DialogParams Click_Duplicate_From_Duplicate_DialogParams
-        {
-            get
-            {
-                if ((this.mClick_Duplicate_From_Duplicate_DialogParams == null))
-                {
-                    this.mClick_Duplicate_From_Duplicate_DialogParams = new Click_Duplicate_From_Duplicate_DialogParams();
-                }
-                return this.mClick_Duplicate_From_Duplicate_DialogParams;
-            }
-        }
-
-        private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
-    }
-
-    /// <summary>
-    /// Parameters to be passed into 'Click_Duplicate_From_Duplicate_Dialog'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Duplicate_From_Duplicate_DialogParams
-    {
-
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Duplicate' button equals 'True'
-        /// </summary>
-        public bool DuplicateButtonExists = true;
-
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-        /// </summary>
-        public bool SaveDialogWindowExists = true;
         #endregion
     }
 }
