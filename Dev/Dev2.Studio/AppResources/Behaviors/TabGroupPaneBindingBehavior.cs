@@ -153,8 +153,11 @@ namespace Dev2.Studio.AppResources.Behaviors
                     where frameworkElement != null && frameworkElement.DataContext == newValue
                     select item)
                 {
-                    tabGroupPane.SelectedItem = item;
-                    break;
+                    if (tabGroupPane.SelectedItem != item)
+                    {
+                        tabGroupPane.SelectedItem = item;
+                        break;
+                    }
                 }
                 FocusManager.AddGotFocusHandler(tabGroupPane, GotFocusHandler);
             }

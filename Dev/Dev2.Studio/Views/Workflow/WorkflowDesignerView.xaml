@@ -269,7 +269,7 @@
     </UserControl.Resources>
 
 
-    <Grid cal:Bind.Model="{Binding .}">
+    <Grid cal:Bind.Model="{Binding ., IsAsync=True}">
         <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60" />
@@ -302,8 +302,8 @@
                 </StackPanel>
             </ScrollViewer>
             <ContentControl Grid.Row="1"
-                                    Content="{Binding Path=DesignerView}"
-                                    AutomationProperties.AutomationId="{Binding Path=DesignerText}"
+                                    Content="{Binding Path=DesignerView, IsAsync=True}"
+                                    AutomationProperties.AutomationId="{Binding Path=DisplayName, Mode=OneWay}"
                                     cal:Message.Attach="[Event LostKeyboardFocus] = [Action DoWorkspaceSave]">
 
                 <i:Interaction.Behaviors>
