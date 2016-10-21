@@ -183,15 +183,12 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void AddToCollection(IEnumerable<string> sources, bool overwrite)
         {
-            if (ModelItemCollection != null)
+            if (GetType() == typeof(DataMergeDesignerViewModel))
             {
-                var firstModelItem = ModelItemCollection.FirstOrDefault();
-                if (firstModelItem != null)
-                {
-                    _initialDto = (TDev2TOFn)firstModelItem.GetCurrentValue();
-                }
+                var lastPopulated = ModelItemCollection?.LastOrDefault(p => !string.IsNullOrWhiteSpace(p.GetProperty("At").ToString()));
+                if (lastPopulated != null)
+                    _initialDto = (TDev2TOFn)lastPopulated.GetCurrentValue();
             }
-
             var indexNumber = GetIndexForAdd(overwrite);
 
             // Always insert items before blank row
@@ -200,7 +197,7 @@ namespace Dev2.Activities.Designers2.Core
                 AddDto(indexNumber, s);
                 indexNumber++;
             }
-
+            AddBlankRow(overwrite);
             var lastModelItem = GetModelItem(ItemCount);
             SetIndexNumber(lastModelItem, indexNumber);
 
@@ -217,28 +214,20 @@ namespace Dev2.Activities.Designers2.Core
         int GetIndexForAdd(bool overwrite)
         {
             var indexNumber = 1;
-            if (overwrite)
-            {
-                if (ModelItemCollection != null)
-                {
-                    ModelItemCollection.Clear();
-                }
-
-                // AddMode blank row
-                AddDto(indexNumber);
-            }
+            if(overwrite)
+                ModelItemCollection?.Clear();
             else
             {
                 var lastDto = GetLastDto();
-                if (ModelItemCollection != null)
+                if(ModelItemCollection != null)
                 {
                     indexNumber = ModelItemCollection.IndexOf(GetModelItem(ItemCount)) + 1;
 
-                    if (ModelItemCollection.Count == 2)
+                    if(ModelItemCollection.Count == 2)
                     {
                         // Check whether we have 2 blank rows
                         var firstDto = GetDto(1);
-                        if (firstDto.CanRemove() && lastDto.CanRemove())
+                        if(firstDto.CanRemove() && lastDto.CanRemove())
                         {
                             RemoveAt(indexNumber, lastDto);
                             indexNumber = indexNumber - 1;
@@ -265,7 +254,7 @@ namespace Dev2.Activities.Designers2.Core
             return GetDto(ItemCount);
         }
 
-        void AddBlankRow()
+        void AddBlankRow(bool overwrite = false)
         {
             var lastDto = GetLastDto();
             var index = ItemCount + 1;
@@ -273,12 +262,29 @@ namespace Dev2.Activities.Designers2.Core
             if (!isLastRowBlank)
             {
                 var lastIndex = index + 1;
+                if (overwrite)
+                    _initialDto = new TDev2TOFn();
                 AddDto(lastIndex);
                 UpdateDisplayName();
                 if (GetType() == typeof(DataMergeDesignerViewModel))
                     RunValidation(ModelItemCount - 1);
             }
         }
+        //void AddBlankRowForOverwriteVariabled()
+        //{
+        //    var lastDto = GetLastDto();
+        //    var index = ItemCount + 1;
+        //    var isLastRowBlank = lastDto.CanRemove();
+        //    if (!isLastRowBlank)
+        //    {
+        //        var lastIndex = index + 1;
+        //        _initialDto = new TDev2TOFn();
+        //        AddDto(lastIndex);
+        //        UpdateDisplayName();
+        //        if (GetType() == typeof(DataMergeDesignerViewModel))
+        //            RunValidation(ModelItemCount - 1);
+        //    }
+        //}
 
         protected virtual void RunValidation(int index)
         {
@@ -287,7 +293,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             //
             // DO NOT invoke Renumber() from here - this method is called MANY times when invoking AddToCollection()!!
-            //
+            //                    
             var dto = CreateDto(indexNumber, initializeWith);
             AttachEvents(dto);
 
@@ -302,10 +308,10 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if (ModelItemCollection != null)
                 {
-                    ModelItemCollection.Insert(idx, dto);
-                    RunValidation(idx);
+                    ModelItemCollection.Insert(idx, dto);                    
                 }
             }
+            RunValidation(idx);
         }
 
         protected virtual IDev2TOFn CreateDto(int indexNumber, string initializeWith)
