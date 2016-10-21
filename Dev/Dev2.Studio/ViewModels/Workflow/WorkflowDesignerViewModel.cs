@@ -17,7 +17,6 @@ using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
 using System.Activities.Presentation.View;
 using System.Activities.Statements;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -87,6 +86,7 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ViewModels;
+
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
@@ -1200,43 +1200,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void SetHashTable()
         {
-            var hashTable = new Hashtable
-            {
-                {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
-                {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]},
-                {WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["DesignerBackground"]},
-                {
-                    WorkflowDesignerColors.WorkflowViewElementBackgroundColorKey,
-                    Application.Current.Resources["WorkflowBackgroundBrush"]
-                },
-                {
-                    WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey,
-                    Application.Current.Resources["WorkflowBackgroundBrush"]
-                },
-                {
-                    WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey,
-                    Application.Current.Resources["WorkflowSelectedBorderBrush"]
-                },
-                {
-                    WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey,
-                    Application.Current.Resources["ShellBarViewBackground"]
-                },
-                {
-                    WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey,
-                    Application.Current.Resources["ShellBarViewBackground"]
-                },
-                {
-                    WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey,
-                    Application.Current.Resources["ShellBarViewBackground"]
-                },
-                {WorkflowDesignerColors.OutlineViewItemSelectedTextColorKey, Application.Current.Resources["SolidWhite"]},
-                {
-                    WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey,
-                    Application.Current.Resources["DesignerBackground"]
-                },
-            };
-
-            _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
+            _wd.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
         }
 
         private void SetDesignerConfigService()
