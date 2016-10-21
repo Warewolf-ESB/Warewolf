@@ -3434,10 +3434,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface()
         {
             #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
             WpfCustom flowchart = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom multiAssign1 = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
             #endregion
+
+            // Type 'Assign' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams.SearchTextBoxText;
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 126));
@@ -6022,35 +6026,11 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom unpinnedTab = this.MainStudioWindow.UnpinnedTab;
-            WpfMenuItem floating = this.MainStudioWindow.UnpinnedTabContextMenu.Floating;
-            WpfMenuItem dockable = this.MainStudioWindow.UnpinnedTabContextMenu.Dockable;
             WpfMenuItem tabbedDocument = this.MainStudioWindow.UnpinnedTabContextMenu.TabbedDocument;
-            WpfMenuItem autoHide = this.MainStudioWindow.UnpinnedTabContextMenu.AutoHide;
-            WpfMenuItem hide = this.MainStudioWindow.UnpinnedTabContextMenu.Hide;
             #endregion
 
             // Right-Click custom control
             Mouse.Click(unpinnedTab, MouseButtons.Right, ModifierKeys.None, new Point(14, 12));
-
-            // Verify that the 'Exists' property of 'Floating' menu item equals 'True'
-            Assert.AreEqual(this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.FloatingExists, floating.Exists, "Menu item as floating does not exist after openning unpinned tab context menu wit" +
-                    "h a right click.");
-
-            // Verify that the 'Exists' property of 'Dockable' menu item equals 'True'
-            Assert.AreEqual(this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.DockableExists, dockable.Exists, "Menu item as dockable does not exist after openning unpinned tab context menu wit" +
-                    "h a right click.");
-
-            // Verify that the 'Exists' property of 'Tabbed Document' menu item equals 'True'
-            Assert.AreEqual(this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.TabbedDocumentExists, tabbedDocument.Exists, "Menu item as tabbed document does not exist after openning unpinned tab context m" +
-                    "enu with a right click.");
-
-            // Verify that the 'Exists' property of 'Auto Hide' menu item equals 'True'
-            Assert.AreEqual(this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.AutoHideExists, autoHide.Exists, "Menu item as auto hide does not exist after openning unpinned tab context menu wi" +
-                    "th a right click.");
-
-            // Verify that the 'Exists' property of 'Hide' menu item equals 'True'
-            Assert.AreEqual(this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.HideExists, hide.Exists, "Menu item as hide does not exist after openning unpinned tab context menu with a " +
-                    "right click.");
 
             // Select 'Tabbed Document' menu item
             tabbedDocument.Checked = this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.TabbedDocumentChecked;
@@ -13593,6 +13573,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Type 'Assign' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Assign";
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
         /// </summary>
         public bool MultiAssignExists = true;
@@ -15767,31 +15752,6 @@ namespace Warewolf.UITests
     {
         
         #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Floating' menu item equals 'True'
-        /// </summary>
-        public bool FloatingExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Dockable' menu item equals 'True'
-        /// </summary>
-        public bool DockableExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Tabbed Document' menu item equals 'True'
-        /// </summary>
-        public bool TabbedDocumentExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Auto Hide' menu item equals 'True'
-        /// </summary>
-        public bool AutoHideExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Hide' menu item equals 'True'
-        /// </summary>
-        public bool HideExists = true;
-        
         /// <summary>
         /// Select 'Tabbed Document' menu item
         /// </summary>
