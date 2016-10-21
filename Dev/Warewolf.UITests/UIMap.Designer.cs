@@ -38,7 +38,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox;
-            WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.Intellisense.Textbox;
+            WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox;
             #endregion
 
             // Type '[[SomeVariable]]' in 'UI_TextBox_AutoID' text box
@@ -71,7 +71,7 @@ namespace Warewolf.UITests
         public void Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.VariableCell.Intellisense.Textbox;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.VariableCell.IntellisenseCombobox.Textbox;
             WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.ValueCell.Intellisense.Textbox;
             #endregion
 
@@ -74961,29 +74961,29 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Intellisense Intellisense
+        public IntellisenseCombobox1 IntellisenseCombobox
         {
             get
             {
-                if ((this.mIntellisense == null))
+                if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisense = new Intellisense(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox1(this);
                 }
-                return this.mIntellisense;
+                return this.mIntellisenseCombobox;
             }
         }
         #endregion
         
         #region Fields
-        private Intellisense mIntellisense;
+        private IntellisenseCombobox1 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Intellisense : WpfComboBox
+    public class IntellisenseCombobox1 : WpfComboBox
     {
         
-        public Intellisense(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -75129,29 +75129,29 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Intellisense1 Intellisense
+        public IntellisenseCombobox2 IntellisenseCombobox
         {
             get
             {
-                if ((this.mIntellisense == null))
+                if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisense = new Intellisense1(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox2(this);
                 }
-                return this.mIntellisense;
+                return this.mIntellisenseCombobox;
             }
         }
         #endregion
         
         #region Fields
-        private Intellisense1 mIntellisense;
+        private IntellisenseCombobox2 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Intellisense1 : WpfComboBox
+    public class IntellisenseCombobox2 : WpfComboBox
     {
         
-        public Intellisense1(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -75247,13 +75247,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Intellisense2 Intellisense
+        public Intellisense Intellisense
         {
             get
             {
                 if ((this.mIntellisense == null))
                 {
-                    this.mIntellisense = new Intellisense2(this);
+                    this.mIntellisense = new Intellisense(this);
                 }
                 return this.mIntellisense;
             }
@@ -75261,15 +75261,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Intellisense2 mIntellisense;
+        private Intellisense mIntellisense;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Intellisense2 : WpfComboBox
+    public class Intellisense : WpfComboBox
     {
         
-        public Intellisense2(UITestControl searchLimitContainer) : 
+        public Intellisense(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -75415,13 +75415,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox1 IntellisenseCombobox
+        public IntellisenseCombobox3 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox1(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox3(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -75429,15 +75429,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox1 mIntellisenseCombobox;
+        private IntellisenseCombobox3 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox1 : WpfComboBox
+    public class IntellisenseCombobox3 : WpfComboBox
     {
         
-        public IntellisenseCombobox1(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -75533,13 +75533,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox2 IntellisenseCombobox
+        public IntellisenseCombobox4 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox2(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox4(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -75547,15 +75547,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox2 mIntellisenseCombobox;
+        private IntellisenseCombobox4 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox2 : WpfComboBox
+    public class IntellisenseCombobox4 : WpfComboBox
     {
         
-        public IntellisenseCombobox2(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -75808,13 +75808,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Intellisense3 Intellisense
+        public Intellisense1 Intellisense
         {
             get
             {
                 if ((this.mIntellisense == null))
                 {
-                    this.mIntellisense = new Intellisense3(this);
+                    this.mIntellisense = new Intellisense1(this);
                 }
                 return this.mIntellisense;
             }
@@ -75822,15 +75822,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Intellisense3 mIntellisense;
+        private Intellisense1 mIntellisense;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Intellisense3 : WpfComboBox
+    public class Intellisense1 : WpfComboBox
     {
         
-        public Intellisense3(UITestControl searchLimitContainer) : 
+        public Intellisense1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -75877,13 +75877,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox3 IntellisenseCombobox
+        public IntellisenseCombobox5 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox3(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox5(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -75891,15 +75891,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox3 mIntellisenseCombobox;
+        private IntellisenseCombobox5 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox3 : WpfComboBox
+    public class IntellisenseCombobox5 : WpfComboBox
     {
         
-        public IntellisenseCombobox3(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -75993,13 +75993,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox4 IntellisenseCombobox
+        public IntellisenseCombobox6 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox4(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox6(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -76007,15 +76007,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox4 mIntellisenseCombobox;
+        private IntellisenseCombobox6 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox4 : WpfComboBox
+    public class IntellisenseCombobox6 : WpfComboBox
     {
         
-        public IntellisenseCombobox4(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -76062,13 +76062,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox5 IntellisenseCombobox
+        public IntellisenseCombobox7 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox5(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox7(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -76076,15 +76076,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox5 mIntellisenseCombobox;
+        private IntellisenseCombobox7 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox5 : WpfComboBox
+    public class IntellisenseCombobox7 : WpfComboBox
     {
         
-        public IntellisenseCombobox5(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox7(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -76178,13 +76178,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox6 IntellisenseCombobox
+        public IntellisenseCombobox8 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox6(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox8(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -76192,15 +76192,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox6 mIntellisenseCombobox;
+        private IntellisenseCombobox8 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox6 : WpfComboBox
+    public class IntellisenseCombobox8 : WpfComboBox
     {
         
-        public IntellisenseCombobox6(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox8(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -76247,13 +76247,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox7 IntellisenseCombobox
+        public IntellisenseCombobox9 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox7(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox9(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -76261,15 +76261,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox7 mIntellisenseCombobox;
+        private IntellisenseCombobox9 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox7 : WpfComboBox
+    public class IntellisenseCombobox9 : WpfComboBox
     {
         
-        public IntellisenseCombobox7(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox9(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -76363,13 +76363,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox8 IntellisenseCombobox
+        public IntellisenseCombobox10 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox8(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox10(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -76377,15 +76377,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox8 mIntellisenseCombobox;
+        private IntellisenseCombobox10 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox8 : WpfComboBox
+    public class IntellisenseCombobox10 : WpfComboBox
     {
         
-        public IntellisenseCombobox8(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox10(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -76432,13 +76432,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox9 IntellisenseCombobox
+        public IntellisenseCombobox11 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox9(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox11(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -76446,15 +76446,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox9 mIntellisenseCombobox;
+        private IntellisenseCombobox11 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox9 : WpfComboBox
+    public class IntellisenseCombobox11 : WpfComboBox
     {
         
-        public IntellisenseCombobox9(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox11(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85181,13 +85181,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseComboBox10 IntellisenseComboBox
+        public IntellisenseComboBox12 IntellisenseComboBox
         {
             get
             {
                 if ((this.mIntellisenseComboBox == null))
                 {
-                    this.mIntellisenseComboBox = new IntellisenseComboBox10(this);
+                    this.mIntellisenseComboBox = new IntellisenseComboBox12(this);
                 }
                 return this.mIntellisenseComboBox;
             }
@@ -85195,15 +85195,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseComboBox10 mIntellisenseComboBox;
+        private IntellisenseComboBox12 mIntellisenseComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseComboBox10 : WpfComboBox
+    public class IntellisenseComboBox12 : WpfComboBox
     {
         
-        public IntellisenseComboBox10(UITestControl searchLimitContainer) : 
+        public IntellisenseComboBox12(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85315,13 +85315,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseComboBox11 IntellisenseComboBox
+        public IntellisenseComboBox13 IntellisenseComboBox
         {
             get
             {
                 if ((this.mIntellisenseComboBox == null))
                 {
-                    this.mIntellisenseComboBox = new IntellisenseComboBox11(this);
+                    this.mIntellisenseComboBox = new IntellisenseComboBox13(this);
                 }
                 return this.mIntellisenseComboBox;
             }
@@ -85329,15 +85329,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseComboBox11 mIntellisenseComboBox;
+        private IntellisenseComboBox13 mIntellisenseComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseComboBox11 : WpfComboBox
+    public class IntellisenseComboBox13 : WpfComboBox
     {
         
-        public IntellisenseComboBox11(UITestControl searchLimitContainer) : 
+        public IntellisenseComboBox13(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -92447,13 +92447,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Intellisense4 Intellisense
+        public Intellisense2 Intellisense
         {
             get
             {
                 if ((this.mIntellisense == null))
                 {
-                    this.mIntellisense = new Intellisense4(this);
+                    this.mIntellisense = new Intellisense2(this);
                 }
                 return this.mIntellisense;
             }
@@ -92461,15 +92461,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Intellisense4 mIntellisense;
+        private Intellisense2 mIntellisense;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Intellisense4 : WpfComboBox
+    public class Intellisense2 : WpfComboBox
     {
         
-        public Intellisense4(UITestControl searchLimitContainer) : 
+        public Intellisense2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -92566,13 +92566,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Intellisense5 Intellisense
+        public Intellisense3 Intellisense
         {
             get
             {
                 if ((this.mIntellisense == null))
                 {
-                    this.mIntellisense = new Intellisense5(this);
+                    this.mIntellisense = new Intellisense3(this);
                 }
                 return this.mIntellisense;
             }
@@ -92580,15 +92580,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Intellisense5 mIntellisense;
+        private Intellisense3 mIntellisense;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Intellisense5 : WpfComboBox
+    public class Intellisense3 : WpfComboBox
     {
         
-        public Intellisense5(UITestControl searchLimitContainer) : 
+        public Intellisense3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -92734,13 +92734,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Intellisense6 Intellisense
+        public Intellisense4 Intellisense
         {
             get
             {
                 if ((this.mIntellisense == null))
                 {
-                    this.mIntellisense = new Intellisense6(this);
+                    this.mIntellisense = new Intellisense4(this);
                 }
                 return this.mIntellisense;
             }
@@ -92748,15 +92748,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Intellisense6 mIntellisense;
+        private Intellisense4 mIntellisense;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Intellisense6 : WpfComboBox
+    public class Intellisense4 : WpfComboBox
     {
         
-        public Intellisense6(UITestControl searchLimitContainer) : 
+        public Intellisense4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -92852,13 +92852,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Intellisense7 Intellisense
+        public Intellisense5 Intellisense
         {
             get
             {
                 if ((this.mIntellisense == null))
                 {
-                    this.mIntellisense = new Intellisense7(this);
+                    this.mIntellisense = new Intellisense5(this);
                 }
                 return this.mIntellisense;
             }
@@ -92866,15 +92866,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Intellisense7 mIntellisense;
+        private Intellisense5 mIntellisense;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Intellisense7 : WpfComboBox
+    public class Intellisense5 : WpfComboBox
     {
         
-        public Intellisense7(UITestControl searchLimitContainer) : 
+        public Intellisense5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93020,13 +93020,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox12 IntellisenseCombobox
+        public IntellisenseCombobox14 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox12(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox14(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -93034,15 +93034,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox12 mIntellisenseCombobox;
+        private IntellisenseCombobox14 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox12 : WpfComboBox
+    public class IntellisenseCombobox14 : WpfComboBox
     {
         
-        public IntellisenseCombobox12(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox14(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93138,13 +93138,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox13 IntellisenseCombobox
+        public IntellisenseCombobox15 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox13(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox15(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -93152,15 +93152,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox13 mIntellisenseCombobox;
+        private IntellisenseCombobox15 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox13 : WpfComboBox
+    public class IntellisenseCombobox15 : WpfComboBox
     {
         
-        public IntellisenseCombobox13(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox15(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93399,13 +93399,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Intellisense8 Intellisense
+        public Intellisense6 Intellisense
         {
             get
             {
                 if ((this.mIntellisense == null))
                 {
-                    this.mIntellisense = new Intellisense8(this);
+                    this.mIntellisense = new Intellisense6(this);
                 }
                 return this.mIntellisense;
             }
@@ -93413,15 +93413,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Intellisense8 mIntellisense;
+        private Intellisense6 mIntellisense;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Intellisense8 : WpfComboBox
+    public class Intellisense6 : WpfComboBox
     {
         
-        public Intellisense8(UITestControl searchLimitContainer) : 
+        public Intellisense6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93468,13 +93468,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox14 IntellisenseCombobox
+        public IntellisenseCombobox16 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox14(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox16(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -93482,15 +93482,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox14 mIntellisenseCombobox;
+        private IntellisenseCombobox16 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox14 : WpfComboBox
+    public class IntellisenseCombobox16 : WpfComboBox
     {
         
-        public IntellisenseCombobox14(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox16(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93584,13 +93584,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox15 IntellisenseCombobox
+        public IntellisenseCombobox17 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox15(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox17(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -93598,15 +93598,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox15 mIntellisenseCombobox;
+        private IntellisenseCombobox17 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox15 : WpfComboBox
+    public class IntellisenseCombobox17 : WpfComboBox
     {
         
-        public IntellisenseCombobox15(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox17(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93653,13 +93653,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox16 IntellisenseCombobox
+        public IntellisenseCombobox18 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox16(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox18(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -93667,15 +93667,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox16 mIntellisenseCombobox;
+        private IntellisenseCombobox18 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox16 : WpfComboBox
+    public class IntellisenseCombobox18 : WpfComboBox
     {
         
-        public IntellisenseCombobox16(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox18(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93769,13 +93769,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox17 IntellisenseCombobox
+        public IntellisenseCombobox19 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox17(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox19(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -93783,15 +93783,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox17 mIntellisenseCombobox;
+        private IntellisenseCombobox19 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox17 : WpfComboBox
+    public class IntellisenseCombobox19 : WpfComboBox
     {
         
-        public IntellisenseCombobox17(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox19(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93838,13 +93838,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox18 IntellisenseCombobox
+        public IntellisenseCombobox20 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox18(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox20(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -93852,15 +93852,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox18 mIntellisenseCombobox;
+        private IntellisenseCombobox20 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox18 : WpfComboBox
+    public class IntellisenseCombobox20 : WpfComboBox
     {
         
-        public IntellisenseCombobox18(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox20(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93954,13 +93954,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox19 IntellisenseCombobox
+        public IntellisenseCombobox21 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox19(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox21(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -93968,15 +93968,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox19 mIntellisenseCombobox;
+        private IntellisenseCombobox21 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox19 : WpfComboBox
+    public class IntellisenseCombobox21 : WpfComboBox
     {
         
-        public IntellisenseCombobox19(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox21(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -94023,13 +94023,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public IntellisenseCombobox20 IntellisenseCombobox
+        public IntellisenseCombobox22 IntellisenseCombobox
         {
             get
             {
                 if ((this.mIntellisenseCombobox == null))
                 {
-                    this.mIntellisenseCombobox = new IntellisenseCombobox20(this);
+                    this.mIntellisenseCombobox = new IntellisenseCombobox22(this);
                 }
                 return this.mIntellisenseCombobox;
             }
@@ -94037,15 +94037,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private IntellisenseCombobox20 mIntellisenseCombobox;
+        private IntellisenseCombobox22 mIntellisenseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class IntellisenseCombobox20 : WpfComboBox
+    public class IntellisenseCombobox22 : WpfComboBox
     {
         
-        public IntellisenseCombobox20(UITestControl searchLimitContainer) : 
+        public IntellisenseCombobox22(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
