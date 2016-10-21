@@ -1,7 +1,7 @@
 ﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
-$SolutionDir = (Get-Item $PSScriptRoot ).parent.parent.FullName
+$SolutionDir = (Get-Item $PSScriptRoot ).parent.parent.parent.FullName
 # Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
@@ -12,11 +12,11 @@ if ($Args.Count -gt 0) {
 	    [xml]$playlistContent = Get-Content $_.FullName
 	    if ($playlistContent.Playlist.Add.count -gt 0) {
 	        foreach( $TestName in $playlistContent.Playlist.Add) {
-		        $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
+		        $TestList += " /test:" + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
 	        }
 	    } else {        
             if ($playlistContent.Playlist.Add.Test -ne $null) {
-                $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
+                $TestList = " /test:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
             } else {
 	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
 	            Continue
@@ -29,35 +29,31 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
+$TestSettingsFile = "$PSScriptRoot\LocalOtherUITests.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
-<?xml version=`"1.0`" encoding=`"UTF-8`"?>
-<TestSettings name=`"Tools Specs`" id=`"" + [guid]::NewGuid() + @"`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>These are default test settings for a local test run.</Description>
-  <NamingScheme baseName=`"ToolsSpecs`" appendTimeStamp=`"false`" useDefault=`"false`" />
+<?xml version=`"1.0`" encoding="UTF-8"?>
+<TestSettings
+  id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
+  name=`"ExampleWorkflowExecutionSpecs`"
+  enableDefaultDataCollectors=`"false`"
+  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+  <Description>Run example workflow execution specs.</Description>
+  <Deployment enabled=`"false`" />
+  <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
-    <Hosts skipUnhostableTests=`"false`" />
-    <TestTypeSpecific>
-      <UnitTestRunConfig testTypeId=`"13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b`">
-        <AssemblyResolution>
-          <TestDirectory useLoadContext=`"true`" />
-        </AssemblyResolution>
-      </UnitTestRunConfig>
-    </TestTypeSpecific>
-    <AgentRule name=`"LocalMachineDefaultRole`">
-    </AgentRule>
+    <Timeouts testTimeout=`"300000`" />
   </Execution>
 </TestSettings>
 "@)
 
 # Create full VSTest argument string.
-$FullArgsList = "`"" + $SolutionDir + "\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /resultsfile:TestResults\OtherUITestResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"!Tools`""
 
 # Display full command including full argument string.
-Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
+Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\MSTest.exe`" $FullArgsList
 
 # Run VSTest with full argument string.
-Start-Process -FilePath "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
+Start-Process -FilePath "$env:vs140comntools..\IDE\MSTest.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
 
 # Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"

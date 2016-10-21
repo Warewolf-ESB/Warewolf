@@ -63,6 +63,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (itemToBeRenamed != null)
                 {
                     explorerItem = ServerExplorerRepo.Find(Guid.Parse(itemToBeRenamed.ToString()));
+                    if (explorerItem == null)
+                    {
+                        throw new ArgumentException(string.Format(ErrorResource.FailedToFindResource, "newName"));
+                    }
                     Dev2Logger.Info($"Rename Item. Path:{explorerItem.ResourcePath} NewPath:{newName}");
                     item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
                 }
@@ -76,10 +80,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     };
                     item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
                     
-                }
-                if (item != null && item.Status == ExecStatus.Success)
-                {
-                    ResourceCatalog.Instance.Reload();
                 }
             }
             catch(Exception e)

@@ -74,6 +74,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Dev2.Studio\App.config">
+      <Link>App.config</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -86,7 +89,6 @@
     <Compile Include="Converters\StringToTimespanConverterTests.cs" />
     <Compile Include="DelayTextChangedEventTriggerTests.cs" />
     <Compile Include="Person.cs" />
-    <Compile Include="ValueConverterGroupTests.cs" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

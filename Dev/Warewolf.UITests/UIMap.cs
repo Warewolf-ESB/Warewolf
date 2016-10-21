@@ -56,9 +56,45 @@ namespace Warewolf.UITests
             TryCloseHangingServicePickerDialog();
             TryCloseHangingWindowsGroupDialog();
             TryPin_Unpinned_Pane_To_Default_Position();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner); 
 #endif
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+        }
+
+        [When(@"I Try Click Message Box OK")]
+        public void TryClickMessageBoxOK()
+        {
+            if (ControlExistsNow(MessageBoxWindow.OKButton))
+            {
+                Click_MessageBox_OK();
+            }
+            else
+            {
+                Console.WriteLine("No hanging message box to clean up.");
+            }
+        }
+
+        public void TryCloseHangingDebugInputDialog()
+        {
+            if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
+            {
+                Click_DebugInput_Cancel_Button();
+            }
+            else
+            {
+                Console.WriteLine("No hanging debug input dialog to clean up.");
+            }
+        }
+
+        public void TryCloseHangingSaveDialog()
+        {
+            if (ControlExistsNow(SaveDialogWindow.CancelButton))
+            {
+                Click_SaveDialog_CancelButton();
+            }
+            else
+            {
+                Console.WriteLine("No hanging save dialog to clean up.");
+            }
         }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
@@ -67,20 +103,33 @@ namespace Warewolf.UITests
             {
                 Restore_Unpinned_Tab_Using_Context_Menu();
             }
+			else
+			{
+				Console.WriteLine("No hanging unpinned pane to clean up.");
+			}
         }
 
         private void TryCloseHangingServicePickerDialog()
         {
-            try
+			if (ControlExistsNow(ServicePickerDialog.Cancel))
+			{
+				Click_Service_Picker_Dialog_Cancel();
+			}
+			else
+			{
+				Console.WriteLine("No hanging service picker dialog to clean up.");
+			}
+        }
+
+        public void TryCloseHangingWindowsGroupDialog()
+        {
+            if (ControlExistsNow(SelectWindowsGroupDialog))
             {
-                if (ControlExistsNow(ServicePickerDialog.Cancel))
-                {
-                    Click_Service_Picker_Dialog_Cancel();
-                }
+                Click_Select_Windows_Group_Cancel_Button();
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine("No hanging service picker dialog to clean up.\n" + e.Message);
+                Console.WriteLine("No hanging select windows group dialog to clean up.");
             }
         }
 
@@ -195,15 +244,6 @@ namespace Warewolf.UITests
             return controlExists;
         }
 
-        [When(@"I Try Click Message Box OK")]
-        public void TryClickMessageBoxOK()
-        {
-            if (ControlExistsNow(MessageBoxWindow.OKButton))
-            {
-                Click_MessageBox_OK();
-            }
-        }
-
         public void InitializeABlankWorkflow()
         {
             Click_New_Workflow_Ribbon_Button();
@@ -291,21 +331,6 @@ namespace Warewolf.UITests
             return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
         }
 
-        public void TryCloseHangingSaveDialog()
-        {
-            try
-            {
-                if (ControlExistsNow(SaveDialogWindow.CancelButton))
-                {
-                    Click_SaveDialog_CancelButton();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup threw an unhandled exception trying to remove hanging save dialog. Test may have crashed without leaving a hanging dialog.\n" + e.Message);
-            }
-        }
-
         public void TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(string SourceName)
         {
             try
@@ -365,21 +390,6 @@ namespace Warewolf.UITests
             finally
             {
                 TryClearExplorerFilter();
-            }
-        }
-
-        public void TryCloseHangingWindowsGroupDialog()
-        {
-            try
-            {
-                if (ControlExistsNow(SelectWindowsGroupDialog))
-                {
-                    Click_Select_Windows_Group_Cancel_Button();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
             }
         }
 
@@ -700,21 +710,6 @@ namespace Warewolf.UITests
             Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1, new Point(91, 9));
             Assert.IsTrue(ServicePickerDialog.OK.Enabled, "Service picker dialog OK button is not enabled.");
             Click_Service_Picker_Dialog_OK();
-        }
-
-        public void TryCloseHangingDebugInputDialog()
-        {
-            try
-            {
-                if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
-                {
-                    Click_DebugInput_Cancel_Button();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
-            }
         }
 
         public void TryRefreshExplorerUntilOneItemOnly(int retries = 3)
@@ -1575,6 +1570,10 @@ namespace Warewolf.UITests
                     var test3 = test as Test3;
                     property = test3.TestNameDisplay;
                     break;
+                case 4:
+                    var test4 = test as Test3;
+                    property = test4.TestNameDisplay;
+                    break;
                 default:
                     var test1 = test as Test1;
                     property = test1.TestNameDisplay;
@@ -1870,7 +1869,7 @@ namespace Warewolf.UITests
         public void Assert_Workflow_Testing_Tab_First_Test_Has_Unsaved_Star(bool HasStar)
         {
             Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.TabDescription.DisplayText.Contains("*"), "Test tab title does not contain unsaved star.");
-            Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestNameDisplay.DisplayText.Contains("*"), "First test title does not contain unsaved star.");
+            Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestNameDisplay.DisplayText.Contains("*"), "First test title does not contain unsaved star.");
         }
 
         [Given(@"That The Second Test ""(.*)"" Unsaved Star")]
@@ -1878,7 +1877,7 @@ namespace Warewolf.UITests
         public void Assert_Workflow_Testing_Tab_Second_Test_Has_Unsaved_Star(string HasHasNot)
         {
             Assert.AreEqual((HasHasNot == "Has"), MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.TabDescription.DisplayText.Contains("*"), "Test tab title does not contain unsaved star.");
-            Assert.AreEqual((HasHasNot == "Has"), MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.TestNameDisplay.DisplayText.Contains("*"), "Second test title does not contain unsaved star.");
+            Assert.AreEqual((HasHasNot == "Has"), MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.TestNameDisplay.DisplayText.Contains("*"), "Second test title does not contain unsaved star.");
         }
 
         [When(@"I Click Duplicate From Explorer Context Menu for Service ""(.*)""")]
@@ -1912,7 +1911,7 @@ namespace Warewolf.UITests
         [When("I Toggle First Test Enabled")]
         public void Toggle_Workflow_Testing_Tab_First_Test_Enabled()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector, new Point(10, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestEnabledSelector, new Point(10, 10));
         }
 
         [When("I Click Test (.*) Run Button")]
@@ -1935,13 +1934,13 @@ namespace Warewolf.UITests
         [When("I Click First Test Delete Button")]
         public void Click_First_Test_Delete_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.DeleteButton, new Point(10, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.DeleteButton, new Point(10, 10));
         }
 
         [When(@"I Click First Test Run Button")]
         public void Click_First_Test_Run_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.RunButton, new Point(10, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.RunButton, new Point(10, 10));
         }
 
         public void Select_First_Test()
@@ -1978,7 +1977,7 @@ namespace Warewolf.UITests
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Invalid(bool invalid = true)
         {
             Point point;
-            Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
+            Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
         }
 
         public void Delete_Assign_With_Context_Menu()

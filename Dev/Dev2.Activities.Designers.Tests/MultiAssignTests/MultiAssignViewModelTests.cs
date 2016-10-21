@@ -82,7 +82,6 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
 
             //exe
             var vm = CreateDsfMultiAssignActivityViewModel();
-            vm.Validate();
 
             //assert
             Assert.AreEqual(ExpectedCollectionName, vm.CollectionName, "Collection Name not initialized on Multi Assign load");
