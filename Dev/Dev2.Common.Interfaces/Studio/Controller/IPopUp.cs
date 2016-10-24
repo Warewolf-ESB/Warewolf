@@ -50,6 +50,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         void ShowInvalidCharacterMessage(string invalidText);
 
         MessageBoxResult ShowDeployNameConflict(string message);
+        MessageBoxResult ShowDeploySuccessful(string message);
 
         MessageBoxResult ShowDeployServerMinVersionConflict(string sourceServerVersion, string destinationServerVersion);
 
