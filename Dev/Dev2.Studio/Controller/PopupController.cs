@@ -315,6 +315,21 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowDeploySuccessful(string message)
+        {
+
+            Buttons = MessageBoxButton.OK;
+            Header = "Resource(s) Deployed Successfuly";
+
+            Description = message;
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            return Show();
+        }
+
         public MessageBoxResult ShowSettingsCloseConfirmation()
         {
 
