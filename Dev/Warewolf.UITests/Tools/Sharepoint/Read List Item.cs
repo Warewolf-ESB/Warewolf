@@ -20,7 +20,7 @@ namespace Warewolf.UITests
         [TestCategory("Tools")]
         public void Sharepoint_Read_List_Item_Large_View()
         {
-            UIMap.Open_Sharepoint_Read_Tool_Large_View();
+            UIMap.Open_Sharepoint_Read_Folder_Tool_Large_View();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.LargeView.Server.Exists, "Server combobox does not exist on tool large view after openning the large view with a double click.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.LargeView.MethodList.Exists, "Method List does not exist on tool large view after openning the large view with a double click.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.LargeView.DataGridTableValues.Exists, "Data Grid Table Values does not exist on tool large view after openning the large view with a double click.");
