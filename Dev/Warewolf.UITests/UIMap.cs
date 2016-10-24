@@ -65,73 +65,115 @@ namespace Warewolf.UITests
         [When(@"I Try Click Message Box OK")]
         public void TryClickMessageBoxOK()
         {
-            if (ControlExistsNow(MessageBoxWindow.OKButton))
+            try
             {
-                Click_MessageBox_OK();
+                if (ControlExistsNow(MessageBoxWindow.OKButton))
+                {
+                    Click_MessageBox_OK();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging message box to clean up.");
+                }
             }
-            else
+            catch(NullReferenceException)
             {
-                Console.WriteLine("No hanging message box to clean up.");
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
         }
 
         public void TryCloseHangingDebugInputDialog()
         {
-            if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
+            try
             {
-                Click_DebugInput_Cancel_Button();
+                if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
+                {
+                    Click_DebugInput_Cancel_Button();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging debug input dialog to clean up.");
+                }
             }
-            else
+            catch(NullReferenceException)
             {
-                Console.WriteLine("No hanging debug input dialog to clean up.");
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
-        }
+}
 
         public void TryCloseHangingSaveDialog()
         {
-            if (ControlExistsNow(SaveDialogWindow.CancelButton))
+            try
             {
-                Click_SaveDialog_CancelButton();
+                if (ControlExistsNow(SaveDialogWindow.CancelButton))
+                {
+                    Click_SaveDialog_CancelButton();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging save dialog to clean up.");
+                }
             }
-            else
+            catch(NullReferenceException)
             {
-                Console.WriteLine("No hanging save dialog to clean up.");
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
         }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
         {
-            if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
+            try
             {
-                Restore_Unpinned_Tab_Using_Context_Menu();
+                if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
+                {
+                    Restore_Unpinned_Tab_Using_Context_Menu();
+                }
+			    else
+			    {
+				    Console.WriteLine("No hanging unpinned pane to clean up.");
+                }
             }
-			else
-			{
-				Console.WriteLine("No hanging unpinned pane to clean up.");
-			}
+            catch(NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
         }
 
         private void TryCloseHangingServicePickerDialog()
         {
-			if (ControlExistsNow(ServicePickerDialog.Cancel))
-			{
-				Click_Service_Picker_Dialog_Cancel();
-			}
-			else
-			{
-				Console.WriteLine("No hanging service picker dialog to clean up.");
-			}
+            try
+            {
+                if (ControlExistsNow(ServicePickerDialog.Cancel))
+			    {
+				    Click_Service_Picker_Dialog_Cancel();
+			    }
+			    else
+			    {
+				    Console.WriteLine("No hanging service picker dialog to clean up.");
+                }
+            }
+            catch(NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
         }
 
         public void TryCloseHangingWindowsGroupDialog()
         {
-            if (ControlExistsNow(SelectWindowsGroupDialog))
+            try
             {
-                Click_Select_Windows_Group_Cancel_Button();
+                if (ControlExistsNow(SelectWindowsGroupDialog))
+                {
+                    Click_Select_Windows_Group_Cancel_Button();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging select windows group dialog to clean up.");
+                }
             }
-            else
+            catch(NullReferenceException)
             {
-                Console.WriteLine("No hanging select windows group dialog to clean up.");
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
         }
 
@@ -1333,6 +1375,22 @@ namespace Warewolf.UITests
             Click_Deploy_Tab_Deploy_Button();
         }
 
+        public void Enter_Values_Into_Data_Merge_Tool_Large_View()
+        {
+            var row1InputVariabComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row.InputCell.Row1InputVariabComboBox;
+            var row1UsingComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row.UsingCell.Row1UsingComboBox;
+            var row2InputVariabComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row2.InputCell.Row2InputVariabComboBox;
+            var row2UsingComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row2.UsingCell.Row2UsingComboBox;
+
+            row1InputVariabComboBox.TextEdit.Text = "VarA";
+            row1UsingComboBox.TextEdit.Text = "1";
+            row2InputVariabComboBox.TextEdit.Text = "VarB";
+            row2UsingComboBox.TextEdit.Text = "2";
+
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row3.MergeTypeCell.Row4MergeTypeComboBox, ModifierKeys.None);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row3.MergeTypeCell.Row4MergeTypeComboBox.NewLineListItem, ModifierKeys.None);
+        }
+
         public void Enter_Text_Into_Workflow_Tests_Output_Row1_Value_Textbox_As_CodedUITest()
         {
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
@@ -1422,6 +1480,11 @@ namespace Warewolf.UITests
             Assert.IsTrue(public_ExecuteCheckBox.Checked, "Public Execute checkbox is NOT checked after Checking Contribute.");
         }
 
+        public void Scroll_Down_Then_Up_On_The_DataMerge_SmallView()
+        {
+            Mouse.MoveScrollWheel(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable, -1);
+        }
+         
         public void UnCheck_Public_View()
         {
             #region Variable Declarations
