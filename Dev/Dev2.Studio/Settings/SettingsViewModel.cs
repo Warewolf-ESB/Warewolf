@@ -349,7 +349,8 @@ namespace Dev2.Settings
             _selectionChanging = false;
         }
 
-
+        public override bool HasVariables => false;
+        public override bool HasDebugOutput => false;
 
 
 

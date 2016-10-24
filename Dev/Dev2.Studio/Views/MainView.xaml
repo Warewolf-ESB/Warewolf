@@ -11,7 +11,6 @@
         xmlns:dock="clr-namespace:Dev2.Studio.Dock"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-        
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:views1="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
         xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
@@ -225,10 +224,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-                <ContentControl Width="60"
-                                SizeChanged="SlidingMenuPane_OnSizeChanged"
-                                
-                                >
+                <ContentControl Width="60" SizeChanged="SlidingMenuPane_OnSizeChanged">
                     <views1:MenuView DataContext="{Binding MenuViewModel}"/>
                     <ContentControl.Style>
                         <Style>
@@ -271,35 +267,6 @@
                                             ToolWindowLoaded="DockManager_OnToolWindowLoaded"
                                             UnpinnedTabHoverAction="Flyout">
                     <igDock:XamDockManager.Panes>
-
-                        <igDock:SplitPane Width="300"
-                                               SplitterOrientation="Horizontal"
-                                               igDock:XamDockManager.InitialLocation="DockedRight">
-
-                            <igDock:ContentPane x:Name="Variables"
-                                                     AllowClose="False"
-                                                     AllowInDocumentHost="False"
-                                                     CloseButtonVisibility="Hidden"
-                                                     Header="VARIABLES"
-                                                     IsPinned="True"
-                                                     Style="{StaticResource DockmangerToolPaneStyle}"
-                                                     WindowPositionMenuVisibility="Hidden" >
-                                <dataList:DataListView DataContext="{Binding ActiveItem.DataListViewModel}" AutomationProperties.AutomationId="UI_VariablesControl_AutoID" />
-                            </igDock:ContentPane>
-
-                            <igDock:ContentPane x:Name="OutputPane"
-                                                     AllowClose="False"
-                                                     AllowInDocumentHost="False"
-                                                     CloseButtonVisibility="Hidden"
-                                                     Header="OUTPUT"
-                                                     IsPinned="True"
-                                                     Style="{StaticResource DockmangerToolPaneStyle}"
-                                                     WindowPositionMenuVisibility="Hidden" >
-                                <customControls:CachingContentHost cal:View.Model="{Binding ActiveItem.DebugOutputViewModel}" AutomationProperties.AutomationId="UI_OutputControl_AutoID" />
-                            </igDock:ContentPane>
-
-                        </igDock:SplitPane>
-
                         <igDock:SplitPane Width="300"
                                                SplitterOrientation="Horizontal"
                                                igDock:XamDockManager.InitialLocation="DockedLeft">
@@ -367,7 +334,49 @@
                                                 <Setter Property="ContentTemplate">
                                                     <Setter.Value>
                                                         <DataTemplate>
-                                                            <ContentControl x:Name="DisplayContentControl" cal:View.Model="{Binding .}" MouseDown="ContentControl_MouseEnter" />
+                                                            <igDock:XamDockManager x:Name="ContentDockManager"
+                                                                                   AllowMaximizeFloatingWindows="True"
+                                                                                   AllowMinimizeFloatingWindows="True"
+                                                                                   Background="{StaticResource WareWolfWhiteBrush}"
+                                                                                   FloatingWindowDoubleClickAction="ToggleDockedState"
+                                                                                   FlyoutAnimation="Resize"
+                                                                                   LayoutMode="FillContainer"
+                                                                                   ToolWindowLoaded="DockManager_OnToolWindowLoaded"
+                                                                                   UnpinnedTabHoverAction="Flyout">
+                                                                <igDock:XamDockManager.Panes>
+
+                                                                    <igDock:SplitPane Width="300"
+                                                                                      SplitterOrientation="Horizontal"
+                                                                                      igDock:XamDockManager.InitialLocation="DockedRight" >
+
+                                                                        <igDock:ContentPane x:Name="Variables"
+                                                                                            AllowClose="False"
+                                                                                            AllowInDocumentHost="False"
+                                                                                            CloseButtonVisibility="Hidden"
+                                                                                            Header="VARIABLES"
+                                                                                            IsPinned="True"
+                                                                                            Visibility="{Binding HasVariables, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                                                            Style="{StaticResource DockmangerToolPaneStyle}"
+                                                                                            WindowPositionMenuVisibility="Hidden" >
+                                                                            <dataList:DataListView DataContext="{Binding DataListViewModel}" AutomationProperties.AutomationId="UI_VariablesControl_AutoID" />
+                                                                        </igDock:ContentPane>
+
+                                                                        <igDock:ContentPane x:Name="OutputPane"
+                                                                                            AllowClose="False"
+                                                                                            AllowInDocumentHost="False"
+                                                                                            CloseButtonVisibility="Hidden"
+                                                                                            Header="OUTPUT"
+                                                                                            IsPinned="True"
+                                                                                            Visibility="{Binding HasDebugOutput, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                                                            Style="{StaticResource DockmangerToolPaneStyle}"
+                                                                                            WindowPositionMenuVisibility="Hidden" >
+                                                                            <customControls:CachingContentHost cal:View.Model="{Binding DebugOutputViewModel}" AutomationProperties.AutomationId="UI_OutputControl_AutoID" />
+                                                                        </igDock:ContentPane>
+
+                                                                    </igDock:SplitPane>
+                                                                </igDock:XamDockManager.Panes>
+                                                                <ContentControl x:Name="DisplayContentControl" cal:View.Model="{Binding .}" />
+                                                            </igDock:XamDockManager>
                                                         </DataTemplate>
                                                     </Setter.Value>
                                                 </Setter>

@@ -963,15 +963,6 @@ namespace Dev2.Studio.ViewModels
 
         protected override void ChangeActiveItem(WorkSurfaceContextViewModel newItem, bool closePrevious)
         {
-            if (_previousActive != null)
-            {
-                if (newItem?.DataListViewModel != null)
-                {
-                    string errors;
-                    newItem.DataListViewModel.ClearCollections();
-                    newItem.DataListViewModel.CreateListsOfIDataListItemModelToBindTo(out errors);
-                }
-            }
             base.ChangeActiveItem(newItem, closePrevious);
             RefreshActiveEnvironment();
         }
@@ -1078,18 +1069,9 @@ namespace Dev2.Studio.ViewModels
         public override void ActivateItem(WorkSurfaceContextViewModel item)
         {
             _previousActive = ActiveItem;
-            if (_previousActive?.DebugOutputViewModel != null)
-            {
-                _previousActive.DebugOutputViewModel.PropertyChanged -= DebugOutputViewModelOnPropertyChanged;
-            }
             base.ActivateItem(item);
             ActiveItemChanged?.Invoke(item);
             if (item?.ContextualResourceModel == null) return;
-            if (item.DebugOutputViewModel != null)
-            {
-                item.DebugOutputViewModel.PropertyChanged += DebugOutputViewModelOnPropertyChanged;
-            }
-            
             SetActiveEnvironment(item.Environment);
         }
 
@@ -1395,7 +1377,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public bool IsDownloading()
+       public bool IsDownloading()
         {
             return false;
         }

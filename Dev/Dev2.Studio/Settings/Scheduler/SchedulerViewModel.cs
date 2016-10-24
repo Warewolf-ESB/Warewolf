@@ -116,6 +116,9 @@ namespace Dev2.Settings.Scheduler
             SetupServer(server);
         }
 
+        public override bool HasVariables => false;
+        public override bool HasDebugOutput => true;
+
         public override string DisplayName
         {
             get
