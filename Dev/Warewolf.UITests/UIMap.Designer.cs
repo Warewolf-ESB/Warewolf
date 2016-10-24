@@ -206,23 +206,14 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox;
-            WpfEdit nameTextbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox;
-            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.OpenQuickVariableInpToggleButton;
+            WpfCustom smallView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView;
             #endregion
 
             // Click 'Done' button
             Mouse.Click(doneButton, new Point(35, 6));
 
-            // Verify that the 'Text' property of 'UI_TextBox_AutoID' text box equals '[[SomeVariable]]'
-            Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.TextboxText, textbox.Text, "Assign small view row1 variable textbox does not contain text somevariable");
-
-            // Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
-            Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.NameTextboxText, nameTextbox.Text, "Variable list scalar row 1 textbox text does not equal somevariable");
-
-            // Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.OpenQuickVariableInpToggleButtonExists, openQuickVariableInpToggleButton.Exists, "QVI toggle button does not exist in assign tool small view after clicking done bu" +
-                    "tton on large view.");
+            // Verify that the 'Text' property of 'SmallViewContent' custom control equals '[[SomeVariable]]'
+            Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.SmallViewText, smallView.GetProperty("Text").ToString(), "Assign small view does not exist after clicking done button.");
         }
         
         /// <summary>
@@ -14965,19 +14956,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Text' property of 'UI_TextBox_AutoID' text box equals '[[SomeVariable]]'
+        /// Verify that the 'Text' property of 'SmallViewContent' custom control equals '[[SomeVariable]]'
         /// </summary>
-        public string TextboxText = "[[SomeVariable]]";
-        
-        /// <summary>
-        /// Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
-        /// </summary>
-        public string NameTextboxText = "SomeVariable";
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
-        /// </summary>
-        public bool OpenQuickVariableInpToggleButtonExists = true;
+        public string SmallViewText = "[[SomeVariable]]";
         #endregion
     }
     
