@@ -85,14 +85,14 @@ namespace Warewolf.UITests
             try
             {
                 if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
-            {
-                Click_DebugInput_Cancel_Button();
+                {
+                    Click_DebugInput_Cancel_Button();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging debug input dialog to clean up.");
+                }
             }
-            else
-            {
-                Console.WriteLine("No hanging debug input dialog to clean up.");
-            }
-        }
             catch(NullReferenceException)
             {
                 Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
@@ -104,14 +104,14 @@ namespace Warewolf.UITests
             try
             {
                 if (ControlExistsNow(SaveDialogWindow.CancelButton))
-            {
-                Click_SaveDialog_CancelButton();
+                {
+                    Click_SaveDialog_CancelButton();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging save dialog to clean up.");
+                }
             }
-            else
-            {
-                Console.WriteLine("No hanging save dialog to clean up.");
-    }
-}
             catch(NullReferenceException)
             {
                 Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
@@ -123,14 +123,14 @@ namespace Warewolf.UITests
             try
             {
                 if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
-            {
-                Restore_Unpinned_Tab_Using_Context_Menu();
+                {
+                    Restore_Unpinned_Tab_Using_Context_Menu();
+                }
+			    else
+			    {
+				    Console.WriteLine("No hanging unpinned pane to clean up.");
+                }
             }
-			else
-			{
-				Console.WriteLine("No hanging unpinned pane to clean up.");
-    }
-}
             catch(NullReferenceException)
             {
                 Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
@@ -142,14 +142,14 @@ namespace Warewolf.UITests
             try
             {
                 if (ControlExistsNow(ServicePickerDialog.Cancel))
-			{
-				Click_Service_Picker_Dialog_Cancel();
-			}
-			else
-			{
-				Console.WriteLine("No hanging service picker dialog to clean up.");
-    }
-}
+			    {
+				    Click_Service_Picker_Dialog_Cancel();
+			    }
+			    else
+			    {
+				    Console.WriteLine("No hanging service picker dialog to clean up.");
+                }
+            }
             catch(NullReferenceException)
             {
                 Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
