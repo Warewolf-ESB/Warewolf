@@ -2312,6 +2312,11 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
+        public void Enter_Variable_And_Value_Into_Assign(string VariableText, string ValueText)
+        {
+            Enter_Variable_And_Value_Into_Assign(VariableText, ValueText, 1);
+        }
+
         public void Enter_Variable_And_Value_Into_Assign(string VariableText, string ValueText, int RowNumber)
         {
             switch (RowNumber)
