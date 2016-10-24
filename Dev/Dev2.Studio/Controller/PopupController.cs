@@ -303,7 +303,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowDeployNameConflict(string message)
         {
 
-            Buttons = MessageBoxButton.OKCancel;
+            Buttons = MessageBoxButton.OK;
             Header = "Deploy Name Conflicts";
 
             Description = message;
