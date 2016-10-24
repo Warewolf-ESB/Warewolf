@@ -99,7 +99,7 @@ namespace Warewolf.UITests
             {
                 Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
-}
+        }
 
         public void TryCloseHangingSaveDialog()
         {
