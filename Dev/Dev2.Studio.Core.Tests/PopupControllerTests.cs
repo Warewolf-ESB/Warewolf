@@ -85,7 +85,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.YesNo, buttons);
-            Assert.AreEqual("Delete version", header);
+            Assert.AreEqual("Delete Version", header);
             Assert.AreEqual("Are you sure you want to delete " + NameOfItemBeingDeleted + "?", description);
         }
 
@@ -132,7 +132,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
-            Assert.AreEqual("Deploy conflicts", header);
+            Assert.AreEqual("Deploy Conflicts", header);
             Assert.AreEqual(Description, description);
         }
 
@@ -179,7 +179,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
-            Assert.AreEqual("Deploy conflicts", header);
+            Assert.AreEqual("Deploy Conflicts", header);
             Assert.AreEqual(Description, description);
         }
 
@@ -213,7 +213,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
-            Assert.AreEqual("Deploy Name conflicts", header);
+            Assert.AreEqual("Deploy Name Conflicts", header);
             Assert.AreEqual(message, description);
             Assert.IsFalse(popupController.IsInfo);
             Assert.IsFalse(popupController.IsDependenciesButtonVisible);
@@ -259,7 +259,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
-            Assert.AreEqual("Deploy ResourceName conflicts", header);
+            Assert.AreEqual("Deploy ResourceName Conflicts", header);
             Assert.AreEqual(message, description);
             Assert.IsTrue(popupController.IsInfo);
             Assert.IsFalse(popupController.IsDependenciesButtonVisible);
@@ -309,7 +309,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
-            Assert.AreEqual("Deploy Version conflicts", header);
+            Assert.AreEqual("Deploy Version Conflicts", header);
             Assert.AreEqual(message, description);
             Assert.IsTrue(popupController.IsInfo);
             Assert.IsFalse(popupController.IsDependenciesButtonVisible);
@@ -358,7 +358,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
-            Assert.AreEqual("Deploy Version conflicts", header);
+            Assert.AreEqual("Deploy Version Conflicts", header);
             Assert.AreEqual(message, description);
             Assert.IsTrue(popupController.IsInfo);
             Assert.IsFalse(popupController.IsDependenciesButtonVisible);
@@ -532,7 +532,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
-            Assert.AreEqual("Server is not connected", header);
+            Assert.AreEqual("Server Is Not Connected", header);
             Assert.AreEqual(message, description);
             Assert.IsFalse(popupController.IsInfo);
             Assert.IsFalse(popupController.IsDependenciesButtonVisible);
@@ -576,7 +576,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
-            Assert.AreEqual("Server Version conflict", header);
+            Assert.AreEqual("Server Version Conflict", header);
             Assert.AreEqual(message, description);
             Assert.IsFalse(popupController.IsInfo);
             Assert.IsFalse(popupController.IsDependenciesButtonVisible);
@@ -619,7 +619,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.YesNo, buttons);
-            Assert.AreEqual("Server is unreachable", header);
+            Assert.AreEqual("Server Is Unreachable", header);
             Assert.AreEqual(message, description);
             Assert.IsFalse(popupController.IsInfo);
             Assert.IsFalse(popupController.IsDependenciesButtonVisible);
@@ -709,7 +709,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
-            Assert.AreEqual("Scheduler load error", header);
+            Assert.AreEqual("Scheduler Load Error", header);
             Assert.AreEqual(expectedDescription, description);
         }
 
@@ -790,7 +790,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.YesNoCancel, buttons);
-            Assert.AreEqual("Rename conflict", header);
+            Assert.AreEqual("Rename Conflicts", header);
             Assert.AreEqual(expectedDescription, description);
             Assert.AreEqual(MessageBoxImage.Information, imageType);
         }
@@ -826,7 +826,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
-            Assert.AreEqual("Server is not connected", header);
+            Assert.AreEqual("Server Is Not Connected", header);
             Assert.AreEqual("You can not change the settings for a server that is offline.", description);
             Assert.AreEqual(MessageBoxImage.Error, imageType);
         }
@@ -904,7 +904,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.YesNoCancel, buttons);
-            Assert.AreEqual("Scheduler Task has changes", header);
+            Assert.AreEqual("Scheduler Task Has Changes", header);
             Assert.AreEqual(expectedDesc, description);
             Assert.AreEqual(MessageBoxImage.Information, imageType);
         }
@@ -946,7 +946,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.YesNoCancel, buttons);
-            Assert.AreEqual("Settings have changed", header);
+            Assert.AreEqual("Settings Have Changed", header);
             Assert.AreEqual(expectedDesc, description);
             Assert.AreEqual(MessageBoxImage.Information, imageType);
         }
