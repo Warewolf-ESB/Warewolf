@@ -17,11 +17,26 @@ namespace Warewolf.UITests.Tabs
     public class PinUnpinPanes
     {
         [TestMethod]
-        public void UnpinAndRepinNewWorkflowTab()
+        public void UnpinAndRepinNewWorkflowTabByDraggingOnly()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not dock into it's default position after being dragged onto the central dock indicator.");
+        }
+
+        [TestMethod]
+        public void UnpinnedPaneContextMenuItems()
+        {
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            Mouse.Click(UIMap.MainStudioWindow.UnpinnedTab, MouseButtons.Right, ModifierKeys.None, new Point(14, 12));
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTabContextMenu.Floating.Exists, "Menu item as floating does not exist after openning unpinned tab context menu with a right click.");
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTabContextMenu.Dockable.Exists, "Menu item as dockable does not exist after openning unpinned tab context menu with a right click.");
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTabContextMenu.TabbedDocument.Exists, "Menu item as tabbed document does not exist after openning unpinned tab context menu with a right click.");
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTabContextMenu.AutoHide.Exists, "Menu item as auto hide does not exist after openning unpinned tab context menu with a right click.");
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTabContextMenu.Hide.Exists, "Menu item as hide does not exist after openning unpinned tab context menu with a right click.");
+            UIMap.MainStudioWindow.UnpinnedTabContextMenu.TabbedDocument.Checked = true;
         }
 
         [TestMethod]
@@ -29,7 +44,7 @@ namespace Warewolf.UITests.Tabs
         {
             UIMap.Click_Settings_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+            UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
         [TestMethod]
@@ -37,7 +52,7 @@ namespace Warewolf.UITests.Tabs
         {
             UIMap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+            UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
         [TestMethod]
@@ -45,7 +60,7 @@ namespace Warewolf.UITests.Tabs
         {
             UIMap.Click_New_Database_Source_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+            UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
         [TestMethod]
@@ -53,7 +68,7 @@ namespace Warewolf.UITests.Tabs
         {
             UIMap.Click_NewPluginSource_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.PluginSourceWizardTab);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+            UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
         [TestMethod]
@@ -61,7 +76,7 @@ namespace Warewolf.UITests.Tabs
         {
             UIMap.Click_New_Web_Source_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+            UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
         [TestMethod]
@@ -69,7 +84,7 @@ namespace Warewolf.UITests.Tabs
         {
             UIMap.Click_Deploy_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+            UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
         [TestMethod]
@@ -77,7 +92,7 @@ namespace Warewolf.UITests.Tabs
         {
             UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+            UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
         [TestMethod]
@@ -86,7 +101,7 @@ namespace Warewolf.UITests.Tabs
             UIMap.Filter_Explorer("Hello World");
             UIMap.Open_Explorer_First_Item_Tests_With_Context_Menu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+            UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
         [TestMethod]
@@ -94,7 +109,7 @@ namespace Warewolf.UITests.Tabs
         {
             UIMap.Click_Scheduler_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+            UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
         #region Additional test attributes

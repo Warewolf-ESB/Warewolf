@@ -86,7 +86,7 @@
         </Grid>
 
         <Grid Grid.Row="1" Focusable="False">
-            <TreeView ItemsSource="{Binding Path=BaseCollection,Mode=TwoWay}"
+            <TreeView ItemsSource="{Binding Path=BaseCollection,Mode=TwoWay, IsAsync=True}"
                       HorizontalAlignment="Stretch"
                       Margin="{StaticResource ElementBorderTop}"
                       x:Name="ScalarExplorer"
@@ -95,8 +95,8 @@
                       Style="{StaticResource VariablesTreeViewStyle}"
                       Grid.IsSharedSizeScope="True"
                       AutomationProperties.AutomationId="UI_VariableTreeView_AutoID"
-                      ScrollViewer.CanContentScroll="False"
-                      VirtualizingStackPanel.IsVirtualizing="False"
+                      ScrollViewer.CanContentScroll="True"
+                      VirtualizingStackPanel.IsVirtualizing="True"
                       VirtualizingStackPanel.VirtualizationMode="Recycling"
                       VirtualizingPanel.IsVirtualizingWhenGrouping="True" 
                       VirtualizingStackPanel.ScrollUnit="Pixel"  
@@ -125,7 +125,6 @@
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
                                                                 aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -191,7 +190,7 @@
                             </CheckBox>
                         </Grid>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type dataList3:RecordSetItemModel}" ItemsSource="{Binding Path=Children}">
+                    <HierarchicalDataTemplate DataType="{x:Type dataList3:RecordSetItemModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
                         <Grid HorizontalAlignment="Stretch" 
                               Visibility="{Binding IsVisible,Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
@@ -213,7 +212,6 @@
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
                                                                 aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -279,7 +277,7 @@
                             </CheckBox>
                         </Grid>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type dataList3:RecordSetFieldItemModel}" ItemsSource="{Binding Path=Children}">
+                    <HierarchicalDataTemplate DataType="{x:Type dataList3:RecordSetFieldItemModel}">
                         <Grid HorizontalAlignment="Stretch" 
                               Visibility="{Binding IsVisible,Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
@@ -301,7 +299,6 @@
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
                                                                 aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -367,7 +364,7 @@
                             </CheckBox>
                         </Grid>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type dataList3:ComplexObjectItemModel}" ItemsSource="{Binding Path=Children}">
+                    <HierarchicalDataTemplate DataType="{x:Type dataList3:ComplexObjectItemModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
                         <Grid HorizontalAlignment="Stretch" 
                               Visibility="{Binding IsVisible,Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
@@ -391,7 +388,6 @@
                                                                     Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                     ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                     DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                    AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
                                                                     ViewComplexObjectsCommand="{Binding DataContext.ViewComplexObjectsCommand,ElementName=DataListViewControl}"
                                                                     Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                     IsUsed="{Binding Path=IsUsed}"
@@ -459,7 +455,7 @@
                             </CheckBox>
                         </Grid>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type dataList3:DataListHeaderItemModel}" ItemsSource="{Binding Path=Children}">
+                    <HierarchicalDataTemplate DataType="{x:Type dataList3:DataListHeaderItemModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
                         <StackPanel>
                             <Grid Height="24" Margin="{StaticResource ControlBorderRight}">
                                 <Grid.ColumnDefinitions>

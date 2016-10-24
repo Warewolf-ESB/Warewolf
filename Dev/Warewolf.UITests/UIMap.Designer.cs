@@ -3279,10 +3279,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface()
         {
             #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
             WpfCustom flowchart = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom multiAssign1 = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
             #endregion
+
+            // Type 'Assign' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams.SearchTextBoxText;
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 126));
@@ -4273,8 +4277,11 @@ namespace Warewolf.UITests
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
             #endregion
 
+            // Type 'Shift + {Home}' in 'UI__Row1_FieldName_AutoID' text box
+            Keyboard.SendKeys(textbox, this.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams.TextboxSendKeys, ModifierKeys.Shift);
+
             // Type '[[Some{Down}{Enter}Variable]]' in 'UI__Row1_FieldName_AutoID' text box
-            Keyboard.SendKeys(textbox, this.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams.TextboxSendKeys, ModifierKeys.None);
+            Keyboard.SendKeys(textbox, this.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams.TextboxSendKeys1, ModifierKeys.None);
 
             // Verify that the 'Text' property of 'UI__Row1_FieldName_AutoID' text box equals '[[SomeVariable]]'
             Assert.AreEqual(this.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams.TextboxText, textbox.Text, "Assign large view row1 variable textbox text does not equal \"[[SomeVariable]]\" af" +
@@ -5748,35 +5755,11 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom unpinnedTab = this.MainStudioWindow.UnpinnedTab;
-            WpfMenuItem floating = this.MainStudioWindow.UnpinnedTabContextMenu.Floating;
-            WpfMenuItem dockable = this.MainStudioWindow.UnpinnedTabContextMenu.Dockable;
             WpfMenuItem tabbedDocument = this.MainStudioWindow.UnpinnedTabContextMenu.TabbedDocument;
-            WpfMenuItem autoHide = this.MainStudioWindow.UnpinnedTabContextMenu.AutoHide;
-            WpfMenuItem hide = this.MainStudioWindow.UnpinnedTabContextMenu.Hide;
             #endregion
 
             // Right-Click custom control
             Mouse.Click(unpinnedTab, MouseButtons.Right, ModifierKeys.None, new Point(14, 12));
-
-            // Verify that the 'Exists' property of 'Floating' menu item equals 'True'
-            Assert.AreEqual(this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.FloatingExists, floating.Exists, "Menu item as floating does not exist after openning unpinned tab context menu wit" +
-                    "h a right click.");
-
-            // Verify that the 'Exists' property of 'Dockable' menu item equals 'True'
-            Assert.AreEqual(this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.DockableExists, dockable.Exists, "Menu item as dockable does not exist after openning unpinned tab context menu wit" +
-                    "h a right click.");
-
-            // Verify that the 'Exists' property of 'Tabbed Document' menu item equals 'True'
-            Assert.AreEqual(this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.TabbedDocumentExists, tabbedDocument.Exists, "Menu item as tabbed document does not exist after openning unpinned tab context m" +
-                    "enu with a right click.");
-
-            // Verify that the 'Exists' property of 'Auto Hide' menu item equals 'True'
-            Assert.AreEqual(this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.AutoHideExists, autoHide.Exists, "Menu item as auto hide does not exist after openning unpinned tab context menu wi" +
-                    "th a right click.");
-
-            // Verify that the 'Exists' property of 'Hide' menu item equals 'True'
-            Assert.AreEqual(this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.HideExists, hide.Exists, "Menu item as hide does not exist after openning unpinned tab context menu with a " +
-                    "right click.");
 
             // Select 'Tabbed Document' menu item
             tabbedDocument.Checked = this.Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.TabbedDocumentChecked;
@@ -7420,18 +7403,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
         public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
         {
             get
@@ -10326,8 +10297,6 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params;
         
         private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams;
@@ -10809,36 +10778,6 @@ namespace Warewolf.UITests
         private SwitchCaseDialog mSwitchCaseDialog;
         
         private StartNodePopupWindow mStartNodePopupWindow;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Debug Inputs' menu item equals 'True'
-        /// </summary>
-        public bool DebugInputsMenuItemExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Debug Studio' menu item equals 'True'
-        /// </summary>
-        public bool DebugStudioMenuItemExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Debug Browser' menu item equals 'True'
-        /// </summary>
-        public bool DebugBrowserMenuItemExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Run All Tests' menu item equals 'True'
-        /// </summary>
-        public bool RunAllTestsMenuItemExists = true;
         #endregion
     }
     
@@ -13200,6 +13139,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Type 'Assign' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Assign";
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
         /// </summary>
         public bool MultiAssignExists = true;
@@ -14135,9 +14079,14 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Type 'Shift + {Home}' in 'UI__Row1_FieldName_AutoID' text box
+        /// </summary>
+        public string TextboxSendKeys = "{Home}";
+        
+        /// <summary>
         /// Type '[[Some{Down}{Enter}Variable]]' in 'UI__Row1_FieldName_AutoID' text box
         /// </summary>
-        public string TextboxSendKeys = "[[Some{Down}{Enter}Variable]]";
+        public string TextboxSendKeys1 = "[[Some{Down}{Enter}Variable]]";
         
         /// <summary>
         /// Verify that the 'Text' property of 'UI__Row1_FieldName_AutoID' text box equals '[[SomeVariable]]'
@@ -15369,31 +15318,6 @@ namespace Warewolf.UITests
     {
         
         #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Floating' menu item equals 'True'
-        /// </summary>
-        public bool FloatingExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Dockable' menu item equals 'True'
-        /// </summary>
-        public bool DockableExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Tabbed Document' menu item equals 'True'
-        /// </summary>
-        public bool TabbedDocumentExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Auto Hide' menu item equals 'True'
-        /// </summary>
-        public bool AutoHideExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Hide' menu item equals 'True'
-        /// </summary>
-        public bool HideExists = true;
-        
         /// <summary>
         /// Select 'Tabbed Document' menu item
         /// </summary>
