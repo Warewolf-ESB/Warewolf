@@ -67,8 +67,8 @@ set /a LoopCounter=0
 IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 echo Timed out waiting for the Warewolf server to start. &exit /b
-@echo Waiting 2 more seconds for %DeploymentDirectory%\ServerStarted file to appear...
-waitfor ServerStart /t 2 2>NUL
+@echo Waiting 5 more seconds for %DeploymentDirectory%\ServerStarted file to appear...
+waitfor ServerStart /t 5 2>NUL
 goto MainLoopBody
 
 :StartStudio
