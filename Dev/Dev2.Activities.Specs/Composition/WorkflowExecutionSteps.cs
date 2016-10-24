@@ -349,7 +349,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             if(debugState.IsFinalStep() && debugState.DisplayName.Equals(workflowName))
             {
-                //_resetEvt.Set();
+                _resetEvt.Set();
             }
 
         }
@@ -1342,7 +1342,7 @@ namespace Dev2.Activities.Specs.Composition
                 dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
                 WebServer.Send(resourceModel, dataList.ToString(), new SynchronousAsyncWorker());
-                //_resetEvt.WaitOne(12);
+                _resetEvt.WaitOne(1000);
             }
         }
 
@@ -1557,7 +1557,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             if(_resetEvt != null)
             {
-                //_resetEvt.Close();
+                _resetEvt.Close();
             }
         }
 
