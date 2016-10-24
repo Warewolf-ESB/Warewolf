@@ -38,7 +38,7 @@ namespace Warewolf.UITests
             UIMap.CloseHangingDialogs();
 #endif
             UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface();
+            UIMap.Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurface();
         }      
 
         UIMap UIMap
