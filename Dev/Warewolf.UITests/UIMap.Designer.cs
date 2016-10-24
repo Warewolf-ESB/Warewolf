@@ -41,14 +41,13 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox;
-            WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox;
             #endregion
 
             // Type '[[SomeVariable]]' in 'UI_TextBox_AutoID' text box
             textbox.Text = this.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText;
 
-            // Type '50' in 'Text' text box
-            textbox1.Text = this.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText1;
+            // Type '50' in 'UI_TextBox_AutoID' text box
+            textbox.Text = this.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText1;
         }
         
         /// <summary>
@@ -14791,7 +14790,7 @@ namespace Warewolf.UITests
         public string TextboxText = "[[SomeVariable]]";
         
         /// <summary>
-        /// Type '50' in 'Text' text box
+        /// Type '50' in 'UI_TextBox_AutoID' text box
         /// </summary>
         public string TextboxText1 = "50";
         #endregion
