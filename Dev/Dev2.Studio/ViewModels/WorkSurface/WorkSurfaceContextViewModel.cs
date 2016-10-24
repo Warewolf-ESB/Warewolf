@@ -100,6 +100,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             get
             {
+                var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
+                if (workflowDesignerViewModel != null)
+                {
+                    return workflowDesignerViewModel.DebugOutputViewModel;
+                }
                 return _debugOutputViewModel;
             }
             set { _debugOutputViewModel = value; }
@@ -111,6 +116,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             get
             {
+
+                var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
+                if (workflowDesignerViewModel != null)
+                {
+                    return workflowDesignerViewModel.DataListViewModel;
+                }
                 return _dataListViewModel;
             }
             set
@@ -121,12 +132,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 }
 
                 _dataListViewModel = value;
-                if (_dataListViewModel != null)
-                {
-                    _dataListViewModel.ConductWith(this);
-                    _dataListViewModel.Parent = this;
-                }
-
                 NotifyOfPropertyChange(() => DataListViewModel);
             }
         }
@@ -454,8 +459,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             inputDataViewModel.DebugExecutionStart += () =>
             {
                 SetDebugStatus(DebugStatus.Executing);
-                DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
                 var workfloDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
+                DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
                 workfloDesignerViewModel?.GetWorkflowLink();
             };
             inputDataViewModel.DebugExecutionFinished += () =>

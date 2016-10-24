@@ -480,11 +480,6 @@ namespace Dev2.Studio.Views
             }
         }
 
-        private void ContentControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-
-        }
-
         bool restoreIfMove;
         bool allowMaximizeState;
 

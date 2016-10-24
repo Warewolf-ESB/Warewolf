@@ -50,12 +50,14 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.Dialogs;
 using Dev2.Factories;
 using Dev2.Factory;
 using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.ActivityDesigners;
@@ -76,6 +78,8 @@ using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Enums;
+using Dev2.Studio.Factory;
+using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.Utilities;
@@ -202,7 +206,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             GetWorkflowLink();
-
+            DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
+            DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
             _firstWorkflowChange = true;
         }
 
@@ -226,7 +231,38 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
+        public DebugOutputViewModel DebugOutputViewModel
+        {
+            get
+            {
+                return _debugOutputViewModel;
+            }
+            set { _debugOutputViewModel = value; }
+        }
+
+
+        public IDataListViewModel DataListViewModel
+        {
+            get
+            {
+                return _dataListViewModel;
+            }
+            set
+            {
+                if (_dataListViewModel == value)
+                {
+                    return;
+                }
+
+                _dataListViewModel = value;                
+                NotifyOfPropertyChange(() => DataListViewModel);
+            }
+        }
+
         #region Properties
+
+        public override bool HasVariables => true;
+        public override bool HasDebugOutput => true;
 
         public override bool CanSave => ResourceModel.IsAuthorized(AuthorizationContext.Contribute);
 
@@ -1611,7 +1647,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="isLoadEvent">if set to <c>true</c> [is load event].</param>
         private void AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(bool isLoadEvent)
         {
-            if (DataListSingleton.ActiveDataList != null)
+            if (DataListViewModel != null)
             {
                 if (Application.Current != null && Application.Current.Dispatcher != null)
                 {
@@ -1636,10 +1672,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-            if(DataListSingleton.ActiveDataList != null)
-            {
-                DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
-            }
+            DataListViewModel?.UpdateDataListItems(ResourceModel, workflowFields);
         }
 
         #endregion
@@ -1912,6 +1945,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private ICommand _showDependenciesCommand;
         private ICommand _viewSwaggerCommand;
         private ICommand _copyUrlCommand;
+        private DebugOutputViewModel _debugOutputViewModel;
+        private IDataListViewModel _dataListViewModel;
 
         /// <summary>
         /// Models the service model changed.
