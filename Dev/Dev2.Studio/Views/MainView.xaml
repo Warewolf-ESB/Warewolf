@@ -258,14 +258,16 @@
             </Grid>
             <Grid Grid.Column="1">
                 <igDock:XamDockManager x:Name="DockManager"
-                                            AllowMaximizeFloatingWindows="True"
-                                            AllowMinimizeFloatingWindows="True"
-                                            Background="{StaticResource WareWolfBackGroundBrush}"
-                                            FloatingWindowDoubleClickAction="ToggleDockedState"
-                                            FlyoutAnimation="Resize"
-                                            LayoutMode="FillContainer"
-                                            ToolWindowLoaded="DockManager_OnToolWindowLoaded"
-                                            UnpinnedTabHoverAction="Flyout">
+                                       AllowMaximizeFloatingWindows="True"
+                                       AllowMinimizeFloatingWindows="True"
+                                       Background="{StaticResource WareWolfBackGroundBrush}"
+                                       FloatingWindowDoubleClickAction="ToggleDockedState"
+                                       FlyoutAnimation="Resize"
+                                       LayoutMode="FillContainer"
+                                       UseOwnedFloatingWindows="False"
+                                       ShowFloatingWindowsInTaskbar="True"
+                                       ToolWindowLoaded="DockManager_OnToolWindowLoaded" 
+                                       UnpinnedTabHoverAction="Flyout">
                     <igDock:XamDockManager.Panes>
                         <igDock:SplitPane Width="300"
                                                SplitterOrientation="Horizontal"
@@ -340,7 +342,7 @@
                                                                                    Background="{StaticResource WareWolfWhiteBrush}"
                                                                                    FloatingWindowDoubleClickAction="ToggleDockedState"
                                                                                    FlyoutAnimation="Resize"
-                                                                                   LayoutMode="FillContainer"
+                                                                                   LayoutMode="FillContainer" ShowFloatingWindowsInTaskbar="True"
                                                                                    ToolWindowLoaded="DockManager_OnToolWindowLoaded"
                                                                                    UnpinnedTabHoverAction="Flyout">
                                                                 <igDock:XamDockManager.Panes>
