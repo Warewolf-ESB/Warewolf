@@ -358,8 +358,11 @@ namespace Dev2.Studio.Views
                 e.Window.PreviewMouseDown += WindowOnPreviewMouseDown;
             }
 
-            var binding = Infragistics.Windows.Utilities.CreateBindingObject(DataContextProperty, BindingMode.OneWay, sender as XamDockManager);
-            e.Window.SetBinding(DataContextProperty, binding);
+            if (e.Source.GetType() == typeof (XamDockManager))
+            {
+                var binding = Infragistics.Windows.Utilities.CreateBindingObject(DataContextProperty, BindingMode.OneWay, sender as XamDockManager);
+                e.Window.SetBinding(DataContextProperty, binding);
+            }
         }
 
         private void WindowOnPreviewMouseDown(object sender, MouseButtonEventArgs e)
