@@ -348,6 +348,7 @@ namespace Dev2
             {
                 SetWorkingDirectory();
                 LoadHostSecurityProvider();
+                MigrateOldTests();
                 InitializeServer();
                 LoadSettingsProvider();
                 ConfigureLoggging();
@@ -802,6 +803,7 @@ namespace Dev2
         /// <date>2013/03/13</date>
         ResourceCatalog LoadResourceCatalog()
         {
+            
             MigrateOldResources();
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
@@ -813,7 +815,7 @@ namespace Dev2
 
         void LoadTestCatalog()
         {
-            MigrateOldTests();
+            
             Write("Loading Test catalog...  ");
             TestCatalog.Instance.Load();
             WriteLine("done.");
