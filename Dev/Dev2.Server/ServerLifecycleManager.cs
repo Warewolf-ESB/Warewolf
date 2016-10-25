@@ -843,11 +843,11 @@ namespace Dev2
 
         static void MigrateOldTests()
         {
-            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
-            if (!Directory.Exists(EnvironmentVariables.TestPath) && Directory.Exists(serverBinResources))
+            var serverBinTests = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
+            if (!Directory.Exists(EnvironmentVariables.TestPath) && Directory.Exists(serverBinTests))
             {
-                DirectoryHelper.Copy(serverBinResources, EnvironmentVariables.TestPath, true);
-                DirectoryHelper.CleanUp(serverBinResources);
+                DirectoryHelper.Copy(serverBinTests, EnvironmentVariables.TestPath, true);
+                DirectoryHelper.CleanUp(serverBinTests);
             }
         }
 
