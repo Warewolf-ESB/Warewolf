@@ -38,13 +38,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
 #endif
             Uimap.InitializeABlankWorkflow();
         }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Click_MessageBox_No();
-        }
+        
 
         UIMap Uimap
         {
