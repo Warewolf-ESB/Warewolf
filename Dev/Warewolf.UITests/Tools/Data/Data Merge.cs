@@ -19,6 +19,7 @@ namespace Warewolf.UITests.Tools.Data
         {
             UIMap.Open_Data_Merge_Tool_Qvi_Large_View();
         }
+
         [TestMethod]
 		[TestCategory("Tools")]
         public void DataMerge_ScrollingUITest()
@@ -44,13 +45,7 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.Drag_Toolbox_Data_Merge_Onto_DesignSurface();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
-            UIMap UIMap
+        UIMap UIMap
         {
             get
             {
