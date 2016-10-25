@@ -273,14 +273,6 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox">
-      <ParameterName />
-      <PropertyName>Text</PropertyName>
-      <ExpectedValue>[[SomeVariable]]</ExpectedValue>
-      <MessageOnValidationFailure>Assign small view row1 variable textbox does not contain text somevariable on unpinned tab.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox">
       <ParameterName />
       <PropertyName>Text</PropertyName>
@@ -10355,7 +10347,7 @@
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Remote Connection Integration option does not exist in Destination server combobox.</MessageOnValidationFailure>
+      <MessageOnValidationFailure>Remote Connection Integration option does not exist in Source server combobox.</MessageOnValidationFailure>
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
