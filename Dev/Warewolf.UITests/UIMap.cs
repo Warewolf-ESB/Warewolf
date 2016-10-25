@@ -1462,6 +1462,10 @@ namespace Warewolf.UITests
                     var test3 = test as Test3;
                     testRunTimeDisplay = test3.RunTimeDisplay;
                     break;
+                case 4:
+                    var test4 = test as Test4;
+                    testRunTimeDisplay = test4.RunTimeDisplay;
+                    break;
                 default:
                     var test1 = test as Test1;
                     testRunTimeDisplay = test1.RunTimeDisplay;
@@ -1482,6 +1486,10 @@ namespace Warewolf.UITests
                 case 3:
                     var test3 = test as Test3;
                     neverRunDisplay = test3.NeverRunDisplay;
+                    break;
+                case 4:
+                    var test4 = test as Test4;
+                    neverRunDisplay = test4.NeverRunDisplay;
                     break;
                 default:
                     var test1 = test as Test1;
@@ -1562,7 +1570,6 @@ namespace Warewolf.UITests
             AssertTestResults(TestResultEnum.Pending, testInstance, currentTest);
             Assert.IsTrue(testNameText.Exists, string.Format("Test{0} Name textbox does not exist after clicking Create New Test", testInstance));
             Assert.IsTrue(testEnabledSelector, string.Format("Test {0} is diabled after clicking Create new test from context menu", testInstance));
-            //Assert.IsTrue(textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
 
             Assert_Display_Text_ContainStar(Tab, nameContainsStar, testInstance);
             Assert_Display_Text_ContainStar(Test, nameContainsStar, testInstance);
@@ -1614,6 +1621,10 @@ namespace Warewolf.UITests
                     var test3 = test as Test3;
                     value = test3.TestEnabledSelector;
                     break;
+                case 4:
+                    var test4 = test as Test4;
+                    value = test4.TestEnabledSelector;
+                    break;
                 default:
                     var test1 = test as Test1;
                     value = test1.TestEnabledSelector;
@@ -1635,7 +1646,7 @@ namespace Warewolf.UITests
                     property = test3.TestNameDisplay;
                     break;
                 case 4:
-                    var test4 = test as Test3;
+                    var test4 = test as Test4;
                     property = test4.TestNameDisplay;
                     break;
                 default:
@@ -1674,6 +1685,9 @@ namespace Warewolf.UITests
                 case 3:
                     test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3;
                     break;
+                case 4:
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4;
+                    break;
                 default:
                     test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1;
                     break;
@@ -1693,6 +1707,10 @@ namespace Warewolf.UITests
                 case 3:
                     var test3 = test as Test3;
                     value = test3.RunButton;
+                    break;
+                case 4:
+                    var test4 = test as Test4;
+                    value = test4.RunButton;
                     break;
                 default:
                     var test1 = test as Test1;
@@ -1714,6 +1732,10 @@ namespace Warewolf.UITests
                 case 3:
                     var test3 = test as Test3;
                     value = test3.DeleteButton;
+                    break;
+                case 4:
+                    var test4 = test as Test4;
+                    value = test4.DeleteButton;
                     break;
                 default:
                     var test1 = test as Test1;
