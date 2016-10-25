@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
@@ -10,10 +12,12 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Explorer;
 using Dev2.Studio.Core.Interfaces;
 using Warewolf.Resource.Errors;
 
@@ -36,6 +40,12 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <returns>a list of tree dependencies</returns>
         public IExecuteMessage FetchDependencies(Guid resourceId)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new CompressedExecuteMessage();
+            }
+
             return FetchDependantsFromServerService(resourceId, false);
         }
 
@@ -57,6 +67,12 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <returns></returns>
         public IExecuteMessage FetchDependants(Guid resourceId)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new CompressedExecuteMessage();
+            }
+
             return FetchDependantsFromServerService(resourceId, true);
         }
 
@@ -67,6 +83,12 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <returns></returns>
         public StringBuilder FetchResourceXaml(Guid resourceId)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new StringBuilder();
+            }
+
             var comsController = CommunicationControllerFactory.CreateController("FetchResourceDefinitionService");
             comsController.AddPayloadArgument("ResourceID", resourceId.ToString());
 
@@ -80,14 +102,28 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <returns></returns>
         public async Task<IExplorerItem> Load(bool reloadCatalogue=false)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new ServerExplorerItem();
+            }
+
             var comsController = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
 
             comsController.AddPayloadArgument("ReloadResourceCatalogue",reloadCatalogue.ToString());
             var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID);
             return result;
-        }        
-                
+        }
+
         #endregion
+
+        private void ShowServerDisconnectedPopup()
+        {
+            var controller = CustomContainer.Get<IPopupController>();
+            controller?.Show(string.Format(ErrorResource.ServerDissconnected, Connection.DisplayName) + Environment.NewLine +
+                             "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK,
+                MessageBoxImage.Error, "", false, true, false, false);
+        }
 
         public IList<IToolDescriptor> FetchTools()
         {
@@ -100,6 +136,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<string> GetComputerNames()
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<string>();
+            }
+
             var comsController = CommunicationControllerFactory.CreateController("GetComputerNamesService");
 
             var workspaceId = Connection.WorkspaceID;
@@ -118,6 +160,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IDbSource> FetchDbSources()
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IDbSource>();
+            }
+
             var comsController = CommunicationControllerFactory.CreateController("FetchDbSources");
 
             var workspaceId = Connection.WorkspaceID;
@@ -136,6 +184,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public async Task<List<IFileResource>> FetchResourceFileTree()
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IFileResource>();
+            }
+
             var comsController = CommunicationControllerFactory.CreateController("FileResourceBuilder");
 
             var workspaceId = Connection.WorkspaceID;
@@ -154,6 +208,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IExchangeSource> FetchExchangeSources()
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IExchangeSource>();
+            }
+
             var comsController = CommunicationControllerFactory.CreateController("FetchExchangeSources");
 
             var workspaceId = Connection.WorkspaceID;
@@ -172,6 +232,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IDbAction> FetchDbActions(IDbSource source)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IDbAction>();
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchDbActions");
             comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
@@ -190,6 +256,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IEnumerable<IWebServiceSource> FetchWebServiceSources()
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IWebServiceSource>();
+            }
+
             var comsController = CommunicationControllerFactory.CreateController("FetchWebServiceSources");
 
             var workspaceId = Connection.WorkspaceID;
@@ -211,6 +283,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public List<IFileListing> GetDllListings(IFileListing listing)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IFileListing>();
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetDllListingsService");
             comsController.AddPayloadArgument("currentDllListing", serializer.Serialize(listing));
@@ -230,6 +308,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public List<IFileListing> GetComDllListings(IFileListing listing)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IFileListing>();
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetComDllListingsService");
             comsController.AddPayloadArgument("currentDllListing", serializer.Serialize(listing));
@@ -249,6 +333,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public ICollection<INamespaceItem> FetchNamespaces(IPluginSource source)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<INamespaceItem>();
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchPluginNameSpaces");
             comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
@@ -266,6 +356,12 @@ namespace Warewolf.Studio.ServerProxyLayer
         }
         public ICollection<INamespaceItem> FetchNamespaces(IComPluginSource source)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<INamespaceItem>();
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchComPluginNameSpaces");
             comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
@@ -284,6 +380,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IFileListing> FetchFiles()
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IFileListing>();
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetFiles");
 
@@ -300,6 +402,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IFileListing> FetchFiles(IFileListing root)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IFileListing>();
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetFiles");
             comsController.AddPayloadArgument("fileListing", serializer.Serialize(root));
@@ -320,6 +428,12 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <returns></returns>
         public IList<Guid> FetchDependenciesOnList(IEnumerable<Guid> values)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<Guid>();
+            }
+
             var enumerable = values as Guid[] ?? values.ToArray();
             if (!enumerable.Any())
             {
@@ -349,6 +463,11 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public List<IWindowsGroupPermission> FetchPermissions()
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IWindowsGroupPermission>();
+            }
 
             var comsController = CommunicationControllerFactory.CreateController("FetchServerPermissions");
             var result = comsController.ExecuteCommand<PermissionsModifiedMemo>(Connection, GlobalConstants.ServerWorkspaceID);
@@ -357,6 +476,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IPluginSource> FetchPluginSources()
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IPluginSource>();
+            }
+
             var comsController = CommunicationControllerFactory.CreateController("FetchPluginSources");
 
             var workspaceId = Connection.WorkspaceID;
@@ -375,6 +500,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IComPluginSource> FetchComPluginSources()
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IComPluginSource>();
+            }
+
             var comsController = CommunicationControllerFactory.CreateController("FetchComPluginSources");
 
             var workspaceId = Connection.WorkspaceID;
@@ -393,6 +524,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IPluginAction> PluginActions(IPluginSource source, INamespaceItem ns)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IPluginAction>();
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchPluginActions");
 
@@ -415,6 +552,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IPluginAction> PluginActions(IComPluginSource source, INamespaceItem ns)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IPluginAction>();
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchComPluginActions");
 
@@ -437,6 +580,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources()
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IRabbitMQServiceSourceDefinition>();
+            }
+
             var comsController = CommunicationControllerFactory.CreateController("FetchRabbitMQServiceSources");
 
             var workspaceId = Connection.WorkspaceID;
@@ -457,6 +606,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IWcfServerSource> FetchWcfSources()
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IWcfServerSource>();
+            }
+
             var comsController = CommunicationControllerFactory.CreateController("FetchWcfSources");
 
             var workspaceId = Connection.WorkspaceID;
@@ -475,6 +630,12 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IWcfAction> WcfActions(IWcfServerSource wcfSource)
         {
+            if (!Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IWcfAction>();
+            }
+
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchWcfAction");
             comsController.AddPayloadArgument("WcfSource", serializer.SerializeToBuilder(wcfSource));
