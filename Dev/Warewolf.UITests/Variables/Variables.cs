@@ -14,7 +14,7 @@ namespace Warewolf.UITests
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             UIMap.Open_Assign_Tool_Large_View();
             UIMap.Enter_Recordset_values();
-            Mouse.Move(UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox, new Point(10, 10));
+            Mouse.Move(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox, new Point(10, 10));
             Mouse.Click();
             UIMap.Press_F5_To_Debug();
             UIMap.Enter_Text_Into_Debug_Input_Row2_Value_Textbox("Bob");
