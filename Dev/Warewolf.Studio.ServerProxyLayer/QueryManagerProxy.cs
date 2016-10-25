@@ -120,7 +120,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         private void ShowServerDisconnectedPopup()
         {
             var controller = CustomContainer.Get<IPopupController>();
-            controller?.Show(string.Format(ErrorResource.ServerDissconnected, Connection.DisplayName) + Environment.NewLine +
+            controller?.Show(string.Format(ErrorResource.ServerDissconnected, Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, true, false, false);
         }
@@ -136,18 +136,17 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<string> GetComputerNames()
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<string>();
-            }
-
             var comsController = CommunicationControllerFactory.CreateController("GetComputerNamesService");
 
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<string>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -160,18 +159,17 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IDbSource> FetchDbSources()
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IDbSource>();
-            }
-
             var comsController = CommunicationControllerFactory.CreateController("FetchDbSources");
 
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IDbSource>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -184,18 +182,17 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public async Task<List<IFileResource>> FetchResourceFileTree()
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IFileResource>();
-            }
-
             var comsController = CommunicationControllerFactory.CreateController("FileResourceBuilder");
 
             var workspaceId = Connection.WorkspaceID;
             var result = await comsController.ExecuteCommandAsync<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IFileResource>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -208,18 +205,17 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IExchangeSource> FetchExchangeSources()
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IExchangeSource>();
-            }
-
             var comsController = CommunicationControllerFactory.CreateController("FetchExchangeSources");
 
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IExchangeSource>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -232,12 +228,6 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IDbAction> FetchDbActions(IDbSource source)
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IDbAction>();
-            }
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchDbActions");
             comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
@@ -245,6 +235,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (payload == null || payload.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IDbAction>();
+                }
                 if (payload != null)
                 {
                     throw new WarewolfSupportServiceException(payload.Message.ToString(), null);
@@ -256,18 +251,17 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IEnumerable<IWebServiceSource> FetchWebServiceSources()
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IWebServiceSource>();
-            }
-
             var comsController = CommunicationControllerFactory.CreateController("FetchWebServiceSources");
 
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IWebServiceSource>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -283,12 +277,6 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public List<IFileListing> GetDllListings(IFileListing listing)
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IFileListing>();
-            }
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetDllListingsService");
             comsController.AddPayloadArgument("currentDllListing", serializer.Serialize(listing));
@@ -296,6 +284,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IFileListing>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -308,12 +301,6 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public List<IFileListing> GetComDllListings(IFileListing listing)
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IFileListing>();
-            }
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetComDllListingsService");
             comsController.AddPayloadArgument("currentDllListing", serializer.Serialize(listing));
@@ -321,6 +308,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IFileListing>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -333,12 +325,6 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public ICollection<INamespaceItem> FetchNamespaces(IPluginSource source)
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<INamespaceItem>();
-            }
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchPluginNameSpaces");
             comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
@@ -346,6 +332,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (payload == null || payload.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<INamespaceItem>();
+                }
                 if (payload != null)
                 {
                     throw new WarewolfSupportServiceException(payload.Message.ToString(), null);
@@ -356,12 +347,6 @@ namespace Warewolf.Studio.ServerProxyLayer
         }
         public ICollection<INamespaceItem> FetchNamespaces(IComPluginSource source)
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<INamespaceItem>();
-            }
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchComPluginNameSpaces");
             comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
@@ -369,6 +354,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (payload == null || payload.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<INamespaceItem>();
+                }
                 if (payload != null)
                 {
                     throw new WarewolfSupportServiceException(payload.Message.ToString(), null);
@@ -380,12 +370,6 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IFileListing> FetchFiles()
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IFileListing>();
-            }
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetFiles");
 
@@ -393,6 +377,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IFileListing>();
+                }
                 throw new WarewolfSupportServiceException(result.Message.ToString(), null);
             }
             var fileListings = serializer.Deserialize<List<IFileListing>>(result.Message.ToString());
@@ -402,12 +391,6 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IFileListing> FetchFiles(IFileListing root)
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IFileListing>();
-            }
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetFiles");
             comsController.AddPayloadArgument("fileListing", serializer.Serialize(root));
@@ -415,6 +398,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IFileListing>();
+                }
                 throw new WarewolfSupportServiceException(result.Message.ToString(), null);
             }
             var fileListings = serializer.Deserialize<List<IFileListing>>(result.Message.ToString());
@@ -476,18 +464,17 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IPluginSource> FetchPluginSources()
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IPluginSource>();
-            }
-
             var comsController = CommunicationControllerFactory.CreateController("FetchPluginSources");
 
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IPluginSource>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -500,18 +487,17 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IComPluginSource> FetchComPluginSources()
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IComPluginSource>();
-            }
-
             var comsController = CommunicationControllerFactory.CreateController("FetchComPluginSources");
 
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IComPluginSource>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -524,12 +510,6 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IPluginAction> PluginActions(IPluginSource source, INamespaceItem ns)
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IPluginAction>();
-            }
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchPluginActions");
 
@@ -539,6 +519,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IPluginAction>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -546,18 +531,11 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
 
-
             return serializer.Deserialize<List<IPluginAction>>(result.Message.ToString());
         }
 
         public IList<IPluginAction> PluginActions(IComPluginSource source, INamespaceItem ns)
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IPluginAction>();
-            }
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchComPluginActions");
 
@@ -567,6 +545,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IPluginAction>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -574,24 +557,22 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
 
-
             return serializer.Deserialize<List<IPluginAction>>(result.Message.ToString());
         }
 
         public IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources()
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IRabbitMQServiceSourceDefinition>();
-            }
-
             var comsController = CommunicationControllerFactory.CreateController("FetchRabbitMQServiceSources");
 
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IRabbitMQServiceSourceDefinition>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -606,18 +587,17 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IWcfServerSource> FetchWcfSources()
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IWcfServerSource>();
-            }
-
             var comsController = CommunicationControllerFactory.CreateController("FetchWcfSources");
 
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result == null || result.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IWcfServerSource>();
+                }
                 if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
@@ -630,12 +610,6 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IWcfAction> WcfActions(IWcfServerSource wcfSource)
         {
-            if (!Connection.IsConnected)
-            {
-                ShowServerDisconnectedPopup();
-                return new List<IWcfAction>();
-            }
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchWcfAction");
             comsController.AddPayloadArgument("WcfSource", serializer.SerializeToBuilder(wcfSource));
@@ -643,6 +617,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (payload == null || payload.HasError)
             {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IWcfAction>();
+                }
                 if (payload != null)
                 {
                     throw new WarewolfSupportServiceException(payload.Message.ToString(), null);
