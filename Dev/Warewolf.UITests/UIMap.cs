@@ -35,7 +35,7 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
 #if DEBUG
             Playback.PlaybackSettings.ThinkTimeMultiplier = 1;
-#else
+#else  
             Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
 #endif
             Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
@@ -279,17 +279,11 @@ namespace Warewolf.UITests
             Playback.PlaybackError -= OnError;
             OnErrorHandlerDisabled = true;
             bool controlExists = false;
-            try
-            {
-                controlExists = thisControl.Exists;
-            }
-            finally
-            {
-                OnErrorHandlerDisabled = false;
-                Playback.PlaybackError += OnError;
-                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
-                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
-            }
+            controlExists = thisControl.TryFind();
+            OnErrorHandlerDisabled = false;
+            Playback.PlaybackError += OnError;
+            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
+            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
             return controlExists;
         }
 
