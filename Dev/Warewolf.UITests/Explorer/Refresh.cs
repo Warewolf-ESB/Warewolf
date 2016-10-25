@@ -17,12 +17,10 @@ namespace Warewolf.UITests
         [TestMethod]
         public void RefreshExplorerAfterDeletingResourceFromDiskUITest()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
+            UIMap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);            
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
             File.Delete(resourcesFolder + @"\" + WorkflowName + ".xml");
             UIMap.Filter_Explorer(WorkflowName);
-            UIMap.Click_Explorer_Refresh_Button();
             Point point;
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.TryGetClickablePoint(out point));
         }
@@ -36,6 +34,14 @@ namespace Warewolf.UITests
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+        }
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         UIMap UIMap
