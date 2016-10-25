@@ -10,14 +10,12 @@ namespace Warewolf.UITests
         [TestMethod]
         public void Recordsets_Usage_in_Debug_Input()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             UIMap.Open_Assign_Tool_Large_View();
             UIMap.Enter_Recordset_values();
             Mouse.Move(UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox, new Point(10, 10));
             Mouse.Click();
             UIMap.Press_F5_To_Debug();
-            UIMap.Enter_Text_Into_Debug_Input_Row2_Value_Textbox("Bob");
+            UIMap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox("Bob");
             UIMap.Click_Cancel_DebugInput_Window();
         }
 
@@ -30,8 +28,16 @@ namespace Warewolf.UITests
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
         }
 
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         UIMap UIMap
         {
             get
