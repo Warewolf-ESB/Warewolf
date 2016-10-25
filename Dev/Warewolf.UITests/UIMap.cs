@@ -218,7 +218,10 @@ namespace Warewolf.UITests
                 while (parent != null && !parentExists)
                 {
                     parent = parent.Container;
-                    parentExists = ControlExistsNow(parent);
+                    if (parent != null)
+                    {
+                        parentExists = ControlExistsNow(parent);
+                    }
                 }
                 if (parent != null && parentExists && parent != MainStudioWindow)
                 {
