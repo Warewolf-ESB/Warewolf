@@ -16,6 +16,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Util;
+using Saxon.Api;
 using Warewolf.Resource.Errors;
 using Wmhelp.XPath2;
 
@@ -26,6 +27,84 @@ namespace Dev2.Data.Parsers
     /// </summary>
     public class XPathParser
     {
+
+        public IEnumerable<string> ExecuteXPathSaxon(string xmlData, string xPath)
+        {
+            if (String.IsNullOrEmpty(xmlData))
+                throw new ArgumentNullException("xmlData");
+            if (String.IsNullOrEmpty(xPath))
+                throw new ArgumentNullException("xPath");
+            try
+            {
+                bool isFragment;
+                var useXmlData = DataListUtil.AdjustForEncodingIssues(xmlData);
+                var isXml = DataListUtil.IsXml(useXmlData, out isFragment);
+
+                if (!isXml && !isFragment)
+                {
+                    throw new Exception("Input XML is not valid.");
+                }
+                var stringList = new List<string>();
+                XmlDocument document = new XmlDocument();
+                document.LoadXml(useXmlData);
+                var namespaces = new List<KeyValuePair<string, string>>();
+                if (document.DocumentElement != null)
+                {
+                    var xmlAttributeCollection = document.DocumentElement.Attributes;
+
+                    foreach (XmlAttribute attrib in xmlAttributeCollection)
+                    {
+                        if (attrib != null)
+                        {
+                            if (attrib.NodeType == XmlNodeType.Attribute)
+                            {
+                                if (attrib.Name.Contains("xmlns:"))
+                                {
+                                    var nsAttrib = attrib.Name.Split(':');
+                                    var ns = nsAttrib[1];
+                                    namespaces.Add(new KeyValuePair<string, string>(ns, attrib.Value));
+                                }
+                            }
+                        }
+                    }
+                }
+                using (TextReader stringReader = new StringReader(useXmlData))
+                {
+                    Processor processor = new Processor();
+                    var compiler = processor.NewXPathCompiler();
+                    compiler.XPathLanguageVersion = "3.0";
+                    var xPathExecutable = compiler.Compile(xPath);
+                    var xPathSelector = xPathExecutable.Load();
+                    
+                    var newDocumentBuilder = processor.NewDocumentBuilder();
+                    newDocumentBuilder.BaseUri = new Uri("http://warewolf.io");
+                    var xdmNode = newDocumentBuilder.Build(stringReader);
+                    xPathSelector.ContextItem = xdmNode;
+                    var xdmValue = xPathSelector.Evaluate();
+                    var list = xdmValue.GetList();
+                    foreach(var val in list)
+                    {
+                        var xdm = val as XdmNode;
+                        if (xdm != null)
+                        {
+                            stringList.Add(xdm.OuterXml);
+                        }
+                    }
+                }
+                return stringList;
+            }
+            catch (Exception exception)
+            {
+                if (exception.GetType() == typeof(XPath2Exception))
+                {
+                    throw new Exception(ErrorResource.XPathProvidedNotValid);
+                }
+
+                Dev2Logger.Error(exception);
+                throw;
+            }
+        }
+
         /// <summary>
         /// Executes the X path.
         /// </summary>
