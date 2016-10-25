@@ -71,6 +71,7 @@ namespace Warewolf.UITests
             UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             UIMap.Click_Delete_Test_Button(4);
             UIMap.Click_Yes_On_The_Confirm_Delete();
+            UIMap.Click_Close_Tests_Tab();
         }
 
         [TestMethod]
