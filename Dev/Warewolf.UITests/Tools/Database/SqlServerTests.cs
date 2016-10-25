@@ -24,12 +24,7 @@ namespace Warewolf.UITests.Tools
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface();
         }
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
+        
         UIMap UIMap
         {
             get

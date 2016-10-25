@@ -46,31 +46,7 @@ namespace Warewolf.UITests.Tools
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Find_Record_Index_Onto_DesignSurface();
         }
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
-
+        
         UIMap UIMap
         {
             get
