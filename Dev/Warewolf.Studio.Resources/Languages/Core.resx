@@ -534,10 +534,10 @@ The window will be reloaded when you click OK.</value>
     <value>Nothing selected to deploy.</value>
   </data>
   <data name="DeployResourcesSamePathAndName" xml:space="preserve">
-    <value>The following resources have the same path and name on the source and destination server but different Ids</value>
+    <value>The following resources have the same path and name on the source and destination server but different IDs</value>
   </data>
   <data name="DeployRenameBeforeContinue" xml:space="preserve">
-    <value>Please rename either the source or destination before continueing</value>
+    <value>Please rename either the source or destination before continuing</value>
   </data>
   <data name="DeployResourceCheckbox" xml:space="preserve">
     <value>Select this item to deploy.</value>
