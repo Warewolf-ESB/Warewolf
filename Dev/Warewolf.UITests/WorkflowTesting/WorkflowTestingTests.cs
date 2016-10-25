@@ -67,7 +67,7 @@ namespace Warewolf.UITests
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4), "This test expects 'Hello World' to have just 3 existing tests.");
             UIMap.Click_Create_New_Tests(true, 4);
             UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
-            UIMap.Click_Delete_Test_Button();
+            UIMap.Click_Delete_Test_Button(4);
             UIMap.Click_Yes_On_The_Confirm_Delete();
         }
 
