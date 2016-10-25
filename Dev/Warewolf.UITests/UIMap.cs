@@ -1707,7 +1707,7 @@ namespace Warewolf.UITests
                     property = test3.TestNameDisplay;
                     break;
                 case 4:
-                    var test4 = test as Test3;
+                    var test4 = test as Test4;
                     property = test4.TestNameDisplay;
                     break;
                 default:
