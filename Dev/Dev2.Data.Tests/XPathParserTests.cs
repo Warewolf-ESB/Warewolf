@@ -38,6 +38,33 @@ namespace Dev2.Data.Tests
         const string XmlData = "<excludelist>" + "<namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.Behaviors\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.WindowManagers\" />" + "<namespace name=\"Dev2.Studio.ActivityDesigners\" />" + "<namespace name=\"Dev2.Studio.Views.Workflow\" />" + "<type name=\"Dev2.Activities.DsfExecuteCommandLineActivity\" />" + "<type name=\"Dev2.Activities.DsfForEachItem\" />" + "<type name=\"Dev2.Activities.DsfGatherSystemInformationActivity\" />" + "<type name=\"Dev2.Activities.DsfRandomActivity\" />" + "<type name=\"Dev2.DynamicServices.DsfDataObject\" excludetype=\"false\">" + "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />" + "<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />" + "</type>" + "<type name=\"Dev2.Runtime.Hosting.DynamicObjectHelper\" excludetype=\"false\">" + "<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />" + "</type>" + "<type name=\"Dev2.CommandLineParameters\">" + "<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />" + "<method name=\"GetUsage\" signature=\"string()\" />" + "<field name=\"&lt;Install&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;IntegrationTestMode&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StartService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StopService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;Uninstall&gt;k__BackingField\" signature=\"bool\" />" + "<propertymember name=\"Install\" />" + "<propertymember name=\"IntegrationTestMode\" />" + "<propertymember name=\"StartService\" />" + "<propertymember name=\"StopService\" />" + "<propertymember name=\"Uninstall\" />" + "</type>" + "<type name=\"Dev2.WebServer\" excludetype=\"false\">" + "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />" + "</type>" + "</excludelist>";
 
         [TestMethod]
+        public void ExecutePathSaxonWhereGivenXMLDocumentExpectXMLReturned()
+        {
+            //------------Setup for test--------------------------
+            const string XPath = "//type/method";
+            //------------Execute Test---------------------------
+            IEnumerable<string> returnData = _xPathParser.ExecuteXPathSaxon(XmlDocument, XPath);
+            //------------Assert Results-------------------------
+            var data = returnData as IList<string> ?? returnData.ToList();
+            Assert.AreEqual(6, data.Count);
+            Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\"/>", data[1]);
+        }
+
+
+        [TestMethod]
+        public void ExecutePathSaxonWhereGivenXPathWithBooleanFunctionShouldReturnTrue()
+        {
+            //------------Setup for test--------------------------
+            const string XPath = "boolean(/dotfuscator)";
+            //------------Execute Test---------------------------
+            IEnumerable<string> returnData = _xPathParser.ExecuteXPathSaxon(XmlDocument, XPath);
+            //------------Assert Results-------------------------
+            var data = returnData as IList<string> ?? returnData.ToList();
+            Assert.AreEqual(1, data.Count);
+            Assert.AreEqual("true", data[1]);
+        }
+
+        [TestMethod]
         public void ExecutePathWhereGivenXMLDocumentExpectXMLReturned()
         {
             //------------Setup for test--------------------------
