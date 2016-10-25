@@ -32,8 +32,6 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Drag_Toolbox_Data_Split_Onto_DesignSurface();
         }
-        
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {
