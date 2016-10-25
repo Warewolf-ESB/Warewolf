@@ -22,10 +22,11 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Core;
@@ -35,6 +36,7 @@ using Warewolf.Studio.Core.Popup;
 // ReSharper disable InconsistentNaming
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable NotAccessedField.Local
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -191,7 +193,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetupCommands()
         {
-            RollbackCommand = new DelegateCommand(() =>
+            RollbackCommand = new DelegateCommand(o =>
                     {
                         var result = _popupController.ShowRollbackVersionMessage(VersionNumber);
                         if (result == MessageBoxResult.Yes)
@@ -199,91 +201,111 @@ namespace Warewolf.Studio.ViewModels
                             _explorerItemViewModelCommandController.RollbackCommand(_explorerRepository, Parent, ResourceId, VersionNumber);
                         }
                     });
-            DeployCommand = new DelegateCommand<IExplorerItemViewModel>(a => ShellViewModel.AddDeploySurface(AsList().Union(new[] { this })));
-            LostFocus = new DelegateCommand(LostFocusCommand);
-            OpenCommand = new DelegateCommand(() =>
+            DeployCommand = new DelegateCommand(a => ShellViewModel.AddDeploySurface(AsList().Union(new[] { this })));
+            LostFocus = new DelegateCommand(o=>LostFocusCommand());
+            OpenCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.OpenCommand(this, Server);
             });
-            RenameCommand = new DelegateCommand(() => IsRenaming = true);
+            RenameCommand = new DelegateCommand(o => IsRenaming = true);
 
-            ViewSwaggerCommand = new DelegateCommand(() =>
+            ViewSwaggerCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.ViewSwaggerCommand(ResourceId, Server);
             });
-            ViewApisJsonCommand = new DelegateCommand(() =>
+            ViewApisJsonCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.ViewApisJsonCommand(ResourcePath, EnvironmentModel.Connection.WebServerUri);
             });
 
-            NewServerCommand = new DelegateCommand(() =>
+            NewServerCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewServerSourceCommand(ResourcePath, Server);
             });
 
-            NewDatabaseSourceCommand = new DelegateCommand(() =>
+            NewDatabaseSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewDatabaseSourceCommand(ResourcePath, Server);
             });
 
-            NewPluginSourceCommand = new DelegateCommand(() =>
+            NewPluginSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewPluginSourceCommand(ResourcePath, Server);
             });
 
-            NewWebSourceSourceCommand = new DelegateCommand(() =>
+            NewWebSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewWebSourceCommand(ResourcePath, Server);
             });
 
-            NewEmailSourceSourceCommand = new DelegateCommand(() =>
+            NewEmailSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewEmailSourceCommand(ResourcePath, Server);
             });
 
-            NewExchangeSourceSourceCommand = new DelegateCommand(() =>
+            NewExchangeSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewExchangeSourceCommand(ResourcePath, Server);
             });
 
-            NewRabbitMQSourceSourceCommand = new DelegateCommand(() =>
+            NewRabbitMQSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewRabbitMQSourceCommand(ResourcePath, Server);
             });
 
-            NewSharepointSourceSourceCommand = new DelegateCommand(() =>
+            NewSharepointSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewSharepointSourceCommand(ResourcePath, Server);
             });
 
-            NewDropboxSourceSourceCommand = new DelegateCommand(() =>
+            NewDropboxSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewDropboxSourceCommand(ResourcePath, Server);
             });
-            NewServiceCommand = new DelegateCommand<string>(type =>
+            NewServiceCommand = new DelegateCommand(type =>
             {
                 _explorerItemViewModelCommandController.NewServiceCommand(ResourcePath, Server);
             });
-            ShowDependenciesCommand = new DelegateCommand(ShowDependencies);
-            ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
-            DeleteCommand = new DelegateCommand(Delete);
-            DuplicateCommand = new DelegateCommand(DuplicateResource, () => CanDuplicate);
-            CreateTestCommand = new DelegateCommand(CreateTest, () => CanCreateTest);
-            OpenVersionCommand = new DelegateCommand(OpenVersion);
-            VersionHeader = "Show Version History";
-            Expand = new DelegateCommand<int?>(clickCount =>
+            DebugStudioCommand = new DelegateCommand(type =>
             {
-                if (clickCount != null && clickCount == 2 && IsFolder)
+                _explorerItemViewModelCommandController.DebugStudioCommand(ResourceId, Server);
+            });
+            DebugBrowserCommand = new DelegateCommand(type =>
+            {
+                _explorerItemViewModelCommandController.DebugBrowserCommand(ResourceId, Server);
+            });
+            ScheduleCommand = new DelegateCommand(type =>
+            {
+                _explorerItemViewModelCommandController.ScheduleCommand(ResourceId);
+            });
+            RunAllTestsCommand = new DelegateCommand(type =>
+            {
+                _explorerItemViewModelCommandController.RunAllTestsCommand(ResourceId);
+            });
+            CopyUrlCommand = new DelegateCommand(type =>
+            {
+                _explorerItemViewModelCommandController.CopyUrlCommand(ResourceId, Server);
+            });
+            ShowDependenciesCommand = new DelegateCommand(o=>ShowDependencies());
+            ShowVersionHistory = new DelegateCommand(o => AreVersionsVisible = !AreVersionsVisible);
+            DeleteCommand = new DelegateCommand(o=>Delete());
+            DuplicateCommand = new DelegateCommand(o=>DuplicateResource(), o => CanDuplicate);
+            CreateTestCommand = new DelegateCommand(o=>CreateTest(), o => CanCreateTest);
+            OpenVersionCommand = new DelegateCommand(o=>OpenVersion());
+            VersionHeader = "Show Version History";
+            Expand = new DelegateCommand(clickCount =>
+            {
+                if (clickCount != null && (int)clickCount == 2 && IsFolder)
                 {
                     IsExpanded = !IsExpanded;
                 }
-                if (clickCount != null && clickCount == 2 && ResourceType == "WorkflowService" && IsExpanded)
+                if (clickCount != null && (int)clickCount == 2 && ResourceType == "WorkflowService" && IsExpanded)
                 {
                     IsExpanded = false;
                 }
             });
-            CreateFolderCommand = new DelegateCommand(CreateNewFolder);
-            DeleteVersionCommand = new DelegateCommand(DeleteVersion);
+            CreateFolderCommand = new DelegateCommand(o=>CreateNewFolder());
+            DeleteVersionCommand = new DelegateCommand(o=>DeleteVersion());
         }
 
       
@@ -620,10 +642,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string ResourceName
         {
-            get
-            {
-                return _resourceName;
-            }
+            get { return _resourceName; }
             set
             {
                 if (_resourceName != null && Parent != null && Parent.Children.Any(a => a.ResourceName == value) && value != _resourceName)
@@ -639,29 +658,39 @@ namespace Warewolf.Studio.ViewModels
                         if (_resourceName == newName)
                         {
                             IsRenaming = false;
-
                         }
                         else
                         {
-                            if (_explorerRepository.Rename(this, NewName(newName)))
+                            var asyncWorker = CustomContainer.Get<IAsyncWorker>();
+                            asyncWorker?.Start(() =>
                             {
-                                if (!ResourcePath.Contains("\\"))
+                                ShellViewModel.SetRefreshExplorerState(true);
+                                if (_explorerRepository.Rename(this, NewName(newName)))
                                 {
-                                    if (_resourceName != null)
+                                    if (!ResourcePath.Contains("\\"))
                                     {
-                                        ResourcePath = ResourcePath.Replace(_resourceName, newName);
+                                        if (_resourceName != null)
+                                        {
+                                            ResourcePath = ResourcePath.Replace(_resourceName, newName);
+                                        }
                                     }
+                                    else
+                                    {
+                                        ResourcePath = ResourcePath.Substring(0, ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) + newName;
+                                    }
+                                    UpdateResourcePaths(this);
+                                    _resourceName = newName;
                                 }
-                                else
+                            }, () =>
+                            {
+                                if (!IsRenaming)
                                 {
-                                    ResourcePath =
-                                        ResourcePath.Substring(0,
-                                            ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) +
-                                        newName;
+                                    _resourceName = newName;
                                 }
-
-                                _resourceName = newName;
-                            }
+                                IsRenaming = false;
+                                OnPropertyChanged(() => ResourceName);
+                                ShellViewModel.SetRefreshExplorerState(false);
+                            });
                         }
                     }
                     if (!IsRenaming)
@@ -669,11 +698,11 @@ namespace Warewolf.Studio.ViewModels
                         _resourceName = newName;
                     }
                     IsRenaming = false;
-
                     OnPropertyChanged(() => ResourceName);
                 }
             }
         }
+
         private string RemoveInvalidCharacters(string name)
         {
             var nameToFix = name.TrimStart(' ').TrimEnd(' ');
@@ -732,7 +761,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand ViewSwaggerCommand { get; set; }
         public ICommand ViewApisJsonCommand { get; set; }
 
-        public ICommand DebugCommand => new DelegateCommand(() =>
+        public ICommand DebugCommand => new DelegateCommand(o =>
         {
             _explorerItemViewModelCommandController.OpenCommand(this, Server);
             ShellViewModel.Debug();
@@ -761,6 +790,12 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewSharepointSourceSourceCommand { get; set; }
         public ICommand NewDropboxSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
+
+        public ICommand DebugStudioCommand { get; set; }
+        public ICommand DebugBrowserCommand { get; set; }
+        public ICommand ScheduleCommand { get; set; }
+        public ICommand RunAllTestsCommand { get; set; }
+        public ICommand CopyUrlCommand { get; set; }
 
         public bool ForcedRefresh
         {
@@ -1191,7 +1226,6 @@ namespace Warewolf.Studio.ViewModels
                 if (!moveResult)
                 {
                     ShowErrorMessage(Resources.Languages.Core.ExplorerMoveFailedMessage, Resources.Languages.Core.ExplorerMoveFailedHeader);
-                    Server.UpdateRepository.FireItemSaved(true);
                     return false;
                 }
                 UpdateResourcePaths(destination);
@@ -1199,7 +1233,6 @@ namespace Warewolf.Studio.ViewModels
             catch (Exception ex)
             {
                 ShowErrorMessage(ex.Message, Resources.Languages.Core.ExplorerMoveFailedHeader);
-                Server.UpdateRepository.FireItemSaved(true);
                 return false;
             }
             finally

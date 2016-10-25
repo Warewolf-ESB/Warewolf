@@ -23,21 +23,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         private static Isolated<PluginRuntimeHandler> CreateInvokeAppDomain()
         {
-//            // Construct and initialize settings for a second AppDomain.
-//            AppDomainSetup domainSetup = new AppDomainSetup
-//            {
-//                ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
-//                ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile,
-//                ApplicationName = AppDomain.CurrentDomain.SetupInformation.ApplicationName,
-//                LoaderOptimization = LoaderOptimization.MultiDomainHost
-//            };
-//            Evidence adevidence = AppDomain.CurrentDomain.Evidence;
-//            // Create the child AppDomain used for the service tool at runtime.
-//            childDomain = AppDomain.CreateDomain(Guid.NewGuid().ToString(), adevidence, domainSetup);
-//
-//            // Create an instance of the runtime in the second AppDomain. 
-//            // A proxy to the object is returned.
-//            IRuntime runtime = (PluginRuntimeHandler)childDomain.CreateInstanceAndUnwrap(typeof(PluginRuntimeHandler).Assembly.FullName, typeof(PluginRuntimeHandler).FullName);
             Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>();
             return isolated;
         }

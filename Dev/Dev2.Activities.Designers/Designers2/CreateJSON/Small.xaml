@@ -94,7 +94,6 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="[[Input]]"
-                                                    AcceptsReturn="False"
                                                     AllowUserCalculateMode="False"
                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                     VerticalScrollBarVisibility="Auto"

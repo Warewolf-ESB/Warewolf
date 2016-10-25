@@ -26,7 +26,7 @@
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
     <core:ActivityDesignerTemplate.RightButtons>
-        <core:ActivityDesignerButton Content="AddMode" 
+        <core:ActivityDesignerButton Content="Add" 
                                      DataContext="{Binding QuickVariableInputViewModel, Mode=TwoWay}"
                                      Margin="0,0,12,12"
                                      Style="{StaticResource ActivityDesignerButtonStyle}"

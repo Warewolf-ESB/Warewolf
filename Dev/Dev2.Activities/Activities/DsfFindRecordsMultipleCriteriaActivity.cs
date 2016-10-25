@@ -173,11 +173,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     results.Add(-1);
                 }
-                var res = String.Join(",", results.Distinct());
-                env.Assign(Result, res, update);
+                var distinctResults = results.Distinct();
+                if (DataListUtil.IsValueScalar(Result))
+                {
+                    var res = string.Join(",", distinctResults);
+                    env.Assign(Result, res, update);
+                }
+                else
+                {
+                    foreach(var distinctResult in distinctResults)
+                    {
+                        env.Assign(Result, distinctResult.ToString(), update);
+                    }
+                }
                 if (dataObject.IsDebugMode())
                 {
-                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    if (DataListUtil.IsValueRecordset(Result))
+                    {
+                        var recVar = DataListUtil.ReplaceRecordsetBlankWithStar(Result);
+                        AddDebugOutputItem(new DebugEvalResult(recVar, "", dataObject.Environment, update));
+                    }
+                    else
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    }
                 }
             }
             catch (Exception exception)

@@ -40,6 +40,7 @@ Scenario: Change SQL Server Source on Existing tool
 	And Outputs is Disabled
 	And Validate is Enabled 
 
+@ChangingSqlServerFunctions
 Scenario: Changing SQL Server Actions
 	Given I open workflow with database connector
 	And Source is Enabled
@@ -48,8 +49,8 @@ Scenario: Changing SQL Server Actions
 	And Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enabled
 	And Inputs appear as
-	| Input | Value | Empty is Null |
-	| Prefix | [[Prefix]]    | false         | 
+	| Input  | Value      | Empty is Null |
+	| Prefix | [[Prefix]] | false         |
 	And Validate is Enabled
 	Then Outputs appear as
 	| Mapped From | Mapped To                                   | 
@@ -59,8 +60,8 @@ Scenario: Changing SQL Server Actions
 	When Action is changed from to "dbo.ImportOrder"
 	And Inputs is Enabled
 	And Inputs appear as
-	| Input    | Value | Empty is Null |
-	| ProductId |               | false         |	
+	| Input     | Value         | Empty is Null |
+	| ProductId | [[ProductId]] | false         |
 	And Validate is Enabled	
 
 Scenario: Change SQL Server Recordset Name

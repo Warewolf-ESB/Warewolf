@@ -84,6 +84,7 @@
                 </customControls:SearchTextBox>
                 <Button Grid.Row="0"
                         Grid.Column="1"
+                        x:Name="FilterRefreshButton"
                         Width="25"
                         Height="25"
                         Margin="0,3,0,-1"
@@ -104,6 +105,7 @@
                 </Button>
                 <views:CircularProgressBar Grid.Row="0"
                                            Grid.Column="1"
+                                           x:Name="FilterRefreshProgressBar"
                                            Width="25"
                                            Height="25"
                                            Padding="2.5"
@@ -126,6 +128,7 @@
                             ItemsSource="{Binding Environments}"
                             MouseUp="ExplorerTree_OnMouseUp"
                             NodeExitedEditMode="ExplorerTree_OnNodeExitedEditMode"
+                            NodeEnteredEditMode="ExplorerTree_OnNodeEnteredEditMode"
                             NodeLineVisibility="Hidden"
                             SelectedDataItems="{Binding SelectedDataItems}"
                             customControls:DataPresenterHelpers.FilterText="{Binding ElementName=SearchTextBox, Path=Text}">
@@ -313,10 +316,12 @@
                                             </ig:ContextMenuManager.ContextMenu>
                                         </ig:ContextMenuManager>
                                     </ig:ContextMenuService.Manager>
+
                                     <Button Grid.Row="0"
                                             Grid.Column="0"
                                             Command="{Binding Path=Data.RefreshCommand}"
-                                            Style="{StaticResource ExplorerTreeEnvironmentButtonStyle}">
+                                            Style="{StaticResource ExplorerTreeEnvironmentButtonStyle}"
+                                            Visibility="{Binding ElementName=FilterRefreshButton, Path=Visibility}">
                                         <Grid>
                                             <Image Width="18"
                                                    Height="18"
@@ -336,6 +341,9 @@
                                                                Visibility="{Binding Path=Data.IsConnecting,
                                                                                     Converter={StaticResource BoolToVisibilityConverter}}" />
 
+                                    <views:CircularProgressBar Grid.Row="0"
+                                                               Grid.Column="0"
+                                                               Visibility="{Binding ElementName=FilterRefreshProgressBar, Path=Visibility}" />
                                     <StackPanel Grid.Row="0"
                                                 Grid.Column="1"
                                                 Margin="1,0,0,0"
@@ -387,8 +395,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox MouseRightButtonDown="ExplorerTree_OnMouseRightButtonDown"
-                                             GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
+                                    <TextBox GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
                                              Style="{StaticResource ExplorerEditTextBoxStyle}"
                                              Text="{Binding Data.ResourceName,
                                                             Mode=TwoWay,
@@ -482,7 +489,6 @@
                                                                     Command="{Binding Path=Data.OpenCommand}"
                                                                     CommandParameter="WorkflowService"
                                                                     Header="Open"
-                                                                    InputGestureText="[Ctrl+W]"
                                                                     Visibility="{Binding Path=Data.CanView,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}" />
                                                     <ig:XamMenuItem Name="NewService"
@@ -592,6 +598,53 @@
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
+                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanViewSwagger, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    
+                                                    <ig:XamMenuItem Name="DebugInputs"
+                                                                    Command="{Binding Path=Data.DebugCommand}"
+                                                                    Header="Debug Inputs"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeDebugInputsToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
+                                                    <ig:XamMenuItem Name="DebugStudio"
+                                                                    Command="{Binding Path=Data.DebugStudioCommand}"
+                                                                    Header="Debug Studio"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeDebugStudioToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
+                                                    <ig:XamMenuItem Name="DebugBrowser"
+                                                                    Command="{Binding Path=Data.DebugBrowserCommand}"
+                                                                    Header="Debug Browser"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeDebugBrowserToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
+                                                    <ig:XamMenuItem Name="Schedule"
+                                                                    Command="{Binding Path=Data.ScheduleCommand}"
+                                                                    Header="Schedule"
+                                                                    IsEnabled="{Binding IsCommandEnabled}"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeScheduleToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanCreateSource, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                                                     <ig:XamMenuItem Name="NewFolderFromItem"
@@ -657,7 +710,15 @@
                                                     </ig:XamMenuItem.Icon>
                                                   </ig:XamMenuItem>
 
-                                                  <ig:XamMenuItem Name="Deploy"
+                                                    <ig:XamMenuItem Name="RunAllTests"
+                                                                    Command="{Binding Path=Data.RunAllTestsCommand}"
+                                                                    Header="Run All Tests"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeRunAllTestsToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    </ig:XamMenuItem>
+
+                                                    <ig:XamMenuItem Name="Deploy"
                                                                     Command="{Binding Path=Data.DeployCommand}"
                                                                     CommandParameter="{Binding Path=Data}"
                                                                     InputGestureText="[Ctrl+D]"
@@ -707,6 +768,13 @@
 
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
 
+                                                    <!--<ig:XamMenuItem Name="CopyUrl"
+                                                                    Command="{Binding Path=Data.CopyUrlCommand}"
+                                                                    Header="Copy URL to Clipboard"
+                                                                    ToolTip="{x:Static languages:Core.StartNodeCopyUrlToolTip}"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    </ig:XamMenuItem>-->
                                                     <ig:XamMenuItem Name="ShowHideVersions"
                                                                     Command="{Binding Path=Data.ShowVersionHistory}"
                                                                     Header="{Binding Path=Data.VersionHeader}"

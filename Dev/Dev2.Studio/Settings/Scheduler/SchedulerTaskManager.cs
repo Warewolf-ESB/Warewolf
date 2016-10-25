@@ -192,7 +192,7 @@ namespace Dev2.Settings.Scheduler
         {
             if (_schedulerViewModel.IsDirty)
             {
-                _schedulerViewModel.PopupController.Show(@"Please save currently edited Task(s) before creating a new one.", @"Save before continuing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                _schedulerViewModel.PopupController.Show(Core.SchedulerUnsavedTaskMessage, Core.SchedulerUnsavedTaskHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                 return;
             }
 
@@ -297,19 +297,27 @@ namespace Dev2.Settings.Scheduler
                 var hasResult = CurrentResourcePickerDialog != null && CurrentResourcePickerDialog.ShowDialog(_schedulerViewModel.CurrentEnvironment);
                 if (hasResult)
                 {
-                    _schedulerViewModel.WorkflowName = CurrentResourcePickerDialog.SelectedResource.ResourcePath;
-
-                    _schedulerViewModel.SelectedTask.ResourceId = CurrentResourcePickerDialog.SelectedResource.ResourceId;
-                    if (_schedulerViewModel.SelectedTask.Name.StartsWith(@"New Task"))
-                    {
-                        _schedulerViewModel.Name = CurrentResourcePickerDialog.SelectedResource.ResourceName;
-                        _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.Name);
-                    }
-                    _schedulerViewModel.SelectedTask.IsDirty = true;
-                    _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.WorkflowName);
-                    _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.TaskList);
+                    var resourcePath = CurrentResourcePickerDialog.SelectedResource.ResourcePath;
+                    var resourceId = CurrentResourcePickerDialog.SelectedResource.ResourceId;
+                    var resourceName = CurrentResourcePickerDialog.SelectedResource.ResourceName;
+                    UpdateScheduleWithResourceDetails(resourcePath, resourceId, resourceName);
                 }
             }
+        }
+
+        public void UpdateScheduleWithResourceDetails(string resourcePath, Guid resourceId, string resourceName)
+        {
+            _schedulerViewModel.WorkflowName = resourcePath;
+
+            _schedulerViewModel.SelectedTask.ResourceId = resourceId;
+            if (_schedulerViewModel.SelectedTask.Name.StartsWith(@"New Task"))
+            {
+                _schedulerViewModel.Name = resourceName;
+                _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.Name);
+            }
+            _schedulerViewModel.SelectedTask.IsDirty = true;
+            _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.WorkflowName);
+            _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.TaskList);
         }
 
         public static bool TriggerEquals(Microsoft.Win32.TaskScheduler.Trigger a, Microsoft.Win32.TaskScheduler.Trigger b)

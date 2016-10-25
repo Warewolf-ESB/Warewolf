@@ -21,7 +21,7 @@ namespace Warewolf.UITests
         [TestCategory("Tools")]
         public void Sharepoint_Read_Folder_LargeView_UITest()
         {
-            UIMap.Open_Sharepoint_Read_Tool_Large_View();
+            UIMap.Open_Sharepoint_Read_Folder_Tool_Large_View();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.LargeView.DataGridTableVariables.ItemRow1.FileNameCell.FieldComboBox.Exists);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.LargeView.DataGridTableVariables.ItemRow1.MatchTypeCell.MatchTypeComboBox.Exists);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.LargeView.DataGridTableVariables.ItemRow1.ValueCell.ValueComboBox.Exists);

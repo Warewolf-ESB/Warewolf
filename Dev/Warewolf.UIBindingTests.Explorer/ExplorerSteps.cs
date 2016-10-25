@@ -524,7 +524,7 @@ namespace Warewolf.UIBindingTests.Explorer
         public void WhenIAddIn(string folder , string server)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
-            explorerView.AddNewFolder(server, folder);
+            explorerView.AddNewFolder(folder, server);
         }
 
         [Given(@"I change path ""(.*)"" to ""(.*)""")]

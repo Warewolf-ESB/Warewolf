@@ -154,6 +154,8 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+
+
         public ObservableCollection<IScalarItemModel> ScalarCollection
         {
             get
@@ -633,13 +635,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 Resource.DataList = result;
             }
 
-            if (BaseCollection.Count >= 1)
-            {
-                BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
-                BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
-                BaseCollection[2].Children = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);
-                AddBlankRow(null);
-            }
             return result;
         }
 
@@ -722,13 +717,15 @@ namespace Dev2.Studio.ViewModels.DataList
             if (RecsetCollection != null)
             {
                 hasUnused = RecsetCollection.Any(sc => !sc.IsUsed);
+                if (!hasUnused)
+                {
+                    hasUnused = RecsetCollection.SelectMany(sc => sc.Children).Any(sc => !sc.IsUsed);
+                }
                 if (hasUnused)
                 {
                     DeleteCommand.RaiseCanExecuteChanged();
                     return true;
                 }
-
-                hasUnused = RecsetCollection.SelectMany(sc => sc.Children).Any(sc => !sc.IsUsed);
             }
 
             if (ComplexObjectCollection != null)
@@ -819,6 +816,13 @@ namespace Dev2.Studio.ViewModels.DataList
 
             DataListHeaderItemModel complexObjectNode = DataListItemModelFactory.CreateDataListHeaderItem("Object");
             BaseCollection.Add(complexObjectNode);
+
+            AddBlankRow(null);
+
+            BaseCollection[0].Children = ScalarCollection;
+            BaseCollection[1].Children = RecsetCollection;
+            BaseCollection[2].Children = ComplexObjectCollection;
+
             WriteToResourceModel();
         }
 
@@ -1058,6 +1062,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         public ISuggestionProvider Provider { get; set; }
+        
 
         private static string BuildErrorMessage(IDataListItemModel model)
         {
