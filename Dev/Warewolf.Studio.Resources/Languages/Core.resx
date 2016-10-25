@@ -941,6 +941,9 @@ The window will be reloaded when you click OK.</value>
   <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="ServerDisconnected" xml:space="preserve">
+    <value>Server: {0} has disconnected.</value>
+  </data>
   <data name="ViewInBrowserLabel" xml:space="preserve">
     <value>View Results In Browser</value>
   </data>
