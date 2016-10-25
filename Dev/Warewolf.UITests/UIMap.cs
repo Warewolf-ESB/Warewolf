@@ -63,73 +63,115 @@ namespace Warewolf.UITests
         [When(@"I Try Click Message Box OK")]
         public void TryClickMessageBoxOK()
         {
-            if (ControlExistsNow(MessageBoxWindow.OKButton))
+            try
             {
-                Click_MessageBox_OK();
+                if (ControlExistsNow(MessageBoxWindow.OKButton))
+                {
+                    Click_MessageBox_OK();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging message box to clean up.");
+                }
             }
-            else
+            catch(NullReferenceException)
             {
-                Console.WriteLine("No hanging message box to clean up.");
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
         }
 
         public void TryCloseHangingDebugInputDialog()
         {
-            if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
+            try
             {
-                Click_DebugInput_Cancel_Button();
+                if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
+                {
+                    Click_DebugInput_Cancel_Button();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging debug input dialog to clean up.");
+                }
             }
-            else
+            catch(NullReferenceException)
             {
-                Console.WriteLine("No hanging debug input dialog to clean up.");
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
-        }
+}
 
         public void TryCloseHangingSaveDialog()
         {
-            if (ControlExistsNow(SaveDialogWindow.CancelButton))
+            try
             {
-                Click_SaveDialog_CancelButton();
+                if (ControlExistsNow(SaveDialogWindow.CancelButton))
+                {
+                    Click_SaveDialog_CancelButton();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging save dialog to clean up.");
+                }
             }
-            else
+            catch(NullReferenceException)
             {
-                Console.WriteLine("No hanging save dialog to clean up.");
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
         }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
         {
-            if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
+            try
             {
-                Restore_Unpinned_Tab_Using_Context_Menu();
+                if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
+                {
+                    Restore_Unpinned_Tab_Using_Context_Menu();
+                }
+			    else
+			    {
+				    Console.WriteLine("No hanging unpinned pane to clean up.");
+                }
             }
-			else
-			{
-				Console.WriteLine("No hanging unpinned pane to clean up.");
-			}
+            catch(NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
         }
 
         private void TryCloseHangingServicePickerDialog()
         {
-			if (ControlExistsNow(ServicePickerDialog.Cancel))
-			{
-				Click_Service_Picker_Dialog_Cancel();
-			}
-			else
-			{
-				Console.WriteLine("No hanging service picker dialog to clean up.");
-			}
+            try
+            {
+                if (ControlExistsNow(ServicePickerDialog.Cancel))
+			    {
+				    Click_Service_Picker_Dialog_Cancel();
+			    }
+			    else
+			    {
+				    Console.WriteLine("No hanging service picker dialog to clean up.");
+                }
+            }
+            catch(NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
         }
 
         public void TryCloseHangingWindowsGroupDialog()
         {
-            if (ControlExistsNow(SelectWindowsGroupDialog))
+            try
             {
-                Click_Select_Windows_Group_Cancel_Button();
+                if (ControlExistsNow(SelectWindowsGroupDialog))
+                {
+                    Click_Select_Windows_Group_Cancel_Button();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging select windows group dialog to clean up.");
+                }
             }
-            else
+            catch(NullReferenceException)
             {
-                Console.WriteLine("No hanging select windows group dialog to clean up.");
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
         }
 
