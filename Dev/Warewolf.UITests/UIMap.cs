@@ -57,8 +57,86 @@ namespace Warewolf.UITests
             TryCloseHangingSaveDialog();
             TryCloseHangingServicePickerDialog();
             TryCloseHangingWindowsGroupDialog();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner); 
+            TryPin_Unpinned_Pane_To_Default_Position();
 #endif
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+        }
+
+        [When(@"I Try Click Message Box OK")]
+        public void TryClickMessageBoxOK()
+        {
+            try
+            {
+                if (ControlExistsNow(MessageBoxWindow.OKButton))
+                {
+                    Click_MessageBox_OK();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging message box to clean up.");
+                }
+            }
+            catch(NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
+        }
+
+        public void TryCloseHangingDebugInputDialog()
+        {
+            try
+            {
+                if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
+                {
+                    Click_DebugInput_Cancel_Button();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging debug input dialog to clean up.");
+                }
+            }
+            catch(NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
+        }
+
+        public void TryCloseHangingSaveDialog()
+        {
+            try
+            {
+                if (ControlExistsNow(SaveDialogWindow.CancelButton))
+                {
+                    Click_SaveDialog_CancelButton();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging save dialog to clean up.");
+                }
+            }
+            catch(NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
+        }
+
+        public void TryPin_Unpinned_Pane_To_Default_Position()
+        {
+            try
+            {
+                if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
+                {
+                    Restore_Unpinned_Tab_Using_Context_Menu();
+                }
+			    else
+			    {
+				    Console.WriteLine("No hanging unpinned pane to clean up.");
+                }
+            }
+            catch(NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
         }
 
         private void TryCloseHangingServicePickerDialog()
@@ -66,13 +144,36 @@ namespace Warewolf.UITests
             try
             {
                 if (ControlExistsNow(ServicePickerDialog.Cancel))
-                {
-                    Click_Service_Picker_Dialog_Cancel();
+			    {
+				    Click_Service_Picker_Dialog_Cancel();
+			    }
+			    else
+			    {
+				    Console.WriteLine("No hanging service picker dialog to clean up.");
                 }
             }
-            catch (Exception e)
+            catch(NullReferenceException)
             {
-                Console.WriteLine("No hanging service picker dialog to clean up.\n" + e.Message);
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
+        }
+
+        public void TryCloseHangingWindowsGroupDialog()
+        {
+            try
+            {
+                if (ControlExistsNow(SelectWindowsGroupDialog))
+                {
+                    Click_Select_Windows_Group_Cancel_Button();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging select windows group dialog to clean up.");
+                }
+            }
+            catch(NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
         }
 
@@ -188,15 +289,6 @@ namespace Warewolf.UITests
             return controlExists;
         }
 
-        [When(@"I Try Click Message Box OK")]
-        public void TryClickMessageBoxOK()
-        {
-            if (ControlExistsNow(MessageBoxWindow.OKButton))
-            {
-                Click_MessageBox_OK();
-            }
-        }
-
         public void InitializeABlankWorkflow()
         {
             Click_New_Workflow_Ribbon_Button();
@@ -284,21 +376,6 @@ namespace Warewolf.UITests
             return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
         }
 
-        public void TryCloseHangingSaveDialog()
-        {
-            try
-            {
-                if (ControlExistsNow(SaveDialogWindow.CancelButton))
-                {
-                    Click_SaveDialog_CancelButton();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup threw an unhandled exception trying to remove hanging save dialog. Test may have crashed without leaving a hanging dialog.\n" + e.Message);
-            }
-        }
-
         public void TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(string SourceName)
         {
             try
@@ -359,21 +436,6 @@ namespace Warewolf.UITests
             finally
             {
                 TryClearExplorerFilter();
-            }
-        }
-
-        public void TryCloseHangingWindowsGroupDialog()
-        {
-            try
-            {
-                if (ControlExistsNow(SelectWindowsGroupDialog))
-                {
-                    Click_Select_Windows_Group_Cancel_Button();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
             }
         }
 
@@ -617,6 +679,13 @@ namespace Warewolf.UITests
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
         }
 
+        [When(@"I Click Duplicate From Duplicate Dialog")]
+        public void WhenIClickDuplicateFromDuplicateDialog()
+        {
+            Click_Duplicate_From_Duplicate_Dialog();
+        }
+
+
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
         {
@@ -699,21 +768,6 @@ namespace Warewolf.UITests
             Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1, new Point(91, 9));
             Assert.IsTrue(ServicePickerDialog.OK.Enabled, "Service picker dialog OK button is not enabled.");
             Click_Service_Picker_Dialog_OK();
-        }
-
-        public void TryCloseHangingDebugInputDialog()
-        {
-            try
-            {
-                if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
-                {
-                    Click_DebugInput_Cancel_Button();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
-            }
         }
 
         public void TryRefreshExplorerUntilOneItemOnly(int retries = 3)
@@ -1292,10 +1346,7 @@ namespace Warewolf.UITests
             #endregion
 
             Filter_Explorer(ServiceName);
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-
+            RightClick_Explorer_Localhost_First_Item();
             Mouse.Click(showDependencies, new Point(50, 15));
             Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
             Assert.IsTrue(textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
@@ -1322,6 +1373,22 @@ namespace Warewolf.UITests
             Enter_DeployViewOnly_Into_Deploy_Source_Filter();
             Select_Deploy_First_Source_Item();
             Click_Deploy_Tab_Deploy_Button();
+        }
+
+        public void Enter_Values_Into_Data_Merge_Tool_Large_View()
+        {
+            var row1InputVariabComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row.InputCell.Row1InputVariabComboBox;
+            var row1UsingComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row.UsingCell.Row1UsingComboBox;
+            var row2InputVariabComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row2.InputCell.Row2InputVariabComboBox;
+            var row2UsingComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row2.UsingCell.Row2UsingComboBox;
+
+            row1InputVariabComboBox.TextEdit.Text = "VarA";
+            row1UsingComboBox.TextEdit.Text = "1";
+            row2InputVariabComboBox.TextEdit.Text = "VarB";
+            row2UsingComboBox.TextEdit.Text = "2";
+
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row3.MergeTypeCell.Row4MergeTypeComboBox, ModifierKeys.None);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row3.MergeTypeCell.Row4MergeTypeComboBox.NewLineListItem, ModifierKeys.None);
         }
 
         public void Enter_Text_Into_Workflow_Tests_Output_Row1_Value_Textbox_As_CodedUITest()
@@ -1413,6 +1480,11 @@ namespace Warewolf.UITests
             Assert.IsTrue(public_ExecuteCheckBox.Checked, "Public Execute checkbox is NOT checked after Checking Contribute.");
         }
 
+        public void Scroll_Down_Then_Up_On_The_DataMerge_SmallView()
+        {
+            Mouse.MoveScrollWheel(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable, -1);
+        }
+         
         public void UnCheck_Public_View()
         {
             #region Variable Declarations
@@ -1633,6 +1705,10 @@ namespace Warewolf.UITests
                 case 3:
                     var test3 = test as Test3;
                     property = test3.TestNameDisplay;
+                    break;
+                case 4:
+                    var test4 = test as Test3;
+                    property = test4.TestNameDisplay;
                     break;
                 default:
                     var test1 = test as Test1;
@@ -1866,8 +1942,15 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink.Exists, "Url hyperlink does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink, new Point(201, 10));
-            Assert.IsTrue(MessageBoxWindow.Exists, "Did you know popup does not exis");
-            Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Ok button does not exist on the DidYouKnow button");
+            Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Did you know popup does not exist after clicking workflow hyperlink.");
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
+        }
+
+        public void Click_Assign_Tool_url_On_Unpinned_Tab()
+        {
+            Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink.Exists, "Url hyperlink does not exist on unpinned tab.");
+            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink, new Point(201, 10));
+            Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Did you know popup does not exist after clicking workflow hyperlink on unpinned tab.");
             Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
         }
 
@@ -2052,7 +2135,7 @@ namespace Warewolf.UITests
         public void Assert_Workflow_Testing_Tab_First_Test_Has_Unsaved_Star(bool HasStar)
         {
             Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.TabDescription.DisplayText.Contains("*"), "Test tab title does not contain unsaved star.");
-            Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestNameDisplay.DisplayText.Contains("*"), "First test title does not contain unsaved star.");
+            Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestNameDisplay.DisplayText.Contains("*"), "First test title does not contain unsaved star.");
         }
 
         [Given(@"That The Second Test ""(.*)"" Unsaved Star")]
@@ -2060,7 +2143,7 @@ namespace Warewolf.UITests
         public void Assert_Workflow_Testing_Tab_Second_Test_Has_Unsaved_Star(string HasHasNot)
         {
             Assert.AreEqual((HasHasNot == "Has"), MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.TabDescription.DisplayText.Contains("*"), "Test tab title does not contain unsaved star.");
-            Assert.AreEqual((HasHasNot == "Has"), MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.TestNameDisplay.DisplayText.Contains("*"), "Second test title does not contain unsaved star.");
+            Assert.AreEqual((HasHasNot == "Has"), MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.TestNameDisplay.DisplayText.Contains("*"), "Second test title does not contain unsaved star.");
         }
 
         [When(@"I Click Duplicate From Explorer Context Menu for Service ""(.*)""")]
@@ -2094,7 +2177,7 @@ namespace Warewolf.UITests
         [When("I Toggle First Test Enabled")]
         public void Toggle_Workflow_Testing_Tab_First_Test_Enabled()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector, new Point(10, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestEnabledSelector, new Point(10, 10));
         }
 
         [When("I Click Test (.*) Run Button")]
@@ -2117,13 +2200,13 @@ namespace Warewolf.UITests
         [When("I Click First Test Delete Button")]
         public void Click_First_Test_Delete_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.DeleteButton, new Point(10, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.DeleteButton, new Point(10, 10));
         }
 
         [When(@"I Click First Test Run Button")]
         public void Click_First_Test_Run_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.RunButton, new Point(10, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.RunButton, new Point(10, 10));
         }
 
         public void Select_First_Test()
@@ -2183,7 +2266,7 @@ namespace Warewolf.UITests
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Invalid(bool invalid = true)
         {
             Point point;
-            Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
+            Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
         }
 
         public void Delete_Assign_With_Context_Menu()
@@ -2200,6 +2283,13 @@ namespace Warewolf.UITests
             Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.TryGetClickablePoint(out newPoint), "HelloWorldWorkFlow still exists on design surface after deleting with context menu.");
         }
 
+        public void Delete_Assign_With_Context_Menu_On_Unpinned_Tab()
+        {
+            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Delete, new Point(27, 18));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView), "Assign tool still exists on unpinned design surface after deleting with context menu.");
+        }
+
         public void Debug_Workflow_With_Ribbon_Button()
         {
             Click_Debug_Ribbon_Button();
@@ -2214,7 +2304,19 @@ namespace Warewolf.UITests
             Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1.");
         }
 
+        public void Remove_Assign_Row_1_With_Context_Menu_On_Unpinned_Tab()
+        {
+            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRowMenuItem, MouseButtons.Left, ModifierKeys.None, new Point(6, 6));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1 on unpinned tab.");
+        }
+
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
+        public void Enter_Variable_And_Value_Into_Assign(string VariableText, string ValueText)
+        {
+            Enter_Variable_And_Value_Into_Assign(VariableText, ValueText, 1);
+        }
+
         public void Enter_Variable_And_Value_Into_Assign(string VariableText, string ValueText, int RowNumber)
         {
             switch (RowNumber)
@@ -2230,6 +2332,26 @@ namespace Warewolf.UITests
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText = ValueText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
                     Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1.");
+                    break;
+            }
+        }
+
+        [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1 on unpinned tab")]
+        public void Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab(string VariableText, string ValueText, int RowNumber)
+        {
+            switch (RowNumber)
+            {
+                case 2:
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextboxText = VariableText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextboxText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tab();
+                    Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2 on unpinned tab.");
+                    break;
+                default:
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextboxText = VariableText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextboxText = ValueText;
+                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tab();
+                    Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1 on unpinned tab.");
                     break;
             }
         }
@@ -2439,6 +2561,19 @@ namespace Warewolf.UITests
             recordset.Text = "[[rec()]]";
             result.Text = "[[result]]";
         }
+
+        public void Pin_Unpinned_Pane_To_Default_Position()
+        {
+            Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
+            Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
+        }
+
+        public void Unpin_Tab_With_Drag(UITestControl Tab)
+        {
+            Mouse.StartDragging(Tab);
+            Mouse.StopDragging(25, 40);
+        }
+
         public void Enter_Recordset_On_Length_tool()
         {
             #region Variable Declarations

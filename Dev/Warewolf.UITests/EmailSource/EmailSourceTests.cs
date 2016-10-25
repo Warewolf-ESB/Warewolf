@@ -27,13 +27,7 @@ namespace Warewolf.UITests
             UIMap.CloseHangingDialogs();
 #endif
         }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_EmailSource_Tab();
-            UIMap.TryRemoveFromExplorer(SourceName);            
-        }
+        
         public UIMap UIMap
         {
             get

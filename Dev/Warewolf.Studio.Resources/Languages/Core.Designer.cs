@@ -2028,7 +2028,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please rename either the source or destination before continueing.
+        ///   Looks up a localized string similar to Please rename either the source or destination before continuing.
         /// </summary>
         public static string DeployRenameBeforeContinue {
             get {
@@ -2055,7 +2055,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The following resources have the same path and name on the source and destination server but different Ids.
+        ///   Looks up a localized string similar to The following resources have the same path and name on the source and destination server but different IDs.
         /// </summary>
         public static string DeployResourcesSamePathAndName {
             get {
@@ -6532,6 +6532,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save before continuing.
+        /// </summary>
+        public static string SchedulerUnsavedTaskHeader {
+            get {
+                return ResourceManager.GetString("SchedulerUnsavedTaskHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please save currently edited Task(s) before creating a new one..
+        /// </summary>
+        public static string SchedulerUnsavedTaskMessage {
+            get {
+                return ResourceManager.GetString("SchedulerUnsavedTaskMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your variables might contain values like &apos;\t&apos; or &apos;\n&apos; etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences..
         /// </summary>
         public static string ScriptingHelpEscapeScript {
@@ -8537,6 +8555,114 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string StandardStyling {
             get {
                 return ResourceManager.GetString("StandardStyling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy the current resource Url.
+        /// </summary>
+        public static string StartNodeCopyUrlToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeCopyUrlToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F7].
+        /// </summary>
+        public static string StartNodeDebugBrowserToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugBrowserToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F5].
+        /// </summary>
+        public static string StartNodeDebugInputsToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugInputsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F6].
+        /// </summary>
+        public static string StartNodeDebugStudioToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugStudioToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View which resources are dependant on the current resource.
+        /// </summary>
+        public static string StartNodeDependenciesToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDependenciesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move current resource between Warewolf servers.
+        /// </summary>
+        public static string StartNodeDeployToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDeployToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot execute this command on an unsaved workflow.
+        /// </summary>
+        public static string StartNodeDisabledToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDisabledToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate the current resource.
+        /// </summary>
+        public static string StartNodeDuplicateToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDuplicateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run all tests in browser for this resource.
+        /// </summary>
+        public static string StartNodeRunAllTestsToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeRunAllTestsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule a service to run.
+        /// </summary>
+        public static string StartNodeScheduleToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeScheduleToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View the current tests for this resource.
+        /// </summary>
+        public static string StartNodeTestEditorToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeTestEditorToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Swagger source for the current resource.
+        /// </summary>
+        public static string StartNodeViewSwaggerToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeViewSwaggerToolTip", resourceCulture);
             }
         }
         

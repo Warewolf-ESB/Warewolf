@@ -44,7 +44,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
-                if (ad.Children.Cast<DirectoryEntry>().Any(dChildEntry => dChildEntry.Name == WarewolfGroup))
+                if (ad.Children.Cast<DirectoryEntry>().Any(dChildEntry => string.Equals(dChildEntry.Name, WarewolfGroup, StringComparison.CurrentCultureIgnoreCase)))
                 {
                     return true;
                 }

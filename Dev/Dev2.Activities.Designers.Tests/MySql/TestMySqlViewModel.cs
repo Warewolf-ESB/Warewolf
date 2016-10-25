@@ -156,7 +156,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
 
             //------------Assert Results-------------------------
             Assert.IsTrue(mySql.ErrorRegion.IsEnabled);
-            Assert.AreEqual(1, mySql.ManageServiceInputViewModel.Errors.Count);
+            Assert.AreNotEqual(0, mySql.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]
@@ -387,6 +387,10 @@ namespace Dev2.Activities.Designers.Tests.MySql
         {
             if (ThrowsTestError)
                 throw new Exception("bob");
+            if (HasRecError)
+            {
+                return null;
+            }
             DataTable dt = new DataTable();
             dt.Columns.Add("a");
             dt.Columns.Add("b");
@@ -405,13 +409,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
     {
         public InputViewForTest(IDatabaseServiceViewModel model, IDbServiceModel serviceModel)
             : base(model, serviceModel)
-        {
-            var sqlModel = serviceModel as MySqlModel;
-            if (sqlModel != null && sqlModel.HasRecError)
-            {
-                OkCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
-                            { throw new Exception("Error in mappings."); });
-            }
+        {            
         }
 
 

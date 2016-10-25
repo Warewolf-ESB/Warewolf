@@ -8,10 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Activities.Presentation;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
-using Dev2.Interfaces;
-using Dev2.Studio.ViewModels.Workflow;
+using System.Windows.Media;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views.Workflow
@@ -22,37 +23,55 @@ namespace Dev2.Studio.Views.Workflow
     public partial class WorkflowDesignerView : IWorkflowDesignerView
     {
         readonly DragDropHelpers _dragDropHelpers;
-        //IDisposable _subscription;
+
         public WorkflowDesignerView()
         {
             InitializeComponent();
             PreviewDrop += DropPointOnDragEnter;
             PreviewDragOver += DropPointOnDragEnter;
             PreviewMouseDown += WorkflowDesignerViewPreviewMouseDown;
-            KeyDown += OnKeyDown;
             _dragDropHelpers = new DragDropHelpers(this);
-            //            var pattern = Observable.FromEventPattern<KeyEventArgs>(this,"KeyUp");
-            //            pattern.Throttle(TimeSpan.FromMilliseconds(50000))
-            //                .ObserveOn(SynchronizationContext.Current);
-            //
-            //            pattern.Subscribe(PerformOnDispatcher);
-        }
-
-        void OnKeyDown(object sender, KeyEventArgs e)
-        {
-            //if (e.Key == Key.Enter)
-            //{
-                
-            //}
         }
 
         void WorkflowDesignerViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var vm = DataContext as WorkflowDesignerViewModel;
-            if (vm != null)
+            if (e.ChangedButton == MouseButton.Right)
             {
-                CustomContainer.Get<IMainViewModel>().AddWorkSurfaceContext(vm.ResourceModel);
+                DependencyObject node = e.OriginalSource as DependencyObject;
+                while (node != null)
+                {
+                    if (node is ActivityDesigner)
+                    {
+                        break;
+                    }
+                    if (node.GetType().Name.Contains("StartSymbol"))
+                    {
+                        var grid = e.OriginalSource as Grid;
+                        var rect = e.OriginalSource as System.Windows.Shapes.Rectangle;
+                        if (grid != null)
+                        {
+                            grid.ContextMenu = WorkflowDesigner.Resources["StartNodeContextMenu"] as ContextMenu;
+                            if (grid.ContextMenu != null)
+                            {
+                                grid.ContextMenu.IsOpen = true;
+                                grid.ContextMenu.DataContext = DataContext;
+                            }
+                        }
+                        else if (rect != null)
+                        {
+                            rect.ContextMenu = WorkflowDesigner.Resources["StartNodeContextMenu"] as ContextMenu;
+                            if (rect.ContextMenu != null)
+                            {
+                                rect.ContextMenu.IsOpen = true;
+                                rect.ContextMenu.DataContext = DataContext;
+                            }
+                        }
+                        break;
+                    }
+                    node = VisualTreeHelper.GetParent(node);
+                }
             }
+            OnPreviewMouseDown(e);
         }
         //a return from here without settings handled to true and DragDropEffects.None implies that the item drop is allowed
         void DropPointOnDragEnter(object sender, DragEventArgs e)

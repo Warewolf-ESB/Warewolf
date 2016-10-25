@@ -32,6 +32,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
                 , "Error message is not about being unable to drop switch onto the Sequence tool");
             Uimap.Click_MessageBox_OK();
         }
+
         [TestMethod]
 		[TestCategory("Tools")]
         public void ToolDesigners_SequenceLargeView_DraggingDecision_NotAllowed_UITest()
@@ -86,13 +87,6 @@ namespace Warewolf.UITests.Tools.Control_Flow
 #endif
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Drag_Toolbox_Sequence_Onto_DesignSurface();
-        }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Click_MessageBox_No();
         }
 
         UIMap Uimap

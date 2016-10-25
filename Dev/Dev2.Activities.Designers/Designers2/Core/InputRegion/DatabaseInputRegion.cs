@@ -9,12 +9,14 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Studio.Core.Activities.Utils;
+
 // ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
-    public class DatabaseInputRegion : IDatabaseInputRegion
+    public sealed class DatabaseInputRegion : IDatabaseInputRegion
     {
+        private readonly IActionInputDatatalistMapper _datatalistMapper;
         private readonly ModelItem _modelItem;
         private readonly IActionToolRegion<IDbAction> _action;
         bool _isEnabled;
@@ -27,17 +29,25 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             ToolRegionName = "DatabaseInputRegion";
         }
 
+
         public DatabaseInputRegion(ModelItem modelItem, IActionToolRegion<IDbAction> action)
+            :this(new ActionInputDatatalistMapper())
         {
             ToolRegionName = "DatabaseInputRegion";
             _modelItem = modelItem;
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
             var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("Inputs");
-            Inputs = new List<IServiceInput>(inputsFromModel??new List<IServiceInput>());
-            if(inputsFromModel == null)
+            Inputs = new List<IServiceInput>(inputsFromModel ?? new List<IServiceInput>());
+            if (inputsFromModel == null)
                 UpdateOnActionSelection();
-            IsEnabled = _action != null && _action.SelectedAction != null;
+            IsEnabled = _action?.SelectedAction != null;
+        }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        public DatabaseInputRegion(IActionInputDatatalistMapper datatalistMapper)
+        {
+            _datatalistMapper = datatalistMapper;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -45,7 +55,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             try
             {
                 Errors.Clear();
-                
+
                 // ReSharper disable once ExplicitCallerInfoArgument
                 UpdateOnActionSelection();
                 // ReSharper disable once ExplicitCallerInfoArgument
@@ -64,19 +74,17 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void CallErrorsEventHandler()
         {
-            if(ErrorsHandler != null)
-            {
-                ErrorsHandler(this, new List<string>(Errors));
-            }
+            ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
         private void UpdateOnActionSelection()
         {
-            Inputs= new List<IServiceInput>();
+            Inputs = new List<IServiceInput>();
             IsEnabled = false;
-            if(_action != null && _action.SelectedAction != null)
+            if (_action?.SelectedAction != null)
             {
                 Inputs = _action.SelectedAction.Inputs;
+                _datatalistMapper.MappInputsToDatalist(Inputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
             }
@@ -156,7 +164,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
             set
             {
-                ErrorsHandler.Invoke(this,new List<string>(value));
+                ErrorsHandler.Invoke(this, new List<string>(value));
             }
         }
 
@@ -164,13 +172,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #region Implementation of IDatabaseInputRegion
@@ -185,7 +190,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             {
                 _inputs = value;
                 OnPropertyChanged();
-                _modelItem.SetProperty("Inputs",value);
+                _modelItem.SetProperty("Inputs", value);
                 OnPropertyChanged();
             }
         }

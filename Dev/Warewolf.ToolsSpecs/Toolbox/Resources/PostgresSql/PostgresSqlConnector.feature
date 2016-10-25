@@ -8,8 +8,8 @@ Scenario: Creating PostgresSql Server Connector
 	When I select "DemoPostgres" as the source
 	When I select "getemployees" as the action
 	Then Test Inputs appear
-	| Input     | Value | Empty is Null |
-	| fname		|       | false         |
+	| Input | Value | Empty is Null |
+	| fname |       | false         |
 	Then Inputs is Enabled for postgresSql
 	Given I Enter a value as the input
 	| fname |
@@ -18,7 +18,7 @@ Scenario: Creating PostgresSql Server Connector
 	Then button is clicked
 	| name | salary | age |
 	| Bill | 4200   | 45  |
-
+@OpeningSavedWorkflowWithPostgresServerTool
 Scenario: Opening Saved workflow with Postgres Server tool
 	Given I Open workflow with PostgreSql connector
 	And Source Is Enable
@@ -27,10 +27,11 @@ Scenario: Opening Saved workflow with Postgres Server tool
 	And Action Is "getemployees"
 	And Inputs Is Enable
 	Then Inputs appear As
-	| Input | Value | Empty is Null |
-	| fname |       | false | 
+	| Input | Value     | Empty is Null |
+	| fname | [[fname]] | false         |
 	And Validate Is Enable
-	
+
+@ChangeTheSourceOnExistingPostgresql	
 Scenario: Change the source on existing postgresql tool
 	Given I Open workflow with PostgreSql connector
 	And Source Is Enable
@@ -39,10 +40,11 @@ Scenario: Change the source on existing postgresql tool
 	And Action Is "getemployees"
 	And Inputs Is Enable
 	Then Inputs appear As
-	| Input | Value | Empty is Null |
-	| fname |       | false | 
+	| Input | Value     | Empty is Null |
+	| fname | [[fname]] | false         |
 	And Validate Is Enable
 
+@ChangeTheActionOnExistingPostgresql
 Scenario: Change the action on existing postgresql tool
 	Given I Open workflow with PostgreSql connector
 	And Source Is Enable
@@ -51,8 +53,8 @@ Scenario: Change the action on existing postgresql tool
 	And Action Is "getemployees"
 	And Inputs Is Enable
 	Then Inputs appear As
-	| Input | Value | Empty is Null |
-	| fname |       | false | 
+	| Input | Value     | Empty is Null |
+	| fname | [[fname]] | false         |  
 	And Validate Is Enable
 
 Scenario: Change the recordset on existing postgresql tool
@@ -63,6 +65,6 @@ Scenario: Change the recordset on existing postgresql tool
 	And Action Is "getemployees"
 	And Inputs Is Enable
 	Then Inputs appear As
-	| Input | Value | Empty is Null |
-	| fname |       | false | 
+	| Input | Value     | Empty is Null |
+	| fname | [[fname]] | false         |
 	And Validate Is Enable
