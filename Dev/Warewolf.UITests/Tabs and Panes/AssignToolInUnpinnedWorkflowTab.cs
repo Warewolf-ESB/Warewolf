@@ -75,7 +75,12 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             UIMap.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface();
         }
-        
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
+        }
 
         UIMap UIMap
         {
