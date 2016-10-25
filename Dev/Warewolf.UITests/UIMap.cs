@@ -1051,7 +1051,7 @@ namespace Warewolf.UITests
             }
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Spinner);
             var displayText = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText;
-            Assert.IsTrue(displayText.Contains("Success"), "Deploy message '" + displayText + "' does not contain 'success' after waiting for deploy spinner.");
+            Assert.IsTrue(MessageBoxWindow.Exists);
         }
 
         public void Change_Selected_Database_ToMySql_DataBase()
@@ -1258,6 +1258,7 @@ namespace Warewolf.UITests
             Enter_DeployViewOnly_Into_Deploy_Source_Filter();
             Select_Deploy_First_Source_Item();
             Click_Deploy_Tab_Deploy_Button();
+            Click_MessageBox_OK();
         }
 
         public void Enter_Values_Into_Data_Merge_Tool_Large_View()
