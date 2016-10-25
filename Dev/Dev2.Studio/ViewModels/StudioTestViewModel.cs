@@ -37,6 +37,9 @@ namespace Dev2.ViewModels
             };
         }
 
+        public override bool HasVariables => false;
+        public override bool HasDebugOutput => true;
+
         protected override void OnDispose()
         {
             _eventPublisher.Unsubscribe(this);

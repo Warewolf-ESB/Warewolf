@@ -1077,20 +1077,6 @@ namespace Dev2.Studio.ViewModels
 
         public Action<WorkSurfaceContextViewModel> ActiveItemChanged;
 
-        void DebugOutputViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs args)
-        {
-            if (args.PropertyName == "IsProcessing")
-            {
-                if (MenuViewModel != null)
-                {
-                    if (ActiveItem.DebugOutputViewModel != null)
-                    {
-                        MenuViewModel.IsProcessing = ActiveItem.DebugOutputViewModel.IsProcessing;
-                    }
-                }
-            }
-        }
-
         private bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)
         {
             if (!models.Any(model => model.Environment.ResourceRepository.HasDependencies(model)))
