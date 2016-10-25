@@ -10,17 +10,27 @@ namespace Warewolf.UITests.Tools.Data
     public class AssignObject
     {
         [TestMethod]
+        [TestCategory("Tools")]
+        public void AssignObject_SmallViewUITest()
+        {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.SmallView.DataGrid.Row1.VariableCell.VariableTextbox.Exists, "Row 1 variable textbox does not exist on assign object tool small view after dragging tool in from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.SmallView.DataGrid.Row1.ValueCell.ValueTextbox.Exists, "Row 1 value textbox does not exist on assign object tool small view after dragging tool in from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.SmallView.DataGrid.Row2.VariableCell.VariableTextbox.Exists, "Row 2 does not exist on assign object tool small view after dragging tool in from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.SmallView.DataGrid.Row2.ValueCell.ValueTextbox.Exists, "Row 2 value textbox does not exist on assign object tool small view after dragging tool in from the toolbox.");
+        }
+
+        [TestMethod]
 		[TestCategory("Tools")]
         public void AssignObject_OpenLargeViewUITest()
         {            
-            Uimap.Open_AssignObject_Large_Tool();
+            UIMap.Open_AssignObject_Large_Tool();
         }
 
         [TestMethod]
 		[TestCategory("Tools")]
         public void AssignObject_OpenQIVLargeViewUITest()
         {
-            Uimap.Open_AssignObject_QVI_LargeView();
+            UIMap.Open_AssignObject_QVI_LargeView();
         }
 
         #region Additional test attributes
@@ -28,21 +38,15 @@ namespace Warewolf.UITests.Tools.Data
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_AssignObject_Onto_DesignSurface();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_AssignObject_Onto_DesignSurface();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Click_MessageBox_No();
-        }
-            UIMap Uimap
+        UIMap UIMap
         {
             get
             {
