@@ -19,6 +19,17 @@ namespace Warewolf.UITests.Tools.Data
             //UIMap.Click_Debug_Input_Dialog_Debug_ButtonParams.DataMergeToolDebugOutputExists = true;
             //UIMap.Click_Debug_Input_Dialog_Debug_Button();
         }
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void DataMerge_ScrollingUITest()
+        {
+            UIMap.Open_Data_Merge_Large_View();
+            UIMap.Enter_Values_Into_Data_Merge_Tool_Large_View();
+            UIMap.Close_Data_Merge_LargeView();            
+            UIMap.Scroll_Down_Then_Up_On_The_DataMerge_SmallView();
+            Assert.AreEqual("1", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row.UsingCell.Row1UsingDComboBox.TextEdit.Text);
+            Assert.AreEqual("2", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row2.UsingCell.Row2UsingComboBox.TextEdit.Text);
+        }
 
         #region Additional test attributes
 
@@ -29,7 +40,8 @@ namespace Warewolf.UITests.Tools.Data
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Data_Merge_Onto_DesignSurface();
         }
 
         UIMap UIMap

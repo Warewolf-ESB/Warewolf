@@ -348,6 +348,7 @@ namespace Dev2
             {
                 SetWorkingDirectory();
                 LoadHostSecurityProvider();
+                MigrateOldTests();
                 InitializeServer();
                 LoadSettingsProvider();
                 ConfigureLoggging();
@@ -802,6 +803,7 @@ namespace Dev2
         /// <date>2013/03/13</date>
         ResourceCatalog LoadResourceCatalog()
         {
+            
             MigrateOldResources();
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
@@ -814,7 +816,7 @@ namespace Dev2
 
         void LoadTestCatalog()
         {
-            MigrateOldTests();
+            
             Write("Loading Test catalog...  ");
             TestCatalog.Instance.Load();
             WriteLine("done.");
@@ -842,11 +844,11 @@ namespace Dev2
 
         static void MigrateOldTests()
         {
-            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
-            if (!Directory.Exists(EnvironmentVariables.TestPath) && Directory.Exists(serverBinResources))
+            var serverBinTests = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
+            if (!Directory.Exists(EnvironmentVariables.TestPath) && Directory.Exists(serverBinTests))
             {
-                DirectoryHelper.Copy(serverBinResources, EnvironmentVariables.TestPath, true);
-                DirectoryHelper.CleanUp(serverBinResources);
+                DirectoryHelper.Copy(serverBinTests, EnvironmentVariables.TestPath, true);
+                DirectoryHelper.CleanUp(serverBinTests);
             }
         }
 

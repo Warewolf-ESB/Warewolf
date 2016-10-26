@@ -3,11 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -37,7 +40,16 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             Assert.IsNotNull(p.GetField("Connection"));
         }
 
-
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QueryManagerProxy_Fetch_DBSources_ShowServerDisconnected")]
+        public void QueryManagerProxy_Fetch_DBSources_ShowServerDisconnected()
+        {
+            var message = new ExecuteMessage();
+            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
+            ErrorRunTest("FetchDbSources", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count, 0), a => a.FetchDbSources());
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -364,12 +376,42 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         }
 
 
-        public void RunTest<T>(string svcName, ExecuteMessage message, IList<Tuple<string, Object>> args, Action<T> resultAction, Func<IQueryManager,T> action)
+        public void ErrorRunTest<T>(string svcName, ExecuteMessage message, IList<Tuple<string, Object>> args, Action<T> resultAction, Func<IQueryManager, T> action)
         {
             //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            CustomContainer.Register(popupController.Object);
             var comms = new Mock<ICommunicationControllerFactory>();
             var env = new Mock<IEnvironmentConnection>();
             env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
+            env.Setup(a => a.DisplayName).Returns("localhost");
+            env.Setup(a => a.IsConnected).Returns(false);
+            var controller = new Mock<ICommunicationController>();
+            comms.Setup(a => a.CreateController(svcName)).Returns(controller.Object);
+            var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
+            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            controller.Setup(a => a.ExecuteCommand<ExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(message);
+            //------------Execute Test---------------------------
+            T res = action(queryManagerProxy);
+            //------------Assert Results-------------------------
+
+            foreach (var tuple in args)
+            {
+
+                controller.Verify(a => a.AddPayloadArgument(tuple.Item1, It.IsAny<StringBuilder>()));
+            }
+            resultAction(res);
+        }
+
+        public void RunTest<T>(string svcName, ExecuteMessage message, IList<Tuple<string, Object>> args, Action<T> resultAction, Func<IQueryManager,T> action)
+        {
+            //------------Setup for test--------------------------
+            CustomContainer.Register<IPopupController>(new PopupController());
+            var comms = new Mock<ICommunicationControllerFactory>();
+            var env = new Mock<IEnvironmentConnection>();
+            env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
+            env.Setup(a => a.DisplayName).Returns("localhost");
+            env.Setup(a => a.IsConnected).Returns(true);
             var controller = new Mock<ICommunicationController>();
             comms.Setup(a => a.CreateController(svcName)).Returns(controller.Object);
             var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
@@ -390,9 +432,12 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void RunTestStringArgs<T>(string svcName, ExecuteMessage message, IList<Tuple<string, Object>> args, Action<T> resultAction, Func<IQueryManager, T> action)
         {
             //------------Setup for test--------------------------
+            CustomContainer.Register<IPopupController>(new PopupController());
             var comms = new Mock<ICommunicationControllerFactory>();
             var env = new Mock<IEnvironmentConnection>();
             env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
+            env.Setup(a => a.DisplayName).Returns("localhost");
+            env.Setup(a => a.IsConnected).Returns(true);
             var controller = new Mock<ICommunicationController>();
             comms.Setup(a => a.CreateController(svcName)).Returns(controller.Object);
             var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
