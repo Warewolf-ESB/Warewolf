@@ -373,6 +373,8 @@ namespace Dev2.Studio.Views
                     {
                         var workSurfaceContextViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
                         mainViewModel?.ActivateItem(workSurfaceContextViewModel);
+                        e.Window.Name = "FloatingWindow";
+                        e.Window.ToolTip = "Floating window for - " + workSurfaceContextViewModel?.ContextualResourceModel.DisplayName;
                     }
                 }
             }
