@@ -21,6 +21,11 @@ namespace Warewolf.UITests
                     Assert.IsNotNull(test3);
                     Assert.IsTrue(test3.Pending.Exists, "Test 3 status is not set to Pending");
                     break;
+                case 4:
+                    var test4 = test as Test4;
+                    Assert.IsNotNull(test4);
+                    Assert.IsTrue(test4.Pending.Exists, "Test 4 status is not set to Pending");
+                    break;
                 default:
                     var test1 = test as Test1;
                     Assert.IsNotNull(test1);
@@ -41,7 +46,12 @@ namespace Warewolf.UITests
                 case 3:
                     var test3 = test as Test3;
                     Assert.IsNotNull(test3);
-                    Assert.IsTrue(test3.Invalid.Exists, "Test 2 status is not set to Invalid");
+                    Assert.IsTrue(test3.Invalid.Exists, "Test 3 status is not set to Invalid");
+                    break;
+                case 4:
+                    var test4 = test as Test4;
+                    Assert.IsNotNull(test4);
+                    Assert.IsTrue(test4.Invalid.Exists, "Test 4 status is not set to Invalid");
                     break;
                 default:
                     var test1 = test as Test1;
@@ -64,6 +74,12 @@ namespace Warewolf.UITests
                 Assert.IsNotNull(test3);
                 Assert.IsTrue(test3.Passing.Exists, "Test 3 status is not set to Passing");
             }
+            if (instance == 4)
+            {
+                var test4 = test as Test4;
+                Assert.IsNotNull(test4);
+                Assert.IsTrue(test4.Passing.Exists, "Test 4 status is not set to Passing");
+            }
             if (instance == 1)
             {
                 var test1 = test as Test1;
@@ -85,6 +101,11 @@ namespace Warewolf.UITests
                     var test3 = test as Test3;
                     Assert.IsNotNull(test3);
                     Assert.IsTrue(test3.Failing.Exists, "Test 3 status is not set to Failing");
+                    break;
+                case 4:
+                    var test4 = test as Test4;
+                    Assert.IsNotNull(test4);
+                    Assert.IsTrue(test4.Failing.Exists, "Test 4 status is not set to Failing");
                     break;
                 default:
                     var test1 = test as Test1;
