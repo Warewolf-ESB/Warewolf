@@ -522,7 +522,7 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 environmentModel.ResourceRepository.LoadResourceFromWorkspace(resourceId, Guid.Empty);
-                if (!server.IsConnected)
+                if (server.IsConnected)
                 {
                     var resource = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId, true);
                     var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
