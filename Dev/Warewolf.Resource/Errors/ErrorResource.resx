@@ -1086,6 +1086,12 @@
   <data name="ServerDisconnected" xml:space="preserve">
     <value>Server: {0} has disconnected.</value>
   </data>
+  <data name="ServerDisconnectedHeader" xml:space="preserve">
+    <value>Disconnected Server</value>
+  </data>
+  <data name="ServerReconnectForActions" xml:space="preserve">
+    <value>Please reconnect before performing any actions</value>
+  </data>
   <data name="ToServiceDefinitionDoesNotRupportResourcesOfTypeSource" xml:space="preserve">
     <value>ToServiceDefinition doesn't support resources of type source. Sources are meant to be managed through the Web API.</value>
   </data>

@@ -153,7 +153,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(ErrorResource.ServerDisconnected, _environmentModel.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
-                             "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK,
+                             ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, true, false, false);
         }
 
