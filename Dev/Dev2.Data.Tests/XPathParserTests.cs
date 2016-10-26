@@ -43,11 +43,11 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "//type/method";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPathSaxon(XmlDocument, XPath);
+            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlDocument, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6, data.Count);
-            Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\"/>", data[1]);
+            Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />", data[1]);
         }
 
 
@@ -57,11 +57,11 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "boolean(/dotfuscator)";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPathSaxon(XmlDocument, XPath);
+            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlDocument, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(1, data.Count);
-            Assert.AreEqual("true", data[1]);
+            Assert.AreEqual("true", data[0]);
         }
 
         [TestMethod]
@@ -345,15 +345,15 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(data, xPath);
             //------------Assert Results-------------------------
             string expected = @"<Deployment userDeploymentRoot=""D:\Builds\ReleaseGate\TestResults"" useDefaultDeploymentRoot=""false"" runDeploymentRoot=""RSAKLFASHLEY$_RSAKLFASHLEY 2013-11-01 13_43_52"">
-  <DeploymentItem filename=""ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe"" />
-  <DeploymentItem filename=""Binaries\IronPython.Modules.dll"" />
-  <DeploymentItem filename=""Binaries\Microsoft.Scripting.dll"" />
-  <DeploymentItem filename=""Binaries\IronRuby.Libraries.dll"" />
-  <DeploymentItem filename=""Binaries\Microsoft.Dynamic.dll"" />
-  <DeploymentItem filename=""Binaries\IronPython.dll"" />
-  <DeploymentItem filename=""Binaries\CefSharp\"" />
-  <DeploymentItem filename=""Binaries\IronRuby.Libraries.Yaml.dll"" />
-  <DeploymentItem filename=""Binaries\IronRuby.dll"" />
+  <DeploymentItem filename=""ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe""/>
+  <DeploymentItem filename=""Binaries\IronPython.Modules.dll""/>
+  <DeploymentItem filename=""Binaries\Microsoft.Scripting.dll""/>
+  <DeploymentItem filename=""Binaries\IronRuby.Libraries.dll""/>
+  <DeploymentItem filename=""Binaries\Microsoft.Dynamic.dll""/>
+  <DeploymentItem filename=""Binaries\IronPython.dll""/>
+  <DeploymentItem filename=""Binaries\CefSharp\""/>
+  <DeploymentItem filename=""Binaries\IronRuby.Libraries.Yaml.dll""/>
+  <DeploymentItem filename=""Binaries\IronRuby.dll""/>
 </Deployment>";
 
             var dataList = returnData as IList<string> ?? returnData.ToList();
@@ -365,8 +365,8 @@ namespace Dev2.Data.Tests
         }
         private void FixBreaks(ref string expected, ref string actual)
         {
-            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
-            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            expected = new StringBuilder(expected).Replace(" ","").Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n","").ToString();
+            actual = new StringBuilder(actual).Replace(" ", "").Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString();
         }
 
         [TestMethod]
@@ -506,30 +506,7 @@ namespace Dev2.Data.Tests
             Assert.AreEqual(expected, dataList[0]);
 
         }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("XPathParser_Parser")]
-        public void XPathParser_Parser_WhenXPathingAttributesFromTFSWithNamespace_ExpectException()
-        {
-            //------------Setup for test--------------------------
-
-            #region data
-
-            var data = LoadFile("SampleTFS.trx");
-
-            #endregion
-
-            const string xPath = "//UnitTest/@name";
-
-            //------------Execute Test---------------------------
-            var result = _xPathParser.ExecuteXPath(data, xPath).ToList();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(4241, result.Count);
-            Assert.AreEqual("ActivityCollectionDesignerViewModel_ExecuteShowErrorsCommand_ShowErrorsIsTrue_ShowErrorsIsSetToFalse", result[0]);
-            Assert.AreEqual("Instantiate_Where_MessageBrokerIsNull_Expected_ArgumentNullException", result[4240]);
-        }
-
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathParser_Parser")]
