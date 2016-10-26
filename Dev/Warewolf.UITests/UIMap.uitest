@@ -9602,15 +9602,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox">
-      <ParameterName />
-      <PropertyName>SelectedItem</PropertyName>
-      <ExpectedValue>Dev2.Common.Interfaces.PluginAction</ExpectedValue>
-      <MessageOnValidationFailure>System.Random is not selected in DotNet DLL tool large view namespace combobox.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox">
+    <TestStepMarkerAction Comment="" MarkerInformation="Select_Action">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -10491,15 +10483,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox">
-      <ParameterName />
-      <PropertyName>SelectedItem</PropertyName>
-      <ExpectedValue>{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}</ExpectedValue>
-      <MessageOnValidationFailure>System.Object is not selected in DotNet DLL tool large view namespace combobox.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox">
+    <TestStepMarkerAction Comment="" MarkerInformation="Select_Namespace">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -12170,7 +12154,7 @@
                     <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
-                    <PropertyCondition Name="Instance">2</PropertyCondition>
+                    <PropertyCondition Name="Instance">1</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
@@ -15000,7 +14984,7 @@
                     <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
-                    <PropertyCondition Name="Instance">3</PropertyCondition>
+                    <PropertyCondition Name="Instance">2</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
@@ -18112,7 +18096,7 @@
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">14</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />
@@ -18178,7 +18162,7 @@
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                            <PropertyCondition Name="Name" Operator="Contains">System.Object</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">5</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />
