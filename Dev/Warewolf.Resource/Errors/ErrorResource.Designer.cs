@@ -3017,9 +3017,9 @@ namespace Warewolf.Resource.Errors {
         /// <summary>
         ///   Looks up a localized string similar to Server: {0} has disconnected..
         /// </summary>
-        public static string ServerDissconnected {
+        public static string ServerDisconnected {
             get {
-                return ResourceManager.GetString("ServerDissconnected", resourceCulture);
+                return ResourceManager.GetString("ServerDisconnected", resourceCulture);
             }
         }
         

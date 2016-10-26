@@ -74,7 +74,6 @@ namespace Warewolf.Studio.Views
         {
             get
             {
-
                 return ((IDeployViewModel)DataContext).DeploySuccessMessage??"";
             }
             set

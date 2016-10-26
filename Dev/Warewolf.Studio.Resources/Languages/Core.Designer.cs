@@ -2028,7 +2028,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please rename either the source or destination before continueing.
+        ///   Looks up a localized string similar to Please rename either the source or destination before continuing.
         /// </summary>
         public static string DeployRenameBeforeContinue {
             get {
@@ -2055,7 +2055,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The following resources have the same path and name on the source and destination server but different Ids.
+        ///   Looks up a localized string similar to The following resources have the same path and name on the source and destination server but different IDs.
         /// </summary>
         public static string DeployResourcesSamePathAndName {
             get {
@@ -6724,6 +6724,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServerAddressHelp {
             get {
                 return ResourceManager.GetString("ServerAddressHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server: {0} has disconnected..
+        /// </summary>
+        public static string ServerDisconnected {
+            get {
+                return ResourceManager.GetString("ServerDisconnected", resourceCulture);
             }
         }
         

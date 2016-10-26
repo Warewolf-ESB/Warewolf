@@ -434,7 +434,7 @@ namespace Dev2.Runtime.ESB.Execution
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private static IDev2Activity MockActivity(IDev2Activity resource, List<IServiceTestStep> testSteps)
         {
-            var foundTestStep = testSteps.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
+            var foundTestStep = testSteps?.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
             if(foundTestStep != null && foundTestStep.Type == StepType.Mock)
             {
                 if(foundTestStep.ActivityType == typeof(DsfDecision).Name)
