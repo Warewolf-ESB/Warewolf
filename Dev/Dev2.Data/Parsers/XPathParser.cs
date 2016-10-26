@@ -9,16 +9,17 @@
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Util;
+using org.xml.sax;
 using Saxon.Api;
 using Warewolf.Resource.Errors;
-using Wmhelp.XPath2;
+// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace Dev2.Data.Parsers
 {
@@ -27,84 +28,6 @@ namespace Dev2.Data.Parsers
     /// </summary>
     public class XPathParser
     {
-
-        public IEnumerable<string> ExecuteXPathSaxon(string xmlData, string xPath)
-        {
-            if (String.IsNullOrEmpty(xmlData))
-                throw new ArgumentNullException("xmlData");
-            if (String.IsNullOrEmpty(xPath))
-                throw new ArgumentNullException("xPath");
-            try
-            {
-                bool isFragment;
-                var useXmlData = DataListUtil.AdjustForEncodingIssues(xmlData);
-                var isXml = DataListUtil.IsXml(useXmlData, out isFragment);
-
-                if (!isXml && !isFragment)
-                {
-                    throw new Exception("Input XML is not valid.");
-                }
-                var stringList = new List<string>();
-                XmlDocument document = new XmlDocument();
-                document.LoadXml(useXmlData);
-                var namespaces = new List<KeyValuePair<string, string>>();
-                if (document.DocumentElement != null)
-                {
-                    var xmlAttributeCollection = document.DocumentElement.Attributes;
-
-                    foreach (XmlAttribute attrib in xmlAttributeCollection)
-                    {
-                        if (attrib != null)
-                        {
-                            if (attrib.NodeType == XmlNodeType.Attribute)
-                            {
-                                if (attrib.Name.Contains("xmlns:"))
-                                {
-                                    var nsAttrib = attrib.Name.Split(':');
-                                    var ns = nsAttrib[1];
-                                    namespaces.Add(new KeyValuePair<string, string>(ns, attrib.Value));
-                                }
-                            }
-                        }
-                    }
-                }
-                using (TextReader stringReader = new StringReader(useXmlData))
-                {
-                    Processor processor = new Processor();
-                    var compiler = processor.NewXPathCompiler();
-                    compiler.XPathLanguageVersion = "3.0";
-                    var xPathExecutable = compiler.Compile(xPath);
-                    var xPathSelector = xPathExecutable.Load();
-                    
-                    var newDocumentBuilder = processor.NewDocumentBuilder();
-                    newDocumentBuilder.BaseUri = new Uri("http://warewolf.io");
-                    var xdmNode = newDocumentBuilder.Build(stringReader);
-                    xPathSelector.ContextItem = xdmNode;
-                    var xdmValue = xPathSelector.Evaluate();
-                    var list = xdmValue.GetList();
-                    foreach(var val in list)
-                    {
-                        var xdm = val as XdmNode;
-                        if (xdm != null)
-                        {
-                            stringList.Add(xdm.OuterXml);
-                        }
-                    }
-                }
-                return stringList;
-            }
-            catch (Exception exception)
-            {
-                if (exception.GetType() == typeof(XPath2Exception))
-                {
-                    throw new Exception(ErrorResource.XPathProvidedNotValid);
-                }
-
-                Dev2Logger.Error(exception);
-                throw;
-            }
-        }
-
         /// <summary>
         /// Executes the X path.
         /// </summary>
@@ -123,128 +46,67 @@ namespace Dev2.Data.Parsers
         /// </exception>
         public IEnumerable<string> ExecuteXPath(string xmlData, string xPath)
         {
-            if(String.IsNullOrEmpty(xmlData))
-                throw new ArgumentNullException("xmlData");
-            if(String.IsNullOrEmpty(xPath))
-                throw new ArgumentNullException("xPath");
+            if (string.IsNullOrEmpty(xmlData))
+                throw new ArgumentNullException(nameof(xmlData));
+            if (string.IsNullOrEmpty(xPath))
+                throw new ArgumentNullException(nameof(xPath));
             try
             {
                 bool isFragment;
                 var useXmlData = DataListUtil.AdjustForEncodingIssues(xmlData);
                 var isXml = DataListUtil.IsXml(useXmlData, out isFragment);
 
-                if(!isXml && !isFragment)
+                if (!isXml && !isFragment)
                 {
                     throw new Exception("Input XML is not valid.");
                 }
-                
+                List<string> stringList;
                 XmlDocument document = new XmlDocument();
                 document.LoadXml(useXmlData);
                 var namespaces = new List<KeyValuePair<string, string>>();
-                if(document.DocumentElement != null)
+                if (document.DocumentElement != null)
                 {
                     var xmlAttributeCollection = document.DocumentElement.Attributes;
-                    
-                    foreach(XmlAttribute attrib in xmlAttributeCollection)
+
+                    foreach (XmlAttribute attrib in xmlAttributeCollection)
                     {
-                        if(attrib != null)
+                        if (attrib?.NodeType == XmlNodeType.Attribute)
                         {
-                            if(attrib.NodeType == XmlNodeType.Attribute)
+                            if (attrib.Name.Contains("xmlns:"))
                             {
-                                if(attrib.Name.Contains("xmlns:"))
-                                {
-                                    var nsAttrib = attrib.Name.Split(':');
-                                    var ns = nsAttrib[1];
-                                    namespaces.Add(new KeyValuePair<string, string>(ns,attrib.Value));
-                                }
+                                var nsAttrib = attrib.Name.Split(':');
+                                var ns = nsAttrib[1];
+                                namespaces.Add(new KeyValuePair<string, string>(ns, attrib.Value));
                             }
                         }
                     }
                 }
-                using(TextReader stringReader = new StringReader(useXmlData))
+                using (TextReader stringReader = new StringReader(useXmlData))
                 {
-                    XmlReaderSettings settings = new XmlReaderSettings
+                    Processor processor = new Processor(false);
+                    var compiler = processor.NewXPathCompiler();
+                    compiler.XPathLanguageVersion = "3.0";
+                    foreach (var keyValuePair in namespaces)
                     {
-                        IgnoreWhitespace = true,
-                        DtdProcessing = DtdProcessing.Ignore,
-                        ConformanceLevel = ConformanceLevel.Auto                  
-                    };
-
-                    using(XmlTextReader xtr = new XmlTextReader(stringReader))
-                    {
-                        xtr.Namespaces = true;
-                        if(namespaces.Count == 0)
-                        {
-                            xtr.Namespaces = false;
-                        }
-                        
-                        using(XmlReader reader = XmlReader.Create(xtr, settings))
-                        {
-
-                            reader.Read();
-
-                            if(reader.NodeType == XmlNodeType.XmlDeclaration || reader.NodeType == XmlNodeType.Whitespace)
-                            {
-                                reader.Skip();
-                                // handle DocumentType nodes
-                                if(reader.NodeType == XmlNodeType.DocumentType)
-                                {
-                                    reader.Skip();
-                                }
-                                // skip white space ;)
-                                while(reader.Value.IndexOf("\n", StringComparison.Ordinal) >= 0 || reader.NodeType == XmlNodeType.Comment)
-                                {
-                                    reader.Skip();
-                                }
-                            }
-
-                            if(xPath.StartsWith("/" + reader.Name) || xPath.StartsWith("//" + reader.Name))
-                            {
-                                xPath = xPath.Replace("/" + reader.Name, "");
-                            }
-                            else if(xPath.StartsWith(reader.Name))
-                            {
-                                xPath = xPath.Replace(reader.Name, "/");
-                            }
-                            
-                            XNode xNode = XNode.ReadFrom(reader);
-                            IEnumerable<object> xdmValue;
-                            if(namespaces.Count == 0)
-                            {
-                                   xdmValue = xNode.XPath2Select(xPath);
-                            }
-                            else
-                            {
-                                var nameSpaceManager = new XmlNamespaceManager(reader.NameTable);
-                                foreach (var nsPair in namespaces)
-                                {
-                                    nameSpaceManager.AddNamespace(nsPair.Key, nsPair.Value);
-                                }
-                                xdmValue = xNode.XPath2Select(xPath, nameSpaceManager);
-                            }
-                            var list = xdmValue.Select(element =>
-                            {
-                                var realElm = element as XObject;
-                                if(realElm != null && realElm.NodeType == XmlNodeType.Attribute)
-                                {
-                                    var xAttribute = realElm as XAttribute;
-                                    if(xAttribute != null)
-                                    {
-                                        return xAttribute.Value;
-                                    }
-                                }
-
-                                return element.ToString();
-
-                            }).ToList();
-                            return list;
-                        }
+                        compiler.DeclareNamespace(keyValuePair.Key, keyValuePair.Value);
                     }
+                    var xPathExecutable = compiler.Compile(xPath);
+                    var xPathSelector = xPathExecutable.Load();
+                    var newDocumentBuilder = processor.NewDocumentBuilder();
+                    newDocumentBuilder.BaseUri = new Uri("http://warewolf.io");
+                    newDocumentBuilder.WhitespacePolicy = WhitespacePolicy.StripAll;                    
+                    var xdmNode = newDocumentBuilder.Build(stringReader);
+                    xPathSelector.ContextItem = xdmNode;
+                    var xdmValue = xPathSelector.Evaluate();
+                    var list = xdmValue.GetEnumerator();
+
+                    stringList = BuildListFromXPathResult(list);                    
                 }
+                return stringList;
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
-                if(exception.GetType() == typeof(XPath2Exception))
+                if (exception.GetType() == typeof(SAXException))
                 {
                     throw new Exception(ErrorResource.XPathProvidedNotValid);
                 }
@@ -252,6 +114,38 @@ namespace Dev2.Data.Parsers
                 Dev2Logger.Error(exception);
                 throw;
             }
+        }
+
+        private static List<string> BuildListFromXPathResult(IEnumerator list)
+        {
+            List<string> stringList = new List<string>();
+            while (list.MoveNext())
+            {
+                var current = list.Current;
+                var realElm = current as XdmNode;
+                if(realElm != null)
+                {
+                    if(realElm.NodeKind == XmlNodeType.Attribute)
+                    {
+                        stringList.Add(realElm.StringValue);
+                    }
+                    else if(realElm.NodeKind == XmlNodeType.Element)
+
+                    {
+                        var xElement = XElement.Parse(current.ToString());
+                        stringList.Add(xElement.ToString());
+                    }
+                    else
+                    {
+                        stringList.Add(realElm.ToString());
+                    }
+                }
+                else
+                {
+                    stringList.Add(current.ToString());
+                }
+            }
+            return stringList;
         }
     }
 }
