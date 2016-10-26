@@ -76,7 +76,7 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging message box to clean up.");
                 }
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
@@ -95,7 +95,7 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging debug input dialog to clean up.");
                 }
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
@@ -114,7 +114,7 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging save dialog to clean up.");
                 }
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
@@ -128,12 +128,12 @@ namespace Warewolf.UITests
                 {
                     Restore_Unpinned_Tab_Using_Context_Menu();
                 }
-			    else
-			    {
-				    Console.WriteLine("No hanging unpinned pane to clean up.");
+                else
+                {
+                    Console.WriteLine("No hanging unpinned pane to clean up.");
                 }
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
@@ -144,15 +144,15 @@ namespace Warewolf.UITests
             try
             {
                 if (ControlExistsNow(ServicePickerDialog.Cancel))
-			    {
-				    Click_Service_Picker_Dialog_Cancel();
-			    }
-			    else
-			    {
-				    Console.WriteLine("No hanging service picker dialog to clean up.");
+                {
+                    Click_Service_Picker_Dialog_Cancel();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging service picker dialog to clean up.");
                 }
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
@@ -171,7 +171,7 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging select windows group dialog to clean up.");
                 }
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
             }
@@ -681,6 +681,9 @@ namespace Warewolf.UITests
         public void WhenIClickDuplicateFromDuplicateDialog()
         {
             Click_Duplicate_From_Duplicate_Dialog();
+            Point point;
+            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+            Assert.IsFalse(saveDialogWindow.TryGetClickablePoint(out point), "Save Dialog does not exist after clicking Duplicate button");
         }
 
 
@@ -836,6 +839,12 @@ namespace Warewolf.UITests
         public void Save_With_Ribbon_Button_And_Dialog_Without_Filtering(string name)
         {
             Save_With_Ribbon_Button_And_Dialog(name, true);
+        }
+
+        [When(@"I Enter Dice Roll Values")]
+        public void WhenIEnterDiceRollValues()
+        {
+            Enter_Dice_Roll_Values();
         }
 
         [When(@"I Save With Ribbon Button and Dialog As ""(.*)"" and Append Unique Guid")]
@@ -1057,10 +1066,7 @@ namespace Warewolf.UITests
 
         public void Enter_Text_Into_Debug_Input_Row2_Value_Textbox(string text)
         {
-            if (MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2.InputValueCell.InputValueComboboxl.InputValueText.Text != text)
-            {
-                MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2.InputValueCell.InputValueComboboxl.InputValueText.Text = text;
-            }
+            MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2.InputValueCell.InputValueComboboxl.InputValueText.Text = text;
             Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debug input data row2 textbox text is not equal to \'" + text + "\' after typing that in.");
         }
 
@@ -1164,7 +1170,7 @@ namespace Warewolf.UITests
             }
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Spinner);
             var displayText = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText;
-            Assert.IsTrue(displayText.Contains("Success"), "Deploy message '" + displayText + "' does not contain 'success' after waiting for deploy spinner.");
+            Assert.IsTrue(MessageBoxWindow.Exists);
         }
 
         public void Change_Selected_Database_ToMySql_DataBase()
@@ -1335,6 +1341,7 @@ namespace Warewolf.UITests
         public void Select_Show_Dependencies_In_Explorer_Context_Menu(string ServiceName)
         {
             #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             WpfMenuItem showDependencies = this.MainStudioWindow.ExplorerContextMenu.ShowDependencies;
             WpfRadioButton showwhatdependsonthisRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox;
@@ -1344,7 +1351,8 @@ namespace Warewolf.UITests
             #endregion
 
             Filter_Explorer(ServiceName);
-            RightClick_Explorer_Localhost_First_Item();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
             Mouse.Click(showDependencies, new Point(50, 15));
             Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
             Assert.IsTrue(textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
@@ -1371,6 +1379,7 @@ namespace Warewolf.UITests
             Enter_DeployViewOnly_Into_Deploy_Source_Filter();
             Select_Deploy_First_Source_Item();
             Click_Deploy_Tab_Deploy_Button();
+            Click_MessageBox_OK();
         }
 
         public void Enter_Values_Into_Data_Merge_Tool_Large_View()
@@ -1482,7 +1491,7 @@ namespace Warewolf.UITests
         {
             Mouse.MoveScrollWheel(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable, -1);
         }
-         
+
         public void UnCheck_Public_View()
         {
             #region Variable Declarations
@@ -1532,6 +1541,10 @@ namespace Warewolf.UITests
                     var test3 = test as Test3;
                     testRunTimeDisplay = test3.RunTimeDisplay;
                     break;
+                case 4:
+                    var test4 = test as Test4;
+                    testRunTimeDisplay = test4.RunTimeDisplay;
+                    break;
                 default:
                     var test1 = test as Test1;
                     testRunTimeDisplay = test1.RunTimeDisplay;
@@ -1552,6 +1565,10 @@ namespace Warewolf.UITests
                 case 3:
                     var test3 = test as Test3;
                     neverRunDisplay = test3.NeverRunDisplay;
+                    break;
+                case 4:
+                    var test4 = test as Test4;
+                    neverRunDisplay = test4.NeverRunDisplay;
                     break;
                 default:
                     var test1 = test as Test1;
@@ -1632,7 +1649,6 @@ namespace Warewolf.UITests
             AssertTestResults(TestResultEnum.Pending, testInstance, currentTest);
             Assert.IsTrue(testNameText.Exists, string.Format("Test{0} Name textbox does not exist after clicking Create New Test", testInstance));
             Assert.IsTrue(testEnabledSelector, string.Format("Test {0} is diabled after clicking Create new test from context menu", testInstance));
-            //Assert.IsTrue(textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
 
             Assert_Display_Text_ContainStar(Tab, nameContainsStar, testInstance);
             Assert_Display_Text_ContainStar(Test, nameContainsStar, testInstance);
@@ -1684,6 +1700,10 @@ namespace Warewolf.UITests
                     var test3 = test as Test3;
                     value = test3.TestEnabledSelector;
                     break;
+                case 4:
+                    var test4 = test as Test4;
+                    value = test4.TestEnabledSelector;
+                    break;
                 default:
                     var test1 = test as Test1;
                     value = test1.TestEnabledSelector;
@@ -1705,7 +1725,7 @@ namespace Warewolf.UITests
                     property = test3.TestNameDisplay;
                     break;
                 case 4:
-                    var test4 = test as Test3;
+                    var test4 = test as Test4;
                     property = test4.TestNameDisplay;
                     break;
                 default:
@@ -1744,6 +1764,9 @@ namespace Warewolf.UITests
                 case 3:
                     test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3;
                     break;
+                case 4:
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4;
+                    break;
                 default:
                     test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1;
                     break;
@@ -1763,6 +1786,10 @@ namespace Warewolf.UITests
                 case 3:
                     var test3 = test as Test3;
                     value = test3.RunButton;
+                    break;
+                case 4:
+                    var test4 = test as Test4;
+                    value = test4.RunButton;
                     break;
                 default:
                     var test1 = test as Test1;
@@ -1784,6 +1811,10 @@ namespace Warewolf.UITests
                 case 3:
                     var test3 = test as Test3;
                     value = test3.DeleteButton;
+                    break;
+                case 4:
+                    var test4 = test as Test4;
+                    value = test4.DeleteButton;
                     break;
                 default:
                     var test1 = test as Test1;
@@ -2175,7 +2206,7 @@ namespace Warewolf.UITests
         [When("I Toggle First Test Enabled")]
         public void Toggle_Workflow_Testing_Tab_First_Test_Enabled()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestEnabledSelector, new Point(10, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector, new Point(10, 10));
         }
 
         [When("I Click Test (.*) Run Button")]
@@ -2192,19 +2223,22 @@ namespace Warewolf.UITests
                 case 3:
                     Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.RunButton, new Point(10, 10));
                     break;
+                case 4:
+                    Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.RunButton, new Point(10, 10));
+                    break;
             }
         }
 
         [When("I Click First Test Delete Button")]
         public void Click_First_Test_Delete_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.DeleteButton, new Point(10, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.DeleteButton, new Point(10, 10));
         }
 
         [When(@"I Click First Test Run Button")]
         public void Click_First_Test_Run_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.RunButton, new Point(10, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.RunButton, new Point(10, 10));
         }
 
         public void Select_First_Test()
@@ -2235,6 +2269,12 @@ namespace Warewolf.UITests
             Mouse.Click(refreshButton);
         }
 
+        [When(@"I wait for output spinner")]
+        public void WhenIWaitForOutputSpinner()
+        {
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+        }
+
         [When("I Click Run All Button")]
         public void Click_Workflow_Testing_Tab_Run_All_Button()
         {
@@ -2250,8 +2290,7 @@ namespace Warewolf.UITests
 
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Passing(bool passing = true)
         {
-            Point point;
-            Assert.AreEqual(passing, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), (passing ? "First test is not passing." : "First test is passing."));
+            Assert.AreEqual(passing, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.Exists, (passing ? "First test is not passing." : "First test is passing."));
         }
 
         [Given(@"That The First Test ""(.*)"" Invalid")]
@@ -2263,8 +2302,7 @@ namespace Warewolf.UITests
 
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Invalid(bool invalid = true)
         {
-            Point point;
-            Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Invalid.TryGetClickablePoint(out point), (invalid ? "First test is not invalid." : "First test is invalid."));
+            Assert.AreEqual(invalid, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Invalid.Exists, (invalid ? "First test is not invalid." : "First test is invalid."));
         }
 
         public void Delete_Assign_With_Context_Menu()
@@ -3105,6 +3143,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled);
             Save_With_Ribbon_Button_And_Dialog(sourceName, true);
             Click_Close_DotNetDll_Tab();
+
         }
 
         public virtual Add_Dotnet_Dll_SourceParams Add_Dotnet_Dll_SourceParams
@@ -3119,6 +3158,47 @@ namespace Warewolf.UITests
             }
         }
 
+        private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
+
+        /// <summary>
+        /// Enter_Dice_Roll_Values - Use 'Enter_Dice_Roll_ValuesParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Dice_Roll_Values()
+        {
+            #region Variable Declarations
+            WpfEdit fromTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.From.FromTextEdit;
+            WpfEdit toTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.To.ToTextEdit;
+            WpfEdit resultTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.ResultComboBox.TextEdit;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Enter_Dice_Roll_ValuesParams.FromTextEditExists, fromTextEdit.Exists, "From textbox does not exist");
+
+            // Type '1' in 'Text' text box
+            fromTextEdit.Text = this.Enter_Dice_Roll_ValuesParams.FromTextEditText;
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Enter_Dice_Roll_ValuesParams.ToTextEditExists, toTextEdit.Exists, "To textbox does not exist");
+
+            // Type '6' in 'Text' text box
+            toTextEdit.Text = this.Enter_Dice_Roll_ValuesParams.ToTextEditText;
+
+            resultTextEdit.Text = "[[out]]";
+        }
+
+        public virtual Enter_Dice_Roll_ValuesParams Enter_Dice_Roll_ValuesParams
+        {
+            get
+            {
+                if ((this.mEnter_Dice_Roll_ValuesParams == null))
+                {
+                    this.mEnter_Dice_Roll_ValuesParams = new Enter_Dice_Roll_ValuesParams();
+                }
+                return this.mEnter_Dice_Roll_ValuesParams;
+            }
+        }
+
+        private Enter_Dice_Roll_ValuesParams mEnter_Dice_Roll_ValuesParams;
         private Add_Dotnet_Dll_SourceParams mAdd_Dotnet_Dll_SourceParams;
 
         [Then(@"The Case Dialog Must Be Open")]
@@ -3154,6 +3234,35 @@ namespace Warewolf.UITests
         /// </summary>
         public string SearchTextBoxEditText = "CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a" +
             "3a, processorArchitecture=AMD64";
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Dice_Roll_Values'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Dice_Roll_ValuesParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool FromTextEditExists = true;
+
+        /// <summary>
+        /// Type '1' in 'Text' text box
+        /// </summary>
+        public string FromTextEditText = "1";
+
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool ToTextEditExists = true;
+
+        /// <summary>
+        /// Type '6' in 'Text' text box
+        /// </summary>
+        public string ToTextEditText = "6";
         #endregion
     }
 }
