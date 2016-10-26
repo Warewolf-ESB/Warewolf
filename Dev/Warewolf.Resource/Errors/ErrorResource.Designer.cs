@@ -2954,9 +2954,18 @@ namespace Warewolf.Resource.Errors {
         /// <summary>
         ///   Looks up a localized string similar to Server: {0} has disconnected..
         /// </summary>
-        public static string ServerDissconnected {
+        public static string ServerDisconnected {
             get {
-                return ResourceManager.GetString("ServerDissconnected", resourceCulture);
+                return ResourceManager.GetString("ServerDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnected Server.
+        /// </summary>
+        public static string ServerDisconnectedHeader {
+            get {
+                return ResourceManager.GetString("ServerDisconnectedHeader", resourceCulture);
             }
         }
         
@@ -2966,6 +2975,15 @@ namespace Warewolf.Resource.Errors {
         public static string ServerInputPathEmpty {
             get {
                 return ResourceManager.GetString("ServerInputPathEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please reconnect before performing any actions.
+        /// </summary>
+        public static string ServerReconnectForActions {
+            get {
+                return ResourceManager.GetString("ServerReconnectForActions", resourceCulture);
             }
         }
         

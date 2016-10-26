@@ -257,9 +257,10 @@ namespace Warewolf.Studio.ViewModels
                     var notfolders = explorerTreeItems.Select(a => a.ResourceId).ToList();
                     _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders, Destination.DeployTests);
                     DeploySuccessfull = true;
-                    var message  = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
-                    PopupController.ShowDeploySuccessful(message);
-                    DeploySuccessfull = false;
+                    DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
+                    var showDeploySuccessful = PopupController.ShowDeploySuccessful(DeploySuccessMessage);
+                    if(showDeploySuccessful == MessageBoxResult.OK)
+                        DeploySuccessfull = false;
 
                     await Destination.RefreshSelectedEnvironment();
                     UpdateServerCompareChanged(this, Guid.Empty);
