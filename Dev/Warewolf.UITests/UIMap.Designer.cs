@@ -6897,10 +6897,10 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
+        /// Select_Action
         /// </summary>
-        [When(@"I Select FirstItem From DotNet DLL Large View Action Combobox")]
-        public void Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox()
+        [When(@"I Select Action")]
+        public void Select_Action()
         {
             #region Variable Declarations
             WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
@@ -6912,9 +6912,6 @@ namespace Warewolf.UITests
 
             // Click 'Item1' list item
             Mouse.Click(item1, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Dev2.Common.Interfaces.PluginAction'
-            Assert.AreEqual(this.Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
         
         /// <summary>
@@ -7486,10 +7483,10 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox - Use 'Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues' to pass parameters into this method.
+        /// Select_Namespace - Use 'Select_NamespaceExpectedValues' to pass parameters into this method.
         /// </summary>
-        [When(@"I Select SystemObject From DotNet DLL Large View Namespace Combobox")]
-        public void Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox()
+        [When(@"I Select Namespace")]
+        public void Select_Namespace()
         {
             #region Variable Declarations
             WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
@@ -7500,13 +7497,10 @@ namespace Warewolf.UITests
             Mouse.Click(classNameComboBox, new Point(216, 7));
 
             // Verify that the 'Exists' property of 'ComboboxlistItemAsSystemObject' list item equals 'True'
-            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
+            Assert.AreEqual(this.Select_NamespaceExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
 
             // Click 'ComboboxlistItemAsSystemObject' list item
             Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
-            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Object is not selected in DotNet DLL tool large view namespace combobox.");
         }
         
         /// <summary>
@@ -10210,18 +10204,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-        {
-            get
-            {
-                if ((this.mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues == null))
-                {
-                    this.mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues = new Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues();
-                }
-                return this.mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-            }
-        }
-        
         public virtual Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues
         {
             get
@@ -10366,15 +10348,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
+        public virtual Select_NamespaceExpectedValues Select_NamespaceExpectedValues
         {
             get
             {
-                if ((this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues == null))
+                if ((this.mSelect_NamespaceExpectedValues == null))
                 {
-                    this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues = new Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues();
+                    this.mSelect_NamespaceExpectedValues = new Select_NamespaceExpectedValues();
                 }
-                return this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
+                return this.mSelect_NamespaceExpectedValues;
             }
         }
         
@@ -11044,8 +11026,6 @@ namespace Warewolf.UITests
         
         private Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
         
-        private Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-        
         private Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues;
         
         private Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams;
@@ -11070,7 +11050,7 @@ namespace Warewolf.UITests
         
         private Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
         
-        private Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
+        private Select_NamespaceExpectedValues mSelect_NamespaceExpectedValues;
         
         private Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
         
@@ -15726,21 +15706,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Dev2.Common.Interfaces.PluginAction'
-        /// </summary>
-        public string ActionsComboBoxSelectedItem = "Dev2.Common.Interfaces.PluginAction";
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15986,10 +15951,10 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox'
+    /// Parameters to be passed into 'Select_Namespace'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
+    public class Select_NamespaceExpectedValues
     {
         
         #region Fields
@@ -15997,13 +15962,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'ComboboxlistItemAsSystemObject' list item equals 'True'
         /// </summary>
         public bool ComboboxlistItemAsSystemObjectExists = true;
-        
-        /// <summary>
-        /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
-        /// </summary>
-        public string ClassNameComboBoxSelectedItem = "{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
-            "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Object\",\"MethodName\":nul" +
-            "l}";
         #endregion
     }
     
@@ -18565,7 +18523,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -23673,7 +23631,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
             this.SearchConfigurations.Add(SearchConfiguration.NextSibling);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
@@ -30803,7 +30761,7 @@ namespace Warewolf.UITests
                 {
                     this.mItem1 = new WpfListItem(this);
                     #region Search Criteria
-                    this.mItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
+                    this.mItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "14";
                     this.mItem1.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -30857,7 +30815,7 @@ namespace Warewolf.UITests
                 {
                     this.mComboboxlistItemAsSystemObject = new WpfListItem(this);
                     #region Search Criteria
-                    this.mComboboxlistItemAsSystemObject.SearchProperties.Add(new PropertyExpression(WpfListItem.PropertyNames.Name, "System.Object", PropertyExpressionOperator.Contains));
+                    this.mComboboxlistItemAsSystemObject.SearchProperties[WpfListItem.PropertyNames.Instance] = "5";
                     this.mComboboxlistItemAsSystemObject.WindowTitles.Add("Warewolf");
                     #endregion
                 }
