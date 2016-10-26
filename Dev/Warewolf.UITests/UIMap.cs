@@ -2168,7 +2168,51 @@ namespace Warewolf.UITests
         public void Debug_Workflow_With_Ribbon_Button()
         {
             Click_Debug_Ribbon_Button();
-            Click_DebugInput_Debug_Button();
+            Click_DebugInput_Debug_Button_For_UnpinnedWindow();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+        }
+
+        public void Click_DebugInput_Debug_Button_For_UnpinnedWindow()
+        {            
+            #region Variable Declarations
+            WpfButton debugF6Button = this.MainStudioWindow.DebugInputDialog.DebugF6Button;
+            WpfCustom debugOutput = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput;
+            WpfButton settingsButton = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.SettingsButton;
+            WpfButton expandCollapseButton = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.ExpandCollapseButton;
+            WpfEdit searchTextBox = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.SearchTextBox;
+            WpfTree debugOutputTree = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree;
+            #endregion
+
+            // Verify that the 'Enabled' property of 'Debug (F6)' button equals 'True'
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.DebugF6ButtonEnabled, debugF6Button.Enabled, "DebugF6Button is not enabled after clicking RunDebug from Menu.");
+
+            // Click 'Debug (F6)' button
+            Mouse.Click(debugF6Button, new Point(34, 10));
+
+            // Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.DebugOutputExists, debugOutput.Exists, "Debug output does not exist");
+            debugOutput.DrawHighlight();
+            // Verify that the 'Exists' property of '?' button equals 'True'
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SettingsButtonExists, settingsButton.Exists, "Debug output settings button does not exist");
+
+            // Verify that the 'Exists' property of '+' button equals 'True'
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.ExpandCollapseButtonExists, expandCollapseButton.Exists, "Debug output expand collapse button does not exist");
+
+            // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SearchTextBoxExists, searchTextBox.Exists, "Debug output filter textbox does not exist");
+
+            // Verify that the 'Exists' property of 'DebugOutputTree' tree equals 'True'
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.DebugOutputTreeExists, debugOutputTree.Exists, "Debug output results tree does not exist");
+            debugOutputTree.DrawHighlight();
+            // Verify that the 'Exists' property of '?' button equals 'True'
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SettingsButtonExists1, settingsButton.Exists, "Debug output settings button does not exist");
+        }
+
+        public void Debug_Unpinned_Workflow_With_Ribbon_Button()
+        {
+            Click_Debug_Ribbon_Button();
+            Click_DebugInput_Debug_Button_For_UnpinnedWindow();
+            StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.StatusBar.DrawHighlight();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 

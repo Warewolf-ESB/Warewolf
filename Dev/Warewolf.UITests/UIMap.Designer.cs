@@ -659,9 +659,8 @@ namespace Warewolf.UITests
         public void Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_Tab()
         {
             #region Variable Declarations
-            WpfText variableTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox;
-            WpfButton assign1Button = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.Assign1Button;
-            WpfCustom multiAssign = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            WpfText variableTextbox = this.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox;
+            WpfButton assign1Button = this.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.Assign1Button;
             #endregion
 
             // Verify that the 'DisplayText' property of '[[SomeVariable]]' label equals '[[SomeVariable]]'
@@ -669,9 +668,6 @@ namespace Warewolf.UITests
 
             // Click 'Assign (1)' button
             Mouse.Click(assign1Button, new Point(21, 9));
-
-            // Verify that the 'ItemStatus' property of 'DsfMultiAssignActivity' custom control equals 'IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid '
-            Assert.AreEqual(this.Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_TabParams.MultiAssignItemStatus, multiAssign.ItemStatus, "Multiassign small view is not selected.");
         }
         
         /// <summary>
@@ -11518,12 +11514,6 @@ namespace Warewolf.UITests
         /// Verify that the 'DisplayText' property of '[[SomeVariable]]' label equals '[[SomeVariable]]'
         /// </summary>
         public string VariableTextboxDisplayText = "[[SomeVariable]]";
-        
-        /// <summary>
-        /// Verify that the 'ItemStatus' property of 'DsfMultiAssignActivity' custom control equals 'IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid '
-        /// </summary>
-        public string MultiAssignItemStatus = "IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=" +
-            "null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid ";
         #endregion
     }
     
