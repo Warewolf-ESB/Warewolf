@@ -27,6 +27,7 @@ using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
 using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics.Windows.DockManager;
 
 // ReSharper disable CheckNamespace
@@ -364,6 +365,15 @@ namespace Dev2.Studio.Views
                 {
                     var binding = Infragistics.Windows.Utilities.CreateBindingObject(DataContextProperty, BindingMode.OneWay, sender as XamDockManager);
                     e.Window.SetBinding(DataContextProperty, binding);
+
+                    MainViewModel mainViewModel = DataContext as MainViewModel;
+                    var paneToolWindow = e.Window;
+
+                    if (paneToolWindow.Pane.Panes != null && paneToolWindow.Pane.Panes.Count > 0)
+                    {
+                        var workSurfaceContextViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
+                        mainViewModel?.ActivateItem(workSurfaceContextViewModel);
+                    }
                 }
             }
             catch (Exception ex)
@@ -403,6 +413,14 @@ namespace Dev2.Studio.Views
                                 {
                                     mainViewModel.AddWorkSurfaceContext(data.ResourceModel);
                                 }
+                            }
+                        }
+                        else
+                        {
+                            if (paneToolWindow.Pane.Panes != null && paneToolWindow.Pane.Panes.Count > 0)
+                            {
+                                var workSurfaceContextViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
+                                mainViewModel?.ActivateItem(workSurfaceContextViewModel);
                             }
                         }
                     }
