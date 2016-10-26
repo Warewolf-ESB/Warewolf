@@ -23,7 +23,10 @@ Scenario: Unsaved Tests Contain a Star in their Name
 
 Scenario: Run Passing Tests
 	When I Click New Workflow Ribbon Button
-	And I Drag Toolbox MultiAssign Onto DesignSurface
+	And I Drag Toolbox Random Onto DesignSurface
+	And I Enter Dice Roll Values
+	And I Press F6
+	And I wait for output spinner
 	And I Click Save Ribbon Button to Open Save Dialog
 	And I Enter Service Name Into Save Dialog As "Testing123"
 	And I Click SaveDialog Save Button
