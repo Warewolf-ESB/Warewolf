@@ -6728,6 +6728,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server: {0} has disconnected..
+        /// </summary>
+        public static string ServerDisconnected {
+            get {
+                return ResourceManager.GetString("ServerDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server Name:.
         /// </summary>
         public static string ServerNameLabel {
