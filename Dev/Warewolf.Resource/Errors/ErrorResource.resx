@@ -1083,7 +1083,7 @@
   <data name="ServerconnectionDropped" xml:space="preserve">
     <value>Server connection has dropped during execution of command.</value>
   </data>
-  <data name="ServerDissconnected" xml:space="preserve">
+  <data name="ServerDisconnected" xml:space="preserve">
     <value>Server: {0} has disconnected.</value>
   </data>
   <data name="ToServiceDefinitionDoesNotRupportResourcesOfTypeSource" xml:space="preserve">
