@@ -152,7 +152,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         private void ShowServerDisconnectedPopup()
         {
             var controller = CustomContainer.Get<IPopupController>();
-            controller?.Show(string.Format(ErrorResource.ServerDissconnected, _environmentModel.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
+            controller?.Show(string.Format(ErrorResource.ServerDisconnected, _environmentModel.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, true, false, false);
         }
