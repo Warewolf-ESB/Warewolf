@@ -2180,10 +2180,12 @@ namespace Warewolf.UITests
         }
 
         public void Remove_Assign_Row_1_With_Context_Menu_On_Unpinned_Tab()
-        {
-            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
-            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRowMenuItem, MouseButtons.Left, ModifierKeys.None, new Point(6, 6));
-            Assert.IsFalse(ControlExistsNow(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1 on unpinned tab.");
+        {            
+            StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.DrawHighlight();
+            Mouse.Click(StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
+            StartNodePopupWindow.DesignSurfaceMenu.DeleteRowMenuItem.DrawHighlight();
+            Mouse.Click(StartNodePopupWindow.DesignSurfaceMenu.DeleteRowMenuItem, MouseButtons.Left, ModifierKeys.None, new Point(6, 6));
+            Assert.IsFalse(ControlExistsNow(StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1 on unpinned tab.");
         }
 
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
@@ -2215,13 +2217,13 @@ namespace Warewolf.UITests
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextboxText = VariableText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextEditText = ValueText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tab();
-                    Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2 on unpinned tab.");
+                    Assert.IsTrue(StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2 on unpinned tab.");
                     break;
                 default:
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextboxText = VariableText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextEditText = ValueText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tab();
-                    Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1 on unpinned tab.");
+                    Assert.IsTrue(StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1 on unpinned tab.");
                     break;
             }
         }
@@ -2328,7 +2330,7 @@ namespace Warewolf.UITests
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
             WpfCustom flowchart = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom multiAssign1 = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            WpfCustom multiAssign1 = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
             #endregion
 
             flowchart.DrawHighlight();
@@ -2336,13 +2338,13 @@ namespace Warewolf.UITests
             searchTextBox.Text = this.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams.SearchTextBoxText;
             Playback.Wait(1500);
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
-            //flowchart.EnsureClickable(new Point(307, 126));            
-            Mouse.StartDragging(multiAssign, new Point(2, 10));            
+            Mouse.StartDragging(multiAssign, new Point(2, 10));
             Mouse.StopDragging(flowchart, new Point(307, 126));
 
             // Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
-            //Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams.MultiAssignExists, multiAssign1.Exists, "MultiAssign does not exist on unpinned tab design surface after dragging from too" +
-            //        "lbox.");
+            Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams.MultiAssignExists, multiAssign1.Exists, "MultiAssign does not exist on unpinned tab design surface after dragging from too" +
+                    "lbox.");
+            multiAssign1.DrawHighlight();
         }
 
         public virtual Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams

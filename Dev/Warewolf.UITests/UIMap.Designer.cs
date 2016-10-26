@@ -58,8 +58,8 @@ namespace Warewolf.UITests
         public void Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tab()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
-            WpfEdit textEdit = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.Listbox.TextEdit;
+            WpfEdit textbox = this.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfEdit textEdit = this.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.Listbox.TextEdit;
             #endregion
 
             // Type '[[SomeVariable]]' in 'UI_TextBox_AutoID' text box
@@ -94,8 +94,8 @@ namespace Warewolf.UITests
         public void Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tab()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.VariableCell.Listbox.Textbox;
-            WpfEdit textEdit = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.ValueCell.Listbox.TextEdit;
+            WpfEdit textbox = this.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.VariableCell.Listbox.Textbox;
+            WpfEdit textEdit = this.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.ValueCell.Listbox.TextEdit;
             #endregion
 
             // Type '[[SomeOtherVariable]]' in 'UI_TextBox_AutoID' text box
@@ -10561,6 +10561,30 @@ namespace Warewolf.UITests
                 return this.mStartNodePopupWindow;
             }
         }
+        
+        public UIWpfWindow UIWpfWindow
+        {
+            get
+            {
+                if ((this.mUIWpfWindow == null))
+                {
+                    this.mUIWpfWindow = new UIWpfWindow();
+                }
+                return this.mUIWpfWindow;
+            }
+        }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -11039,6 +11063,10 @@ namespace Warewolf.UITests
         private SwitchCaseDialog mSwitchCaseDialog;
         
         private StartNodePopupWindow mStartNodePopupWindow;
+        
+        private UIWpfWindow mUIWpfWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -53041,6 +53069,18 @@ namespace Warewolf.UITests
                 return this.mItemMenu;
             }
         }
+        
+        public DesignSurfaceMenu DesignSurfaceMenu
+        {
+            get
+            {
+                if ((this.mDesignSurfaceMenu == null))
+                {
+                    this.mDesignSurfaceMenu = new DesignSurfaceMenu(this);
+                }
+                return this.mDesignSurfaceMenu;
+            }
+        }
         #endregion
         
         #region Fields
@@ -53049,6 +53089,8 @@ namespace Warewolf.UITests
         private FloatingWindowCustom mFloatingWindowCustom;
         
         private ItemMenu mItemMenu;
+        
+        private DesignSurfaceMenu mDesignSurfaceMenu;
         #endregion
     }
     
@@ -59467,6 +59509,106 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfMenuItem mTabbedMenuItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DesignSurfaceMenu : WpfMenu
+    {
+        
+        public DesignSurfaceMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem DeleteMenuItem
+        {
+            get
+            {
+                if ((this.mDeleteMenuItem == null))
+                {
+                    this.mDeleteMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDeleteMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "DeleteMenuItem";
+                    #endregion
+                }
+                return this.mDeleteMenuItem;
+            }
+        }
+        
+        public WpfMenuItem DeleteRowMenuItem
+        {
+            get
+            {
+                if ((this.mDeleteRowMenuItem == null))
+                {
+                    this.mDeleteRowMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDeleteRowMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "UI_DeleteRowMenuItem_AutoID";
+                    this.mDeleteRowMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDeleteRowMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mDeleteMenuItem;
+        
+        private WpfMenuItem mDeleteRowMenuItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWpfWindow : WpfWindow
+    {
+        
+        public UIWpfWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            #endregion
+        }
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenu UIItemMenu
+        {
+            get
+            {
+                if ((this.mUIItemMenu == null))
+                {
+                    this.mUIItemMenu = new WpfMenu(this);
+                    #region Search Criteria
+                    this.mUIItemMenu.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+                    this.mUIItemMenu.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIItemMenu;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenu mUIItemMenu;
         #endregion
     }
 }
