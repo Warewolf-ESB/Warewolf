@@ -11,6 +11,7 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Communication;
 using Dev2.CustomControls.Progress;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
@@ -55,6 +56,7 @@ namespace Dev2.Settings.Logging
         private IEnvironmentModel _currentEnvironment;
         private LogLevel _serverFileLogLevel;
         private LogLevel _studioFileLogLevel;
+        private LogSettingsViewModel _item;
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IEnvironmentModel currentEnvironment)
         {
@@ -160,6 +162,22 @@ namespace Dev2.Settings.Logging
             //Implement if help is done for the log settings.
         }
 
+        public LogSettingsViewModel Item
+        {
+            private get { return _item; }
+            set
+            {
+                _item = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void SetItem(LogSettingsViewModel model)
+        {
+            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            //Item = ser.Serialize(model);
+        }
+
         public ICommand GetServerLogFileCommand { get; }
         public ICommand GetStudioLogFileCommand { get; }
         public LogLevel ServerEventLogLevel
@@ -171,7 +189,7 @@ namespace Dev2.Settings.Logging
             set
             {
                 _serverEventLogLevel = value;
-                IsDirty = true;
+                IsDirty = !Equals(Item);
                 OnPropertyChanged();
             }
         }
@@ -184,7 +202,7 @@ namespace Dev2.Settings.Logging
             set
             {
                 _studioEventLogLevel = value;
-                IsDirty = true;
+                IsDirty = !Equals(Item);
                 OnPropertyChanged();
             }
         }
@@ -198,7 +216,7 @@ namespace Dev2.Settings.Logging
             set
             {
                 _serverFileLogLevel = value;
-                IsDirty = true;
+                IsDirty = !Equals(Item);
                 OnPropertyChanged();
             }
         }
@@ -211,7 +229,7 @@ namespace Dev2.Settings.Logging
             set
             {
                 _studioFileLogLevel = value;
-                IsDirty = true;
+                IsDirty = !Equals(Item);
                 OnPropertyChanged();
             }
         }
@@ -224,18 +242,17 @@ namespace Dev2.Settings.Logging
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_serverLogMaxSize))
                 {
                     _serverLogMaxSize = "0";
-                    IsDirty = true;
                 }
                 else
                 {
                     int val;
                     if (value.IsWholeNumber(out val))
                     {
-                        IsDirty = true;
                         _serverLogMaxSize = value;
                         OnPropertyChanged();
                     }
                 }
+                IsDirty = !Equals(Item);
             }
         }
 
@@ -247,18 +264,17 @@ namespace Dev2.Settings.Logging
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_studioLogMaxSize))
                 {
                     _studioLogMaxSize = "0";
-                    IsDirty = true;
                 }
                 else
                 {
                     int val;
                     if (value.IsWholeNumber(out val))
                     {
-                        IsDirty = true;
                         _studioLogMaxSize = value;
                         OnPropertyChanged();
                     }
                 }
+                IsDirty = !Equals(Item);
             }
         }
 
@@ -270,6 +286,23 @@ namespace Dev2.Settings.Logging
         }
 
         #endregion
+
+        private bool Equals(LoggingSettingsTo other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            return EqualsSeq(other);
+        }
+
+        private bool EqualsSeq(LoggingSettingsTo other)
+        {
+            return string.Equals(_serverFileLogLevel.ToString(), other.FileLoggerLogLevel) &&
+                   string.Equals(_serverEventLogLevel.ToString(), other.EventLogLoggerLogLevel) &&
+                   int.Parse(_serverLogMaxSize) == other.FileLoggerLogSize;
+        }
     }
 
     public interface ILogSettings

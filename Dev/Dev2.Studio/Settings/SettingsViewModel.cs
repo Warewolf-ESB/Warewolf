@@ -421,7 +421,9 @@ namespace Dev2.Settings
         {
             if(Settings.Logging != null)
             {
-                return new LogSettingsViewModel(Settings.Logging, CurrentEnvironment);
+                var logSettingsViewModel = new LogSettingsViewModel(Settings.Logging, CurrentEnvironment);
+                logSettingsViewModel.SetItem(logSettingsViewModel);
+                return logSettingsViewModel;
             }
             return null;
         }
