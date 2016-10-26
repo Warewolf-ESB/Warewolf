@@ -60,6 +60,7 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
+using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
 
 // ReSharper disable CatchAllClause
 // ReSharper disable InconsistentNaming
@@ -521,11 +522,14 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 environmentModel.ResourceRepository.LoadResourceFromWorkspace(resourceId, Guid.Empty);
-                var resource = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId, true);
-                var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
-                contextualResourceModel.Update(resource);
-                contextualResourceModel.ID = resourceId;
-                _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
+                if (server.IsConnected)
+                {
+                    var resource = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId, true);
+                    var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
+                    contextualResourceModel.Update(resource);
+                    contextualResourceModel.ID = resourceId;
+                    _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
+                }
             }
         }
 
@@ -870,10 +874,25 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.NewComPluginSource(resourcePath);
         }
 
+        private void ShowServerDisconnectedPopup()
+        {
+            var controller = CustomContainer.Get<IPopupController>();
+            controller?.Show(string.Format(Warewolf.Studio.Resources.Languages.Core.ServerDisconnected, ActiveServer.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
+                             Warewolf.Studio.Resources.Languages.Core.ServerReconnectForActions, Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK,
+                MessageBoxImage.Error, "", false, true, false, false);
+        }
+
         public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
         {
-            _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
-            ExplorerViewModel?.RefreshEnvironment(ActiveServer.EnvironmentID);
+            if (!ActiveServer.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+            }
+            else
+            {
+                _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
+                ExplorerViewModel?.RefreshEnvironment(ActiveServer.EnvironmentID);
+            }
         }
 
         public void NewDropboxSource(string resourcePath)
