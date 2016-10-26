@@ -11,13 +11,13 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Communication;
 using Dev2.CustomControls.Progress;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Dev2.Utils;
+using Newtonsoft.Json;
 
 namespace Dev2.Settings.Logging
 {
@@ -57,6 +57,11 @@ namespace Dev2.Settings.Logging
         private LogLevel _serverFileLogLevel;
         private LogLevel _studioFileLogLevel;
         private LogSettingsViewModel _item;
+
+        public LogSettingsViewModel()
+        {
+            
+        }
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IEnvironmentModel currentEnvironment)
         {
@@ -162,6 +167,7 @@ namespace Dev2.Settings.Logging
             //Implement if help is done for the log settings.
         }
 
+        [JsonIgnore]
         public LogSettingsViewModel Item
         {
             private get { return _item; }
@@ -174,8 +180,15 @@ namespace Dev2.Settings.Logging
 
         public void SetItem(LogSettingsViewModel model)
         {
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
-            //Item = ser.Serialize(model);
+            Item = Clone(model);
+        }
+
+        public LogSettingsViewModel Clone(LogSettingsViewModel model)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings { ContractResolver = resolver });
+            LogSettingsViewModel clone = JsonConvert.DeserializeObject<LogSettingsViewModel>(ser);
+            return clone;
         }
 
         public ICommand GetServerLogFileCommand { get; }
@@ -287,7 +300,7 @@ namespace Dev2.Settings.Logging
 
         #endregion
 
-        private bool Equals(LoggingSettingsTo other)
+        private bool Equals(LogSettingsViewModel other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -297,11 +310,14 @@ namespace Dev2.Settings.Logging
             return EqualsSeq(other);
         }
 
-        private bool EqualsSeq(LoggingSettingsTo other)
+        private bool EqualsSeq(LogSettingsViewModel other)
         {
-            return string.Equals(_serverFileLogLevel.ToString(), other.FileLoggerLogLevel) &&
-                   string.Equals(_serverEventLogLevel.ToString(), other.EventLogLoggerLogLevel) &&
-                   int.Parse(_serverLogMaxSize) == other.FileLoggerLogSize;
+            return string.Equals(_serverEventLogLevel.ToString(), other._serverEventLogLevel.ToString()) &&
+                   string.Equals(_studioEventLogLevel.ToString(), other._studioEventLogLevel.ToString()) &&
+                   string.Equals(_serverFileLogLevel.ToString(), other._serverFileLogLevel.ToString()) &&
+                   string.Equals(_studioFileLogLevel.ToString(), other._studioFileLogLevel.ToString()) &&
+                   int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize) &&
+                   int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
         }
     }
 

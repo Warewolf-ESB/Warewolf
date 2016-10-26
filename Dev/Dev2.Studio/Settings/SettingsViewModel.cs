@@ -58,6 +58,7 @@ namespace Dev2.Settings
         private IEnvironmentModel _currentEnvironment;
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
         private PerfcounterViewModel _perfmonViewModel;
+        private string _displayName;
 
         public SettingsViewModel()
             : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow,CustomContainer.Get<IShellViewModel>().ActiveServer, null)
@@ -85,18 +86,34 @@ namespace Dev2.Settings
             ToEnvironmentModel = toEnvironmentModel??( a=>a.ToEnvironmentModel());
             CurrentEnvironment= ToEnvironmentModel(server);
             LoadSettings();
- 
+            DisplayName = "Settings - " + Server.ResourceName;
         }
 
         public override string DisplayName
         {
             get
             {
-                return "Settings - " + Server.ResourceName;
+                return _displayName;
             }
             set
             {
+                _displayName = value;
+                NotifyOfPropertyChange(() => DisplayName);
+            }
+        }
 
+        private void SetDisplayName()
+        {
+            if (IsDirty)
+            {
+                if (!DisplayName.EndsWith(" *"))
+                {
+                    DisplayName += " *";
+                }
+            }
+            else
+            {
+                DisplayName = _displayName.Replace("*", "").TrimEnd(' ');
             }
         }
 
@@ -208,6 +225,7 @@ namespace Dev2.Settings
                 NotifyOfPropertyChange(() => IsDirty);
                 NotifyOfPropertyChange(() => IsSavedSuccessVisible);
                 NotifyOfPropertyChange(() => IsErrorsVisible);
+                SetDisplayName();
                 SaveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -408,12 +426,16 @@ namespace Dev2.Settings
 
         protected virtual SecurityViewModel CreateSecurityViewModel()
         {
-            return new SecurityViewModel(Settings.Security, _parentWindow, CurrentEnvironment);
+            var securityViewModel = new SecurityViewModel(Settings.Security, _parentWindow, CurrentEnvironment);
+            securityViewModel.SetItem(securityViewModel);
+            return securityViewModel;
         }
 
         protected virtual PerfcounterViewModel CreatePerfmonViewModel()
         {
-            return new PerfcounterViewModel(Settings.PerfCounters, CurrentEnvironment);
+            var perfcounterViewModel = new PerfcounterViewModel(Settings.PerfCounters, CurrentEnvironment);
+            perfcounterViewModel.SetItem(perfcounterViewModel);
+            return perfcounterViewModel;
         }
 
 

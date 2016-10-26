@@ -17,6 +17,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
+using Newtonsoft.Json;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ViewModels;
 // ReSharper disable RedundantArgumentDefaultValue
@@ -57,12 +58,9 @@ namespace Dev2.Settings.Perfcounters
             if (server.Permissions == null)
             {
                 server.Permissions = new List<IWindowsGroupPermission>();
-                if(environment.AuthorizationService != null)
+                if(environment.AuthorizationService?.SecurityService != null)
                 {
-                    if(environment.AuthorizationService.SecurityService != null)
-                    {
-                        server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
-                    }
+                    server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
                 }
             }
             var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
@@ -84,6 +82,7 @@ namespace Dev2.Settings.Perfcounters
 
         }
 
+        [JsonIgnore]
         public ICommand ResetCountersCommand { get; set; }
 
         private void ResetCounters(object obj)
@@ -181,9 +180,137 @@ namespace Dev2.Settings.Perfcounters
             counter.PropertyChanged += OnPerfCounterPropertyChanged;
         }
 
+        [JsonIgnore]
+        public PerfcounterViewModel Item
+        {
+            private get { return _item; }
+            set
+            {
+                _item = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void SetItem(PerfcounterViewModel model)
+        {
+            //Item = Clone(model);
+        }
+
+        public PerfcounterViewModel Clone(PerfcounterViewModel model)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings { ContractResolver = resolver });
+            PerfcounterViewModel clone = JsonConvert.DeserializeObject<PerfcounterViewModel>(ser);
+            return clone;
+        }
+
+        private bool Equals(PerfcounterViewModel other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            return EqualsSeq(other);
+        }
+
+        private bool EqualsSeq(PerfcounterViewModel other)
+        {
+            var serverCountersCompare = ServerCountersCompare(other, true);
+            var resourceCountersCompare = ResourceCountersCompare(other, true);
+            var @equals = serverCountersCompare && resourceCountersCompare;
+
+            return @equals;
+        }
+
+        private bool ServerCountersCompare(PerfcounterViewModel other, bool serverPermissionCompare)
+        {
+            if (_serverCounters == null)
+            {
+                return true;
+            }
+            if (_serverCounters.Count != other._serverCounters.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _serverCounters.Count; i++)
+            {
+                if (ServerCounters[i].AverageExecutionTime != other.ServerCounters[i].AverageExecutionTime)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerCounters[i].ConcurrentRequests != other.ServerCounters[i].ConcurrentRequests)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerCounters[i].RequestPerSecond != other.ServerCounters[i].RequestPerSecond)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerCounters[i].TotalErrors != other.ServerCounters[i].TotalErrors)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerCounters[i].WorkFlowsNotFound != other.ServerCounters[i].WorkFlowsNotFound)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerCounters[i].NotAuthorisedErrors != other.ServerCounters[i].NotAuthorisedErrors)
+                {
+                    serverPermissionCompare = false;
+                }
+            }
+            return serverPermissionCompare;
+        }
+
+        private bool ResourceCountersCompare(PerfcounterViewModel other, bool resourcePermissionCompare)
+        {
+            if (_resourceCounters == null)
+            {
+                return true;
+            }
+            if (_resourceCounters.Count != other._resourceCounters.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _resourceCounters.Count; i++)
+            {
+                if (ResourceCounters[i].ResourceId != other.ResourceCounters[i].ResourceId)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourceCounters[i].AverageExecutionTime != other.ResourceCounters[i].AverageExecutionTime)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourceCounters[i].ConcurrentRequests != other.ResourceCounters[i].ConcurrentRequests)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourceCounters[i].RequestPerSecond != other.ResourceCounters[i].RequestPerSecond)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourceCounters[i].TotalErrors != other.ResourceCounters[i].TotalErrors)
+                {
+                    resourcePermissionCompare = false;
+                }
+            }
+            return resourcePermissionCompare;
+        }
+
         void OnPerfCounterPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            IsDirty = true;
+            IsDirty = !Equals(Item);
             if (args.PropertyName == "CounterName")
             {
                 var countersByResource = (IPerformanceCountersByResource)sender;
@@ -233,10 +360,10 @@ namespace Dev2.Settings.Perfcounters
             }
         }
 
-        
+        [JsonIgnore]
         public ICommand PickResourceCommand { get; private set; }
 
-
+        [JsonIgnore]
         public ICommunicationController CommunicationController
         {
             get
@@ -250,6 +377,7 @@ namespace Dev2.Settings.Perfcounters
         }
 
         private ICommunicationController _communicationController;
+        private PerfcounterViewModel _item;
 
 
         void PickResource(object obj)
@@ -292,10 +420,7 @@ namespace Dev2.Settings.Perfcounters
         public void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion
