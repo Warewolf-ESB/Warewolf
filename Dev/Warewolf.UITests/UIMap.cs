@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using System.IO;
+using Microsoft.VisualStudio.TestTools.UITest.Common;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
 
@@ -879,6 +880,18 @@ namespace Warewolf.UITests
                     Click_MessageBox_No();
                 }
             }
+        }
+        public void Enter_Text_Into_Unpinned_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariabeName()
+        {
+            #region Variable Declarations
+            WpfEdit textbox = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            #endregion
+
+            // Type '[[SomeVariable]]' in 'UI__Row1_FieldName_AutoID' text box
+            textbox.Text = "[[SomeVariable]]";
+
+            // Verify that the 'Text' property of 'UI__Row1_FieldName_AutoID' text box equals '[[SomeVariable]]'
+            Assert.AreEqual("[[SomeVariable]]", textbox.Text, "Multiassign small view row 1 variable textbox text does not equal \"[[SomeVariable]]\".");
         }
 
         [When("I Click New Workflow Ribbon Button")]
@@ -1973,7 +1986,7 @@ namespace Warewolf.UITests
 
         [Then(@"I delete Added Test")]
         public void ThenIDeleteAddedTest()
-        {            
+        {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.DeleteButton, new Point(10, 10));
             Click_MessageBox_Yes();
         }
@@ -2305,6 +2318,46 @@ namespace Warewolf.UITests
         }
 
         private Enter_Dice_Roll_ValuesParams mEnter_Dice_Roll_ValuesParams;
+
+        /// <summary>
+        /// Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface - Use 'Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
+            WpfCustom flowchart = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom multiAssign1 = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            #endregion
+
+            flowchart.DrawHighlight();
+            // Type 'Assign' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams.SearchTextBoxText;
+            Playback.Wait(1500);
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            //flowchart.EnsureClickable(new Point(307, 126));            
+            Mouse.StartDragging(multiAssign, new Point(2, 10));            
+            Mouse.StopDragging(flowchart, new Point(307, 126));
+
+            // Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+            //Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams.MultiAssignExists, multiAssign1.Exists, "MultiAssign does not exist on unpinned tab design surface after dragging from too" +
+            //        "lbox.");
+        }
+
+        public virtual Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams = new Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams;
+            }
+        }
+
+        private Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams mDrag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams;
     }
     /// <summary>
     /// Parameters to be passed into 'Click_Duplicate_From_Duplicate_Dialog'
@@ -2352,6 +2405,25 @@ namespace Warewolf.UITests
         /// Type '6' in 'Text' text box
         /// </summary>
         public string ToTextEditText = "6";
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Type 'Assign' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Assign";
+
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+        /// </summary>
+        public bool MultiAssignExists = true;
         #endregion
     }
 }

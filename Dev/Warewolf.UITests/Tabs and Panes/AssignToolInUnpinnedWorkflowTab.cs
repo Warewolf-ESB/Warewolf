@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Tools.Data
         public void AssignToolInUnpinnedWorkflowTabOpenAndCloseLargeViewWithDoubleClickUITest()
         {
             UIMap.Open_Assign_Tool_On_Unpinned_Tab_Large_View();
+            UIMap.Enter_Text_Into_Unpinned_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariabeName();
             UIMap.Click_Assign_Tool_Large_View_Done_Button_On_Unpinned_Tab();
         }
 
@@ -17,9 +18,9 @@ namespace Warewolf.UITests.Tools.Data
         public void AssignToolInUnpinnedWorkflowTabOpenAndCloseLargeViewWithExpandAllToggleUITest()
         {
             UIMap.Click_Unpinned_Workflow_ExpandAll();
-            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.Exists, "Multiassign large view does not exist after openning it with the expand all button on unpinned tab.");
+            Assert.IsTrue(UIMap.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.Exists,"Multiassign large view does not exist after openning it with the expand all button on unpinned tab.");
             UIMap.Click_Unpinned_Workflow_CollapseAll();
-            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.Exists, "Multiassign small view does not exist after collapsing it with the collapse all button on unpinned tab.");
+            Assert.IsTrue(UIMap.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.Exists, "Multiassign small view does not exist after collapsing it with the collapse all button on unpinned tab.");
         }
 
         [TestMethod]
@@ -80,6 +81,8 @@ namespace Warewolf.UITests.Tools.Data
         public void MyTestCleanup()
         {
             UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
         UIMap UIMap
