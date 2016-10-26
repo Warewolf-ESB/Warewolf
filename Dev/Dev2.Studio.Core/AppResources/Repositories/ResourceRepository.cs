@@ -21,6 +21,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data.ServiceModel;
@@ -148,30 +149,49 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return effectedResources;
         }
 
-
+        private void ShowServerDisconnectedPopup()
+        {
+            var controller = CustomContainer.Get<IPopupController>();
+            controller?.Show(string.Format(ErrorResource.ServerDisconnected, _environmentModel.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
+                             "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK,
+                MessageBoxImage.Error, "", false, true, false, false);
+        }
 
         public IResourceModel LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId)
         {
+            if (!_environmentModel.Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return null;
+            }
             var con = _environmentModel.Connection;
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
             comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
             comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(ResourceType), ResourceType.WorkflowService));
             var workspaceIdToUse = workspaceId ?? con.WorkspaceID;
             var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(con, workspaceIdToUse);
-            foreach (var serializableResource in toReloadResources)
+            if (toReloadResources == null && !_environmentModel.Connection.IsConnected)
             {
-                var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true);
-                var resourceToUpdate = _resourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
+                ShowServerDisconnectedPopup();
+                return null;
+            }
+            if (toReloadResources != null)
+            {
+                foreach (var serializableResource in toReloadResources)
+                {
+                    var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true);
+                    var resourceToUpdate = _resourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
 
-                if (resourceToUpdate != null)
-                {
-                    resourceToUpdate.Update(resource);
+                    if (resourceToUpdate != null)
+                    {
+                        resourceToUpdate.Update(resource);
+                    }
+                    else
+                    {
+                        _resourceModels.Add(resource);
+                    }
+                    return resource;
                 }
-                else
-                {
-                    _resourceModels.Add(resource);
-                }
-                return resource;
             }
             return null;
         }
@@ -194,6 +214,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public IContextualResourceModel LoadContextualResourceModel(Guid resourceId)
         {
+            if (!_environmentModel.Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return null;
+            }
             var con = _environmentModel.Connection;
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
             comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
