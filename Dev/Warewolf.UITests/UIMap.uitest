@@ -912,7 +912,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox">
+    <AssertAction UIObjectName="UIMap.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox">
       <ParameterName />
       <PropertyName>DisplayText</PropertyName>
       <ExpectedValue>[[SomeVariable]]</ExpectedValue>
@@ -920,7 +920,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.Assign1Button">
+    <MouseAction UIObjectName="UIMap.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.Assign1Button">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -929,14 +929,6 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign">
-      <ParameterName />
-      <PropertyName>ItemStatus</PropertyName>
-      <ExpectedValue>IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid </ExpectedValue>
-      <MessageOnValidationFailure>Multiassign small view is not selected.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_Tab">
       <ParameterName />
       <StepId>-1</StepId>

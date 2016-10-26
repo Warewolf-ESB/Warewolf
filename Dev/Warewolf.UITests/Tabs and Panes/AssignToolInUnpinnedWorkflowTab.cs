@@ -39,7 +39,7 @@ namespace Warewolf.UITests.Tools.Data
         public void AssignToolInUnpinnedWorkflowTabDebugOutputUITest()
         {
             UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tab();
-            UIMap.Debug_Workflow_With_Ribbon_Button();
+            UIMap.Debug_Unpinned_Workflow_With_Ribbon_Button();
             UIMap.Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_Tab();
         }
 
