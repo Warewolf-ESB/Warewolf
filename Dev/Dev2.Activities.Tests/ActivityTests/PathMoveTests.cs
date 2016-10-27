@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using ActivityUnitTests;
+using Dev2.Communication;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities.Mocks;
@@ -87,7 +88,25 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion
 
-        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfPathMove_UpdateForEachInputs")]
+        public void DsfPathMove_Serialize_ShouldDeserializeCorrectly()
+        {
+            //------------Setup for test--------------------------
+            var newGuid = Guid.NewGuid();
+            var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
+            var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
+            var act = new DsfPathMove { InputPath = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serialized = serializer.Serialize(act);
+            //------------Execute Test---------------------------
+            var deSerialized = serializer.Deserialize<DsfPathMove>(serialized);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(inputPath, deSerialized.InputPath);
+            Assert.AreEqual(outputPath, deSerialized.OutputPath);
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
