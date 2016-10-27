@@ -147,8 +147,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                     {
                         if (ServerAuthorizationService.Instance != null)
                         {
-                            // ReSharper disable once UnusedVariable
-                            var service = ServerAuthorizationService.Instance;
                             Authorizer.RunPermissions(resource.ResourceID);
                         }
                     }

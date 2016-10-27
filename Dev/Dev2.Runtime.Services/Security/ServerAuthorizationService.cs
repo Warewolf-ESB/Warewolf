@@ -111,10 +111,8 @@ namespace Dev2.Runtime.Security
                 authorized = IsAuthorizedImpl(request);
             }
 
-            // Only in the case when permissions change and we need to still fetch results ;)
             if (!authorized && (request.RequestType == WebServerRequestType.HubConnect || request.RequestType == WebServerRequestType.EsbFetchExecutePayloadFragment))
             {
-                // TODO : Check that the ResultsCache contains data to fetch for the user ;)
                 var identity = request.User.Identity;
                 if (ResultsCache.Instance.ContainsPendingRequestForUser(identity.Name))
                 {
@@ -123,7 +121,6 @@ namespace Dev2.Runtime.Security
             }
             else
             {
-                // normal execution
                 authorizedRequest = new Tuple<bool, DateTime>(authorized, DateTime.Now);
                 _cachedRequests.AddOrUpdate(request.Key, authorizedRequest, (tuple, tuple1) => authorizedRequest);
             }
