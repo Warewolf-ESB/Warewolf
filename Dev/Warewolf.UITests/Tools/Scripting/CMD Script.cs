@@ -29,12 +29,6 @@ namespace Warewolf.UITests.Tools.Scripting
             UIMap.InitializeABlankWorkflow();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
         public TestContext TestContext
         {
             get

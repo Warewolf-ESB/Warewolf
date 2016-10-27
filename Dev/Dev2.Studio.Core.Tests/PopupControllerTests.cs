@@ -212,7 +212,7 @@ namespace Dev2.Core.Tests
 
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
-            Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
             Assert.AreEqual("Deploy Name Conflicts", header);
             Assert.AreEqual(message, description);
             Assert.IsFalse(popupController.IsInfo);
