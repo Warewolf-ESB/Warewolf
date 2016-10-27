@@ -41,7 +41,7 @@
                                Grid.Column="0"
                                ItemsSource="{Binding ModelItem.MergeCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource SpacedActivityDataGridStyle}"
-                               MinHeight="56">
+                               MinHeight="60">
             <i:Interaction.Behaviors>
                 <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors2:DataGridWatermarkModifier.WatermarkText>
@@ -130,10 +130,11 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
+                <DataGridTemplateColumn Width="Auto" d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox Padding="3"
+                            <ui:IntellisenseTextBox MaxWidth="30"
+                                                    Padding="3"
                                                     Margin="0,0,1,1"
                                                     WrapInBrackets="False"
                                                     AllowUserInsertLine="False"
