@@ -160,6 +160,8 @@ namespace Dev2.Settings.Logging
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
             Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(),StudioEventLogLevel.ToString(), settingsConfigFile,"Warewolf Studio");
+
+            SetItem(this);
         }
 
         protected override void CloseHelp()

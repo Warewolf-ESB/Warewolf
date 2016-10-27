@@ -153,9 +153,10 @@ namespace Dev2.Settings.Security
 
         [JsonIgnore]
         public static readonly DependencyProperty IsResourceHelpVisibleProperty = DependencyProperty.Register(@"IsResourceHelpVisible", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false, IsResourceHelpVisiblePropertyChanged));
-        private SecurityViewModel _item;
         private ObservableCollection<WindowsGroupPermission> _serverPermissions;
         private ObservableCollection<WindowsGroupPermission> _resourcePermissions;
+        private ObservableCollection<WindowsGroupPermission> _itemResourcePermissions;
+        private ObservableCollection<WindowsGroupPermission> _itemServerPermissions;
 
         static void IsResourceHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
@@ -169,6 +170,8 @@ namespace Dev2.Settings.Security
             securitySettings.WindowsGroupPermissions.Clear();
             Copy(ServerPermissions, securitySettings.WindowsGroupPermissions);
             Copy(ResourcePermissions, securitySettings.WindowsGroupPermissions);
+
+            SetItem(this);
         }
 
         void Copy(IList<WindowsGroupPermission> source, IList<WindowsGroupPermission> target)
@@ -330,162 +333,9 @@ namespace Dev2.Settings.Security
             permission.PropertyChanged += OnPermissionPropertyChanged;
         }
 
-        [JsonIgnore]
-        public SecurityViewModel Item
-        {
-            private get { return _item; }
-            set
-            {
-                _item = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public void SetItem(SecurityViewModel model)
-        {
-            Item = Clone(model);
-        }
-
-        public SecurityViewModel Clone(SecurityViewModel model)
-        {
-            var resolver = new ShouldSerializeContractResolver();
-            var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings { ContractResolver = resolver });
-            SecurityViewModel clone = JsonConvert.DeserializeObject<SecurityViewModel>(ser);
-            return clone;
-        }
-
-        private bool Equals(SecurityViewModel other)
-        {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-
-            return EqualsSeq(other);
-        }
-
-        private bool EqualsSeq(SecurityViewModel other)
-        {
-            var serverPermissionCompare = ServerPermissionsCompare(other, true);
-            var resourcePermissionCompare = ResourcePermissionsCompare(other, true);
-            var @equals = serverPermissionCompare && resourcePermissionCompare;
-
-            return @equals;
-        }
-
-        private bool ServerPermissionsCompare(SecurityViewModel other, bool serverPermissionCompare)
-        {
-            if (_serverPermissions == null)
-            {
-                return true;
-            }
-            if (_serverPermissions.Count != other._serverPermissions.Count)
-            {
-                return false;
-            }
-            for (int i = 0; i < _serverPermissions.Count; i++)
-            {
-                if (ServerPermissions[i].ResourceName != other.ServerPermissions[i].ResourceName)
-                {
-                    serverPermissionCompare = false;
-                }
-                if (!serverPermissionCompare) continue;
-                if (ServerPermissions[i].WindowsGroup != other.ServerPermissions[i].WindowsGroup)
-                {
-                    serverPermissionCompare = false;
-                }
-                if (!serverPermissionCompare) continue;
-                if (ServerPermissions[i].DeployTo != other.ServerPermissions[i].DeployTo)
-                {
-                    serverPermissionCompare = false;
-                }
-                if (!serverPermissionCompare) continue;
-                if (ServerPermissions[i].DeployFrom != other.ServerPermissions[i].DeployFrom)
-                {
-                    serverPermissionCompare = false;
-                }
-                if (!serverPermissionCompare) continue;
-                if (ServerPermissions[i].Administrator != other.ServerPermissions[i].Administrator)
-                {
-                    serverPermissionCompare = false;
-                }
-                if (!serverPermissionCompare) continue;
-                if (ServerPermissions[i].View != other.ServerPermissions[i].View)
-                {
-                    serverPermissionCompare = false;
-                }
-                if (!serverPermissionCompare) continue;
-                if (ServerPermissions[i].Execute != other.ServerPermissions[i].Execute)
-                {
-                    serverPermissionCompare = false;
-                }
-                if (!serverPermissionCompare) continue;
-                if (ServerPermissions[i].Contribute != other.ServerPermissions[i].Contribute)
-                {
-                    serverPermissionCompare = false;
-                }
-            }
-            return serverPermissionCompare;
-        }
-
-        private bool ResourcePermissionsCompare(SecurityViewModel other, bool resourcePermissionCompare)
-        {
-            if (_resourcePermissions == null)
-            {
-                return true;
-            }
-            if (_resourcePermissions.Count != other._resourcePermissions.Count)
-            {
-                return false;
-            }
-            for (int i = 0; i < _resourcePermissions.Count; i++)
-            {
-                if (ResourcePermissions[i].ResourceName != other.ResourcePermissions[i].ResourceName)
-                {
-                    resourcePermissionCompare = false;
-                }
-                if (!resourcePermissionCompare) continue;
-                if (ResourcePermissions[i].WindowsGroup != other.ResourcePermissions[i].WindowsGroup)
-                {
-                    resourcePermissionCompare = false;
-                }
-                if (!resourcePermissionCompare) continue;
-                if (ResourcePermissions[i].DeployTo != other.ResourcePermissions[i].DeployTo)
-                {
-                    resourcePermissionCompare = false;
-                }
-                if (!resourcePermissionCompare) continue;
-                if (ResourcePermissions[i].DeployFrom != other.ResourcePermissions[i].DeployFrom)
-                {
-                    resourcePermissionCompare = false;
-                }
-                if (!resourcePermissionCompare) continue;
-                if (ResourcePermissions[i].Administrator != other.ResourcePermissions[i].Administrator)
-                {
-                    resourcePermissionCompare = false;
-                }
-                if (!resourcePermissionCompare) continue;
-                if (ResourcePermissions[i].View != other.ResourcePermissions[i].View)
-                {
-                    resourcePermissionCompare = false;
-                }
-                if (!resourcePermissionCompare) continue;
-                if (ResourcePermissions[i].Execute != other.ResourcePermissions[i].Execute)
-                {
-                    resourcePermissionCompare = false;
-                }
-                if (!resourcePermissionCompare) continue;
-                if (ResourcePermissions[i].Contribute != other.ResourcePermissions[i].Contribute)
-                {
-                    resourcePermissionCompare = false;
-                }
-            }
-            return resourcePermissionCompare;
-        }
-
         void OnPermissionPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            IsDirty = !Equals(Item);
+            IsDirty = !Equals(ItemServerPermissions, ItemResourcePermissions);
             UpdateOverridingPermission(sender as WindowsGroupPermission, args.PropertyName);
             if (args.PropertyName == @"WindowsGroup" || args.PropertyName == @"ResourceName")
             {
@@ -679,5 +529,184 @@ namespace Dev2.Settings.Security
 
 
         }
+
+        #region CloneItems
+
+        public void SetItem(SecurityViewModel model)
+        {
+            ItemServerPermissions = CloneServerPermissions(model.ServerPermissions);
+            ItemResourcePermissions = CloneResourcePermissions(model.ResourcePermissions);
+        }
+
+        public ObservableCollection<WindowsGroupPermission> ItemResourcePermissions
+        {
+            get { return _itemResourcePermissions; }
+            set
+            {
+                _itemResourcePermissions = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<WindowsGroupPermission> ItemServerPermissions
+        {
+            get { return _itemServerPermissions; }
+            set
+            {
+                _itemServerPermissions = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<WindowsGroupPermission> CloneResourcePermissions(ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(resourcePermissions, new JsonSerializerSettings { ContractResolver = resolver });
+            ObservableCollection<WindowsGroupPermission> clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
+            return clone;
+        }
+
+        private ObservableCollection<WindowsGroupPermission> CloneServerPermissions(ObservableCollection<WindowsGroupPermission> serverPermissions)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(serverPermissions, new JsonSerializerSettings { ContractResolver = resolver });
+            ObservableCollection<WindowsGroupPermission> clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
+            return clone;
+        }
+
+        private bool Equals(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        {
+            if (ReferenceEquals(null, serverPermissions))
+            {
+                return false;
+            }
+            if (ReferenceEquals(null, resourcePermissions))
+            {
+                return false;
+            }
+
+            return EqualsSeq(serverPermissions, resourcePermissions);
+        }
+
+        private bool EqualsSeq(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        {
+            var serverPermissionCompare = ServerPermissionsCompare(serverPermissions, true);
+            var resourcePermissionCompare = ResourcePermissionsCompare(resourcePermissions, true);
+            var @equals = serverPermissionCompare && resourcePermissionCompare;
+
+            return @equals;
+        }
+
+        private bool ServerPermissionsCompare(ObservableCollection<WindowsGroupPermission> serverPermissions, bool serverPermissionCompare)
+        {
+            if (_serverPermissions == null)
+            {
+                return true;
+            }
+            if (_serverPermissions.Count != serverPermissions.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _serverPermissions.Count; i++)
+            {
+                if (ServerPermissions[i].ResourceName != serverPermissions[i].ResourceName)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].WindowsGroup != serverPermissions[i].WindowsGroup)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].DeployTo != serverPermissions[i].DeployTo)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].DeployFrom != serverPermissions[i].DeployFrom)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].Administrator != serverPermissions[i].Administrator)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].View != serverPermissions[i].View)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].Execute != serverPermissions[i].Execute)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].Contribute != serverPermissions[i].Contribute)
+                {
+                    serverPermissionCompare = false;
+                }
+            }
+            return serverPermissionCompare;
+        }
+
+        private bool ResourcePermissionsCompare(ObservableCollection<WindowsGroupPermission> resourcePermissions, bool resourcePermissionCompare)
+        {
+            if (_resourcePermissions == null)
+            {
+                return true;
+            }
+            if (_resourcePermissions.Count != resourcePermissions.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _resourcePermissions.Count; i++)
+            {
+                if (ResourcePermissions[i].ResourceName != resourcePermissions[i].ResourceName)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].WindowsGroup != resourcePermissions[i].WindowsGroup)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].DeployTo != resourcePermissions[i].DeployTo)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].DeployFrom != resourcePermissions[i].DeployFrom)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].Administrator != resourcePermissions[i].Administrator)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].View != resourcePermissions[i].View)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].Execute != resourcePermissions[i].Execute)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].Contribute != resourcePermissions[i].Contribute)
+                {
+                    resourcePermissionCompare = false;
+                }
+            }
+            return resourcePermissionCompare;
+        }
+
+        #endregion
     }
 }
