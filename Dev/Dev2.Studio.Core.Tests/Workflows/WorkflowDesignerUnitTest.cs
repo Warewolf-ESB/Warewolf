@@ -4755,5 +4755,477 @@ namespace Dev2.Core.Tests.Workflows
             //------------Assert Results-------------------------
             Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>", workflowLink);
         }
+
+        //[TestMethod]
+        //[Owner("Hagashen Naidu")]
+        //[TestCategory("WorkSurfaceContextViewModel_EnvironmentModelIsConnectedChanged")]
+        //public void WorkSurfaceContextViewModel_EnvironmentModelIsConnectedChanged_False_DebugStatusFinished()
+        //{
+        //    //------------Setup for test--------------------------
+        //    var workSurfaceKey = new WorkSurfaceKey();
+        //    var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+        //    var mockedConn = new Mock<IEnvironmentConnection>();
+        //    mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+        //    var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //    mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+        //    var environmentModel = mockEnvironmentModel.Object;
+        //    mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+        //    var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
+        //    var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
+
+        //    var eventAggregator = new Mock<IEventAggregator>();
+        //    var vm = new StudioTestViewModel(eventAggregator.Object, new Mock<IServiceTestViewModel>().Object, new Mock<IPopupController>().Object, null) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
+        //    //var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
+        //    //------------Execute Test---------------------------
+        //    mockEnvironmentModel.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
+        //    //------------Assert Results-------------------------
+        //    Assert.AreEqual(DebugStatus.Finished, vm.DebugOutputViewModel.DebugStatus);
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Hagashen Naidu")]
+        //[TestCategory("WorkSurfaceContextViewModel_EnvironmentModelIsConnectedChanged")]
+        //public void WorkSurfaceContextViewModel_EnvironmentModelIsConnectedChanged_True_DebugStatusNotChanged()
+        //{
+        //    //------------Setup for test--------------------------
+        //    var mockedConn = new Mock<IEnvironmentConnection>();
+        //    mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+        //    var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //    mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+        //    var environmentModel = mockEnvironmentModel.Object;
+        //    var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(environmentModel);
+        //    var connectedEventArgs = new ConnectedEventArgs { IsConnected = true };
+        //    workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
+        //    //------------Execute Test---------------------------
+        //    mockEnvironmentModel.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
+        //    //------------Assert Results-------------------------
+        //    Assert.AreEqual(DebugStatus.Executing, workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus);
+        //}
+
+        //[TestMethod]
+        //[Owner("Hagashen Naidu")]
+        //[TestCategory("WorkSurfaceContextViewModel_SetDebugStatus")]
+        //public void WorkSurfaceContextViewModel_SetDebugStatus_StatusConfigure_ClearsDebugOutputViewModel()
+        //{
+        //    //------------Setup for test--------------------------
+        //    WorkSurfaceContextViewModel workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
+        //    var mockDebugState = new Mock<IDebugState>();
+        //    mockDebugState.Setup(state => state.StateType).Returns(StateType.All);
+        //    mockDebugState.Setup(m => m.SessionID).Returns(workSurfaceContextViewModel.DebugOutputViewModel.SessionID);
+        //    workSurfaceContextViewModel.DebugOutputViewModel.Append(mockDebugState.Object);
+        //    //------------Precondition----------------------------
+        //    Assert.AreEqual(1, workSurfaceContextViewModel.DebugOutputViewModel.ContentItemCount);
+        //    //------------Execute Test---------------------------
+        //    workSurfaceContextViewModel.SetDebugStatus(DebugStatus.Configure);
+        //    //------------Assert Results-------------------------
+        //    Assert.AreEqual(1, workSurfaceContextViewModel.DebugOutputViewModel.ContentItemCount);
+        //}
+
+        //[TestMethod]
+        //[Owner("Hagashen Naidu")]
+        //[TestCategory("WorkSurfaceContextViewModel_SetDebugStatus")]
+        //public void WorkSurfaceContextViewModel_SetDebugStatus_StatusFinished_DebugStatusFinished()
+        //{
+        //    //------------Setup for test--------------------------
+        //    WorkSurfaceContextViewModel workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
+        //    workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
+        //    //------------Execute Test---------------------------
+        //    workSurfaceContextViewModel.SetDebugStatus(DebugStatus.Finished);
+        //    //------------Assert Results-------------------------
+        //    Assert.AreEqual(DebugStatus.Finished, workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus);
+        //}
+
+        //[TestMethod]
+        //[Owner("Leon Rajindrapersadh")]
+        //[TestCategory("WorkSurfaceContextViewModel_CanDebug")]
+        //public void WorkSurfaceContextViewModel_CanDebug_ExpectTrue()
+        //{
+        //    //------------Setup for test--------------------------
+        //    var workSurfaceKey = new WorkSurfaceKey();
+        //    var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+        //    var mockedConn = new Mock<IEnvironmentConnection>();
+        //    mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+        //    var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //    mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+        //    var environmentModel = mockEnvironmentModel.Object;
+        //    mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+        //    mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
+        //    var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
+        //    // ReSharper disable UseObjectOrCollectionInitializer
+        //    var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+        //    // ReSharper restore UseObjectOrCollectionInitializer
+        //    workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
+        //    //------------Execute Test---------------------------
+        //    Assert.IsTrue(workSurfaceContextViewModel.CanDebug());
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Leon Rajindrapersadh")]
+        //[TestCategory("WorkSurfaceContextViewModel_CanDebug")]
+        //public void WorkSurfaceContextViewModel_CanSave_ExpectTrue()
+        //{
+        //    //------------Setup for test--------------------------
+        //    var workSurfaceKey = new WorkSurfaceKey();
+        //    var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+        //    var mockedConn = new Mock<IEnvironmentConnection>();
+        //    mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+        //    var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //    mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+        //    var environmentModel = mockEnvironmentModel.Object;
+        //    mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+        //    mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
+        //    var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
+        //    // ReSharper disable UseObjectOrCollectionInitializer
+        //    var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+        //    // ReSharper restore UseObjectOrCollectionInitializer
+        //    workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
+        //    //------------Execute Test---------------------------
+        //    Assert.IsTrue(workSurfaceContextViewModel.CanSave());
+        //}
+
+
+
+        //[TestMethod]
+        //[Owner("Leon Rajindrapersadh")]
+        //[TestCategory("WorkSurfaceContextViewModel_CanDebug")]
+        //public void WorkSurfaceContextViewModel_CanExecute_ExpectTrue()
+        //{
+        //    //------------Setup for test--------------------------
+        //    var workSurfaceKey = new WorkSurfaceKey();
+        //    var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+        //    var mockedConn = new Mock<IEnvironmentConnection>();
+        //    mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+        //    var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //    mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+        //    var environmentModel = mockEnvironmentModel.Object;
+        //    mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+        //    mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
+        //    var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
+        //    var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object) { WorkSurfaceViewModel = new WorkSurfaceViewModelTest() };
+        //    //------------Execute Test---------------------------
+        //    Assert.IsTrue(workSurfaceContextViewModel.CanExecute());
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Leon Rajindrapersadh")]
+        //[TestCategory("WorkSurfaceContextViewModel_CanDebug")]
+        //public void WorkSurfaceContextViewModel_CanViewInBrowser_ExpectTrue()
+        //{
+        //    //------------Setup for test--------------------------
+        //    var workSurfaceKey = new WorkSurfaceKey();
+        //    var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+        //    var mockedConn = new Mock<IEnvironmentConnection>();
+        //    mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+        //    var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //    mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+        //    var environmentModel = mockEnvironmentModel.Object;
+        //    mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+        //    mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
+        //    var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
+        //    var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object) { WorkSurfaceViewModel = new WorkSurfaceViewModelTest() };
+        //    //------------Execute Test---------------------------
+        //    Assert.IsTrue(workSurfaceContextViewModel.CanViewInBrowser());
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("WorkSurfaceContextViewModel_Debug")]
+        //public void WorkSurfaceContextViewModel_Debug_CallsBindToModelOnWorkSurfaceViewModel()
+        //{
+        //    //------------Setup for test--------------------------
+        //    CustomContainer.Register(new Mock<IWindowManager>().Object);
+        //    var workSurfaceKey = new WorkSurfaceKey();
+        //    var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+        //    var mockedConn = new Mock<IEnvironmentConnection>();
+        //    mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+        //    var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //    mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+        //    mockEnvironmentModel.SetupGet(p => p.IsConnected).Returns(true);
+        //    var mockRepository = new Mock<IResourceRepository>();
+        //    mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
+        //    mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
+        //    var environmentModel = mockEnvironmentModel.Object;
+        //    mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+        //    mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
+        //    var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
+
+        //    var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+        //    var mockResourceModel = new Mock<IContextualResourceModel>();
+        //    mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
+        //    mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
+
+        //    //------------Execute Test---------------------------
+        //    workSurfaceContextViewModel.Debug(mockResourceModel.Object, true);
+        //    //------------Assert---------------------------------
+        //    mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
+        //    mockRepository.Verify(m => m.Save(It.IsAny<IResourceModel>()), Times.Once());
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("WorkSurfaceContextViewModel_Handle")]
+        //public void WorkSurfaceContextViewModel_Handle_DebugResourceMessage_CallsBindModelAndSave()
+        //{
+        //    //------------Setup for test--------------------------
+        //    CustomContainer.Register(new Mock<IWindowManager>().Object);
+        //    var workSurfaceKey = new WorkSurfaceKey();
+        //    var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+        //    var mockedConn = new Mock<IEnvironmentConnection>();
+        //    mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+        //    var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //    mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+        //    mockEnvironmentModel.SetupGet(p => p.IsConnected).Returns(true);
+        //    var mockRepository = new Mock<IResourceRepository>();
+        //    mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
+        //    mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
+        //    var environmentModel = mockEnvironmentModel.Object;
+        //    mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+        //    mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
+        //    var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
+        //    var mockResourceModel = new Mock<IContextualResourceModel>();
+        //    mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
+        //    mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
+        //    mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(mockResourceModel.Object);
+        //    var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+        //    //------------Execute Test---------------------------
+        //    workSurfaceContextViewModel.Handle(new DebugResourceMessage(mockResourceModel.Object));
+        //    //------------Assert---------------------------------
+        //    mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
+        //    mockRepository.Verify(m => m.Save(It.IsAny<IResourceModel>()), Times.Once());
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("WorkSurfaceContextViewModel_Handle")]
+        //public void WorkSurfaceContextViewModel_Handle_ExecuteResourceMessage_CallsBindModelAndSave()
+        //{
+        //    //------------Setup for test--------------------------
+        //    CustomContainer.Register(new Mock<IWindowManager>().Object);
+        //    var workSurfaceKey = new WorkSurfaceKey();
+        //    var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+        //    var mockedConn = new Mock<IEnvironmentConnection>();
+        //    mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+        //    var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //    mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+        //    mockEnvironmentModel.SetupGet(p => p.IsConnected).Returns(true);
+        //    var mockRepository = new Mock<IResourceRepository>();
+        //    mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
+        //    mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
+        //    var environmentModel = mockEnvironmentModel.Object;
+        //    mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+        //    mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
+        //    var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
+        //    var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+        //    var mockResourceModel = new Mock<IContextualResourceModel>();
+        //    mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
+        //    mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
+        //    //------------Execute Test---------------------------
+        //    workSurfaceContextViewModel.Handle(new ExecuteResourceMessage(mockResourceModel.Object));
+        //    //------------Assert---------------------------------
+        //    mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
+        //    mockRepository.Verify(m => m.Save(It.IsAny<IResourceModel>()), Times.Once());
+        //}
+
+        //[TestMethod]
+        //[Owner("Trevor Williams-Ros")]
+        //[TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        //public void WorkSurfaceContextViewModel_DebugCommand_UserHasAdministratorPermissions_CanExecuteIsTrue()
+        //{
+        //    Verify_DebugCommand_CanExecute(Permissions.Administrator, true);
+        //}
+
+        //[TestMethod]
+        //[Owner("Trevor Williams-Ros")]
+        //[TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        //public void WorkSurfaceContextViewModel_DebugCommand_UserHasContributePermissions_CanExecuteIsTrue()
+        //{
+        //    Verify_DebugCommand_CanExecute(Permissions.Contribute, true);
+        //}
+
+        //[TestMethod]
+        //[Owner("Trevor Williams-Ros")]
+        //[TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        //public void WorkSurfaceContextViewModel_DebugCommand_UserHasViewAndExecutePermissions_CanExecuteIsTrue()
+        //{
+        //    Verify_DebugCommand_CanExecute(Permissions.View | Permissions.Execute, true);
+        //}
+
+        //[TestMethod]
+        //[Owner("Trevor Williams-Ros")]
+        //[TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        //public void WorkSurfaceContextViewModel_DebugCommand_UserHasViewPermissions_CanExecuteIsFalse()
+        //{
+        //    Verify_DebugCommand_CanExecute(Permissions.View, false);
+        //}
+
+        //[TestMethod]
+        //[Owner("Trevor Williams-Ros")]
+        //[TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        //public void WorkSurfaceContextViewModel_DebugCommand_UserHasExecutePermissions_CanExecuteIsFalse()
+        //{
+        //    Verify_DebugCommand_CanExecute(Permissions.Execute, false);
+        //}
+
+        //static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel()
+        //{
+        //    var mockedConn = new Mock<IEnvironmentConnection>();
+        //    mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+        //    var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //    mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+
+        //    var environmentModel = mockEnvironmentModel.Object;
+        //    return CreateWorkSurfaceContextViewModel(environmentModel);
+        //}
+
+        //static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(Permissions userPermissions)
+        //{
+
+        //    var mockedConn = new Mock<IEnvironmentConnection>();
+        //    mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+        //    var authService = new Mock<IAuthorizationService>();
+        //    authService.Setup(s => s.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+
+        //    var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //    mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+        //    mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+        //    mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authService.Object);
+
+        //    var environmentModel = mockEnvironmentModel.Object;
+
+        //    var resourceModel = new ResourceModel(environmentModel)
+        //    {
+        //        ID = Guid.NewGuid(),
+        //        ResourceName = "TestResource" + Guid.NewGuid(),
+        //        UserPermissions = userPermissions
+        //    };
+
+        //    var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+        //    mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+        //    mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel);
+
+        //    var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
+
+        //    var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new WorkSurfaceKey(), workSurfaceViewModel)
+        //    {
+        //        DebugOutputViewModel = { DebugStatus = DebugStatus.Ready }
+        //    };
+
+        //    workSurfaceContextViewModel.DebugCommand.UpdateContext(environmentModel, resourceModel);
+        //    workSurfaceContextViewModel.QuickDebugCommand.UpdateContext(environmentModel, resourceModel);
+
+        //    return workSurfaceContextViewModel;
+        //}
+
+        //void Verify_DebugCommand_CanExecute(Permissions userPermissions, bool expected)
+        //{
+        //    //------------Setup for test--------------------------
+        //    var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(userPermissions);
+
+        //    //------------Execute Test---------------------------
+        //    var actualDebug = workSurfaceContextViewModel.DebugCommand.CanExecute(null);
+        //    var actualQuickDebug = workSurfaceContextViewModel.QuickDebugCommand.CanExecute(null);
+
+        //    //------------Assert Results-------------------------
+        //    Assert.AreEqual(expected, actualDebug);
+        //    Assert.AreEqual(expected, actualQuickDebug);
+        //}
+
+        //static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(IEnvironmentModel environmentModel, Mock<IContextualResourceModel> ResourceModel = null)
+        //{
+        //    var workSurfaceKey = new WorkSurfaceKey();
+        //    var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+        //    var mockResourceModel = ResourceModel ?? new Mock<IContextualResourceModel>();
+        //    mockResourceModel.Setup(model => model.Environment).Returns(environmentModel);
+        //    mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+        //    mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(mockResourceModel.Object);
+        //    var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
+        //    var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel);
+        //    return workSurfaceContextViewModel;
+        //}
+
+        //[TestMethod]
+        //[Owner("Trevor Williams-Ros")]
+        //[TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        //public void WorkSurfaceContextViewModel_DebugCommand_UserHasNoContributePermissions_SaveIsNotInvoked()
+        //{
+        //    Verify_DebugCommand_SaveIsInvoked(Permissions.Execute, 0);
+        //}
+
+        //[TestMethod]
+        //[Owner("Trevor Williams-Ros")]
+        //[TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        //public void WorkSurfaceContextViewModel_DebugCommand_UserHasContributePermissions_SaveIsInvoked()
+        //{
+
+        //    Verify_DebugCommand_SaveIsInvoked(Permissions.Contribute, 1);
+        //}
+
+        //void Verify_DebugCommand_SaveIsInvoked(Permissions userPermissions, int saveHitCount)
+        //{
+        //    //------------Setup for test--------------------------
+        //    CustomContainer.Register(new Mock<IWindowManager>().Object);
+        //    var expected = saveHitCount;
+        //    var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(userPermissions);
+
+        //    var resourceRepo = new Mock<IResourceRepository>();
+        //    resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+
+        //    var environmentModel = Mock.Get(workSurfaceContextViewModel.ContextualResourceModel.Environment);
+        //    var mockConnection = new Mock<IEnvironmentConnection>();
+        //    mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+        //    environmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+        //    environmentModel.Setup(model => model.ResourceRepository).Returns(resourceRepo.Object);
+
+
+        //    //------------Execute Test---------------------------
+        //    //------------Assert Results-------------------------
+        //    workSurfaceContextViewModel.DebugCommand.Execute(null);
+        //    resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Exactly(expected));
+
+        //    expected += saveHitCount;
+
+        //    workSurfaceContextViewModel.QuickDebugCommand.Execute(null);
+        //    resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Exactly(expected));
+        //}
+
+        //[TestMethod]
+        //[Owner("Leon Rajindrapersadh")]
+        //[TestCategory("WorkSurfaceContextViewModel_Debug")]
+        //public void WorkSurfaceContextViewModel_Debug_ValidateDataList()
+        //{
+        //    const Permissions userPermissions = Permissions.Administrator;
+        //    var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(userPermissions);
+
+        //    var resourceRepo = new Mock<IResourceRepository>();
+        //    resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+        //    var ctx = new Mock<IContextualResourceModel>();
+
+        //    var environmentModel = new Mock<IEnvironmentModel>();
+
+        //    var mockConnection = new Mock<IEnvironmentConnection>();
+        //    mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+        //    environmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+        //    environmentModel.Setup(model => model.ResourceRepository).Returns(resourceRepo.Object);
+        //    var popup = new Mock<IPopupController>();
+        //    ctx.Setup(a => a.DataList).Returns("asdasda$%^");
+        //    PrivateObject pvt = new PrivateObject(workSurfaceContextViewModel);
+        //    pvt.SetField("_contextualResourceModel", ctx.Object);
+        //    pvt.SetField("_popupController", popup.Object);
+        //    ctx.Setup(a => a.Environment).Returns(environmentModel.Object);
+        //    pvt.SetField("_dataListViewModel", new DataListViewModel());
+
+
+        //    //------------Execute Test---------------------------
+        //    //------------Assert Results-------------------------
+        //    workSurfaceContextViewModel.QuickDebug();
+
+        //    popup.Verify(a => a.Show(It.IsAny<string>(), "Error Debugging", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false));
+
+        //}
     }
 }

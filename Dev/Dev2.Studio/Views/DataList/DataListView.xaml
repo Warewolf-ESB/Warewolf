@@ -14,7 +14,6 @@
              xmlns:dataList1="clr-namespace:Dev2.Studio.ViewModels.DataList;assembly=Dev2.Studio.Core"
              xmlns:dataList3="clr-namespace:Dev2.Studio.Core.Models.DataList;assembly=Dev2.Studio.Core"
              LostKeyboardFocus="UserControlLostKeyboardFocus"
-             MouseEnter="DataListView_OnMouseEnter"
              KeyboardNavigation.DirectionalNavigation="Continue" KeyboardNavigation.TabNavigation="Cycle"
              x:Name="DataListViewControl"
              AutomationProperties.AutomationId="UI_DataListView_AutoID"
@@ -33,7 +32,6 @@
     </i:Interaction.Behaviors>
     <Grid x:Name="MainGrid"
           LostKeyboardFocus="UIElement_OnLostKeyboardFocus" 
-          MouseEnter="DataListView_OnMouseEnter"
           Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
