@@ -18302,6 +18302,7 @@
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">Row</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
@@ -18404,6 +18405,7 @@
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">Row</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
@@ -18521,6 +18523,7 @@
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">Row</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">3</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
