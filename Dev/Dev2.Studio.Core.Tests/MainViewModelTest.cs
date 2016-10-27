@@ -406,26 +406,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("MainViewModel_ChangeActiveItem")]
-        public void MainViewModel_ChangeActiveItem_WhenHasContextWithNoDataListViewModel_ClearsCollectionsOnNewItem()
-        {
-            //------------Setup for test--------------------------
-            string errorString;
-            CreateFullExportsAndVm();
-            FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
-            var firstCtx = MainViewModel.WorksurfaceContextManager.FindWorkSurfaceContextViewModel(FirstResource.Object);
-            var mockDataListViewModel = new Mock<IDataListViewModel>();
-            firstCtx.DataListViewModel = mockDataListViewModel.Object;
-            MainViewModel.ActiveItem = MainViewModel.Items.FirstOrDefault(c => c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
-            //------------Execute Test---------------------------
-            MainViewModel.ActivateItem(firstCtx);
-            //------------Assert Results-------------------------
-            mockDataListViewModel.Verify(model => model.ClearCollections(), Times.Once());
-            mockDataListViewModel.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
-        }
-
-        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("MainViewModel_IsWorkFlowOpened")]
         public void MainViewModel_IsWorkFlowOpened_ResourceIsOpened_True()
