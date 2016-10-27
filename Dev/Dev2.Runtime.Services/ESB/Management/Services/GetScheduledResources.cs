@@ -22,6 +22,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Scheduler;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 
@@ -29,6 +30,16 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetScheduledResources : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
+
         private IServerSchedulerFactory _schedulerFactory;
         ISecurityWrapper _securityWrapper;
         private IResourceCatalog _catalog;

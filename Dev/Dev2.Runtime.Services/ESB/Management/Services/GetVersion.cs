@@ -22,14 +22,26 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Dev2.Services.Security;
 using Dev2.Util;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetVersion : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
+
         #region Implementation of ISpookyLoadable<string>
         private IServerVersionRepository _serverExplorerRepository;
         IResourceCatalog _resourceCatalog   ;
@@ -119,5 +131,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             get { return _resourceCatalog ?? Hosting.ResourceCatalog.Instance; }
             set { _resourceCatalog = value; }
         }
+
+
     }
 }

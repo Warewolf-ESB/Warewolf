@@ -5,7 +5,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -86,9 +85,7 @@ namespace Dev2.Tests.Runtime.Services
         public void FetchTests_Execute_ExpectTestList()
         {
             //------------Setup for test--------------------------
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
-            var fetchTests = new FetchTests(mock.Object);
+            var fetchTests = new FetchTests();
 
             var listOfTests = new List<IServiceTestModelTO>
             {

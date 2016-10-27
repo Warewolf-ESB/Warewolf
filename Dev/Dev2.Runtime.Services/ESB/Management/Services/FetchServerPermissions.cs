@@ -8,9 +8,8 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -21,25 +20,21 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchServerPermissions : IEsbManagementEndpoint
     {
-        private IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredAdministratorManagementEndpoint());
-
-        public FetchServerPermissions(IAuthorizer authorizer)
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            _authorizer = authorizer;
+            return Guid.Empty;
         }
 
-        // ReSharper disable once MemberCanBeInternal
-        public FetchServerPermissions()
+        public AuthorizationContext GetAuthorizationContextForService()
         {
-
+            return AuthorizationContext.Administrator;
         }
+        
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
                 Dev2Logger.Info("Find Server User Name");
-                Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 var user = Thread.CurrentPrincipal;
                 var permissionsMemo = new PermissionsModifiedMemo
                 {

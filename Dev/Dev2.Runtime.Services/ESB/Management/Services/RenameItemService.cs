@@ -21,6 +21,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Explorer;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -28,6 +29,27 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class RenameItemService : IEsbManagementEndpoint
     {
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            StringBuilder tmp;
+            requestArgs.TryGetValue("itemToRename", out tmp);
+            if (tmp != null)
+            {
+                Guid resourceId;
+                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                {
+                    return resourceId;
+                }
+            }
+
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
         private IExplorerServerResourceRepository _serverExplorerRepository;
 
         public string HandlesType()

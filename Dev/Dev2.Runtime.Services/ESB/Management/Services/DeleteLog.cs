@@ -17,8 +17,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -27,19 +26,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     // ReSharper disable once MemberCanBeInternal
     public class DeleteLog : IEsbManagementEndpoint
     {
-        private readonly IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? new SecuredContributeManagementEndpoint();
 
-        public DeleteLog(IAuthorizer authorizer)
-        {
-            _authorizer = authorizer;
-        }
-
-        // ReSharper disable once MemberCanBeInternal
-        public DeleteLog()
-        {
-
-        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             string filePath = null;
@@ -58,7 +45,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 directory = tmp.ToString();
             }
-            Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
             if (string.IsNullOrWhiteSpace(filePath))
             {
                 msg.HasError = true;
@@ -126,6 +112,16 @@ namespace Dev2.Runtime.ESB.Management.Services
         static string FormatMessage(string message, string filePath, string directory)
         {
             return $"DeleteLog: Error deleting '{filePath}' from '{directory}'...{message}";
+        }
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Administrator;
         }
     }
 }

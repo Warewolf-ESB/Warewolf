@@ -19,31 +19,35 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Delete a resource ;)
-    /// </summary>
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class DeleteResource : IEsbManagementEndpoint
     {
-        private readonly IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? new SecuredContributeManagementEndpoint();
-
-        public DeleteResource(IAuthorizer authorizer)
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            _authorizer = authorizer;
+            StringBuilder tmp;
+            requestArgs.TryGetValue("ResourceID", out tmp);
+            if (tmp != null)
+            {
+                Guid resourceId;
+                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                {
+                    return resourceId;
+                }
+            }
+
+            return Guid.Empty;
         }
 
-        // ReSharper disable once MemberCanBeInternal
-        public DeleteResource()
+        public AuthorizationContext GetAuthorizationContextForService()
         {
-
+            return AuthorizationContext.Contribute;
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -69,9 +73,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     type = tmp.ToString();
                 }
-                Authorizer.RunPermissions(resourceId);
                 Dev2Logger.Info("Delete Resource Service. Resource:" + resourceId);
-                // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
                 var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceId, type);
                 TestCatalog.Instance.DeleteAllTests(resourceId);
                 TestCatalog.Instance.Load();

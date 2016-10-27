@@ -51,17 +51,7 @@ namespace Dev2.Tests.Runtime.Services
             var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "DebugFilePath", null } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
-
-        [TestMethod]
-        [Owner("Huggs")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetDirectoriesRelativeToServer_UnitTest_ExecuteWithNullDirectory_ExpectedInvalidDataContractException()
-        {
-
-            var esb = new RenameResourceCategory();
-            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Directory", null } }, null);
-            Assert.AreEqual(string.Empty, actual);
-        }
+       
 
         [TestMethod]
         [Owner("Huggs")]

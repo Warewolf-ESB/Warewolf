@@ -20,6 +20,8 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.Security;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -79,12 +81,19 @@ namespace Dev2.Runtime.ESB.Execution
                         GenerateRequestDictionaryFromDataObject(out invokeErrors);
                         errors.MergeErrors(invokeErrors);
                     }
-
-                    var res = eme.Execute(Request.Args, TheWorkspace);
-                    Request.ExecuteResult = res;
-                    errors.MergeErrors(invokeErrors);
-                    result = DataObject.DataListID;
+                    if (CanExecute(eme))
+                    {
+                        var res = eme.Execute(Request.Args, TheWorkspace);
+                        Request.ExecuteResult = res;
+                        errors.MergeErrors(invokeErrors);
+                        result = DataObject.DataListID;
+                    }
+                    else
+                    {
+                        errors.AddError(ErrorResource.NotAuthorizedToExecuteException);
+                    }
                     Request.WasInternalService = true;
+
                 }
                 else
                 {
@@ -99,7 +108,16 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        
+        private bool CanExecute(IEsbManagementEndpoint eme)
+        {
+            return CanExecute(eme.GetResourceID(Request.Args), DataObject, eme.GetAuthorizationContextForService());
+        }
+
+        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
+        {
+            var isAuthorized = ServerAuthorizationService.Instance.IsAuthorized(authorizationContext, resourceId.ToString());
+            return isAuthorized;
+        }
 
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
         {

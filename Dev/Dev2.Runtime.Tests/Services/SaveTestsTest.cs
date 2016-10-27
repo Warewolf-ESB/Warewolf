@@ -132,9 +132,7 @@ namespace Dev2.Tests.Runtime.Services
             var compressedExecuteMessage = new CompressedExecuteMessage();
             compressedExecuteMessage.SetMessage(serializer.Serialize(listOfTests));
             var values = new Dictionary<string, StringBuilder> { { "resourceID", new StringBuilder(Guid.NewGuid().ToString()) }, { "testDefinitions", serializer.SerializeToBuilder(compressedExecuteMessage) } };
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID));
-            var saveTests = new SaveTests(mock.Object);
+            var saveTests = new SaveTests();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             StringBuilder jsonResult = saveTests.Execute(values, null);
@@ -162,9 +160,7 @@ namespace Dev2.Tests.Runtime.Services
             var compressedExecuteMessage = new CompressedExecuteMessage();
             compressedExecuteMessage.SetMessage(serializer.Serialize(listOfTests));
             var values = new Dictionary<string, StringBuilder> { { "resourceID", new StringBuilder(Guid.NewGuid().ToString()) }, { "resourcePath", "Home".ToStringBuilder() } };
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID));
-            var saveTests = new SaveTests(mock.Object);
+            var saveTests = new SaveTests();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             StringBuilder jsonResult = saveTests.Execute(values, null);
@@ -183,9 +179,7 @@ namespace Dev2.Tests.Runtime.Services
             var serializer = new Dev2JsonSerializer();
             var inputs = new Dictionary<string, StringBuilder>();
             var resourceID = Guid.NewGuid();
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID));
-            var saveTests = new SaveTests(mock.Object);
+            var saveTests = new SaveTests();
 
             var listOfTests = new List<ServiceTestModelTO>
             {
@@ -238,9 +232,7 @@ namespace Dev2.Tests.Runtime.Services
             var serializer = new Dev2JsonSerializer();
             var inputs = new Dictionary<string, StringBuilder>();
             var resourceID = Guid.NewGuid();
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID));
-            var saveTests = new SaveTests(mock.Object);
+            var saveTests = new SaveTests();
 
             var listOfTests = new List<ServiceTestModelTO>
             {
@@ -282,9 +274,7 @@ namespace Dev2.Tests.Runtime.Services
             var serializer = new Dev2JsonSerializer();
             var inputs = new Dictionary<string, StringBuilder>();
             var resourceID = Guid.NewGuid();
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID));
-            var saveTests = new SaveTests(mock.Object);
+            var saveTests = new SaveTests();
 
             var listOfTests = new List<ServiceTestModelTO>
             {
@@ -331,9 +321,7 @@ namespace Dev2.Tests.Runtime.Services
             var serializer = new Dev2JsonSerializer();
             var inputs = new Dictionary<string, StringBuilder>();
             var resourceID = Guid.NewGuid();
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID));
-            var saveTests = new SaveTests(mock.Object);
+            var saveTests = new SaveTests();
 
             var listOfTests = new List<ServiceTestModelTO>
             {

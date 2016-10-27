@@ -19,7 +19,6 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Explorer;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -66,9 +65,7 @@ namespace Dev2.Tests.Runtime.Services
         public void FetchExplorerItems_Execute_ExpectName()
         {
             //------------Setup for test--------------------------
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
-            var fetchExplorerItems = new FetchExplorerItems(mock.Object);
+            var fetchExplorerItems = new FetchExplorerItems();
 
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
             Assert.IsNotNull(item);
@@ -93,9 +90,7 @@ namespace Dev2.Tests.Runtime.Services
         public void FetchExplorerItems_ExecuteNotPermitted_ExpectEmpty()
         {
             //------------Setup for test--------------------------
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>())).Throws(new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToViewException));
-            var fetchExplorerItems = new FetchExplorerItems(mock.Object);
+            var fetchExplorerItems = new FetchExplorerItems();
 
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
             Assert.IsNotNull(item);
