@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System.Windows.Forms;
+using System.Windows.Input;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools
@@ -8,9 +10,28 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void FindRecordsToolUITest()
+        public void FindRecordsTool__OpenLargeViewUITest()
+        {            
+            UIMap.Open_Find_Record_Index_Tool_Large_View();
+        }
+
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void ToolDesigners_FindRecordslargeView_TabbingToResultBox_FocusIsSetToResultBox_UITest()
+        {            
+            UIMap.Open_Find_Record_Index_Tool_Large_View();
+            UIMap.Click_RequireAllFieldsToMatch_CheckBox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex.LargeViewContentCustom.ResultComboBox.HasFocus, "Focus is not set to Result combobox after tabbing from RequireAllFieldsToMatchCheckBox");
+        }
+
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void ToolDesigners_FindRecordsSmallView_SelectingOptionInDopdownWithKeyboard_MatchesBoxEnabled_UITest()
         {
-            UIMap.Drag_Toolbox_Find_Index_Onto_DesignSurface();
+            Keyboard.SendKeys(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex, "{Tab}", ModifierKeys.None);            
+            Keyboard.SendKeys(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex.SmallViewContentCustom.FieldsToSearchComboBox.TextEdit, "{Tab}", ModifierKeys.None);            
+            Keyboard.SendKeys(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex.SmallViewContentCustom.SmallDataGridTable.Row1.SearchTypeCell.SearchTypeComboBox, "{Down}", ModifierKeys.None);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex.SmallViewContentCustom.SmallDataGridTable.Row1.SearchCriteriaCell.SearchCriteriaComboBox.Enabled);
         }
 
         #region Additional test attributes
@@ -22,27 +43,10 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Find_Record_Index_Onto_DesignSurface();
         }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
-
+        
         UIMap UIMap
         {
             get
