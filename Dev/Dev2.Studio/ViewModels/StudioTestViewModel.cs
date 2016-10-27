@@ -3,18 +3,25 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels
 {
-    public class StudioTestViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
+    public class StudioTestViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab, IHandle<DebugOutputMessage>
     {
         readonly IPopupController _popupController;
+        private DebugOutputViewModel _debugOutputViewModel;
 
         public StudioTestViewModel(IEventAggregator eventPublisher, IServiceTestViewModel vm, IPopupController popupController, IView view)
             : base(eventPublisher)
@@ -35,6 +42,7 @@ namespace Dev2.ViewModels
                     NotifyOfPropertyChange(() => DisplayName);
                 }
             };
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
         }
 
         public override bool HasVariables => false;
@@ -77,6 +85,33 @@ namespace Dev2.ViewModels
         public string HelpText { get; set; }
         public IServiceTestViewModel ViewModel { get; set; }
         public IView View { get; set; }
+        public DebugOutputViewModel DebugOutputViewModel
+        {
+            get
+            {
+                return _debugOutputViewModel;
+            }
+            set
+            {
+                _debugOutputViewModel = value;
+                NotifyOfPropertyChange(() => DebugOutputViewModel);
+            }
+        }
+
+        public void Handle(DebugOutputMessage message)
+        {
+            Dev2Logger.Info(message.GetType().Name);
+            DebugOutputViewModel.Clear();
+            foreach (var debugState in message.DebugStates)
+            {
+                if (debugState != null)
+                {
+                    debugState.StateType = StateType.Clear;
+                    debugState.SessionID = DebugOutputViewModel.SessionID;
+                    DebugOutputViewModel.Append(debugState);
+                }
+            }
+        }
 
         #endregion
 

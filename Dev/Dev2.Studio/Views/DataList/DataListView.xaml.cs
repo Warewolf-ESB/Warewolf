@@ -39,13 +39,10 @@ namespace Dev2.Studio.Views.DataList
             if(vm != null)
             {
                 TextBox txtbox = sender as TextBox;
-                if(txtbox != null)
+                IDataListItemModel itemThatChanged = txtbox?.DataContext as IDataListItemModel;
+                if (itemThatChanged != null)
                 {
-                    IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
-                    if (itemThatChanged != null)
-                    {
-                        itemThatChanged.IsExpanded = true;
-                    }
+                    itemThatChanged.IsExpanded = true;
                 }
                 vm.AddBlankRow(null);
             }
@@ -105,7 +102,7 @@ namespace Dev2.Studio.Views.DataList
             IDataListViewModel vm = DataContext as IDataListViewModel;
             if (vm != null && !vm.IsSorting)
             {
-                vm?.WriteToResourceModel();
+                vm.WriteToResourceModel();
             }
         }
 
@@ -136,14 +133,5 @@ namespace Dev2.Studio.Views.DataList
         }
 
         #endregion
-
-        private void DataListView_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-//            IDataListViewModel vm = DataContext as IDataListViewModel;
-//            if (vm != null && !vm.IsSorting)
-//            {
-//                vm?.AddBlankRow(null);
-//            }
-        }
     }
 }
