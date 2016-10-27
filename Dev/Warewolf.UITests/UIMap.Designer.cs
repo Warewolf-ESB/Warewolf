@@ -14155,8 +14155,6 @@ namespace Warewolf.UITests
         
         private Click_DotNet_DLL_Large_View_Done_ButtonParams mClick_DotNet_DLL_Large_View_Done_ButtonParams;
         
-        private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
-        
         private Click_EmailSource_TestConnection_ButtonParams mClick_EmailSource_TestConnection_ButtonParams;
         
         private Click_EndThisWF_On_XPath_LargeViewParams mClick_EndThisWF_On_XPath_LargeViewParams;
