@@ -30,6 +30,7 @@ using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
@@ -1219,6 +1220,10 @@ namespace Dev2.Core.Tests.Workflows
 
                     var resourceModel = new Mock<IContextualResourceModel>();
                     resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+                    var envConn = new Mock<IEnvironmentConnection>();
+                    var serverEvents = new Mock<IEventPublisher>();
+                    envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+                    resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
                     resourceModel.Setup(r => r.ResourceName).Returns("Test");
                     StringBuilder xamlBuilder = new StringBuilder("abc");
 
@@ -1442,10 +1447,14 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            envConn.Setup(m => m.WebServerUri).Returns(new Uri(ServiceUri));
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
             resourceModel.Setup(m => m.Environment.ID).Returns(resourceEnvironmentID);
-            resourceModel.Setup(m => m.Environment.Connection.WebServerUri).Returns(new Uri(ServiceUri));
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 1");
             #endregion
 
@@ -1500,11 +1509,15 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            envConn.Setup(m => m.WebServerUri).Returns(new Uri(ServiceUri));
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name");
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
             resourceModel.Setup(m => m.Environment.ID).Returns(resourceEnvironmentID);
-            resourceModel.Setup(m => m.Environment.Connection.WebServerUri).Returns(new Uri(ServiceUri));
 
             #endregion
 
@@ -2322,6 +2335,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
             resourceModel.SetupProperty(model => model.IsWorkflowSaved);
@@ -2450,6 +2467,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
             StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
@@ -2462,8 +2483,7 @@ namespace Dev2.Core.Tests.Workflows
             //viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
-
-
+            
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -2515,6 +2535,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
             StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
@@ -2528,8 +2552,7 @@ namespace Dev2.Core.Tests.Workflows
 
             Assert.AreEqual(viewModel.DesignerText, viewModel.ServiceDefinition);
             #endregion
-
-
+            
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -2586,6 +2609,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.SetupAllProperties();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
@@ -2598,8 +2625,7 @@ namespace Dev2.Core.Tests.Workflows
             var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, new Mock<IExternalProcessExecutor>().Object) { ServiceDefinition = xamlBuilder };
 
             #endregion
-
-
+            
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -2654,6 +2680,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.SetupAllProperties();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
@@ -2721,6 +2751,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.SetupAllProperties();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
@@ -2788,6 +2822,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
             resourceModel.SetupProperty(model => model.IsWorkflowSaved);
@@ -2869,6 +2907,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 7");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -2912,6 +2954,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 6");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -3031,6 +3077,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 5");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -3162,6 +3212,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 66");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -3231,6 +3285,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 66");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -3313,6 +3371,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 66");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -3387,6 +3449,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 66");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -3432,6 +3498,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(model => model.ResourceName).Returns("Some workflow 44");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -3474,6 +3544,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(model => model.ResourceName).Returns("Some workflow 332");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -3517,6 +3591,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(model => model.ResourceName).Returns("Some workflow 34");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -3561,6 +3639,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(model => model.ResourceName).Returns("Some workflow 22");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -3605,6 +3687,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(model => model.ResourceName).Returns("Some workflow");
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -3653,6 +3739,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -3670,6 +3758,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.SetupProperty(model => model.WorkflowXaml);
 
             #endregion
+
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
@@ -3706,6 +3795,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -3727,6 +3818,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.SetupProperty(model => model.WorkflowXaml);
 
             #endregion
+
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
@@ -3773,6 +3865,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -3792,6 +3886,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.SetupProperty(model => model.WorkflowXaml);
 
             #endregion
+
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
@@ -3829,6 +3924,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -3851,6 +3948,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.SetupProperty(model => model.WorkflowXaml);
 
             #endregion
+
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
@@ -3885,6 +3983,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(model => model.IsNewWorkflow).Returns(false);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 9");
@@ -3895,6 +3997,7 @@ namespace Dev2.Core.Tests.Workflows
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
             resourceModel.SetupProperty(model => model.WorkflowXaml);
             #endregion
+
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
@@ -3924,6 +4027,10 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(model => model.IsNewWorkflow).Returns(false);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 11");
@@ -4045,6 +4152,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -4068,6 +4177,7 @@ namespace Dev2.Core.Tests.Workflows
             _shellViewModelMock = new Mock<IShellViewModel>();
 
             #endregion
+
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
@@ -4101,6 +4211,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -4155,6 +4267,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -4209,6 +4323,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -4263,6 +4379,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -4284,6 +4402,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.SetupProperty(model => model.WorkflowXaml);
 
             #endregion
+
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
@@ -4317,6 +4436,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -4338,6 +4459,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.SetupProperty(model => model.WorkflowXaml);
 
             #endregion
+
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
@@ -4371,6 +4493,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -4392,6 +4516,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.SetupProperty(model => model.WorkflowXaml);
 
             #endregion
+
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
@@ -4425,6 +4550,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -4479,6 +4606,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -4500,6 +4629,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.SetupProperty(model => model.WorkflowXaml);
 
             #endregion
+
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
@@ -4533,6 +4663,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -4587,6 +4719,8 @@ namespace Dev2.Core.Tests.Workflows
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
@@ -4608,6 +4742,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.SetupProperty(model => model.WorkflowXaml);
 
             #endregion
+
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
