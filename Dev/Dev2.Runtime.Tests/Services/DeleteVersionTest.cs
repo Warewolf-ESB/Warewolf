@@ -12,12 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -101,9 +99,7 @@ namespace Dev2.Tests.Runtime.Services
         public void DeleteVersion_ExecuteNotPermited_Valid_ExpectFailure()
         {
             //------------Setup for test--------------------------
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>())).Throws(new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException));
-            var deleteVersion = new DeleteVersion(mock.Object);
+            var deleteVersion = new DeleteVersion();
             var serializer = new Dev2JsonSerializer();
             var ws = new Mock<IWorkspace>();
             var server = new Mock<IServerVersionRepository>();
@@ -126,9 +122,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
 
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
-            var deleteVersion = new DeleteVersion(mock.Object);
+            var deleteVersion = new DeleteVersion();
             var serializer = new Dev2JsonSerializer();
             var ws = new Mock<IWorkspace>();
             var server = new Mock<IServerVersionRepository>();

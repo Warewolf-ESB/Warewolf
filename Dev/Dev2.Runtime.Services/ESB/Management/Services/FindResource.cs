@@ -14,16 +14,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -34,18 +32,14 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FindResource : IEsbManagementEndpoint
     {
-        private IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredViewManagementEndpoint());
-
-        public FindResource(IAuthorizer authorizer)
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            _authorizer = authorizer;
+           return Guid.Empty;
         }
 
-        // ReSharper disable once MemberCanBeInternal
-        public FindResource()
+        public AuthorizationContext GetAuthorizationContextForService()
         {
-
+            return AuthorizationContext.Any;
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -80,7 +74,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    Authorizer.RunPermissions(resourceId.ToGuid());
                     resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", resourceId }, { "type", type } }).ToList();
                 }
                 Dev2Logger.Info("Find Resource. ResourceName: " + resourceName);

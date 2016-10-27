@@ -40,7 +40,6 @@ namespace Dev2.Services.Security
             _securityService.PermissionsChanged += (s, e) => RaisePermissionsChanged();
             _securityService.PermissionsModified += (s, e) => OnPermissionsModified(e);
 
-            // set up the func for normal use ;)
             AreAdministratorsMembersOfWarewolfAdministrators = delegate
             {
                 var adGroup = FindGroup(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
@@ -132,11 +131,6 @@ namespace Dev2.Services.Security
             }
         }
 
-        public virtual void ClearCaches()
-        {
-           
-        }
-
         public virtual void Remove(Guid resourceId)
         {
             _securityService.Remove(resourceId);
@@ -150,13 +144,11 @@ namespace Dev2.Services.Security
         protected virtual void RaisePermissionsChanged()
         {
             PermissionsChanged?.Invoke(this, EventArgs.Empty);
-            ClearCaches();
         }
 
         protected virtual void OnPermissionsModified(PermissionsModifiedEventArgs e)
         {
             _permissionsModifedHandler?.Invoke(this, e);
-            ClearCaches();
         }
 
         protected bool IsAuthorizedToConnect(IPrincipal principal)

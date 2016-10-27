@@ -21,16 +21,18 @@ namespace Dev2.Runtime.Security
 {
     public class ServerAuthorizationService : AuthorizationServiceBase
     {
-        private readonly ConcurrentDictionary<Tuple<string, string>, Tuple<bool, DateTime>> _cachedRequests = new ConcurrentDictionary<Tuple<string, string>, Tuple<bool, DateTime>>();
+        private static ConcurrentDictionary<Tuple<string, string>, Tuple<bool, DateTime>> _cachedRequests = new ConcurrentDictionary<Tuple<string, string>, Tuple<bool, DateTime>>();
 
-        // Singleton instance - lazy initialization is used to ensure that the creation is thread-safe
         private static Lazy<ServerAuthorizationService> _theInstance = new Lazy<ServerAuthorizationService>(() => new ServerAuthorizationService(new ServerSecurityService()));
 
         public static IAuthorizationService Instance
         {
             get
             {
-                return _theInstance.Value;
+                var serverAuthorizationService = _theInstance.Value;
+                serverAuthorizationService.SecurityService.PermissionsChanged += (s, e) => ClearCaches();
+                serverAuthorizationService.SecurityService.PermissionsModified += (s, e) => ClearCaches();
+                return serverAuthorizationService;        
             }
         }
 
@@ -40,7 +42,7 @@ namespace Dev2.Runtime.Security
         protected ServerAuthorizationService(ISecurityService securityService)
             : base(securityService, true)
         {
-            _timeOutPeriod = securityService.TimeOutPeriod;
+            _timeOutPeriod = securityService.TimeOutPeriod;            
             try
             {
                 _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of Not Authorised errors");
@@ -53,9 +55,9 @@ namespace Dev2.Runtime.Security
 
         public int CachedRequestCount => _cachedRequests.Count;
 
-        public  override void ClearCaches()
+        private static void ClearCaches()
         {
-            _cachedRequests.Clear();
+            _cachedRequests = new ConcurrentDictionary<Tuple<string, string>, Tuple<bool, DateTime>>();
         }
 
         public override bool IsAuthorized(AuthorizationContext context, string resource)

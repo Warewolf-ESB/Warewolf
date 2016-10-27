@@ -19,8 +19,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 // ReSharper disable MemberCanBeInternal
 
@@ -29,18 +28,26 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class DeleteVersion : IEsbManagementEndpoint
     {
         IServerVersionRepository _serverExplorerRepository;
-        private readonly IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? new SecuredContributeManagementEndpoint();
 
-        public DeleteVersion(IAuthorizer authorizer)
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            _authorizer = authorizer;
+            StringBuilder tmp;
+            requestArgs.TryGetValue("resourceId", out tmp);
+            if (tmp != null)
+            {
+                Guid resourceId;
+                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                {
+                    return resourceId;
+                }
+            }
+
+            return Guid.Empty;
         }
 
-        // ReSharper disable once MemberCanBeInternal
-        public DeleteVersion()
+        public AuthorizationContext GetAuthorizationContextForService()
         {
-
+            return AuthorizationContext.Contribute;
         }
         #region Implementation of ISpookyLoadable<string>
 
@@ -80,7 +87,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 try
                 {
                     var guid = Guid.Parse(values["resourceId"].ToString());
-                    Authorizer.RunPermissions(guid);
                     var version = values["versionNumber"].ToString();
                     Dev2Logger.Info($"Delete Version. ResourceId:{guid} VersionNumber{version}");
                     StringBuilder tmp;

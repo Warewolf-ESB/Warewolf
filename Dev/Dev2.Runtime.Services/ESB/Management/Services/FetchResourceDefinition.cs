@@ -25,12 +25,12 @@ using Dev2.Util;
 using Dev2.Workspaces;
 using Dev2.Common.Utils;
 using System.Text.RegularExpressions;
-using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 // ReSharper disable NonLocalizedString
 // ReSharper disable MemberCanBeInternal
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -43,21 +43,28 @@ namespace Dev2.Runtime.ESB.Management.Services
         const string PayloadEnd = @"</XamlDefinition>";
         const string AltPayloadStart = @"<Actions>";
         const string AltPayloadEnd = @"</Actions>";
-       
-        private IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredViewManagementEndpoint());
 
-        public FetchResourceDefinition(IAuthorizer authorizer)
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            _authorizer = authorizer;
+            StringBuilder tmp;
+            requestArgs.TryGetValue("ResourceID", out tmp);
+            if (tmp != null)
+            {
+                Guid resourceId;
+                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                {
+                    return resourceId;
+                }
+            }
+
+            return Guid.Empty;
         }
 
-        // ReSharper disable once MemberCanBeInternal
-        // ReSharper disable once UnusedMember.Global
-        public FetchResourceDefinition()
+        public AuthorizationContext GetAuthorizationContextForService()
         {
-
+            return AuthorizationContext.View;
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -87,8 +94,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}");
                 try
                 {
-                    Authorizer.RunPermissions(resourceId);
-
+                   
                     var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
                     if (!result.IsNullOrEmpty())
                     {
@@ -191,7 +197,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
+        private StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
         {
             Dictionary<string, StringTransform> replacements = new Dictionary<string, StringTransform>
                                                                {

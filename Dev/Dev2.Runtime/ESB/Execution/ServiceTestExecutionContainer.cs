@@ -156,6 +156,11 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
+        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
+        {
+            return true;
+        }
+
         private static void AddRecordsetsInputs(IEnumerable<IServiceTestInput> recSets, IExecutionEnvironment environment)
         {
             if(recSets != null)

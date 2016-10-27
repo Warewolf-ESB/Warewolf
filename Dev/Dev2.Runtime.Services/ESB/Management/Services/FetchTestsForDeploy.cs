@@ -10,10 +10,10 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 // ReSharper disable MemberCanBeInternal
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -24,19 +24,15 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class FetchTestsForDeploy : IEsbManagementEndpoint
     {
         private ITestCatalog _testCatalog;
-       
-        private IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredViewManagementEndpoint());
 
-        public FetchTestsForDeploy(IAuthorizer authorizer)
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            _authorizer = authorizer;
+            return Guid.Empty;
         }
 
-        // ReSharper disable once MemberCanBeInternal
-        public FetchTestsForDeploy()
+        public AuthorizationContext GetAuthorizationContextForService()
         {
-
+            return AuthorizationContext.Any;
         }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -56,7 +52,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-                Authorizer.RunPermissions(resourceId);
                 var tests = TestCatalog.Fetch(resourceId);
                 foreach(var serviceTestModelTO in tests.Where(to => !string.IsNullOrEmpty(to.Password)))
                 {

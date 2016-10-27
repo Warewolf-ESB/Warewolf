@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
@@ -6,12 +7,24 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetServerVersion : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
+
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();

@@ -11,8 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 
 // ReSharper disable InconsistentNaming
 
@@ -21,21 +20,17 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SaveRabbitMQServiceSource : IEsbManagementEndpoint
     {
-       
 
-        private IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
-
-        public SaveRabbitMQServiceSource(IAuthorizer authorizer)
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            _authorizer = authorizer;
+            return Guid.Empty;
         }
 
-        // ReSharper disable once MemberCanBeInternal
-        public SaveRabbitMQServiceSource()
+        public AuthorizationContext GetAuthorizationContextForService()
         {
-
+            return AuthorizationContext.Contribute;
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
@@ -43,7 +38,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             try
             {
-                Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save RabbitMQ Service Source");
                 StringBuilder resourceDefinition;
                 msg.HasError = false;

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -16,20 +14,15 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SavePerformanceCounters : IEsbManagementEndpoint
     {
         private IPerformanceCounterRepository _manager;
-        
 
-        private IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
-
-        public SavePerformanceCounters(IAuthorizer authorizer)
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            _authorizer = authorizer;
+            return Guid.Empty;
         }
 
-        // ReSharper disable once MemberCanBeInternal
-        public SavePerformanceCounters()
+        public AuthorizationContext GetAuthorizationContextForService()
         {
-
+            return AuthorizationContext.Administrator;
         }
 
         public string HandlesType()
@@ -49,7 +42,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Manager.Save(serializer.Deserialize<IPerformanceCounterTo>(values["PerformanceCounterTo"]));
                 msg.HasError = false;
                 msg.Message = new StringBuilder();

@@ -87,5 +87,14 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             return "LoggingSettingsWriteService";
         }
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
     }
 }

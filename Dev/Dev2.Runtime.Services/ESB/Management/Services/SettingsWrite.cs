@@ -18,6 +18,7 @@ using Dev2.Communication;
 using Dev2.Data.Settings;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -25,6 +26,16 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class SettingsWrite : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Administrator;
+        }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             if(values == null)

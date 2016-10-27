@@ -15,7 +15,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Interfaces;
 using Dev2.Scheduler;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Workspaces;
@@ -86,9 +85,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             const string username = "user";
             const string password = "pass";
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID));
-            var esbMethod = new SaveScheduledResource(mock.Object);
+            var esbMethod = new SaveScheduledResource();
             var security = new Mock<ISecurityWrapper>();
             esbMethod.SecurityWrapper = security.Object;
             var factory = new Mock<IServerSchedulerFactory>();

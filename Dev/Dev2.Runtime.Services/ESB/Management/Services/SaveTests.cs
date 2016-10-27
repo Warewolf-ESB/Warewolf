@@ -10,8 +10,9 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -24,25 +25,32 @@ namespace Dev2.Runtime.ESB.Management.Services
         private ITestCatalog _testCatalog;
         private IResourceCatalog _resourceCatalog;
 
-        private IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
-
-        public SaveTests(IAuthorizer authorizer)
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            _authorizer = authorizer;
+            StringBuilder tmp;
+            requestArgs.TryGetValue("resourceID", out tmp);
+            if (tmp != null)
+            {
+                Guid resourceId;
+                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                {
+                    return resourceId;
+                }
+            }
+
+            return Guid.Empty;
         }
 
-        // ReSharper disable once MemberCanBeInternal
-        public SaveTests()
+        public AuthorizationContext GetAuthorizationContextForService()
         {
-
+            return AuthorizationContext.Contribute;
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
                 Dev2Logger.Info("Save Tests Service");
                 StringBuilder testDefinitionMessage;
                 StringBuilder resourceIdString;

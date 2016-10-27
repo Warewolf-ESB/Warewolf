@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
@@ -20,6 +21,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Scheduler;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -37,6 +39,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         }
 
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Administrator;
+        }
         public string HandlesType()
         {
             return "DeleteScheduledResourceService";

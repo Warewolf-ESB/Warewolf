@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -22,6 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using Dev2.Services.Security;
 
 // ReSharper disable InconsistentNaming
 
@@ -30,6 +32,16 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchRabbitMQServiceSources : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
+
         public string HandlesType()
         {
             return "FetchRabbitMQServiceSources";

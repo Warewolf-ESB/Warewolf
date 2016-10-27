@@ -23,6 +23,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -40,6 +41,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             WindowsGroupPermission.CreateGuests()
         };
 
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Debug("Start Security Read");

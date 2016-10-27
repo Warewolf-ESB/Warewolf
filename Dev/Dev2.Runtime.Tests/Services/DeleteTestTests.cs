@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -101,9 +99,7 @@ namespace Dev2.Tests.Runtime.Services
         public void DeleteTestExecute__ValidArgs_ExpectDeleteTestCalled()
         {
             //------------Setup for test--------------------------
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()));
-            var deleteTest = new DeleteTest(mock.Object);
+            var deleteTest = new DeleteTest();
           
             var repo = new Mock<ITestCatalog>();
             var ws = new Mock<IWorkspace>();
@@ -134,10 +130,7 @@ namespace Dev2.Tests.Runtime.Services
         public void DeleteTestExecute__ValidArgsNotPermitted_ExpectDeleteTestNotCalled()
         {
             //------------Setup for test--------------------------
-            var mock = new Mock<IAuthorizer>();
-            mock.Setup(authorizer => authorizer.RunPermissions(It.IsAny<Guid>()))
-                .Throws(new ServiceNotAuthorizedException(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException));
-            var deleteTest = new DeleteTest(mock.Object);
+            var deleteTest = new DeleteTest();
           
             var repo = new Mock<ITestCatalog>();
             var ws = new Mock<IWorkspace>();

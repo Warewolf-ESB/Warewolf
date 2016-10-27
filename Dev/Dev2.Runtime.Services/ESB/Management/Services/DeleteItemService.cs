@@ -21,31 +21,48 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Explorer;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DeleteItemService : IEsbManagementEndpoint
     {
-        private IExplorerServerResourceRepository _serverExplorerRepository;
-        private IAuthorizer _authorizer;
-        public DeleteItemService(IAuthorizer authorizer)
-        {
-            Authorizer = authorizer;
-        }
-
-        // ReSharper disable once MemberCanBeInternal
-        public DeleteItemService()
-        {
-
-        }
+        private IExplorerServerResourceRepository _serverExplorerRepository;       
 
         public string HandlesType()
         {
             return "DeleteItemService";
+        }
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            if (requestArgs == null)
+            {
+                throw new ArgumentNullException(nameof(requestArgs));
+            }
+            StringBuilder itemBeingDeleted;
+            if (!requestArgs.TryGetValue("itemToDelete", out itemBeingDeleted))
+            {
+                throw new ArgumentException(string.Format(ErrorResource.IsBlank, "itemToDelete"));
+            }
+
+            if (itemBeingDeleted != null)
+            {
+                var itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
+                if (itemToDelete != null)
+                {
+                    return itemToDelete.ResourceId;
+                }
+            }
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -73,8 +90,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
 
                     itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
-                    if(itemToDelete != null)
-                        Authorizer.RunPermissions(itemToDelete.ResourceId);
                     Dev2Logger.Info("Delete Item Service." + itemToDelete);
                     item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
 
@@ -113,17 +128,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
             set { _serverExplorerRepository = value; }
-        }
-        private IAuthorizer Authorizer
-        {
-            get
-            {
-                return _authorizer ?? new SecuredContributeManagementEndpoint();
-            }
-            set
-            {
-                _authorizer = value;
-            }
         }
     }
 }

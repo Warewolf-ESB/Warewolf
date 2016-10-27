@@ -21,13 +21,28 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable CollectionNeverQueried.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetDirectoriesRelativeToServer : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
+
         IExplorerServerResourceRepository _serverExplorerRepository;
 
         #region Implementation of ISpookyLoadable<string>

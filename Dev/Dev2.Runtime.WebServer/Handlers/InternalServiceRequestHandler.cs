@@ -19,9 +19,7 @@ using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
-using Dev2.Runtime.ServiceUserAuthorizations;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
@@ -31,19 +29,7 @@ namespace Dev2.Runtime.WebServer.Handlers
     public class InternalServiceRequestHandler : AbstractWebRequestHandler
     {
         public IPrincipal ExecutingUser { private get; set; }
-        private IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredExecuteManagementEndpoint());
 
-        // ReSharper disable once UnusedMember.Global
-        public InternalServiceRequestHandler(IAuthorizer authorizer)
-        {
-            _authorizer = authorizer;
-        }
-
-        public InternalServiceRequestHandler()
-        {
-
-        }
         public override void ProcessRequest(ICommunicationContext ctx)
         {
             var serviceName = GetServiceName(ctx);
@@ -132,8 +118,6 @@ namespace Dev2.Runtime.WebServer.Handlers
             var isManagementResource = false;
             if (resource != null)
             {
-        
-
                 dataObject.ResourceID = resource.ResourceID;
                 if (!string.IsNullOrEmpty(request.TestName))
                 {
@@ -141,23 +125,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                     dataObject.IsServiceTestExecution = true;
                 }
                 isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
-                if (!isManagementResource)
-                {
-                    try
-                    {
-                        if (ServerAuthorizationService.Instance != null)
-                        {
-                            Authorizer.RunPermissions(resource.ResourceID);
-                        }
-                    }
-                    catch (ServiceNotAuthorizedException ex)
-                    {
-                        var message = new ExecuteMessage { HasError = true };
-                        message.SetMessage(ex.Message);
-                        return serializer.SerializeToBuilder(message);
-                    }
-                }
-
             }
 
             dataObject.ClientID = Guid.Parse(connectionId);
@@ -199,6 +166,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                                 }
                             }
                         }
+                        
                         channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
                     });
 
@@ -219,6 +187,8 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 return new StringBuilder();
             }
+
+            
 
             ExecuteMessage msg = new ExecuteMessage { HasError = true };
             msg.SetMessage(string.Join(Environment.NewLine, dataObject.Environment.Errors));

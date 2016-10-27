@@ -22,9 +22,8 @@ using Dev2.Converters.Graph.DataTable;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Runtime.ServiceUserAuthorizations;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Core;
 // ReSharper disable MemberCanBePrivate.Global
@@ -35,31 +34,27 @@ namespace Dev2.Runtime.ESB.Management.Services
     // ReSharper disable once MemberCanBeInternal
     public class SaveDbService : IEsbManagementEndpoint
     {
-       
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
+
+
         IExplorerServerResourceRepository _serverExplorerRepository;
        
-
-        private IAuthorizer _authorizer;
-        private IAuthorizer Authorizer => _authorizer ?? (_authorizer = new SecuredCreateEndpoint());
-
-        public SaveDbService(IAuthorizer authorizer)
-        {
-            _authorizer = authorizer;
-        }
-
-        // ReSharper disable once MemberCanBeInternal
-        public SaveDbService()
-        {
-
-        }
+        
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Authorizer.RunPermissions(GlobalConstants.ServerWorkspaceID);
-
                 Dev2Logger.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
 

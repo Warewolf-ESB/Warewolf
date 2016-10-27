@@ -171,9 +171,6 @@
   <ItemGroup>
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
-    <Compile Include="Server Test\InternalServices\FindDirectoryServiceTest.cs" />
-    <Compile Include="Server Test\InternalServices\FindDriveServiceTest.cs" />
-    <Compile Include="Server Test\InternalServices\FindNetworkComputerServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindResourceServiceTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\MoqConfigurationReader.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\StudioServerCommsTests.cs" />
