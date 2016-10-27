@@ -104,5 +104,8 @@ namespace Dev2.ViewModels
         }
 
         #endregion
+
+        public override bool HasVariables => false;
+        public override bool HasDebugOutput => false;
     }
 }

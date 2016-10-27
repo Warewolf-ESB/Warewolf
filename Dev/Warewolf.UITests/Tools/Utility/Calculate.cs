@@ -11,6 +11,12 @@ namespace Warewolf.UITests.Tools.Utility
         public void CalculateToolUITest()
         {
             UIMap.Open_Calculate_Tool_Large_View();
+            UIMap.Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox();
+            UIMap.Click_Calculate_Large_View_Done_Button();
+            UIMap.Click_Debug_Ribbon_Button();
+            UIMap.Click_DebugInput_Debug_Button();
+            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            UIMap.Click_Debug_Output_Calculate_Cell();
         }
 
         #region Additional test attributes
