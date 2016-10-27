@@ -262,5 +262,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             base.OnViewAttached(view, this);
         }
 
+        public override bool HasVariables => false;
+        public override bool HasDebugOutput => false;
     }
 }

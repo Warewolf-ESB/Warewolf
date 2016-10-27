@@ -11,12 +11,11 @@ namespace Warewolf.UITests.Tools.Data
         public void BaseConvert_OpenLargeViewToolUITest()
         {
             UIMap.Open_Base_Conversion_Tool_Large_View();
-        }
-
-        [TestMethod]
-		[TestCategory("Tools")]
-        public void BaseConvert_OpenQVI_UITest()
-        {
+            UIMap.Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox();
+            UIMap.Click_Base_Convert_Large_View_Done_Button();
+            UIMap.Press_F6();
+            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            UIMap.Click_Debug_Output_BaseConvert_Cell();
             UIMap.Open_Base_Conversion_Tool_Qvi_Large_View();
         }
 

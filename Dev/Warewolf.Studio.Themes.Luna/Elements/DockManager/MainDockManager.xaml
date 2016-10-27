@@ -15,7 +15,7 @@
         <ResourceDictionary Source="../../Common/Styles.xaml" />
         <ResourceDictionary Source="../../Common/Brushes.xaml" />
         <ResourceDictionary Source="../../Elements/xamMenu.xaml" />
-
+        <ResourceDictionary Source="../../Elements/MenuBar/MenuBar.xaml" />
 
         <!--  IMAGES  -->
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Images/System-Pin.xaml" />
@@ -975,7 +975,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type igWindows:ToolWindow}">
-                    <Grid Background="White" SnapsToDevicePixels="true">
+                    <Grid Background="{StaticResource WareWolfBackGroundBrush}" SnapsToDevicePixels="true">
                         <Border x:Name="windowOuterBorder"
                                 BorderBrush="White"
                                 BorderThickness="0" />
@@ -996,13 +996,12 @@
                                 <!--  AS 6/24/11 FloatingWindowCaptionSource - Bind Visibility  -->
                                 <Border BorderBrush="{StaticResource MenuPanelGradient}" BorderThickness="0,0,0,1">
                                     <igWindows:CardPanel x:Name="PART_Caption"
-                                                         Background="White"
+                                                         Background="{StaticResource WareWolfBackGroundBrush}"
                                                          Visibility="{TemplateBinding CaptionVisibility}">
-                                        <DockPanel x:Name="captionPanel" Margin="3,0">
+                                        <DockPanel x:Name="captionPanel">
                                             <Button x:Name="MaximizeButton"
-                                                    Width="20"
-                                                    Height="20"
-                                                    Margin="0,5,5,5"
+                                                    Width="25"
+                                                    Height="25"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
                                                     Command="{x:Static igWindows:ToolWindow.MaximizeCommand}"
@@ -1015,7 +1014,11 @@
                                                       Fill="Black"
                                                       Stretch="Uniform" />
                                             </Button>
+                                            <Image Source="{StaticResource System-Logo}"
+                                                   Margin="5,0,0,0"
+                                                   Height="20"/>
                                             <TextBlock x:Name="txtCaption"
+                                                       FontSize="16"
                                                        Foreground="#FFAAAAAA"
                                                        IsHitTestVisible="False"
                                                        Text="{TemplateBinding Title}"
@@ -1092,11 +1095,9 @@
                             <Setter TargetName="Content" Property="Margin" Value="0" />
                         </MultiTrigger>
                         <Trigger Property="IsActive" Value="True">
-                            <Setter TargetName="txtCaption" Property="Foreground" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCaptionTextFillKey}}" />
                             <Setter TargetName="windowOuterBorder" Property="BorderBrush" Value="White" />
                             <Setter TargetName="windowInnerBorder" Property="BorderBrush" Value="{StaticResource MenuPanelGradient}" />
                             <Setter TargetName="windowCenterBorder" Property="Background" Value="{StaticResource WarewolfPanelGreyBrush}" />
-                            <Setter TargetName="PART_Caption" Property="Background" Value="White" />
                         </Trigger>
                         <!--  Do not allow resizing unless canresize or canresizewithgrip  -->
                         <MultiTrigger>

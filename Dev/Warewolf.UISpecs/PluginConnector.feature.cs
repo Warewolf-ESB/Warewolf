@@ -83,8 +83,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.And("I Click NewPluginSource Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.And("I Type \"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll\" into Plugin" +
-                    " Source Wizard Assembly Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Type \"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Numerics.dll\" into" +
+                    " Plugin Source Wizard Assembly Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
  testRunner.And("I Save With Ribbon Button And Dialog As \"UITestingPluginSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
@@ -96,9 +96,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.And("I Select First Item From DotNet DLL Large View Source Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
- testRunner.And("I Select SystemObject From DotNet DLL Large View Namespace Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Namespace", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.And("I Select FirstItem From DotNet DLL Large View Action Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
  testRunner.And("I Click DotNet DLL Large View Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
