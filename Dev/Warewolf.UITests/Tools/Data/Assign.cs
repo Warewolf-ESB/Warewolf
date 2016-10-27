@@ -121,13 +121,6 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.Remove_Assign_Row_1_With_Context_Menu();
         }
 
-        [TestMethod]
-        [TestCategory("Tools")]
-        public void AssignDeleteToolUITest()
-        {
-            UIMap.Delete_Assign_With_Context_Menu();
-        }
-
         #region Additional test attributes
 
         [TestInitialize]
