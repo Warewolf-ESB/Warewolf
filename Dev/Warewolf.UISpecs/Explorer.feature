@@ -43,6 +43,8 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	And I Click DebugInput Debug Button
 	And I Click Debug Output Workflow1 Name
 	And I Select Show Dependencies In Explorer Context Menu for service "LocalWorkflowWithRemoteSubworkflow"
+	And I Click Close Dependecy Tab 
+	And I Click Close Workflow Tab Button
 	
 Scenario: Deploy and Reverse Deploy View Only Workflow
 	Given The Warewolf Studio is running

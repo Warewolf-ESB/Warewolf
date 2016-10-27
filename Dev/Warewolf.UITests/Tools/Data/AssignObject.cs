@@ -40,7 +40,7 @@ namespace Warewolf.UITests.Tools.Data
         {
             UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_AssignObject_Onto_DesignSurface();
