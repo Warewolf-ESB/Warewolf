@@ -8,10 +8,14 @@ namespace Warewolf.UITests.Tools.Utility
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void CreateJSONToolUITest()
-        {
-            UIMap.Drag_Toolbox_JSON_Onto_DesignSurface();
-            UIMap.Open_Json_Tool_Large_View();
+        public void CreateJSONTool_OpenLargeViewUITest()
+        {            
+            UIMap.Open_Json_Tool_Large_View();         
+        }
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void CreateJSONTool_OpenQVIUITest()
+        {            
             UIMap.Open_Json_Tool_Qvi_Large_View();
         }
 
@@ -24,9 +28,17 @@ namespace Warewolf.UITests.Tools.Utility
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_JSON_Onto_DesignSurface();
         }
-        
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
+
         public TestContext TestContext
         {
             get

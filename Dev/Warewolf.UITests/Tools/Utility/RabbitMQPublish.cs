@@ -1,21 +1,16 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Warewolf.UITests.Tools
+namespace Warewolf.UITests.Tools.Utility
 {
     [CodedUITest]
-    public class Create_WEB_Source_From_Tool
+    public class RabbitMQPublish
     {
-        const string WebSourceName = "UITestingWebSourceFromTool";
         [TestMethod]
-        [TestCategory("Tools")]
-        public void WebSourceFromTool()
+		[TestCategory("Tools")]
+        public void RabbitMQPublishTool_OpenLargerViewUITest()
         {
-            UIMap.Drag_GET_Web_Connector_Onto_DesignSurface();
-            UIMap.Open_GET_Web_Connector_Tool_Large_View();
-            UIMap.Click_AddNew_Web_Source_From_tool();
-            UIMap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
-            UIMap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
+            UIMap.Open_RabbitMqPublish_LargeView();
         }
 
         #region Additional test attributes
@@ -27,14 +22,15 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurface();
         }
 
         UIMap UIMap
         {
             get
             {
-                if ((_UIMap == null))
+                if (_UIMap == null)
                 {
                     _UIMap = new UIMap();
                 }
