@@ -180,6 +180,34 @@ namespace Dev2.Studio.Dock
 
         void pane_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
+            var contentPane = sender as ContentPane;
+
+            if (contentPane != null)
+            {
+                var tabGroupPane = contentPane.Parent as TabGroupPane;
+                var splitPane = tabGroupPane?.Parent as SplitPane;
+                var paneToolWindow = splitPane?.Parent as PaneToolWindow;
+                if (paneToolWindow != null)
+                {
+                    if (string.IsNullOrWhiteSpace(paneToolWindow.Title))
+                    {
+                        if (Application.Current != null)
+                        {
+                            if (Application.Current.MainWindow != null)
+                            {
+                                if (Application.Current.MainWindow.DataContext != null)
+                                {
+                                    var mainViewModel = Application.Current.MainWindow.DataContext as MainViewModel;
+                                    if (mainViewModel != null)
+                                    {
+                                        paneToolWindow.Title = mainViewModel.DisplayName;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void ViewModelDeactivated(object sender, DeactivationEventArgs e)

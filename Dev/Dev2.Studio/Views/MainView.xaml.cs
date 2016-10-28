@@ -373,18 +373,18 @@ namespace Dev2.Studio.Views
                     {
                         var workSurfaceContextViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
                         mainViewModel?.ActivateItem(workSurfaceContextViewModel);
-                        e.Window.Name = "FloatingWindow";
+                        paneToolWindow.Name = "FloatingWindow";
                         if (string.IsNullOrWhiteSpace(e.Window.Title))
                         {
-                            e.Window.Title = Title;
+                            paneToolWindow.Title = Title;
                         }
                         else
                         {
                             var dockManager = sender as XamDockManager;
                             var workflowDesignerViewModel = dockManager?.DataContext as WorkflowDesignerViewModel;
-                            e.Window.Title += " - " + workflowDesignerViewModel?.DisplayName;
+                            paneToolWindow.Title += " - " + workflowDesignerViewModel?.DisplayName;
                         }
-                        e.Window.ToolTip = "Floating window for - " + workSurfaceContextViewModel?.ContextualResourceModel.DisplayName;
+                        paneToolWindow.ToolTip = "Floating window for - " + workSurfaceContextViewModel?.ContextualResourceModel.DisplayName;
                     }
                 }
             }
@@ -661,6 +661,23 @@ namespace Dev2.Studio.Views
             catch (Exception)
             {
                 // ignored
+            }
+        }
+
+        private void ContentDockManager_OnPaneDragEnded(object sender, PaneDragEndedEventArgs e)
+        {
+            if (e.Panes != null)
+            {
+                var tabGroupPane = e.Panes[0].Parent as TabGroupPane;
+                var splitPane = tabGroupPane?.Parent as SplitPane;
+                var paneToolWindow = splitPane?.Parent as PaneToolWindow;
+                if (paneToolWindow != null)
+                {
+                    if (string.IsNullOrWhiteSpace(paneToolWindow.Title))
+                    {
+                        paneToolWindow.Title = Title;
+                    }
+                }
             }
         }
     }
