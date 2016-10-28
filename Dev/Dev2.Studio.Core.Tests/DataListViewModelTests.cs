@@ -418,6 +418,43 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("DataListViewModel_HasUnusedDataListItems")]
+        public void DataListViewModel_HasOpenBracket_BeforeAnyClosing_ExpectedComplexObjectNotToBeAdded()
+        {
+            Setup();
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.DisplayValue).Returns("type)()");
+            part.Setup(c => c.IsScalar).Returns(false);
+            part.Setup(c => c.IsJson).Returns(true);
+            parts.Add(part.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts);
+            parts.Add(part.Object);
+            _dataListViewModel.SetIsUsedDataListItems(parts, false);
+            Assert.AreEqual(0, _dataListViewModel.ComplexObjectCollection.Count);
+        }
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("DataListViewModel_HasUnusedDataListItems")]
+        public void DataListViewModel_NameAroundBracket_ExpectedComplexObjectToBeAdded()
+        {
+            Setup();
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.DisplayValue).Returns("(type())");
+            part.Setup(c => c.IsScalar).Returns(false);
+            part.Setup(c => c.IsJson).Returns(true);
+            parts.Add(part.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts);
+            parts.Add(part.Object);
+            Assert.AreEqual(1, _dataListViewModel.ComplexObjectCollection.Count);
+        }
+
+
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("DataListViewModel_HasUnusedDataListItems")]
         public void DataListViewModel_HasUnusedDataListItems_RemoveMalformedComplexObject_ExpectedComplexObjectRemove()
@@ -2144,7 +2181,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual(0, missingDataListParts.Count);
         }
-
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_UpdateDataListItems")]
