@@ -234,6 +234,7 @@
     <Compile Include="ESB\Management\Services\LoggingSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\LoggingSettingsWrite.cs" />
     <Compile Include="ESB\Management\Services\MoveItemService.cs" />
+    <Compile Include="ESB\Management\Services\ReloadAllTests.cs" />
     <Compile Include="ESB\Management\Services\RenameFolderService.cs" />
     <Compile Include="ESB\Management\Services\RenameItemService.cs" />
     <Compile Include="ESB\Management\Services\ResetPerformanceCounters.cs" />

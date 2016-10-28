@@ -414,6 +414,65 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_Load")]
+        public void TestCatalog_Reload_ShouldLoadDictionaryWithResourceIdAndTests()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var resourceID2 = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2"
+                }
+            };
+
+
+            var res2ServiceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 21"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 22"
+                }
+            };
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
+            testCatalog.SaveTests(resourceID2, res2ServiceTestModelTos);
+            testCatalog.Load();
+            //------------Assert Preconditions-------------------
+            Assert.AreEqual(2, testCatalog.Tests.Count);
+            var res1Tests = testCatalog.Tests[resourceID];
+            Assert.AreEqual(2, res1Tests.Count);
+            Assert.AreEqual("Test 1", res1Tests[0].TestName);
+            Assert.AreEqual("Test 2", res1Tests[1].TestName);
+            var res2Tests = testCatalog.Tests[resourceID2];
+            Assert.AreEqual(2, res2Tests.Count);
+            Assert.AreEqual("Test 21", res2Tests[0].TestName);
+            Assert.AreEqual("Test 22", res2Tests[1].TestName);
+            DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
+            Directory.CreateDirectory(EnvironmentVariables.TestPath);
+            //------------Execute Test---------------------------
+            testCatalog.ReloadAllTests();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, testCatalog.Tests.Count);
+
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("TestCatalog_Fetch")]
         public void TestCatalog_Fetch_WhenResourceIdValid_ShouldReturnListOfTestsForResourceId()
         {
