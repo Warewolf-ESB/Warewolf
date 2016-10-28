@@ -44,11 +44,12 @@ namespace Dev2.ViewModels.Workflow
            IDataListVerifyPart verifyPart;
             if (isJsonObjectSource)
             {
-                string removeAtSign = dataPartFieldData;
-                if(dataPartFieldData.IndexOf("@", StringComparison.Ordinal) == 0)
-                    removeAtSign = dataPartFieldData.Substring(1, dataPartFieldData.Length - 1);
-                var intellisenseResult = dataLanguageParser.ValidateName(removeAtSign, "");
-                if (intellisenseResult == null)
+                bool valid = true;
+                var firstIndexOfAtSign = dataPartFieldData.IndexOf("@", StringComparison.Ordinal);
+                //If the value after the @ is a number, do not add to variable list
+                if (firstIndexOfAtSign < dataPartFieldData.Length && char.IsNumber(dataPartFieldData[firstIndexOfAtSign + 1]))
+                    valid = false;
+                if (valid)
                 {
                     verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
                     AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
