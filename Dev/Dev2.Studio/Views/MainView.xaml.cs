@@ -27,6 +27,7 @@ using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
 using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics.Windows.DockManager;
 
 // ReSharper disable CheckNamespace
@@ -347,53 +348,90 @@ namespace Dev2.Studio.Views
 
         private void DockManager_OnToolWindowLoaded(object sender, PaneToolWindowEventArgs e)
         {
-            var resourceDictionary = System.Windows.Application.Current.Resources;
-            var style = resourceDictionary["WarewolfToolWindow"] as Style;
-            if (style != null)
+            try
             {
-                var window = e.Window;
-                window.UseOSNonClientArea = false;
-                window.Style = style;
+                var resourceDictionary = System.Windows.Application.Current.Resources;
+                var style = resourceDictionary["WarewolfToolWindow"] as Style;
+                if (style != null)
+                {
+                    var window = e.Window;
+                    window.UseOSNonClientArea = false;
+                    window.Style = style;
 
-                e.Window.PreviewMouseDown += WindowOnPreviewMouseDown;
+                    e.Window.PreviewMouseDown += WindowOnPreviewMouseDown;
+                }
+
+                if (e.Source.GetType() == typeof(XamDockManager))
+                {
+                    var binding = Infragistics.Windows.Utilities.CreateBindingObject(DataContextProperty, BindingMode.OneWay, sender as XamDockManager);
+                    e.Window.SetBinding(DataContextProperty, binding);
+
+                    MainViewModel mainViewModel = DataContext as MainViewModel;
+                    var paneToolWindow = e.Window;
+
+                    if (paneToolWindow.Pane.Panes != null && paneToolWindow.Pane.Panes.Count > 0)
+                    {
+                        var workSurfaceContextViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
+                        mainViewModel?.ActivateItem(workSurfaceContextViewModel);
+                        e.Window.Name = "FloatingWindow";
+                        e.Window.Title = Title;
+                        e.Window.ToolTip = "Floating window for - " + workSurfaceContextViewModel?.ContextualResourceModel.DisplayName;
+                    }
+                }
             }
-
-            var binding = Infragistics.Windows.Utilities.CreateBindingObject(DataContextProperty, BindingMode.OneWay, sender as XamDockManager);
-            e.Window.SetBinding(DataContextProperty, binding);
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex);
+            }
         }
 
         private void WindowOnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            MainViewModel mainViewModel = DataContext as MainViewModel;
-            if (mainViewModel != null)
+            try
             {
-                var paneToolWindow = sender as PaneToolWindow;
-                if (paneToolWindow?.Pane?.Panes.Count > 0)
+                MainViewModel mainViewModel = DataContext as MainViewModel;
+                if (mainViewModel != null)
                 {
-                    var frameworkElement = paneToolWindow.Pane.Panes[0] as TabGroupPane;
-
-                    if (frameworkElement?.Items.Count >= 1)
+                    var paneToolWindow = sender as PaneToolWindow;
+                    if (paneToolWindow?.Pane?.Panes.Count > 0)
                     {
-                        var textBlock = e.OriginalSource as TextBlock;
-                        var border = e.OriginalSource as Border;
-                        if (textBlock != null)
+                        var frameworkElement = paneToolWindow.Pane.Panes[0] as TabGroupPane;
+
+                        if (frameworkElement?.Items.Count >= 1)
                         {
-                            var data = textBlock.DataContext as WorkflowDesignerViewModel;
-                            if (data != null)
+                            var textBlock = e.OriginalSource as TextBlock;
+                            var border = e.OriginalSource as Border;
+                            if (textBlock != null)
                             {
-                                mainViewModel.AddWorkSurfaceContext(data.ResourceModel);
+                                var data = textBlock.DataContext as WorkflowDesignerViewModel;
+                                if (data != null)
+                                {
+                                    mainViewModel.AddWorkSurfaceContext(data.ResourceModel);
+                                }
+                            }
+                            else if (border != null)
+                            {
+                                var data = border.DataContext as WorkflowDesignerViewModel;
+                                if (data != null)
+                                {
+                                    mainViewModel.AddWorkSurfaceContext(data.ResourceModel);
+                                }
                             }
                         }
-                        else if (border != null)
+                        else
                         {
-                            var data = border.DataContext as WorkflowDesignerViewModel;
-                            if (data != null)
+                            if (paneToolWindow.Pane.Panes != null && paneToolWindow.Pane.Panes.Count > 0)
                             {
-                                mainViewModel.AddWorkSurfaceContext(data.ResourceModel);
+                                var workSurfaceContextViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
+                                mainViewModel?.ActivateItem(workSurfaceContextViewModel);
                             }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex);
             }
         }
 
@@ -478,11 +516,6 @@ namespace Dev2.Studio.Views
                 storyboard.SetValue(Storyboard.TargetProperty, titleBar);
                 storyboard.Begin();
             }
-        }
-
-        private void ContentControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-
         }
 
         bool restoreIfMove;

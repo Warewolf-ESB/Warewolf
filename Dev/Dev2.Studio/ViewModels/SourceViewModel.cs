@@ -43,8 +43,11 @@ namespace Dev2.ViewModels
         {
             _eventPublisher.Unsubscribe(this);
             base.OnDispose();
-            if (ViewModel != null) ViewModel.Dispose();
+            ViewModel?.Dispose();
         }
+
+        public override bool HasVariables => false;
+        public override bool HasDebugOutput => false;
 
         public override object GetView(object context = null)
         {
