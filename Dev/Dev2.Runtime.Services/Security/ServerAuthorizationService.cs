@@ -21,7 +21,7 @@ namespace Dev2.Runtime.Security
 {
     public class ServerAuthorizationService : AuthorizationServiceBase
     {
-        private static ConcurrentDictionary<Tuple<string, string>, Tuple<bool, DateTime>> _cachedRequests = new ConcurrentDictionary<Tuple<string, string>, Tuple<bool, DateTime>>();
+        private static ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>> _cachedRequests = new ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>>();
 
         private static Lazy<ServerAuthorizationService> _theInstance = new Lazy<ServerAuthorizationService>(() => new ServerAuthorizationService(new ServerSecurityService()));
 
@@ -57,7 +57,7 @@ namespace Dev2.Runtime.Security
 
         private static void ClearCaches()
         {
-            _cachedRequests = new ConcurrentDictionary<Tuple<string, string>, Tuple<bool, DateTime>>();
+            _cachedRequests = new ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>>();
         }
 
         public override bool IsAuthorized(AuthorizationContext context, string resource)
@@ -68,7 +68,7 @@ namespace Dev2.Runtime.Security
 
             var user = Common.Utilities.OrginalExecutingUser ?? ClaimsPrincipal.Current;
 
-            Tuple<string, string> requestKey = new Tuple<string, string>(user.Identity.Name, resource);
+            Tuple<string, string, AuthorizationContext> requestKey = new Tuple<string, string,AuthorizationContext>(user.Identity.Name, resource,context);
             Tuple<bool, DateTime> authorizedRequest;
             if (_cachedRequests.TryGetValue(requestKey, out authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod)
             {
@@ -88,8 +88,11 @@ namespace Dev2.Runtime.Security
             }
             else
             {
-                authorizedRequest = new Tuple<bool, DateTime>(authorized, DateTime.Now);
-                _cachedRequests.AddOrUpdate(requestKey, authorizedRequest, (tuple, tuple1) => authorizedRequest);
+                if (resource != Guid.Empty.ToString())
+                {
+                    authorizedRequest = new Tuple<bool, DateTime>(authorized, DateTime.Now);
+                    _cachedRequests.AddOrUpdate(requestKey, authorizedRequest, (tuple, tuple1) => authorizedRequest);
+                }
             }
 
             if (!authorized)

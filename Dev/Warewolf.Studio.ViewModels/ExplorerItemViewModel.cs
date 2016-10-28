@@ -569,7 +569,7 @@ namespace Warewolf.Studio.ViewModels
                 SetAdministratorPermissions();
             }
 
-            if (permission.HasFlag(Permissions.None))
+            if (permission.Equals(Permissions.None))
             {
                 SetNonePermissions();
             }
