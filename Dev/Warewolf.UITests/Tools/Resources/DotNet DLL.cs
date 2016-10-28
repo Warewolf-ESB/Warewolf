@@ -8,42 +8,31 @@ namespace Warewolf.UITests.Tools.Resources
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void DotNetDLLToolUITest()
-        {
-            UIMap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
+        public void DotNetDLLTool_OpenLargeViewUITest()
+        {            
             UIMap.Open_DotNet_DLL_Connector_Tool_Large_View();
-        }
+        }        
 
         #region Additional test attributes
 
-        [TestInitialize]
+       [TestInitialize]
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
         }
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
+        [TestCleanup]
+        public void MyTestCleanup()
         {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
-
-        private TestContext testContextInstance;
-
+        
         UIMap UIMap
         {
             get

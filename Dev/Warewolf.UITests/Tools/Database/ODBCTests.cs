@@ -1,16 +1,16 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Warewolf.UITests.Tools.Control_Flow
+namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class For_Each
+    public class ODBCTests
     {
         [TestMethod]
-		[TestCategory("Tools")]
-        public void ForEachToolUITest()
-        {
-            UIMap.Drag_Toolbox_For_Each_Onto_DesignSurface();
+        [TestCategory("Tools")]
+        public void ODBCTool_OpenLargeViewUITest()
+        {            
+            UIMap.Open_ODBC_Tool_Large_View();
         }
 
         #region Additional test attributes
@@ -22,14 +22,15 @@ namespace Warewolf.UITests.Tools.Control_Flow
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurface();
         }
-
+        
         UIMap UIMap
         {
             get
             {
-                if (_UIMap == null)
+                if ((_UIMap == null))
                 {
                     _UIMap = new UIMap();
                 }

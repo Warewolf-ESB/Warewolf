@@ -8,9 +8,15 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void SysInfoToolUITest()
+        public void SysInfoTool_OpenLargeViewUITest()
+        {            
+            UIMap.Open_System_Information_Tool_Large_View();
+        }
+
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void SysInfoTool_OpenQVIUITest()
         {
-            UIMap.Drag_Toolbox_System_Information_Onto_DesignSurface();
             UIMap.Open_System_Information_Tool_Qvi_Large_View();
         }
 
@@ -23,22 +29,9 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_System_Information_Onto_DesignSurface();
         }
-        
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap UIMap
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Common;
 
@@ -25,7 +26,7 @@ namespace Warewolf.UITests
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Assert.AreEqual("Valid Input", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.TestNameDisplay.DisplayText, "Third 'Hello World' test is not 'Valid Input' as expected.");
             UIMap.Click_Test_Run_Button(3);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Passing.Exists, "Test passing icon is not displayed after running a passing test.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Invalid.Exists, "Test passing icon is not displayed after running a passing test.");
             UIMap.Click_Close_Tests_Tab();
         }
 
