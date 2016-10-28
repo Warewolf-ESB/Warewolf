@@ -19,7 +19,7 @@ namespace Warewolf.UITests.Tools.Utility
         {
             UIMap.Drag_Toolbox_Comment_Onto_DesignSurface();
             UIMap.Press_F6();
-            Assert.AreEqual("Comment", UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.CommentTreeItem.CommentButton.DisplayText);
+            Assert.AreEqual("Comment", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CommentTreeItem.CommentButton.DisplayText);
         }
 
         #region Additional test attributes
