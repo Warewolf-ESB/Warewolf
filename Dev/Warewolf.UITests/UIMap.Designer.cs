@@ -1832,7 +1832,7 @@ namespace Warewolf.UITests
         public void Click_Remove_Unused_Variables()
         {
             #region Variable Declarations
-            WpfButton removeUnused = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused;
+            WpfButton removeUnused = this.MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.RemoveUnused;
             #endregion
 
             // Click '?' button
@@ -4817,31 +4817,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1 - Use 'Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Drag Toolbox Sharepoint Read Folder Onto DesignSurface1")]
-        public void Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem readFolder = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.ReadFolder;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-
-            // Type 'Read' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params.SearchTextBoxText;
-
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
-            flowchart.EnsureClickable(new Point(303, 128));
-            Mouse.StartDragging(readFolder, new Point(13, 15));
-            Mouse.StopDragging(flowchart, new Point(303, 128));
-
-            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-        }
-        
-        /// <summary>
         /// Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Drag Toolbox Sharepoint Update Onto DesignSurface")]
@@ -5637,15 +5612,33 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest - Use 'Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Enter Text Into Workflow Tests Row1 Value Textbox As CodedUITest")]
+        public void Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest()
+        {
+            #region Variable Declarations
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+            #endregion
+
+            // Type 'User' in 'Text' text box
+            Keyboard.SendKeys(textbox, this.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams.TextboxSendKeys, ModifierKeys.None);
+
+            // Verify that the 'Text' property of 'Text' text box equals 'User'
+            Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests row 1 value textbox text does not equal User after typing that in." +
+                    "");
+        }
+        
+        /// <summary>
         /// Enter_Vaiablelist_Items - Use 'Enter_Vaiablelist_ItemsParams' to pass parameters into this method.
         /// </summary>
         [When(@"I Enter Vaiablelist Items")]
         public void Enter_Vaiablelist_Items()
         {
             #region Variable Declarations
-            WpfEdit nameTextbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox;
-            WpfEdit nameTextbox1 = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox;
-            WpfEdit nameTextbox2 = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem3.ScrollViewerPane.NameTextbox;
+            WpfEdit nameTextbox = this.MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox;
+            WpfEdit nameTextbox1 = this.MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox;
+            WpfEdit nameTextbox2 = this.MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem3.ScrollViewerPane.NameTextbox;
             #endregion
 
             // Click 'UI_NameTextBox_AutoID' text box
@@ -5674,24 +5667,6 @@ namespace Warewolf.UITests
 
             // Type '{CapsLock}' in 'UI_NameTextBox_AutoID' text box
             Keyboard.SendKeys(nameTextbox2, this.Enter_Vaiablelist_ItemsParams.NameTextboxSendKeys2, ModifierKeys.None);
-        }
-        
-        /// <summary>
-        /// Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest - Use 'Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Enter Text Into Workflow Tests Row1 Value Textbox As CodedUITest")]
-        public void Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest()
-        {
-            #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
-            #endregion
-
-            // Type 'User' in 'Text' text box
-            Keyboard.SendKeys(textbox, this.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams.TextboxSendKeys, ModifierKeys.None);
-
-            // Verify that the 'Text' property of 'Text' text box equals 'User'
-            Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests row 1 value textbox text does not equal User after typing that in." +
-                    "");
         }
         
         /// <summary>
@@ -8557,24 +8532,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Action
-        /// </summary>
-        [When(@"I Select Action")]
-        public void Select_Action()
-        {
-            #region Variable Declarations
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
-            #endregion
-
-            // Click 'ActionsComboBox' combo box
-            Mouse.Click(actionsComboBox, new Point(216, 7));
-
-            // Click 'Item1' list item
-            Mouse.Click(item1, new Point(137, 7));
-        }
-        
-        /// <summary>
         /// RightClick_SharepointCreateListItem_OnDesignSurface
         /// </summary>
         [When(@"I RightClick SharepointCreateListItem OnDesignSurface")]
@@ -8817,24 +8774,21 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Namespace - Use 'Select_NamespaceExpectedValues' to pass parameters into this method.
+        /// Select_Action
         /// </summary>
-        [When(@"I Select Namespace")]
-        public void Select_Namespace()
+        [When(@"I Select Action")]
+        public void Select_Action()
         {
             #region Variable Declarations
-            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfListItem comboboxlistItemAsSystemObject = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject;
+            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
+            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
             #endregion
 
-            // Click 'NamespaceComboBox' combo box
-            Mouse.Click(classNameComboBox, new Point(216, 7));
+            // Click 'ActionsComboBox' combo box
+            Mouse.Click(actionsComboBox, new Point(216, 7));
 
-            // Verify that the 'Exists' property of 'ComboboxlistItemAsSystemObject' list item equals 'True'
-            Assert.AreEqual(this.Select_NamespaceExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
-
-            // Click 'ComboboxlistItemAsSystemObject' list item
-            Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
+            // Click 'Item1' list item
+            Mouse.Click(item1, new Point(137, 7));
         }
         
         /// <summary>
@@ -9267,6 +9221,27 @@ namespace Warewolf.UITests
 
             // Verify that the 'DisplayText' property of 'Microsoft SQL Server' label equals 'Microsoft SQL Server'
             Assert.AreEqual(this.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams.MicrosoftSQLServerDisplayText, microsoftSQLServer.DisplayText, "Microsoft SQL Server is not selected in DB source wizard.");
+        }
+        
+        /// <summary>
+        /// Select_Namespace - Use 'Select_NamespaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Select Namespace")]
+        public void Select_Namespace()
+        {
+            #region Variable Declarations
+            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
+            WpfListItem comboboxlistItemAsSystemObject = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject;
+            #endregion
+
+            // Click 'NamespaceComboBox' combo box
+            Mouse.Click(classNameComboBox, new Point(216, 7));
+
+            // Verify that the 'Exists' property of 'ComboboxlistItemAsSystemObject' list item equals 'True'
+            Assert.AreEqual(this.Select_NamespaceExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
+
+            // Click 'ComboboxlistItemAsSystemObject' list item
+            Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
         }
         
         /// <summary>
@@ -11968,18 +11943,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params
-        {
-            get
-            {
-                if ((this.mDrag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params == null))
-                {
-                    this.mDrag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params = new Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params();
-                }
-                return this.mDrag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params;
-            }
-        }
-        
         public virtual Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams
         {
             get
@@ -12424,18 +12387,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Enter_Vaiablelist_ItemsParams Enter_Vaiablelist_ItemsParams
-        {
-            get
-            {
-                if ((this.mEnter_Vaiablelist_ItemsParams == null))
-                {
-                    this.mEnter_Vaiablelist_ItemsParams = new Enter_Vaiablelist_ItemsParams();
-                }
-                return this.mEnter_Vaiablelist_ItemsParams;
-            }
-        }
-        
         public virtual Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams
         {
             get
@@ -12445,6 +12396,18 @@ namespace Warewolf.UITests
                     this.mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams = new Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams();
                 }
                 return this.mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
+            }
+        }
+        
+        public virtual Enter_Vaiablelist_ItemsParams Enter_Vaiablelist_ItemsParams
+        {
+            get
+            {
+                if ((this.mEnter_Vaiablelist_ItemsParams == null))
+                {
+                    this.mEnter_Vaiablelist_ItemsParams = new Enter_Vaiablelist_ItemsParams();
+                }
+                return this.mEnter_Vaiablelist_ItemsParams;
             }
         }
         
@@ -13396,18 +13359,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_NamespaceExpectedValues Select_NamespaceExpectedValues
-        {
-            get
-            {
-                if ((this.mSelect_NamespaceExpectedValues == null))
-                {
-                    this.mSelect_NamespaceExpectedValues = new Select_NamespaceExpectedValues();
-                }
-                return this.mSelect_NamespaceExpectedValues;
-            }
-        }
-        
         public virtual Select_Action_From_PostgreToolParams Select_Action_From_PostgreToolParams
         {
             get
@@ -13537,6 +13488,18 @@ namespace Warewolf.UITests
                     this.mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams = new Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams();
                 }
                 return this.mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams;
+            }
+        }
+        
+        public virtual Select_NamespaceExpectedValues Select_NamespaceExpectedValues
+        {
+            get
+            {
+                if ((this.mSelect_NamespaceExpectedValues == null))
+                {
+                    this.mSelect_NamespaceExpectedValues = new Select_NamespaceExpectedValues();
+                }
+                return this.mSelect_NamespaceExpectedValues;
             }
         }
         
@@ -14292,8 +14255,6 @@ namespace Warewolf.UITests
         
         private Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams;
         
-        private Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params mDrag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params;
-        
         private Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams;
@@ -14368,9 +14329,9 @@ namespace Warewolf.UITests
         
         private Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams;
         
-        private Enter_Vaiablelist_ItemsParams mEnter_Vaiablelist_ItemsParams;
-        
         private Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
+        
+        private Enter_Vaiablelist_ItemsParams mEnter_Vaiablelist_ItemsParams;
         
         private Filter_variablesParams mFilter_variablesParams;
         
@@ -14530,8 +14491,6 @@ namespace Warewolf.UITests
         
         private Search_And_Select_HelloWolrdParams mSearch_And_Select_HelloWolrdParams;
         
-        private Select_NamespaceExpectedValues mSelect_NamespaceExpectedValues;
-        
         private Select_Action_From_PostgreToolParams mSelect_Action_From_PostgreToolParams;
         
         private Select_DatabaseAndTable_From_BulkInsert_ToolParams mSelect_DatabaseAndTable_From_BulkInsert_ToolParams;
@@ -14553,6 +14512,8 @@ namespace Warewolf.UITests
         private Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams;
         
         private Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams;
+        
+        private Select_NamespaceExpectedValues mSelect_NamespaceExpectedValues;
         
         private Select_NewDatabaseSource_FromSqlServerToolParams mSelect_NewDatabaseSource_FromSqlServerToolParams;
         
@@ -17813,26 +17774,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface1Params
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'Read' in 'SearchTextBox' text box
-        /// </summary>
-        public string SearchTextBoxText = "Read";
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-        /// </summary>
-        public bool Connector1Exists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -18589,6 +18530,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'User' in 'Text' text box
+        /// </summary>
+        public string TextboxSendKeys = "User";
+        
+        /// <summary>
+        /// Verify that the 'Text' property of 'Text' text box equals 'User'
+        /// </summary>
+        public string TextboxText = "User";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Enter_Vaiablelist_Items'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -18625,26 +18586,6 @@ namespace Warewolf.UITests
         /// Type '{CapsLock}' in 'UI_NameTextBox_AutoID' text box
         /// </summary>
         public string NameTextboxSendKeys2 = "{CapsLock}";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'User' in 'Text' text box
-        /// </summary>
-        public string TextboxSendKeys = "User";
-        
-        /// <summary>
-        /// Verify that the 'Text' property of 'Text' text box equals 'User'
-        /// </summary>
-        public string TextboxText = "User";
         #endregion
     }
     
@@ -20639,21 +20580,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Select_Namespace'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NamespaceExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ComboboxlistItemAsSystemObject' list item equals 'True'
-        /// </summary>
-        public bool ComboboxlistItemAsSystemObjectExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Select_Action_From_PostgreTool'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -20840,6 +20766,21 @@ namespace Warewolf.UITests
         /// Verify that the 'DisplayText' property of 'Microsoft SQL Server' label equals 'Microsoft SQL Server'
         /// </summary>
         public string MicrosoftSQLServerDisplayText = "Microsoft SQL Server";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_Namespace'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_NamespaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ComboboxlistItemAsSystemObject' list item equals 'True'
+        /// </summary>
+        public bool ComboboxlistItemAsSystemObjectExists = true;
         #endregion
     }
     
@@ -23692,18 +23633,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public SplitPaneRight1 SplitPaneRight
-        {
-            get
-            {
-                if ((this.mSplitPaneRight == null))
-                {
-                    this.mSplitPaneRight = new SplitPaneRight1(this);
-                }
-                return this.mSplitPaneRight;
-            }
-        }
-        
         public WpfButton NewWebServiceButton
         {
             get
@@ -23822,8 +23751,6 @@ namespace Warewolf.UITests
         
         private SplitPaneMiddle mSplitPaneMiddle;
         
-        private SplitPaneRight1 mSplitPaneRight;
-        
         private WpfButton mNewWebServiceButton;
         
         private WpfButton mKnowledgeBaseButton;
@@ -23849,7 +23776,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -23925,6 +23852,18 @@ namespace Warewolf.UITests
                 return this.mHelp;
             }
         }
+        
+        public Variables Variables
+        {
+            get
+            {
+                if ((this.mVariables == null))
+                {
+                    this.mVariables = new Variables(this);
+                }
+                return this.mVariables;
+            }
+        }
         #endregion
         
         #region Fields
@@ -23937,6 +23876,8 @@ namespace Warewolf.UITests
         private WpfControl mToolboxHelpSplitter;
         
         private Help mHelp;
+        
+        private Variables mVariables;
         #endregion
     }
     
@@ -29497,6 +29438,3478 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Variables : WpfCustom
+    {
+        
+        public Variables(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Variables";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton VariableUnpinBtn
+        {
+            get
+            {
+                if ((this.mVariableUnpinBtn == null))
+                {
+                    this.mVariableUnpinBtn = new WpfButton(this);
+                    #region Search Criteria
+                    this.mVariableUnpinBtn.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
+                    this.mVariableUnpinBtn.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mVariableUnpinBtn;
+            }
+        }
+        
+        public DatalistView DatalistView
+        {
+            get
+            {
+                if ((this.mDatalistView == null))
+                {
+                    this.mDatalistView = new DatalistView(this);
+                }
+                return this.mDatalistView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mVariableUnpinBtn;
+        
+        private DatalistView mDatalistView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DatalistView : WpfCustom
+    {
+        
+        public DatalistView(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataListView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_DataListView_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public VariableTree VariableTree
+        {
+            get
+            {
+                if ((this.mVariableTree == null))
+                {
+                    this.mVariableTree = new VariableTree(this);
+                }
+                return this.mVariableTree;
+            }
+        }
+        
+        public SearchTextbox2 SearchTextbox
+        {
+            get
+            {
+                if ((this.mSearchTextbox == null))
+                {
+                    this.mSearchTextbox = new SearchTextbox2(this);
+                }
+                return this.mSearchTextbox;
+            }
+        }
+        
+        public WpfButton RemoveUnused
+        {
+            get
+            {
+                if ((this.mRemoveUnused == null))
+                {
+                    this.mRemoveUnused = new WpfButton(this);
+                    #region Search Criteria
+                    this.mRemoveUnused.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_AddRemovebtn_AutoID";
+                    this.mRemoveUnused.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mRemoveUnused;
+            }
+        }
+        
+        public WpfButton Sort
+        {
+            get
+            {
+                if ((this.mSort == null))
+                {
+                    this.mSort = new WpfButton(this);
+                    #region Search Criteria
+                    this.mSort.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_Sortbtn_AutoID";
+                    this.mSort.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSort;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private VariableTree mVariableTree;
+        
+        private SearchTextbox2 mSearchTextbox;
+        
+        private WpfButton mRemoveUnused;
+        
+        private WpfButton mSort;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class VariableTree : WpfTree
+    {
+        
+        public VariableTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "UI_VariableTreeView_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public VariableTreeItem VariableTreeItem
+        {
+            get
+            {
+                if ((this.mVariableTreeItem == null))
+                {
+                    this.mVariableTreeItem = new VariableTreeItem(this);
+                }
+                return this.mVariableTreeItem;
+            }
+        }
+        
+        public RecordsetTreeItem RecordsetTreeItem
+        {
+            get
+            {
+                if ((this.mRecordsetTreeItem == null))
+                {
+                    this.mRecordsetTreeItem = new RecordsetTreeItem(this);
+                }
+                return this.mRecordsetTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private VariableTreeItem mVariableTreeItem;
+        
+        private RecordsetTreeItem mRecordsetTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class VariableTreeItem : WpfTreeItem
+    {
+        
+        public VariableTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Variable";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public TreeItem1 TreeItem1
+        {
+            get
+            {
+                if ((this.mTreeItem1 == null))
+                {
+                    this.mTreeItem1 = new TreeItem1(this);
+                }
+                return this.mTreeItem1;
+            }
+        }
+        
+        public TreeItem2 TreeItem2
+        {
+            get
+            {
+                if ((this.mTreeItem2 == null))
+                {
+                    this.mTreeItem2 = new TreeItem2(this);
+                }
+                return this.mTreeItem2;
+            }
+        }
+        
+        public TreeItem3 TreeItem3
+        {
+            get
+            {
+                if ((this.mTreeItem3 == null))
+                {
+                    this.mTreeItem3 = new TreeItem3(this);
+                }
+                return this.mTreeItem3;
+            }
+        }
+        
+        public TreeItem4 TreeItem4
+        {
+            get
+            {
+                if ((this.mTreeItem4 == null))
+                {
+                    this.mTreeItem4 = new TreeItem4(this);
+                }
+                return this.mTreeItem4;
+            }
+        }
+        
+        public TreeItem5 TreeItem5
+        {
+            get
+            {
+                if ((this.mTreeItem5 == null))
+                {
+                    this.mTreeItem5 = new TreeItem5(this);
+                }
+                return this.mTreeItem5;
+            }
+        }
+        
+        public WpfButton ExpanderButton
+        {
+            get
+            {
+                if ((this.mExpanderButton == null))
+                {
+                    this.mExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExpanderButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TreeItem1 mTreeItem1;
+        
+        private TreeItem2 mTreeItem2;
+        
+        private TreeItem3 mTreeItem3;
+        
+        private TreeItem4 mTreeItem4;
+        
+        private TreeItem5 mTreeItem5;
+        
+        private WpfButton mExpanderButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem1 : WpfTreeItem
+    {
+        
+        public TreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane : WpfPane
+    {
+        
+        public ScrollViewerPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox : WpfEdit
+    {
+        
+        public NameTextbox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public DeleteButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new DeleteButton(this);
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        
+        private DeleteButton mDeleteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeleteButton : WpfButton
+    {
+        
+        public DeleteButton(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage Image
+        {
+            get
+            {
+                if ((this.mImage == null))
+                {
+                    this.mImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteVar";
+                    this.mImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem2 : WpfTreeItem
+    {
+        
+        public TreeItem2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane1 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane1(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane1 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane1 : WpfPane
+    {
+        
+        public ScrollViewerPane1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox1 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox1(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox1 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox1 : WpfEdit
+    {
+        
+        public NameTextbox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem3 : WpfTreeItem
+    {
+        
+        public TreeItem3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane2 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane2(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane2 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane2 : WpfPane
+    {
+        
+        public ScrollViewerPane2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox2 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox2(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox2 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox2 : WpfEdit
+    {
+        
+        public NameTextbox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem4 : WpfTreeItem
+    {
+        
+        public TreeItem4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "4";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane3 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane3(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane3 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane3 : WpfPane
+    {
+        
+        public ScrollViewerPane3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox3 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox3(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox3 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox3 : WpfEdit
+    {
+        
+        public NameTextbox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem5 : WpfTreeItem
+    {
+        
+        public TreeItem5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane4 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane4(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane4 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane4 : WpfPane
+    {
+        
+        public ScrollViewerPane4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox4 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox4(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox4 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox4 : WpfEdit
+    {
+        
+        public NameTextbox4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RecordsetTreeItem : WpfTreeItem
+    {
+        
+        public RecordsetTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Recordset";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public TreeItem11 TreeItem1
+        {
+            get
+            {
+                if ((this.mTreeItem1 == null))
+                {
+                    this.mTreeItem1 = new TreeItem11(this);
+                }
+                return this.mTreeItem1;
+            }
+        }
+        
+        public TreeItem21 TreeItem2
+        {
+            get
+            {
+                if ((this.mTreeItem2 == null))
+                {
+                    this.mTreeItem2 = new TreeItem21(this);
+                }
+                return this.mTreeItem2;
+            }
+        }
+        
+        public TreeItem31 TreeItem3
+        {
+            get
+            {
+                if ((this.mTreeItem3 == null))
+                {
+                    this.mTreeItem3 = new TreeItem31(this);
+                }
+                return this.mTreeItem3;
+            }
+        }
+        
+        public TreeItem41 TreeItem4
+        {
+            get
+            {
+                if ((this.mTreeItem4 == null))
+                {
+                    this.mTreeItem4 = new TreeItem41(this);
+                }
+                return this.mTreeItem4;
+            }
+        }
+        
+        public TreeItem51 TreeItem5
+        {
+            get
+            {
+                if ((this.mTreeItem5 == null))
+                {
+                    this.mTreeItem5 = new TreeItem51(this);
+                }
+                return this.mTreeItem5;
+            }
+        }
+        
+        public WpfButton ExpanderButton
+        {
+            get
+            {
+                if ((this.mExpanderButton == null))
+                {
+                    this.mExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExpanderButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TreeItem11 mTreeItem1;
+        
+        private TreeItem21 mTreeItem2;
+        
+        private TreeItem31 mTreeItem3;
+        
+        private TreeItem41 mTreeItem4;
+        
+        private TreeItem51 mTreeItem5;
+        
+        private WpfButton mExpanderButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem11 : WpfTreeItem
+    {
+        
+        public TreeItem11(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane5 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane5(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        
+        public Field1 Field1
+        {
+            get
+            {
+                if ((this.mField1 == null))
+                {
+                    this.mField1 = new Field1(this);
+                }
+                return this.mField1;
+            }
+        }
+        
+        public Field2 Field2
+        {
+            get
+            {
+                if ((this.mField2 == null))
+                {
+                    this.mField2 = new Field2(this);
+                }
+                return this.mField2;
+            }
+        }
+        
+        public WpfButton ExpanderButton
+        {
+            get
+            {
+                if ((this.mExpanderButton == null))
+                {
+                    this.mExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExpanderButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane5 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        
+        private Field1 mField1;
+        
+        private Field2 mField2;
+        
+        private WpfButton mExpanderButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane5 : WpfPane
+    {
+        
+        public ScrollViewerPane5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox5 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox5(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox5 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox5 : WpfEdit
+    {
+        
+        public NameTextbox5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButtonButton
+        {
+            get
+            {
+                if ((this.mDeleteButtonButton == null))
+                {
+                    this.mDeleteButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButtonButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButtonButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Field1 : WpfTreeItem
+    {
+        
+        public Field1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane6 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane6(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane6 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane6 : WpfPane
+    {
+        
+        public ScrollViewerPane6(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox6 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox6(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox6 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox6 : WpfEdit
+    {
+        
+        public NameTextbox6(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Field2 : WpfTreeItem
+    {
+        
+        public Field2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane7 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane7(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane7 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane7 : WpfPane
+    {
+        
+        public ScrollViewerPane7(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox7 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox7(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox7 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox7 : WpfEdit
+    {
+        
+        public NameTextbox7(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem21 : WpfTreeItem
+    {
+        
+        public TreeItem21(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane8 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane8(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        
+        public Field Field
+        {
+            get
+            {
+                if ((this.mField == null))
+                {
+                    this.mField = new Field(this);
+                }
+                return this.mField;
+            }
+        }
+        
+        public WpfButton ExpanderButton
+        {
+            get
+            {
+                if ((this.mExpanderButton == null))
+                {
+                    this.mExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExpanderButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane8 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        
+        private Field mField;
+        
+        private WpfButton mExpanderButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane8 : WpfPane
+    {
+        
+        public ScrollViewerPane8(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox8 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox8(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox8 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox8 : WpfEdit
+    {
+        
+        public NameTextbox8(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButtonButton
+        {
+            get
+            {
+                if ((this.mDeleteButtonButton == null))
+                {
+                    this.mDeleteButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButtonButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButtonButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Field : WpfTreeItem
+    {
+        
+        public Field(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane9 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane9(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane9 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane9 : WpfPane
+    {
+        
+        public ScrollViewerPane9(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox9 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox9(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox9 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox9 : WpfEdit
+    {
+        
+        public NameTextbox9(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem31 : WpfTreeItem
+    {
+        
+        public TreeItem31(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane10 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane10(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        
+        public Field3 Field
+        {
+            get
+            {
+                if ((this.mField == null))
+                {
+                    this.mField = new Field3(this);
+                }
+                return this.mField;
+            }
+        }
+        
+        public WpfButton ExpanderButton
+        {
+            get
+            {
+                if ((this.mExpanderButton == null))
+                {
+                    this.mExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExpanderButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane10 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        
+        private Field3 mField;
+        
+        private WpfButton mExpanderButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane10 : WpfPane
+    {
+        
+        public ScrollViewerPane10(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox10 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox10(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox10 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox10 : WpfEdit
+    {
+        
+        public NameTextbox10(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButtonButton
+        {
+            get
+            {
+                if ((this.mDeleteButtonButton == null))
+                {
+                    this.mDeleteButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButtonButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButtonButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Field3 : WpfTreeItem
+    {
+        
+        public Field3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane11 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane11(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane11 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane11 : WpfPane
+    {
+        
+        public ScrollViewerPane11(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox11 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox11(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox11 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox11 : WpfEdit
+    {
+        
+        public NameTextbox11(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem41 : WpfTreeItem
+    {
+        
+        public TreeItem41(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "4";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane12 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane12(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        
+        public Field4 Field
+        {
+            get
+            {
+                if ((this.mField == null))
+                {
+                    this.mField = new Field4(this);
+                }
+                return this.mField;
+            }
+        }
+        
+        public WpfButton ExpanderButton
+        {
+            get
+            {
+                if ((this.mExpanderButton == null))
+                {
+                    this.mExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExpanderButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane12 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        
+        private Field4 mField;
+        
+        private WpfButton mExpanderButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane12 : WpfPane
+    {
+        
+        public ScrollViewerPane12(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox12 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox12(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox12 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox12 : WpfEdit
+    {
+        
+        public NameTextbox12(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButtonButton
+        {
+            get
+            {
+                if ((this.mDeleteButtonButton == null))
+                {
+                    this.mDeleteButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButtonButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButtonButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Field4 : WpfTreeItem
+    {
+        
+        public Field4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane13 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane13(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane13 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane13 : WpfPane
+    {
+        
+        public ScrollViewerPane13(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox13 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox13(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox13 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox13 : WpfEdit
+    {
+        
+        public NameTextbox13(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem51 : WpfTreeItem
+    {
+        
+        public TreeItem51(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane14 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane14(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        
+        public Field5 Field
+        {
+            get
+            {
+                if ((this.mField == null))
+                {
+                    this.mField = new Field5(this);
+                }
+                return this.mField;
+            }
+        }
+        
+        public WpfButton ExpanderButton
+        {
+            get
+            {
+                if ((this.mExpanderButton == null))
+                {
+                    this.mExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpanderButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExpanderButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane14 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        
+        private Field5 mField;
+        
+        private WpfButton mExpanderButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane14 : WpfPane
+    {
+        
+        public ScrollViewerPane14(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox14 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox14(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox14 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox14 : WpfEdit
+    {
+        
+        public NameTextbox14(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton DeleteButtonButton
+        {
+            get
+            {
+                if ((this.mDeleteButtonButton == null))
+                {
+                    this.mDeleteButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButtonButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        
+        private WpfButton mDeleteButtonButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Field5 : WpfTreeItem
+    {
+        
+        public Field5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ScrollViewerPane15 ScrollViewerPane
+        {
+            get
+            {
+                if ((this.mScrollViewerPane == null))
+                {
+                    this.mScrollViewerPane = new ScrollViewerPane15(this);
+                }
+                return this.mScrollViewerPane;
+            }
+        }
+        
+        public WpfCheckBox InputCheckbox
+        {
+            get
+            {
+                if ((this.mInputCheckbox == null))
+                {
+                    this.mInputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mInputCheckbox;
+            }
+        }
+        
+        public WpfCheckBox OutputCheckbox
+        {
+            get
+            {
+                if ((this.mOutputCheckbox == null))
+                {
+                    this.mOutputCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOutputCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ScrollViewerPane15 mScrollViewerPane;
+        
+        private WpfCheckBox mInputCheckbox;
+        
+        private WpfCheckBox mOutputCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ScrollViewerPane15 : WpfPane
+    {
+        
+        public ScrollViewerPane15(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public NameTextbox15 NameTextbox
+        {
+            get
+            {
+                if ((this.mNameTextbox == null))
+                {
+                    this.mNameTextbox = new NameTextbox15(this);
+                }
+                return this.mNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private NameTextbox15 mNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameTextbox15 : WpfEdit
+    {
+        
+        public NameTextbox15(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Label
+        {
+            get
+            {
+                if ((this.mLabel == null))
+                {
+                    this.mLabel = new WpfText(this);
+                    #region Search Criteria
+                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mLabel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLabel;
+            }
+        }
+        
+        public WpfImage DeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mDeleteDisabledImage == null))
+                {
+                    this.mDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteDisabledImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLabel;
+        
+        private WpfImage mDeleteDisabledImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SearchTextbox2 : WpfEdit
+    {
+        
+        public SearchTextbox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText FilterText
+        {
+            get
+            {
+                if ((this.mFilterText == null))
+                {
+                    this.mFilterText = new WpfText(this);
+                    #region Search Criteria
+                    this.mFilterText.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mFilterText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mFilterText;
+            }
+        }
+        
+        public WpfImage ClearSearchDisabled
+        {
+            get
+            {
+                if ((this.mClearSearchDisabled == null))
+                {
+                    this.mClearSearchDisabled = new WpfImage(this);
+                    #region Search Criteria
+                    this.mClearSearchDisabled.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ClearSearchDisabled";
+                    this.mClearSearchDisabled.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mClearSearchDisabled;
+            }
+        }
+        
+        public WpfButton ClearSearchButton
+        {
+            get
+            {
+                if ((this.mClearSearchButton == null))
+                {
+                    this.mClearSearchButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mClearSearchButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ClearSearchButton";
+                    this.mClearSearchButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mClearSearchButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mFilterText;
+        
+        private WpfImage mClearSearchDisabled;
+        
+        private WpfButton mClearSearchButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitPaneMiddle : WpfCustom
     {
         
@@ -32558,13 +35971,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane ScrollViewerPane
+        public ScrollViewerPane16 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane(this);
+                    this.mScrollViewerPane = new ScrollViewerPane16(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -32604,7 +36017,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane mScrollViewerPane;
+        private ScrollViewerPane16 mScrollViewerPane;
         
         private WpfToggleButton mExpandAllToggleButton;
         
@@ -32613,10 +36026,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane : WpfPane
+    public class ScrollViewerPane16 : WpfPane
     {
         
-        public ScrollViewerPane(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane16(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82035,13 +85448,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Variables Variables
+        public Variables1 Variables
         {
             get
             {
                 if ((this.mVariables == null))
                 {
-                    this.mVariables = new Variables(this);
+                    this.mVariables = new Variables1(this);
                 }
                 return this.mVariables;
             }
@@ -82061,17 +85474,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Variables mVariables;
+        private Variables1 mVariables;
         
         private DebugOutput mDebugOutput;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Variables : WpfCustom
+    public class Variables1 : WpfCustom
     {
         
-        public Variables(UITestControl searchLimitContainer) : 
+        public Variables1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82098,13 +85511,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public DatalistView DatalistView
+        public DatalistView1 DatalistView
         {
             get
             {
                 if ((this.mDatalistView == null))
                 {
-                    this.mDatalistView = new DatalistView(this);
+                    this.mDatalistView = new DatalistView1(this);
                 }
                 return this.mDatalistView;
             }
@@ -82114,15 +85527,15 @@ namespace Warewolf.UITests
         #region Fields
         private WpfButton mVariableUnpinBtn;
         
-        private DatalistView mDatalistView;
+        private DatalistView1 mDatalistView;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DatalistView : WpfCustom
+    public class DatalistView1 : WpfCustom
     {
         
-        public DatalistView(UITestControl searchLimitContainer) : 
+        public DatalistView1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82133,25 +85546,25 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableTree VariableTree
+        public VariableTree1 VariableTree
         {
             get
             {
                 if ((this.mVariableTree == null))
                 {
-                    this.mVariableTree = new VariableTree(this);
+                    this.mVariableTree = new VariableTree1(this);
                 }
                 return this.mVariableTree;
             }
         }
         
-        public SearchTextbox2 SearchTextbox
+        public SearchTextbox3 SearchTextbox
         {
             get
             {
                 if ((this.mSearchTextbox == null))
                 {
-                    this.mSearchTextbox = new SearchTextbox2(this);
+                    this.mSearchTextbox = new SearchTextbox3(this);
                 }
                 return this.mSearchTextbox;
             }
@@ -82191,9 +85604,9 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableTree mVariableTree;
+        private VariableTree1 mVariableTree;
         
-        private SearchTextbox2 mSearchTextbox;
+        private SearchTextbox3 mSearchTextbox;
         
         private WpfButton mRemoveUnused;
         
@@ -82202,10 +85615,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableTree : WpfTree
+    public class VariableTree1 : WpfTree
     {
         
-        public VariableTree(UITestControl searchLimitContainer) : 
+        public VariableTree1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82215,25 +85628,25 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public VariableTreeItem VariableTreeItem
+        public VariableTreeItem1 VariableTreeItem
         {
             get
             {
                 if ((this.mVariableTreeItem == null))
                 {
-                    this.mVariableTreeItem = new VariableTreeItem(this);
+                    this.mVariableTreeItem = new VariableTreeItem1(this);
                 }
                 return this.mVariableTreeItem;
             }
         }
         
-        public RecordsetTreeItem RecordsetTreeItem
+        public RecordsetTreeItem1 RecordsetTreeItem
         {
             get
             {
                 if ((this.mRecordsetTreeItem == null))
                 {
-                    this.mRecordsetTreeItem = new RecordsetTreeItem(this);
+                    this.mRecordsetTreeItem = new RecordsetTreeItem1(this);
                 }
                 return this.mRecordsetTreeItem;
             }
@@ -82241,17 +85654,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private VariableTreeItem mVariableTreeItem;
+        private VariableTreeItem1 mVariableTreeItem;
         
-        private RecordsetTreeItem mRecordsetTreeItem;
+        private RecordsetTreeItem1 mRecordsetTreeItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableTreeItem : WpfTreeItem
+    public class VariableTreeItem1 : WpfTreeItem
     {
         
-        public VariableTreeItem(UITestControl searchLimitContainer) : 
+        public VariableTreeItem1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82261,61 +85674,61 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public TreeItem1 TreeItem1
+        public TreeItem12 TreeItem1
         {
             get
             {
                 if ((this.mTreeItem1 == null))
                 {
-                    this.mTreeItem1 = new TreeItem1(this);
+                    this.mTreeItem1 = new TreeItem12(this);
                 }
                 return this.mTreeItem1;
             }
         }
         
-        public TreeItem2 TreeItem2
+        public TreeItem22 TreeItem2
         {
             get
             {
                 if ((this.mTreeItem2 == null))
                 {
-                    this.mTreeItem2 = new TreeItem2(this);
+                    this.mTreeItem2 = new TreeItem22(this);
                 }
                 return this.mTreeItem2;
             }
         }
         
-        public TreeItem3 TreeItem3
+        public TreeItem32 TreeItem3
         {
             get
             {
                 if ((this.mTreeItem3 == null))
                 {
-                    this.mTreeItem3 = new TreeItem3(this);
+                    this.mTreeItem3 = new TreeItem32(this);
                 }
                 return this.mTreeItem3;
             }
         }
         
-        public TreeItem4 TreeItem4
+        public TreeItem42 TreeItem4
         {
             get
             {
                 if ((this.mTreeItem4 == null))
                 {
-                    this.mTreeItem4 = new TreeItem4(this);
+                    this.mTreeItem4 = new TreeItem42(this);
                 }
                 return this.mTreeItem4;
             }
         }
         
-        public TreeItem5 TreeItem5
+        public TreeItem52 TreeItem5
         {
             get
             {
                 if ((this.mTreeItem5 == null))
                 {
-                    this.mTreeItem5 = new TreeItem5(this);
+                    this.mTreeItem5 = new TreeItem52(this);
                 }
                 return this.mTreeItem5;
             }
@@ -82340,25 +85753,25 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private TreeItem1 mTreeItem1;
+        private TreeItem12 mTreeItem1;
         
-        private TreeItem2 mTreeItem2;
+        private TreeItem22 mTreeItem2;
         
-        private TreeItem3 mTreeItem3;
+        private TreeItem32 mTreeItem3;
         
-        private TreeItem4 mTreeItem4;
+        private TreeItem42 mTreeItem4;
         
-        private TreeItem5 mTreeItem5;
+        private TreeItem52 mTreeItem5;
         
         private WpfButton mExpanderButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem1 : WpfTreeItem
+    public class TreeItem12 : WpfTreeItem
     {
         
-        public TreeItem1(UITestControl searchLimitContainer) : 
+        public TreeItem12(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82370,13 +85783,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane1 ScrollViewerPane
+        public ScrollViewerPane17 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane1(this);
+                    this.mScrollViewerPane = new ScrollViewerPane17(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -82418,7 +85831,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane1 mScrollViewerPane;
+        private ScrollViewerPane17 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
@@ -82427,10 +85840,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane1 : WpfPane
+    public class ScrollViewerPane17 : WpfPane
     {
         
-        public ScrollViewerPane1(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane17(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82442,13 +85855,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox NameTextbox
+        public NameTextbox16 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox(this);
+                    this.mNameTextbox = new NameTextbox16(this);
                 }
                 return this.mNameTextbox;
             }
@@ -82456,15 +85869,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox mNameTextbox;
+        private NameTextbox16 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox : WpfEdit
+    public class NameTextbox16 : WpfEdit
     {
         
-        public NameTextbox(UITestControl searchLimitContainer) : 
+        public NameTextbox16(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82509,13 +85922,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public DeleteButton DeleteButton
+        public DeleteButton1 DeleteButton
         {
             get
             {
                 if ((this.mDeleteButton == null))
                 {
-                    this.mDeleteButton = new DeleteButton(this);
+                    this.mDeleteButton = new DeleteButton1(this);
                 }
                 return this.mDeleteButton;
             }
@@ -82527,15 +85940,15 @@ namespace Warewolf.UITests
         
         private WpfImage mDeleteDisabledImage;
         
-        private DeleteButton mDeleteButton;
+        private DeleteButton1 mDeleteButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DeleteButton : WpfButton
+    public class DeleteButton1 : WpfButton
     {
         
-        public DeleteButton(UITestControl searchLimitContainer) : 
+        public DeleteButton1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82570,10 +85983,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem2 : WpfTreeItem
+    public class TreeItem22 : WpfTreeItem
     {
         
-        public TreeItem2(UITestControl searchLimitContainer) : 
+        public TreeItem22(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82585,13 +85998,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane2 ScrollViewerPane
+        public ScrollViewerPane18 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane2(this);
+                    this.mScrollViewerPane = new ScrollViewerPane18(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -82633,7 +86046,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane2 mScrollViewerPane;
+        private ScrollViewerPane18 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
@@ -82642,10 +86055,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane2 : WpfPane
+    public class ScrollViewerPane18 : WpfPane
     {
         
-        public ScrollViewerPane2(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane18(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82657,13 +86070,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox1 NameTextbox
+        public NameTextbox17 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox1(this);
+                    this.mNameTextbox = new NameTextbox17(this);
                 }
                 return this.mNameTextbox;
             }
@@ -82671,15 +86084,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox1 mNameTextbox;
+        private NameTextbox17 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox1 : WpfEdit
+    public class NameTextbox17 : WpfEdit
     {
         
-        public NameTextbox1(UITestControl searchLimitContainer) : 
+        public NameTextbox17(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82752,10 +86165,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem3 : WpfTreeItem
+    public class TreeItem32 : WpfTreeItem
     {
         
-        public TreeItem3(UITestControl searchLimitContainer) : 
+        public TreeItem32(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82767,13 +86180,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane3 ScrollViewerPane
+        public ScrollViewerPane19 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane3(this);
+                    this.mScrollViewerPane = new ScrollViewerPane19(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -82815,7 +86228,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane3 mScrollViewerPane;
+        private ScrollViewerPane19 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
@@ -82824,10 +86237,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane3 : WpfPane
+    public class ScrollViewerPane19 : WpfPane
     {
         
-        public ScrollViewerPane3(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane19(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82839,13 +86252,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox2 NameTextbox
+        public NameTextbox18 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox2(this);
+                    this.mNameTextbox = new NameTextbox18(this);
                 }
                 return this.mNameTextbox;
             }
@@ -82853,15 +86266,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox2 mNameTextbox;
+        private NameTextbox18 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox2 : WpfEdit
+    public class NameTextbox18 : WpfEdit
     {
         
-        public NameTextbox2(UITestControl searchLimitContainer) : 
+        public NameTextbox18(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82934,10 +86347,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem4 : WpfTreeItem
+    public class TreeItem42 : WpfTreeItem
     {
         
-        public TreeItem4(UITestControl searchLimitContainer) : 
+        public TreeItem42(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82949,13 +86362,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane4 ScrollViewerPane
+        public ScrollViewerPane20 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane4(this);
+                    this.mScrollViewerPane = new ScrollViewerPane20(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -82997,7 +86410,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane4 mScrollViewerPane;
+        private ScrollViewerPane20 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
@@ -83006,10 +86419,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane4 : WpfPane
+    public class ScrollViewerPane20 : WpfPane
     {
         
-        public ScrollViewerPane4(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane20(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83021,13 +86434,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox3 NameTextbox
+        public NameTextbox19 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox3(this);
+                    this.mNameTextbox = new NameTextbox19(this);
                 }
                 return this.mNameTextbox;
             }
@@ -83035,15 +86448,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox3 mNameTextbox;
+        private NameTextbox19 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox3 : WpfEdit
+    public class NameTextbox19 : WpfEdit
     {
         
-        public NameTextbox3(UITestControl searchLimitContainer) : 
+        public NameTextbox19(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83116,10 +86529,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem5 : WpfTreeItem
+    public class TreeItem52 : WpfTreeItem
     {
         
-        public TreeItem5(UITestControl searchLimitContainer) : 
+        public TreeItem52(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83131,13 +86544,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane5 ScrollViewerPane
+        public ScrollViewerPane21 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane5(this);
+                    this.mScrollViewerPane = new ScrollViewerPane21(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -83179,7 +86592,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane5 mScrollViewerPane;
+        private ScrollViewerPane21 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
@@ -83188,10 +86601,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane5 : WpfPane
+    public class ScrollViewerPane21 : WpfPane
     {
         
-        public ScrollViewerPane5(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane21(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83203,13 +86616,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox4 NameTextbox
+        public NameTextbox20 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox4(this);
+                    this.mNameTextbox = new NameTextbox20(this);
                 }
                 return this.mNameTextbox;
             }
@@ -83217,15 +86630,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox4 mNameTextbox;
+        private NameTextbox20 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox4 : WpfEdit
+    public class NameTextbox20 : WpfEdit
     {
         
-        public NameTextbox4(UITestControl searchLimitContainer) : 
+        public NameTextbox20(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83298,10 +86711,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetTreeItem : WpfTreeItem
+    public class RecordsetTreeItem1 : WpfTreeItem
     {
         
-        public RecordsetTreeItem(UITestControl searchLimitContainer) : 
+        public RecordsetTreeItem1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83311,61 +86724,61 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public TreeItem11 TreeItem1
+        public TreeItem13 TreeItem1
         {
             get
             {
                 if ((this.mTreeItem1 == null))
                 {
-                    this.mTreeItem1 = new TreeItem11(this);
+                    this.mTreeItem1 = new TreeItem13(this);
                 }
                 return this.mTreeItem1;
             }
         }
         
-        public TreeItem21 TreeItem2
+        public TreeItem23 TreeItem2
         {
             get
             {
                 if ((this.mTreeItem2 == null))
                 {
-                    this.mTreeItem2 = new TreeItem21(this);
+                    this.mTreeItem2 = new TreeItem23(this);
                 }
                 return this.mTreeItem2;
             }
         }
         
-        public TreeItem31 TreeItem3
+        public TreeItem33 TreeItem3
         {
             get
             {
                 if ((this.mTreeItem3 == null))
                 {
-                    this.mTreeItem3 = new TreeItem31(this);
+                    this.mTreeItem3 = new TreeItem33(this);
                 }
                 return this.mTreeItem3;
             }
         }
         
-        public TreeItem41 TreeItem4
+        public TreeItem43 TreeItem4
         {
             get
             {
                 if ((this.mTreeItem4 == null))
                 {
-                    this.mTreeItem4 = new TreeItem41(this);
+                    this.mTreeItem4 = new TreeItem43(this);
                 }
                 return this.mTreeItem4;
             }
         }
         
-        public TreeItem51 TreeItem5
+        public TreeItem53 TreeItem5
         {
             get
             {
                 if ((this.mTreeItem5 == null))
                 {
-                    this.mTreeItem5 = new TreeItem51(this);
+                    this.mTreeItem5 = new TreeItem53(this);
                 }
                 return this.mTreeItem5;
             }
@@ -83390,25 +86803,25 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private TreeItem11 mTreeItem1;
+        private TreeItem13 mTreeItem1;
         
-        private TreeItem21 mTreeItem2;
+        private TreeItem23 mTreeItem2;
         
-        private TreeItem31 mTreeItem3;
+        private TreeItem33 mTreeItem3;
         
-        private TreeItem41 mTreeItem4;
+        private TreeItem43 mTreeItem4;
         
-        private TreeItem51 mTreeItem5;
+        private TreeItem53 mTreeItem5;
         
         private WpfButton mExpanderButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem11 : WpfTreeItem
+    public class TreeItem13 : WpfTreeItem
     {
         
-        public TreeItem11(UITestControl searchLimitContainer) : 
+        public TreeItem13(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83420,13 +86833,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane6 ScrollViewerPane
+        public ScrollViewerPane22 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane6(this);
+                    this.mScrollViewerPane = new ScrollViewerPane22(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -83466,25 +86879,25 @@ namespace Warewolf.UITests
             }
         }
         
-        public Field1 Field1
+        public Field11 Field1
         {
             get
             {
                 if ((this.mField1 == null))
                 {
-                    this.mField1 = new Field1(this);
+                    this.mField1 = new Field11(this);
                 }
                 return this.mField1;
             }
         }
         
-        public Field2 Field2
+        public Field21 Field2
         {
             get
             {
                 if ((this.mField2 == null))
                 {
-                    this.mField2 = new Field2(this);
+                    this.mField2 = new Field21(this);
                 }
                 return this.mField2;
             }
@@ -83509,25 +86922,25 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane6 mScrollViewerPane;
+        private ScrollViewerPane22 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
         
-        private Field1 mField1;
+        private Field11 mField1;
         
-        private Field2 mField2;
+        private Field21 mField2;
         
         private WpfButton mExpanderButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane6 : WpfPane
+    public class ScrollViewerPane22 : WpfPane
     {
         
-        public ScrollViewerPane6(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane22(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83539,13 +86952,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox5 NameTextbox
+        public NameTextbox21 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox5(this);
+                    this.mNameTextbox = new NameTextbox21(this);
                 }
                 return this.mNameTextbox;
             }
@@ -83553,15 +86966,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox5 mNameTextbox;
+        private NameTextbox21 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox5 : WpfEdit
+    public class NameTextbox21 : WpfEdit
     {
         
-        public NameTextbox5(UITestControl searchLimitContainer) : 
+        public NameTextbox21(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83634,10 +87047,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field1 : WpfTreeItem
+    public class Field11 : WpfTreeItem
     {
         
-        public Field1(UITestControl searchLimitContainer) : 
+        public Field11(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83649,13 +87062,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane7 ScrollViewerPane
+        public ScrollViewerPane23 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane7(this);
+                    this.mScrollViewerPane = new ScrollViewerPane23(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -83697,7 +87110,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane7 mScrollViewerPane;
+        private ScrollViewerPane23 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
@@ -83706,10 +87119,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane7 : WpfPane
+    public class ScrollViewerPane23 : WpfPane
     {
         
-        public ScrollViewerPane7(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane23(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83721,13 +87134,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox6 NameTextbox
+        public NameTextbox22 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox6(this);
+                    this.mNameTextbox = new NameTextbox22(this);
                 }
                 return this.mNameTextbox;
             }
@@ -83735,15 +87148,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox6 mNameTextbox;
+        private NameTextbox22 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox6 : WpfEdit
+    public class NameTextbox22 : WpfEdit
     {
         
-        public NameTextbox6(UITestControl searchLimitContainer) : 
+        public NameTextbox22(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83797,10 +87210,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field2 : WpfTreeItem
+    public class Field21 : WpfTreeItem
     {
         
-        public Field2(UITestControl searchLimitContainer) : 
+        public Field21(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83812,13 +87225,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane8 ScrollViewerPane
+        public ScrollViewerPane24 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane8(this);
+                    this.mScrollViewerPane = new ScrollViewerPane24(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -83860,7 +87273,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane8 mScrollViewerPane;
+        private ScrollViewerPane24 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
@@ -83869,10 +87282,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane8 : WpfPane
+    public class ScrollViewerPane24 : WpfPane
     {
         
-        public ScrollViewerPane8(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane24(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83884,13 +87297,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox7 NameTextbox
+        public NameTextbox23 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox7(this);
+                    this.mNameTextbox = new NameTextbox23(this);
                 }
                 return this.mNameTextbox;
             }
@@ -83898,15 +87311,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox7 mNameTextbox;
+        private NameTextbox23 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox7 : WpfEdit
+    public class NameTextbox23 : WpfEdit
     {
         
-        public NameTextbox7(UITestControl searchLimitContainer) : 
+        public NameTextbox23(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83960,10 +87373,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem21 : WpfTreeItem
+    public class TreeItem23 : WpfTreeItem
     {
         
-        public TreeItem21(UITestControl searchLimitContainer) : 
+        public TreeItem23(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83975,13 +87388,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane9 ScrollViewerPane
+        public ScrollViewerPane25 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane9(this);
+                    this.mScrollViewerPane = new ScrollViewerPane25(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -84021,13 +87434,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public Field Field
+        public Field6 Field
         {
             get
             {
                 if ((this.mField == null))
                 {
-                    this.mField = new Field(this);
+                    this.mField = new Field6(this);
                 }
                 return this.mField;
             }
@@ -84052,23 +87465,23 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane9 mScrollViewerPane;
+        private ScrollViewerPane25 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
         
-        private Field mField;
+        private Field6 mField;
         
         private WpfButton mExpanderButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane9 : WpfPane
+    public class ScrollViewerPane25 : WpfPane
     {
         
-        public ScrollViewerPane9(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane25(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84080,13 +87493,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox8 NameTextbox
+        public NameTextbox24 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox8(this);
+                    this.mNameTextbox = new NameTextbox24(this);
                 }
                 return this.mNameTextbox;
             }
@@ -84094,15 +87507,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox8 mNameTextbox;
+        private NameTextbox24 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox8 : WpfEdit
+    public class NameTextbox24 : WpfEdit
     {
         
-        public NameTextbox8(UITestControl searchLimitContainer) : 
+        public NameTextbox24(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84175,10 +87588,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field : WpfTreeItem
+    public class Field6 : WpfTreeItem
     {
         
-        public Field(UITestControl searchLimitContainer) : 
+        public Field6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84189,13 +87602,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane10 ScrollViewerPane
+        public ScrollViewerPane26 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane10(this);
+                    this.mScrollViewerPane = new ScrollViewerPane26(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -84237,7 +87650,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane10 mScrollViewerPane;
+        private ScrollViewerPane26 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
@@ -84246,10 +87659,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane10 : WpfPane
+    public class ScrollViewerPane26 : WpfPane
     {
         
-        public ScrollViewerPane10(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane26(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84261,13 +87674,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox9 NameTextbox
+        public NameTextbox25 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox9(this);
+                    this.mNameTextbox = new NameTextbox25(this);
                 }
                 return this.mNameTextbox;
             }
@@ -84275,15 +87688,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox9 mNameTextbox;
+        private NameTextbox25 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox9 : WpfEdit
+    public class NameTextbox25 : WpfEdit
     {
         
-        public NameTextbox9(UITestControl searchLimitContainer) : 
+        public NameTextbox25(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84337,10 +87750,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem31 : WpfTreeItem
+    public class TreeItem33 : WpfTreeItem
     {
         
-        public TreeItem31(UITestControl searchLimitContainer) : 
+        public TreeItem33(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84352,13 +87765,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane11 ScrollViewerPane
+        public ScrollViewerPane27 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane11(this);
+                    this.mScrollViewerPane = new ScrollViewerPane27(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -84398,13 +87811,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public Field3 Field
+        public Field7 Field
         {
             get
             {
                 if ((this.mField == null))
                 {
-                    this.mField = new Field3(this);
+                    this.mField = new Field7(this);
                 }
                 return this.mField;
             }
@@ -84429,23 +87842,23 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane11 mScrollViewerPane;
+        private ScrollViewerPane27 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
         
-        private Field3 mField;
+        private Field7 mField;
         
         private WpfButton mExpanderButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane11 : WpfPane
+    public class ScrollViewerPane27 : WpfPane
     {
         
-        public ScrollViewerPane11(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane27(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84457,13 +87870,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox10 NameTextbox
+        public NameTextbox26 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox10(this);
+                    this.mNameTextbox = new NameTextbox26(this);
                 }
                 return this.mNameTextbox;
             }
@@ -84471,15 +87884,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox10 mNameTextbox;
+        private NameTextbox26 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox10 : WpfEdit
+    public class NameTextbox26 : WpfEdit
     {
         
-        public NameTextbox10(UITestControl searchLimitContainer) : 
+        public NameTextbox26(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84552,10 +87965,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field3 : WpfTreeItem
+    public class Field7 : WpfTreeItem
     {
         
-        public Field3(UITestControl searchLimitContainer) : 
+        public Field7(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84566,13 +87979,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane12 ScrollViewerPane
+        public ScrollViewerPane28 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane12(this);
+                    this.mScrollViewerPane = new ScrollViewerPane28(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -84614,7 +88027,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane12 mScrollViewerPane;
+        private ScrollViewerPane28 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
@@ -84623,10 +88036,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane12 : WpfPane
+    public class ScrollViewerPane28 : WpfPane
     {
         
-        public ScrollViewerPane12(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane28(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84638,13 +88051,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox11 NameTextbox
+        public NameTextbox27 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox11(this);
+                    this.mNameTextbox = new NameTextbox27(this);
                 }
                 return this.mNameTextbox;
             }
@@ -84652,15 +88065,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox11 mNameTextbox;
+        private NameTextbox27 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox11 : WpfEdit
+    public class NameTextbox27 : WpfEdit
     {
         
-        public NameTextbox11(UITestControl searchLimitContainer) : 
+        public NameTextbox27(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84714,10 +88127,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem41 : WpfTreeItem
+    public class TreeItem43 : WpfTreeItem
     {
         
-        public TreeItem41(UITestControl searchLimitContainer) : 
+        public TreeItem43(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84729,13 +88142,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane13 ScrollViewerPane
+        public ScrollViewerPane29 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane13(this);
+                    this.mScrollViewerPane = new ScrollViewerPane29(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -84775,13 +88188,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public Field4 Field
+        public Field8 Field
         {
             get
             {
                 if ((this.mField == null))
                 {
-                    this.mField = new Field4(this);
+                    this.mField = new Field8(this);
                 }
                 return this.mField;
             }
@@ -84806,23 +88219,23 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane13 mScrollViewerPane;
+        private ScrollViewerPane29 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
         
-        private Field4 mField;
+        private Field8 mField;
         
         private WpfButton mExpanderButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane13 : WpfPane
+    public class ScrollViewerPane29 : WpfPane
     {
         
-        public ScrollViewerPane13(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane29(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84834,13 +88247,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox12 NameTextbox
+        public NameTextbox28 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox12(this);
+                    this.mNameTextbox = new NameTextbox28(this);
                 }
                 return this.mNameTextbox;
             }
@@ -84848,15 +88261,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox12 mNameTextbox;
+        private NameTextbox28 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox12 : WpfEdit
+    public class NameTextbox28 : WpfEdit
     {
         
-        public NameTextbox12(UITestControl searchLimitContainer) : 
+        public NameTextbox28(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84929,10 +88342,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field4 : WpfTreeItem
+    public class Field8 : WpfTreeItem
     {
         
-        public Field4(UITestControl searchLimitContainer) : 
+        public Field8(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84943,13 +88356,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane14 ScrollViewerPane
+        public ScrollViewerPane30 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane14(this);
+                    this.mScrollViewerPane = new ScrollViewerPane30(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -84991,7 +88404,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane14 mScrollViewerPane;
+        private ScrollViewerPane30 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
@@ -85000,10 +88413,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane14 : WpfPane
+    public class ScrollViewerPane30 : WpfPane
     {
         
-        public ScrollViewerPane14(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane30(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85015,13 +88428,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox13 NameTextbox
+        public NameTextbox29 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox13(this);
+                    this.mNameTextbox = new NameTextbox29(this);
                 }
                 return this.mNameTextbox;
             }
@@ -85029,15 +88442,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox13 mNameTextbox;
+        private NameTextbox29 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox13 : WpfEdit
+    public class NameTextbox29 : WpfEdit
     {
         
-        public NameTextbox13(UITestControl searchLimitContainer) : 
+        public NameTextbox29(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85091,10 +88504,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem51 : WpfTreeItem
+    public class TreeItem53 : WpfTreeItem
     {
         
-        public TreeItem51(UITestControl searchLimitContainer) : 
+        public TreeItem53(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85106,13 +88519,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane15 ScrollViewerPane
+        public ScrollViewerPane31 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane15(this);
+                    this.mScrollViewerPane = new ScrollViewerPane31(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -85152,13 +88565,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public Field5 Field
+        public Field9 Field
         {
             get
             {
                 if ((this.mField == null))
                 {
-                    this.mField = new Field5(this);
+                    this.mField = new Field9(this);
                 }
                 return this.mField;
             }
@@ -85183,23 +88596,23 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane15 mScrollViewerPane;
+        private ScrollViewerPane31 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
         private WpfCheckBox mOutputCheckbox;
         
-        private Field5 mField;
+        private Field9 mField;
         
         private WpfButton mExpanderButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane15 : WpfPane
+    public class ScrollViewerPane31 : WpfPane
     {
         
-        public ScrollViewerPane15(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane31(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85211,13 +88624,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox14 NameTextbox
+        public NameTextbox30 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox14(this);
+                    this.mNameTextbox = new NameTextbox30(this);
                 }
                 return this.mNameTextbox;
             }
@@ -85225,15 +88638,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox14 mNameTextbox;
+        private NameTextbox30 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox14 : WpfEdit
+    public class NameTextbox30 : WpfEdit
     {
         
-        public NameTextbox14(UITestControl searchLimitContainer) : 
+        public NameTextbox30(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85306,10 +88719,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field5 : WpfTreeItem
+    public class Field9 : WpfTreeItem
     {
         
-        public Field5(UITestControl searchLimitContainer) : 
+        public Field9(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85320,13 +88733,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ScrollViewerPane16 ScrollViewerPane
+        public ScrollViewerPane32 ScrollViewerPane
         {
             get
             {
                 if ((this.mScrollViewerPane == null))
                 {
-                    this.mScrollViewerPane = new ScrollViewerPane16(this);
+                    this.mScrollViewerPane = new ScrollViewerPane32(this);
                 }
                 return this.mScrollViewerPane;
             }
@@ -85368,7 +88781,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ScrollViewerPane16 mScrollViewerPane;
+        private ScrollViewerPane32 mScrollViewerPane;
         
         private WpfCheckBox mInputCheckbox;
         
@@ -85377,10 +88790,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane16 : WpfPane
+    public class ScrollViewerPane32 : WpfPane
     {
         
-        public ScrollViewerPane16(UITestControl searchLimitContainer) : 
+        public ScrollViewerPane32(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85392,13 +88805,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NameTextbox15 NameTextbox
+        public NameTextbox31 NameTextbox
         {
             get
             {
                 if ((this.mNameTextbox == null))
                 {
-                    this.mNameTextbox = new NameTextbox15(this);
+                    this.mNameTextbox = new NameTextbox31(this);
                 }
                 return this.mNameTextbox;
             }
@@ -85406,15 +88819,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NameTextbox15 mNameTextbox;
+        private NameTextbox31 mNameTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox15 : WpfEdit
+    public class NameTextbox31 : WpfEdit
     {
         
-        public NameTextbox15(UITestControl searchLimitContainer) : 
+        public NameTextbox31(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85468,10 +88881,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SearchTextbox2 : WpfEdit
+    public class SearchTextbox3 : WpfEdit
     {
         
-        public SearchTextbox2(UITestControl searchLimitContainer) : 
+        public SearchTextbox3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -95230,3994 +98643,6 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SplitPaneRight1 : WpfCustom
-    {
-        
-        public SplitPaneRight1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.Instance] = "1";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public Variables1 Variables
-        {
-            get
-            {
-                if ((this.mVariables == null))
-                {
-                    this.mVariables = new Variables1(this);
-                }
-                return this.mVariables;
-            }
-        }
-        
-        public DebugOutput1 DebugOutput
-        {
-            get
-            {
-                if ((this.mDebugOutput == null))
-                {
-                    this.mDebugOutput = new DebugOutput1(this);
-                }
-                return this.mDebugOutput;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private Variables1 mVariables;
-        
-        private DebugOutput1 mDebugOutput;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Variables1 : WpfCustom
-    {
-        
-        public Variables1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Variables";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton VariableUnpinBtn
-        {
-            get
-            {
-                if ((this.mVariableUnpinBtn == null))
-                {
-                    this.mVariableUnpinBtn = new WpfButton(this);
-                    #region Search Criteria
-                    this.mVariableUnpinBtn.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    this.mVariableUnpinBtn.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mVariableUnpinBtn;
-            }
-        }
-        
-        public DatalistView1 DatalistView
-        {
-            get
-            {
-                if ((this.mDatalistView == null))
-                {
-                    this.mDatalistView = new DatalistView1(this);
-                }
-                return this.mDatalistView;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mVariableUnpinBtn;
-        
-        private DatalistView1 mDatalistView;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DatalistView1 : WpfCustom
-    {
-        
-        public DatalistView1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataListView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_DataListView_AutoID";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public VariableTree1 VariableTree
-        {
-            get
-            {
-                if ((this.mVariableTree == null))
-                {
-                    this.mVariableTree = new VariableTree1(this);
-                }
-                return this.mVariableTree;
-            }
-        }
-        
-        public SearchTextbox3 SearchTextbox
-        {
-            get
-            {
-                if ((this.mSearchTextbox == null))
-                {
-                    this.mSearchTextbox = new SearchTextbox3(this);
-                }
-                return this.mSearchTextbox;
-            }
-        }
-        
-        public WpfButton RemoveUnused
-        {
-            get
-            {
-                if ((this.mRemoveUnused == null))
-                {
-                    this.mRemoveUnused = new WpfButton(this);
-                    #region Search Criteria
-                    this.mRemoveUnused.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_AddRemovebtn_AutoID";
-                    this.mRemoveUnused.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mRemoveUnused;
-            }
-        }
-        
-        public WpfButton Sort
-        {
-            get
-            {
-                if ((this.mSort == null))
-                {
-                    this.mSort = new WpfButton(this);
-                    #region Search Criteria
-                    this.mSort.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_Sortbtn_AutoID";
-                    this.mSort.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSort;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private VariableTree1 mVariableTree;
-        
-        private SearchTextbox3 mSearchTextbox;
-        
-        private WpfButton mRemoveUnused;
-        
-        private WpfButton mSort;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableTree1 : WpfTree
-    {
-        
-        public VariableTree1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "UI_VariableTreeView_AutoID";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public VariableTreeItem1 VariableTreeItem
-        {
-            get
-            {
-                if ((this.mVariableTreeItem == null))
-                {
-                    this.mVariableTreeItem = new VariableTreeItem1(this);
-                }
-                return this.mVariableTreeItem;
-            }
-        }
-        
-        public RecordsetTreeItem1 RecordsetTreeItem
-        {
-            get
-            {
-                if ((this.mRecordsetTreeItem == null))
-                {
-                    this.mRecordsetTreeItem = new RecordsetTreeItem1(this);
-                }
-                return this.mRecordsetTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private VariableTreeItem1 mVariableTreeItem;
-        
-        private RecordsetTreeItem1 mRecordsetTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableTreeItem1 : WpfTreeItem
-    {
-        
-        public VariableTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Variable";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public TreeItem12 TreeItem1
-        {
-            get
-            {
-                if ((this.mTreeItem1 == null))
-                {
-                    this.mTreeItem1 = new TreeItem12(this);
-                }
-                return this.mTreeItem1;
-            }
-        }
-        
-        public TreeItem22 TreeItem2
-        {
-            get
-            {
-                if ((this.mTreeItem2 == null))
-                {
-                    this.mTreeItem2 = new TreeItem22(this);
-                }
-                return this.mTreeItem2;
-            }
-        }
-        
-        public TreeItem32 TreeItem3
-        {
-            get
-            {
-                if ((this.mTreeItem3 == null))
-                {
-                    this.mTreeItem3 = new TreeItem32(this);
-                }
-                return this.mTreeItem3;
-            }
-        }
-        
-        public TreeItem42 TreeItem4
-        {
-            get
-            {
-                if ((this.mTreeItem4 == null))
-                {
-                    this.mTreeItem4 = new TreeItem42(this);
-                }
-                return this.mTreeItem4;
-            }
-        }
-        
-        public TreeItem52 TreeItem5
-        {
-            get
-            {
-                if ((this.mTreeItem5 == null))
-                {
-                    this.mTreeItem5 = new TreeItem52(this);
-                }
-                return this.mTreeItem5;
-            }
-        }
-        
-        public WpfButton ExpanderButton
-        {
-            get
-            {
-                if ((this.mExpanderButton == null))
-                {
-                    this.mExpanderButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mExpanderButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private TreeItem12 mTreeItem1;
-        
-        private TreeItem22 mTreeItem2;
-        
-        private TreeItem32 mTreeItem3;
-        
-        private TreeItem42 mTreeItem4;
-        
-        private TreeItem52 mTreeItem5;
-        
-        private WpfButton mExpanderButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem12 : WpfTreeItem
-    {
-        
-        public TreeItem12(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane17 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane17(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane17 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane17 : WpfPane
-    {
-        
-        public ScrollViewerPane17(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox16 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox16(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox16 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox16 : WpfEdit
-    {
-        
-        public NameTextbox16(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public DeleteButton1 DeleteButton
-        {
-            get
-            {
-                if ((this.mDeleteButton == null))
-                {
-                    this.mDeleteButton = new DeleteButton1(this);
-                }
-                return this.mDeleteButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        
-        private DeleteButton1 mDeleteButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DeleteButton1 : WpfButton
-    {
-        
-        public DeleteButton1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfImage Image
-        {
-            get
-            {
-                if ((this.mImage == null))
-                {
-                    this.mImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteVar";
-                    this.mImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mImage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfImage mImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem22 : WpfTreeItem
-    {
-        
-        public TreeItem22(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane18 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane18(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane18 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane18 : WpfPane
-    {
-        
-        public ScrollViewerPane18(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox17 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox17(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox17 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox17 : WpfEdit
-    {
-        
-        public NameTextbox17(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButton
-        {
-            get
-            {
-                if ((this.mDeleteButton == null))
-                {
-                    this.mDeleteButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem32 : WpfTreeItem
-    {
-        
-        public TreeItem32(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane19 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane19(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane19 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane19 : WpfPane
-    {
-        
-        public ScrollViewerPane19(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox18 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox18(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox18 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox18 : WpfEdit
-    {
-        
-        public NameTextbox18(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButton
-        {
-            get
-            {
-                if ((this.mDeleteButton == null))
-                {
-                    this.mDeleteButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem42 : WpfTreeItem
-    {
-        
-        public TreeItem42(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "4";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane20 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane20(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane20 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane20 : WpfPane
-    {
-        
-        public ScrollViewerPane20(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox19 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox19(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox19 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox19 : WpfEdit
-    {
-        
-        public NameTextbox19(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButton
-        {
-            get
-            {
-                if ((this.mDeleteButton == null))
-                {
-                    this.mDeleteButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem52 : WpfTreeItem
-    {
-        
-        public TreeItem52(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane21 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane21(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane21 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane21 : WpfPane
-    {
-        
-        public ScrollViewerPane21(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox20 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox20(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox20 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox20 : WpfEdit
-    {
-        
-        public NameTextbox20(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButton
-        {
-            get
-            {
-                if ((this.mDeleteButton == null))
-                {
-                    this.mDeleteButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetTreeItem1 : WpfTreeItem
-    {
-        
-        public RecordsetTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Recordset";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public TreeItem13 TreeItem1
-        {
-            get
-            {
-                if ((this.mTreeItem1 == null))
-                {
-                    this.mTreeItem1 = new TreeItem13(this);
-                }
-                return this.mTreeItem1;
-            }
-        }
-        
-        public TreeItem23 TreeItem2
-        {
-            get
-            {
-                if ((this.mTreeItem2 == null))
-                {
-                    this.mTreeItem2 = new TreeItem23(this);
-                }
-                return this.mTreeItem2;
-            }
-        }
-        
-        public TreeItem33 TreeItem3
-        {
-            get
-            {
-                if ((this.mTreeItem3 == null))
-                {
-                    this.mTreeItem3 = new TreeItem33(this);
-                }
-                return this.mTreeItem3;
-            }
-        }
-        
-        public TreeItem43 TreeItem4
-        {
-            get
-            {
-                if ((this.mTreeItem4 == null))
-                {
-                    this.mTreeItem4 = new TreeItem43(this);
-                }
-                return this.mTreeItem4;
-            }
-        }
-        
-        public TreeItem53 TreeItem5
-        {
-            get
-            {
-                if ((this.mTreeItem5 == null))
-                {
-                    this.mTreeItem5 = new TreeItem53(this);
-                }
-                return this.mTreeItem5;
-            }
-        }
-        
-        public WpfButton ExpanderButton
-        {
-            get
-            {
-                if ((this.mExpanderButton == null))
-                {
-                    this.mExpanderButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mExpanderButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private TreeItem13 mTreeItem1;
-        
-        private TreeItem23 mTreeItem2;
-        
-        private TreeItem33 mTreeItem3;
-        
-        private TreeItem43 mTreeItem4;
-        
-        private TreeItem53 mTreeItem5;
-        
-        private WpfButton mExpanderButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem13 : WpfTreeItem
-    {
-        
-        public TreeItem13(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane22 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane22(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        
-        public Field11 Field1
-        {
-            get
-            {
-                if ((this.mField1 == null))
-                {
-                    this.mField1 = new Field11(this);
-                }
-                return this.mField1;
-            }
-        }
-        
-        public Field21 Field2
-        {
-            get
-            {
-                if ((this.mField2 == null))
-                {
-                    this.mField2 = new Field21(this);
-                }
-                return this.mField2;
-            }
-        }
-        
-        public WpfButton ExpanderButton
-        {
-            get
-            {
-                if ((this.mExpanderButton == null))
-                {
-                    this.mExpanderButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mExpanderButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane22 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        
-        private Field11 mField1;
-        
-        private Field21 mField2;
-        
-        private WpfButton mExpanderButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane22 : WpfPane
-    {
-        
-        public ScrollViewerPane22(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox21 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox21(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox21 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox21 : WpfEdit
-    {
-        
-        public NameTextbox21(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButtonButton
-        {
-            get
-            {
-                if ((this.mDeleteButtonButton == null))
-                {
-                    this.mDeleteButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteButtonButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButtonButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field11 : WpfTreeItem
-    {
-        
-        public Field11(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane23 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane23(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane23 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane23 : WpfPane
-    {
-        
-        public ScrollViewerPane23(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox22 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox22(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox22 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox22 : WpfEdit
-    {
-        
-        public NameTextbox22(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field21 : WpfTreeItem
-    {
-        
-        public Field21(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane24 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane24(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane24 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane24 : WpfPane
-    {
-        
-        public ScrollViewerPane24(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox23 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox23(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox23 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox23 : WpfEdit
-    {
-        
-        public NameTextbox23(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem23 : WpfTreeItem
-    {
-        
-        public TreeItem23(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane25 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane25(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        
-        public Field6 Field
-        {
-            get
-            {
-                if ((this.mField == null))
-                {
-                    this.mField = new Field6(this);
-                }
-                return this.mField;
-            }
-        }
-        
-        public WpfButton ExpanderButton
-        {
-            get
-            {
-                if ((this.mExpanderButton == null))
-                {
-                    this.mExpanderButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mExpanderButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane25 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        
-        private Field6 mField;
-        
-        private WpfButton mExpanderButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane25 : WpfPane
-    {
-        
-        public ScrollViewerPane25(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox24 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox24(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox24 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox24 : WpfEdit
-    {
-        
-        public NameTextbox24(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButtonButton
-        {
-            get
-            {
-                if ((this.mDeleteButtonButton == null))
-                {
-                    this.mDeleteButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteButtonButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButtonButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field6 : WpfTreeItem
-    {
-        
-        public Field6(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane26 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane26(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane26 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane26 : WpfPane
-    {
-        
-        public ScrollViewerPane26(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox25 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox25(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox25 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox25 : WpfEdit
-    {
-        
-        public NameTextbox25(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem33 : WpfTreeItem
-    {
-        
-        public TreeItem33(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane27 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane27(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        
-        public Field7 Field
-        {
-            get
-            {
-                if ((this.mField == null))
-                {
-                    this.mField = new Field7(this);
-                }
-                return this.mField;
-            }
-        }
-        
-        public WpfButton ExpanderButton
-        {
-            get
-            {
-                if ((this.mExpanderButton == null))
-                {
-                    this.mExpanderButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mExpanderButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane27 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        
-        private Field7 mField;
-        
-        private WpfButton mExpanderButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane27 : WpfPane
-    {
-        
-        public ScrollViewerPane27(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox26 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox26(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox26 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox26 : WpfEdit
-    {
-        
-        public NameTextbox26(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButtonButton
-        {
-            get
-            {
-                if ((this.mDeleteButtonButton == null))
-                {
-                    this.mDeleteButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteButtonButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButtonButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field7 : WpfTreeItem
-    {
-        
-        public Field7(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane28 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane28(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane28 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane28 : WpfPane
-    {
-        
-        public ScrollViewerPane28(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox27 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox27(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox27 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox27 : WpfEdit
-    {
-        
-        public NameTextbox27(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem43 : WpfTreeItem
-    {
-        
-        public TreeItem43(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "4";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane29 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane29(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        
-        public Field8 Field
-        {
-            get
-            {
-                if ((this.mField == null))
-                {
-                    this.mField = new Field8(this);
-                }
-                return this.mField;
-            }
-        }
-        
-        public WpfButton ExpanderButton
-        {
-            get
-            {
-                if ((this.mExpanderButton == null))
-                {
-                    this.mExpanderButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mExpanderButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane29 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        
-        private Field8 mField;
-        
-        private WpfButton mExpanderButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane29 : WpfPane
-    {
-        
-        public ScrollViewerPane29(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox28 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox28(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox28 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox28 : WpfEdit
-    {
-        
-        public NameTextbox28(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButtonButton
-        {
-            get
-            {
-                if ((this.mDeleteButtonButton == null))
-                {
-                    this.mDeleteButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteButtonButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButtonButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field8 : WpfTreeItem
-    {
-        
-        public Field8(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane30 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane30(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane30 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane30 : WpfPane
-    {
-        
-        public ScrollViewerPane30(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox29 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox29(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox29 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox29 : WpfEdit
-    {
-        
-        public NameTextbox29(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem53 : WpfTreeItem
-    {
-        
-        public TreeItem53(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane31 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane31(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        
-        public Field9 Field
-        {
-            get
-            {
-                if ((this.mField == null))
-                {
-                    this.mField = new Field9(this);
-                }
-                return this.mField;
-            }
-        }
-        
-        public WpfButton ExpanderButton
-        {
-            get
-            {
-                if ((this.mExpanderButton == null))
-                {
-                    this.mExpanderButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpanderButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mExpanderButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane31 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        
-        private Field9 mField;
-        
-        private WpfButton mExpanderButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane31 : WpfPane
-    {
-        
-        public ScrollViewerPane31(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox30 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox30(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox30 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox30 : WpfEdit
-    {
-        
-        public NameTextbox30(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        
-        public WpfButton DeleteButtonButton
-        {
-            get
-            {
-                if ((this.mDeleteButtonButton == null))
-                {
-                    this.mDeleteButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
-                    this.mDeleteButtonButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteButtonButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteButtonButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        
-        private WpfButton mDeleteButtonButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Field9 : WpfTreeItem
-    {
-        
-        public Field9(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ScrollViewerPane32 ScrollViewerPane
-        {
-            get
-            {
-                if ((this.mScrollViewerPane == null))
-                {
-                    this.mScrollViewerPane = new ScrollViewerPane32(this);
-                }
-                return this.mScrollViewerPane;
-            }
-        }
-        
-        public WpfCheckBox InputCheckbox
-        {
-            get
-            {
-                if ((this.mInputCheckbox == null))
-                {
-                    this.mInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox OutputCheckbox
-        {
-            get
-            {
-                if ((this.mOutputCheckbox == null))
-                {
-                    this.mOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOutputCheckbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ScrollViewerPane32 mScrollViewerPane;
-        
-        private WpfCheckBox mInputCheckbox;
-        
-        private WpfCheckBox mOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ScrollViewerPane32 : WpfPane
-    {
-        
-        public ScrollViewerPane32(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NameTextbox31 NameTextbox
-        {
-            get
-            {
-                if ((this.mNameTextbox == null))
-                {
-                    this.mNameTextbox = new NameTextbox31(this);
-                }
-                return this.mNameTextbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NameTextbox31 mNameTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NameTextbox31 : WpfEdit
-    {
-        
-        public NameTextbox31(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText Label
-        {
-            get
-            {
-                if ((this.mLabel == null))
-                {
-                    this.mLabel = new WpfText(this);
-                    #region Search Criteria
-                    this.mLabel.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mLabel.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mLabel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLabel;
-            }
-        }
-        
-        public WpfImage DeleteDisabledImage
-        {
-            get
-            {
-                if ((this.mDeleteDisabledImage == null))
-                {
-                    this.mDeleteDisabledImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
-                    this.mDeleteDisabledImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteDisabledImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeleteDisabledImage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mLabel;
-        
-        private WpfImage mDeleteDisabledImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SearchTextbox3 : WpfEdit
-    {
-        
-        public SearchTextbox3(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText FilterText
-        {
-            get
-            {
-                if ((this.mFilterText == null))
-                {
-                    this.mFilterText = new WpfText(this);
-                    #region Search Criteria
-                    this.mFilterText.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mFilterText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mFilterText;
-            }
-        }
-        
-        public WpfImage ClearSearchDisabled
-        {
-            get
-            {
-                if ((this.mClearSearchDisabled == null))
-                {
-                    this.mClearSearchDisabled = new WpfImage(this);
-                    #region Search Criteria
-                    this.mClearSearchDisabled.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ClearSearchDisabled";
-                    this.mClearSearchDisabled.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mClearSearchDisabled;
-            }
-        }
-        
-        public WpfButton ClearSearchButton
-        {
-            get
-            {
-                if ((this.mClearSearchButton == null))
-                {
-                    this.mClearSearchButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mClearSearchButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ClearSearchButton";
-                    this.mClearSearchButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mClearSearchButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mFilterText;
-        
-        private WpfImage mClearSearchDisabled;
-        
-        private WpfButton mClearSearchButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DebugOutput1 : WpfCustom
-    {
-        
-        public DebugOutput1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DebugOutputView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DebugOutput";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton DebugOutputUnpinBtn
-        {
-            get
-            {
-                if ((this.mDebugOutputUnpinBtn == null))
-                {
-                    this.mDebugOutputUnpinBtn = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDebugOutputUnpinBtn.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    this.mDebugOutputUnpinBtn.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDebugOutputUnpinBtn;
-            }
-        }
-        
-        public WpfEdit SearchTextBox
-        {
-            get
-            {
-                if ((this.mSearchTextBox == null))
-                {
-                    this.mSearchTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mSearchTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
-                    this.mSearchTextBox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSearchTextBox;
-            }
-        }
-        
-        public WpfButton SettingsButton
-        {
-            get
-            {
-                if ((this.mSettingsButton == null))
-                {
-                    this.mSettingsButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mSettingsButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_DebugOutputOptionsButton_AutoID";
-                    this.mSettingsButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSettingsButton;
-            }
-        }
-        
-        public WpfButton ExpandCollapseButton
-        {
-            get
-            {
-                if ((this.mExpandCollapseButton == null))
-                {
-                    this.mExpandCollapseButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpandCollapseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_DebugOutputExpandAllMode_AutoID";
-                    this.mExpandCollapseButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mExpandCollapseButton;
-            }
-        }
-        
-        public DebugOutputTree1 DebugOutputTree
-        {
-            get
-            {
-                if ((this.mDebugOutputTree == null))
-                {
-                    this.mDebugOutputTree = new DebugOutputTree1(this);
-                }
-                return this.mDebugOutputTree;
-            }
-        }
-        
-        public StatusBar1 StatusBar
-        {
-            get
-            {
-                if ((this.mStatusBar == null))
-                {
-                    this.mStatusBar = new StatusBar1(this);
-                }
-                return this.mStatusBar;
-            }
-        }
-        
-        public CommentTreeItem1 CommentTreeItem
-        {
-            get
-            {
-                if ((this.mCommentTreeItem == null))
-                {
-                    this.mCommentTreeItem = new CommentTreeItem1(this);
-                }
-                return this.mCommentTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mDebugOutputUnpinBtn;
-        
-        private WpfEdit mSearchTextBox;
-        
-        private WpfButton mSettingsButton;
-        
-        private WpfButton mExpandCollapseButton;
-        
-        private DebugOutputTree1 mDebugOutputTree;
-        
-        private StatusBar1 mStatusBar;
-        
-        private CommentTreeItem1 mCommentTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DebugOutputTree1 : WpfTree
-    {
-        
-        public DebugOutputTree1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "DebugOutputTree";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public Step11 Step1
-        {
-            get
-            {
-                if ((this.mStep1 == null))
-                {
-                    this.mStep1 = new Step11(this);
-                }
-                return this.mStep1;
-            }
-        }
-        
-        public SubWorkflow1 SubWorkflow
-        {
-            get
-            {
-                if ((this.mSubWorkflow == null))
-                {
-                    this.mSubWorkflow = new SubWorkflow1(this);
-                }
-                return this.mSubWorkflow;
-            }
-        }
-        
-        public ServiceTreeItem1 ServiceTreeItem
-        {
-            get
-            {
-                if ((this.mServiceTreeItem == null))
-                {
-                    this.mServiceTreeItem = new ServiceTreeItem1(this);
-                }
-                return this.mServiceTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private Step11 mStep1;
-        
-        private SubWorkflow1 mSubWorkflow;
-        
-        private ServiceTreeItem1 mServiceTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Step11 : WpfTreeItem
-    {
-        
-        public Step11(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText VariableTextbox
-        {
-            get
-            {
-                if ((this.mVariableTextbox == null))
-                {
-                    this.mVariableTextbox = new WpfText(this);
-                    #region Search Criteria
-                    this.mVariableTextbox.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
-                    this.mVariableTextbox.SearchProperties[WpfText.PropertyNames.Instance] = "2";
-                    this.mVariableTextbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableTextbox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mVariableTextbox;
-            }
-        }
-        
-        public WpfButton Assign1Button
-        {
-            get
-            {
-                if ((this.mAssign1Button == null))
-                {
-                    this.mAssign1Button = new WpfButton(this);
-                    #region Search Criteria
-                    this.mAssign1Button.SearchProperties[WpfButton.PropertyNames.Name] = "Assign (1)";
-                    this.mAssign1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssign1Button.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mAssign1Button;
-            }
-        }
-        
-        public WpfButton BaseConversion1Button
-        {
-            get
-            {
-                if ((this.mBaseConversion1Button == null))
-                {
-                    this.mBaseConversion1Button = new WpfButton(this);
-                    #region Search Criteria
-                    this.mBaseConversion1Button.SearchProperties[WpfButton.PropertyNames.Name] = "Base Conversion (1)";
-                    this.mBaseConversion1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mBaseConversion1Button.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mBaseConversion1Button;
-            }
-        }
-        
-        public WpfButton CalculateButton
-        {
-            get
-            {
-                if ((this.mCalculateButton == null))
-                {
-                    this.mCalculateButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mCalculateButton.SearchProperties[WpfButton.PropertyNames.Name] = "Calculate";
-                    this.mCalculateButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mCalculateButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mCalculateButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mVariableTextbox;
-        
-        private WpfButton mAssign1Button;
-        
-        private WpfButton mBaseConversion1Button;
-        
-        private WpfButton mCalculateButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SubWorkflow1 : WpfTreeItem
-    {
-        
-        public SubWorkflow1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Service";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public UIHelloWorldTreeItem11 UIHelloWorldTreeItem1
-        {
-            get
-            {
-                if ((this.mUIHelloWorldTreeItem1 == null))
-                {
-                    this.mUIHelloWorldTreeItem1 = new UIHelloWorldTreeItem11(this);
-                }
-                return this.mUIHelloWorldTreeItem1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIHelloWorldTreeItem11 mUIHelloWorldTreeItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIHelloWorldTreeItem11 : WpfTreeItem
-    {
-        
-        public UIHelloWorldTreeItem11(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Start";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIHelloWorldButton
-        {
-            get
-            {
-                if ((this.mUIHelloWorldButton == null))
-                {
-                    this.mUIHelloWorldButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIHelloWorldButton.SearchProperties[WpfButton.PropertyNames.Name] = "Hello World";
-                    this.mUIHelloWorldButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUIHelloWorldButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mUIHelloWorldButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIHelloWorldButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ServiceTreeItem1 : WpfTreeItem
-    {
-        
-        public ServiceTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Service";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton Workflow1Button
-        {
-            get
-            {
-                if ((this.mWorkflow1Button == null))
-                {
-                    this.mWorkflow1Button = new WpfButton(this);
-                    #region Search Criteria
-                    this.mWorkflow1Button.SearchProperties[WpfButton.PropertyNames.Name] = "workflow1";
-                    this.mWorkflow1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mWorkflow1Button.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mWorkflow1Button;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mWorkflow1Button;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class StatusBar1 : WpfEdit
-    {
-        
-        public StatusBar1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Dev2StatusBarAutomationID";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom Spinner
-        {
-            get
-            {
-                if ((this.mSpinner == null))
-                {
-                    this.mSpinner = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
-                    this.mSpinner.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSpinner;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mSpinner;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class CommentTreeItem1 : WpfTreeItem
-    {
-        
-        public CommentTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton CommentButton
-        {
-            get
-            {
-                if ((this.mCommentButton == null))
-                {
-                    this.mCommentButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mCommentButton.SearchProperties[WpfButton.PropertyNames.Name] = "Comment";
-                    this.mCommentButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mCommentButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mCommentButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mCommentButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DebugInputDialog : WpfWindow
     {
         
@@ -99736,13 +99161,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public CommentTreeItem2 CommentTreeItem
+        public CommentTreeItem1 CommentTreeItem
         {
             get
             {
                 if ((this.mCommentTreeItem == null))
                 {
-                    this.mCommentTreeItem = new CommentTreeItem2(this);
+                    this.mCommentTreeItem = new CommentTreeItem1(this);
                 }
                 return this.mCommentTreeItem;
             }
@@ -99752,15 +99177,15 @@ namespace Warewolf.UITests
         #region Fields
         private WpfCustom mJSONWindow;
         
-        private CommentTreeItem2 mCommentTreeItem;
+        private CommentTreeItem1 mCommentTreeItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class CommentTreeItem2 : WpfTreeItem
+    public class CommentTreeItem1 : WpfTreeItem
     {
         
-        public CommentTreeItem2(UITestControl searchLimitContainer) : 
+        public CommentTreeItem1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -104654,13 +104079,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SplitPaneRight2 SplitPaneRight
+        public SplitPaneRight1 SplitPaneRight
         {
             get
             {
                 if ((this.mSplitPaneRight == null))
                 {
-                    this.mSplitPaneRight = new SplitPaneRight2(this);
+                    this.mSplitPaneRight = new SplitPaneRight1(this);
                 }
                 return this.mSplitPaneRight;
             }
@@ -104680,17 +104105,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SplitPaneRight2 mSplitPaneRight;
+        private SplitPaneRight1 mSplitPaneRight;
         
         private WorkflowDesignerView2 mWorkflowDesignerView;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SplitPaneRight2 : WpfCustom
+    public class SplitPaneRight1 : WpfCustom
     {
         
-        public SplitPaneRight2(UITestControl searchLimitContainer) : 
+        public SplitPaneRight1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -104713,13 +104138,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public DebugOutput2 DebugOutput
+        public DebugOutput1 DebugOutput
         {
             get
             {
                 if ((this.mDebugOutput == null))
                 {
-                    this.mDebugOutput = new DebugOutput2(this);
+                    this.mDebugOutput = new DebugOutput1(this);
                 }
                 return this.mDebugOutput;
             }
@@ -104729,7 +104154,7 @@ namespace Warewolf.UITests
         #region Fields
         private Variables2 mVariables;
         
-        private DebugOutput2 mDebugOutput;
+        private DebugOutput1 mDebugOutput;
         #endregion
     }
     
@@ -108224,10 +107649,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DebugOutput2 : WpfCustom
+    public class DebugOutput1 : WpfCustom
     {
         
-        public DebugOutput2(UITestControl searchLimitContainer) : 
+        public DebugOutput1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -108302,25 +107727,25 @@ namespace Warewolf.UITests
             }
         }
         
-        public DebugOutputTree2 DebugOutputTree
+        public DebugOutputTree1 DebugOutputTree
         {
             get
             {
                 if ((this.mDebugOutputTree == null))
                 {
-                    this.mDebugOutputTree = new DebugOutputTree2(this);
+                    this.mDebugOutputTree = new DebugOutputTree1(this);
                 }
                 return this.mDebugOutputTree;
             }
         }
         
-        public StatusBar2 StatusBar
+        public StatusBar1 StatusBar
         {
             get
             {
                 if ((this.mStatusBar == null))
                 {
-                    this.mStatusBar = new StatusBar2(this);
+                    this.mStatusBar = new StatusBar1(this);
                 }
                 return this.mStatusBar;
             }
@@ -108336,17 +107761,17 @@ namespace Warewolf.UITests
         
         private WpfButton mExpandCollapseButton;
         
-        private DebugOutputTree2 mDebugOutputTree;
+        private DebugOutputTree1 mDebugOutputTree;
         
-        private StatusBar2 mStatusBar;
+        private StatusBar1 mStatusBar;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DebugOutputTree2 : WpfTree
+    public class DebugOutputTree1 : WpfTree
     {
         
-        public DebugOutputTree2(UITestControl searchLimitContainer) : 
+        public DebugOutputTree1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -108356,37 +107781,37 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Step12 Step1
+        public Step11 Step1
         {
             get
             {
                 if ((this.mStep1 == null))
                 {
-                    this.mStep1 = new Step12(this);
+                    this.mStep1 = new Step11(this);
                 }
                 return this.mStep1;
             }
         }
         
-        public SubWorkflow2 SubWorkflow
+        public SubWorkflow1 SubWorkflow
         {
             get
             {
                 if ((this.mSubWorkflow == null))
                 {
-                    this.mSubWorkflow = new SubWorkflow2(this);
+                    this.mSubWorkflow = new SubWorkflow1(this);
                 }
                 return this.mSubWorkflow;
             }
         }
         
-        public ServiceTreeItem2 ServiceTreeItem
+        public ServiceTreeItem1 ServiceTreeItem
         {
             get
             {
                 if ((this.mServiceTreeItem == null))
                 {
-                    this.mServiceTreeItem = new ServiceTreeItem2(this);
+                    this.mServiceTreeItem = new ServiceTreeItem1(this);
                 }
                 return this.mServiceTreeItem;
             }
@@ -108394,19 +107819,19 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Step12 mStep1;
+        private Step11 mStep1;
         
-        private SubWorkflow2 mSubWorkflow;
+        private SubWorkflow1 mSubWorkflow;
         
-        private ServiceTreeItem2 mServiceTreeItem;
+        private ServiceTreeItem1 mServiceTreeItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Step12 : WpfTreeItem
+    public class Step11 : WpfTreeItem
     {
         
-        public Step12(UITestControl searchLimitContainer) : 
+        public Step11(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -108499,10 +107924,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SubWorkflow2 : WpfTreeItem
+    public class SubWorkflow1 : WpfTreeItem
     {
         
-        public SubWorkflow2(UITestControl searchLimitContainer) : 
+        public SubWorkflow1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -108512,13 +107937,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public UIHelloWorldTreeItem12 UIHelloWorldTreeItem1
+        public UIHelloWorldTreeItem11 UIHelloWorldTreeItem1
         {
             get
             {
                 if ((this.mUIHelloWorldTreeItem1 == null))
                 {
-                    this.mUIHelloWorldTreeItem1 = new UIHelloWorldTreeItem12(this);
+                    this.mUIHelloWorldTreeItem1 = new UIHelloWorldTreeItem11(this);
                 }
                 return this.mUIHelloWorldTreeItem1;
             }
@@ -108526,15 +107951,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private UIHelloWorldTreeItem12 mUIHelloWorldTreeItem1;
+        private UIHelloWorldTreeItem11 mUIHelloWorldTreeItem1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIHelloWorldTreeItem12 : WpfTreeItem
+    public class UIHelloWorldTreeItem11 : WpfTreeItem
     {
         
-        public UIHelloWorldTreeItem12(UITestControl searchLimitContainer) : 
+        public UIHelloWorldTreeItem11(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -108569,10 +107994,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ServiceTreeItem2 : WpfTreeItem
+    public class ServiceTreeItem1 : WpfTreeItem
     {
         
-        public ServiceTreeItem2(UITestControl searchLimitContainer) : 
+        public ServiceTreeItem1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -108606,10 +108031,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class StatusBar2 : WpfEdit
+    public class StatusBar1 : WpfEdit
     {
         
-        public StatusBar2(UITestControl searchLimitContainer) : 
+        public StatusBar1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

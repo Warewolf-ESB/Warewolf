@@ -22,12 +22,12 @@ namespace Warewolf.UITests
         [TestMethod]
         public void VariableList_DeleteAColumnOffARecorset_DeleteAllButtonIsEnbaled_UITest()
         {
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused.Enabled);
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.RemoveUnused.Enabled);
             UIMap.Enter_Vaiablelist_Items();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused.Enabled);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.RemoveUnused.Enabled);
             UIMap.Click_Remove_Unused_Variables();
             Point newPoint;
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.TryGetClickablePoint(out newPoint));
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.TryGetClickablePoint(out newPoint));
         }
 
         #region Additional test attributes
