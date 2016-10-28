@@ -169,17 +169,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             
             Assert.IsFalse(model.CanCancelTest());
         }
-
-        [TestMethod]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
-        public void WcfSource_TestConnection_Returns_Success()
-        {
-            var model = GetModel();
-           model.TestCommand.Execute(null);
-
-            Assert.IsFalse(model.CanCancelTest());
-        }
+       
 
         [TestMethod]
         [Owner(TestOwner)]
