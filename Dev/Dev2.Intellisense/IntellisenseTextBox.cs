@@ -386,10 +386,19 @@ namespace Dev2.UI
             {
                 _originalToolTip = ToolTip;
             }
+            bool isValid = true;
             if (FilterType == enIntellisensePartType.JsonObject)
             {
-                if (text.Contains("@") && text.IndexOf("@", StringComparison.Ordinal) == 2)
-                    removeAtSign = text.Replace("@","");
+                if (text.Contains("@") && (text.IndexOf("@", StringComparison.Ordinal) == 2) && !char.IsLetter(text[3]))
+                    isValid = false;
+                if (text.Contains('.'))
+                {
+                    var indexOfFullStop = text.IndexOf(".", StringComparison.Ordinal);
+                    if (indexOfFullStop < text.Length && char.IsNumber(text[indexOfFullStop + 1]))
+                        isValid = false;
+                }
+                if (!isValid)
+                    removeAtSign = text.Replace("@", "");
             }
             var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(removeAtSign);
             if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
@@ -892,7 +901,10 @@ namespace Dev2.UI
         public string AddBracketsToExpression(string expression)
         {
             string result = expression.Trim();
-
+            if (result.EndsWith("()"))
+            {
+                result = result.Insert(0, "@");
+            }
             if (!result.StartsWith("[["))
             {
                 result = string.Concat(!result.StartsWith("[") ? "[[" : "[", result);
@@ -901,7 +913,7 @@ namespace Dev2.UI
             if (!result.EndsWith("]]"))
             {
                 result = string.Concat(result, !expression.EndsWith("]") ? "]]" : "]");
-            }
+            }            
             if (FilterType == enIntellisensePartType.JsonObject && !result.Contains("@"))
             {
                 result = result.Insert(2, "@");
