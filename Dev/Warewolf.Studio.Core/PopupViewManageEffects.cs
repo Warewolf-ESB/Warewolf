@@ -19,6 +19,8 @@ namespace Warewolf.Studio.Core
 
         public static void RemoveBlackOutEffect(Grid blackoutGrid)
         {
+            if(!Application.Current.Dispatcher.CheckAccess())
+                return;
             Application.Current.MainWindow.Effect = null;
             var content = Application.Current.MainWindow.Content as Grid;
             content?.Children.Remove(blackoutGrid);
