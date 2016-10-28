@@ -4,21 +4,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class Create_SQL_Server_Source_From_Tool
+    public class MySqlTests
     {
         [TestMethod]
         [TestCategory("Tools")]
-        public void SQLServerSourceFromTool()
-        {
-            UIMap.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface();
-            UIMap.Open_SQL_Large_View_FromContextMenu();
-            UIMap.Select_NewDatabaseSource_FromSqlServerTool();
-            UIMap.Change_Selected_Database_ToMySql_DataBase();
-            UIMap.Change_Selected_Database_ToPostgreSql_DataBase();
-            UIMap.Change_Selected_Database_ToOracle_DataBase();
-            UIMap.Change_Selected_Database_ToODBC_DataBase();
-
-            UIMap.Click_DB_Source_Wizard_Test_Connection_Button();
+        public void MySqlTool_OpenLargeViewUITest()
+        {            
+            UIMap.Open_MySql_Database_Tool_Large_View();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.DoneButton.Exists);
         }
 
         #region Additional test attributes
@@ -30,14 +23,15 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_MySql_Database_Onto_DesignSurface();
         }
-
+        
         UIMap UIMap
         {
             get
             {
-                if (_UIMap == null)
+                if ((_UIMap == null))
                 {
                     _UIMap = new UIMap();
                 }

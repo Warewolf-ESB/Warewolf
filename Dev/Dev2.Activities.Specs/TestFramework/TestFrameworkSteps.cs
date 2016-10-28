@@ -53,6 +53,11 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenTestFolderIsCleaned()
         {
             DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
+            commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+
         }
 
 
@@ -1145,7 +1150,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var environmentModel = EnvironmentRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             environmentModel.ResourceRepository.ForceLoad();
-            var savedSource = environmentModel.ResourceRepository.All().Single(model => model.Category.Equals(path + "\\" + rName, StringComparison.InvariantCultureIgnoreCase));
+            var savedSource = environmentModel.ResourceRepository.All().FirstOrDefault(model => model.Category.Equals(path + "\\" + rName, StringComparison.InvariantCultureIgnoreCase));
             ScenarioContext[rName + "id"] = savedSource.ID;
             var resourceID = ScenarioContext.Get<Guid>(rName + "id");
             lock (_syncRoot)

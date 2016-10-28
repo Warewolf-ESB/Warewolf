@@ -6737,6 +6737,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disconnected Server.
+        /// </summary>
+        public static string ServerDisconnectedHeader {
+            get {
+                return ResourceManager.GetString("ServerDisconnectedHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server Name:.
         /// </summary>
         public static string ServerNameLabel {
@@ -6751,6 +6760,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServerProtocolHelp {
             get {
                 return ResourceManager.GetString("ServerProtocolHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please reconnect before performing any actions.
+        /// </summary>
+        public static string ServerReconnectForActions {
+            get {
+                return ResourceManager.GetString("ServerReconnectForActions", resourceCulture);
             }
         }
         

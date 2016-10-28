@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
@@ -878,7 +877,7 @@ namespace Dev2.Studio.ViewModels
         {
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(Warewolf.Studio.Resources.Languages.Core.ServerDisconnected, ActiveServer.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
-                             "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK,
+                             Warewolf.Studio.Resources.Languages.Core.ServerReconnectForActions, Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, true, false, false);
         }
 
@@ -982,15 +981,6 @@ namespace Dev2.Studio.ViewModels
 
         protected override void ChangeActiveItem(WorkSurfaceContextViewModel newItem, bool closePrevious)
         {
-            if (_previousActive != null)
-            {
-                if (newItem?.DataListViewModel != null)
-                {
-                    string errors;
-                    newItem.DataListViewModel.ClearCollections();
-                    newItem.DataListViewModel.CreateListsOfIDataListItemModelToBindTo(out errors);
-                }
-            }
             base.ChangeActiveItem(newItem, closePrevious);
             RefreshActiveEnvironment();
         }
@@ -1097,36 +1087,13 @@ namespace Dev2.Studio.ViewModels
         public override void ActivateItem(WorkSurfaceContextViewModel item)
         {
             _previousActive = ActiveItem;
-            if (_previousActive?.DebugOutputViewModel != null)
-            {
-                _previousActive.DebugOutputViewModel.PropertyChanged -= DebugOutputViewModelOnPropertyChanged;
-            }
             base.ActivateItem(item);
             ActiveItemChanged?.Invoke(item);
             if (item?.ContextualResourceModel == null) return;
-            if (item.DebugOutputViewModel != null)
-            {
-                item.DebugOutputViewModel.PropertyChanged += DebugOutputViewModelOnPropertyChanged;
-            }
-            
             SetActiveEnvironment(item.Environment);
         }
 
         public Action<WorkSurfaceContextViewModel> ActiveItemChanged;
-
-        void DebugOutputViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs args)
-        {
-            if (args.PropertyName == "IsProcessing")
-            {
-                if (MenuViewModel != null)
-                {
-                    if (ActiveItem.DebugOutputViewModel != null)
-                    {
-                        MenuViewModel.IsProcessing = ActiveItem.DebugOutputViewModel.IsProcessing;
-                    }
-                }
-            }
-        }
 
         private bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)
         {
@@ -1414,7 +1381,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public bool IsDownloading()
+       public bool IsDownloading()
         {
             return false;
         }

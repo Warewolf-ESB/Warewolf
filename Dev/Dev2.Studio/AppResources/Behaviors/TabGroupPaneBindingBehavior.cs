@@ -133,18 +133,9 @@ namespace Dev2.Studio.AppResources.Behaviors
                 }
 
                 var workSurfaceContextViewModel = routedPropertyChangedEventArgs.NewValue?.DataContext as WorkSurfaceContextViewModel;
-                if (workSurfaceContextViewModel == null)
-                {
-                    _mainViewModel.ActiveItemChanged = null;
-                    _mainViewModel.ActiveItem = null;
-                    _mainViewModel.ActiveItemChanged = ActiveItemChanged;
-                }
-                else
-                {
-                    _mainViewModel.ActiveItemChanged = null;
-                    _mainViewModel.ActiveItem = workSurfaceContextViewModel;
-                    _mainViewModel.ActiveItemChanged = ActiveItemChanged;
-                }
+                _mainViewModel.ActiveItemChanged = null;
+                _mainViewModel.ActiveItem = workSurfaceContextViewModel;
+                _mainViewModel.ActiveItemChanged = ActiveItemChanged;
             }
         }
 

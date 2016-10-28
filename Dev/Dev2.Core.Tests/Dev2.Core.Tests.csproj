@@ -101,7 +101,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xaml" />
@@ -249,6 +249,9 @@
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\mscorlib.fakes" />
     <CodeAnalysisDictionary Include="Fakes\System.fakes" />
+    <None Include="..\Dev2.Studio\App.config">
+      <Link>App.config</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
