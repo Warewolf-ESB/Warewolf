@@ -8,11 +8,10 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void WebRequestToolUITest()
-        {
-            UIMap.Drag_Toolbox_Web_Request_Onto_DesignSurface();
+        public void WebRequestTool_OpenLArgeViewUITest()
+        {            
             UIMap.Open_WebRequest_LargeView();
-        }
+        }        
 
         #region Additional test attributes
 
@@ -23,22 +22,9 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Web_Request_Onto_DesignSurface();
         }
-        
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap UIMap
         {

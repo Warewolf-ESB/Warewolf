@@ -381,11 +381,17 @@ namespace Dev2.UI
 
         private void ValidateText(string text)
         {
+            string removeAtSign = text;
             if (!HasError)
             {
                 _originalToolTip = ToolTip;
             }
-            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
+            if (FilterType == enIntellisensePartType.JsonObject)
+            {
+                if (text.Contains("@") && text.IndexOf("@", StringComparison.Ordinal) == 2)
+                    removeAtSign = text.Replace("@","");
+            }
+            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(removeAtSign);
             if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
             {
                 ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset";
@@ -405,7 +411,13 @@ namespace Dev2.UI
             {
                 if (error.Item2 != string.Empty)
                 {
-                    ToolTip = error.Item2;
+                    if(FilterType != enIntellisensePartType.JsonObject)
+                        ToolTip = error.Item2;
+                    else
+                    {
+                        var jsonErrorMessage = error.Item2.Replace(removeAtSign, text);
+                        ToolTip = jsonErrorMessage;
+                    }
                     HasError = true;
                 }
                 else

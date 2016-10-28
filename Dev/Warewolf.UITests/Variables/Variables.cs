@@ -19,6 +19,17 @@ namespace Warewolf.UITests
             UIMap.Click_Cancel_DebugInput_Window();
         }
 
+        [TestMethod]
+        public void VariableList_DeleteAColumnOffARecorset_DeleteAllButtonIsEnbaled_UITest()
+        {
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused.Enabled);
+            UIMap.Enter_Vaiablelist_Items();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused.Enabled);
+            UIMap.Click_Remove_Unused_Variables();
+            Point newPoint;
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.TryGetClickablePoint(out newPoint));
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]
@@ -31,13 +42,7 @@ namespace Warewolf.UITests
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
         }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
+                
         UIMap UIMap
         {
             get
