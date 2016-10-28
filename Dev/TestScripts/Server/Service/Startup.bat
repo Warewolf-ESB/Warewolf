@@ -30,7 +30,6 @@ if %errorLevel% == 0 (
 	echo Failure: Current permissions inadequate.
 	exit 1
 )
-@echo on
 
 REM ** Cleanup **
 call "%~dp0Cleanup.bat"
@@ -51,7 +50,10 @@ if %ERRORLEVEL% EQU 1062 GOTO NotStarted
 if %ERRORLEVEL% EQU 0 GOTO Running
 
 :NotInstalled
-IF EXIST %windir%\nircmd.exe (nircmd elevate sc create "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" obj= dev2\Integrationtester start= demand) else (sc create "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" obj= dev2\Integrationtester start= demand)
+@echo on
+@echo Creating Warewolf Server Service... Please any key to continue. Consider changing the user the service runs as to ensure accurate test results.
+PAUSE
+IF EXIST %windir%\nircmd.exe (nircmd elevate sc create "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand) else (sc create "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand)
 GOTO StartService
 
 :NotReady

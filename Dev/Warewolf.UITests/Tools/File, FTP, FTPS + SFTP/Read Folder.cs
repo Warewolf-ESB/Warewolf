@@ -9,9 +9,8 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void ReadFolderToolUITest()
-        {
-            UIMap.Drag_Toolbox_Read_Folder_Onto_DesignSurface();
+        public void ReadFolderTool_OpenLargeViewUITest()
+        {            
             UIMap.Open_Read_Folder_Tool_Large_View();
         }
 
@@ -24,22 +23,9 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Read_Folder_Onto_DesignSurface();
         }
-        
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap UIMap
         {

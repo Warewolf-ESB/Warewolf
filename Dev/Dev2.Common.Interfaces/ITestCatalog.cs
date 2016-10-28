@@ -21,5 +21,7 @@ namespace Dev2.Common.Interfaces
         void SaveTest(Guid resourceID, IServiceTestModelTO test);
 
         void UpdateTestsBasedOnIOChange(Guid resourceID, IList<IDev2Definition> inputDefs, IList<IDev2Definition> outputDefs);
+
+        void ReloadAllTests();
     }
 }
