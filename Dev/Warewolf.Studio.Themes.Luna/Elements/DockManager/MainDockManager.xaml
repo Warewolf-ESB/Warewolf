@@ -997,14 +997,8 @@
                                                     VerticalAlignment="Center"
                                                     Command="{x:Static igWindows:ToolWindow.MaximizeCommand}"
                                                     DockPanel.Dock="Right"
-                                                    Style="{StaticResource MetroWindowButtonStyle}"
-                                                    Visibility="{TemplateBinding MaximizeButtonVisibility}">
-                                                <Path Width="10"
-                                                      Margin="0,0,0,0"
-                                                      Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
-                                                      Fill="Black"
-                                                      Stretch="Uniform" />
-                                            </Button>
+                                                    Style="{StaticResource PanToolWindowButtonStyle}"
+                                                    Visibility="{TemplateBinding MaximizeButtonVisibility}"/>
                                             <Image Source="{StaticResource System-Logo}"
                                                    Margin="5,0,0,0"
                                                    Height="20"/>
@@ -1012,7 +1006,7 @@
                                                        FontSize="16"
                                                        Foreground="#FFAAAAAA"
                                                        IsHitTestVisible="False"
-                                                       Text="{TemplateBinding Title}"
+                                                       Text="{Binding DisplayName}"
                                                        TextTrimming="CharacterEllipsis" />
                                         </DockPanel>
                                     </igWindows:CardPanel>

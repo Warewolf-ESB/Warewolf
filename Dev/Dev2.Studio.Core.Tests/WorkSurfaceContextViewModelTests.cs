@@ -119,19 +119,36 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var workSurfaceKey = new WorkSurfaceKey();
-            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
-            
-            var viewModel = WorkflowDesignerViewModelMock(false);
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+           
+
+            var workflow = new ActivityBuilder();
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns((ExecuteMessage) null);
+
+            var resourceModel = mockResourceModel;
+            mockEnvironmentModel.Setup(m => m.ResourceRepository).Returns(resourceRep.Object);
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            mockEnvironmentModel.Setup(m => m.Connection).Returns(envConn.Object);
+            mockEnvironmentModel.Setup(m => m.IsConnected).Returns(true);
+            resourceModel.Setup(r => r.ResourceName).Returns("Test");
+            StringBuilder xamlBuilder = new StringBuilder("abc");
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => workflow);
+            workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
+            mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
             var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
             //------------Execute Test---------------------------
-            mockEnvironmentModel.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
+            mockEnvironmentModel.Raise(model => model.IsConnectedChanged+=null, connectedEventArgs);
             //------------Assert Results-------------------------
             Assert.AreEqual(DebugStatus.Finished, workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus);
         }
@@ -558,42 +575,6 @@ namespace Dev2.Core.Tests
 
         }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("WorkSurfaceContextViewModel_Debug")]
-        public void WorkSurfaceContextViewModel_Debug_CallsBindToModelOnWorkSurfaceViewModel()
-        {
-            //------------Setup for test--------------------------
-            CustomContainer.Register(new Mock<IWindowManager>().Object);
-            var workSurfaceKey = new WorkSurfaceKey();
-            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            mockEnvironmentModel.SetupGet(p => p.IsConnected).Returns(true);
-            var mockRepository = new Mock<IResourceRepository>();
-            mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
-            mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
-            mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-
-            var mockResourceModel = new Mock<IContextualResourceModel>();
-            mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
-            mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-            var viewModel = WorkflowDesignerViewModelMock(true, mockResourceModel);
-
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
-
-            //------------Execute Test---------------------------
-            workSurfaceContextViewModel.Debug(mockResourceModel.Object, true);
-            //------------Assert---------------------------------
-            mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
-            mockRepository.Verify(m => m.Save(It.IsAny<IResourceModel>()), Times.Once());
-        }
-
-
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -624,76 +605,6 @@ namespace Dev2.Core.Tests
             mockServiceDebugInfoModel.SetupGet(p => p.ResourceModel).Returns(mockResourceModel.Object);
             //------------Assert---------------------------------
             //mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("WorkSurfaceContextViewModel_Handle")]
-        public void WorkSurfaceContextViewModel_Handle_DebugResourceMessage_CallsBindModelAndSave()
-        {
-            //------------Setup for test--------------------------
-            CustomContainer.Register(new Mock<IWindowManager>().Object);
-            var workSurfaceKey = new WorkSurfaceKey();
-            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            mockEnvironmentModel.SetupGet(p => p.IsConnected).Returns(true);
-            var mockRepository = new Mock<IResourceRepository>();
-            mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
-            mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
-            mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-            
-            var mockResourceModel = new Mock<IContextualResourceModel>();
-            mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
-            mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(mockResourceModel.Object);
-
-            var viewModel = WorkflowDesignerViewModelMock(true, mockResourceModel);
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
-            //------------Execute Test---------------------------
-            workSurfaceContextViewModel.Handle(new DebugResourceMessage(mockResourceModel.Object));
-            //------------Assert---------------------------------
-            mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
-            mockRepository.Verify(m => m.Save(It.IsAny<IResourceModel>()), Times.Once());
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("WorkSurfaceContextViewModel_Handle")]
-        public void WorkSurfaceContextViewModel_Handle_ExecuteResourceMessage_CallsBindModelAndSave()
-        {
-            //------------Setup for test--------------------------
-            CustomContainer.Register(new Mock<IWindowManager>().Object);
-            var workSurfaceKey = new WorkSurfaceKey();
-            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            mockEnvironmentModel.SetupGet(p => p.IsConnected).Returns(true);
-            var mockRepository = new Mock<IResourceRepository>();
-            mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
-            mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
-            mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-
-            var mockResourceModel = new Mock<IContextualResourceModel>();
-            mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
-            mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-
-            var viewModel = WorkflowDesignerViewModelMock(true, mockResourceModel);
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
-            
-            //------------Execute Test---------------------------
-            workSurfaceContextViewModel.Handle(new ExecuteResourceMessage(mockResourceModel.Object));
-            //------------Assert---------------------------------
-            mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
-            mockRepository.Verify(m => m.Save(It.IsAny<IResourceModel>()), Times.Once());
         }
 
         [TestMethod]
