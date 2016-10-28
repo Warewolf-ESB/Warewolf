@@ -21,7 +21,9 @@ using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Workspaces;
 using Infragistics;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
@@ -591,6 +593,9 @@ namespace Dev2.Studio.Dock
                 {
                     var dataItem = GetItemForContainer(pane);
                     cv.Remove(dataItem);
+                    var item = pane.Content as WorkflowDesignerViewModel;
+                    if (item?.ResourceModel != null)
+                        WorkspaceItemRepository.Instance.Remove(item.ResourceModel);
                 }
             }
         }

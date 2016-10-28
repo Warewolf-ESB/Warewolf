@@ -1006,8 +1006,23 @@
                                                        FontSize="16"
                                                        Foreground="#FFAAAAAA"
                                                        IsHitTestVisible="False"
-                                                       Text="{Binding DisplayName}"
-                                                       TextTrimming="CharacterEllipsis" />
+                                                       Text="{TemplateBinding Title}"
+                                                       TextTrimming="CharacterEllipsis" >
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock" >
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="{x:Null}">
+                                                                <Setter Property="FontStyle" Value="Italic"/>
+                                                                <Setter Property="Text" Value="test null" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
+                                                                <Setter Property="FontStyle" Value="Italic"/>
+                                                                <Setter Property="Text" Value="test empty" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
                                         </DockPanel>
                                     </igWindows:CardPanel>
                                 </Border>
