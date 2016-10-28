@@ -38,7 +38,6 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Diagnostics;
-using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Util;
 using Dev2.Utilities;
@@ -119,20 +118,16 @@ namespace Dev2.Core.Tests
         public void WorkSurfaceContextViewModel_EnvironmentModelIsConnectedChanged_False_DebugStatusFinished()
         {
             //------------Setup for test--------------------------
-            var mockPopupController = new Mock<IPopupController>();
-            CustomContainer.Register(mockPopupController.Object);
             var workSurfaceKey = new WorkSurfaceKey();
-            
+            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             var environmentModel = mockEnvironmentModel.Object;
-            var mockContextualResourceModel = new Mock<IContextualResourceModel>();
-            mockContextualResourceModel.Setup(model => model.Environment).Returns(environmentModel);
-
-            var viewModel = WorkflowDesignerViewModelMock();
-
+            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            
+            var viewModel = WorkflowDesignerViewModelMock(false);
             var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
             //------------Execute Test---------------------------
@@ -141,7 +136,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(DebugStatus.Finished, workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus);
         }
 
-        private static WorkflowDesignerViewModelMock WorkflowDesignerViewModelMock()
+        private static WorkflowDesignerViewModelMock WorkflowDesignerViewModelMock(bool isConnected, Mock<IContextualResourceModel> ResourceModel = null)
         {
             var workflow = new ActivityBuilder();
             var resourceRep = new Mock<IResourceRepository>();
@@ -149,18 +144,16 @@ namespace Dev2.Core.Tests
 
             ExecuteMessage exeMsg = null;
             // ReSharper disable ExpressionIsAlwaysNull
-            resourceRep.Setup(
-                r =>
-                    r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(),
-                        It.IsAny<bool>())).Returns(exeMsg);
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(exeMsg);
             // ReSharper restore ExpressionIsAlwaysNull
 
-            var resourceModel = new Mock<IContextualResourceModel>();
+            var resourceModel = ResourceModel ?? new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             var envConn = new Mock<IEnvironmentConnection>();
             var serverEvents = new Mock<IEventPublisher>();
             envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
+            resourceModel.Setup(m => m.Environment.IsConnected).Returns(isConnected);
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
             StringBuilder xamlBuilder = new StringBuilder("abc");
 
@@ -173,8 +166,7 @@ namespace Dev2.Core.Tests
                 return workflow;
             });
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object,
-                new Mock<IExternalProcessExecutor>().Object);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
             return viewModel;
         }
 
@@ -190,7 +182,7 @@ namespace Dev2.Core.Tests
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             var environmentModel = mockEnvironmentModel.Object;
-            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(environmentModel);
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(environmentModel, true);
             var connectedEventArgs = new ConnectedEventArgs { IsConnected = true };
             workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
             //------------Execute Test---------------------------
@@ -245,7 +237,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             var environmentModel = mockEnvironmentModel.Object;
-            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(environmentModel);
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(environmentModel, true);
 
             //------------Execute Test---------------------------
             var isEnvironmentConnected = workSurfaceContextViewModel.IsEnvironmentConnected();
@@ -266,7 +258,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(false);
             var environmentModel = mockEnvironmentModel.Object;
-            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(environmentModel);
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(environmentModel, false);
 
             //------------Execute Test---------------------------
             var isEnvironmentConnected = workSurfaceContextViewModel.IsEnvironmentConnected();
@@ -280,7 +272,7 @@ namespace Dev2.Core.Tests
         public void WorkSurfaceContextViewModel_IsEnvironmentConnected_WhenEnvironmentNull_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(null);
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(null, false);
 
             //------------Execute Test---------------------------
             var isEnvironmentConnected = workSurfaceContextViewModel.IsEnvironmentConnected();
@@ -299,7 +291,8 @@ namespace Dev2.Core.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(WorksurfaceResourceID);
             mockResourceModel.SetupSet(model => model.ResourceName = It.IsAny<string>()).Callback<string>(value => { actualNewName = value; });
-            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(null, mockResourceModel);
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(null, true, mockResourceModel);
+            workSurfaceContextViewModel.ContextualResourceModel.ID = WorksurfaceResourceID;
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new UpdateWorksurfaceDisplayName(WorksurfaceResourceID, "Worksurface Resource Name", newName));
 
@@ -347,13 +340,13 @@ namespace Dev2.Core.Tests
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
 
-            var viewModel = WorkflowDesignerViewModelMock();
+            var viewModel = WorkflowDesignerViewModelMock(true);
             // ReSharper disable UseObjectOrCollectionInitializer
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
             // ReSharper restore UseObjectOrCollectionInitializer
             workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
+            workSurfaceContextViewModel.DebugOutputViewModel = viewModel.DebugOutputViewModel;
             //------------Execute Test---------------------------
             Assert.IsTrue(workSurfaceContextViewModel.CanDebug());
         }
@@ -374,11 +367,13 @@ namespace Dev2.Core.Tests
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
+
+            var viewModel = WorkflowDesignerViewModelMock(true);
             // ReSharper disable UseObjectOrCollectionInitializer
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
             // ReSharper restore UseObjectOrCollectionInitializer
             workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
+            workSurfaceContextViewModel.DebugOutputViewModel = viewModel.DebugOutputViewModel;
             //------------Execute Test---------------------------
             Assert.IsTrue(workSurfaceContextViewModel.CanSave());
         }
@@ -400,8 +395,9 @@ namespace Dev2.Core.Tests
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object) { WorkSurfaceViewModel = new WorkSurfaceViewModelTest() };
+            var viewModel = WorkflowDesignerViewModelMock(true);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel) { WorkSurfaceViewModel = new WorkSurfaceViewModelTest() };
+            workSurfaceContextViewModel.DebugOutputViewModel = viewModel.DebugOutputViewModel;
             //------------Execute Test---------------------------
             Assert.IsTrue(workSurfaceContextViewModel.CanExecute());
         }
@@ -422,8 +418,9 @@ namespace Dev2.Core.Tests
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object) { WorkSurfaceViewModel = new WorkSurfaceViewModelTest() };
+            var viewModel = WorkflowDesignerViewModelMock(true);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel) { WorkSurfaceViewModel = new WorkSurfaceViewModelTest() };
+            workSurfaceContextViewModel.DebugOutputViewModel = viewModel.DebugOutputViewModel;
             //------------Execute Test---------------------------
             Assert.IsTrue(workSurfaceContextViewModel.CanViewInBrowser());
         }
@@ -581,12 +578,13 @@ namespace Dev2.Core.Tests
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
+            var viewModel = WorkflowDesignerViewModelMock(true, mockResourceModel);
+
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
 
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Debug(mockResourceModel.Object, true);
@@ -648,12 +646,14 @@ namespace Dev2.Core.Tests
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
+            
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
             mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(mockResourceModel.Object);
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+
+            var viewModel = WorkflowDesignerViewModelMock(true, mockResourceModel);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new DebugResourceMessage(mockResourceModel.Object));
             //------------Assert---------------------------------
@@ -681,11 +681,14 @@ namespace Dev2.Core.Tests
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
+
+            var viewModel = WorkflowDesignerViewModelMock(true, mockResourceModel);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
+            
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new ExecuteResourceMessage(mockResourceModel.Object));
             //------------Assert---------------------------------
@@ -890,17 +893,13 @@ namespace Dev2.Core.Tests
 
 
 
-        static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(IEnvironmentModel environmentModel, Mock<IContextualResourceModel> ResourceModel = null)
+        static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(IEnvironmentModel environmentModel, bool isConnected, Mock<IContextualResourceModel> ResourceModel = null)
         {
             var workSurfaceKey = new WorkSurfaceKey();
-            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockResourceModel = ResourceModel ?? new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.Environment).Returns(environmentModel);
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
-            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(mockResourceModel.Object);
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
 
-            var viewModel = WorkflowDesignerViewModelMock();
+            var viewModel = WorkflowDesignerViewModelMock(isConnected, mockResourceModel);
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
             return workSurfaceContextViewModel;
@@ -915,7 +914,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
 
             var environmentModel = mockEnvironmentModel.Object;
-            return CreateWorkSurfaceContextViewModel(environmentModel);
+            return CreateWorkSurfaceContextViewModel(environmentModel, true);
         }
 
         [TestMethod]
@@ -999,9 +998,13 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel);
 
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceModel.ID);
+            mockResourceModel.Setup(model => model.ResourceName).Returns(resourceModel.ResourceName);
+            mockResourceModel.Setup(model => model.UserPermissions).Returns(resourceModel.UserPermissions);
+            var viewModel = WorkflowDesignerViewModelMock(true, mockResourceModel);
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new WorkSurfaceKey(), workSurfaceViewModel)
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new WorkSurfaceKey(), viewModel)
             {
                 DebugOutputViewModel = { DebugStatus = DebugStatus.Ready }
             };
