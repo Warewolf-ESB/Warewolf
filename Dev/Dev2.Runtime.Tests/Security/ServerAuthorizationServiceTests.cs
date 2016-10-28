@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.Security
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", "Url"));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.Unknown);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -102,7 +102,7 @@ namespace Dev2.Tests.Runtime.Security
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
 
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", "Url"));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.HubConnect);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -137,7 +137,7 @@ namespace Dev2.Tests.Runtime.Security
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
 
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", "Url"));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.EsbFetchExecutePayloadFragment);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -169,7 +169,7 @@ namespace Dev2.Tests.Runtime.Security
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
 
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", "Url"));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.HubConnect);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -201,7 +201,7 @@ namespace Dev2.Tests.Runtime.Security
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
 
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", "Url"));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.EsbWrite);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -232,7 +232,7 @@ namespace Dev2.Tests.Runtime.Security
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", "Url"));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -259,7 +259,7 @@ namespace Dev2.Tests.Runtime.Security
             var authorizationService = new TestServerAuthorizationService(securityService.Object);
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", "Url"));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -288,7 +288,7 @@ namespace Dev2.Tests.Runtime.Security
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", "Url"));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
             authorizationService.IsAuthorized(request.Object);
@@ -316,7 +316,7 @@ namespace Dev2.Tests.Runtime.Security
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", "Url"));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
             authorizationService.IsAuthorized(request.Object);

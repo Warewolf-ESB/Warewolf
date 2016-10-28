@@ -21,6 +21,9 @@ using Dev2.Communication;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Core.Interfaces;
 using Warewolf.Resource.Errors;
+// ReSharper disable UnusedParameter.Local
+// ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable CheckNamespace
 
 namespace Dev2.Controller
 {
@@ -93,43 +96,8 @@ namespace Dev2.Controller
             ServicePayload.AddArgument(key, value);
         }
 
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <returns></returns>
-        public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId)
+        private static string ContainsAuthorizationError(ExecuteMessage message, IExplorerRepositoryResult explorerRepositoryResult, out bool containsAuthorization)
         {
-            try
-            {
-                var executeCommand = ExecuteCommand<T>(connection, workspaceId, Guid.Empty);
-                var message = executeCommand as ExecuteMessage;
-                var explorerRepositoryResult = executeCommand as IExplorerRepositoryResult;
-                if (message != null || explorerRepositoryResult != null)
-                {
-                    bool containsAuthorization;
-                    var s = ContainsAuthorizationError<T>(message, explorerRepositoryResult, out containsAuthorization);
-                    if (containsAuthorization)
-                    {
-                        ShowAuthorizationErrorPopup(s);
-                        return default(T);
-                    }
-
-                }
-
-                return executeCommand;
-            }
-            catch (ServiceNotAuthorizedException ex)
-            {
-                ShowAuthorizationErrorPopup(ex.Message);
-                return default(T);
-            }
-        }
-
-        private static string ContainsAuthorizationError<T>(ExecuteMessage message, IExplorerRepositoryResult explorerRepositoryResult, out bool containsAuthorization)
-        {
-            containsAuthorization = false;
             var executeMessage = message;
             var authorizationErrors = new List<string>
             {
@@ -142,12 +110,8 @@ namespace Dev2.Controller
                 ErrorResource.NotAuthorizedToDeployToException,
             };
             var authorizationError = executeMessage?.Message.ToString() ?? explorerRepositoryResult.Message;
-            var firstUniquePartOfTheMsg = authorizationError.Split('.').First();
-            if(!string.IsNullOrEmpty(firstUniquePartOfTheMsg))
-            {
-                containsAuthorization = authorizationErrors.Any(err => err.Split('.').First().ToUpper().Contains(firstUniquePartOfTheMsg.ToUpper()));
-            }
-           
+            containsAuthorization = authorizationErrors.Any(err => err.ToUpper().Contains(authorizationError.ToUpper()));
+
             return authorizationError;
         }
 
@@ -163,37 +127,17 @@ namespace Dev2.Controller
         /// </summary>
         /// <param name="connection">The connection.</param>
         /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="dataListId">The data list unique identifier.</param>
         /// <returns></returns>
-        public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId, Guid dataListId)
+        public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId)
         {
-            // build the service request payload ;)
             var serializer = new Dev2JsonSerializer();
-
+            var popupController = CustomContainer.Get<IPopupController>();
             if (connection == null || !connection.IsConnected)
             {
-                if (connection != null)
-                {
-                    try
-                    {
-                        if (!connection.IsConnecting)
-                        {
-                            var popupController = CustomContainer.Get<IPopupController>();
-                            popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
-                                                  ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK, 
-                                                  MessageBoxImage.Information, "", false, false, true, false);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Error("Error popup", e);
-                    }
-                }
+                IsConnectionValid(connection, popupController);
             }
             else
             {
-
-                // now bundle it up into a nice string builder ;)
                 if (ServicePayload == null)
                 {
                     ServicePayload = new EsbExecuteRequest();
@@ -202,18 +146,68 @@ namespace Dev2.Controller
                 ServicePayload.ServiceName = ServiceName;
                 StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
                 StringBuilder payload = connection.ExecuteCommand(toSend, workspaceId);
-                if (payload == null || payload.Length == 0)
-                {
-                    var popupController = CustomContainer.Get<IPopupController>();
-                    if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
-                    {
-                        popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + "Please ensure that your server is still running and your network connection is working."
-                                            , "Server dropped", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false);
-                    }
-                }
-                return serializer.Deserialize<T>(payload);
+                ValidatePayload(connection, payload, popupController);
+                var executeCommand = serializer.Deserialize<T>(payload);
+                return CheckAuthorization(executeCommand, serializer, payload);                
             }
             return default(T);
+        }
+
+        private static T CheckAuthorization<T>(T executeCommand, Dev2JsonSerializer serializer, StringBuilder payload)
+        {
+            IExplorerRepositoryResult explorerRepositoryResult = null;
+            ExecuteMessage message = null;
+            if(executeCommand != null)
+            {
+                explorerRepositoryResult = executeCommand as IExplorerRepositoryResult;
+            }
+            else
+            {
+                message = serializer.Deserialize<ExecuteMessage>(payload);
+            }
+            if(message != null || explorerRepositoryResult != null)
+            {
+                bool containsAuthorization;
+                var s = ContainsAuthorizationError(message, explorerRepositoryResult, out containsAuthorization);
+                if(containsAuthorization)
+                {
+                    ShowAuthorizationErrorPopup(s);
+                    return default(T);
+                }
+            }
+            return executeCommand;
+        }
+
+        private static void ValidatePayload(IEnvironmentConnection connection, StringBuilder payload, IPopupController popupController)
+        {
+            if(payload == null || payload.Length == 0)
+            {
+                if(connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
+                {
+                    popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + "Please ensure that your server is still running and your network connection is working."
+                        , "Server dropped", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false);
+                }
+            }
+        }
+
+        private static void IsConnectionValid(IEnvironmentConnection connection, IPopupController popupController)
+        {
+            if(connection != null)
+            {
+                try
+                {
+                    if(!connection.IsConnecting)
+                    {
+                        popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
+                                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
+                            MessageBoxImage.Information, "", false, false, true, false);
+                    }
+                }
+                catch(Exception e)
+                {
+                    Dev2Logger.Error("Error popup", e);
+                }
+            }
         }
 
         /// <summary>
@@ -254,20 +248,7 @@ namespace Dev2.Controller
                             StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
                             var payload = await connection.ExecuteCommandAsync(toSend, workspaceId);
                             var executeCommand = serializer.Deserialize<T>(payload);
-                            var message = executeCommand as ExecuteMessage;
-                            var explorerRepositoryResult = executeCommand as IExplorerRepositoryResult;
-                            if (message != null || explorerRepositoryResult != null)
-                            {
-                                bool containsAuthorization;
-                                var s = ContainsAuthorizationError<T>(message, explorerRepositoryResult, out containsAuthorization);
-                                if (containsAuthorization)
-                                {
-                                    ShowAuthorizationErrorPopup(s);
-                                    return default(T);
-                                }
-                            }
-
-                            return executeCommand;
+                    return CheckAuthorization(executeCommand, serializer, payload);
 
                 }
                 catch (ServiceNotAuthorizedException ex)
