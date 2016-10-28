@@ -8,9 +8,9 @@ namespace Warewolf.UITests.Tools.Utility
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void DateTimeToolUITest()
+        public void DateTimeTool_OpenLargeViewUITest()
         {
-            UIMap.Drag_Toolbox_Date_And_Time_Onto_DesignSurface();
+            UIMap.Open_DateTime_LargeView();
         }
 
         #region Additional test attributes
@@ -22,26 +22,9 @@ namespace Warewolf.UITests.Tools.Utility
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Date_And_Time_Onto_DesignSurface();
         }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap UIMap
         {
