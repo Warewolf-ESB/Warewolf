@@ -44,8 +44,15 @@ namespace Dev2.ViewModels.Workflow
            IDataListVerifyPart verifyPart;
             if (isJsonObjectSource)
             {
-                verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
-                AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                string removeAtSign = dataPartFieldData;
+                if(dataPartFieldData.IndexOf("@", StringComparison.Ordinal) == 0)
+                    removeAtSign = dataPartFieldData.Substring(1, dataPartFieldData.Length - 1);
+                var intellisenseResult = dataLanguageParser.ValidateName(removeAtSign, "");
+                if (intellisenseResult == null)
+                {
+                    verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
+                    AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                }
             }
             else
             {
