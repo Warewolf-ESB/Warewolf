@@ -382,7 +382,12 @@ namespace Dev2.Studio.Views
                         {
                             var dockManager = sender as XamDockManager;
                             var workflowDesignerViewModel = dockManager?.DataContext as WorkflowDesignerViewModel;
-                            paneToolWindow.Title += " - " + workflowDesignerViewModel?.DisplayName;
+                            var title = paneToolWindow.Title;
+                            var newTitle = " - " + workflowDesignerViewModel?.DisplayName;
+                            if (!title.Contains(newTitle))
+                            {
+                                paneToolWindow.Title = paneToolWindow.Title + " - " + workflowDesignerViewModel?.DisplayName;
+                            }
                         }
                         paneToolWindow.ToolTip = "Floating window for - " + workSurfaceContextViewModel?.ContextualResourceModel.DisplayName;
                     }
