@@ -69,7 +69,7 @@ namespace Dev2.Core.Tests.Workflows
         public void DesignerDataListUtils_BuildDataPart_InvalidRecSetName_ExpectInsert()
         {
             //------------Setup for test--------------------------
-            var unique = new Dictionary<IDataListVerifyPart, string>();
+            var unique = new Dictionary<IDataListVerifyPart, string>();            
             WorkflowDesignerDataPartUtils.BuildDataPart("[[rec$().a]]", unique);
             Assert.AreEqual(0, unique.Count);
         }
@@ -86,5 +86,46 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual(1, unique.Count);
         }
 
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("DesignerDataListUtils_BuildDataPart")]
+        public void DesignerDataListUtils_BuildDataPart_InvalidJsonObjectVariable_ExpectNotInserted()
+        {
+            //------------Setup for test--------------------------
+            var unique = new Dictionary<IDataListVerifyPart, string>();
+            WorkflowDesignerDataPartUtils.BuildDataPart("[[@rec().#a]]", unique, true);
+            Assert.AreEqual(0, unique.Count);
+        }
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("DesignerDataListUtils_BuildDataPart")]
+        public void DesignerDataListUtils_BuildDataPart_ValidJsonObjectVariable_ExpectInserted()
+        {
+            //------------Setup for test--------------------------
+            var unique = new Dictionary<IDataListVerifyPart, string>();
+            WorkflowDesignerDataPartUtils.BuildDataPart("[[@rec]]", unique, true);
+            Assert.AreEqual(1, unique.Count);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("DesignerDataListUtils_BuildDataPart")]
+        public void DesignerDataListUtils_BuildDataPart_JsonObjectVariableStartsWithNumber_ExpectNotInserted()
+        {
+            //------------Setup for test--------------------------
+            var unique = new Dictionary<IDataListVerifyPart, string>();
+            WorkflowDesignerDataPartUtils.BuildDataPart("[[@55rec]]", unique, true);
+            Assert.AreEqual(0, unique.Count);
+        }
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("DesignerDataListUtils_BuildDataPart")]
+        public void DesignerDataListUtils_BuildDataPart_JsonObjectVariableAroundBrackets_ExpectNotInserted()
+        {
+            //------------Setup for test--------------------------
+            var unique = new Dictionary<IDataListVerifyPart, string>();
+            WorkflowDesignerDataPartUtils.BuildDataPart("[[@(type())]]", unique, true);
+            Assert.AreEqual(0, unique.Count);
+        }
     }
 }
