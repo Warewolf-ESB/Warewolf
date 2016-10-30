@@ -42,7 +42,7 @@ namespace Dev2.Studio.Core.DataList
             for (var index = 0; index < paths.Length; index++)
             {
                 var path = paths[index];
-                if(char.IsNumber(path[0]))
+                if(string.IsNullOrEmpty(path) || char.IsNumber(path[0]))
                     return;
                 path = DataListUtil.ReplaceRecordsetIndexWithBlank(path);
                 var pathToMatch = path.Replace("@", "");
