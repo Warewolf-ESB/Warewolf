@@ -408,7 +408,7 @@ namespace Warewolf.UITests
             }
         }
 
-        [When(@"I Try Remove ""(*.)"" from Explorer")]
+        [When(@"I Try Remove ""(.*)"" from Explorer")]
         public void TryRemoveFromExplorer(string ResourceName)
         {
             Filter_Explorer(ResourceName);
