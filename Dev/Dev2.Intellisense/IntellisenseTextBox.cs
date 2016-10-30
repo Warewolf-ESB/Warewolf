@@ -377,56 +377,17 @@ namespace Dev2.UI
             ValidateText(text);
             _desiredResultSet = string.IsNullOrEmpty(text) ? IntellisenseDesiredResultSet.EntireSet : IntellisenseDesiredResultSet.ClosestMatch;
         }
-
-
         private void ValidateText(string text)
         {
-            string removeAtSign = text;
             if (!HasError)
             {
                 _originalToolTip = ToolTip;
             }
-            bool isValid = true;
             if (FilterType == enIntellisensePartType.JsonObject)
             {
-                if (text.Contains("@") && (text.IndexOf("@", StringComparison.Ordinal) == 2) && !char.IsLetter(text[3]))
-                    isValid = false;
-                if (text.Contains('.'))
-                {
-                    var indexOfFullStop = text.IndexOf(".", StringComparison.Ordinal);
-                    if (indexOfFullStop < text.Length && char.IsNumber(text[indexOfFullStop + 1]))
-                        isValid = false;
-                }
-                if (!isValid)
-                    removeAtSign = text.Replace("@", "");
-            }
-            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(removeAtSign);
-            if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
-            {
-                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset";
-                HasError = true;
-            }
-            else if (FilterType == enIntellisensePartType.ScalarsOnly && !error.Item1.IsScalarExpression)
-            {
-                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid scalar";
-                HasError = true;
-            }
-            else if (FilterType == enIntellisensePartType.RecordsetFields && !error.Item1.IsRecordSetExpression)
-            {
-                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
-                HasError = true;
-            }
-            else
-            {
-                if (error.Item2 != string.Empty)
-                {
-                    if(FilterType != enIntellisensePartType.JsonObject)
-                        ToolTip = error.Item2;
-                    else
-                    {
-                        var jsonErrorMessage = error.Item2.Replace(removeAtSign, text);
-                        ToolTip = jsonErrorMessage;
-                    }
+                var isValid = ValidateJsonInputs(text);
+                if(!isValid)
+                {                    
                     HasError = true;
                 }
                 else
@@ -435,6 +396,66 @@ namespace Dev2.UI
                     HasError = false;
                 }
             }
+            else
+            {
+                var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
+                if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
+                {
+                    ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset";
+                    HasError = true;
+                }
+                else if (FilterType == enIntellisensePartType.ScalarsOnly && !error.Item1.IsScalarExpression)
+                {
+                    ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid scalar";
+                    HasError = true;
+                }
+                else if (FilterType == enIntellisensePartType.RecordsetFields && !error.Item1.IsRecordSetExpression)
+                {
+                    ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
+                    HasError = true;
+                }
+                else
+                {
+                    if (error.Item2 != string.Empty)
+                    {
+                        ToolTip = error.Item2;
+                        HasError = true;
+                    }
+                    else
+                    {
+                        ToolTip = _originalToolTip;
+                        HasError = false;
+                    }
+                }
+            }
+        }
+        private bool ValidateJsonInputs(string text)
+        {
+            bool isValid = true;
+            if(text.Contains("@") && (text.IndexOf("@", StringComparison.Ordinal) == 2) && !char.IsLetter(text[3]))
+            {
+                isValid = false;
+                ToolTip = "Variable name " + text + " begins with a number";
+            }
+            if(text.Contains('.'))
+            {
+                var indexOfFullStop = text.IndexOf(".", StringComparison.Ordinal);
+                if(indexOfFullStop + 1 >= text.Length)
+                {
+                    isValid = false;
+                    ToolTip = "Variable name " + text + " contains invalid character(s)";
+                }
+                else
+                {
+                    char charecterAfterFullStop = text[indexOfFullStop + 1];
+                    if(charecterAfterFullStop > text.Length && !char.IsLetter(charecterAfterFullStop))
+                    {
+                        isValid = false;
+                        ToolTip = "Variable name " + text + " begins with a number";
+                    }
+                }
+            }
+            return isValid;
         }
 
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
@@ -901,10 +922,6 @@ namespace Dev2.UI
         public string AddBracketsToExpression(string expression)
         {
             string result = expression.Trim();
-            if (result.EndsWith("()"))
-            {
-                result = result.Insert(0, "@");
-            }
             if (!result.StartsWith("[["))
             {
                 result = string.Concat(!result.StartsWith("[") ? "[[" : "[", result);

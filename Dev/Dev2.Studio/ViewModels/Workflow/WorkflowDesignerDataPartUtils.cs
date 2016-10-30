@@ -37,7 +37,7 @@ namespace Dev2.ViewModels.Workflow
 
 
      public static void BuildDataPart(string dataPartFieldData, Dictionary<IDataListVerifyPart, string> unique,bool isJsonObjectSource = false)
-       {
+        {
            Dev2DataLanguageParser dataLanguageParser = new Dev2DataLanguageParser();
 
            dataPartFieldData = DataListUtil.StripBracketsFromValue(dataPartFieldData);
@@ -51,8 +51,14 @@ namespace Dev2.ViewModels.Workflow
                     valid = false;
                 if (valid)
                 {
-                    verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
-                    AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                    var removeBrace = RemoveRecordSetBrace(dataPartFieldData);
+                    var replaceAtSign = removeBrace.Replace("@", "");
+                    var intellisenseResult = dataLanguageParser.ValidateName(replaceAtSign, "");
+                    if (intellisenseResult == null)
+                    {
+                        verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
+                        AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                    }
                 }
             }
             else
@@ -74,8 +80,6 @@ namespace Dev2.ViewModels.Workflow
                                 var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "");
                                 if (intellisenseResult == null)
                                 {
-
-
                                     recAdded = true;
                                     verifyPart =
                                          IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue,
