@@ -431,38 +431,35 @@ namespace Dev2.UI
         }
         private bool ValidateJsonInputs(string text)
         {
-            bool isValid = true;
-            if (text.Contains("@") && (text.IndexOf("@", StringComparison.Ordinal) == 2))
+            bool isValid = false;
+            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
+            if(error == null)
+                isValid = true;
+            else
             {
-                if (char.IsNumber(text[3]))
+                ToolTip = error.Item2;
+                if(text.Contains("@") && (text.IndexOf("@", StringComparison.Ordinal) == 2))
                 {
-                    isValid = false;
-                    ToolTip = "Variable name " + text + " begins with a number";
-                }
-                if (!char.IsNumber(text[3]) && !char.IsLetter(text[3]))
-                {
-                    isValid = false;
-                    ToolTip = "Variable name " + text + " contains invalid character(s)";
-                }
-            }
-            if(text.Contains('.'))
-            {
-                var indexOfFullStop = text.IndexOf(".", StringComparison.Ordinal);
-                if(indexOfFullStop + 1 >= text.Length)
-                {
-                    isValid = false;
-                    ToolTip = "Variable name " + text + " contains invalid character(s)";
-                }
-                else
-                {
-                    char charecterAfterFullStop = text[indexOfFullStop + 1];
-                    if(charecterAfterFullStop > text.Length && !char.IsLetter(charecterAfterFullStop))
-                    {
-                        isValid = false;
+                    if(char.IsNumber(text[3]))
                         ToolTip = "Variable name " + text + " begins with a number";
+                    if(!char.IsNumber(text[3]) && !char.IsLetter(text[3]))
+                        ToolTip = "Variable name " + text + " contains invalid character(s)";
+                }
+                if(text.Contains('.'))
+                {
+                    var indexOfFullStop = text.IndexOf(".", StringComparison.Ordinal);
+                    if(indexOfFullStop + 1 >= text.Length)
+                        ToolTip = "Variable name " + text + " contains invalid character(s)";
+                    else
+                    {
+                        char charecterAfterFullStop = text[indexOfFullStop + 1];
+                        if(charecterAfterFullStop > text.Length && !char.IsLetter(charecterAfterFullStop))
+                            ToolTip = "Variable name " + text + " begins with a number";
                     }
                 }
             }
+            if (string.IsNullOrEmpty(ToolTip.ToString()))
+                return true;
             return isValid;
         }
 
