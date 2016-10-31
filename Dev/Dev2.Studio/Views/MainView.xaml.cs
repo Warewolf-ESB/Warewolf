@@ -386,10 +386,16 @@ namespace Dev2.Studio.Views
                             var newTitle = " - " + workflowDesignerViewModel?.DisplayName;
                             if (!title.Contains(newTitle))
                             {
-                                paneToolWindow.Title = paneToolWindow.Title + " - " + workflowDesignerViewModel?.DisplayName;
+                                if (!string.IsNullOrWhiteSpace(workflowDesignerViewModel?.DisplayName))
+                                {
+                                    paneToolWindow.Title = paneToolWindow.Title + " - " + workflowDesignerViewModel?.DisplayName;
+                                }
                             }
                         }
-                        paneToolWindow.ToolTip = "Floating window for - " + workSurfaceContextViewModel?.ContextualResourceModel.DisplayName;
+                        if (workSurfaceContextViewModel?.ContextualResourceModel != null)
+                        {
+                            paneToolWindow.ToolTip = "Floating window for - " + workSurfaceContextViewModel?.ContextualResourceModel.DisplayName;
+                        }
                     }
                 }
             }
