@@ -20,6 +20,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Xml;
 using Dev2.Common;
+using Dev2.Settings.Scheduler;
 using Dev2.Studio.ViewModels;
 using Dev2.Views;
 using FontAwesome.WPF;
@@ -28,6 +29,7 @@ using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.ViewModels;
 using Infragistics.Windows.DockManager;
 
 // ReSharper disable CheckNamespace
@@ -381,14 +383,43 @@ namespace Dev2.Studio.Views
                         else
                         {
                             var dockManager = sender as XamDockManager;
-                            var workflowDesignerViewModel = dockManager?.DataContext as WorkflowDesignerViewModel;
-                            var title = paneToolWindow.Title;
-                            var newTitle = " - " + workflowDesignerViewModel?.DisplayName;
-                            if (!title.Contains(newTitle))
+                            if (dockManager?.DataContext.GetType() == typeof (WorkflowDesignerViewModel))
                             {
-                                if (!string.IsNullOrWhiteSpace(workflowDesignerViewModel?.DisplayName))
+                                var workflowDesignerViewModel = dockManager?.DataContext as WorkflowDesignerViewModel;
+                                var title = paneToolWindow.Title;
+                                var newTitle = " - " + workflowDesignerViewModel?.DisplayName.Replace("*", "").TrimEnd();
+                                if (!title.Contains(newTitle))
                                 {
-                                    paneToolWindow.Title = paneToolWindow.Title + " - " + workflowDesignerViewModel?.DisplayName;
+                                    if (!string.IsNullOrWhiteSpace(workflowDesignerViewModel?.DisplayName))
+                                    {
+                                        paneToolWindow.Title = paneToolWindow.Title + " - " + workflowDesignerViewModel?.DisplayName;
+                                    }
+                                }
+                            }
+                            else if (dockManager?.DataContext.GetType() == typeof(StudioTestViewModel))
+                            {
+                                var studioTestViewModel = dockManager?.DataContext as StudioTestViewModel;
+                                var title = paneToolWindow.Title;
+                                var newTitle = " - " + studioTestViewModel?.DisplayName.Replace("*", "").TrimEnd();
+                                if (!title.Contains(newTitle))
+                                {
+                                    if (!string.IsNullOrWhiteSpace(studioTestViewModel?.DisplayName))
+                                    {
+                                        paneToolWindow.Title = paneToolWindow.Title + " - " + studioTestViewModel?.DisplayName;
+                                    }
+                                }
+                            }
+                            else if (dockManager?.DataContext.GetType() == typeof(SchedulerViewModel))
+                            {
+                                var schedulerViewModel = dockManager?.DataContext as SchedulerViewModel;
+                                var title = paneToolWindow.Title;
+                                var newTitle = " - " + schedulerViewModel?.DisplayName.Replace("*", "").TrimEnd();
+                                if (!title.Contains(newTitle))
+                                {
+                                    if (!string.IsNullOrWhiteSpace(schedulerViewModel?.DisplayName))
+                                    {
+                                        paneToolWindow.Title = paneToolWindow.Title + " - " + schedulerViewModel?.DisplayName;
+                                    }
                                 }
                             }
                         }
@@ -443,7 +474,16 @@ namespace Dev2.Studio.Views
                             if (paneToolWindow.Pane.Panes != null && paneToolWindow.Pane.Panes.Count > 0)
                             {
                                 var workSurfaceContextViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
-                                mainViewModel?.ActivateItem(workSurfaceContextViewModel);
+                                if (workSurfaceContextViewModel != null)
+                                {
+                                    mainViewModel?.ActivateItem(workSurfaceContextViewModel);
+                                }
+                                else
+                                {
+                                    var workflowDesignerViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkflowDesignerViewModel;
+                                    if (workflowDesignerViewModel != null)
+                                        mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
+                                }
                             }
                         }
                     }
