@@ -37,21 +37,36 @@ namespace Dev2.ViewModels.Workflow
 
 
      public static void BuildDataPart(string dataPartFieldData, Dictionary<IDataListVerifyPart, string> unique,bool isJsonObjectSource = false)
-       {
+        {
            Dev2DataLanguageParser dataLanguageParser = new Dev2DataLanguageParser();
 
            dataPartFieldData = DataListUtil.StripBracketsFromValue(dataPartFieldData);
            IDataListVerifyPart verifyPart;
             if (isJsonObjectSource)
             {
-                string removeAtSign = dataPartFieldData;
-                if(dataPartFieldData.IndexOf("@", StringComparison.Ordinal) == 0)
-                    removeAtSign = dataPartFieldData.Substring(1, dataPartFieldData.Length - 1);
-                var intellisenseResult = dataLanguageParser.ValidateName(removeAtSign, "");
-                if (intellisenseResult == null)
+                bool valid = true;
+                var firstIndexOfAtSign = dataPartFieldData.IndexOf("@", StringComparison.Ordinal);
+                //If the value after the @ is a number, do not add to variable list
+                if (firstIndexOfAtSign < dataPartFieldData.Length && char.IsNumber(dataPartFieldData[firstIndexOfAtSign + 1]))
+                    valid = false;
+                if (valid)
                 {
-                    verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
-                    AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                    var removeBrace = RemoveRecordSetBrace(dataPartFieldData);
+                    var replaceAtSign = removeBrace.Replace("@", "");
+                    if (replaceAtSign.Contains('.') && replaceAtSign[replaceAtSign.Length-1] != '.')
+                    {
+                        verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
+                        AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                    }
+                    else
+                    {
+                        var intellisenseResult = dataLanguageParser.ValidateName(replaceAtSign, "");
+                        if (intellisenseResult == null)
+                        {
+                            verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
+                            AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                        }
+                    }
                 }
             }
             else
@@ -73,8 +88,6 @@ namespace Dev2.ViewModels.Workflow
                                 var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "");
                                 if (intellisenseResult == null)
                                 {
-
-
                                     recAdded = true;
                                     verifyPart =
                                          IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue,

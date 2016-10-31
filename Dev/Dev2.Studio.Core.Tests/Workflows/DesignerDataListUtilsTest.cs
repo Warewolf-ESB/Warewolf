@@ -94,7 +94,7 @@ namespace Dev2.Core.Tests.Workflows
             //------------Setup for test--------------------------
             var unique = new Dictionary<IDataListVerifyPart, string>();
             WorkflowDesignerDataPartUtils.BuildDataPart("[[@rec().#a]]", unique, true);
-            Assert.AreEqual(0, unique.Count);
+            Assert.AreEqual(1, unique.Count);
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -117,6 +117,7 @@ namespace Dev2.Core.Tests.Workflows
             WorkflowDesignerDataPartUtils.BuildDataPart("[[@55rec]]", unique, true);
             Assert.AreEqual(0, unique.Count);
         }
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("DesignerDataListUtils_BuildDataPart")]
@@ -125,7 +126,7 @@ namespace Dev2.Core.Tests.Workflows
             //------------Setup for test--------------------------
             var unique = new Dictionary<IDataListVerifyPart, string>();
             WorkflowDesignerDataPartUtils.BuildDataPart("[[@(type())]]", unique, true);
-            Assert.AreEqual(0, unique.Count);
+            Assert.AreEqual(1, unique.Count);
         }
     }
 }
