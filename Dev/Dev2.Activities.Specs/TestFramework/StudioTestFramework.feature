@@ -493,7 +493,6 @@ Scenario: Run all unselects all tests on selection shows corect debug
 	When I run all tests
 	And selected test is empty
 	And I select "Test1"
-	Then debug window is visible	
 
 @TestFramework
 Scenario: Duplicate a test

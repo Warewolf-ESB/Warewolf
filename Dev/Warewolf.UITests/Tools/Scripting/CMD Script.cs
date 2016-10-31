@@ -28,7 +28,7 @@ namespace Warewolf.UITests.Tools.Scripting
 #endif
             UIMap.InitializeABlankWorkflow();
         }
-        
+
         public TestContext TestContext
         {
             get

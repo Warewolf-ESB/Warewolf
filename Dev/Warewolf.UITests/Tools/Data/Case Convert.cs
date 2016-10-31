@@ -8,16 +8,16 @@ namespace Warewolf.UITests.Tools.Data
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void CaseConvertUITest()
+        public void CaseConvertTool_OpenLargeViewUITest()
         {
-            UIMap.Drag_Toolbox_Case_Conversion_Onto_DesignSurface();
-            //UIMap.Open_Case_Conversion_Tool_Large_View();
-            //UIMap.Enter_Values_Into_Case_Conversion_Tool_Large_View();
-            //UIMap.Click_Case_Conversion_Tool_Large_View_Done_Button();
-            UIMap.Open_Case_Conversion_Tool_Qvi_Large_View();
-            //UIMap.Click_Debug_Bibbon_Button();
-            //UIMap.Click_Debug_Input_Dialog_Debug_ButtonParams.CaseConversionToolDebugOutputExists = true;
-            //UIMap.Click_Debug_Input_Dialog_Debug_Button();
+            Uimap.Open_Case_Conversion_Tool_Large_View();
+        }
+
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void CaseConvertTool_OpenQVIUITest()
+        {
+            Uimap.Open_Case_Conversion_Tool_Qvi_Large_View();
         }
 
         #region Additional test attributes
@@ -25,27 +25,28 @@ namespace Warewolf.UITests.Tools.Data
         [TestInitialize]
         public void MyTestInitialize()
         {
-            UIMap.SetPlaybackSettings();
+            Uimap.SetPlaybackSettings();
 #if !DEBUG
-            UIMap.CloseHangingDialogs();
+            Uimap.CloseHangingDialogs();
 #endif
-            UIMap.InitializeABlankWorkflow();
+            Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Drag_Toolbox_Case_Conversion_Onto_DesignSurface();
         }
-
-        UIMap UIMap
+        
+        UIMap Uimap
         {
             get
             {
-                if (_UIMap == null)
+                if (_uiMap == null)
                 {
-                    _UIMap = new UIMap();
+                    _uiMap = new UIMap();
                 }
 
-                return _UIMap;
+                return _uiMap;
             }
         }
 
-        private UIMap _UIMap;
+        private UIMap _uiMap;
 
         #endregion
     }
