@@ -53,11 +53,19 @@ namespace Dev2.ViewModels.Workflow
                 {
                     var removeBrace = RemoveRecordSetBrace(dataPartFieldData);
                     var replaceAtSign = removeBrace.Replace("@", "");
-                    var intellisenseResult = dataLanguageParser.ValidateName(replaceAtSign, "");
-                    if (intellisenseResult == null)
+                    if (replaceAtSign.Contains('.') && replaceAtSign[replaceAtSign.Length-1] != '.')
                     {
                         verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
                         AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                    }
+                    else
+                    {
+                        var intellisenseResult = dataLanguageParser.ValidateName(replaceAtSign, "");
+                        if (intellisenseResult == null)
+                        {
+                            verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
+                            AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                        }
                     }
                 }
             }

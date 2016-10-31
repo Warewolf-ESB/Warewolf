@@ -25,6 +25,7 @@ using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Dev2.Studio.Controller;
+using Dev2.Studio.Core;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -165,6 +166,24 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
+        public string ServerVersion
+        {
+            get
+            {
+                var server = new Warewolf.Studio.AntiCorruptionLayer.Server(EnvironmentRepository.Instance.Source);
+                return server.GetServerVersion();
+            }
+        }
+
+        public string StudioVersion
+        {
+            get
+            {
+                var studioVersion = Warewolf.Studio.AntiCorruptionLayer.Utils.FetchVersionInfo();
+                return studioVersion;
+            }
+        }
+
         public string StepsToFollow
         {
             get { return _stepsToFollow; }
@@ -220,7 +239,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 steps = StepsToFollow;
             }
-            string description = "Email Address : " + email + Environment.NewLine + " " + Environment.NewLine +
+            string description = "Server Version : " + ServerVersion + Environment.NewLine + " " + Environment.NewLine +
+                                 "Studio Version : " + StudioVersion + Environment.NewLine + " " + Environment.NewLine +
+                                 "Email Address : " + email + Environment.NewLine + " " + Environment.NewLine +                                 
                                  "Steps to follow : " + steps + Environment.NewLine + " " + Environment.NewLine +
                                  StackTrace;
 
