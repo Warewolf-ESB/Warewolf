@@ -45,6 +45,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
+using Newtonsoft.Json;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
@@ -78,6 +79,8 @@ namespace Dev2.Settings.Scheduler
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
         private bool _errorShown;
         private DebugOutputViewModel _debugOutputViewModel;
+        private string _displayName;
+        private SchedulerViewModel _item;
 
         // ReSharper disable once MemberCanBeProtected.Global
         public SchedulerViewModel()
@@ -118,6 +121,8 @@ namespace Dev2.Settings.Scheduler
 
             Server = server;
             SetupServer(server);
+            DisplayName = "Scheduler - " + Server.ResourceName;
+            SetItem(this);
         }
 
         public override bool HasVariables => false;
@@ -127,16 +132,52 @@ namespace Dev2.Settings.Scheduler
         {
             get
             {
-                if (Server != null)
-                {
-                    return "Scheduler - " + Server.ResourceName;
-                }
-                return "Scheduler";
+                return _displayName;
             }
             set
             {
-
+                _displayName = value;
+                NotifyOfPropertyChange(() => DisplayName);
             }
+        }
+
+        private void SetDisplayName()
+        {
+            if (IsDirty)
+            {
+                if (!DisplayName.EndsWith(" *"))
+                {
+                    DisplayName += " *";
+                }
+            }
+            else
+            {
+                DisplayName = _displayName.Replace("*", "").TrimEnd(' ');
+            }
+        }
+
+        [JsonIgnore]
+        public SchedulerViewModel Item
+        {
+            private get { return _item; }
+            set
+            {
+                _item = value;
+                NotifyOfPropertyChange(() => Item);
+            }
+        }
+
+        public void SetItem(SchedulerViewModel model)
+        {
+            Item = Clone(model);
+        }
+
+        public SchedulerViewModel Clone(SchedulerViewModel model)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings { ContractResolver = resolver });
+            SchedulerViewModel clone = JsonConvert.DeserializeObject<SchedulerViewModel>(ser);
+            return clone;
         }
 
         public Func<IServer, IEnvironmentModel> ToEnvironmentModel
@@ -306,7 +347,7 @@ namespace Dev2.Settings.Scheduler
                     ClearError(Core.SchedulerDuplicateNameErrorMessage);
                 }
                 SelectedTask.Name = value;
-                SelectedTask.IsDirty = true;
+                SelectedTask.IsDirty = !Equals(this);
                 NotifyOfPropertyChange(() => Name);
             }
         }
@@ -326,7 +367,7 @@ namespace Dev2.Settings.Scheduler
                         return;
                     }
                     SelectedTask.RunAsapIfScheduleMissed = value;
-                    SelectedTask.IsDirty = true;
+                    SelectedTask.IsDirty = !Equals(this);
                     NotifyOfPropertyChange(() => RunAsapIfScheduleMissed);
                 }
             }
@@ -349,7 +390,7 @@ namespace Dev2.Settings.Scheduler
                     if (string.IsNullOrEmpty(value))
                     {
                         SelectedTask.NumberOfHistoryToKeep = 0;
-                        SelectedTask.IsDirty = true;
+                        SelectedTask.IsDirty = !Equals(this);
                     }
                     else
                     {
@@ -357,7 +398,7 @@ namespace Dev2.Settings.Scheduler
                         if (value.IsWholeNumber(out val))
                         {
                             SelectedTask.NumberOfHistoryToKeep = val;
-                            SelectedTask.IsDirty = true;
+                            SelectedTask.IsDirty = !Equals(this);
                         }
                     }
                     NotifyOfPropertyChange(() => NumberOfRecordsToKeep);
@@ -497,7 +538,7 @@ namespace Dev2.Settings.Scheduler
                     }
                     ClearError(Core.SchedulerLoginErrorMessage);
                     SelectedTask.UserName = value;
-                    SelectedTask.IsDirty = true;
+                    SelectedTask.IsDirty = !Equals(this);
                     NotifyOfPropertyChange(() => AccountName);
                 }
             }
@@ -519,7 +560,7 @@ namespace Dev2.Settings.Scheduler
                     }
                     ClearError(Core.SchedulerLoginErrorMessage);
                     SelectedTask.Password = value;
-                    SelectedTask.IsDirty = true;
+                    SelectedTask.IsDirty = !Equals(this);
                     NotifyOfPropertyChange(() => Password);
                 }
             }
@@ -782,6 +823,7 @@ namespace Dev2.Settings.Scheduler
                         _errorShown = true;
                     }
                 }
+                SetDisplayName();
                 return false;
             }
         }
@@ -854,6 +896,28 @@ namespace Dev2.Settings.Scheduler
         public void UpdateScheduleWithResourceDetails(string resourcePath, Guid id, string resourceName)
         {
             SchedulerTaskManager.UpdateScheduleWithResourceDetails(resourcePath, id, resourceName);
+        }
+
+        private bool Equals(SchedulerViewModel other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            return EqualsSeq(other);
+        }
+
+        private bool EqualsSeq(SchedulerViewModel other)
+        {
+            return string.Equals(_selectedTask.Name, other._selectedTask.Name) &&
+                   string.Equals(TriggerText, other.TriggerText) &&
+                   string.Equals(_selectedTask.Status.ToString(), other._selectedTask.Status.ToString()) &&
+                   string.Equals(_selectedTask.WorkflowName, other._selectedTask.WorkflowName) &&
+                   string.Equals(_selectedTask.RunAsapIfScheduleMissed.ToString(), other._selectedTask.RunAsapIfScheduleMissed.ToString()) &&
+                   string.Equals(NumberOfRecordsToKeep, other.NumberOfRecordsToKeep) &&
+                   string.Equals(AccountName, other.AccountName) &&
+                   string.Equals(Password, other.Password);
         }
     }
 
