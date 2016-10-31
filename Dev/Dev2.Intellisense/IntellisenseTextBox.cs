@@ -432,10 +432,18 @@ namespace Dev2.UI
         private bool ValidateJsonInputs(string text)
         {
             bool isValid = true;
-            if(text.Contains("@") && (text.IndexOf("@", StringComparison.Ordinal) == 2) && !char.IsLetter(text[3]))
+            if (text.Contains("@") && (text.IndexOf("@", StringComparison.Ordinal) == 2))
             {
-                isValid = false;
-                ToolTip = "Variable name " + text + " begins with a number";
+                if (char.IsNumber(text[3]))
+                {
+                    isValid = false;
+                    ToolTip = "Variable name " + text + " begins with a number";
+                }
+                if (!char.IsNumber(text[3]) && !char.IsLetter(text[3]))
+                {
+                    isValid = false;
+                    ToolTip = "Variable name " + text + " contains invalid character(s)";
+                }
             }
             if(text.Contains('.'))
             {
