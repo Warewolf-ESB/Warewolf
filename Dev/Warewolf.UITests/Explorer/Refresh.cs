@@ -17,7 +17,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void RefreshExplorerAfterDeletingResourceFromDiskUITest()
         {
-            UIMap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);            
+            UIMap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
             File.Delete(resourcesFolder + @"\" + WorkflowName + ".xml");
             UIMap.Filter_Explorer(WorkflowName);
@@ -43,7 +43,6 @@ namespace Warewolf.UITests
         {
             UIMap.Click_Close_Workflow_Tab_Button();
         }
-
         UIMap UIMap
         {
             get

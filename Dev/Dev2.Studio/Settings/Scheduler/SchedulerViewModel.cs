@@ -31,8 +31,10 @@ using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.Dialogs;
 using Dev2.Interfaces;
+using Dev2.Providers.Events;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
@@ -40,6 +42,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Warewolf.Studio.AntiCorruptionLayer;
@@ -74,6 +77,7 @@ namespace Dev2.Settings.Scheduler
         private IScheduledResourceModel _scheduledResourceModel;
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
         private bool _errorShown;
+        private DebugOutputViewModel _debugOutputViewModel;
 
         // ReSharper disable once MemberCanBeProtected.Global
         public SchedulerViewModel()
@@ -110,11 +114,14 @@ namespace Dev2.Settings.Scheduler
             directoryObjectPicker1.ShowAdvancedView = false;
 
             InitializeHelp();
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
 
-           
             Server = server;
             SetupServer(server);
         }
+
+        public override bool HasVariables => false;
+        public override bool HasDebugOutput => true;
 
         public override string DisplayName
         {
@@ -397,7 +404,19 @@ namespace Dev2.Settings.Scheduler
                     return;
                 }
                 _selectedHistory = value;
-                EventPublisher.Publish(new DebugOutputMessage(value.DebugOutput));
+                DebugOutputViewModel.Clear();
+                if (value.DebugOutput != null)
+                {
+                    foreach (var debugState in value.DebugOutput)
+                    {
+                        if (debugState != null)
+                        {
+                            debugState.StateType = StateType.Clear;
+                            debugState.SessionID = DebugOutputViewModel.SessionID;
+                            DebugOutputViewModel.Append(debugState);
+                        }
+                    }
+                }
                 NotifyOfPropertyChange(() => SelectedHistory);
             }
         }
@@ -650,8 +669,6 @@ namespace Dev2.Settings.Scheduler
             return toggle;
         }
 
-        
-
         void SetupServer(IServer tmpEnv)
         {
             CurrentEnvironment = ToEnvironmentModel(tmpEnv);
@@ -821,6 +838,16 @@ namespace Dev2.Settings.Scheduler
             get
             {
                 return _popupController;
+            }
+        }
+
+        public DebugOutputViewModel DebugOutputViewModel
+        {
+            get { return _debugOutputViewModel; }
+            set
+            {
+                _debugOutputViewModel = value;
+                NotifyOfPropertyChange(() => DebugOutputViewModel);
             }
         }
 

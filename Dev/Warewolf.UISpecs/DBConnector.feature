@@ -27,3 +27,14 @@ Scenario: DB Connector
 	And I Click SQL Server Large View Done Button
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
+
+Scenario: Create Source From Tool
+	Given The Warewolf Studio is running
+	When I Drag Toolbox SQL Server Tool Onto DesignSurface
+	And I Open SQL Large View FromContextMenu
+	And I Select NewDatabaseSource FromSqlServerTool
+	And I Change Selected Database ToMySql DataBase
+	And I Change Selected Database ToPostgreSql DataBase
+	And I Change Selected Database ToOracle DataBase
+	And I Change Selected Database ToODBC DataBase
+	And I Click DB Source Wizard Test Connection Button

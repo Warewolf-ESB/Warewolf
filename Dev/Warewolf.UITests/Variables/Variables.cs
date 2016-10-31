@@ -12,11 +12,22 @@ namespace Warewolf.UITests
         {
             UIMap.Open_Assign_Tool_Large_View();
             UIMap.Enter_Recordset_values();
-            Mouse.Move(UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox, new Point(10, 10));
+            Mouse.Move(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox, new Point(10, 10));
             Mouse.Click();
             UIMap.Press_F5_To_Debug();
             UIMap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox("Bob");
             UIMap.Click_Cancel_DebugInput_Window();
+        }
+
+        [TestMethod]
+        public void VariableList_DeleteAColumnOffARecorset_DeleteAllButtonIsEnbaled_UITest()
+        {
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused.Enabled);
+            UIMap.Enter_Vaiablelist_Items();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused.Enabled);
+            UIMap.Click_Remove_Unused_Variables();
+            Point newPoint;
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.TryGetClickablePoint(out newPoint));
         }
 
         #region Additional test attributes
@@ -31,13 +42,7 @@ namespace Warewolf.UITests
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
         }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
+                
         UIMap UIMap
         {
             get

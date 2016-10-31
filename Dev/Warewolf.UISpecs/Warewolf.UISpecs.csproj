@@ -79,6 +79,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Explorer.feature</DependentUpon>
     </Compile>
+    <Compile Include="SettingsTab.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettingsTab.feature</DependentUpon>
+    </Compile>
+    <Compile Include="SharepointConnectors.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharepointConnectors.feature</DependentUpon>
+    </Compile>
+    <Compile Include="SwitchTool.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SwitchTool.feature</DependentUpon>
+    </Compile>
     <Compile Include="WebConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -110,6 +125,18 @@
     <None Include="SaveDialog.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SaveDialog.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SettingsTab.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SettingsTab.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SharepointConnectors.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SharepointConnectors.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SwitchTool.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SwitchTool.feature.cs</LastGenOutput>
     </None>
     <None Include="WebConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
