@@ -434,6 +434,11 @@ namespace Dev2.UI
                         HasError = true;
                         ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
                     }
+                    if (text.Contains("@"))
+                    {
+                        HasError = true;
+                        ToolTip = "Variable name " + text + " contains invalid character(s)";
+                    }
                 }
             }
         }
