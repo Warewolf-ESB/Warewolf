@@ -8,31 +8,33 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 
 namespace Dev2.Services.Security
 {
+    [Flags]
     public enum AuthorizationContext
     {
         [Reason("You are not authorized.")]
-        None,
+        None = 0,
 
         [Reason("You are not authorized to view this resource.")]
-        View,
+        View = 1,
 
         [Reason("You are not authorized to execute this resource.")]
-        Execute,
+        Execute = 2,
 
         [Reason("You are not authorized to add, update, delete or save this resource.")]
-        Contribute,
+        Contribute = 4,
 
         [Reason("You are not authorized to deploy to this server.")]
-        DeployTo,
+        DeployTo = 8,
 
         [Reason("You are not authorized to deploy from this server.")]
-        DeployFrom,
+        DeployFrom = 16,
 
-        Administrator,
+        Administrator = 32,
 
-        Any
+        Any = 64
     }
 }
