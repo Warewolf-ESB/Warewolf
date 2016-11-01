@@ -52682,7 +52682,7 @@ namespace Warewolf.UITests
                 {
                     this.mNewSharePointSource = new WpfListItem(this);
                     #region Search Criteria
-                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":null,""AuthenticationType"":""Windows"",""UserName"":null,""Password"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""77fe880c-baa0-4f69-ad3c-94439293c611"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""New Sharepoint Server Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
                     this.mNewSharePointSource.WindowTitles.Add("Warewolf");
                     #endregion
                 }
