@@ -364,6 +364,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(SwitchCaseDialog.Exists, "Switch case dialog does not exist after dragging onto switch case arm.");
             Mouse.Click(SwitchCaseDialog.DoneButton);
         }
+        [When(@"I Click Close Workflow Tab")]
         [Then(@"I Click Close Workflow Tab")]
         public void ThenIClickCloseWorkflowTab()
         {
@@ -717,14 +718,14 @@ namespace Warewolf.UITests
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
         }
 
-        [When(@"I Click Duplicate From Duplicate Dialog")]
-        public void WhenIClickDuplicateFromDuplicateDialog()
-        {
-            Click_Duplicate_From_Duplicate_Dialog();
-            Point point;
-            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-            Assert.IsFalse(SaveDialogWindow.TryGetClickablePoint(out point), "Save Dialog does not exist after clicking Duplicate button");
-        }
+        //[When(@"I Click Duplicate From Duplicate Dialog")]
+        //public void WhenIClickDuplicateFromDuplicateDialog()
+        //{
+        //    Click_Duplicate_From_Duplicate_Dialog();
+        //    Point point;
+        //    // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+        //    Assert.IsFalse(SaveDialogWindow.TryGetClickablePoint(out point), "Save Dialog does not exist after clicking Duplicate button");
+        //}
 
 
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
@@ -3150,6 +3151,22 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server.NewSharePointSource);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists);
         }
+
+        [When(@"I Click Close Sharepoint Server Source Tab")]
+        public void WhenIClickCloseSharepointServerSourceTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointSourceTabCloseButton);
+        }
+
+
+        [When(@"I Click UserButton OnSharepointSource")]
+        public void WhenIClickUserButtonOnSharepointSource()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserRadioButton.Selected = true;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox.Exists);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox.Exists);
+        }
+
 
         [When(@"I drag a ""(.*)"" tool")]
         public void WhenIDragATool(string p0)
