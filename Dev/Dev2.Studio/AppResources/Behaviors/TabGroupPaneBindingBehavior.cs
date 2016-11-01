@@ -135,6 +135,10 @@ namespace Dev2.Studio.AppResources.Behaviors
                 var workSurfaceContextViewModel = routedPropertyChangedEventArgs.NewValue?.DataContext as WorkSurfaceContextViewModel;
                 _mainViewModel.ActiveItemChanged = null;
                 _mainViewModel.ActiveItem = workSurfaceContextViewModel;
+                if (workSurfaceContextViewModel != null)
+                {
+                    _mainViewModel.PersistTabs();
+                }
                 _mainViewModel.ActiveItemChanged = ActiveItemChanged;
             }
         }
