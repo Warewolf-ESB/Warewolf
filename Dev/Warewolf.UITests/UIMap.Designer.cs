@@ -388,6 +388,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Close_Critical_Error_Dialog
+        /// </summary>
+        [When(@"I Click Close Critical Error Dialog")]
+        public void Click_Close_Critical_Error_Dialog()
+        {
+            #region Variable Declarations
+            WinButton closeButton = this.CriticalErrorWindow.CloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(closeButton, new Point(9, 11));
+        }
+        
+        /// <summary>
         /// Click_Close_DB_Source_Wizard_Tab_Button
         /// </summary>
         [When(@"I Click Close DB Source Wizard Tab Button")]
@@ -458,6 +472,20 @@ namespace Warewolf.UITests
 
             // Click '?' button
             Mouse.Click(emailSourceTabCloseButton, new Point(13, 10));
+        }
+        
+        /// <summary>
+        /// Click_Close_Error_Dialog
+        /// </summary>
+        [When(@"I Click Close Error Dialog")]
+        public void Click_Close_Error_Dialog()
+        {
+            #region Variable Declarations
+            WinButton closeButton = this.ErrorWindow.CloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(closeButton, new Point(8, 9));
         }
         
         /// <summary>
@@ -13959,15 +13987,27 @@ namespace Warewolf.UITests
             }
         }
         
-        public UIWpfWindow UIWpfWindow
+        public ErrorWindow ErrorWindow
         {
             get
             {
-                if ((this.mUIWpfWindow == null))
+                if ((this.mErrorWindow == null))
                 {
-                    this.mUIWpfWindow = new UIWpfWindow();
+                    this.mErrorWindow = new ErrorWindow();
                 }
-                return this.mUIWpfWindow;
+                return this.mErrorWindow;
+            }
+        }
+        
+        public CriticalErrorWindow CriticalErrorWindow
+        {
+            get
+            {
+                if ((this.mCriticalErrorWindow == null))
+                {
+                    this.mCriticalErrorWindow = new CriticalErrorWindow();
+                }
+                return this.mCriticalErrorWindow;
             }
         }
         #endregion
@@ -14591,7 +14631,9 @@ namespace Warewolf.UITests
         
         private StartNodePopupWindow mStartNodePopupWindow;
         
-        private UIWpfWindow mUIWpfWindow;
+        private ErrorWindow mErrorWindow;
+        
+        private CriticalErrorWindow mCriticalErrorWindow;
         #endregion
     }
     
@@ -52682,7 +52724,7 @@ namespace Warewolf.UITests
                 {
                     this.mNewSharePointSource = new WpfListItem(this);
                     #region Search Criteria
-                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":null,""AuthenticationType"":""Windows"",""UserName"":null,""Password"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""77fe880c-baa0-4f69-ad3c-94439293c611"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""New Sharepoint Server Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
                     this.mNewSharePointSource.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -106801,14 +106843,74 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWpfWindow : WpfWindow
+    public class ErrorWindow : WinWindow
     {
         
-        public UIWpfWindow()
+        public ErrorWindow()
         {
             #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Error";
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Error");
             #endregion
         }
+        
+        #region Properties
+        public WinButton CloseButton
+        {
+            get
+            {
+                if ((this.mCloseButton == null))
+                {
+                    this.mCloseButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mCloseButton.SearchProperties[WinButton.PropertyNames.Name] = "Close";
+                    this.mCloseButton.WindowTitles.Add("Error");
+                    #endregion
+                }
+                return this.mCloseButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mCloseButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CriticalErrorWindow : WinWindow
+    {
+        
+        public CriticalErrorWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Critical Error";
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Critical Error");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton CloseButton
+        {
+            get
+            {
+                if ((this.mCloseButton == null))
+                {
+                    this.mCloseButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mCloseButton.SearchProperties[WinButton.PropertyNames.Name] = "Close";
+                    this.mCloseButton.WindowTitles.Add("Critical Error");
+                    #endregion
+                }
+                return this.mCloseButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mCloseButton;
+        #endregion
     }
 }

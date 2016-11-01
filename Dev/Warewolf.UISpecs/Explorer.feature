@@ -61,6 +61,7 @@ Scenario: Deploy and Reverse Deploy View Only Workflow
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Connect Button
 	And I Deploy "DeployViewOnly" From Deploy View
+	And I Try Click Message Box OK
 	And I Select RemoteConnectionIntegrationConnected From Deploy Tab Source Server Combobox
 	And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
 	And I Deploy "DeployViewOnly" From Deploy View

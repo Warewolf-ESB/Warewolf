@@ -94,7 +94,7 @@ namespace Dev2.Core.Tests.Workflows
             //------------Setup for test--------------------------
             var unique = new Dictionary<IDataListVerifyPart, string>();
             WorkflowDesignerDataPartUtils.BuildDataPart("[[@rec().#a]]", unique, true);
-            Assert.AreEqual(1, unique.Count);
+            Assert.AreEqual(0, unique.Count);
         }
 
         [TestMethod]
@@ -154,7 +154,7 @@ namespace Dev2.Core.Tests.Workflows
             //------------Setup for test--------------------------
             var unique = new Dictionary<IDataListVerifyPart, string>();
             WorkflowDesignerDataPartUtils.BuildDataPart("[[@(type())]]", unique, true);
-            Assert.AreEqual(1, unique.Count);
+            Assert.AreEqual(0, unique.Count);
         }
     }
 }
