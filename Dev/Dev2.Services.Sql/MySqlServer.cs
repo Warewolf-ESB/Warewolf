@@ -70,6 +70,7 @@ namespace Dev2.Services.Sql
         {
             VerifyConnection();
             IDbCommand command = _connection.CreateCommand();
+            command.Connection = _connection;
             command.Transaction = _transaction;
             return command;
         }
