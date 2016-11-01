@@ -388,6 +388,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Close_Critical_Error_Dialog
+        /// </summary>
+        [When(@"I Click Close Critical Error Dialog")]
+        public void Click_Close_Critical_Error_Dialog()
+        {
+            #region Variable Declarations
+            WinButton closeButton = this.CriticalErrorWindow.CloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(closeButton, new Point(9, 11));
+        }
+        
+        /// <summary>
         /// Click_Close_DB_Source_Wizard_Tab_Button
         /// </summary>
         [When(@"I Click Close DB Source Wizard Tab Button")]
@@ -458,6 +472,20 @@ namespace Warewolf.UITests
 
             // Click '?' button
             Mouse.Click(emailSourceTabCloseButton, new Point(13, 10));
+        }
+        
+        /// <summary>
+        /// Click_Close_Error_Dialog
+        /// </summary>
+        [When(@"I Click Close Error Dialog")]
+        public void Click_Close_Error_Dialog()
+        {
+            #region Variable Declarations
+            WinButton closeButton = this.ErrorWindow.CloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(closeButton, new Point(8, 9));
         }
         
         /// <summary>
@@ -10250,34 +10278,6 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
-        /// <summary>
-        /// Click_Close_Critical_Error_Dialog
-        /// </summary>
-        [When(@"I Click Close Critical Error Dialog")]
-        public void Click_Close_Critical_Error_Dialog()
-        {
-            #region Variable Declarations
-            WinButton uICloseButton = this.UIErrorWindow.UICloseButton;
-            #endregion
-
-            // Click 'Close' button
-            Mouse.Click(uICloseButton, new Point(8, 9));
-        }
-        
-        /// <summary>
-        /// Click_Close_Critical_Error_Dialog_Variant_2
-        /// </summary>
-        [When(@"I Click Close Critical Error Dialog Variant 2")]
-        public void Click_Close_Critical_Error_Dialog_Variant_2()
-        {
-            #region Variable Declarations
-            WinButton uICloseButton = this.UICriticalErrorWindow.UICloseButton;
-            #endregion
-
-            // Click 'Close' button
-            Mouse.Click(uICloseButton, new Point(9, 11));
-        }
-        
         #region Properties
         public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
         {
@@ -13987,39 +13987,27 @@ namespace Warewolf.UITests
             }
         }
         
-        public UIWpfWindow UIWpfWindow
+        public ErrorWindow ErrorWindow
         {
             get
             {
-                if ((this.mUIWpfWindow == null))
+                if ((this.mErrorWindow == null))
                 {
-                    this.mUIWpfWindow = new UIWpfWindow();
+                    this.mErrorWindow = new ErrorWindow();
                 }
-                return this.mUIWpfWindow;
+                return this.mErrorWindow;
             }
         }
         
-        public UIErrorWindow UIErrorWindow
+        public CriticalErrorWindow CriticalErrorWindow
         {
             get
             {
-                if ((this.mUIErrorWindow == null))
+                if ((this.mCriticalErrorWindow == null))
                 {
-                    this.mUIErrorWindow = new UIErrorWindow();
+                    this.mCriticalErrorWindow = new CriticalErrorWindow();
                 }
-                return this.mUIErrorWindow;
-            }
-        }
-        
-        public UICriticalErrorWindow UICriticalErrorWindow
-        {
-            get
-            {
-                if ((this.mUICriticalErrorWindow == null))
-                {
-                    this.mUICriticalErrorWindow = new UICriticalErrorWindow();
-                }
-                return this.mUICriticalErrorWindow;
+                return this.mCriticalErrorWindow;
             }
         }
         #endregion
@@ -14643,11 +14631,9 @@ namespace Warewolf.UITests
         
         private StartNodePopupWindow mStartNodePopupWindow;
         
-        private UIWpfWindow mUIWpfWindow;
+        private ErrorWindow mErrorWindow;
         
-        private UIErrorWindow mUIErrorWindow;
-        
-        private UICriticalErrorWindow mUICriticalErrorWindow;
+        private CriticalErrorWindow mCriticalErrorWindow;
         #endregion
     }
     
@@ -106857,22 +106843,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWpfWindow : WpfWindow
+    public class ErrorWindow : WinWindow
     {
         
-        public UIWpfWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            #endregion
-        }
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIErrorWindow : WinWindow
-    {
-        
-        public UIErrorWindow()
+        public ErrorWindow()
         {
             #region Search Criteria
             this.SearchProperties[WinWindow.PropertyNames.Name] = "Error";
@@ -106882,33 +106856,33 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WinButton UICloseButton
+        public WinButton CloseButton
         {
             get
             {
-                if ((this.mUICloseButton == null))
+                if ((this.mCloseButton == null))
                 {
-                    this.mUICloseButton = new WinButton(this);
+                    this.mCloseButton = new WinButton(this);
                     #region Search Criteria
-                    this.mUICloseButton.SearchProperties[WinButton.PropertyNames.Name] = "Close";
-                    this.mUICloseButton.WindowTitles.Add("Error");
+                    this.mCloseButton.SearchProperties[WinButton.PropertyNames.Name] = "Close";
+                    this.mCloseButton.WindowTitles.Add("Error");
                     #endregion
                 }
-                return this.mUICloseButton;
+                return this.mCloseButton;
             }
         }
         #endregion
         
         #region Fields
-        private WinButton mUICloseButton;
+        private WinButton mCloseButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UICriticalErrorWindow : WinWindow
+    public class CriticalErrorWindow : WinWindow
     {
         
-        public UICriticalErrorWindow()
+        public CriticalErrorWindow()
         {
             #region Search Criteria
             this.SearchProperties[WinWindow.PropertyNames.Name] = "Critical Error";
@@ -106918,25 +106892,25 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WinButton UICloseButton
+        public WinButton CloseButton
         {
             get
             {
-                if ((this.mUICloseButton == null))
+                if ((this.mCloseButton == null))
                 {
-                    this.mUICloseButton = new WinButton(this);
+                    this.mCloseButton = new WinButton(this);
                     #region Search Criteria
-                    this.mUICloseButton.SearchProperties[WinButton.PropertyNames.Name] = "Close";
-                    this.mUICloseButton.WindowTitles.Add("Critical Error");
+                    this.mCloseButton.SearchProperties[WinButton.PropertyNames.Name] = "Close";
+                    this.mCloseButton.WindowTitles.Add("Critical Error");
                     #endregion
                 }
-                return this.mUICloseButton;
+                return this.mCloseButton;
             }
         }
         #endregion
         
         #region Fields
-        private WinButton mUICloseButton;
+        private WinButton mCloseButton;
         #endregion
     }
 }

@@ -59,6 +59,8 @@ namespace Warewolf.UITests
             TryCloseHangingServicePickerDialog();
             TryCloseHangingWindowsGroupDialog();
             TryPin_Unpinned_Pane_To_Default_Position();
+            TryCloseHangingCriticalErrorDialog();
+            TryCloseHangingErrorDialog();
 #endif
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
@@ -170,6 +172,44 @@ namespace Warewolf.UITests
                 else
                 {
                     Console.WriteLine("No hanging select windows group dialog to clean up.");
+                }
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
+        }
+
+        public void TryCloseHangingErrorDialog()
+        {
+            try
+            {
+                if (ControlExistsNow(ErrorWindow))
+                {
+                    Click_Close_Error_Dialog();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging error dialog to clean up.");
+                }
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
+        }
+
+        public void TryCloseHangingCriticalErrorDialog()
+        {
+            try
+            {
+                if (ControlExistsNow(CriticalErrorWindow))
+                {
+                    Click_Close_Critical_Error_Dialog();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging critical error dialog to clean up.");
                 }
             }
             catch (NullReferenceException)
