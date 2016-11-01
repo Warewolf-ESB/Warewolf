@@ -91023,12 +91023,30 @@ namespace Warewolf.UITests
                 return this.mRemoteConnectionIntegrationText;
             }
         }
+        
+        public WpfText ConnectedRemoteConnectionText
+        {
+            get
+            {
+                if ((this.mConnectedRemoteConnectionText == null))
+                {
+                    this.mConnectedRemoteConnectionText = new WpfText(this);
+                    #region Search Criteria
+                    this.mConnectedRemoteConnectionText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+                    this.mConnectedRemoteConnectionText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mConnectedRemoteConnectionText;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mToggleButton;
         
         private WpfText mRemoteConnectionIntegrationText;
+        
+        private WpfText mConnectedRemoteConnectionText;
         #endregion
     }
     
@@ -91148,12 +91166,30 @@ namespace Warewolf.UITests
                 return this.mRemoteConnectionIntegrationText;
             }
         }
+        
+        public WpfText ConnectedRemoteConnectionText
+        {
+            get
+            {
+                if ((this.mConnectedRemoteConnectionText == null))
+                {
+                    this.mConnectedRemoteConnectionText = new WpfText(this);
+                    #region Search Criteria
+                    this.mConnectedRemoteConnectionText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+                    this.mConnectedRemoteConnectionText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mConnectedRemoteConnectionText;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mToggleButton;
         
         private WpfText mRemoteConnectionIntegrationText;
+        
+        private WpfText mConnectedRemoteConnectionText;
         #endregion
     }
     
@@ -99033,6 +99069,22 @@ namespace Warewolf.UITests
                 return this.mDropnotallowedText;
             }
         }
+        
+        public WpfText ResourcesDeployedSucText
+        {
+            get
+            {
+                if ((this.mResourcesDeployedSucText == null))
+                {
+                    this.mResourcesDeployedSucText = new WpfText(this);
+                    #region Search Criteria
+                    this.mResourcesDeployedSucText.SearchProperties[WpfText.PropertyNames.Name] = "Resource(s) Deployed Successfully";
+                    this.mResourcesDeployedSucText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mResourcesDeployedSucText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -99049,6 +99101,8 @@ namespace Warewolf.UITests
         private WpfText mUIThefollowingerroroccText;
         
         private WpfText mDropnotallowedText;
+        
+        private WpfText mResourcesDeployedSucText;
         #endregion
     }
     
