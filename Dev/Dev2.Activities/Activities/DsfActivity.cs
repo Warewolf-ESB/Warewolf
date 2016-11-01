@@ -56,7 +56,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(string.IsNullOrEmpty(serviceName))
             {
-                throw new ArgumentNullException("serviceName");
+                throw new ArgumentNullException(nameof(serviceName));
             }
             ToolboxFriendlyName = toolboxFriendlyName;
             IconPath = iconPath;
@@ -65,6 +65,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ResultValidationRequiredTags = resultValidationRequiredTags;
             ResultValidationExpression = resultValidationExpression;
             IsService = false;
+            
         }
         #endregion
 
@@ -85,6 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// The friendly name of the source.
         /// </value>
         // ReSharper disable ConvertToAutoProperty
+        // ReSharper disable once ConvertToAutoProperty
         public InArgument<string> FriendlySourceName
         // ReSharper restore ConvertToAutoProperty
         {
@@ -157,6 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ResultValidationExpression { get; set; }
         public string Category { get; set; }
         public string Tags { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public bool DeferExecution { get; set; }
         /// <summary>
         /// Gets or sets the service URI.
@@ -165,6 +168,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// The service URI.
         /// </value>
         // ReSharper disable ConvertToAutoProperty
+        // ReSharper disable once ConvertToAutoProperty
         public string ServiceUri
         // ReSharper restore ConvertToAutoProperty
         {
@@ -205,8 +209,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ActivityStateData { get; set; }
         public bool RemoveInputFromOutput { get; set; }
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public bool IsObject { get; set; }
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string ObjectName { get; set; }
 
         public string ObjectResult { get; set; }
@@ -230,6 +236,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // ReSharper restore InconsistentNaming
         [NonSerialized]
         IAuthorizationService _authorizationService;
+
         public override void UpdateDebugParentID(IDSFDataObject dataObject)
         {
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
@@ -393,6 +400,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _authorizationService = value;
             }
         }
+        // ReSharper disable once MemberCanBeProtected.Global
         public Guid SourceId { get; set; }
         public ICollection<IServiceInput> Inputs
         {
@@ -425,7 +433,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
         {
-            var resourceId = ResourceID == null || ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
+            var resourceId = ResourceID?.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
             if(resourceId == Guid.Empty || dataObject.ExecutingUser == null)
             {
                 return;
@@ -433,7 +441,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var isAuthorized = AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString());
             if(!isAuthorized)
             {
-                var message = string.Format("User: {0} does not have Execute Permission to resource {1}.", dataObject.ExecutingUser.Identity.Name, ServiceName);
+                var message = $"User: {dataObject.ExecutingUser.Identity.Name} does not have Execute Permission to resource {ServiceName}.";
                 tmpErrors.AddError(message);
                 dataObject.Environment.AddError(message);
                 throw new InvalidCredentialException(message);
@@ -471,8 +479,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            dataObject.EnvironmentID = EnvironmentID==null || EnvironmentID.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
-            dataObject.RemoteServiceType = Type.Expression == null ? "" : Type.Expression.ToString();
+            dataObject.EnvironmentID = EnvironmentID?.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
+            dataObject.RemoteServiceType = Type.Expression?.ToString() ?? "";
             ParentServiceName = dataObject.ServiceName;
 
 
@@ -611,6 +619,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return GetDebugInputs(env, parser, update).Select(a => (DebugItem)a).ToList();
 
         }
+        // ReSharper disable once ReturnTypeCanBeEnumerable.Global
         public List<IDebugItem> GetDebugInputs( IExecutionEnvironment env, IDev2LanguageParser parser, int update)
         {
             var results = new List<IDebugItem>();

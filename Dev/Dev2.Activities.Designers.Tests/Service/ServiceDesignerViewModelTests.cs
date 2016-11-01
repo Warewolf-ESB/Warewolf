@@ -295,7 +295,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.AreSame(error, model.ValidationMemoManager.DesignValidationErrors[0], model.ValidationMemoManager.DesignValidationErrors[0].Message);
         }
 
-        
+
 
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -377,7 +377,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         #region Design Validation Service
 
-       
+
 
 
         #endregion
@@ -895,7 +895,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
 
-            var resourceModel = CreateResourceModel(resourceID, false,null);
+            var resourceModel = CreateResourceModel(resourceID, false, null);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -993,7 +993,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var resRepo = new Mock<IResourceRepository>();
-           
+
 
             var srcRes = new Mock<IResourceModel>();
             srcRes.Setup(a => a.ResourceName).Returns("bob");
@@ -1499,7 +1499,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resources = new Mock<IResourceRepository>();
             // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
-                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b,bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
@@ -1672,7 +1672,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
 
-            var resourceModel = CreateResourceModel(Guid.Empty, false,null);
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var dataListViewModel = new DataListViewModel();
@@ -1710,7 +1710,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
 
-            var resourceModel = CreateResourceModel(Guid.Empty, false,null);
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
             ISetup<IContextualResourceModel, string> setupResourceModel = resourceModel.Setup(model => model.DataList);
             setupResourceModel.Returns("<DataList><n1/></DataList>");
 
@@ -1743,7 +1743,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
 
-            var resourceModel = CreateResourceModel(Guid.Empty, false,null);
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -1774,7 +1774,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
 
-            var resourceModel = CreateResourceModel(Guid.Empty, false,null);
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -1805,7 +1805,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
 
-            var resourceModel = CreateResourceModel(Guid.Empty, false,null);
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
             resourceModel.Setup(model => model.ServerResourceType).Returns("Workflow");
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
@@ -1837,7 +1837,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
 
-            var resourceModel = CreateResourceModel(Guid.Empty, false,null);
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
             resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
@@ -1859,6 +1859,100 @@ namespace Dev2.Activities.Designers.Tests.Service
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(viewModel.IsAsyncVisible);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InitializeDisplayName_GivenhasDisplayName_ShouldUseDisplayName()
+        {
+            //---------------Set up test pack-------------------
+
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
+            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
+
+            var resourceType = resourceModel.Object.ResourceType.ToString();
+            const string helloWorld = "Hello World";
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID)
+                ,
+                EnvironmentID = new InArgument<Guid>(Guid.Empty)
+                ,
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                Type = new InArgument<string>(resourceType),
+                DisplayName = helloWorld
+            };
+            var modelItem = CreateModelItem(activity);
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //---------------Execute Test ----------------------
+            var displayName = activity.DisplayName;
+            Assert.AreEqual(helloWorld, displayName);
+            var displayName1 = viewModel.ModelItem.GetProperty<string>("DisplayName");
+            Assert.AreEqual(displayName, displayName1);
+            //---------------Test Result -----------------------
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InitializeDisplayName_GivenEmptyDisplayName_ShouldUseServiceName()
+        {
+            //---------------Set up test pack-------------------
+
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
+            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
+
+            var resourceType = resourceModel.Object.ResourceType.ToString();
+            const string helloWorld = "Hello World1";
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID)
+                ,
+                EnvironmentID = new InArgument<Guid>(Guid.Empty)
+                ,
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                Type = new InArgument<string>(resourceType),
+                DisplayName = string.Empty,
+                ServiceName = helloWorld
+            };
+            var modelItem = CreateModelItem(activity);
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //---------------Execute Test ----------------------
+            var displayName = activity.DisplayName;
+            Assert.AreEqual(helloWorld, displayName);
+            var displayName1 = viewModel.ModelItem.GetProperty<string>("DisplayName");
+            Assert.AreEqual(displayName, displayName1);
+            //---------------Test Result -----------------------
         }
 
         ///////////////////////////////////////////////
@@ -1917,7 +2011,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, params IErrorInfo[] resourceErrors)
         {
-            return CreateResourceModel(resourceID, false,null, resourceErrors);
+            return CreateResourceModel(resourceID, false, null, resourceErrors);
         }
 
         static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, bool resourceRepositoryReturnsNull, Mock<IContextualResourceModel> contextualResourceModel, params IErrorInfo[] resourceErrors)
@@ -1925,16 +2019,16 @@ namespace Dev2.Activities.Designers.Tests.Service
             Mock<IResourceRepository> resourceRepository;
             Mock<IContextualResourceModel> resourceModel = CreateResourceModel(resourceID, out resourceRepository, resourceErrors);
             resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
-            if(resourceRepositoryReturnsNull)
+            if (resourceRepositoryReturnsNull)
             {
                 resourceRepository.Setup(r => r.LoadContextualResourceModel(resourceID)).Returns((IContextualResourceModel)null);
             }
             else
             {
-                if(contextualResourceModel != null)
+                if (contextualResourceModel != null)
                 {
                     resourceRepository.Setup(r => r.LoadContextualResourceModel(contextualResourceModel.Object.ID)).Returns(contextualResourceModel.Object);
-                    
+
                 }
                 resourceRepository.Setup(r => r.LoadContextualResourceModel(resourceID)).Returns(resourceModel.Object);
             }
@@ -1993,9 +2087,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         static ServiceDesignerViewModel CreateServiceDesignerViewModelWithEmptyResourceID(Guid instanceID, params IErrorInfo[] resourceErrors)
         {
-            var rootModel = CreateResourceModel(Guid.NewGuid(), false,null, resourceErrors);
+            var rootModel = CreateResourceModel(Guid.NewGuid(), false, null, resourceErrors);
             rootModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
-            var resourceModel = CreateResourceModel(Guid.Empty, false,null);
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
             resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             resourceModel.Setup(model => model.ResourceName).Returns("TestResource");
@@ -2030,9 +2124,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         static ServiceDesignerViewModel CreateServiceDesignerViewModel(Guid instanceID, bool resourceRepositoryReturnsNull, IEventAggregator eventPublisher, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
         {
-            var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull,null, resourceErrors);
+            var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, null, resourceErrors);
             rootModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
-            var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull,null);
+            var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, null);
             resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
