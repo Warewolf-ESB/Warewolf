@@ -5,6 +5,6 @@ namespace Dev2.Activities.Designers2.Core
 {
     public interface IActionInputDatatalistMapper
     {
-        void MappInputsToDatalist(IEnumerable<IServiceInput> inputs);
+        void MapInputsToDatalist(IEnumerable<IServiceInput> inputs);
     }
 }
