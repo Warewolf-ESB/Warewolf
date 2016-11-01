@@ -10250,6 +10250,34 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
+        /// <summary>
+        /// Click_Close_Critical_Error_Dialog
+        /// </summary>
+        [When(@"I Click Close Critical Error Dialog")]
+        public void Click_Close_Critical_Error_Dialog()
+        {
+            #region Variable Declarations
+            WinButton uICloseButton = this.UIErrorWindow.UICloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(8, 9));
+        }
+        
+        /// <summary>
+        /// Click_Close_Critical_Error_Dialog_Variant_2
+        /// </summary>
+        [When(@"I Click Close Critical Error Dialog Variant 2")]
+        public void Click_Close_Critical_Error_Dialog_Variant_2()
+        {
+            #region Variable Declarations
+            WinButton uICloseButton = this.UICriticalErrorWindow.UICloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(9, 11));
+        }
+        
         #region Properties
         public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
         {
@@ -13970,6 +13998,30 @@ namespace Warewolf.UITests
                 return this.mUIWpfWindow;
             }
         }
+        
+        public UIErrorWindow UIErrorWindow
+        {
+            get
+            {
+                if ((this.mUIErrorWindow == null))
+                {
+                    this.mUIErrorWindow = new UIErrorWindow();
+                }
+                return this.mUIErrorWindow;
+            }
+        }
+        
+        public UICriticalErrorWindow UICriticalErrorWindow
+        {
+            get
+            {
+                if ((this.mUICriticalErrorWindow == null))
+                {
+                    this.mUICriticalErrorWindow = new UICriticalErrorWindow();
+                }
+                return this.mUICriticalErrorWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -14592,6 +14644,10 @@ namespace Warewolf.UITests
         private StartNodePopupWindow mStartNodePopupWindow;
         
         private UIWpfWindow mUIWpfWindow;
+        
+        private UIErrorWindow mUIErrorWindow;
+        
+        private UICriticalErrorWindow mUICriticalErrorWindow;
         #endregion
     }
     
@@ -52682,7 +52738,7 @@ namespace Warewolf.UITests
                 {
                     this.mNewSharePointSource = new WpfListItem(this);
                     #region Search Criteria
-                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":null,""AuthenticationType"":""Windows"",""UserName"":null,""Password"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""77fe880c-baa0-4f69-ad3c-94439293c611"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""New Sharepoint Server Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewSharePointSource.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
                     this.mNewSharePointSource.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -106810,5 +106866,77 @@ namespace Warewolf.UITests
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
             #endregion
         }
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIErrorWindow : WinWindow
+    {
+        
+        public UIErrorWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Error";
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Error");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UICloseButton
+        {
+            get
+            {
+                if ((this.mUICloseButton == null))
+                {
+                    this.mUICloseButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUICloseButton.SearchProperties[WinButton.PropertyNames.Name] = "Close";
+                    this.mUICloseButton.WindowTitles.Add("Error");
+                    #endregion
+                }
+                return this.mUICloseButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUICloseButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UICriticalErrorWindow : WinWindow
+    {
+        
+        public UICriticalErrorWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Critical Error";
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Critical Error");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UICloseButton
+        {
+            get
+            {
+                if ((this.mUICloseButton == null))
+                {
+                    this.mUICloseButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUICloseButton.SearchProperties[WinButton.PropertyNames.Name] = "Close";
+                    this.mUICloseButton.WindowTitles.Add("Critical Error");
+                    #endregion
+                }
+                return this.mUICloseButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUICloseButton;
+        #endregion
     }
 }
