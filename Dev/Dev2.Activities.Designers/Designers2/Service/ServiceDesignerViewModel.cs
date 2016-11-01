@@ -140,10 +140,11 @@ namespace Dev2.Activities.Designers2.Service
                     IsItemDragged.Instance.IsDragged = false;
                 }
             }
-            var source = _environment?.ResourceRepository.FindSingle(a => a.ID == SourceId);
-            if (source != null)
+            var environmentModel = environmentRepository.Get(EnvironmentID);
+            if(environmentModel?.Connection?.WebServerUri != null)
             {
-                FriendlySourceName = source.DisplayName;
+                var servUri = new Uri(environmentModel.Connection.WebServerUri.ToString());
+                FriendlySourceName = servUri.Host;
             }
 
             InitializeProperties();
@@ -375,11 +376,14 @@ namespace Dev2.Activities.Designers2.Service
         public string ServiceName => GetProperty<string>();
         string ActionName => GetProperty<string>();
 
-        string FriendlySourceName
+
+        private string FriendlySourceName   
         {
             get
             {
-                return GetProperty<string>();
+                var friendlySourceName = GetProperty<string>();
+              
+                return friendlySourceName;
             }
             set
             {
