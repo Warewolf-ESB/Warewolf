@@ -330,6 +330,48 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text == string.Empty, "Toolbox filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text + " is not empty after clicking clear filter button.");
         }
 
+        [When(@"I First Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
+        public void WhenIFirstDragToolboxCommentOntoSwitchLeftArmOnDesignSurface()
+        {
+            First_Drag_Toolbox_Comment_Onto_Switch_Left_Arm_On_DesignSurface();
+        }
+
+        [When(@"I Then Drag Toolbox Comment Onto Switch Right Arm On DesignSurface")]
+        public void WhenIThenDragToolboxCommentOntoSwitchRightArmOnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem commentToolboxItem = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector3 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector3;
+            WpfCustom commentOnTheDesignSurface = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
+            #endregion
+
+            var switchRightAutoConnector = new Point(360, 200);
+            flowchart.EnsureClickable(switchRightAutoConnector);
+            Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
+            Mouse.StopDragging(flowchart, switchRightAutoConnector);
+            Assert.IsTrue(SwitchCaseDialog.Exists);
+            Mouse.Click(SwitchCaseDialog.DoneButton, new Point(34, 10));
+            Assert.IsTrue(connector3.Exists, "Third connector does not exist on design surface after drop onto autoconnector.");
+            Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
+        }
+
+        [Then(@"The Case Dialog Must Be Open")]
+        public void ThenTheCaseDialogMustBeOpen()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch);
+            Assert.IsTrue(SwitchCaseDialog.Exists, "Switch case dialog does not exist after dragging onto switch case arm.");
+            Mouse.Click(SwitchCaseDialog.DoneButton);
+        }
+        [When(@"I Click Close Workflow Tab")]
+        [Then(@"I Click Close Workflow Tab")]
+        public void ThenIClickCloseWorkflowTab()
+        {
+            Click_Close_Workflow_Tab_Button();
+            Click_MessageBox_No();
+        }
+
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
         {
             Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
@@ -676,14 +718,14 @@ namespace Warewolf.UITests
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
         }
 
-        [When(@"I Click Duplicate From Duplicate Dialog")]
-        public void WhenIClickDuplicateFromDuplicateDialog()
-        {
-            Click_Duplicate_From_Duplicate_Dialog();
-            Point point;
-            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-            Assert.IsFalse(SaveDialogWindow.TryGetClickablePoint(out point), "Save Dialog does not exist after clicking Duplicate button");
-        }
+        //[When(@"I Click Duplicate From Duplicate Dialog")]
+        //public void WhenIClickDuplicateFromDuplicateDialog()
+        //{
+        //    Click_Duplicate_From_Duplicate_Dialog();
+        //    Point point;
+        //    // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+        //    Assert.IsFalse(SaveDialogWindow.TryGetClickablePoint(out point), "Save Dialog does not exist after clicking Duplicate button");
+        //}
 
 
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
@@ -3101,7 +3143,52 @@ namespace Warewolf.UITests
             Mouse.StartDragging(decision, new Point(13, 17));
             Mouse.StopDragging(dropActivityHereCustom);
         }
-        
+
+        [When(@"I Select New Sharepoint Server Source")]
+        public void WhenISelectNewSharepointServerSource()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server.NewSharePointSource);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists);
+        }
+
+        [When(@"I Click Close Sharepoint Server Source Tab")]
+        public void WhenIClickCloseSharepointServerSourceTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointSourceTabCloseButton);
+        }
+
+
+        [When(@"I Click UserButton OnSharepointSource")]
+        public void WhenIClickUserButtonOnSharepointSource()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserRadioButton.Selected = true;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox.Exists);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox.Exists);
+        }
+
+
+        [When(@"I drag a ""(.*)"" tool")]
+        public void WhenIDragATool(string p0)
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem copyFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CopyFile;
+            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom sharepointTool = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile;
+            #endregion
+
+            flowchart.DrawHighlight();
+            // Type 'Assign' in 'SearchTextBox' text box
+            searchTextBox.Text = p0;
+            Playback.Wait(1500);
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Mouse.StartDragging(copyFile, new Point(2, 10));
+            Mouse.StopDragging(flowchart, new Point(307, 126));
+            
+            Assert.IsTrue(sharepointTool.Exists, "Sharepoint tool does not exist on the Design Surface");
+        }
+
         public void Drag_Toolbox_AssignObject_Onto_Foreach_LargeTool()
         {
             #region Variable Declarations
