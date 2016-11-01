@@ -94,10 +94,14 @@ IF EXIST %windir%\nircmd.exe (nircmd elevate sc start "Warewolf Server") else (s
 :WaitForServerStart
 set /a LoopCounter=0
 :WaitForServerStartLoopBody
-IF EXIST "%DeploymentDirectory%\ServerStarted" exit 0
+IF EXIST "%DeploymentDirectory%\ServerStarted" GOTO ServerStarted
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 60 exit 1
 rem wait for 10 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 60: Waiting 10 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
 waitfor ServerStart /t 10 2>NUL
 goto WaitForServerStartLoopBody
+
+:ServerStarted
+IF EXIST "%programdata%\Warewolf\Server Log\wareWolf-Server.log" TYPE "%programdata%\Warewolf\Server Log\wareWolf-Server.log"
+exit 0
