@@ -387,7 +387,7 @@ namespace Dev2.UI
             {
                 var isValid = ValidateJsonInputs(text);
                 if(!isValid)
-                {                    
+                {
                     HasError = true;
                 }
                 else
@@ -413,7 +413,7 @@ namespace Dev2.UI
                 {
                     ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
                     HasError = true;
-                }
+                }               
                 else
                 {
                     if (error.Item2 != string.Empty)
@@ -425,6 +425,14 @@ namespace Dev2.UI
                     {
                         ToolTip = _originalToolTip;
                         HasError = false;
+                    }
+                }
+                if (FilterType != enIntellisensePartType.RecordsetsOnly)
+                {
+                    if (text.EndsWith(")") || text.EndsWith(")]]"))
+                    {
+                        HasError = true;
+                        ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
                     }
                 }
             }
