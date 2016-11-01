@@ -409,6 +409,100 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InitializeDisplayName_GivenhasDisplayName_ShouldUseDisplayName()
+        {
+            //---------------Set up test pack-------------------
+
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
+            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
+
+            var resourceType = resourceModel.Object.ResourceType.ToString();
+            const string helloWorld = "Hello World";
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID)
+                ,
+                EnvironmentID = new InArgument<Guid>(Guid.Empty)
+                ,
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                Type = new InArgument<string>(resourceType),
+                DisplayName = helloWorld
+            };
+            var modelItem = CreateModelItem(activity);
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //---------------Execute Test ----------------------
+            var displayName = activity.DisplayName;
+            Assert.AreEqual(helloWorld, displayName);
+            var displayName1 = viewModel.ModelItem.GetProperty<string>("DisplayName");
+            Assert.AreEqual(displayName, displayName1);
+            //---------------Test Result -----------------------
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InitializeDisplayName_GivenEmptyDisplayName_ShouldUseServiceName()
+        {
+            //---------------Set up test pack-------------------
+
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
+            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
+
+            var resourceType = resourceModel.Object.ResourceType.ToString();
+            const string helloWorld = "Hello World1";
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID)
+                ,
+                EnvironmentID = new InArgument<Guid>(Guid.Empty)
+                ,
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                Type = new InArgument<string>(resourceType),
+                DisplayName = string.Empty,
+                ServiceName = helloWorld
+            };
+            var modelItem = CreateModelItem(activity);
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //---------------Execute Test ----------------------
+            var displayName = activity.DisplayName;
+            Assert.AreEqual(helloWorld, displayName);
+            var displayName1 = viewModel.ModelItem.GetProperty<string>("DisplayName");
+            Assert.AreEqual(displayName, displayName1);
+            //---------------Test Result -----------------------
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
