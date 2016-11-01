@@ -990,13 +990,6 @@
                                               IsTabStop="False"
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                               Padding="{TemplateBinding Padding}" />
-                                <Label x:Name="LabelText"
-                                       Margin="2,4,2,2"
-                                       Grid.Column="0"
-                                       Foreground="{StaticResource SearchBoxWatermarkTextForeground}"
-                                       Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LabelText}"
-                                       Padding="2,0,0,0" FontWeight="Normal"
-                                       FontStyle="Italic" />
                             </Grid>
                         </Border>
                         <Border x:Name="DisabledVisualElement"  Grid.Column="0" Grid.ColumnSpan="2"
@@ -1135,12 +1128,10 @@
                             <Setter Property="Visibility" TargetName="AddNoteButton" Value="Visible" />
                         </Trigger>-->
                         <Trigger Property="IsUsed" Value="False">
-                            <Setter Property="Visibility" TargetName="LabelText" Value="Hidden" />
                             <Setter Property="Visibility" TargetName="DeleteDisabled" Value="Hidden" />
                             <Setter Property="Visibility" TargetName="DeleteButton" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter Property="Visibility" TargetName="LabelText" Value="Hidden" />
                             <Setter Property="BorderBrush" TargetName="PART_DeleteIconBorder" Value="{StaticResource TextBoxFocusedBrush}"/>
                         </Trigger>
                         <Trigger Property="IsSelectionActive" Value="True">
@@ -1165,7 +1156,6 @@
                                 <Condition Property="IsFocused" Value="True"/>
                                 <Condition Property="IsUsed" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Visibility" TargetName="LabelText" Value="Visible" />
                             <Setter Property="Visibility" TargetName="DeleteDisabled" Value="Visible" />
                             <Setter Property="Visibility" TargetName="DeleteButton" Value="Hidden" />
                         </MultiTrigger>
@@ -1287,13 +1277,6 @@
                                               IsTabStop="False"
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                               Padding="{TemplateBinding Padding}" />
-                                <Label x:Name="LabelText"
-                                       Margin="2,4,2,2"
-                                       Grid.Column="0"
-                                       Foreground="{StaticResource SearchBoxWatermarkTextForeground}"
-                                       Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LabelText}"
-                                       Padding="2,0,0,0" FontWeight="Normal"
-                                       FontStyle="Italic" />
                             </Grid>
                         </Border>
                         <Border x:Name="DisabledVisualElement"  Grid.Column="0" Grid.ColumnSpan="2"
@@ -1469,7 +1452,6 @@
                             <Setter Property="Visibility" TargetName="AddNoteButton" Value="Visible" />
                         </Trigger>-->
                         <Trigger Property="IsUsed" Value="False">
-                            <Setter Property="Visibility" TargetName="LabelText" Value="Hidden" />
                             <Setter Property="Visibility" TargetName="DeleteDisabled" Value="Hidden" />
                             <Setter Property="Visibility" TargetName="DeleteButton" Value="Visible" />
                         </Trigger>
@@ -1478,7 +1460,6 @@
                             <Setter Property="Visibility" TargetName="ViewObjectsButton" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter Property="Visibility" TargetName="LabelText" Value="Hidden" />
                             <Setter Property="BorderBrush" TargetName="PART_DeleteIconBorder" Value="{StaticResource TextBoxFocusedBrush}"/>
                         </Trigger>
                         <Trigger Property="IsSelectionActive" Value="True">
@@ -1503,7 +1484,6 @@
                                 <Condition Property="IsFocused" Value="True"/>
                                 <Condition Property="IsUsed" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Visibility" TargetName="LabelText" Value="Visible" />
                             <Setter Property="Visibility" TargetName="DeleteDisabled" Value="Visible" />
                             <Setter Property="Visibility" TargetName="DeleteButton" Value="Hidden" />
                         </MultiTrigger>

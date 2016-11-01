@@ -588,31 +588,22 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if (itemToRemove is IScalarItemModel)
             {
-                var item = ScalarCollection.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
-                if (item != null)
-                {
-                    ScalarCollection.Remove(item);
-                }
+                var item = itemToRemove as IScalarItemModel;
+                ScalarCollection.Remove(item);
                 CheckDataListItemsForDuplicates(DataList);
             }
             else if (itemToRemove is IRecordSetItemModel)
             {
-                var item = RecsetCollection.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
-                if (item != null)
-                {
-                    RecsetCollection.Remove(item);
-                }
+                var item = itemToRemove as IRecordSetItemModel;
+                RecsetCollection.Remove(item);
                 CheckDataListItemsForDuplicates(DataList);
             }
             else
             {
                 foreach (var recset in RecsetCollection)
                 {
-                    var item = recset.Children.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
-                    if (item != null)
-                    {
-                        recset.Children.Remove(item);
-                    }
+                    var item = itemToRemove as IRecordSetFieldItemModel;
+                    recset.Children.Remove(item);
                     CheckDataListItemsForDuplicates(recset.Children);
                 }
             }

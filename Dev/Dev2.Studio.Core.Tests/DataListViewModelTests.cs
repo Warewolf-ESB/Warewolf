@@ -1849,6 +1849,35 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_RemoveDuplicateDataListItem")]
+        public void DataListViewModel_RemoveDuplicateDataListItem_WithComplexObjectItem_ShouldRemoveFromComplexObjectItemCollection()
+        {
+            //------------Setup for test--------------------------
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            const string complexObject = "testing";
+            const string complexObjectChild = "item";
+            var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
+            complexObjectDataModel.Input = true;
+            complexObjectDataModel.Output = true;
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild, complexObjectDataModel));
+            dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
+            dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
+            var dataListParts = new List<IDataListVerifyPart>();
+            var part = CreateComplexObjectPart(complexObject);
+            dataListParts.Add(part.Object);
+            //----------------------Precondition----------------------------
+            Assert.AreEqual(2, dataListViewModel.ComplexObjectCollection.Count);
+
+            complexObjectDataModel.IsUsed = false;
+            complexObjectDataModel.Children[0].IsUsed = false;
+            //------------Execute Test---------------------------
+            dataListViewModel.RemoveDataListItem(complexObjectDataModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dataListViewModel.ComplexObjectCollection.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("DataListViewModel_RemoveDataListItem")]
         public void DataListViewModel_RemoveDataListItem_WithComplexObjectItem_ShouldNotRemoveFromComplexObjectItemCollection()
         {
@@ -2006,6 +2035,24 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_RemoveDuplicateDataListItem")]
+        public void DataListViewModel_RemoveDuplicateDataListItem_WithScalarItem_ShouldRemoveFromScalarCollection()
+        {
+            //------------Setup for test--------------------------
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var scalarItem = new ScalarItemModel("scalar");
+            dataListViewModel.ScalarCollection.Add(scalarItem);
+            dataListViewModel.ScalarCollection.Add(scalarItem);
+            //----------------------Precondition----------------------------
+            Assert.AreEqual(2, dataListViewModel.ScalarCollection.Count);
+            //------------Execute Test---------------------------
+            dataListViewModel.RemoveDataListItem(scalarItem);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dataListViewModel.ScalarCollection.Count);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_RemoveDataListItem")]
         public void DataListViewModel_RemoveDataListItem_WithRecsetItem_ShouldRemoveFromRecsetCollection()
@@ -2028,6 +2075,29 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_RemoveDuplicateDataListItem")]
+        public void DataListViewModel_RemoveDuplicateDataListItem_WithRecsetItem_ShouldRemoveFromRecsetCollection()
+        {
+            //------------Setup for test--------------------------
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            const string recsetName = "recset";
+            const string firstFieldName = "f1";
+            var recSetDataModel = CreateRecsetDataListModelWithTwoFields(recsetName, firstFieldName, "f2");
+            dataListViewModel.RecsetCollection.Add(recSetDataModel);
+            dataListViewModel.RecsetCollection.Add(recSetDataModel);
+            var dataListParts = new List<IDataListVerifyPart>();
+            var part = CreateRecsetPart(recsetName, firstFieldName);
+            dataListParts.Add(part.Object);
+            //----------------------Precondition----------------------------
+            Assert.AreEqual(2, dataListViewModel.RecsetCollection.Count);
+            //------------Execute Test---------------------------
+            dataListViewModel.RemoveDataListItem(recSetDataModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dataListViewModel.RecsetCollection.Count);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_RemoveDataListItem")]
         public void DataListViewModel_RemoveDataListItem_WithRecsetFieldItem_ShouldRemoveFromRecsetChildrenCollection()
@@ -2040,6 +2110,32 @@ namespace Dev2.Core.Tests
             var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             recSetDataModel.Children.Add(CreateRecordSetFieldDataListModel("f2", recSetDataModel));
+            dataListViewModel.RecsetCollection.Add(recSetDataModel);
+            var dataListParts = new List<IDataListVerifyPart>();
+            var part = CreateRecsetPart(recsetName, firstFieldName);
+            dataListParts.Add(part.Object);
+            //----------------------Precondition----------------------------
+            Assert.AreEqual(2, dataListViewModel.RecsetCollection[0].Children.Count);
+            //------------Execute Test---------------------------
+            dataListViewModel.RemoveDataListItem(firstFieldDataListItemModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dataListViewModel.RecsetCollection[0].Children.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_RemoveDuplicateDataListItem")]
+        public void DataListViewModel_RemoveDuplicateDataListItem_WithRecsetFieldItem_ShouldRemoveFromRecsetChildrenCollection()
+        {
+            //------------Setup for test--------------------------
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            const string recsetName = "recset";
+            const string firstFieldName = "f1";
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
+            recSetDataModel.Children.Add(firstFieldDataListItemModel);
+            recSetDataModel.Children.Add(CreateRecordSetFieldDataListModel("f2", recSetDataModel));
+            dataListViewModel.RecsetCollection.Add(recSetDataModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             var dataListParts = new List<IDataListVerifyPart>();
             var part = CreateRecsetPart(recsetName, firstFieldName);
