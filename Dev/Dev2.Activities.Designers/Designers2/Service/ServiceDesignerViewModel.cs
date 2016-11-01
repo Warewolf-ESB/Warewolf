@@ -431,7 +431,7 @@ namespace Dev2.Activities.Designers2.Service
             if (!string.IsNullOrEmpty(serviceName))
             {
                 var displayName = DisplayName;
-                if (string.IsNullOrEmpty(displayName))
+                if (!string.IsNullOrEmpty(displayName))
                 {
                     DisplayName = serviceName;
                 }
