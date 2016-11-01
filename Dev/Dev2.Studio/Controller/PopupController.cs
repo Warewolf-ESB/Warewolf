@@ -319,7 +319,7 @@ namespace Dev2.Studio.Controller
         {
 
             Buttons = MessageBoxButton.OK;
-            Header = "Resource(s) Deployed Successfuly";
+            Header = "Resource(s) Deployed Successfully";
 
             Description = message;
             ImageType = MessageBoxImage.Information;
