@@ -199,18 +199,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Assert.IsTrue(textBox.HasError);
         }
 
-        //        [TestMethod]
-        //        [Owner("Leon Rajindrapersadh")]
-        //        [TestCategory("IntellisenseTextBoxTests_Handle")]
-        //        public void IntellisenseTextBoxTests_HandlePasteMessageCallsEnsureIntellisenseResults()
-        //        {
-        //            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
-        //            Assert.IsFalse(textBox.HasError);
-        //            textBox.Text = "[[var]]";
-        //            textBox.Handle(new UpdateAllIntellisenseMessage());
-        //            Assert.IsTrue(textBox.HasError);
-        //        }
-
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IntellisenseTextBoxTests_SetText")]
