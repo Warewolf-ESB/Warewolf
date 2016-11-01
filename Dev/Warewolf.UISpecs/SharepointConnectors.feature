@@ -6,6 +6,9 @@
 @mytag
 Scenario: Create Source From Tool
 	Given The Warewolf Studio is running
+	When I Click New Workflow Ribbon Button
+	And I drag a "Sharepoint" tool
+	And I Select New Sharepoint Server Source
 	When I Enter Sharepoint ServerSource ServerName
 	And I Click UserButton OnSharepointSource
 	And I Enter Sharepoint ServerSource User Credentials

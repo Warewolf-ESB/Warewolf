@@ -3142,7 +3142,36 @@ namespace Warewolf.UITests
             Mouse.StartDragging(decision, new Point(13, 17));
             Mouse.StopDragging(dropActivityHereCustom);
         }
-        
+
+        [When(@"I Select New Sharepoint Server Source")]
+        public void WhenISelectNewSharepointServerSource()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server.NewSharePointSource);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists);
+        }
+
+        [When(@"I drag a ""(.*)"" tool")]
+        public void WhenIDragATool(string p0)
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem copyFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CopyFile;
+            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom sharepointTool = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile;
+            #endregion
+
+            flowchart.DrawHighlight();
+            // Type 'Assign' in 'SearchTextBox' text box
+            searchTextBox.Text = p0;
+            Playback.Wait(1500);
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Mouse.StartDragging(copyFile, new Point(2, 10));
+            Mouse.StopDragging(flowchart, new Point(307, 126));
+            
+            Assert.IsTrue(sharepointTool.Exists, "Sharepoint tool does not exist on the Design Surface");
+        }
+
         public void Drag_Toolbox_AssignObject_Onto_Foreach_LargeTool()
         {
             #region Variable Declarations
