@@ -2760,7 +2760,7 @@ namespace Warewolf.UITests
 
         public void Pin_Unpinned_Pane_To_Default_Position()
         {
-            Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
+            Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(0, 0));
             Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
         }
 

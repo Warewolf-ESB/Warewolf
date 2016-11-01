@@ -439,6 +439,18 @@ namespace Dev2.UI
                         HasError = true;
                         ToolTip = "Variable name " + text + " contains invalid character(s)";
                     }
+                    if (text.Contains("."))
+                    {
+                        var replaceOpenBracket = text.Replace("[[", "");
+                        var replaceCloseBracket = replaceOpenBracket.Replace("]]", "");
+                        var fields = replaceCloseBracket.Split('.');
+                        foreach (var field in fields)
+                            if (!string.IsNullOrEmpty(field) && char.IsNumber(field[0]))
+                            {
+                                HasError = true;
+                                ToolTip = "Variable name " + field + " begins with a number";
+                            }
+                    }
                 }
             }
         }
