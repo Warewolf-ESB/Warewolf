@@ -313,7 +313,7 @@ namespace Dev2.UI
             }
         }
 
-        void EnsureErrorStatus()
+        protected void EnsureErrorStatus()
         {
             var currentText = Text;
             if (string.IsNullOrEmpty(currentText)) return;

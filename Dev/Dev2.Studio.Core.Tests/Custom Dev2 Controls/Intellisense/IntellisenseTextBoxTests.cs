@@ -106,7 +106,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                                                   sender = s as IntellisenseTextBox;
                                               }));
 
-            Clipboard.SetText("Cake\t");
+            System.Windows.Clipboard.SetText("Cake\t");
 
             IntellisenseTextBox textBox = new IntellisenseTextBox();
             textBox.CreateVisualTree();
@@ -123,7 +123,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         public void TextContaningNoTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventNotRaised()
         {
-            var preserveClipboard = Clipboard.GetText();
+            var preserveClipboard = System.Windows.Clipboard.GetText();
             try
             {
                 bool eventRaised = false;
@@ -133,7 +133,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                                                       eventRaised = true;
                                                   }));
 
-                Clipboard.SetText("Cake");
+                System.Windows.Clipboard.SetText("Cake");
 
                 IntellisenseTextBox textBox = new IntellisenseTextBox();
                 textBox.CreateVisualTree();
@@ -144,7 +144,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             }
             finally
             {
-                Clipboard.SetText(preserveClipboard);
+                System.Windows.Clipboard.SetText(preserveClipboard);
             }
 
         }
@@ -378,6 +378,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Assert.IsFalse(textBox.HasError);
         }
 
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IntellisenseTextBoxTests_SetText")]
@@ -513,5 +514,81 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Assert.AreEqual("DW YY mm", textBox.Text);
         }
 
+        [TestMethod]
+        public void IntellisenseBox_GivenMultipleValidVariables_HasNoError()
+        {
+            IntellisenseTextBoxTestHelper textBoxTest = new IntellisenseTextBoxTestHelper { AllowMultipleVariables = true };
+            textBoxTest.CreateVisualTree();
+            textBoxTest.Text = "\"[[Var]]\", \"[[Var()]]\"";
+            textBoxTest.EnsureErrorStatus();
+            Assert.IsFalse(textBoxTest.HasError);
+            Assert.AreEqual(textBoxTest.DefaultText, textBoxTest.ToolTip);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("IntellisenseTextBoxTests_ValidateText")]
+        public void IntellisenseTextBoxTests_ValidateText_FilterTypeIsJsonObjectAndTextIsScalar_ToolTipHasErrorMessage()
+        {
+            IntellisenseTextBox textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
+            textBox.CreateVisualTree();
+            textBox.Text = "[[City.]]";
+            Assert.IsTrue(textBox.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("IntellisenseTextBoxTests_ValidateText")]
+        public void IntellisenseTextBoxTests_ValidateText_FilterTypeIsJsonObjectAndTextIsJson_ToolTipHasNoErrorMessage()
+        {
+            IntellisenseTextBox textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
+            textBox.CreateVisualTree();
+            textBox.Text = "[[@City]]";
+            Assert.IsFalse(textBox.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("IntellisenseTextBoxTests_ValidateText")]
+        public void IntellisenseTextBoxTests_ValidateText_FilterTypeIsJsonObjectAndTextIsInvalidJson_ToolTipHasErrorMessage()
+        {
+            IntellisenseTextBox textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
+            textBox.CreateVisualTree();
+            textBox.Text = "[[@2City]]";
+            Assert.AreEqual("Variable name [[@2City]] begins with a number", textBox.ToolTip);
+            textBox.Text = "[[@&City]]";
+            Assert.AreEqual("Variable name [[@&City]] contains invalid character(s)", textBox.ToolTip);
+            textBox.Text = "@.";
+            Assert.AreEqual("Variable name @. contains invalid character(s)", textBox.ToolTip);
+            Assert.IsTrue(textBox.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("IntellisenseTextBoxTests_ValidateText")]
+        public void IntellisenseTextBoxTests_ValidateText_FilterTypeIsJsonObjectAndTextIsScalar_ToolTipHasNoErrorMessage()
+        {
+            var mockPresentationSource =new Mock<PresentationSource>();
+            IntellisenseTextBoxTestHelper testHelper = new IntellisenseTextBoxTestHelper();
+            testHelper.OnKeyDown(new KeyEventArgs(null, mockPresentationSource.Object, 0, Key.Escape));
+            Assert.IsFalse(testHelper.IsDropDownOpen);
+        }
+    }
+
+    public class IntellisenseTextBoxTestHelper : IntellisenseTextBox
+    {        
+        public new void OnKeyDown(KeyEventArgs e)
+        {
+            base.IsDropDownOpen = true;
+            FilterType = enIntellisensePartType.JsonObject;
+            if(e == null)
+                throw new ArgumentNullException(nameof(e));
+            base.OnKeyDown(e);
+        }
+
+        public new void EnsureErrorStatus()
+        {
+            base.EnsureErrorStatus();
+        }
     }
 }
