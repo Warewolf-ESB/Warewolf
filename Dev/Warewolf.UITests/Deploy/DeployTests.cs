@@ -11,7 +11,7 @@ namespace Warewolf.UITests
         {
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
-            Assert.AreEqual("Remote Connection Integration (Connected)", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
+            Assert.AreEqual("Remote Connection Integration (Connected)", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             Assert.AreEqual("Remote Connection Integration", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Deploy tab destination server did not disconnect after clicking disconnect button.");
         }
@@ -21,7 +21,7 @@ namespace Warewolf.UITests
         {
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
             UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
-            Assert.AreEqual("Remote Connection Integration (Connected)", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
+            Assert.AreEqual("Remote Connection Integration (Connected)", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
             UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
             Assert.AreEqual("Remote Connection Integration", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Deploy tab destination server did not disconnect after clicking disconnect button.");
         }
@@ -47,6 +47,11 @@ namespace Warewolf.UITests
             UIMap.Click_Deploy_Ribbon_Button();
         }
 
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Deploy_Tab_Button();
+        }
         public UIMap UIMap
         {
             get
