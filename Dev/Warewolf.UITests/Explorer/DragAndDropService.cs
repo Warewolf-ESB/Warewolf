@@ -21,12 +21,17 @@ namespace Warewolf.UITests
         [TestMethod]
         public void MergeFoldersUITest()
         {
+            var acceptanceResources = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Testing Resources";
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests\Acceptance Testing Resources";
+            Assert.IsTrue(Directory.Exists(acceptanceResources));
             Assert.IsFalse(Directory.Exists(resourcesFolder));
+            UIMap.Filter_Explorer("Acceptance");
             UIMap.Create_SubFolder_In_Folder1();
             Assert.IsTrue(Directory.Exists(resourcesFolder));
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.Move_AcceptanceTestd_To_AcceptanceTestingResopurces();
             Assert.IsTrue(Directory.Exists(resourcesFolder));
+            Assert.IsFalse(Directory.Exists(acceptanceResources));
         }
 
         [TestMethod]

@@ -120,9 +120,20 @@ namespace Warewolf.Storage
                 {
                     return;
                 }
-
+                bool recsetError = false;
+                if (values.Name.Contains('.'))
+                {
+                    var removeOpenBrace = values.Name.Replace("[[", "");
+                    var removeCloseBrace = removeOpenBrace.Replace("]]", "");
+                    var fields = removeCloseBrace.Split('.');
+                    if (fields.Any(p => !string.IsNullOrEmpty(p) && char.IsNumber(p[0])))
+                        recsetError = true;                        
+                }
+                if(recsetError)
+                    throw new Exception("parse error");
                 var envTemp = PublicFunctions.EvalAssignWithFrame(values, update, _env);
                 _env = envTemp;
+                
             }
             catch (Exception err)
             {
