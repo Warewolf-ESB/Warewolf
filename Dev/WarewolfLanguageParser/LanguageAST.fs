@@ -61,3 +61,17 @@ let tryParseIndex (x : Index) =
             raise (new System.IndexOutOfRangeException((sprintf "Recordset index [ %i ] is not greater than zero" a)))
         else x
     | _ -> x
+
+let tryParseName (x: string) (itemBeingParsed: string) = 
+    if (x.Length > 0) then 
+        let startswithNum, _ = System.Int32.TryParse(x.[0].ToString())
+        match startswithNum with
+          | true -> raise (new System.Exception(itemBeingParsed+" name " + x + " begins with a number."))
+          | false -> x
+    else raise (new System.Exception("No "+itemBeingParsed+" Name provided."))
+
+let tryParseColumn (x : string) = 
+    tryParseName x "Column"
+
+let tryParseRecsetName (x : string) = 
+    tryParseName x "Recordset"
