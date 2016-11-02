@@ -262,7 +262,6 @@ Scenario: Edit existing test validate star
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
 	When I click New Test
@@ -366,7 +365,6 @@ Scenario: Loading existing Tests has correct Name for display
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
 	And I close the test builder
@@ -402,7 +400,6 @@ Scenario: Loading existing Tests
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
 	When I click New Test
@@ -425,7 +422,6 @@ Scenario: Close test window
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
 	When I click "Test1"
@@ -443,7 +439,6 @@ Scenario: Delete an Disabled Test
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
 	And there are 1 tests
