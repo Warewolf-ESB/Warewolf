@@ -330,7 +330,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.AddPayloadArgument("Roles", "*");
 
             var con = _environmentModel.Connection;
-            comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            var executeCommand = comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (executeCommand.HasError)
+            {
+                throw new Exception(executeCommand.Message.ToString());
+            }
         }
 
 

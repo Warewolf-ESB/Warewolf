@@ -21,7 +21,7 @@ namespace Dev2.Common
             Status = status;
         }
 
-        public ExecStatus Status { get; private set; }
-        public string Message { get; private set; }
+        public ExecStatus Status { get; set; }
+        public string Message { get; set; }
     }
 }

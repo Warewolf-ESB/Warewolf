@@ -46,30 +46,38 @@ namespace Dev2.Services.Security
 
         public static Permissions ToPermissions(this AuthorizationContext context)
         {
-            switch(context)
+            if (context == AuthorizationContext.None)
             {
-                case AuthorizationContext.Administrator:
-                    return Permissions.Administrator;
-
-                case AuthorizationContext.View:
-                    return Permissions.Administrator | Permissions.Contribute | Permissions.View;
-
-                case AuthorizationContext.Execute:
-                    return Permissions.Administrator | Permissions.Contribute | Permissions.Execute;
-
-                case AuthorizationContext.Contribute:
-                    return Permissions.Administrator | Permissions.Contribute;
-
-                case AuthorizationContext.DeployTo:
-                    return Permissions.Administrator | Permissions.DeployTo;
-
-                case AuthorizationContext.DeployFrom:
-                    return Permissions.Administrator | Permissions.DeployFrom;
-
-                case AuthorizationContext.Any:
-                    return Permissions.Administrator | Permissions.View | Permissions.Contribute | Permissions.Execute | Permissions.DeployFrom | Permissions.DeployTo;
+                return Permissions.None;
             }
-            return Permissions.None;
+            Permissions permission = Permissions.Administrator;
+
+            if (context.HasFlag(AuthorizationContext.DeployTo))
+            {
+                permission |= Permissions.DeployTo;
+            }
+            if (context.HasFlag(AuthorizationContext.Contribute))
+            {
+                permission |= Permissions.Contribute;
+            }
+            if (context.HasFlag(AuthorizationContext.DeployFrom))
+            {
+                permission |= Permissions.DeployFrom;
+            }
+            if (context.HasFlag(AuthorizationContext.Execute))
+            {
+                permission |= Permissions.DeployFrom;
+            }
+            if (context.HasFlag(AuthorizationContext.View))
+            {
+                permission |= Permissions.View;
+            }
+            if (context.HasFlag(AuthorizationContext.Any))
+            {
+                permission = Permissions.Administrator | Permissions.View | Permissions.Contribute | Permissions.Execute | Permissions.DeployFrom | Permissions.DeployTo;
+            }
+
+            return permission;
         }
 
         public static bool Matches(this WindowsGroupPermission permission, string resource)
