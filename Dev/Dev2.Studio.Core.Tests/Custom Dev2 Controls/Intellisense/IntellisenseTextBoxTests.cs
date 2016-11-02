@@ -70,10 +70,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 
             // When exceptions are thrown, no results are to be displayed
             Assert.AreEqual(0, textBox.View.Count);
-            //The desired result is that an exception isn't thrown
-
-
-            // GetIntellisenseResults -> OnIntellisenseProviderChanged
+            
         }
 
         //BUG 8761

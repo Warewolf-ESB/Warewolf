@@ -205,19 +205,11 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton;
-            WpfCustom smallView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView;
-            WpfEdit nameTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox;
             WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.OpenQuickVariableInpToggleButton;
             #endregion
 
             // Click 'Done' button
             Mouse.Click(doneButton, new Point(35, 6));
-
-            // Verify that the 'Text' property of 'SmallViewContent' custom control equals '[[SomeVariable]]'
-            Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.SmallViewText, smallView.GetProperty("Text").ToString(), "Assign small view row1 variable textbox does not contain text somevariable");
-
-            // Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
-            Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.NameTextboxText, nameTextbox.Text, "Variable list scalar row 1 textbox text does not equal somevariable");
 
             // Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
             Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.OpenQuickVariableInpToggleButtonExists, openQuickVariableInpToggleButton.Exists, "QVI toggle button does not exist in assign tool small view after clicking done bu" +
@@ -14825,16 +14817,6 @@ namespace Warewolf.UITests
     {
         
         #region Fields
-        /// <summary>
-        /// Verify that the 'Text' property of 'SmallViewContent' custom control equals '[[SomeVariable]]'
-        /// </summary>
-        public string SmallViewText = "[[SomeVariable]]";
-        
-        /// <summary>
-        /// Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
-        /// </summary>
-        public string NameTextboxText = "SomeVariable";
-        
         /// <summary>
         /// Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
         /// </summary>
@@ -91065,12 +91047,30 @@ namespace Warewolf.UITests
                 return this.mRemoteConnectionIntegrationText;
             }
         }
+        
+        public WpfText ConnectedRemoteConnectionText
+        {
+            get
+            {
+                if ((this.mConnectedRemoteConnectionText == null))
+                {
+                    this.mConnectedRemoteConnectionText = new WpfText(this);
+                    #region Search Criteria
+                    this.mConnectedRemoteConnectionText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+                    this.mConnectedRemoteConnectionText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mConnectedRemoteConnectionText;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mToggleButton;
         
         private WpfText mRemoteConnectionIntegrationText;
+        
+        private WpfText mConnectedRemoteConnectionText;
         #endregion
     }
     
@@ -91190,12 +91190,30 @@ namespace Warewolf.UITests
                 return this.mRemoteConnectionIntegrationText;
             }
         }
+        
+        public WpfText ConnectedRemoteConnectionText
+        {
+            get
+            {
+                if ((this.mConnectedRemoteConnectionText == null))
+                {
+                    this.mConnectedRemoteConnectionText = new WpfText(this);
+                    #region Search Criteria
+                    this.mConnectedRemoteConnectionText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+                    this.mConnectedRemoteConnectionText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mConnectedRemoteConnectionText;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mToggleButton;
         
         private WpfText mRemoteConnectionIntegrationText;
+        
+        private WpfText mConnectedRemoteConnectionText;
         #endregion
     }
     
@@ -99075,6 +99093,22 @@ namespace Warewolf.UITests
                 return this.mDropnotallowedText;
             }
         }
+        
+        public WpfText ResourcesDeployedSucText
+        {
+            get
+            {
+                if ((this.mResourcesDeployedSucText == null))
+                {
+                    this.mResourcesDeployedSucText = new WpfText(this);
+                    #region Search Criteria
+                    this.mResourcesDeployedSucText.SearchProperties[WpfText.PropertyNames.Name] = "Resource(s) Deployed Successfully";
+                    this.mResourcesDeployedSucText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mResourcesDeployedSucText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -99091,6 +99125,8 @@ namespace Warewolf.UITests
         private WpfText mUIThefollowingerroroccText;
         
         private WpfText mDropnotallowedText;
+        
+        private WpfText mResourcesDeployedSucText;
         #endregion
     }
     
