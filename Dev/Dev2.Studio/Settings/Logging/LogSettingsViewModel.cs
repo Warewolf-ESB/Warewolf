@@ -32,7 +32,7 @@ namespace Dev2.Settings.Logging
         DEBUG,
         TRACE
     }
-    public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings,IUpdatesHelp
+    public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
         public IEnvironmentModel CurrentEnvironment
         {
@@ -43,7 +43,9 @@ namespace Dev2.Settings.Logging
             set
             {
                 _currentEnvironment = value;
+                // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged("CanEditStudioLogSettings");
+                // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged("CanEditLogSettings");
             }
         }
@@ -58,9 +60,10 @@ namespace Dev2.Settings.Logging
         private LogLevel _studioFileLogLevel;
         private LogSettingsViewModel _item;
 
+        // ReSharper disable once UnusedMember.Global
         public LogSettingsViewModel()
         {
-            
+
         }
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IEnvironmentModel currentEnvironment)
@@ -72,7 +75,7 @@ namespace Dev2.Settings.Logging
             GetStudioLogFileCommand = new DelegateCommand(OpenStudioLogFile);
             LogLevel serverFileLogLevel;
             LogLevel serverEventLogLevel;
-            if (Enum.TryParse(logging.FileLoggerLogLevel,out serverFileLogLevel))
+            if (Enum.TryParse(logging.FileLoggerLogLevel, out serverFileLogLevel))
             {
                 _serverFileLogLevel = serverFileLogLevel;
             }
@@ -116,7 +119,7 @@ namespace Dev2.Settings.Logging
             var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
             _serverLogFile = Path.Combine(GlobalConstants.TempLocation, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
             client.DownloadFileAsync(managementServiceUri, _serverLogFile);
-           
+
         }
 
         [ExcludeFromCodeCoverage]
@@ -138,7 +141,7 @@ namespace Dev2.Settings.Logging
         {
             var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var logFile = Path.Combine(localAppDataFolder, "Warewolf", "Studio Logs", "Warewolf Studio.log");
-            if(File.Exists(logFile))
+            if (File.Exists(logFile))
             {
                 Process.Start(logFile);
             }
@@ -159,7 +162,7 @@ namespace Dev2.Settings.Logging
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
-            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(),StudioEventLogLevel.ToString(), settingsConfigFile,"Warewolf Studio");
+            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio");
 
             SetItem(this);
         }
@@ -263,11 +266,12 @@ namespace Dev2.Settings.Logging
                     int val;
                     if (value.IsWholeNumber(out val))
                     {
+                        IsDirty = !Equals(Item);
                         _serverLogMaxSize = value;
                         OnPropertyChanged();
                     }
                 }
-                IsDirty = !Equals(Item);
+
             }
         }
 
@@ -285,11 +289,12 @@ namespace Dev2.Settings.Logging
                     int val;
                     if (value.IsWholeNumber(out val))
                     {
+                        IsDirty = !Equals(Item);
                         _studioLogMaxSize = value;
                         OnPropertyChanged();
                     }
                 }
-                IsDirty = !Equals(Item);
+              
             }
         }
 
@@ -314,12 +319,13 @@ namespace Dev2.Settings.Logging
 
         private bool EqualsSeq(LogSettingsViewModel other)
         {
-            return string.Equals(_serverEventLogLevel.ToString(), other._serverEventLogLevel.ToString()) &&
-                   string.Equals(_studioEventLogLevel.ToString(), other._studioEventLogLevel.ToString()) &&
-                   string.Equals(_serverFileLogLevel.ToString(), other._serverFileLogLevel.ToString()) &&
-                   string.Equals(_studioFileLogLevel.ToString(), other._studioFileLogLevel.ToString()) &&
-                   int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize) &&
-                   int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
+            var equalsSeq = string.Equals(_serverEventLogLevel.ToString(), other._serverEventLogLevel.ToString()) &&
+                            string.Equals(_studioEventLogLevel.ToString(), other._studioEventLogLevel.ToString()) &&
+                            string.Equals(_serverFileLogLevel.ToString(), other._serverFileLogLevel.ToString()) &&
+                            string.Equals(_studioFileLogLevel.ToString(), other._studioFileLogLevel.ToString()) &&
+                            int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize) &&
+                            int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
+            return equalsSeq;
         }
     }
 
