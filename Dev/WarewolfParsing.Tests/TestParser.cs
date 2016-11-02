@@ -99,8 +99,7 @@ namespace WarewolfParsingTest
                 Assert.Fail("Wrong type");
             }
         }
-
-
+        
         [TestMethod]
         public void TestRecsetExpressionLastIndex_InvalidName()
         {
@@ -111,7 +110,7 @@ namespace WarewolfParsingTest
             }
             catch (Exception e)
             {
-                Assert.AreEqual("Recordset Name name 1rec begins with a number.", e.Message);
+                Assert.AreEqual("Recordset name 1rec begins with a number.", e.Message);
             }
 
         }
@@ -126,7 +125,7 @@ namespace WarewolfParsingTest
             }
             catch (Exception e)
             {
-                Assert.AreEqual("Recordset Name name 1rec begins with a number.", e.Message);
+                Assert.AreEqual("Recordset name 1rec begins with a number.", e.Message);
             }
 
         }
@@ -141,7 +140,7 @@ namespace WarewolfParsingTest
             }
             catch (Exception e)
             {
-                Assert.AreEqual("Recordset Name name 1rec begins with a number.", e.Message);
+                Assert.AreEqual("Recordset name 1rec begins with a number.", e.Message);
             }
 
         }
@@ -156,7 +155,7 @@ namespace WarewolfParsingTest
             }
             catch (Exception e)
             {
-                Assert.AreEqual("Recordset Name name 1rec begins with a number.", e.Message);
+                Assert.AreEqual("Recordset name 1rec begins with a number.", e.Message);
             }
 
         }
