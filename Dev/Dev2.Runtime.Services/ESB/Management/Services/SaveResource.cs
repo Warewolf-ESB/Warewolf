@@ -14,13 +14,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 
@@ -32,34 +30,14 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SaveResource : IEsbManagementEndpoint
     {
-        private bool _existingResource;
-
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            _existingResource = false;
-            StringBuilder resourceDefinition;
-            requestArgs.TryGetValue("ResourceXml", out resourceDefinition);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            resourceDefinition = new StringBuilder(serializer.Deserialize<CompressedExecuteMessage>(resourceDefinition).GetDecompressedMessage());
-            var xml = resourceDefinition.ToXElement();
-            var resource = new Resource(xml);
-
-            var res = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
-            if (res != null)
-            {
-                _existingResource = true;
-                return res.ResourceID;
-            }
+        {           
             return Guid.Empty;
         }
 
         public AuthorizationContext GetAuthorizationContextForService()
         {
-            if (_existingResource)
-            {
-                return AuthorizationContext.Contribute;
-            }
-            return AuthorizationContext.Contribute | AuthorizationContext.DeployTo;
+            return AuthorizationContext.Contribute;
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)

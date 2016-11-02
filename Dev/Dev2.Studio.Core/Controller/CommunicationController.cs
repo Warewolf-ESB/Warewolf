@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
@@ -52,7 +53,7 @@ namespace Dev2.Controller
         /// <param name="connection">The connection.</param>
         /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <returns></returns>
-        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId);
+        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class;
 
         /// <summary>
         /// Executes the command async.
@@ -60,9 +61,9 @@ namespace Dev2.Controller
         /// <param name="connection">The connection.</param>
         /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <returns></returns>
-        Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId);
+        Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class;
 
-        Task<T> ExecuteCompressedCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId);
+        Task<T> ExecuteCompressedCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class;
     }
 
     public class CommunicationController : ICommunicationController
@@ -128,7 +129,7 @@ namespace Dev2.Controller
         /// <param name="connection">The connection.</param>
         /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <returns></returns>
-        public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId)
+        public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class
         {
             var serializer = new Dev2JsonSerializer();
             var popupController = CustomContainer.Get<IPopupController>();
@@ -153,7 +154,7 @@ namespace Dev2.Controller
             return default(T);
         }
 
-        private static T CheckAuthorization<T>(T executeCommand, Dev2JsonSerializer serializer, StringBuilder payload)
+        private static T CheckAuthorization<T>(T executeCommand, Dev2JsonSerializer serializer, StringBuilder payload) where T : class
         {
             IExplorerRepositoryResult explorerRepositoryResult = null;
             ExecuteMessage message = null;
@@ -165,6 +166,10 @@ namespace Dev2.Controller
             {
                 message = serializer.Deserialize<ExecuteMessage>(payload);
             }
+            if (explorerRepositoryResult == null)
+            {
+                message = executeCommand as ExecuteMessage;
+            }
             if(message != null || explorerRepositoryResult != null)
             {
                 bool containsAuthorization;
@@ -172,7 +177,15 @@ namespace Dev2.Controller
                 if(containsAuthorization)
                 {
                     ShowAuthorizationErrorPopup(s);
-                    return default(T);
+                    if (message != null)
+                    {
+                        message.HasError = true;
+                        message.Message = new StringBuilder(s);
+                        return message as T;
+                    }
+                    explorerRepositoryResult.Status = ExecStatus.Fail;
+                    explorerRepositoryResult.Message = s;
+                    return explorerRepositoryResult as T;
                 }
             }
             return executeCommand;
@@ -216,7 +229,7 @@ namespace Dev2.Controller
         /// <param name="connection">The connection.</param>
         /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <returns></returns>
-        public async Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId)
+        public async Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class
         {
             // build the service request payload ;)
             var serializer = new Dev2JsonSerializer();
@@ -272,7 +285,7 @@ namespace Dev2.Controller
             return default(T);
         }
 
-        public async Task<T> ExecuteCompressedCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId)
+        public async Task<T> ExecuteCompressedCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class
         {
             // build the service request payload ;)
             var serializer = new Dev2JsonSerializer();

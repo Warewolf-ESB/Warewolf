@@ -30,8 +30,8 @@ namespace Dev2.Common.Interfaces.Infrastructure
 
     public interface IExplorerRepositoryResult
     {
-        ExecStatus Status { get; }
+        ExecStatus Status { get; set; }
 
-        string Message { get; }
+        string Message { get; set; }
     }
 }
