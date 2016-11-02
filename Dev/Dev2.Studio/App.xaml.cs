@@ -193,7 +193,7 @@ namespace Dev2.Studio
         }
 
         private void ShowSplash()
-        {
+        {            
             // Create the window 
             var server = new Warewolf.Studio.AntiCorruptionLayer.Server(EnvironmentRepository.Instance.Source);
             server.Connect();
@@ -225,7 +225,7 @@ namespace Dev2.Studio
             // Now that the window is created, allow the rest of the startup to run 
             _resetSplashCreated?.Set();
             splashViewModel.ShowServerVersion();
-            Dispatcher.Run();
+            Dispatcher.Run();           
         }
 
         protected override void OnExit(ExitEventArgs e)

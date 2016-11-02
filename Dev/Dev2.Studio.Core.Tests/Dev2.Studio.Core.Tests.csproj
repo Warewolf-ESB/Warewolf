@@ -272,6 +272,7 @@
     <Compile Include="ShareTests.cs" />
     <Compile Include="TestUtil.cs" />
     <Compile Include="ComplexObjectItemModelTests.cs" />
+    <Compile Include="StudioTestViewModelTest.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="UtilsTests\DataListConversionUtilTest.cs" />
     <Compile Include="UtilsTests\WebServerTests.cs" />

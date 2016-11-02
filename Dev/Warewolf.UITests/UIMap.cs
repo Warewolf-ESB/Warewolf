@@ -59,6 +59,8 @@ namespace Warewolf.UITests
             TryCloseHangingServicePickerDialog();
             TryCloseHangingWindowsGroupDialog();
             TryPin_Unpinned_Pane_To_Default_Position();
+            TryCloseHangingCriticalErrorDialog();
+            TryCloseHangingErrorDialog();
 #endif
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
@@ -170,6 +172,44 @@ namespace Warewolf.UITests
                 else
                 {
                     Console.WriteLine("No hanging select windows group dialog to clean up.");
+                }
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
+        }
+
+        public void TryCloseHangingErrorDialog()
+        {
+            try
+            {
+                if (ControlExistsNow(ErrorWindow))
+                {
+                    Click_Close_Error_Dialog();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging error dialog to clean up.");
+                }
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+            }
+        }
+
+        public void TryCloseHangingCriticalErrorDialog()
+        {
+            try
+            {
+                if (ControlExistsNow(CriticalErrorWindow))
+                {
+                    Click_Close_Critical_Error_Dialog();
+                }
+                else
+                {
+                    Console.WriteLine("No hanging critical error dialog to clean up.");
                 }
             }
             catch (NullReferenceException)
@@ -330,6 +370,48 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text == string.Empty, "Toolbox filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text + " is not empty after clicking clear filter button.");
         }
 
+        [When(@"I First Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
+        public void WhenIFirstDragToolboxCommentOntoSwitchLeftArmOnDesignSurface()
+        {
+            First_Drag_Toolbox_Comment_Onto_Switch_Left_Arm_On_DesignSurface();
+        }
+
+        [When(@"I Then Drag Toolbox Comment Onto Switch Right Arm On DesignSurface")]
+        public void WhenIThenDragToolboxCommentOntoSwitchRightArmOnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem commentToolboxItem = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector3 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector3;
+            WpfCustom commentOnTheDesignSurface = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
+            #endregion
+
+            var switchRightAutoConnector = new Point(360, 200);
+            flowchart.EnsureClickable(switchRightAutoConnector);
+            Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
+            Mouse.StopDragging(flowchart, switchRightAutoConnector);
+            Assert.IsTrue(SwitchCaseDialog.Exists);
+            Mouse.Click(SwitchCaseDialog.DoneButton, new Point(34, 10));
+            Assert.IsTrue(connector3.Exists, "Third connector does not exist on design surface after drop onto autoconnector.");
+            Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
+        }
+
+        [Then(@"The Case Dialog Must Be Open")]
+        public void ThenTheCaseDialogMustBeOpen()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch);
+            Assert.IsTrue(SwitchCaseDialog.Exists, "Switch case dialog does not exist after dragging onto switch case arm.");
+            Mouse.Click(SwitchCaseDialog.DoneButton);
+        }
+        [When(@"I Click Close Workflow Tab")]
+        [Then(@"I Click Close Workflow Tab")]
+        public void ThenIClickCloseWorkflowTab()
+        {
+            Click_Close_Workflow_Tab_Button();
+            Click_MessageBox_No();
+        }
+
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
         {
             Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
@@ -408,7 +490,7 @@ namespace Warewolf.UITests
             }
         }
 
-        [When(@"I Try Remove ""(*.)"" from Explorer")]
+        [When(@"I Try Remove ""(.*)"" from Explorer")]
         public void TryRemoveFromExplorer(string ResourceName)
         {
             Filter_Explorer(ResourceName);
@@ -676,14 +758,14 @@ namespace Warewolf.UITests
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
         }
 
-        [When(@"I Click Duplicate From Duplicate Dialog")]
-        public void WhenIClickDuplicateFromDuplicateDialog()
-        {
-            Click_Duplicate_From_Duplicate_Dialog();
-            Point point;
-            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-            Assert.IsFalse(SaveDialogWindow.TryGetClickablePoint(out point), "Save Dialog does not exist after clicking Duplicate button");
-        }
+        //[When(@"I Click Duplicate From Duplicate Dialog")]
+        //public void WhenIClickDuplicateFromDuplicateDialog()
+        //{
+        //    Click_Duplicate_From_Duplicate_Dialog();
+        //    Point point;
+        //    // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+        //    Assert.IsFalse(SaveDialogWindow.TryGetClickablePoint(out point), "Save Dialog does not exist after clicking Duplicate button");
+        //}
 
 
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
@@ -2008,6 +2090,8 @@ namespace Warewolf.UITests
 
             // Click 'New Workflow Service' menu item
             Mouse.Click(newWorkflow, new Point(79, 13));
+
+            Drag_Toolbox_Random_Onto_DesignSurface();
         }
 
         public void Click_Assign_Tool_Remove_Variable_From_Tool()
@@ -2017,12 +2101,12 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox, "{Right}{Tab}", ModifierKeys.None);
             Assert.AreEqual("[[Some$Invalid%Variable]]", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox.Text, "Multiassign small view row 1 variable textbox text does not equal \"[[Some$Invalid%Variable]]\".");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox.Exists, "Assign large view row 1 variable textbox does not exist");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.SearchTextbox.Exists, "Variable filter textbox does not exist");
-            MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.SearchTextbox.Text = "Other";
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.SearchTextbox.ClearSearchButton.Exists, "Variable clear filter button does not exist");
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.SearchTextbox.ClearSearchButton, new Point(8, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Exists, "Variable delete does not exist");
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton, new Point(9, 8));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.Exists, "Variable filter textbox does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.Text = "Other";
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.ClearSearchButton.Exists, "Variable clear filter button does not exist");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.ClearSearchButton, new Point(8, 13));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Exists, "Variable delete does not exist");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton, new Point(9, 8));
         }
 
         [When(@"I Refresh Explorer")]
@@ -2716,7 +2800,7 @@ namespace Warewolf.UITests
 
         public void Pin_Unpinned_Pane_To_Default_Position()
         {
-            Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
+            Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(0, 0));
             Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
         }
 
@@ -3101,7 +3185,52 @@ namespace Warewolf.UITests
             Mouse.StartDragging(decision, new Point(13, 17));
             Mouse.StopDragging(dropActivityHereCustom);
         }
-        
+
+        [When(@"I Select New Sharepoint Server Source")]
+        public void WhenISelectNewSharepointServerSource()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server.NewSharePointSource);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists);
+        }
+
+        [When(@"I Click Close Sharepoint Server Source Tab")]
+        public void WhenIClickCloseSharepointServerSourceTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointSourceTabCloseButton);
+        }
+
+
+        [When(@"I Click UserButton OnSharepointSource")]
+        public void WhenIClickUserButtonOnSharepointSource()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserRadioButton.Selected = true;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox.Exists);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox.Exists);
+        }
+
+
+        [When(@"I drag a ""(.*)"" tool")]
+        public void WhenIDragATool(string p0)
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem copyFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CopyFile;
+            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom sharepointTool = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile;
+            #endregion
+
+            flowchart.DrawHighlight();
+            // Type 'Assign' in 'SearchTextBox' text box
+            searchTextBox.Text = p0;
+            Playback.Wait(1500);
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Mouse.StartDragging(copyFile, new Point(2, 10));
+            Mouse.StopDragging(flowchart, new Point(307, 126));
+            
+            Assert.IsTrue(sharepointTool.Exists, "Sharepoint tool does not exist on the Design Surface");
+        }
+
         public void Drag_Toolbox_AssignObject_Onto_Foreach_LargeTool()
         {
             #region Variable Declarations
@@ -3224,7 +3353,9 @@ namespace Warewolf.UITests
         [Then("Deploy Was Successful")]
         public void Assert_Deploy_Was_Successful()
         {
-            Assert.AreEqual("Resource Deployed Successfully", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText, "Deploy message text does not equal 'Resource Deployed Successfully'.");
+            Assert.AreEqual("Resource(s) Deployed Successfully", MessageBoxWindow.ResourcesDeployedSucText.DisplayText
+                , "Deploy message text does not equal 'Resource Deployed Successfully'.");
+            Click_MessageBox_OK();
         }
 
         [Then("Dice Is Selected InSettings Tab Permissions Row 1")]

@@ -36,16 +36,20 @@ namespace Dev2.ViewModels.Workflow
        }
 
 
-     public static void BuildDataPart(string dataPartFieldData, Dictionary<IDataListVerifyPart, string> unique,bool isJsonObjectSource = false)
-       {
-           Dev2DataLanguageParser dataLanguageParser = new Dev2DataLanguageParser();
+        public static void BuildDataPart(string dataPartFieldData, Dictionary<IDataListVerifyPart, string> unique, bool isJsonObjectSource = false)
+        {
+            Dev2DataLanguageParser dataLanguageParser = new Dev2DataLanguageParser();
+            dataPartFieldData = DataListUtil.StripBracketsFromValue(dataPartFieldData);
+            IDataListVerifyPart verifyPart;
 
-           dataPartFieldData = DataListUtil.StripBracketsFromValue(dataPartFieldData);
-           IDataListVerifyPart verifyPart;
             if (isJsonObjectSource)
             {
-                verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
-                AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                var isValid = IsJSonInputValid(dataPartFieldData, dataLanguageParser);
+                if (isValid)
+                {
+                    verifyPart = IntellisenseFactory.CreateJsonPart(dataPartFieldData);
+                    AddDataVerifyPart(verifyPart, verifyPart.DisplayValue, unique);
+                }
             }
             else
             {
@@ -66,8 +70,6 @@ namespace Dev2.ViewModels.Workflow
                                 var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "");
                                 if (intellisenseResult == null)
                                 {
-
-
                                     recAdded = true;
                                     verifyPart =
                                          IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue,
@@ -121,10 +123,45 @@ namespace Dev2.ViewModels.Workflow
                     }
                 }
             }
+        }
+
+       private static bool IsJSonInputValid(string dataPartFieldData, Dev2DataLanguageParser dataLanguageParser)
+       {
+           var isValid = false;
+           var removeBrace = dataPartFieldData.Contains("()") ? dataPartFieldData.Replace("()", "") : RemoveRecordSetBrace(dataPartFieldData);
+           var replaceAtSign = removeBrace.Replace("@", "");
+           var intellisenseResult = dataLanguageParser.ValidateName(string.IsNullOrEmpty(replaceAtSign) ? dataPartFieldData : replaceAtSign, "");
+           if (intellisenseResult == null)
+                isValid = true;
+            else
+            {
+                if (dataPartFieldData.Contains("@") && (dataPartFieldData.IndexOf("@", StringComparison.Ordinal) == 2))
+                {
+                    if (char.IsLetter(dataPartFieldData[3]))
+                        isValid = true;
+                    if (char.IsLetter(dataPartFieldData[3]))
+                        isValid = true;
+                }
+                var indexOfAtSign = dataPartFieldData.IndexOf("@", StringComparison.Ordinal);
+                if (dataPartFieldData.Contains("@") && (indexOfAtSign == 0) && (indexOfAtSign + 1 >= dataPartFieldData.Length))
+                {
+                    if (!intellisenseResult.Message.Contains("invalid char"))
+                        if (char.IsLetter(dataPartFieldData[1]))
+                            isValid = true;
+                }
+
+                if (dataPartFieldData.Contains('.'))
+                {
+                    var replaceAt = dataPartFieldData.Replace("@", "");
+                    var fields = replaceAt.Split('.');
+                    if(fields.All(p => !string.IsNullOrEmpty(p) && char.IsLetter(p[0])))
+                        isValid = true;
+                }
+            }
+            return isValid;
        }
 
-
-      public  static void AddDataVerifyPart(IDataListVerifyPart part, string nameOfPart, Dictionary<IDataListVerifyPart, string> unique)
+       public  static void AddDataVerifyPart(IDataListVerifyPart part, string nameOfPart, Dictionary<IDataListVerifyPart, string> unique)
         {
             if (!unique.ContainsValue(nameOfPart))
             {
