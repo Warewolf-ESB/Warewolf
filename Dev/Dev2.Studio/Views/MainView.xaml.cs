@@ -458,44 +458,9 @@ namespace Dev2.Studio.Views
 
                         if (frameworkElement?.Items.Count >= 1)
                         {
-                            var textBlock = e.OriginalSource as TextBlock;
-                            var border = e.OriginalSource as Border;
-                            if (textBlock != null)
-                            {
-                                var data = textBlock.DataContext as WorkflowDesignerViewModel;
-                                if (data != null)
-                                {
-                                    mainViewModel.AddWorkSurfaceContext(data.ResourceModel);
-                                }
-                            }
-                            else if (border != null)
-                            {
-                                var data = border.DataContext as WorkflowDesignerViewModel;
-                                if (data != null)
-                                {
-                                    mainViewModel.AddWorkSurfaceContext(data.ResourceModel);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (paneToolWindow.Pane.Panes != null && paneToolWindow.Pane.Panes.Count > 0)
-                            {
-                                var workSurfaceContextViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
-                                if (workSurfaceContextViewModel != null)
-                                {
-                                    if (mainViewModel.ActiveItem != workSurfaceContextViewModel)
-                                    {
-                                        mainViewModel.ActivateItem(workSurfaceContextViewModel);
-                                    }
-                                }
-                                else
-                                {
-                                    var workflowDesignerViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkflowDesignerViewModel;
-                                    if (workflowDesignerViewModel != null)
-                                        mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
-                                }
-                            }
+                            var selectedContent = frameworkElement.SelectedContent as ContentPane;
+                            var workSurfaceContextViewModel = selectedContent?.DataContext as WorkSurfaceContextViewModel;
+                            mainViewModel.ActivateItem(workSurfaceContextViewModel);
                         }
                     }
                 }
@@ -745,6 +710,15 @@ namespace Dev2.Studio.Views
                 }
                 
             }
+        }
+
+        private void DockManager_OnToolWindowUnLoaded(object sender, PaneToolWindowEventArgs e)
+        {
+//            var window = e.Window;
+//            if (window != null)
+//            {
+//                window.PreviewMouseLeftButtonUp -= WindowOnPreviewMouseDown;
+//            }
         }
     }
 }
