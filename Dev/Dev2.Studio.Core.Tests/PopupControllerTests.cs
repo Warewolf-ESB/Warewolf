@@ -527,12 +527,12 @@ namespace Dev2.Core.Tests
             string server = "localhost";
             popupController.ShowServerNotConnected(server);
 
-            var message = "The server " + server + " is unreachable and will be removed from your explorer tab. Please reconnect to save any unsaved work.";
+            var message = "The server " + server + " is unreachable. \n \nPlease make sure the Warewolf Server service is running on that machine.";
 
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
-            Assert.AreEqual("Server Is Not Connected", header);
+            Assert.AreEqual("Server Unreachable", header);
             Assert.AreEqual(message, description);
             Assert.IsFalse(popupController.IsInfo);
             Assert.IsFalse(popupController.IsDependenciesButtonVisible);
@@ -826,8 +826,8 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
-            Assert.AreEqual("Server Is Not Connected", header);
-            Assert.AreEqual("You can not change the settings for a server that is offline.", description);
+            Assert.AreEqual("Server Unreachable", header);
+            Assert.AreEqual("You can not change the settings for a server that is unreachable.", description);
             Assert.AreEqual(MessageBoxImage.Error, imageType);
         }
 

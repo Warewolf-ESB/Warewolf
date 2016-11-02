@@ -5,6 +5,7 @@
 
 Scenario: Switch Case Arm Autoconnectors
 	Given The Warewolf Studio is running
+	When I Click New Workflow Ribbon Button
 	When I Drag Toolbox Switch Onto DesignSurface
 	And I Click Switch Dialog Done Button
 	And I First Drag Toolbox Comment Onto Switch Left Arm On DesignSurface
@@ -12,3 +13,4 @@ Scenario: Switch Case Arm Autoconnectors
 	And I Click Switch Dialog Done Button
 	And I Then Drag Toolbox Comment Onto Switch Right Arm On DesignSurface
 	Then The Case Dialog Must Be Open
+	And I Click Close Workflow Tab
