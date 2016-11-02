@@ -848,7 +848,6 @@ namespace Dev2.UI
 
         public static readonly DependencyProperty WrapInBracketsProperty = DependencyProperty.Register("WrapInBrackets", typeof(bool), typeof(IntellisenseTextBox), new UIPropertyMetadata(false));
 
-        public static readonly DependencyProperty ErrorToolTipTextProperty = DependencyProperty.Register("ErrorToolTip", typeof(string), typeof(IntellisenseTextBox), new UIPropertyMetadata(string.Empty, ErrorTextChanged));
         public bool WrapInBrackets
         {
             get
@@ -858,34 +857,6 @@ namespace Dev2.UI
             set
             {
                 SetValue(WrapInBracketsProperty, value);
-            }
-        }
-
-        public string ErrorToolTip
-        {
-            get
-            {
-                return (string)GetValue(ErrorToolTipTextProperty);
-            }
-            set
-            {
-                SetValue(ErrorToolTipTextProperty, value);
-            }
-        }
-
-        static void ErrorTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            var errorText = dependencyPropertyChangedEventArgs.NewValue as string;
-            if (string.IsNullOrEmpty(errorText))
-            {
-                return;
-            }
-
-            var box = dependencyObject as IntellisenseTextBox;
-            var toolTip = box?.ToolTip as ToolTip;
-            if (toolTip != null)
-            {
-                toolTip.Content = errorText;
             }
         }
 
@@ -937,11 +908,6 @@ namespace Dev2.UI
 
         void ExecWrapBrackets()
         {
-            if (IsDropDownOpen && !IsKeyboardFocusWithin)
-            {
-               // CloseDropDown(true, false);
-            }
-
             if (WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
             {
                 Text = AddBracketsToExpression(Text);
