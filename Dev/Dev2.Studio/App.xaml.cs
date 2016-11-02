@@ -178,9 +178,6 @@ namespace Dev2.Studio
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
-
-            //_appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
-            //_appExceptionHandler.Handle(new Exception("Teting - Exception"));
         }
 
         private async void CheckForDuplicateResources()

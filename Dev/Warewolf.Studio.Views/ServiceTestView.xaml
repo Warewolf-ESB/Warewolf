@@ -534,6 +534,7 @@
                                 <TextBlock Grid.Row="0" Text="Error" FontWeight="Bold"/>
                                 <RadioButton x:Name="NoErrorRadioButton"
                                              Grid.Column="1"
+                                             GroupName="NoError_Settings"
                                              Padding="0,0,5,0" 
                                              ToolTip="{x:Static languages:Core.ServiceTestNoErrorExpectedTooltip}" 
                                              VerticalAlignment="Center" 
@@ -546,6 +547,7 @@
                                 </RadioButton>
                                 <RadioButton x:Name="ErrorRadioButton" 
                                              Grid.Column="2"
+                                             GroupName="Error_Settings"
                                              ToolTip="{x:Static languages:Core.ServiceTestErrorExpectedTooltip}" 
                                              VerticalAlignment="Center" 
                                              HorizontalAlignment="Left" 

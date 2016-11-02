@@ -248,9 +248,13 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _noErrorExpected = value;
-                OnPropertyChanged(() => NoErrorExpected);
-                OnPropertyChanged(() => NameForDisplay);
+                if (value != _noErrorExpected)
+                {
+                    _noErrorExpected = value;
+                    ErrorExpected = !_noErrorExpected;
+                    OnPropertyChanged(() => NoErrorExpected);
+                    OnPropertyChanged(() => IsDirty);
+                }
             }
         }
         public bool ErrorExpected
@@ -261,9 +265,13 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _errorExpected = value;
-                OnPropertyChanged(() => ErrorExpected);
-                OnPropertyChanged(() => IsDirty);
+                if (value != _errorExpected)
+                {
+                    _errorExpected = value;
+                    NoErrorExpected = !_errorExpected;
+                    OnPropertyChanged(() => ErrorExpected);
+                    OnPropertyChanged(() => IsDirty);
+                }
             }
         }
 
