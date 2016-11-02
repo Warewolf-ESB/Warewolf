@@ -84,7 +84,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             if (_action?.SelectedAction != null)
             {
                 Inputs = _action.SelectedAction.Inputs;
-                _datatalistMapper.MappInputsToDatalist(Inputs);
+                _datatalistMapper.MapInputsToDatalist(Inputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
             }
