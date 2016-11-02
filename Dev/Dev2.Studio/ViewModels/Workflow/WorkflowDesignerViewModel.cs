@@ -1689,7 +1689,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (selectedModelItem != null)
                 {
                     ClearSelection();
-                    Selection.Subscribe(_wd.Context, SelectedItemChanged);
                     Selection.Union(_wd.Context, selectedModelItem);
                 }
             }
