@@ -135,13 +135,6 @@ namespace Dev2.ViewModels.Workflow
                 isValid = true;
             else
             {
-                if (dataPartFieldData.Contains("@") && (dataPartFieldData.IndexOf("@", StringComparison.Ordinal) == 2))
-                {
-                    if (char.IsLetter(dataPartFieldData[3]))
-                        isValid = true;
-                    if (char.IsLetter(dataPartFieldData[3]))
-                        isValid = true;
-                }
                 var indexOfAtSign = dataPartFieldData.IndexOf("@", StringComparison.Ordinal);
                 if (dataPartFieldData.Contains("@") && (indexOfAtSign == 0) && (indexOfAtSign + 1 >= dataPartFieldData.Length))
                 {
@@ -152,8 +145,7 @@ namespace Dev2.ViewModels.Workflow
 
                 if (dataPartFieldData.Contains('.'))
                 {
-                    var replaceAt = dataPartFieldData.Replace("@", "");
-                    var fields = replaceAt.Split('.');
+                    var fields = dataPartFieldData.Replace("@", "").Split('.');
                     if(fields.All(p => !string.IsNullOrEmpty(p) && char.IsLetter(p[0])))
                         isValid = true;
                 }
