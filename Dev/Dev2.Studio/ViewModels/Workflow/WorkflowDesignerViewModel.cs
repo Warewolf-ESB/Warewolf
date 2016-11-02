@@ -1356,25 +1356,32 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual ModelItem GetSelectedModelItem(Guid itemId, Guid parentId)
         {
-            var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
-            // ReSharper disable MaximumChainedReferences
-            var selectedModelItem = (from mi in modelItems let instanceID = ModelItemUtils.GetUniqueID(mi) where instanceID == itemId || instanceID == parentId select mi).FirstOrDefault();
-            // ReSharper restore MaximumChainedReferences
+            if (ModelService != null)
+            {
+                var modelItems = ModelService.Find(ModelService.Root, typeof (IDev2Activity));
+                // ReSharper disable MaximumChainedReferences
+                var selectedModelItem = (from mi in modelItems
+                    let instanceID = ModelItemUtils.GetUniqueID(mi)
+                    where instanceID == itemId || instanceID == parentId
+                    select mi).FirstOrDefault();
+                // ReSharper restore MaximumChainedReferences
 
-            if (selectedModelItem == null)
-            {
-                // Find the root flow chart
-                selectedModelItem = ModelService.Find(ModelService.Root, typeof(Flowchart)).FirstOrDefault();
-            }
-            else
-            {
-                if (DecisionSwitchTypes.Contains(selectedModelItem.Parent.ItemType))
+                if (selectedModelItem == null)
                 {
-                    // Decision/switches activities are represented by their parents in the designer!
-                    selectedModelItem = selectedModelItem.Parent;
+                    // Find the root flow chart
+                    selectedModelItem = ModelService.Find(ModelService.Root, typeof (Flowchart)).FirstOrDefault();
                 }
+                else
+                {
+                    if (DecisionSwitchTypes.Contains(selectedModelItem.Parent.ItemType))
+                    {
+                        // Decision/switches activities are represented by their parents in the designer!
+                        selectedModelItem = selectedModelItem.Parent;
+                    }
+                }
+                return selectedModelItem;
             }
-            return selectedModelItem;
+            return null;
         }
 
         private void SelectSingleModelItem(ModelItem selectedModelItem)
@@ -1481,7 +1488,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     // log the trace for fetch ;)
                     Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
-                    _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
+                    var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
+                    _wd.Load(activityBuilder);
                     BindToModel();
                 }
                 else
@@ -1500,7 +1508,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void SetDesignerText(StringBuilder xaml)
         {
             var designerText = _workflowHelper.SanitizeXaml(xaml);
-            _wd.Text = designerText.ToString();
+            if (designerText != null)
+                _wd.Text = designerText.ToString();
         }
 
         private void SelectedItemChanged(Selection item)
