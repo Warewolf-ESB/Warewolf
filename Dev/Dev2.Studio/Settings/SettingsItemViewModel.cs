@@ -31,7 +31,6 @@ namespace Dev2.Settings
 
         [JsonIgnore]
         public ICommand CloseHelpCommand { get; private set; }
-
         [JsonIgnore]
         public string HelpText
         {
