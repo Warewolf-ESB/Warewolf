@@ -357,6 +357,21 @@ Scenario Outline: Assign to an invalid variable
 	| 28 | a[[rec([[[[b]]]]).a]]@                    | AN    |
 	| 29 | [[var  ]]                                 | AN    |
 	| 30 | [[rec()                                   | AN    |
+	| 31 | [[rec().2set]]                            | AN    |
+	| 32 | [[@var]]                                  | AN    |
+	| 33 | [[(rec1)]]                                | AN    |
+	| 34 | rec()                                     | AN    |
+	| 35 | var;iable                                 | AN    |
+	| 36 | rec().                                    | AN    |
+	| 37 | rec(*)                                    | AN    |
+	| 38 | rec().1                                   | AN    |
+	| 39 | rec().#field#                             | AN    |
+	| 40 | rec().field                               | AN    |
+	| 41 | rec(500)                                  | AN    |
+	| 42 | .                                         | AN    |
+	| 43 | ().                                       | AN    |
+	| 44 | .field                                    | AN    |
+	| 45 | 1.1                                       | AN    |
 	
 Scenario: Assign values to different columns in a reccord set
        Given I assign the value 10 to a variable "[[rec().a]]"       
