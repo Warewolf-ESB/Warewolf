@@ -31,6 +31,167 @@ namespace WarewolfParsingTest
         }
 
         [TestMethod]
+        public void TestRecsetExpressionLastIndex()
+        {
+            var ast = EvaluationFunctions.parseLanguageExpression("[[rec().a]]", 0);
+            Assert.IsTrue(ast.IsRecordSetExpression);
+            var astval = ast as LanguageAST.LanguageExpression.RecordSetExpression;
+            if (astval != null)
+            {
+                Assert.AreEqual(astval.Item.Name, "rec");
+                Assert.AreEqual(astval.Item.Column, "a");
+                Assert.AreEqual(astval.Item.Index, LanguageAST.Index.Last);
+            }
+            else
+            {
+                Assert.Fail("Wrong type");
+            }
+        }
+
+        [TestMethod]
+        public void TestRecsetExpressionStarIndex()
+        {
+            var ast = EvaluationFunctions.parseLanguageExpression("[[rec(*).a]]", 0);
+            Assert.IsTrue(ast.IsRecordSetExpression);
+            var astval = ast as LanguageAST.LanguageExpression.RecordSetExpression;
+            if (astval != null)
+            {
+                Assert.AreEqual(astval.Item.Name, "rec");
+                Assert.AreEqual(astval.Item.Column, "a");
+                Assert.AreEqual(astval.Item.Index, LanguageAST.Index.Star);
+            }
+            else
+            {
+                Assert.Fail("Wrong type");
+            }
+        }
+
+        [TestMethod]
+        public void TestRecsetNameExpressionStarIndex()
+        {
+            var ast = EvaluationFunctions.parseLanguageExpression("[[rec(*)]]", 0);
+            Assert.IsTrue(ast.IsRecordSetNameExpression);
+            var astval = ast as LanguageAST.LanguageExpression.RecordSetNameExpression;
+            if (astval != null)
+            {
+                Assert.AreEqual(astval.Item.Name, "rec");
+                Assert.AreEqual(astval.Item.Index, LanguageAST.Index.Star);
+            }
+            else
+            {
+                Assert.Fail("Wrong type");
+            }
+        }
+
+        [TestMethod]
+        public void TestRecsetNameExpressionLastIndex()
+        {
+            var ast = EvaluationFunctions.parseLanguageExpression("[[rec()]]", 0);
+            Assert.IsTrue(ast.IsRecordSetNameExpression);
+            var astval = ast as LanguageAST.LanguageExpression.RecordSetNameExpression;
+            if (astval != null)
+            {
+                Assert.AreEqual(astval.Item.Name, "rec");
+                Assert.AreEqual(astval.Item.Index, LanguageAST.Index.Last);
+            }
+            else
+            {
+                Assert.Fail("Wrong type");
+            }
+        }
+
+
+        [TestMethod]
+        public void TestRecsetExpressionLastIndex_InvalidName()
+        {
+            try
+            {
+                EvaluationFunctions.parseLanguageExpression("[[1rec().a]]", 0);
+                Assert.Fail("No Exception thrown");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Recordset Name name 1rec begins with a number.", e.Message);
+            }
+
+        }
+
+        [TestMethod]
+        public void TestRecsetExpressionStarIndex_InvalidName()
+        {
+            try
+            {
+                EvaluationFunctions.parseLanguageExpression("[[1rec(*).a]]", 0);
+                Assert.Fail("No Exception thrown");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Recordset Name name 1rec begins with a number.", e.Message);
+            }
+
+        }
+
+        [TestMethod]
+        public void TestRecsetExpressionLastIndex_InvalidName_RecOnly()
+        {
+            try
+            {
+                EvaluationFunctions.parseLanguageExpression("[[1rec()]]", 0);
+                Assert.Fail("No Exception thrown");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Recordset Name name 1rec begins with a number.", e.Message);
+            }
+
+        }
+
+        [TestMethod]
+        public void TestRecsetExpressionStarIndex_InvalidName_RecOnly()
+        {
+            try
+            {
+                EvaluationFunctions.parseLanguageExpression("[[1rec(*)]]", 0);
+                Assert.Fail("No Exception thrown");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Recordset Name name 1rec begins with a number.", e.Message);
+            }
+
+        }
+
+        [TestMethod]
+        public void TestRecsetExpressionLastIndex_InvalidColumnName()
+        {
+            try
+            {
+                EvaluationFunctions.parseLanguageExpression("[[rec().1a]]", 0);
+                Assert.Fail("No Exception thrown");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Column name 1a begins with a number.", e.Message);
+            }
+
+        }
+
+
+        [TestMethod]
+        public void TestRecsetExpressionStarIndex_InvalidColumnName()
+        {
+            try
+            {
+                EvaluationFunctions.parseLanguageExpression("[[rec(*).1a]]", 0);
+                Assert.Fail("No Exception thrown");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Column name 1a begins with a number.", e.Message);
+            }
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Parse")]
         public void WarewolfParse_Parse_Nested_ExpectComplex()
@@ -58,7 +219,7 @@ namespace WarewolfParsingTest
         [TestCategory("WarewolfParse_Parse")]
         public void WarewolfParse_Parse_Nested_ExpectComplex_MultiNested()
         {
-           
+
 
             var ast = EvaluationFunctions.parseLanguageExpression("[[[[[[a]]]]]]", 0);
             Assert.IsTrue(ast.IsComplexExpression);
@@ -605,7 +766,7 @@ namespace WarewolfParsingTest
             var env = WarewolfTestData.CreateTestEnvEmpty("");
 
             var envx = PublicFunctions.EvalMultiAssign(assigns, 0, env);
-             envx = AssignEvaluation.evalMultiAssignList(envx, new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewInt(1), DataStorage.WarewolfAtom.NewInt(2) }, "[[bec([[a]]).a]]", 0, true);
+            envx = AssignEvaluation.evalMultiAssignList(envx, new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewInt(1), DataStorage.WarewolfAtom.NewInt(2) }, "[[bec([[a]]).a]]", 0, true);
 
 
         }
@@ -767,7 +928,7 @@ namespace WarewolfParsingTest
              {
                  new AssignValue("[[bec().a]]", "[[rec().a]]"),
                  new AssignValue("[[bec().b]]", "[[rec().b]]"),
-   
+
 
              };
             var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv2);
@@ -796,7 +957,7 @@ namespace WarewolfParsingTest
                  new AssignValue("[[rec().a]]", "25"),
                  new AssignValue("[[rec().b]]", "33"),
                  new AssignValue("[[rec().a]]", "26"),
-          
+
 
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
@@ -807,7 +968,7 @@ namespace WarewolfParsingTest
              {
                  new AssignValue("[[bec().a]]", "[[rec().a]]"),
                  new AssignValue("[[bec().b]]", "[[rec().b]]"),
-   
+
 
              };
             var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv2);
@@ -843,7 +1004,7 @@ namespace WarewolfParsingTest
              {
                  new AssignValue("[[bec().a]]", "[[rec(1).a]]"),
                  new AssignValue("[[bec().b]]", "[[rec(1).b]]"),
-   
+
 
              };
             var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv2);
@@ -1186,7 +1347,7 @@ namespace WarewolfParsingTest
             env.EvalDelete("[[rec([[a]])]]", 0);
             var items = env.EvalAsListOfStrings("[[rec(*).a]]", 0);
 
-            Assert.AreEqual(items.Count,2);
+            Assert.AreEqual(items.Count, 2);
             Assert.AreEqual(items[0], "25");
             Assert.AreEqual(items[1], "26");
 
@@ -1224,7 +1385,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
-    [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(Exception))]
         public void WarewolfParse_Eval_Delete_NonExistent()
         {
 
@@ -1744,7 +1905,7 @@ namespace WarewolfParsingTest
 
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
 
-            var env3 = EvaluationFunctions.evalToExpression(testEnv2,0,"[[rec([[a]]).a]]");
+            var env3 = EvaluationFunctions.evalToExpression(testEnv2, 0, "[[rec([[a]]).a]]");
             Assert.AreEqual(env3, "[[rec(1).a]]");
 
 
@@ -1799,7 +1960,7 @@ namespace WarewolfParsingTest
             var env3 = EvaluationFunctions.evalToExpression(testEnv2, 0, "[[a]]");
             Assert.AreEqual(env3, "[[a]]");
 
-             env3 = EvaluationFunctions.evalToExpression(testEnv2, 0, "[[rec().a]]");
+            env3 = EvaluationFunctions.evalToExpression(testEnv2, 0, "[[rec().a]]");
             Assert.AreEqual(env3, "[[rec().a]]");
 
         }
@@ -1837,7 +1998,7 @@ namespace WarewolfParsingTest
 
             var env3 = PublicFunctions.EvalAssignFromList("[[a]]", new List<DataStorage.WarewolfAtom>() { DataStorage.WarewolfAtom.NewDataString("a"), DataStorage.WarewolfAtom.NewDataString("b") }, testEnv, 0, true);
 
-       
+
             var items = PublicFunctions.EvalEnvExpression("[[a]]", 0, false, env3);
             if (items.IsWarewolfAtomListresult)
             {
