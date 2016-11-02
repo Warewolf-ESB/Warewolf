@@ -272,8 +272,9 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.IsTrue(logSettingsViewModel.CanEditLogSettings);
             Assert.IsTrue(logSettingsViewModel.CanEditStudioLogSettings);
-        }        
-        
+        }
+
+  
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("LogSettingsViewModel_StudioLogMaxSize")]
@@ -289,7 +290,8 @@ namespace Dev2.Core.Tests.Settings
                     hasPropertyChanged = true;
                 }
             };
-
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(logSettingsViewModel.IsDirty);
             //------------Execute Test---------------------------
             logSettingsViewModel.StudioLogMaxSize = "aa";
             //------------Assert Results-------------------------
