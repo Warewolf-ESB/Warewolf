@@ -2090,6 +2090,8 @@ namespace Warewolf.UITests
 
             // Click 'New Workflow Service' menu item
             Mouse.Click(newWorkflow, new Point(79, 13));
+
+            Drag_Toolbox_Random_Onto_DesignSurface();
         }
 
         public void Click_Assign_Tool_Remove_Variable_From_Tool()
@@ -2798,7 +2800,7 @@ namespace Warewolf.UITests
 
         public void Pin_Unpinned_Pane_To_Default_Position()
         {
-            Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
+            Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(0, 0));
             Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
         }
 
@@ -3351,7 +3353,9 @@ namespace Warewolf.UITests
         [Then("Deploy Was Successful")]
         public void Assert_Deploy_Was_Successful()
         {
-            Assert.AreEqual("Resource Deployed Successfully", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText, "Deploy message text does not equal 'Resource Deployed Successfully'.");
+            Assert.AreEqual("Resource(s) Deployed Successfully", MessageBoxWindow.ResourcesDeployedSucText.DisplayText
+                , "Deploy message text does not equal 'Resource Deployed Successfully'.");
+            Click_MessageBox_OK();
         }
 
         [Then("Dice Is Selected InSettings Tab Permissions Row 1")]
