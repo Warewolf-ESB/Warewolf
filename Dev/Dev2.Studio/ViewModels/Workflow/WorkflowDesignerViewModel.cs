@@ -85,6 +85,7 @@ using Dev2.Utilities;
 using Dev2.Utils;
 using Dev2.ViewModels.Workflow;
 using Dev2.Workspaces;
+using Infragistics.Windows.DockManager;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.AntiCorruptionLayer;
@@ -100,7 +101,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                                              IHandle<AddStringListToDataListMessage>,
                                              IHandle<EditActivityMessage>,
                                              IHandle<SaveUnsavedWorkflowMessage>,
-                                             IHandle<UpdateResourceMessage>,
                                              IWorkflowDesignerViewModel
     {
         static readonly Type[] DecisionSwitchTypes = { typeof(FlowSwitch<string>), typeof(FlowDecision) };
@@ -1356,25 +1356,32 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual ModelItem GetSelectedModelItem(Guid itemId, Guid parentId)
         {
-            var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
-            // ReSharper disable MaximumChainedReferences
-            var selectedModelItem = (from mi in modelItems let instanceID = ModelItemUtils.GetUniqueID(mi) where instanceID == itemId || instanceID == parentId select mi).FirstOrDefault();
-            // ReSharper restore MaximumChainedReferences
+            if (ModelService != null)
+            {
+                var modelItems = ModelService.Find(ModelService.Root, typeof (IDev2Activity));
+                // ReSharper disable MaximumChainedReferences
+                var selectedModelItem = (from mi in modelItems
+                    let instanceID = ModelItemUtils.GetUniqueID(mi)
+                    where instanceID == itemId || instanceID == parentId
+                    select mi).FirstOrDefault();
+                // ReSharper restore MaximumChainedReferences
 
-            if (selectedModelItem == null)
-            {
-                // Find the root flow chart
-                selectedModelItem = ModelService.Find(ModelService.Root, typeof(Flowchart)).FirstOrDefault();
-            }
-            else
-            {
-                if (DecisionSwitchTypes.Contains(selectedModelItem.Parent.ItemType))
+                if (selectedModelItem == null)
                 {
-                    // Decision/switches activities are represented by their parents in the designer!
-                    selectedModelItem = selectedModelItem.Parent;
+                    // Find the root flow chart
+                    selectedModelItem = ModelService.Find(ModelService.Root, typeof (Flowchart)).FirstOrDefault();
                 }
+                else
+                {
+                    if (DecisionSwitchTypes.Contains(selectedModelItem.Parent.ItemType))
+                    {
+                        // Decision/switches activities are represented by their parents in the designer!
+                        selectedModelItem = selectedModelItem.Parent;
+                    }
+                }
+                return selectedModelItem;
             }
-            return selectedModelItem;
+            return null;
         }
 
         private void SelectSingleModelItem(ModelItem selectedModelItem)
@@ -1481,7 +1488,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     // log the trace for fetch ;)
                     Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
-                    _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
+                    var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
+                    _wd.Load(activityBuilder);
                     BindToModel();
                 }
                 else
@@ -1500,7 +1508,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void SetDesignerText(StringBuilder xaml)
         {
             var designerText = _workflowHelper.SanitizeXaml(xaml);
-            _wd.Text = designerText.ToString();
+            if (designerText != null)
+                _wd.Text = designerText.ToString();
         }
 
         private void SelectedItemChanged(Selection item)
@@ -1689,7 +1698,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (selectedModelItem != null)
                 {
                     ClearSelection();
-                    Selection.Subscribe(_wd.Context, SelectedItemChanged);
                     Selection.Union(_wd.Context, selectedModelItem);
                 }
             }
@@ -1946,6 +1954,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private ICommand _copyUrlCommand;
         private DebugOutputViewModel _debugOutputViewModel;
         private IDataListViewModel _dataListViewModel;
+        private PaneToolWindow _paneToolWindow;
 
         /// <summary>
         /// Models the service model changed.
@@ -2140,31 +2149,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
-
-        /// <summary>
-        /// Handles the specified message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public void Handle(UpdateResourceMessage message)
-        {
-            Dev2Logger.Debug(message.GetType().Name);
-            if (ContexttualResourceModelEqualityComparer.Current.Equals(message.ResourceModel, _resourceModel))
-            {
-                IObservableReadOnlyList<IErrorInfo> currentErrors = null;
-                if (message.ResourceModel.Errors != null && message.ResourceModel.Errors.Count > 0)
-                {
-                    currentErrors = message.ResourceModel.Errors;
-                }
-                _resourceModel.Update(message.ResourceModel);
-                if (currentErrors != null && currentErrors.Count > 0)
-                {
-                    foreach (var currentError in currentErrors)
-                    {
-                        _resourceModel.AddError(currentError);
-                    }
-                }
-            }
-        }
+       
         /// <summary>
         /// Gets the work surface context.
         /// </summary>
@@ -2187,6 +2172,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         public IEnvironmentModel EnvironmentModel => ResourceModel.Environment;
 
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
+
+        public PaneToolWindow PaneToolWindow
+        {
+            get { return _paneToolWindow; }
+            set
+            {
+                _paneToolWindow = value; 
+                OnPropertyChanged("PaneToolWindow");
+            }
+        }
 
         #region Implementation of IHandle<EditActivityMessage>
 
@@ -2212,29 +2207,44 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
-            Dev2Logger.Info("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
-            EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(message.ResourceModel, false));
             var resourceModel = message.ResourceModel;
             WorkspaceItemRepository.Instance.Remove(resourceModel);
             resourceModel.Environment.ResourceRepository.DeleteResource(resourceModel);
             var unsavedName = resourceModel.ResourceName;
-            BindToModel();
             UpdateResourceModel(message, resourceModel, unsavedName);
             PublishMessages(resourceModel);
-            if (message.KeepTabOpen)
-            {
-                Dev2Logger.Debug("Publish message of type - " + typeof(AddWorkSurfaceMessage));
-                EventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel));
-            }
+            OnDispose();
+            ActivityDesignerHelper.AddDesignerAttributes(this);
+            NotifyOfPropertyChange(()=>DesignerView);
             NewWorkflowNames.Instance.Remove(unsavedName);
         }
 
         private void PublishMessages(IContextualResourceModel resourceModel)
         {
+            UpdateResource(resourceModel);
             Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage));
             EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
         }
 
+        private void UpdateResource(IContextualResourceModel resourceModel)
+        {
+            if (ContexttualResourceModelEqualityComparer.Current.Equals(resourceModel, _resourceModel))
+            {
+                IObservableReadOnlyList<IErrorInfo> currentErrors = null;
+                if (resourceModel.Errors != null && resourceModel.Errors.Count > 0)
+                {
+                    currentErrors = resourceModel.Errors;
+                }
+                _resourceModel.Update(resourceModel);
+                if (currentErrors != null && currentErrors.Count > 0)
+                {
+                    foreach (var currentError in currentErrors)
+                    {
+                        _resourceModel.AddError(currentError);
+                    }
+                }
+            }
+        }
         private static void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
         {
             resourceModel.ResourceName = message.ResourceName;

@@ -17,6 +17,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
+using Newtonsoft.Json;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ViewModels;
 // ReSharper disable RedundantArgumentDefaultValue
@@ -57,12 +58,9 @@ namespace Dev2.Settings.Perfcounters
             if (server.Permissions == null)
             {
                 server.Permissions = new List<IWindowsGroupPermission>();
-                if(environment.AuthorizationService != null)
+                if(environment.AuthorizationService?.SecurityService != null)
                 {
-                    if(environment.AuthorizationService.SecurityService != null)
-                    {
-                        server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
-                    }
+                    server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
                 }
             }
             var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
@@ -84,6 +82,7 @@ namespace Dev2.Settings.Perfcounters
 
         }
 
+        [JsonIgnore]
         public ICommand ResetCountersCommand { get; set; }
 
         private void ResetCounters(object obj)
@@ -183,7 +182,7 @@ namespace Dev2.Settings.Perfcounters
 
         void OnPerfCounterPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            IsDirty = true;
+            IsDirty = !Equals(ItemServerCounters, ItemResourceCounters);
             if (args.PropertyName == "CounterName")
             {
                 var countersByResource = (IPerformanceCountersByResource)sender;
@@ -233,10 +232,10 @@ namespace Dev2.Settings.Perfcounters
             }
         }
 
-        
+        [JsonIgnore]
         public ICommand PickResourceCommand { get; private set; }
 
-
+        [JsonIgnore]
         public ICommunicationController CommunicationController
         {
             get
@@ -292,10 +291,7 @@ namespace Dev2.Settings.Perfcounters
         public void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion
@@ -303,6 +299,144 @@ namespace Dev2.Settings.Perfcounters
         #region Overrides of SettingsItemViewModel //Not used but needed due to base class
         protected override void CloseHelp()
         {
+        }
+
+        #endregion
+
+        #region CloneItems
+
+        public void SetItem(PerfcounterViewModel model)
+        {
+            //ItemServerCounters = CloneServerCounters(model.ServerCounters);
+            //ItemResourceCounters = CloneResourceCounters(model.ResourceCounters);
+        }
+
+        private ObservableCollection<IPerformanceCountersByResource> CloneResourceCounters(ObservableCollection<IPerformanceCountersByResource> resourceCounters)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(resourceCounters, new JsonSerializerSettings { ContractResolver = resolver });
+            ObservableCollection<IPerformanceCountersByResource> clone = JsonConvert.DeserializeObject<ObservableCollection<IPerformanceCountersByResource>>(ser);
+            return clone;
+        }
+
+        private ObservableCollection<IPerformanceCountersByMachine> CloneServerCounters(ObservableCollection<IPerformanceCountersByMachine> serverCounters)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(serverCounters, new JsonSerializerSettings { ContractResolver = resolver });
+            ObservableCollection<IPerformanceCountersByMachine> clone = JsonConvert.DeserializeObject<ObservableCollection<IPerformanceCountersByMachine>>(ser);
+            return clone;
+        }
+
+        public ObservableCollection<IPerformanceCountersByResource> ItemResourceCounters { get; set; }
+
+        public ObservableCollection<IPerformanceCountersByMachine> ItemServerCounters { get; set; }
+
+        private bool Equals(ObservableCollection<IPerformanceCountersByMachine> serverCounters, ObservableCollection<IPerformanceCountersByResource> resourceCounters)
+        {
+            if (ReferenceEquals(null, serverCounters))
+            {
+                return false;
+            }
+            if (ReferenceEquals(null, resourceCounters))
+            {
+                return false;
+            }
+
+            return EqualsSeq(serverCounters, resourceCounters);
+        }
+
+        private bool EqualsSeq(ObservableCollection<IPerformanceCountersByMachine> serverCounters, ObservableCollection<IPerformanceCountersByResource> resourceCounters)
+        {
+            var serverCountersCompare = ServerCountersCompare(serverCounters, true);
+            var resourceCountersCompare = ResourceCountersCompare(resourceCounters, true);
+            var @equals = serverCountersCompare && resourceCountersCompare;
+
+            return @equals;
+        }
+
+        private bool ServerCountersCompare(ObservableCollection<IPerformanceCountersByMachine> serverCounters, bool serverPermissionCompare)
+        {
+            if (_serverCounters == null)
+            {
+                return true;
+            }
+            if (_serverCounters.Count != serverCounters.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _serverCounters.Count; i++)
+            {
+                if (ServerCounters[i].AverageExecutionTime != serverCounters[i].AverageExecutionTime)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerCounters[i].ConcurrentRequests != serverCounters[i].ConcurrentRequests)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerCounters[i].RequestPerSecond != serverCounters[i].RequestPerSecond)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerCounters[i].TotalErrors != serverCounters[i].TotalErrors)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerCounters[i].WorkFlowsNotFound != serverCounters[i].WorkFlowsNotFound)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerCounters[i].NotAuthorisedErrors != serverCounters[i].NotAuthorisedErrors)
+                {
+                    serverPermissionCompare = false;
+                }
+            }
+            return serverPermissionCompare;
+        }
+
+        private bool ResourceCountersCompare(ObservableCollection<IPerformanceCountersByResource> resourceCounters, bool resourcePermissionCompare)
+        {
+            if (_resourceCounters == null)
+            {
+                return true;
+            }
+            if (_resourceCounters.Count != resourceCounters.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _resourceCounters.Count; i++)
+            {
+                if (ResourceCounters[i].ResourceId != resourceCounters[i].ResourceId)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourceCounters[i].AverageExecutionTime != resourceCounters[i].AverageExecutionTime)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourceCounters[i].ConcurrentRequests != resourceCounters[i].ConcurrentRequests)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourceCounters[i].RequestPerSecond != resourceCounters[i].RequestPerSecond)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourceCounters[i].TotalErrors != resourceCounters[i].TotalErrors)
+                {
+                    resourcePermissionCompare = false;
+                }
+            }
+            return resourcePermissionCompare;
         }
 
         #endregion

@@ -326,15 +326,16 @@ namespace Dev2.Services.Execution
             {
                 foreach (var parameter in methodParameters)
                 {
+                    var parameterName = parameter.Name.Replace("`","");
                     if (parameter.EmptyIsNull &&
                         (parameter.Value == null ||
                          string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
                     {
-                        sqlParameters.Add(new MySqlParameter($"@{parameter.Name}", DBNull.Value));
+                        sqlParameters.Add(new MySqlParameter($"@{parameterName}", DBNull.Value));
                     }
                     else
                     {
-                        sqlParameters.Add(new MySqlParameter($"@{parameter.Name}", parameter.Value));
+                        sqlParameters.Add(new MySqlParameter($"@{parameterName}", parameter.Value));
                     }
                 }
             }

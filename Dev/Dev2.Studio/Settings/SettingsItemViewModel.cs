@@ -9,43 +9,45 @@
 */
 
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Annotations;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Dev2.Settings
 {
     public abstract class SettingsItemViewModel : DependencyObject, INotifyPropertyChanged
     {
-        protected SettingsItemViewModel()
+        
+        public SettingsItemViewModel()
         {
             CloseHelpCommand = new DelegateCommand(o => CloseHelp());
         }
 
+        [JsonIgnore]
         public ICommand CloseHelpCommand { get; private set; }
-
+        [JsonIgnore]
         public string HelpText
         {
             get { return (string)GetValue(HelpTextProperty); }
             set { SetValue(HelpTextProperty, value); }
         }
 
+        [JsonIgnore]
         public static readonly DependencyProperty HelpTextProperty = DependencyProperty.Register("HelpText", typeof(string), typeof(SettingsItemViewModel), new PropertyMetadata(null,OnHelpTextChanged));
 
+        
         private static void OnHelpTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(e.NewValue as string?? "");
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(e.NewValue as string?? "");
         }
-
         
-
         public bool IsDirty
         {
             get { return (bool)GetValue(IsDirtyProperty); }
@@ -56,6 +58,7 @@ namespace Dev2.Settings
             }
         }
 
+        [JsonIgnore]
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(SettingsItemViewModel), new PropertyMetadata(false));
 
         protected abstract void CloseHelp();
@@ -66,10 +69,22 @@ namespace Dev2.Settings
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if(handler != null)
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class ShouldSerializeContractResolver : DefaultContractResolver
+    {
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            JsonProperty property = base.CreateProperty(member, memberSerialization);
+
+            if (property.PropertyName == "Dispatcher")
             {
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                property.ShouldSerialize = instance => false;
             }
+
+            return property;
         }
     }
 }

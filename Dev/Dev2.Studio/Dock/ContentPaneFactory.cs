@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -142,14 +143,14 @@ namespace Dev2.Studio.Dock
 
                 //Juries attach to events when viewmodel is closed/deactivated to close view.
                 WorkSurfaceContextViewModel model = item as WorkSurfaceContextViewModel;
-                if(model != null)
+                if (model != null)
                 {
                     var vm = model;
                     vm.Deactivated += ViewModelDeactivated;
                 }
 
 
-                if(RemoveItemOnClose)
+                if (RemoveItemOnClose)
                 {
                     IEditableCollectionView cv = CollectionViewSource.GetDefaultView(ItemsSource) as IEditableCollectionView;
 
@@ -220,10 +221,13 @@ namespace Dev2.Studio.Dock
                     WorkSurfaceContextViewModel model = sender as WorkSurfaceContextViewModel;
                     if(model != null)
                     {
-                        var vm = model.WorkSurfaceViewModel;
                         var toRemove = container.Items.Cast<ContentPane>().ToList()
-                            .FirstOrDefault(p => p.Content != null && p.Content == vm);
-                        RemovePane(toRemove);
+                            .FirstOrDefault(p => p.Content != null && p.Content == model.WorkSurfaceViewModel);
+
+                        if (toRemove != null)
+                        {
+                            RemovePane(toRemove);
+                        }
                         if(toRemove != null &&
                             Application.Current != null &&
                             !Application.Current.Dispatcher.HasShutdownStarted)
