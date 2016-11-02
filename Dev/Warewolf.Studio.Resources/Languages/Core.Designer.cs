@@ -6316,11 +6316,40 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Workflow requires that you have Execute permission on the &apos;{0}&apos; Workflow. 
+        ///Please contact your Warewolf System Administrator..
+        /// </summary>
+        public static string SchedulerExecutePermissionError {
+            get {
+                return ResourceManager.GetString("SchedulerExecutePermissionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The task name may not contain the following characters.
+        /// </summary>
+        public static string SchedulerInvalidCharactersError {
+            get {
+                return ResourceManager.GetString("SchedulerInvalidCharactersError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error while saving: Logon failure: unknown user name or bad password.
         /// </summary>
         public static string SchedulerLoginErrorMessage {
             get {
                 return ResourceManager.GetString("SchedulerLoginErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This task requires that the user account specified has &apos;Log On As Batch&apos; job rights. 
+        ///Please contact your Windows System Administrator..
+        /// </summary>
+        public static string SchedulerLogOnAsBatchError {
+            get {
+                return ResourceManager.GetString("SchedulerLogOnAsBatchError", resourceCulture);
             }
         }
         

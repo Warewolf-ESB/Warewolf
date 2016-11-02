@@ -989,6 +989,7 @@ namespace Dev2.Studio.ViewModels
         {
             base.DeactivateItem(item, close);
         }
+        public bool DontPrompt { get; set; }
         public override void DeactivateItem(WorkSurfaceContextViewModel item, bool close)
         {
             if (item == null)
@@ -999,7 +1000,7 @@ namespace Dev2.Studio.ViewModels
             bool success = true;
             if (close)
             {
-                success = _worksurfaceContextManager.CloseWorkSurfaceContext(item, null);
+                success = _worksurfaceContextManager.CloseWorkSurfaceContext(item, null, DontPrompt);
             }
 
             if (success)

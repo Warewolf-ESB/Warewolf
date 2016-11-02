@@ -3081,6 +3081,16 @@ Examples:
     | WorkflowName                  | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestMySqlWFWithMySqlStarIndex | MySqlEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
 
+Scenario Outline: Database MySqlDB Database service using char in param name
+     Given I have a workflow "TestMySqlWFWithMySqlCharParamName"
+	 And "TestMySqlWFWithMySqlCharParamName" contains a mysql database service "procWithCharNoOutput" with mappings as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  | id               | 445           |                     |             |
+	  | val              | bart01        |                     |             |
+      When "TestMySqlWFWithMySqlCharParamName" is executed
+     Then the workflow execution has "NO" error
+
+
 Scenario Outline: Database MySqlDB Database service using int indexes
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -3123,8 +3133,6 @@ Scenario Outline: Database MySqlDB Database service scalar outputs
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
 	  |                      |
-	  | [[name]] = Monk |
-	  | [[email]] = dora@explorers.com |
 Examples: 
     | WorkflowName               | ServiceName | nameVariable | emailVariable | errorOccured |
     | TestMySqlWFWithMySqlScalar | MySqlEmail  | [[name]]     | [[email]]     | NO           |
