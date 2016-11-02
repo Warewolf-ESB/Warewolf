@@ -396,10 +396,10 @@ namespace Dev2.Tests {
 
             long exeTime = sw.ElapsedMilliseconds;
 
-            // can we do 100k ops in less then 100s? 
+            // can we do 100k ops in less then 1,2s? 
             // I sure hope so ;)
             Console.WriteLine(@"Total Time : " + exeTime);
-            Assert.IsTrue(opCnt == 100000 && exeTime < 1000, "It took [ " + exeTime + " ]");
+            Assert.IsTrue(opCnt == 100000 && exeTime < 1200, "Expecting it to take 1200 ms but it took " + exeTime + " ms.");
         }
 
         [TestMethod]

@@ -16,7 +16,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Dev2.Studio.Core.DataList
 {
-    internal class ComplexObjectHandler: IComplexObjectHandler
+    internal class ComplexObjectHandler : IComplexObjectHandler
     {
         private readonly DataListViewModel _vm;
         public ComplexObjectHandler(DataListViewModel vm)
@@ -28,7 +28,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void RemoveBlankComplexObjects()
         {
-            var complexObjectItemModels = _vm.ComplexObjectCollection .Where(model => string.IsNullOrEmpty(model.DisplayName));
+            var complexObjectItemModels = _vm.ComplexObjectCollection.Where(model => string.IsNullOrEmpty(model.DisplayName));
             var objectItemModels = complexObjectItemModels as IList<IComplexObjectItemModel> ?? complexObjectItemModels.ToList();
             if (objectItemModels.Count <= 1) return;
             for (var i = objectItemModels.Count; i > 0; i--)
@@ -42,9 +42,12 @@ namespace Dev2.Studio.Core.DataList
             for (var index = 0; index < paths.Length; index++)
             {
                 var path = paths[index];
+                if(string.IsNullOrEmpty(path) || char.IsNumber(path[0]))
+                    return;
                 path = DataListUtil.ReplaceRecordsetIndexWithBlank(path);
                 var pathToMatch = path.Replace("@", "");
-                if (string.IsNullOrEmpty(pathToMatch)) return;
+                if (string.IsNullOrEmpty(pathToMatch) || pathToMatch == "()")
+                    return;
 
                 var isArray = DataListUtil.IsArray(ref path);
 
@@ -120,7 +123,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 var xDocument = XDocument.Parse(json);
                 json = JsonConvert.SerializeXNode(xDocument, Newtonsoft.Json.Formatting.Indented, true);
-                
+
             }
 
             var objToProcess = JsonConvert.DeserializeObject(json) as JObject;
@@ -161,14 +164,14 @@ namespace Dev2.Studio.Core.DataList
             return name;
         }
 
-      
+
         public void AddComplexObjectFromXmlNode(XmlNode xmlNode, ComplexObjectItemModel parent)
         {
             var isArray = false;
             var ioDirection = enDev2ColumnArgumentDirection.None;
             if (xmlNode.Attributes != null)
             {
-                isArray =Common.ParseBoolAttribute(xmlNode.Attributes["IsArray"]);
+                isArray = Common.ParseBoolAttribute(xmlNode.Attributes["IsArray"]);
                 ioDirection = Common.ParseColumnIODirection(xmlNode.Attributes[GlobalConstants.DataListIoColDirection]);
             }
             var name = GetNameForArrayComplexObject(xmlNode, isArray);
@@ -201,7 +204,7 @@ namespace Dev2.Studio.Core.DataList
             }
             result.AppendFormat("{0} {1}=\"{2}\" {3}=\"{4}\" IsJson=\"{5}\" IsArray=\"{6}\" {7}=\"{8}\">"
                 , name
-                , Common. Description
+                , Common.Description
                 , complexObjectItemModel.Description
                 , Common.IsEditable
                 , complexObjectItemModel.IsEditable

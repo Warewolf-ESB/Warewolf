@@ -10,14 +10,11 @@
 
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
-using Dev2.Diagnostics;
 using Dev2.Factory;
 using Dev2.Messages;
-using Dev2.Providers.Events;
 using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -25,7 +22,6 @@ using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -53,7 +49,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     /// <author>Jurie.smit</author>
     /// <date>2/27/2013</date>
     public class WorkSurfaceContextViewModel : BaseViewModel,
-                                 IHandle<SaveResourceMessage>, IHandle<DebugResourceMessage>, IHandle<DebugOutputMessage>,
+                                 IHandle<SaveResourceMessage>, IHandle<DebugResourceMessage>,
                                  IHandle<ExecuteResourceMessage>,
                                  IHandle<UpdateWorksurfaceDisplayName>, IWorkSurfaceContextViewModel
     {
@@ -91,7 +87,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             get
             {
                 var environmentModel = ContextualResourceModel?.Environment;
-
                 return environmentModel;
             }
         }
@@ -116,7 +111,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             get
             {
-
                 var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
                 if (workflowDesignerViewModel != null)
                 {
@@ -196,20 +190,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 _environmentModel = model.EnvironmentModel;
                 if (_environmentModel != null)
                 {
-                    // MUST use connection server event publisher - debug events are published from the server!
-                    DebugOutputViewModel = new DebugOutputViewModel(_environmentModel.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
                     _environmentModel.IsConnectedChanged += EnvironmentModelOnIsConnectedChanged();
                     _environmentModel.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
                 }
             }
-
-            if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler || WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.ServiceTestsViewer)
-            {
-                if (DebugOutputViewModel == null)
-                {
-                    DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
-                }
-            }
+            
             _popupController = popupController;
             _saveDialogAction = saveDialogAction;
         }
@@ -250,24 +235,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (contextualResourceModel != null && ContextualResourceModel != null && contextualResourceModel.ID == ContextualResourceModel.ID)
             {
                 Debug(contextualResourceModel, true);
-            }
-        }
-
-        public void Handle(DebugOutputMessage message)
-        {
-            Dev2Logger.Info(message.GetType().Name);
-            if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler || WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.ServiceTestsViewer)
-            {
-                DebugOutputViewModel.Clear();
-                foreach(var debugState in message.DebugStates)
-                {
-                    if (debugState != null)
-                    {
-                        debugState.StateType = StateType.Clear;
-                        debugState.SessionID = DebugOutputViewModel.SessionID;
-                        DebugOutputViewModel.Append(debugState);
-                    }
-                }
             }
         }
 

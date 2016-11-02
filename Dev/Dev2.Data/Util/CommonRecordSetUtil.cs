@@ -11,10 +11,10 @@ namespace Dev2.Data.Util
     internal class CommonRecordSetUtil : ICommonRecordSetUtil
     {
         private Dev2DataLanguageParser _dev2DataLanguageParser;
-
+        const string EmptyBrackets = "()";
         public CommonRecordSetUtil()
         {
-            
+
         }
         public CommonRecordSetUtil(Dev2DataLanguageParser dev2DataLanguageParser)
         {
@@ -24,10 +24,10 @@ namespace Dev2.Data.Util
 
         public string ReplaceRecordBlankWithStar(string fullRecSetName)
         {
-            var blankIndex = fullRecSetName.IndexOf("()", StringComparison.Ordinal);
+            var blankIndex = fullRecSetName.IndexOf(EmptyBrackets, StringComparison.Ordinal);
             if (blankIndex != -1)
             {
-                return fullRecSetName.Replace("()", $"({"*"})");
+                return fullRecSetName.Replace(EmptyBrackets, $"({"*"})");
             }
             return fullRecSetName;
         }
@@ -59,7 +59,7 @@ namespace Dev2.Data.Util
 
         public string RemoveRecordsetBracketsFromValue(string value)
         {
-            return value.Replace("()", "");
+            return value.Replace(EmptyBrackets, "");
         }
 
         public enRecordsetIndexType GetRecordsetIndexType(string expression)
@@ -119,7 +119,7 @@ namespace Dev2.Data.Util
 
         public string MakeValueIntoHighLevelRecordset(string value, bool starNotation)
         {
-            var inject = "()";
+            var inject = EmptyBrackets;
 
             if (starNotation)
             {
@@ -136,7 +136,7 @@ namespace Dev2.Data.Util
             {
                 return result.Replace(DataListUtil.RecordsetIndexClosingBracket, inject);
             }
-            else if (!result.EndsWith("()"))
+            else if (!result.EndsWith(EmptyBrackets))
             {
                 result = string.Concat(result, inject);
             }
@@ -175,7 +175,7 @@ namespace Dev2.Data.Util
             {
                 return string.Empty;
             }
-            
+
             value = DataListUtil.StripBracketsFromValue(value);
             string result = string.Empty;
 
@@ -224,16 +224,18 @@ namespace Dev2.Data.Util
 
         public string ReplaceRecordsetIndexWithBlank(string expression)
         {
+            var firstOpenBracket = expression.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+            var firstCloseBracket = expression.IndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);            
+            if (firstOpenBracket > firstCloseBracket)
+                return EmptyBrackets;
             var index = ExtractIndexRegionFromRecordset(expression);
 
             if (string.IsNullOrEmpty(index))
-            {
                 return expression;
-            }
 
             string extractIndexRegionFromRecordset = $"({index})";
             return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
-                                        expression.Replace(extractIndexRegionFromRecordset, "()");
+                                        expression.Replace(extractIndexRegionFromRecordset, EmptyBrackets);
         }
 
         public string RemoveRecordSetBraces(string search, ref bool isRs)
