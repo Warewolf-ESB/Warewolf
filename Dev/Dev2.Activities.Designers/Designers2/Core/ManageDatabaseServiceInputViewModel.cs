@@ -136,20 +136,19 @@ namespace Dev2.Activities.Designers2.Core
             // ReSharper disable once LoopCanBeConvertedToQuery
             if (testResults != null)
             {
-                if (testResults.Columns.Count < 1)
+                if (testResults.Columns.Count > 1)
                 {
-                    _viewmodel.OutputsRegion.RecordsetName = String.Empty;
-                    throw new Exception("Invalid table returned. Please check parameter or stored procedure.");
+                    var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? Model.Action.Name.Replace(".", "_") : testResults.TableName;
+                    _viewmodel.OutputsRegion.RecordsetName = recordsetName;
+                    for (int i = 0; i < testResults.Columns.Count; i++)
+                    {
+                        var column = testResults.Columns[i];
+                        var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString().Replace(" ", ""), recordsetName);
+                        mappings.Add(dbOutputMapping);
+                    }
+                    return mappings;
                 }
-                var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? Model.Action.Name.Replace(".", "_") : testResults.TableName;
-                _viewmodel.OutputsRegion.RecordsetName = recordsetName;
-                for (int i = 0; i < testResults.Columns.Count; i++)
-                {
-                    var column = testResults.Columns[i];
-                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString().Replace(" ", ""), recordsetName);
-                    mappings.Add(dbOutputMapping);
-                }
-                return mappings;
+                _viewmodel.OutputsRegion.RecordsetName = String.Empty;
             }
             return new List<IServiceOutputMapping>();
         }
@@ -171,20 +170,18 @@ namespace Dev2.Activities.Designers2.Core
                 }
                 if (TestResults != null)
                 {
-                    if (TestResults.Columns.Count < 1)
+                    if (TestResults.Columns.Count > 1)
                     {
-                        throw new Exception("Invalid table returned. Please check parameter or stored procedure.");
-                    }
-                    TestResultsAvailable = TestResults.Rows.Count != 0;
-                    IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
-                    _generateOutputArea.IsEnabled = true;
-                    OutputCountExpandAllowed = TestResults.Rows.Count > 3;
+                        TestResultsAvailable = TestResults.Rows.Count != 0;
+                        IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
+                        _generateOutputArea.IsEnabled = true;
+                        OutputCountExpandAllowed = TestResults.Rows.Count > 3;
 
-                    if (!OutputCountExpandAllowed)
-                    {
-                        InputCountExpandAllowed = true;
+                        if (!OutputCountExpandAllowed)
+                        {
+                            InputCountExpandAllowed = true;
+                        }
                     }
-
                     IsTesting = false;
                 }
             }

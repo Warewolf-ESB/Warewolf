@@ -111,11 +111,37 @@ Scenario: Assign a json object value to a json object overwriting the existing v
 	| 2 | [[@Person.Surname]] = Smith	|
 	| 3 | [[@Person.Surname]] = Bob		|
 
-Scenario: Assign a value to an invalid json object
-	Given I assign the value "[[@Person.Score]]" to a json object "[[@Person..Score]]"
+Scenario Outline: Assign a value to an invalid json object
+	Given I assign the value "[[@Person.Score]]" to a json object "<var>"
 	When the assign object tool is executed
-	Then the execution has "AN" error
-	And the execution has "parse error" error
+	Then the execution has "<error>" error
+	And the execution has "parse error" error	
+   And the debug inputs as
+	| # | Variable | New Value |	
+   And the debug output as
+	| # |          |			|
+   Examples:
+	| no | var                | error |
+	| 1  | [[@Person..Score]] | AN    |
+	| 2  | @                  | AN    |
+	| 3  | @.                 | AN    |
+	| 4  | @()                | AN    |
+	| 5  | @().               | AN    |
+	| 6  | @.Field            | AN    |
+	| 7  | @Object.           | AN    |
+	| 8  | @1                 | AN    |
+	| 9  | @1.                | AN    |
+	| 10 | @1.1               | AN    |
+	| 11 | @Rec1.             | AN    |
+	| 12 | @Rec1.1            | AN    |
+	| 13 | @1Rec              | AN    |
+	| 14 | @Rec1.#Field#      | AN    |
+	| 15 | @Rec1.1Field       | AN    |
+	| 16 | @Var;iable         | AN    |
+	| 17 | @(Rec1@)           | AN    |
+	| 18 | [[@(Rec1@)]]       | AN    |
+	| 19 | @(Rec)             | AN    |
+	| 12 | @;;;;p             | AN    |	
 
 Scenario: Assign an invalid value to a json object
 	Given I assign the value "[[@Person..Score]]" to a json object "[[@Person..Score]]"
