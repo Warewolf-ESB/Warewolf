@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Core.Tests.Utils;
@@ -217,6 +218,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBox.HandleWrapInBrackets(Key.F10);
             //------------Assert Results-------------------------
             Assert.AreEqual("var()", textBox.Text);
+            Assert.IsTrue(textBox.WrapInBrackets);
         }
 
         [TestMethod]
@@ -514,6 +516,98 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Assert.AreEqual("DW YY mm", textBox.Text);
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("IntellisenseTextBox_KeyDown")]
+        public void IntellisenseTextBox_Properties_Not_SetTo_Null()
+        {
+            //------------Setup for test--------------------------
+            var textBox = new IntellisenseTextBox();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(textBox.MinLines);
+            Assert.IsNotNull(textBox.LineCount);
+            Assert.IsNotNull(textBox.IsPaste);
+            Assert.IsNotNull(textBox.IsInCalculateMode);
+            Assert.IsNotNull(textBox.HorizontalScrollBarVisibility);
+            Assert.IsNotNull(textBox.VerticalScrollBarVisibility);
+            Assert.IsNotNull(textBox.TextWrapping);
+            Assert.IsNotNull(textBox.AcceptsTab);
+            Assert.IsNotNull(textBox.AcceptsReturn);
+            Assert.IsNotNull(textBox.AllowMultipleVariables);
+            Assert.IsNotNull(textBox.AllowMultilinePaste);
+            Assert.IsNotNull(textBox.AllowUserCalculateMode);
+            Assert.IsFalse(textBox.SelectAllOnGotFocus);
+            Assert.IsTrue(textBox.IsUndoEnabled);
+            Assert.IsFalse(textBox.HasError);
+        }
+
+        [TestMethod]
+        public void IntellisenseBox_GivenWrappedInBrackets_AStringWithNoBrackets_Should_AddBrackets()
+        {
+            IntellisenseTextBoxTestHelper textBoxTest = new IntellisenseTextBoxTestHelper { WrapInBrackets = true };
+            textBoxTest.Text = "Variable";
+            textBoxTest.HandleWrapInBrackets(Key.F6);
+            Assert.IsFalse(textBoxTest.HasError);
+            Assert.AreEqual("[[Variable]]", textBoxTest.Text);
+        }
+
+        [TestMethod]
+        public void IntellisenseBox_OnPreviewKeyDown_GivenI_Hit_Enter_Key_And_AlloInsertLine_Is_True_Should_AddLine()
+        {
+            var mockPresentationSource = new Mock<PresentationSource>();
+            var textBox = new Mock<TextBox>();
+            textBox.Object.MinLines = 5;
+            textBox.Object.Text = "Var";
+            IntellisenseTextBoxTestHelper testHelper = new IntellisenseTextBoxTestHelper
+            {
+                AllowUserInsertLine = true,
+                TextBox = textBox.Object,
+                MinLines = textBox.Object.MinLines
+            };
+            testHelper.OnPreviewKeyDown(new KeyEventArgs(Keyboard.PrimaryDevice, mockPresentationSource.Object, 0, Key.Enter));
+            Assert.IsFalse(testHelper.HasError);
+        }
+
+        [TestMethod]
+        public void IntellisenseBox_OnPreviewKeyDown_Given_EnterKey_And_AllowInsertLineIsTrueButLineCountIsEqualToMaximumLine_ShouldNotAddLine()
+        {
+            var mockPresentationSource = new Mock<PresentationSource>();
+            var textBox = new Mock<TextBox>();
+            textBox.Object.MinLines = 5;
+            var givenText = textBox.Object.Text = "Var";
+            Assert.IsFalse(givenText.Contains("\r\n"));
+            IntellisenseTextBoxTestHelper testHelper = new IntellisenseTextBoxTestHelper
+            {
+                AllowUserInsertLine = true,
+                TextBox = textBox.Object,
+                MinLines = textBox.Object.MinLines,
+                LineCount = 5
+            };
+            testHelper.OnPreviewKeyDown(new KeyEventArgs(Keyboard.PrimaryDevice, mockPresentationSource.Object, 0, Key.Enter));
+            Assert.IsFalse(testHelper.HasError);
+            Assert.IsFalse(testHelper.TextBox.Text.Contains("\r\n"));
+        }
+        [TestMethod]
+        public void IntellisenseBox_OnPreviewKeyDown_GivenI_Hit_Tab_Key_Should_AppendText()
+        {
+            var mockPresentationSource = new Mock<PresentationSource>();
+            var textBox = new Mock<TextBox>();
+            textBox.Object.MinLines = 5;
+            var givenText = textBox.Object.Text = "Var";
+            Assert.IsFalse(givenText.Contains("\r\n"));
+            IntellisenseTextBoxTestHelper testHelper = new IntellisenseTextBoxTestHelper
+            {
+                AllowUserInsertLine = true,
+                TextBox = textBox.Object,
+                IsDropDownOpen = true,
+            };
+            testHelper.OnPreviewKeyDown(new KeyEventArgs(Keyboard.PrimaryDevice, mockPresentationSource.Object, 0, Key.Tab));
+            Assert.IsFalse(testHelper.HasError);
+            Assert.IsFalse(testHelper.TextBox.Text.Contains("\r\n"));
+        }        
+
         [TestMethod]
         public void IntellisenseBox_GivenMultipleValidVariables_HasNoError()
         {
@@ -523,6 +617,26 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBoxTest.EnsureErrorStatus();
             Assert.IsFalse(textBoxTest.HasError);
             Assert.AreEqual(textBoxTest.DefaultText, textBoxTest.ToolTip);
+        }
+
+        [TestMethod]
+        public void IntellisenseBox_ErrorTooltip_ShouldBeSetTo_CurrentError()
+        {
+            IntellisenseTextBox textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
+            textBox.CreateVisualTree();
+            textBox.Text = "[[City.]]";
+            Assert.IsTrue(textBox.HasError);
+        }
+
+        [TestMethod]
+        public void IntellisenseBox_Function_HasIsCalcMode_SetTo_True()
+        {
+            IntellisenseTextBoxTestHelper textBoxTest = new IntellisenseTextBoxTestHelper { AllowUserCalculateMode = true };
+            textBoxTest.EnsureIntellisenseResults(null, false,IntellisenseDesiredResultSet.Default);
+            Assert.IsTrue(string.IsNullOrEmpty(textBoxTest.Text));
+            var input = textBoxTest.Text = "=Sum(5,5)";
+            textBoxTest.EnsureIntellisenseResults(input,false,IntellisenseDesiredResultSet.Default);
+            Assert.IsTrue(textBoxTest.IsInCalculateMode);
         }
 
         [TestMethod]
@@ -585,7 +699,11 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 throw new ArgumentNullException(nameof(e));
             base.OnKeyDown(e);
         }
-
+   
+        public new void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+        }
         public new void EnsureErrorStatus()
         {
             base.EnsureErrorStatus();
