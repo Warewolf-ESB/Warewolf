@@ -68,8 +68,8 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowNotConnected()
         {
             Buttons = MessageBoxButton.OK;
-            Header = "Server Is Not Connected";
-            Description = "You can not change the settings for a server that is offline.";
+            Header = "Server Unreachable";
+            Description = "You can not change the settings for a server that is unreachable.";
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -126,8 +126,8 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowServerNotConnected(string server)
         {
             Buttons = MessageBoxButton.OK;
-            Header = "Server Is Not Connected";
-            Description = "The server " + server + " is unreachable and will be removed from your explorer tab. Please reconnect to save any unsaved work.";
+            Header = "Server Unreachable";
+            Description = "The server " + server + " is unreachable. \n \nPlease make sure the Warewolf Server service is running on that machine.";
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
