@@ -30,7 +30,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xaml;
 using System.Xml.Linq;
@@ -90,6 +89,9 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ViewModels;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable ConvertToAutoProperty
+// ReSharper disable UnusedMember.Global
 
 
 // ReSharper disable CheckNamespace
@@ -674,10 +676,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         void AddSwitch(ModelItem mi)
         // ReSharper restore ExcessiveIndentation
         {
-            if (mi.Parent != null &&
-                   mi.Parent.Parent != null &&
-                   mi.Parent.Parent.Parent != null &&
-                   mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
+            if (mi.Parent?.Parent != null && mi.Parent.Parent.Parent != null && mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
             {
                 ModelProperty activityExpression = mi.Parent.Parent.Parent.Properties["Expression"];
                 if (activityExpression != null)
@@ -704,21 +703,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 if (tmpProperty != null)
                 {
-                    if (tmpProperty.Value != null)
+                    var tmp = tmpProperty.Value?.ToString();
+
+                    if (!string.IsNullOrEmpty(tmp))
                     {
-                        var tmp = tmpProperty.Value.ToString();
+                        int start = tmp.IndexOf("(", StringComparison.Ordinal);
+                        int end = tmp.IndexOf(",", StringComparison.Ordinal);
 
-                        if (!string.IsNullOrEmpty(tmp))
+                        if (start < end && start >= 0)
                         {
-                            int start = tmp.IndexOf("(", StringComparison.Ordinal);
-                            int end = tmp.IndexOf(",", StringComparison.Ordinal);
-
-                            if (start < end && start >= 0)
-                            {
-                                start += 2;
-                                end -= 1;
-                                switchExpressionValue = tmp.Substring(start, (end - start));
-                            }
+                            start += 2;
+                            end -= 1;
+                            switchExpressionValue = tmp.Substring(start, (end - start));
                         }
                     }
                 }
@@ -1136,7 +1132,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         //selectedItem = innerActivity;
                     }
                 }
-                Selection.Union(_wd.Context, selectedItem);
+                //Selection.Union(_wd.Context, selectedItem);
             }
             return false;
         }
@@ -1222,15 +1218,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var senderAsFrameworkElement = ModelService.Root.View as FrameworkElement;
             var freePormPanel = senderAsFrameworkElement?.FindChildren<AdornerLayer>(layer => layer.IsEnabled);
-            if (freePormPanel != null)
+            var ad = freePormPanel?.FirstOrDefault();
+            if (ad != null)
             {
-                var ad = freePormPanel.FirstOrDefault();
-                if (ad != null)
-                {
                     
-                }
             }
-            
         }
 
         private void SetHashTable()
@@ -1690,17 +1682,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = HandleMouseClick(e.LeftButton, e.ClickCount, e.OriginalSource as DependencyObject, e.Source as DesignerView);
-            if (!(e.OriginalSource is Path) && !(e.OriginalSource is Rectangle))
-            {
-                var item = sender as Grid;
-                var context = item?.DataContext as WorkflowDesignerViewModel;
-                var selectedModelItem = context?.SelectedModelItem as ModelItem;
-                if (selectedModelItem != null)
-                {
-                    ClearSelection();
-                    Selection.Union(_wd.Context, selectedModelItem);
-                }
-            }
         }
 
         /// <summary>
@@ -1954,7 +1935,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         private ICommand _copyUrlCommand;
         private DebugOutputViewModel _debugOutputViewModel;
         private IDataListViewModel _dataListViewModel;
-        private PaneToolWindow _paneToolWindow;
 
         /// <summary>
         /// Models the service model changed.
@@ -2173,15 +2153,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
 
-        public PaneToolWindow PaneToolWindow
-        {
-            get { return _paneToolWindow; }
-            set
-            {
-                _paneToolWindow = value; 
-                OnPropertyChanged("PaneToolWindow");
-            }
-        }
+        public PaneToolWindow PaneToolWindow { get; set; }
 
         #region Implementation of IHandle<EditActivityMessage>
 
