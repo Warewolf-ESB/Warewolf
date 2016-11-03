@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Common;
 
@@ -15,8 +14,11 @@ namespace Warewolf.UITests
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Assert.AreEqual("Blank Input", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestNameDisplay.DisplayText, "First 'Hello World' test is not 'Blank Input' as expected.");
-            UIMap.Click_Test_Run_Button(1);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Failing.Exists, "Test failing icon is not displayed after running a failing test.");
+            UIMap.Click_Create_New_Tests(true,4);
+            UIMap.Click_Test_Run_Button(4);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Failing.Exists, "Test failing icon is not displayed after running a failing test.");
+            UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
+            UIMap.Click_Delete_Test_Button(4);
             UIMap.Click_Close_Tests_Tab();
         }
 

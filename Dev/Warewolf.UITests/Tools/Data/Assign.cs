@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Data
     public class Assign
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void Assign_Tool_Small_View_UITest()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Exists, "Assign tool DataGrid does not exist on large view after dragging tool in from the toolbox.");
@@ -18,7 +18,7 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void Assign_Tool_Open_Large_View_With_Double_Click_UITest()
         {
             UIMap.Open_Assign_Tool_Large_View();
@@ -32,7 +32,7 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void Assign_Tool_Click_Done_Button_UITest()
         {
             UIMap.Open_Assign_Tool_Large_View();
@@ -45,7 +45,7 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void AssignToolOpenAndCloseLargeViewWithExpandAllToggleUITest()
         {
             UIMap.Click_Workflow_ExpandAll();
@@ -55,21 +55,21 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void AssignDeleteToolUITest()
         {
             UIMap.Delete_Assign_With_Context_Menu();
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void AssignToolUrlUITest()
         {
             UIMap.Click_Assign_Tool_url();
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized_UITest()
         {
             UIMap.Open_Assign_Tool_Large_View();
@@ -79,7 +79,7 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void QuickVariableInputFromListTest()
         {
             UIMap.Open_Assign_Tool_Qvi_Large_View();
@@ -91,14 +91,14 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void AssignTool_OpenQviUITest()
         {
             UIMap.Open_Assign_Tool_Qvi_Large_View();
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void AssignToolDebugOutputUITest()
         {
             UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
@@ -107,7 +107,7 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void AssignToolAddRemoveVariablesUITest()
         {
             const string Variable1Name = "SomeVariable";

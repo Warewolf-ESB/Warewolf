@@ -10,7 +10,7 @@ namespace Warewolf.UITests.Tools.Data
     public class AssignObject
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void AssignObject_SmallViewUITest()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.SmallView.DataGrid.Row1.VariableCell.VariableTextbox.Exists, "Row 1 variable textbox does not exist on assign object tool small view after dragging tool in from the toolbox.");
@@ -20,14 +20,14 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Data Tools")]
         public void AssignObject_OpenLargeViewUITest()
         {            
             UIMap.Open_AssignObject_Large_Tool();
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Data Tools")]
         public void AssignObject_OpenQIVLargeViewUITest()
         {
             UIMap.Open_AssignObject_QVI_LargeView();
