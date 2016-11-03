@@ -204,6 +204,7 @@
     <Compile Include="ActivityTests\SelectAndApply\SelectAndApplyActivityTests.cs" />
     <Compile Include="ActivityTests\RabbitMQ\Consume\DsfConsumeRabbitMQActivityTests.cs" />
     <Compile Include="ActivityTests\RabbitMQ\Publish\DsfPublishRabbitMQActivityTests.cs" />
+    <Compile Include="ActivityTests\DsfMySqlDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
