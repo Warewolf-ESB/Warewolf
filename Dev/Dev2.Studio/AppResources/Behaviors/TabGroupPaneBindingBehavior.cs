@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -80,12 +81,34 @@ namespace Dev2.Studio.AppResources.Behaviors
             if (oldValue != null)
             {
                 oldValue.ActiveDocumentChanged -= itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
+                oldValue.PreviewMouseLeftButtonDown -= itemsControlBindingBehavior.NewValueOnPreviewMouseLeftButtonDown;
             }
 
             if (newValue != null)
             {
                 newValue.ActiveDocumentChanged -= itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
                 newValue.ActiveDocumentChanged += itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
+                newValue.PreviewMouseLeftButtonDown -= itemsControlBindingBehavior.NewValueOnPreviewMouseLeftButtonDown;
+                newValue.PreviewMouseLeftButtonDown += itemsControlBindingBehavior.NewValueOnPreviewMouseLeftButtonDown;
+            }
+        }
+
+        private void NewValueOnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            var host = sender as DocumentContentHost;
+            var workSurfaceContextViewModel = host?.ActiveDocument.DataContext as WorkSurfaceContextViewModel;
+            
+            if (_mainViewModel == null)
+            {
+                var mainViewModel = DocumentHost?.DataContext as MainViewModel;
+                _mainViewModel = mainViewModel;                
+            }
+            if (_mainViewModel != null)
+            {
+                if (_mainViewModel.ActiveItem != workSurfaceContextViewModel)
+                {
+                    _mainViewModel.ActiveItem = workSurfaceContextViewModel;
+                }
             }
         }
 
