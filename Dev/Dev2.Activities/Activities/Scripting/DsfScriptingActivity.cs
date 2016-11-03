@@ -59,7 +59,7 @@ namespace Dev2.Activities
 
         #endregion Properties
 
-        IStringScriptSources _sources;
+        readonly IStringScriptSources _sources;
         #region Ctor
 
         public DsfScriptingActivity()
