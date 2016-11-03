@@ -14,14 +14,13 @@ namespace Dev2.Activities
     public class DebugEvalResult : DebugOutputBase
     {
         string _inputVariable;
-        readonly string _label;
         readonly CommonFunctions.WarewolfEvalResult _evalResult;
         private readonly bool _isCalculate;
 
         public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false,bool isCalculate=false)
         {
             _inputVariable = inputVariable.Trim();
-            _label = label;
+            LabelText = label;
             _isCalculate = isCalculate;
             try
             {
@@ -60,7 +59,7 @@ namespace Dev2.Activities
                     if (DataListUtil.IsFullyEvaluated(finalString))
                     {
                         _inputVariable = finalString;
-                        _evalResult = environment.Eval(finalString, update,false);
+                        _evalResult = environment.Eval(finalString, update);
                     }
                     else
                     {
@@ -78,7 +77,7 @@ namespace Dev2.Activities
                     {
                         _inputVariable = evalToExpression;
                     }
-                    _evalResult = environment.Eval(_inputVariable, update,false);
+                    _evalResult = environment.Eval(_inputVariable, update);
                     string cleanExpression;
                     var isCalcExpression = DataListUtil.IsCalcEvaluation(_inputVariable, out cleanExpression);
                     if (isCalcExpression && !isCalculate)
@@ -109,7 +108,7 @@ namespace Dev2.Activities
 
         #region Overrides of DebugOutputBase
 
-        public override string LabelText => _label;
+        public override string LabelText { get; }
 
         public override List<IDebugItemResult> GetDebugItemResult()
         {
