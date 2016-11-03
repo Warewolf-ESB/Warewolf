@@ -3238,6 +3238,48 @@ namespace Warewolf.UITests
             
             Assert.IsTrue(sharepointTool.Exists, "Sharepoint tool does not exist on the Design Surface");
         }
+        [When(@"I Click UserButton On Database Source")]
+        public void WhenIClickUserButtonOnDatabaseSource()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserRadioButton);
+        }
+
+        [When(@"I Enter RunAsUser Username And Password on Database source")]
+        public void WhenIEnterRunAsUserUsernameAndPasswordOnDatabaseSource()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.Text = "testuser";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Text = "test123";
+        }
+
+        [When(@"I Change Selected Database ToMySql DataBase")]
+        public void WhenIChangeSelectedDatabaseToMySqlDataBase()
+        {
+            Change_Selected_Database_ToMySql_DataBase();
+        }
+
+        [When(@"I Change Selected Database ToPostgreSql DataBase")]
+        public void WhenIChangeSelectedDatabaseToPostgreSqlDataBase()
+        {
+            Change_Selected_Database_ToPostgreSql_DataBase();
+        }
+
+        [When(@"I Change Selected Database ToOracle DataBase")]
+        public void WhenIChangeSelectedDatabaseToOracleDataBase()
+        {
+            Change_Selected_Database_ToOracle_DataBase();
+        }
+
+        [When(@"I Change Selected Database ToODBC DataBase")]
+        public void WhenIChangeSelectedDatabaseToODBCDataBase()
+        {
+            Change_Selected_Database_ToODBC_DataBase();
+        }
+
+        [When(@"I Click DotNet DLL Large View Test Cancel Done Button")]
+        public void WhenIClickDotNetDLLLargeViewTestCancelDoneButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CancelButton);
+        }
 
         public void Drag_Toolbox_AssignObject_Onto_Foreach_LargeTool()
         {
@@ -3557,4 +3599,5 @@ namespace Warewolf.UITests
         public bool MultiAssignExists = true;
         #endregion
     }
+
 }
