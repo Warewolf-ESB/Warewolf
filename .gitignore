@@ -58,3 +58,4 @@ bin
 # Coded UI
 ####################################################################################
 /Dev/Warewolf.UITests/UIMapEditorBackups/*.uitest
+/Dev/TestScripts/Tests/VSTest/LocalSecuritySpecs.testsettings
