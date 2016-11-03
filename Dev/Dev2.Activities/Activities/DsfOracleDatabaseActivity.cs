@@ -1,13 +1,16 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Services.Execution;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
+using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
@@ -48,6 +51,26 @@ namespace Dev2.Activities
                 dataObject.Environment.Errors.Add(error);
             }
             errors.MergeErrors(execErrors);
+        }
+
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        {
+            if (env == null)
+            {
+                return new List<DebugItem>();
+            }
+            base.GetDebugInputs(env, update);
+
+            if (Inputs != null)
+            {
+                foreach (var serviceInput in Inputs)
+                {
+                    DebugItem debugItem = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(serviceInput.Value, serviceInput.Name, env, update), debugItem);
+                    _debugInputs.Add(debugItem);
+                }
+            }
+            return _debugInputs;
         }
 
         protected override void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
