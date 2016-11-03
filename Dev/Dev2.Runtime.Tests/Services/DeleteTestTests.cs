@@ -127,7 +127,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DeleteTestExecute")]
-        public void DeleteTestExecute__ValidArgsNotPermitted_ExpectDeleteTestNotCalled()
+        public void DeleteTestExecute__ValidArgsPermitted_ExpectDeleteTestCalled()
         {
             //------------Setup for test--------------------------
             var deleteTest = new DeleteTest();
@@ -141,13 +141,9 @@ namespace Dev2.Tests.Runtime.Services
             inputs.Add("testName", new StringBuilder("TestToDelete"));            
             deleteTest.TestCatalog = repo.Object;
             //------------Execute Test---------------------------
-            var stringBuilder = deleteTest.Execute(inputs, ws.Object);
+            deleteTest.Execute(inputs, ws.Object);
             //------------Assert Results-------------------------
-            repo.Verify(a => a.DeleteTest(It.IsAny<Guid>(),It.IsAny<string>()), Times.Never);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var compressedExecuteMessage = serializer.Deserialize<CompressedExecuteMessage>(stringBuilder);
-            Assert.AreEqual(compressedExecuteMessage.Message.ToString(), Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException);
-            Assert.IsTrue(compressedExecuteMessage.HasError);
+            repo.Verify(a => a.DeleteTest(It.IsAny<Guid>(),It.IsAny<string>()), Times.Once);
 
         }        
     }

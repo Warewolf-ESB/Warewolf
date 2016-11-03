@@ -92,28 +92,7 @@ namespace Dev2.Tests.Runtime.Services
             var des = serializer.Deserialize<ExecuteMessage>(ax);
             Assert.AreEqual(des.HasError, true);
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DeleteVersion_Execute")]
-        public void DeleteVersion_ExecuteNotPermited_Valid_ExpectFailure()
-        {
-            //------------Setup for test--------------------------
-            var deleteVersion = new DeleteVersion();
-            var serializer = new Dev2JsonSerializer();
-            var ws = new Mock<IWorkspace>();
-            var server = new Mock<IServerVersionRepository>();
-            var res = Guid.NewGuid();
-            //------------Execute Test---------------------------
-            deleteVersion.ServerVersionRepo = server.Object;
-            var ax = deleteVersion.Execute(new Dictionary<string, StringBuilder> { { "resourceId", new StringBuilder(res.ToString()) }, { "versionNumber", new StringBuilder("1") } }, ws.Object);
-
-            //------------Assert Results-------------------------
-            var executeMessage = serializer.Deserialize<ExecuteMessage>(ax);
-            server.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1", ""), Times.Never);
-            Assert.AreEqual(executeMessage.Message.ToString(), Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException);
-            Assert.IsTrue(executeMessage.HasError);
-        }
+        
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

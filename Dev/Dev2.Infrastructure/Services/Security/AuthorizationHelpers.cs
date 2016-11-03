@@ -66,11 +66,11 @@ namespace Dev2.Services.Security
             }
             if (context.HasFlag(AuthorizationContext.Execute))
             {
-                permission |= Permissions.DeployFrom;
+                permission |= Permissions.Execute | Permissions.Contribute;
             }
             if (context.HasFlag(AuthorizationContext.View))
             {
-                permission |= Permissions.View;
+                permission |= Permissions.View | Permissions.Contribute;;
             }
             if (context.HasFlag(AuthorizationContext.Any))
             {

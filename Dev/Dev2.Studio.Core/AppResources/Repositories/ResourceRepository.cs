@@ -331,7 +331,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var con = _environmentModel.Connection;
             var executeCommand = comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
-            if (executeCommand.HasError)
+            if (executeCommand != null && executeCommand.HasError)
             {
                 throw new Exception(executeCommand.Message.ToString());
             }

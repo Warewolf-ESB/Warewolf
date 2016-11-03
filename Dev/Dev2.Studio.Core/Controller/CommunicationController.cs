@@ -111,6 +111,11 @@ namespace Dev2.Controller
                 ErrorResource.NotAuthorizedToDeployToException,
             };
             var authorizationError = executeMessage?.Message.ToString() ?? explorerRepositoryResult.Message;
+            if (string.IsNullOrEmpty(authorizationError))
+            {
+                containsAuthorization = false;
+                return "";
+            }
             containsAuthorization = authorizationErrors.Any(err => err.ToUpper().Contains(authorizationError.ToUpper()));
 
             return authorizationError;
