@@ -67,7 +67,6 @@ using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -84,7 +83,6 @@ using Dev2.Utilities;
 using Dev2.Utils;
 using Dev2.ViewModels.Workflow;
 using Dev2.Workspaces;
-using Infragistics.Windows.DockManager;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.AntiCorruptionLayer;
@@ -674,7 +672,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         void AddSwitch(ModelItem mi)
-        // ReSharper restore ExcessiveIndentation
         {
             if (mi.Parent?.Parent != null && mi.Parent.Parent.Parent != null && mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
             {
@@ -1177,7 +1174,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.Measure(new Size(2000, 2000));
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
-                _wd.View.MouseEnter+=ViewOnMouseEnter;
                 _wd.View.PreviewKeyDown += ViewOnKeyDown;
                 _wd.View.LostFocus += OnViewOnLostFocus;
 
@@ -1213,18 +1209,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 SubscribeToDebugSelectionChanged();
             }
         }
-
-        private void ViewOnMouseEnter(object sender, MouseEventArgs mouseEventArgs)
-        {
-            var senderAsFrameworkElement = ModelService.Root.View as FrameworkElement;
-            var freePormPanel = senderAsFrameworkElement?.FindChildren<AdornerLayer>(layer => layer.IsEnabled);
-            var ad = freePormPanel?.FirstOrDefault();
-            if (ad != null)
-            {
-                    
-            }
-        }
-
+        
         private void SetHashTable()
         {
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
@@ -1397,10 +1382,14 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void AddModelItemToSelection(ModelItem selectedModelItem)
         {
-            if (SelectedDebugItems.Contains(selectedModelItem))
+            if(selectedModelItem.ItemType == typeof(Flowchart))
             {
                 return;
             }
+            if (SelectedDebugItems.Contains(selectedModelItem))
+            {
+                return;
+            }          
             Selection.Union(_wd.Context, selectedModelItem);
 
             ModelService modelService = _wd.Context.Services.GetService<ModelService>();
@@ -2152,8 +2141,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         public IEnvironmentModel EnvironmentModel => ResourceModel.Environment;
 
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
-
-        public PaneToolWindow PaneToolWindow { get; set; }
 
         #region Implementation of IHandle<EditActivityMessage>
 
