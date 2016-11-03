@@ -187,7 +187,7 @@ namespace Dev2.Activities.Designers2.Core
                     TestPassed = true;
                     ShowTestMessage = TestResults.Columns.Count < 1;
                     if (ShowTestMessage)
-                        TestMessage = string.Format(Warewolf.Studio.Resources.Languages.Core.NoReturnedDataExecuteSuccess, Model.Action.Name);
+                        TestMessage = Warewolf.Studio.Resources.Languages.Core.NoReturnedDataExecuteSuccess;
                     TestFailed = false;
                 }
             }
