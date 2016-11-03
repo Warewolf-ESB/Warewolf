@@ -13,6 +13,11 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
 // ReSharper disable ExplicitCallerInfoArgument
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable ConvertToAutoProperty
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
@@ -336,10 +341,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 _errors = value;
                 OnPropertyChanged();
-                if(ErrorsHandler != null)
-                {
-                    ErrorsHandler.Invoke(this, new List<string>(value));
-                }
+                ErrorsHandler?.Invoke(this, new List<string>(value));
             }
         }
 
@@ -437,20 +439,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
+            handler?.Invoke(this, args);
         }
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
