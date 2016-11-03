@@ -7,7 +7,7 @@ namespace Warewolf.UITests
     public class Read_List_Item
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Read_List_Item_Small_View()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.Server.Exists, "Server combobox does not exist on small view after tool has been dragged from the toolbox.");
@@ -17,7 +17,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Read_List_Item_Large_View()
         {
             UIMap.Open_Sharepoint_Read_Folder_Tool_Large_View();

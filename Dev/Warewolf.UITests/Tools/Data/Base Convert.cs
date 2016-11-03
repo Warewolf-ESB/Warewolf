@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Data
     public class Base_Convert
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Data Tools")]
         public void BaseConvert_OpenLargeViewToolUITest()
         {
             UIMap.Open_Base_Conversion_Tool_Large_View();

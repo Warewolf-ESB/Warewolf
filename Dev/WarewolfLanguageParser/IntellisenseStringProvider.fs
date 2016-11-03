@@ -56,7 +56,8 @@ let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression 
             | ComplexExpression x -> verifyComplexExpression (x)
             | WarewolfAtomExpression _ -> (res, "")
             | JsonIdentifierExpression _ -> (res, "")
-        with ex when ex.Message.ToLower() = "parse error" -> 
+        with ex -> 
+          if ex.Message.ToLower() = "parse error" then
             if (lang.Length > 2) then 
                 let startswithNum, _ = System.Int32.TryParse(lang.[2].ToString())
                 match startswithNum with
@@ -69,8 +70,8 @@ let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression 
             else 
                 (WarewolfAtomExpression(DataStorage.DataString lang), 
                  "Variable name " + lang + " contains invalid character(s)")
-            | :? System.IndexOutOfRangeException as ex ->
-                (WarewolfAtomExpression(DataStorage.DataString lang), ex.Message)
+          else
+            (WarewolfAtomExpression(DataStorage.DataString lang), ex.Message)                           
     else (WarewolfAtomExpression(parseAtom lang), "")
 
 and validateScalar (lang: LanguageExpression) =
