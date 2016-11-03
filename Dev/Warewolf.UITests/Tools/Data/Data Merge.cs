@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Data
     public class Data_Merge
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void DataMergeUITest()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.Exists);
@@ -16,21 +16,21 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void DataMergeTool_OpenLargeViewUITest()
         {
             UIMap.Open_Data_Merge_Large_View();
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void DataMergeTool_OpenQVIUITest()
         {
             UIMap.Open_Data_Merge_Tool_Qvi_Large_View();
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void DataMerge_ScrollingUITest()
         {
             UIMap.Open_Data_Merge_Large_View();

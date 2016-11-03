@@ -7,7 +7,7 @@ namespace Warewolf.UITests
     public class Read_Folder
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Read_Folder_SmallView_UITest()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadFolder.SmallView.SourceCombobox.Exists, "Source combobox does not exist on smallview after dragging tool in from the toolbox.");
@@ -19,7 +19,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Read_Folder_LargeView_UITest()
         {
             UIMap.Open_Sharepoint_Read_Folder_Tool_Large_View();
