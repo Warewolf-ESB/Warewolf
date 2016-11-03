@@ -7,7 +7,7 @@ namespace Warewolf.UITests
     public class Update_List_Item
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Update_UITest()
         {
             UIMap.Open_Sharepoint_Update_Tool_Large_View();
