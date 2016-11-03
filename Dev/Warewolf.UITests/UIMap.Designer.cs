@@ -4160,10 +4160,12 @@ namespace Warewolf.UITests
             // Type 'Assign' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
+            // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
+            Playback.Wait(1000);
             Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.MultiAssignExists, multiAssign.Exists, "Toolbox Multiassign does not exist");
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(multiAssign, new Point(13, 17));
             Mouse.StopDragging(flowchart, new Point(307, 128));
@@ -5727,7 +5729,7 @@ namespace Warewolf.UITests
             //System parameter 'Show window contents while dragging' is not set.This could lead to incorrect recording of drag actions.
             secondItem.EnsureClickable(new Point(10, 10));
             Mouse.StartDragging(firstItem, new Point(94, 11));
-            Mouse.StopDragging(secondItem, new Point(40, 10));
+            Mouse.StopDragging(secondItem, new Point(10, 10));
         }
         
         /// <summary>
@@ -17247,7 +17249,7 @@ namespace Warewolf.UITests
         public string SearchTextBoxText = "Assign";
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
+        /// Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
         /// </summary>
         public bool MultiAssignExists = true;
         
