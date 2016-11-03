@@ -17,7 +17,9 @@ Scenario: Plugin Connector
 	And I Select Action
 	And I Click DotNet DLL Large View Generate Outputs
 	And I Click DotNet DLL Large View Test Inputs Button
-	And I Click DotNet DLL Large View Test Inputs Done Button
+	And I Click DotNet DLL Large View Test Cancel Done Button
 	And I Click DotNet DLL Large View Done Button
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
+	And I Click Close Workflow Tab Button
+	And I Click MessageBox No

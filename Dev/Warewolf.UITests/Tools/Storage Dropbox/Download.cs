@@ -24,9 +24,16 @@ namespace Warewolf.UITests.Tools.Storage_Dropbox
 #endif
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Dropbox_Download_Onto_DesignSurface();
-        }      
+        }
 
-        UIMap UIMap
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
+            UIMap UIMap
         {
             get
             {
