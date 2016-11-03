@@ -2491,7 +2491,7 @@ namespace Warewolf.UITests
         public void Debug_Workflow_With_Ribbon_Button()
         {
             Click_Debug_Ribbon_Button();
-            Click_DebugInput_Debug_Button_For_UnpinnedWindow();
+            Click_DebugInput_Debug_Button();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
