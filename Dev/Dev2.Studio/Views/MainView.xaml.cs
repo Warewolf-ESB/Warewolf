@@ -453,13 +453,21 @@ namespace Dev2.Studio.Views
                     var paneToolWindow = sender as PaneToolWindow;
                     if (paneToolWindow?.Pane?.Panes.Count > 0)
                     {
-                        var frameworkElement = paneToolWindow.Pane.Panes[0] as TabGroupPane;
-
-                        if (frameworkElement?.Items.Count >= 1)
+                        var contentPane = paneToolWindow.Pane.Panes[0] as ContentPane;
+                        if (contentPane != null)
                         {
-                            var selectedContent = frameworkElement.SelectedContent as ContentPane;
-                            var workSurfaceContextViewModel = selectedContent?.DataContext as WorkSurfaceContextViewModel;
+                            var workSurfaceContextViewModel = contentPane.DataContext as WorkSurfaceContextViewModel;
                             mainViewModel.ActivateItem(workSurfaceContextViewModel);
+                        }
+                        else
+                        {
+                            var tabGroupPane = paneToolWindow.Pane.Panes[0] as TabGroupPane;
+                            if (tabGroupPane?.Items.Count >= 1)
+                            {
+                                var selectedContent = tabGroupPane.SelectedContent as ContentPane;
+                                var workSurfaceContextViewModel = selectedContent?.DataContext as WorkSurfaceContextViewModel;
+                                mainViewModel.ActivateItem(workSurfaceContextViewModel);
+                            }
                         }
                     }
                 }
@@ -713,11 +721,6 @@ namespace Dev2.Studio.Views
 
         private void DockManager_OnToolWindowUnLoaded(object sender, PaneToolWindowEventArgs e)
         {
-//            var window = e.Window;
-//            if (window != null)
-//            {
-//                window.PreviewMouseLeftButtonUp -= WindowOnPreviewMouseDown;
-//            }
         }
     }
 }
