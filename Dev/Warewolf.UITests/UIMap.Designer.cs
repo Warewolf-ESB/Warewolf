@@ -5726,7 +5726,7 @@ namespace Warewolf.UITests
             //System parameter 'Show window contents while dragging' is not set.This could lead to incorrect recording of drag actions.
             secondItem.EnsureClickable(new Point(10, 10));
             Mouse.StartDragging(firstItem, new Point(94, 11));
-            Mouse.StopDragging(secondItem, new Point(10, 10));
+            Mouse.StopDragging(secondItem, new Point(40, 10));
         }
         
         /// <summary>
