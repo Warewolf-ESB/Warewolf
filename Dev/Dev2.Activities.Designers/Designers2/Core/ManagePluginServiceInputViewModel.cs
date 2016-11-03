@@ -52,6 +52,8 @@ namespace Dev2.Activities.Designers2.Core
         private RecordsetList _recordsetList;
         private bool _outputCountExpandAllowed;
         private bool _inputCountExpandAllowed;
+        private bool _testPassed;
+        private bool _testFailed;
 
         public ManagePluginServiceInputViewModel(IDotNetViewModel model, IPluginServiceModel serviceModel)
         {
@@ -100,7 +102,9 @@ namespace Dev2.Activities.Designers2.Core
             _viewmodel.GenerateOutputsVisible = false;
             InputArea.IsEnabled = false;
             OutputArea.IsEnabled = false;
-            TestResults = String.Empty;
+            TestResults = string.Empty;
+            TestFailed = false;
+            TestPassed = false;
             TestResultsAvailable = false;
             Errors.Clear();
 
@@ -195,6 +199,8 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     TestResultsAvailable = TestResults != null;
                     IsTesting = false;
+                    TestPassed = true;
+                    TestFailed = false;
                 }
             }
             catch (JsonSerializationException)
@@ -205,6 +211,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 Errors.Add(e.Message);
                 IsTesting = false;
+                TestPassed = false;
+                TestFailed = true;
                 _generateOutputArea.IsEnabled = false;
                 _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
                 _viewmodel.ErrorMessage(e, true);
@@ -265,6 +273,27 @@ namespace Dev2.Activities.Designers2.Core
 
         public Action TestAction { get; set; }
         public ICommand TestCommand { get; private set; }
+
+        public bool TestPassed
+        {
+            get { return _testPassed; }
+            set
+            {
+                _testPassed = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool TestFailed
+        {
+            get { return _testFailed; }
+            set
+            {
+                _testFailed = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool TestResultsAvailable
         {
             get

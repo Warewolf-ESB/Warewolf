@@ -95,7 +95,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         private void NewValueOnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             var host = sender as DocumentContentHost;
-            var workSurfaceContextViewModel = host?.ActiveDocument.DataContext as WorkSurfaceContextViewModel;
+            var workSurfaceContextViewModel = host?.ActiveDocument?.DataContext as WorkSurfaceContextViewModel;
             
             if (_mainViewModel == null)
             {

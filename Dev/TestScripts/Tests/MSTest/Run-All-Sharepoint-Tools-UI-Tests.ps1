@@ -29,7 +29,7 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalUISpecs.testsettings"
+$TestSettingsFile = "$PSScriptRoot\LocalToolsUITesting.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
@@ -47,7 +47,7 @@ $TestSettingsFile = "$PSScriptRoot\LocalUISpecs.testsettings"
 "@)
 
 # Create full VSTest argument string.
-$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UISpecs.dll`" /resultsfile:TestResults\UISpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /resultsfile:TestResults\DataToolUITestsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"Sharepoint Tools`""
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\MSTest.exe`" $FullArgsList
