@@ -5163,6 +5163,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} executed successfully and returned no data..
+        /// </summary>
+        public static string NoReturnedDataExecuteSuccess {
+            get {
+                return ResourceManager.GetString("NoReturnedDataExecuteSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New OAuth Source.
         /// </summary>
         public static string OAuthSourceNewHeaderLabel {
