@@ -36,6 +36,7 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
+// ReSharper disable NonReadonlyMemberInGetHashCode
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -667,14 +668,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(remoteID != Guid.Empty)
             {
                 var resource = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
-                if(resource != null)
-                {
-                    name = resource.ResourceName;
-                }
-                else
-                {
-                    name = remoteID.ToString();
-                }
+                name = resource != null ? resource.ResourceName : remoteID.ToString();
             }
             else
             {
@@ -939,7 +933,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </returns>
         public override int GetHashCode()
         {
-            return UniqueID != null ? UniqueID.GetHashCode() : 0;
+            return UniqueID?.GetHashCode() ?? 0;
         }
 
         public static bool operator ==(DsfNativeActivity<T> left, DsfNativeActivity<T> right)

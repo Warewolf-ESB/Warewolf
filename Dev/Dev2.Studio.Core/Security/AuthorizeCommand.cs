@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
+// ReSharper disable CheckNamespace
 
 namespace Dev2.Security
 {
