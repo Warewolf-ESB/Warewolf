@@ -380,8 +380,7 @@ namespace Dev2.Activities.Designers2.Email
         {
 
             const string Separator = @";";
-            var message = new FileChooserMessage();
-            message.SelectedFiles = Attachments.Split(Separator.ToCharArray());
+            var message = new FileChooserMessage { SelectedFiles = Attachments.Split(Separator.ToCharArray()) };
             message.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == @"SelectedFiles")
