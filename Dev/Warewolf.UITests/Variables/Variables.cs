@@ -24,6 +24,8 @@ namespace Warewolf.UITests
         {
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused.Enabled);
             UIMap.Enter_Vaiablelist_Items();
+            UIMap.Click_Assign_tool_VariableTextbox();
+            UIMap.Click_Assign_tool_ValueTextbox();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused.Enabled);
             UIMap.Click_Remove_Unused_Variables();
             Point newPoint;
