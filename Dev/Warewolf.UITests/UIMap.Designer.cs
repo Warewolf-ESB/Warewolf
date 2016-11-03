@@ -4665,7 +4665,8 @@ namespace Warewolf.UITests
             // Type 'Copy File' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(311, 128));
             Mouse.StartDragging(copyFile, new Point(10, 16));
             Mouse.StopDragging(flowchart, new Point(311, 128));
@@ -4695,7 +4696,8 @@ namespace Warewolf.UITests
             // Type 'Create List Item' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(311, 128));
             Mouse.StartDragging(createListItems, new Point(10, 16));
             Mouse.StopDragging(flowchart, new Point(311, 128));
@@ -4726,7 +4728,8 @@ namespace Warewolf.UITests
             // Type 'Delete List Item' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(306, 131));
             Mouse.StartDragging(deleteListItems, new Point(16, 5));
             Mouse.StopDragging(flowchart, new Point(306, 131));
@@ -4751,7 +4754,8 @@ namespace Warewolf.UITests
             // Type 'Download' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(307, 129));
             Mouse.StartDragging(downloadFile, new Point(124, 593));
             Mouse.StopDragging(flowchart, new Point(307, 129));
@@ -4778,7 +4782,8 @@ namespace Warewolf.UITests
             // Type 'Move' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(311, 128));
             Mouse.StartDragging(moveFile, new Point(10, 16));
             Mouse.StopDragging(flowchart, new Point(311, 128));
@@ -4806,7 +4811,8 @@ namespace Warewolf.UITests
             // Type 'Read' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(303, 128));
             Mouse.StartDragging(readFolder, new Point(13, 15));
             Mouse.StopDragging(flowchart, new Point(303, 128));
@@ -4831,7 +4837,8 @@ namespace Warewolf.UITests
             // Type 'Read List Item' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(303, 128));
             Mouse.StartDragging(readListItems, new Point(13, 15));
             Mouse.StopDragging(flowchart, new Point(303, 128));
@@ -4856,7 +4863,8 @@ namespace Warewolf.UITests
             // Type 'Update List Item' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(300, 127));
             Mouse.StartDragging(updateListItems, new Point(17, 9));
             Mouse.StopDragging(flowchart, new Point(300, 127));
