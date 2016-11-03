@@ -10,6 +10,8 @@ Scenario: DB Connector
 	And I Select MSSQLSERVER From DB Source Wizard Address Protocol Dropdown
 	And I Type rsaklfsvrgen into DB Source Wizard Server Textbox
 	And I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist
+	And I Click UserButton On Database Source
+	And I Enter RunAsUser Username And Password on Database source
 	And I Click DB Source Wizard Test Connection Button
 	And I Select Dev2TestingDB From DB Source Wizard Database Combobox
 	And I Save With Ribbon Button And Dialog As "UITestingDBSource"
@@ -27,9 +29,12 @@ Scenario: DB Connector
 	And I Click SQL Server Large View Done Button
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
+	And I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Create Source From Tool
 	Given The Warewolf Studio is running
+	When I Click New Workflow Ribbon Button
 	When I Drag Toolbox SQL Server Tool Onto DesignSurface
 	And I Open SQL Large View FromContextMenu
 	And I Select NewDatabaseSource FromSqlServerTool
@@ -38,3 +43,6 @@ Scenario: Create Source From Tool
 	And I Change Selected Database ToOracle DataBase
 	And I Change Selected Database ToODBC DataBase
 	And I Click DB Source Wizard Test Connection Button
+	And I Click Close DB Source Wizard Tab Button
+	And I Click Close Workflow Tab Button
+	And I Click MessageBox No

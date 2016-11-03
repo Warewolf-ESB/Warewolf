@@ -18,6 +18,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
@@ -585,21 +586,34 @@ namespace Dev2.Studio.Dock
 
                     if (resource != null && !resource.IsWorkflowSaved)
                     {
-                        var vm = model;
-                        vm.TryClose();
-                        var mainVm = vm.Parent as MainViewModel;
-                        if (mainVm != null)
+                        CloseCurrent(e, model);
+                    }
+                    else
+                    {
+                        var sourceView = model.WorkSurfaceViewModel as IStudioTab;
+                        if (sourceView != null && sourceView.IsDirty)
                         {
-                            if (mainVm.CloseCurrent)
-                            {
-                                //vm.Dispose();
-                            }
-                            else
-                            {
-                                e.Cancel = true;
-                            }
+                            CloseCurrent(e, model);
                         }
                     }
+                }
+            }
+        }
+
+        private static void CloseCurrent(PaneClosingEventArgs e, WorkSurfaceContextViewModel model)
+        {
+            var vm = model;
+            vm.TryClose();
+            var mainVm = vm.Parent as MainViewModel;
+            if(mainVm != null)
+            {
+                if(mainVm.CloseCurrent)
+                {
+                    //vm.Dispose();
+                }
+                else
+                {
+                    e.Cancel = true;
                 }
             }
         }
