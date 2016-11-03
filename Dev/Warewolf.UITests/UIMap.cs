@@ -3275,6 +3275,12 @@ namespace Warewolf.UITests
             Change_Selected_Database_ToODBC_DataBase();
         }
 
+        [When(@"I Click DotNet DLL Large View Test Cancel Done Button")]
+        public void WhenIClickDotNetDLLLargeViewTestCancelDoneButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CancelButton);
+        }
+
         public void Drag_Toolbox_AssignObject_Onto_Foreach_LargeTool()
         {
             #region Variable Declarations
