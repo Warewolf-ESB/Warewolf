@@ -37,6 +37,10 @@ namespace Dev2.Activities.Designers2.Core
         private IDatabaseService _model;
         private bool _inputCountExpandAllowed;
         private bool _outputCountExpandAllowed;
+        private bool _testPassed;
+        private bool _testFailed;
+        private string _testMessage;
+        private bool _showTestMessage;
 
         public ManageDatabaseServiceInputViewModel(IDatabaseServiceViewModel model, IDbServiceModel serviceModel)
         {
@@ -81,14 +85,13 @@ namespace Dev2.Activities.Designers2.Core
         {
             IsEnabled = false;
             _viewmodel.GenerateOutputsVisible = false;
+            _viewmodel.SetDisplayName("");
             InputArea.IsEnabled = false;
             OutputArea.IsEnabled = false;
+            ResetTestForExecute();
             TestResults = new DataTable();
             TestResultsAvailable = false;
             Errors.Clear();
-
-            _viewmodel.SetDisplayName("");
-            _viewmodel.ErrorMessage(new Exception(), false);
         }
 
         public void ExecuteClose()
@@ -156,10 +159,8 @@ namespace Dev2.Activities.Designers2.Core
         public void ExecuteTest()
         {
             OutputArea.IsEnabled = true;
-            TestResults = null;
             IsTesting = true;
-            Errors = new List<string>();
-            _viewmodel.ErrorMessage(new Exception(""), false);
+            ResetTestForExecute();
             try
             {
                 TestResults = _serverModel.TestService(Model);
@@ -183,6 +184,11 @@ namespace Dev2.Activities.Designers2.Core
                         }
                     }
                     IsTesting = false;
+                    TestPassed = true;
+                    ShowTestMessage = TestResults.Columns.Count < 1;
+                    if (ShowTestMessage)
+                        TestMessage = string.Format(Warewolf.Studio.Resources.Languages.Core.NoReturnedDataExecuteSuccess, Model.Action.Name);
+                    TestFailed = false;
                 }
             }
             catch (Exception e)
@@ -192,8 +198,21 @@ namespace Dev2.Activities.Designers2.Core
                 TestResultsAvailable = false;
                 _generateOutputArea.IsEnabled = false;
                 _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
+                TestPassed = false;
+                TestFailed = true;
                 _viewmodel.ErrorMessage(e, true);
             }
+        }
+
+        private void ResetTestForExecute()
+        {
+            TestResults = null;
+            TestPassed = false;
+            TestFailed = false;
+            TestMessage = string.Empty;
+            ShowTestMessage = false;
+            Errors = new List<string>();
+            _viewmodel.ErrorMessage(new Exception(""), false);
         }
 
         public bool IsGenerateInputsEmptyRows
@@ -249,6 +268,47 @@ namespace Dev2.Activities.Designers2.Core
 
         public Action TestAction { get; set; }
         public ICommand TestCommand { get; private set; }
+
+        public bool TestPassed
+        {
+            get { return _testPassed; }
+            set
+            {
+                _testPassed = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public bool TestFailed
+        {
+            get { return _testFailed; }
+            set
+            {
+                _testFailed = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TestMessage
+        {
+            get { return _testMessage; }
+            set
+            {
+                _testMessage = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ShowTestMessage
+        {
+            get { return _showTestMessage; }
+            set
+            {
+                _showTestMessage = value; 
+                OnPropertyChanged();
+            }
+        }
+
         public bool TestResultsAvailable
         {
             get
