@@ -8,11 +8,11 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    public class DsfMySqlDatabaseActivityTests
+    public class DsfSqlServerDatabaseActivityTests
     {
-        private static DsfMySqlDatabaseActivity CreateMySqlDatabaseActivity()
+        private static DsfSqlServerDatabaseActivity CreateDsfSqlServerDatabaseActivity()
         {
-            return new DsfMySqlDatabaseActivity();
+            return new DsfSqlServerDatabaseActivity();
         }
 
         private static IExecutionEnvironment CreateExecutionEnvironment()
@@ -22,14 +22,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        public void DsfMySqlDatabaseActivity_GivenNewInstance_ShouldNotBeNull()
+        public void DsfSqlServerDatabaseActivity_GivenNewInstance_ShouldNotBeNull()
         {
             //---------------Set up test pack-------------------
-            var mySqlDatabaseActivity = CreateMySqlDatabaseActivity();
+            var sqlServerDatabaseActivity = CreateDsfSqlServerDatabaseActivity();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.IsNotNull(mySqlDatabaseActivity);
+            Assert.IsNotNull(sqlServerDatabaseActivity);
         }
 
         [TestMethod]
@@ -37,12 +37,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void CreateNewActivity_GivenIsNew_ShouldHaveDisplayName()
         {
             //---------------Set up test pack-------------------
-            var mySqlDatabaseActivity = CreateMySqlDatabaseActivity();
+            var sqlServerDatabaseActivity = CreateDsfSqlServerDatabaseActivity();
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(mySqlDatabaseActivity);
+            Assert.IsNotNull(sqlServerDatabaseActivity);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual("MySQL Database", mySqlDatabaseActivity.DisplayName);
+            Assert.AreEqual("SQL Server Database", sqlServerDatabaseActivity.DisplayName);
 
         }
 
@@ -51,10 +51,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void GetFindMissingType_GivenIsNew_ShouldSetDatagridAcitivity()
         {
             //---------------Set up test pack-------------------
-            var mySqlDatabaseActivity = CreateMySqlDatabaseActivity();
+            var sqlServerDatabaseActivity = CreateDsfSqlServerDatabaseActivity();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var enFindMissingType = mySqlDatabaseActivity.GetFindMissingType();
+            var enFindMissingType = sqlServerDatabaseActivity.GetFindMissingType();
             //---------------Test Result -----------------------
             Assert.AreEqual(enFindMissingType.DataGridActivity, enFindMissingType);
 
@@ -65,10 +65,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void GetDebugInputs_GivenEnvironmentIsNull_ShouldHaveNoDebugOutputs()
         {
             //---------------Set up test pack-------------------
-            var mySqlDatabaseActivity = CreateMySqlDatabaseActivity();
+            var sqlServerDatabaseActivity = CreateDsfSqlServerDatabaseActivity();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var debugInputs = mySqlDatabaseActivity.GetDebugInputs(null, 0);
+            var debugInputs = sqlServerDatabaseActivity.GetDebugInputs(null, 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, debugInputs.Count);
         }
@@ -78,7 +78,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void GetDebugInputs_GivenEnvironmentMockEnvironmentAndFromPath_ShouldHaveOneDebugOutputs()
         {
             //---------------Set up test pack-------------------
-            var mySqlDatabaseActivity = CreateMySqlDatabaseActivity();
+            var sqlServerDatabaseActivity = CreateDsfSqlServerDatabaseActivity();
             var serviceInputs = new List<IServiceInput>();
 
             var serviceInput1 = new ServiceInput
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Name = "name1",
                 Value = "value1"
             };
-            
+
             serviceInputs.Add(serviceInput1);
 
             var serviceInput2 = new ServiceInput
@@ -96,12 +96,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             serviceInputs.Add(serviceInput2);
 
-            mySqlDatabaseActivity.Inputs = serviceInputs;
+            sqlServerDatabaseActivity.Inputs = serviceInputs;
             //---------------Assert Precondition----------------
-            
+
 
             //---------------Execute Test ----------------------
-            var debugInputs = mySqlDatabaseActivity.GetDebugInputs(CreateExecutionEnvironment(), 0);
+            var debugInputs = sqlServerDatabaseActivity.GetDebugInputs(CreateExecutionEnvironment(), 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(2, debugInputs.Count);
             Assert.AreEqual("name1", debugInputs[0].ResultsList[0].Label);
