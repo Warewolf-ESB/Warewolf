@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Sharepoint
     public class Download_File
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Download_File_Small_View_UITest()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView.SourceCombobox.Exists, "Source combobox does not exist on small view after tool has been dragged from the toolbox.");
@@ -18,7 +18,7 @@ namespace Warewolf.UITests.Tools.Sharepoint
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("Tools")]
+        [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Download_File_Large_View_UITest()
         {
             UIMap.Open_Sharepoint_Download_File_Tool_Large_View_With_Double_Click();
