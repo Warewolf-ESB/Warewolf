@@ -5724,9 +5724,9 @@ namespace Warewolf.UITests
 
             // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
             //System parameter 'Show window contents while dragging' is not set.This could lead to incorrect recording of drag actions.
-            secondItem.EnsureClickable(new Point(10, 10));
-            Mouse.StartDragging(firstItem, new Point(94, 11));
-            Mouse.StopDragging(secondItem, new Point(10, 10));
+            secondItem.EnsureClickable(new Point(12, 10));
+            Mouse.StartDragging(firstItem, new Point(96, 11));
+            Mouse.StopDragging(secondItem, new Point(12, 10));
         }
         
         /// <summary>
