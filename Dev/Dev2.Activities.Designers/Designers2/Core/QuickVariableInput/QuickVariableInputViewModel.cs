@@ -26,6 +26,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 using Warewolf.Resource.Errors;
+// ReSharper disable ConvertToAutoProperty
 
 namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 {

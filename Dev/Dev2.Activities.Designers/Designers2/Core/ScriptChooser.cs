@@ -15,7 +15,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 includeFile = "";
             }
-            chooserMessage.SelectedFiles = includeFile?.Split(Separator.ToCharArray());
+            chooserMessage.SelectedFiles = includeFile.Split(Separator.ToCharArray());
             chooserMessage.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == @"SelectedFiles")
