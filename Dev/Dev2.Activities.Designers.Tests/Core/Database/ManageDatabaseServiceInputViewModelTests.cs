@@ -2,6 +2,7 @@
 using Dev2.Activities.Designers.Tests.SqlServer;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.SqlServerDatabase;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,10 +29,10 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
                 ServiceName = "dsfBob"
             };
 
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Assert Results-------------------------
-            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(webget, mod);
+            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             Assert.IsNotNull(vm.CloseCommand);
             Assert.IsNotNull(vm.CloseCommand);
 
@@ -53,9 +54,9 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
                 ServiceName = "dsfBob"
             };
 
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
-            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(webget, mod);
+            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             vm.TestAction = () => { called = true; };
             vm.OkAction = () =>
             {
@@ -73,7 +74,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [TestCategory("SqlServer_MethodName")]
         public void ManageDatabaseServiceInputViewModel_PropertyChangedHandler()
         {
             //------------Setup for test--------------------------
@@ -81,8 +82,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var act = new DsfSqlServerDatabaseActivity();
             var called = false;
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.PropertyChanged += (sender, args) => called = true;
             inputview.Model = new DatabaseService();
             //------------Execute Test---------------------------
@@ -95,15 +96,15 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [TestCategory("SqlServer_MethodName")]
         public void ManageDatabaseServiceInputViewModelCloneRegion_ReturnsNull()
         {
             //------------Setup for test--------------------------
             var mod = new SqlServerModel();
 
             var act = new DsfSqlServerDatabaseActivity();
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService();
 
             //------------Execute Test---------------------------
@@ -116,7 +117,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [TestCategory("SqlServer_MethodName")]
         public void ManageDatabaseServiceInputViewModelTestAction_Exception()
         {
             //------------Setup for test--------------------------
@@ -124,8 +125,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             mod.HasRecError = true;
 
             var act = new DsfSqlServerDatabaseActivity();
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = null;
 
             //------------Execute Test---------------------------
@@ -138,7 +139,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [TestCategory("SqlServer_MethodName")]
         public void ManageDatabaseServiceInputViewModelOkAction_Exception()
         {
             //------------Setup for test--------------------------
@@ -146,9 +147,9 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             mod.HasRecError = true;
 
             var act = new DsfSqlServerDatabaseActivity();
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
-            webget.OutputsRegion.Outputs = null;
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
+            sqlServer.OutputsRegion.Outputs = null;
 
             //------------Execute Test---------------------------
             inputview.ExecuteOk();
@@ -160,15 +161,15 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [TestCategory("SqlServer_MethodName")]
         public void ManageDatabaseServiceInputViewModel_RestoreRegion_DoesNothing()
         {
             //------------Setup for test--------------------------
             var mod = new SqlServerModel();
 
             var act = new DsfSqlServerDatabaseActivity();
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService();
 
             //------------Execute Test---------------------------
@@ -181,7 +182,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [TestCategory("SqlServer_MethodName")]
         public void ManageDatabaseServiceInputViewModel_TestActionSetSourceAndTestClickOk()
         {
             //------------Setup for test--------------------------
@@ -189,27 +190,34 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var act = new DsfSqlServerDatabaseActivity();
 
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
-            inputview.Model = new DatabaseService(){Action = new DbAction(){Inputs = new List<IServiceInput>(),Name ="bob"},};
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
+            inputview.Model = new DatabaseService(){Source = new DbSourceDefinition(), Action = new DbAction(){Inputs = new List<IServiceInput>(),Name ="bob"},};
             inputview.ExecuteTest();
             //------------Execute Test---------------------------
 
-
+            Assert.IsTrue(inputview.TestPassed);
+            Assert.IsFalse(inputview.TestFailed);
+            Assert.AreEqual(string.Empty, inputview.TestMessage);
+            Assert.IsFalse(inputview.ShowTestMessage);
             inputview.ExecuteOk();
             //------------Execute Ok---------------------------
-            Assert.IsTrue(webget.SourceRegion.IsEnabled);
-            Assert.IsTrue(webget.InputArea.IsEnabled);
-            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
-            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
-            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
+            Assert.IsFalse(sqlServer.ManageServiceInputViewModel.InputArea.IsEnabled);
 
+            Assert.IsFalse(inputview.TestPassed);
+            Assert.IsFalse(inputview.TestFailed);
+            Assert.AreEqual(string.Empty, inputview.TestMessage);
+            Assert.IsFalse(inputview.ShowTestMessage);
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [TestCategory("SqlServer_MethodName")]
         public void ManageDatabaseServiceInputViewModel_TestActionSetSourceAndTestClickClose()
         {
             //------------Setup for test--------------------------
@@ -217,17 +225,17 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var act = new DsfSqlServerDatabaseActivity();
 
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService();
             inputview.ExecuteClose();
             //------------Execute Ok---------------------------
             Assert.IsNull(inputview.OutputArea.Outputs);
-            Assert.IsTrue(webget.SourceRegion.IsEnabled);
-            Assert.IsFalse(webget.OutputsRegion.IsEnabled);
-            Assert.IsTrue(webget.InputArea.IsEnabled);
-            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
-            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.IsFalse(sqlServer.OutputsRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
+            Assert.IsFalse(sqlServer.ManageServiceInputViewModel.InputArea.IsEnabled);
 
             //------------Assert Results-------------------------
         }
@@ -245,9 +253,9 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
                 ServiceName = "dsfBob"
             };
 
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
-            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(webget, mod);
+            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             var lst = new List<IServiceInput>();
             vm.InputArea.Inputs = lst;
             Assert.AreEqual(lst, vm.InputArea.Inputs);
