@@ -55,7 +55,7 @@ namespace Dev2.Runtime.Security
 
         public int CachedRequestCount => _cachedRequests.Count;
 
-        private static void ClearCaches()
+        protected static void ClearCaches()
         {
             _cachedRequests = new ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>>();
         }

@@ -774,6 +774,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
 
             var msg = new ExecuteMessage();
+            msg.HasError = false;
             var payload = JsonConvert.SerializeObject(msg);
 
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -806,6 +807,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
 
             var msg = new ExecuteMessage();
+            msg.HasError = false;
             var payload = JsonConvert.SerializeObject(msg);
 
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -874,6 +876,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
 
             var msg = new ExecuteMessage();
+            msg.HasError = false;
             var payload = JsonConvert.SerializeObject(msg);
 
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();

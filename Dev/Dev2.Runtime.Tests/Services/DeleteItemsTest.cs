@@ -113,34 +113,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             repo.Verify(a => a.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()));
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("deleteItem_Execute")]
-        public void DeleteItem_ExecuteNotPermited_ExpectError()
-        {
-            //------------Setup for test--------------------------
-            var deleteItem = new DeleteItemService();
-
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
-            var repo = new Mock<IExplorerServerResourceRepository>();
-            var ws = new Mock<IWorkspace>();
-            repo.Setup(a => a.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>())).Returns(new ExplorerRepositoryResult(ExecStatus.Success, "")).Verifiable();
-            repo.Setup(a => a.Find(It.IsAny<Func<IExplorerItem, bool>>())).Returns(item).Verifiable();
-
-            var serializer = new Dev2JsonSerializer();
-            var inputs = new Dictionary<string, StringBuilder> { { "itemToDelete", serializer.SerializeToBuilder(item) } };
-            ws.Setup(a => a.ID).Returns(Guid.Empty);
-            deleteItem.ServerExplorerRepo = repo.Object;
-            //------------Execute Test---------------------------
-            var stringBuilder = deleteItem.Execute(inputs, ws.Object);
-            //------------Assert Results-------------------------
-            repo.Verify(a => a.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()), Times.Never);
-            var explorerRepositoryResult = serializer.Deserialize<ExplorerRepositoryResult>(stringBuilder);
-            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToContributeException,explorerRepositoryResult.Message);
-            Assert.IsTrue(explorerRepositoryResult.Status == ExecStatus.Fail);
-        }
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("deleteItem_CreateEntry")]

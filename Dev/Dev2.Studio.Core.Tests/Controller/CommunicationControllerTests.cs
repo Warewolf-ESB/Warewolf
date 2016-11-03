@@ -23,27 +23,6 @@ namespace Dev2.Core.Tests.Controller
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ExecuteCommand_GivenHasAuthorizationError_ShouldShowCorrectPopup()
-        {
-            //---------------Set up test pack-------------------
-            var mock = new Mock<IPopupController>();
-            mock.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false));
-            CustomContainer.Register(mock.Object);
-            var connection = new Mock<IEnvironmentConnection>();
-            connection.Setup(environmentConnection => environmentConnection.IsConnected).Returns(true);
-            connection.Setup(environmentConnection => environmentConnection.ExecuteCommand(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID))
-                .Throws(new ServiceNotAuthorizedException(ErrorResource.NotAuthorizedToCreateException));
-            var controller = new CommunicationController();
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-
-            controller.ExecuteCommand<ExecuteMessage>(connection.Object, GlobalConstants.ServerWorkspaceID);
-            //---------------Test Result -----------------------
-            mock.Verify(c => c.Show(ErrorResource.NotAuthorizedToCreateException, "ServiceNotAuthorizedException", MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false), Times.Once);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void ExecuteCommand_GivenReturnAuthorizationError_ShouldShowCorrectPopup()
         {
             //---------------Set up test pack-------------------
@@ -66,7 +45,7 @@ namespace Dev2.Core.Tests.Controller
 
             controller.ExecuteCommand<ExecuteMessage>(connection.Object, GlobalConstants.ServerWorkspaceID);
             //---------------Test Result -----------------------
-            mock.Verify(c => c.Show(ErrorResource.NotAuthorizedToCreateException, "ServiceNotAuthorizedException", MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false), Times.Once);
+            mock.Verify(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false), Times.Once);
         }
 
         [TestMethod]
@@ -92,7 +71,7 @@ namespace Dev2.Core.Tests.Controller
 
             controller.ExecuteCommand<ExplorerRepositoryResult>(connection.Object, GlobalConstants.ServerWorkspaceID);
             //---------------Test Result -----------------------
-            mock.Verify(c => c.Show(ErrorResource.NotAuthorizedToCreateException, "ServiceNotAuthorizedException", MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false), Times.Once);
+            mock.Verify(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false), Times.Once);
         }
 
         [TestMethod]
@@ -118,7 +97,7 @@ namespace Dev2.Core.Tests.Controller
 
             var explorerRepositoryResult = controller.ExecuteCommandAsync<ExplorerRepositoryResult>(connection.Object, GlobalConstants.ServerWorkspaceID).Result;
             //---------------Test Result -----------------------
-            mock.Verify(c => c.Show(ErrorResource.NotAuthorizedToCreateException, "ServiceNotAuthorizedException", MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false), Times.Once);
+            mock.Verify(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false), Times.Once);
         }
 
         [TestMethod]

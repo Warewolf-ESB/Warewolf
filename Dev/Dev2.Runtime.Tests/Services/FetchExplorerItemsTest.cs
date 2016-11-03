@@ -83,32 +83,7 @@ namespace Dev2.Tests.Runtime.Services
             var message = serializer.Deserialize<CompressedExecuteMessage>(execute);
             Assert.AreEqual(serializer.Deserialize<IExplorerItem>(message.GetDecompressedMessage()).ResourceId, item.ResourceId);
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("FetchExplorerItems_HandlesType")]
-        public void FetchExplorerItems_ExecuteNotPermitted_ExpectEmpty()
-        {
-            //------------Setup for test--------------------------
-            var fetchExplorerItems = new FetchExplorerItems();
-
-            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
-            Assert.IsNotNull(item);
-            var repo = new Mock<IExplorerServerResourceRepository>();
-            var ws = new Mock<IWorkspace>();
-            repo.Setup(a => a.Load(GlobalConstants.ServerWorkspaceID, false))
-                .Returns(item).Verifiable();
-            var serializer = new Dev2JsonSerializer();
-            ws.Setup(a => a.ID).Returns(Guid.Empty);
-            fetchExplorerItems.ServerExplorerRepo = repo.Object;
-            //------------Execute Test---------------------------
-            var execute = fetchExplorerItems.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
-            //------------Assert Results-------------------------
-            repo.Verify(a => a.Load(GlobalConstants.ServerWorkspaceID, false), Times.Never);
-            var message = serializer.Deserialize<IExplorerRepositoryResult>(execute);
-            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToViewException, message.Message);
-            Assert.AreEqual(ExecStatus.Fail, message.Status);
-        }
+        
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
