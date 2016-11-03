@@ -5163,7 +5163,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} executed successfully and returned no data..
+        ///   Looks up a localized string similar to No data returned.   .
         /// </summary>
         public static string NoReturnedDataExecuteSuccess {
             get {
