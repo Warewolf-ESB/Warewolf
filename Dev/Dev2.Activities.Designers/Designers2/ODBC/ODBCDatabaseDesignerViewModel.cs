@@ -488,8 +488,7 @@ namespace Dev2.Activities.Designers2.ODBC
         {
             if (!string.IsNullOrEmpty(CommandText))
             {
-                DbAction command = new DbAction();
-                command.Name = CommandText;
+                DbAction command = new DbAction { Name = CommandText };
                 ActionRegion.SelectedAction = command;
             }
             var databaseService = new DatabaseService

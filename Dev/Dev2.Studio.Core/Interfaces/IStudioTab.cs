@@ -10,6 +10,7 @@
 
 
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Interfaces
 {
     public interface IStudioTab
