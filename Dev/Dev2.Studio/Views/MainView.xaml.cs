@@ -395,8 +395,6 @@ namespace Dev2.Studio.Views
                                         PaneToolWindow.Title = PaneToolWindow.Title + " - " + workflowDesignerViewModel?.DisplayName;
                                     }
                                 }
-                                if (workflowDesignerViewModel != null)
-                                    workflowDesignerViewModel.PaneToolWindow = PaneToolWindow;
                             }
                             else if (dockManager?.DataContext.GetType() == typeof(StudioTestViewModel))
                             {
@@ -428,9 +426,6 @@ namespace Dev2.Studio.Views
                         if (workSurfaceContextViewModel?.ContextualResourceModel != null)
                         {
                             PaneToolWindow.ToolTip = "Floating window for - " + workSurfaceContextViewModel?.ContextualResourceModel.DisplayName;
-                            var workflowDesignerViewModel = workSurfaceContextViewModel.WorkSurfaceViewModel as WorkflowDesignerViewModel;
-                            if (workflowDesignerViewModel != null)
-                                workflowDesignerViewModel.PaneToolWindow = PaneToolWindow;
                         }
                     }
                 }
@@ -711,16 +706,10 @@ namespace Dev2.Studio.Views
                     {
                         paneToolWindow.Title = Title;
                     }
-                    var workflowDesignerViewModel = e.Panes[0].Content as WorkflowDesignerViewModel;
-                    if (workflowDesignerViewModel != null)
-                        workflowDesignerViewModel.PaneToolWindow = paneToolWindow;
                 }
                 
             }
         }
-
-        private void DockManager_OnToolWindowUnLoaded(object sender, PaneToolWindowEventArgs e)
-        {
-        }
+        
     }
 }
