@@ -27,6 +27,7 @@ using Dev2.Interfaces;
 using Microsoft.CSharp.Activities;
 using Newtonsoft.Json;
 using Warewolf.Storage;
+// ReSharper disable NonReadonlyMemberInGetHashCode
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
