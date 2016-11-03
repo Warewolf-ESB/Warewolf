@@ -87660,6 +87660,7 @@ namespace Warewolf.UITests
                 {
                     this.mDuplicateButton = new WpfButton(this);
                     #region Search Criteria
+                    this.mDuplicateButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Duplicate this test";
                     this.mDuplicateButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
