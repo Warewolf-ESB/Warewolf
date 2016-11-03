@@ -1745,7 +1745,6 @@ namespace Warewolf.UITests
             var testEnabledSelector = GetTestRunState(testInstance, currentTest).Checked;
             var testNeverRun = GetSelectedTestNeverRunDisplay(currentTest, testInstance);
 
-            //Assert.AreEqual(testInstance + 1, testsListBox.GetContent().Length);
             Assert.AreEqual("Never run", testNeverRun.DisplayText);
             AssertTestResults(TestResultEnum.Pending, testInstance, currentTest);
             Assert.IsTrue(testNameText.Exists, string.Format("Test{0} Name textbox does not exist after clicking Create New Test", testInstance));

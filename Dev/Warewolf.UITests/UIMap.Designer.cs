@@ -4351,7 +4351,8 @@ namespace Warewolf.UITests
             Mouse.StopDragging(flowchart, new Point(309, 128));
 
             // Verify that the 'Exists' property of 'SmallViewContent' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.SmallViewContentCustomExists, smallViewContentCustom.Exists, "Done button does not exist after dragging RabbitMq tool onto the design surface");
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.SmallViewContentCustomExists, smallViewContentCustom.Exists, "Small view does not exist after dragging RabbitMq publish tool onto the design su" +
+                    "rface");
         }
         
         /// <summary>
@@ -36021,7 +36022,8 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "DELETE Web Method(WebServiceDeleteDesigner)", PropertyExpressionOperator.Contains));
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DELETE Web Method - Outputs(WebServiceDeleteDesigner)";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "WebServiceDeleteDesigner";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -36137,8 +36139,8 @@ namespace Warewolf.UITests
                 {
                     this.mPasteButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mPasteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "PasteButton";
                     this.mPasteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Paste a customized response instead";
+                    this.mPasteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "PasteButton";
                     this.mPasteButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
