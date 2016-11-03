@@ -7,14 +7,14 @@ namespace Warewolf.UITests.Tools.Data
     public class Case_Convert
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Data Tools")]
         public void CaseConvertTool_OpenLargeViewUITest()
         {
             Uimap.Open_Case_Conversion_Tool_Large_View();
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Data Tools")]
         public void CaseConvertTool_OpenQVIUITest()
         {
             Uimap.Open_Case_Conversion_Tool_Qvi_Large_View();
