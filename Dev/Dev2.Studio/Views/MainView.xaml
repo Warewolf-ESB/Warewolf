@@ -201,7 +201,6 @@
                                             FlyoutAnimation="Resize"
                                             LayoutMode="FillContainer" ShowFloatingWindowsInTaskbar="True"
                                             ToolWindowLoaded="DockManager_OnToolWindowLoaded"
-                                            ToolWindowUnloaded="DockManager_OnToolWindowUnLoaded"
                                             UnpinnedTabHoverAction="Flyout">
                         <igDock:XamDockManager.Panes>
 
