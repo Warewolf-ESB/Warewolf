@@ -2566,14 +2566,10 @@ namespace Warewolf.UITests
             switch (RowNumber)
             {
                 case 2:
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params.TextboxText = VariableText;
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params.TextboxText = ValueText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2();
                     Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2.");
                     break;
                 default:
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText = VariableText;
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText = ValueText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
                     Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1.");
                     break;
