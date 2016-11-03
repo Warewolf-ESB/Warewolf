@@ -3749,6 +3749,6 @@ Please contact your Warewolf System Administrator.</value>
     <value>The task name may not contain the following characters</value>
   </data>
 <data name="NoReturnedDataExecuteSuccess" xml:space="preserve">
-    <value>{0} executed successfully and returned no data.</value>
+    <value>No data returned.   </value>
   </data>
 </root>
