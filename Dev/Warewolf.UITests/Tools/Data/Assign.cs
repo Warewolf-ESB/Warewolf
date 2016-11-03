@@ -102,7 +102,8 @@ namespace Warewolf.UITests.Tools.Data
         public void AssignToolDebugOutputUITest()
         {
             UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
-            UIMap.Debug_Workflow_With_Ribbon_Button();
+            UIMap.Press_F6();            
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             UIMap.Click_Debug_Output_Assign_Cell();
         }
 
