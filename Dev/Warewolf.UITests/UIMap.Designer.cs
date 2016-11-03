@@ -4325,7 +4325,7 @@ namespace Warewolf.UITests
             Mouse.StopDragging(flowchart, new Point(309, 128));
 
             // Verify that the 'Exists' property of 'SmallViewContent' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.SmallViewContentCustomExists, smallViewContentCustom.Exists, "Done button does not exist after dragging RabbitMq tool onto the design surface");
+            Assert.AreEqual(this.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.SmallViewContentCustomExists, smallViewContentCustom.Exists, "Small View does not exist after dragging RabbitMq tool onto the design surface");
         }
         
         /// <summary>

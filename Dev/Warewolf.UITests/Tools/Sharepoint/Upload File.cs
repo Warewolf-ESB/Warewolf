@@ -7,7 +7,7 @@ namespace Warewolf.UITests
     public class Upload_File
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Upload_File_SmallView_UITest()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile.SmallView.SourceCombobox.Exists, "Source combobox does not exist on sharepoint upload file tool small view after dragging in from the toolbox.");
@@ -18,7 +18,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Upload_File_LargeView_UITest()
         {
             UIMap.Open_Sharepoint_Upload_Tool_Large_View();

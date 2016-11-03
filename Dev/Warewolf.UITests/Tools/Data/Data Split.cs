@@ -7,14 +7,14 @@ namespace Warewolf.UITests.Tools.Data
     public class Data_Split
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Data Tools")]
         public void DataSplitTool_OpenLargeViewUITest()
         {
             Uimap.Open_Data_Split_Large_View();
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Data Tools")]
         public void DataSplitTool_OpenQVIUITest()
         {
             Uimap.Open_Data_Split_Tool_Qvi_Large_View();

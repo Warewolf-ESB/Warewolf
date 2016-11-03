@@ -51,10 +51,10 @@ variableExpression 	:
 	| EOF {[]}
 	| atom {[WarewolfAtomExpression $1]}
 recset : 
-    |OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $7; Index =tryParseIndex($4) ;}}
-	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $7; Index =Star ;}}
-    |OPENLANGUAGE VARNAME OPENBRACKET CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $6; Index =Last ;}}
-	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $7; Index = IndexExpression $4 ;}}
+    |OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = tryParseRecsetName($2); Column = tryParseColumn($7); Index =tryParseIndex($4) ;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = tryParseRecsetName($2); Column = tryParseColumn($7); Index =Star ;}}
+    |OPENLANGUAGE VARNAME OPENBRACKET CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = tryParseRecsetName($2); Column = tryParseColumn($6); Index =Last ;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = tryParseRecsetName($2); Column = tryParseColumn($7); Index = IndexExpression $4 ;}}
 
 jsonIdentifierExpression : 
 	|OPENLANGUAGE ATIDF VARNAME CLOSELANGAUGE { NameExpression  {Name= $3} }
@@ -78,10 +78,10 @@ nestedJsonIdentifier :
 	| VARNAME DOT nestedJsonIdentifier { NestedNameExpression {ObjectName = $1; Next = $3;} } 
 
 recsetName : 
-    |OPENLANGUAGE VARNAME OPENBRACKET CLOSEDBRACKET CLOSELANGAUGE{{Name = $2;Index = Last;}}
-	|OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET CLOSELANGAUGE{{Name = $2; Index = $4;}}
-	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE{{Name = $2; Index = Star;}}
-	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET CLOSELANGAUGE{{Name = $2;Index = IndexExpression $4;}}
+    |OPENLANGUAGE VARNAME OPENBRACKET CLOSEDBRACKET CLOSELANGAUGE{{Name = tryParseRecsetName($2);Index = Last;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET CLOSELANGAUGE{{Name = tryParseRecsetName($2); Index = $4;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE{{Name = tryParseRecsetName($2); Index = Star;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET CLOSELANGAUGE{{Name = tryParseRecsetName($2);Index = IndexExpression $4;}}
 index :
 	| INT {IntIndex ( System.Int32.Parse (  $1))}
 intindex :
