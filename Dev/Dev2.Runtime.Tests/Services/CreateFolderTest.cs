@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var resId = service.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
-            Assert.AreEqual(AuthorizationContext.Any, resId);
+            Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
         [TestMethod]
