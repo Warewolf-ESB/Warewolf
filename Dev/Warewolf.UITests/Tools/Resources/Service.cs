@@ -55,6 +55,7 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists
                 , "Hello World work flow does not exist after selecting OK from Service Picker");
             UIMap.Delete_HelloWorld_With_Context_Menu();
+            UIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
         }
 
         #region Additional test attributes
