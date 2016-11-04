@@ -2622,29 +2622,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 14")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Execute")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource Name", "Acceptance Testing Resources\\DECISION TESTING")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource Rights", "View, Execute")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Execute")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant14()
-        {
-            this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("15", "Users", "Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Contribute, View, Execute")]
@@ -2655,7 +2632,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Contribute, View, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant15()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant14()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("16", "Users", "Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2663,11 +2640,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 16")]
+            "ions: Variant 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Deploy From")]
@@ -2678,7 +2655,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Deploy From")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant16()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant15()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("17", "Users", "Deploy To, Deploy From", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Deploy To, Deploy From", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2686,11 +2663,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 17")]
+            "ions: Variant 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "View, Execute")]
@@ -2701,7 +2678,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "View, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant17()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant16()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("18", "Users", "View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2709,11 +2686,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 18")]
+            "ions: Variant 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "View, Execute, Contribute, Deploy To, Deploy From")]
@@ -2724,7 +2701,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "View, Execute, Contribute, Deploy To, Deploy From")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant18()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant17()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("19", "Users", "View, Execute, Contribute, Deploy To, Deploy From", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2732,11 +2709,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 19")]
+            "ions: Variant 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, View")]
@@ -2747,7 +2724,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant19()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant18()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("20", "Users", "Deploy To, View", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Deploy To, View", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2755,11 +2732,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 20")]
+            "ions: Variant 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 20")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Execute")]
@@ -2770,7 +2747,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant20()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant19()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("21", "Users", "Deploy To, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Deploy To, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2778,11 +2755,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 21")]
+            "ions: Variant 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Contribute, View, Execute")]
@@ -2793,7 +2770,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Contribute, View, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant21()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant20()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("22", "Users", "Deploy To, Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Deploy To, Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2801,11 +2778,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 22")]
+            "ions: Variant 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 22")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy From, View")]
@@ -2816,7 +2793,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy From, View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant22()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant21()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("23", "Users", "Deploy From, View", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Deploy From, View", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2824,11 +2801,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 23")]
+            "ions: Variant 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy From, Execute")]
@@ -2839,7 +2816,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy From, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant23()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant22()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("24", "Users", "Deploy From, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Deploy From, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2847,11 +2824,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 24")]
+            "ions: Variant 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy From, Contribute, View, Execute")]
@@ -2862,7 +2839,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy From, Contribute, View, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant24()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant23()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("25", "Users", "Deploy From, Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Deploy From, Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2870,11 +2847,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 25")]
+            "ions: Variant 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Deploy From, View")]
@@ -2885,7 +2862,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Deploy From, View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant25()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant24()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("26", "Users", "Deploy To, Deploy From, View", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Deploy To, Deploy From, View", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2893,11 +2870,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 26")]
+            "ions: Variant 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Deploy From, Execute")]
@@ -2908,7 +2885,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Deploy From, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant26()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant25()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("27", "Users", "Deploy To, Deploy From, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Deploy To, Deploy From, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2916,11 +2893,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 27")]
+            "ions: Variant 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 27")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Deploy From, Contribute, View, Execute, Administrator")]
@@ -2931,7 +2908,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Deploy From, Contribute, View, Execute, Administrator")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant27()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant26()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("28", "Users", "Deploy To, Deploy From, Contribute, View, Execute, Administrator", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", "Users", "All", "Deploy To, Deploy From, Contribute, View, Execute, Administrator", "Acceptance Testing Resources\\DECISION TESTING", "View, Execute", ((string[])(null)));
 #line hidden
@@ -2939,11 +2916,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 28")]
+            "ions: Variant 27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 28")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To")]
@@ -2954,7 +2931,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant28()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant27()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("29", "Users", "Deploy To", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy To", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -2962,11 +2939,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 29")]
+            "ions: Variant 28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 29")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy From")]
@@ -2977,7 +2954,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy From")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant29()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant28()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("30", "Users", "Deploy From", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy From", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -2985,11 +2962,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 30")]
+            "ions: Variant 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "View")]
@@ -3000,7 +2977,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant30()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant29()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("31", "Users", "View", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "View", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3008,11 +2985,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 31")]
+            "ions: Variant 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 31")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Execute")]
@@ -3023,7 +3000,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant31()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant30()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("32", "Users", "Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3031,11 +3008,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 32")]
+            "ions: Variant 31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 32")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Contribute, View, Execute")]
@@ -3046,7 +3023,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Contribute, View, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant32()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant31()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("33", "Users", "Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3054,11 +3031,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 33")]
+            "ions: Variant 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 33")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Deploy From")]
@@ -3069,7 +3046,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Deploy From")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant33()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant32()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("34", "Users", "Deploy To, Deploy From", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy To, Deploy From", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3077,11 +3054,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 34")]
+            "ions: Variant 33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 34")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "View, Execute")]
@@ -3092,7 +3069,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "View, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant34()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant33()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("35", "Users", "View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3100,11 +3077,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 35")]
+            "ions: Variant 34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 35")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "View, Execute, Contribute, Deploy To, Deploy From, Administrator")]
@@ -3115,7 +3092,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "View, Execute, Contribute, Deploy To, Deploy From, Administrator")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant35()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant34()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("36", "Users", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3123,11 +3100,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 36")]
+            "ions: Variant 35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 36")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, View")]
@@ -3138,7 +3115,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant36()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant35()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("37", "Users", "Deploy To, View", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy To, View", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3146,11 +3123,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 37")]
+            "ions: Variant 36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 37")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Execute")]
@@ -3161,7 +3138,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant37()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant36()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("38", "Users", "Deploy To, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy To, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3169,11 +3146,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 38")]
+            "ions: Variant 37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 38")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Contribute, View, Execute")]
@@ -3184,7 +3161,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Contribute, View, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant38()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant37()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("39", "Users", "Deploy To, Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy To, Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3192,11 +3169,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 39")]
+            "ions: Variant 38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 39")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy From, View")]
@@ -3207,7 +3184,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy From, View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant39()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant38()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("30", "Users", "Deploy From, View", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy From, View", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3215,11 +3192,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 40")]
+            "ions: Variant 39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 40")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy From, Execute")]
@@ -3230,7 +3207,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy From, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant40()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant39()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("31", "Users", "Deploy From, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy From, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3238,11 +3215,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 41")]
+            "ions: Variant 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 41")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy From, Contribute, View, Execute")]
@@ -3253,7 +3230,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy From, Contribute, View, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant41()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant40()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("32", "Users", "Deploy From, Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy From, Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3261,11 +3238,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 42")]
+            "ions: Variant 41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 42")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Deploy From, View")]
@@ -3276,7 +3253,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Deploy From, View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant42()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant41()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("33", "Users", "Deploy To, Deploy From, View", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy To, Deploy From, View", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3284,11 +3261,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 43")]
+            "ions: Variant 42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 43")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Deploy From, Execute")]
@@ -3299,7 +3276,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Deploy From, Execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant43()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant42()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("34", "Users", "Deploy To, Deploy From, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy To, Deploy From, Execute", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden
@@ -3307,11 +3284,11 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions on server for users and conflicting permiss" +
-            "ions: Variant 44")]
+            "ions: Variant 43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerPermissionsSecurity")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 44")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Deploy From, Contribute, View, Execute, Administrator")]
@@ -3322,7 +3299,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Deploy From, Contribute, View, Execute, Administrator")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Acceptance Testing Resources\\DECISION TESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
-        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant44()
+        public virtual void SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions_Variant43()
         {
             this.SettingSelectedResourcePermissionsOnServerForUsersAndConflictingPermissions("35", "Users", "Deploy To, Deploy From, Contribute, View, Execute, Administrator", "Acceptance Testing Resources\\DECISION TESTING", "None", "Users", "All", "Deploy To, Deploy From, Contribute, View, Execute, Administrator", "Acceptance Testing Resources\\DECISION TESTING", "None", ((string[])(null)));
 #line hidden

@@ -11,7 +11,7 @@
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 
-namespace Dev2.Runtime.Hosting
+namespace Dev2.Common
 {
     public class ExplorerRepositoryResult : IExplorerRepositoryResult
     {
@@ -21,7 +21,7 @@ namespace Dev2.Runtime.Hosting
             Status = status;
         }
 
-        public ExecStatus Status { get; private set; }
-        public string Message { get; private set; }
+        public ExecStatus Status { get; set; }
+        public string Message { get; set; }
     }
 }

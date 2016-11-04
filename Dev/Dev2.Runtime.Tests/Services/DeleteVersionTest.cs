@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -25,6 +26,34 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class DeleteVersionTest
     {
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var deleteVersion = new DeleteVersion();
+
+            //------------Execute Test---------------------------
+            var resId = deleteVersion.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var deleteVersion = new DeleteVersion();
+
+            //------------Execute Test---------------------------
+            var resId = deleteVersion.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Contribute, resId);
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeleteVersion_Name")]
@@ -92,6 +121,7 @@ namespace Dev2.Tests.Runtime.Services
             var des = serializer.Deserialize<ExecuteMessage>(ax);
             Assert.AreEqual(des.HasError, true);
         }
+        
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -99,6 +129,7 @@ namespace Dev2.Tests.Runtime.Services
         public void DeleteVersion_Execute_Valid_ExpectServerCalled()
         {
             //------------Setup for test--------------------------
+
             var deleteVersion = new DeleteVersion();
             var serializer = new Dev2JsonSerializer();
             var ws = new Mock<IWorkspace>();

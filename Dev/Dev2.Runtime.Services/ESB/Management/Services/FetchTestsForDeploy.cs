@@ -10,7 +10,10 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
+// ReSharper disable MemberCanBeInternal
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -22,6 +25,15 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private ITestCatalog _testCatalog;
 
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -40,7 +52,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-
                 var tests = TestCatalog.Fetch(resourceId);
                 foreach(var serviceTestModelTO in tests.Where(to => !string.IsNullOrEmpty(to.Password)))
                 {

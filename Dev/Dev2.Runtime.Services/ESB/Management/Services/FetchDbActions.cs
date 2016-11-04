@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Services.Security;
 using Warewolf.Core;
 
 // ReSharper disable UnusedMember.Global
@@ -30,6 +31,16 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchDbActions : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
+
         public string HandlesType()
         {
             return "FetchDbActions";

@@ -19,6 +19,7 @@ using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable PossibleNullReferenceException
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.Services
 {

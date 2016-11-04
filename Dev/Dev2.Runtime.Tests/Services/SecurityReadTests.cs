@@ -314,5 +314,33 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var securityRead = new SecurityRead();
+
+            //------------Execute Test---------------------------
+            var resId = securityRead.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var securityRead = new SecurityRead();
+
+            //------------Execute Test---------------------------
+            var resId = securityRead.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Any, resId);
+        }
+
     }
 }

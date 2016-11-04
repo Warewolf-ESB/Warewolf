@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -580,6 +581,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceModel_ToServiceDefinition")]
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public void ResourceModel_ToServiceDefinition_GivenHasMoreThanOneError_ThenThereShouldBeTwoErrorElements()
         {
             //------------Setup for test--------------------------

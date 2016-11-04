@@ -9,6 +9,7 @@
 // *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 // */
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -16,6 +17,7 @@ using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -64,5 +66,15 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         #endregion
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
     }
 }

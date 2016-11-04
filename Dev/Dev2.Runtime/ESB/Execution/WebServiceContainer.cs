@@ -13,11 +13,11 @@ using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Services.Execution;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    // BUG 9619 - 2013.06.05 - TWR - Refactored
     public class WebServiceContainer : EsbExecutionContainer
     {
         private readonly IServiceExecution _webserviceExecution;
@@ -39,6 +39,11 @@ namespace Dev2.Runtime.ESB.Execution
             _webserviceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
             var result = _webserviceExecution.Execute(out errors, update);
             return result;
+        }
+
+        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
+        {
+            return true;
         }
 
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)

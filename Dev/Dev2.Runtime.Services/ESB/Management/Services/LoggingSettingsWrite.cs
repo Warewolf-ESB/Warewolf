@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                throw new InvalidDataException(ErrorResource.InvalidSecuritySettings + string.Format(" Error: {0}", e.Message));
+                throw new InvalidDataException(ErrorResource.InvalidSecuritySettings + $" Error: {e.Message}");
             }
 
             var msg = new ExecuteMessage { HasError = false };
@@ -86,6 +86,15 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string HandlesType()
         {
             return "LoggingSettingsWriteService";
+        }
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
         }
     }
 }

@@ -958,7 +958,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer(reloadCatalogue);
-                CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != null, Children.Any(a => AllowResourceCheck));
+                if(explorerItems != null)
+                {
+                    CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != null, Children.Any(a => AllowResourceCheck));
+                }
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
@@ -1054,6 +1057,7 @@ namespace Warewolf.Studio.ViewModels
                 var existingItem = parent?.Children?.FirstOrDefault(model => model.ResourcePath.ToLowerInvariant() == explorerItem.ResourcePath.ToLower());
                 if (existingItem != null)
                 {
+                    existingItem.SetPermissions(explorerItem.Permissions, isDeploy);
                     CreateExplorerItemsSync(explorerItem.Children, server, existingItem, isDialog, isDeploy);
                     explorerItemModels.Add(existingItem);
                 }

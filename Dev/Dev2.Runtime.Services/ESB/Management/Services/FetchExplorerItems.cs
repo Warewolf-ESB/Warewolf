@@ -19,14 +19,27 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
+// ReSharper disable MemberCanBeInternal
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchExplorerItems : IEsbManagementEndpoint
     {
-        private IExplorerServerResourceRepository _serverExplorerRepository;
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
 
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
+
+        private IExplorerServerResourceRepository _serverExplorerRepository;
+      
         public string HandlesType()
         {
             return "FetchExplorerItemsService";
@@ -45,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 StringBuilder tmp;
                 values.TryGetValue("ReloadResourceCatalogue", out tmp);
-                String reloadResourceCatalogueString = "";
+                string reloadResourceCatalogueString = "";
                 if (tmp != null)
                 {
                     reloadResourceCatalogueString = tmp.ToString();
