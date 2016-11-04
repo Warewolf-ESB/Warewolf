@@ -11,8 +11,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void DragAndDropServiceFromExplorerUITest()
         {
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests\Acceptance Testing Resources";
-            Assert.IsFalse(Directory.Exists(resourcesFolder));
+            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
             UIMap.Move_AcceptanceTestd_To_AcceptanceTestingResopurces();
             UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Assert.IsTrue(Directory.Exists(resourcesFolder));
@@ -31,7 +30,6 @@ namespace Warewolf.UITests
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.Move_AcceptanceTestd_To_AcceptanceTestingResopurces();
             Assert.IsTrue(Directory.Exists(resourcesFolder));
-            Assert.IsFalse(Directory.Exists(acceptanceResources));
         }
 
         [TestMethod]
