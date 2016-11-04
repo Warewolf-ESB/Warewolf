@@ -51,7 +51,7 @@ namespace Dev2.Utilities
 
         public StringBuilder SerializeWorkflow(ModelService modelService)
         {
-            var builder = EnsureImplementation(modelService);
+            var builder = GetActivityBuilder(modelService);
             var text = GetXamlDefinition(builder);
 
             return text;
@@ -138,6 +138,17 @@ namespace Dev2.Utilities
 
         public ActivityBuilder EnsureImplementation(ModelService modelService)
         {
+            var builder = GetActivityBuilder(modelService);
+            var chart = builder?.Implementation as Flowchart;
+            if(chart != null)
+            {
+                EnsureImplementation(builder, chart);
+            }
+            return builder;
+        }
+
+        private static ActivityBuilder GetActivityBuilder(ModelService modelService)
+        {
             if(modelService?.Root == null)
             {
                 return null;
@@ -146,11 +157,6 @@ namespace Dev2.Utilities
             var root = modelService.Root.GetCurrentValue();
 
             var builder = root as ActivityBuilder;
-            var chart = builder?.Implementation as Flowchart;
-            if(chart != null)
-            {
-                EnsureImplementation(builder, chart);
-            }
             return builder;
         }
 
@@ -316,9 +322,10 @@ namespace Dev2.Utilities
                 variables.Add(new Variable<Unlimited.Applications.BusinessDesignStudio.Activities.Util> { Name = "t" });
                 variables.Add(new Variable<Dev2DataListDecisionHandler> { Name = "Dev2DecisionHandler" });
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                Dev2Logger.Error("Error Setting Variables",e);
+                variables = new Collection<Variable>();
+                variables.Clear();
             }
         }
 
