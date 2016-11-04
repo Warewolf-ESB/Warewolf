@@ -93,7 +93,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             Assert.IsNotNull(vm);
             Assert.IsNotNull(vm.EditRabbitMQSourceCommand);
             Assert.IsNotNull(vm.NewRabbitMQSourceCommand);
-            Assert.IsTrue(vm.ShowLarge);
+            Assert.IsFalse(vm.ShowLarge);
             Assert.AreEqual(vm.ThumbVisibility, Visibility.Visible);
             Assert.IsNotNull(vm.RabbitMQSources);
             Assert.IsFalse(vm.IsRabbitMQSourceFocused);

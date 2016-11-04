@@ -40,13 +40,14 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox;
+            WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox;
             #endregion
 
             // Type '[[SomeVariable]]' in 'UI_TextBox_AutoID' text box
             textbox.Text = this.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText;
 
-            // Type '50' in 'UI_TextBox_AutoID' text box
-            textbox.Text = this.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText1;
+            // Type '50' in 'Text' text box
+            textbox1.Text = this.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText1;
         }
         
         /// <summary>
@@ -944,8 +945,8 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton;
-            WpfButton pasteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.PasteButton;
-            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.TestButton;
+            WpfButton pasteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DsfWebDeleteOutputsLargeView.PasteButton;
+            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DsfWebDeleteOutputsLargeView.TestButton;
             #endregion
 
             // Click 'Generate Outputs' button
@@ -4159,10 +4160,12 @@ namespace Warewolf.UITests
             // Type 'Assign' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
+            // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
+            Playback.Wait(1000);
             Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.MultiAssignExists, multiAssign.Exists, "Toolbox Multiassign does not exist");
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(multiAssign, new Point(13, 17));
             Mouse.StopDragging(flowchart, new Point(307, 128));
@@ -4662,7 +4665,8 @@ namespace Warewolf.UITests
             // Type 'Copy File' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(311, 128));
             Mouse.StartDragging(copyFile, new Point(10, 16));
             Mouse.StopDragging(flowchart, new Point(311, 128));
@@ -4692,7 +4696,8 @@ namespace Warewolf.UITests
             // Type 'Create List Item' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(311, 128));
             Mouse.StartDragging(createListItems, new Point(10, 16));
             Mouse.StopDragging(flowchart, new Point(311, 128));
@@ -4723,7 +4728,8 @@ namespace Warewolf.UITests
             // Type 'Delete List Item' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(306, 131));
             Mouse.StartDragging(deleteListItems, new Point(16, 5));
             Mouse.StopDragging(flowchart, new Point(306, 131));
@@ -4748,7 +4754,8 @@ namespace Warewolf.UITests
             // Type 'Download' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(307, 129));
             Mouse.StartDragging(downloadFile, new Point(124, 593));
             Mouse.StopDragging(flowchart, new Point(307, 129));
@@ -4775,7 +4782,8 @@ namespace Warewolf.UITests
             // Type 'Move' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(311, 128));
             Mouse.StartDragging(moveFile, new Point(10, 16));
             Mouse.StopDragging(flowchart, new Point(311, 128));
@@ -4803,7 +4811,8 @@ namespace Warewolf.UITests
             // Type 'Read' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(303, 128));
             Mouse.StartDragging(readFolder, new Point(13, 15));
             Mouse.StopDragging(flowchart, new Point(303, 128));
@@ -4828,7 +4837,8 @@ namespace Warewolf.UITests
             // Type 'Read List Item' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(303, 128));
             Mouse.StartDragging(readListItems, new Point(13, 15));
             Mouse.StopDragging(flowchart, new Point(303, 128));
@@ -4853,7 +4863,8 @@ namespace Warewolf.UITests
             // Type 'Update List Item' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(300, 127));
             Mouse.StartDragging(updateListItems, new Point(17, 9));
             Mouse.StopDragging(flowchart, new Point(300, 127));
@@ -14658,7 +14669,7 @@ namespace Warewolf.UITests
         public string TextboxText = "[[SomeVariable]]";
         
         /// <summary>
-        /// Type '50' in 'UI_TextBox_AutoID' text box
+        /// Type '50' in 'Text' text box
         /// </summary>
         public string TextboxText1 = "50";
         #endregion
@@ -17246,7 +17257,7 @@ namespace Warewolf.UITests
         public string SearchTextBoxText = "Assign";
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
+        /// Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
         /// </summary>
         public bool MultiAssignExists = true;
         
@@ -33769,6 +33780,18 @@ namespace Warewolf.UITests
                 return this.mPrefixcontainsinvaliText;
             }
         }
+        
+        public DsfWebDeleteOutputsLargeView DsfWebDeleteOutputsLargeView
+        {
+            get
+            {
+                if ((this.mDsfWebDeleteOutputsLargeView == null))
+                {
+                    this.mDsfWebDeleteOutputsLargeView = new DsfWebDeleteOutputsLargeView(this);
+                }
+                return this.mDsfWebDeleteOutputsLargeView;
+            }
+        }
         #endregion
         
         #region Fields
@@ -33941,6 +33964,8 @@ namespace Warewolf.UITests
         private WpfText mErrors;
         
         private PrefixcontainsinvaliText mPrefixcontainsinvaliText;
+        
+        private DsfWebDeleteOutputsLargeView mDsfWebDeleteOutputsLargeView;
         #endregion
     }
     
@@ -36036,8 +36061,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DELETE Web Method - Outputs(WebServiceDeleteDesigner)";
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "WebServiceDeleteDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DELETE Web Method(WebServiceDeleteDesigner)";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -39563,6 +39587,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "1";
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
@@ -39749,6 +39774,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "2";
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
@@ -39955,6 +39981,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
@@ -81868,6 +81895,63 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfHyperlink mPrefixcontainsinvaliHyperlink;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DsfWebDeleteOutputsLargeView : WpfCustom
+    {
+        
+        public DsfWebDeleteOutputsLargeView(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WebServiceDeleteDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DELETE Web Method - Outputs(WebServiceDeleteDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton TestButton
+        {
+            get
+            {
+                if ((this.mTestButton == null))
+                {
+                    this.mTestButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
+                    this.mTestButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Test the procedure or function";
+                    this.mTestButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestButton;
+            }
+        }
+        
+        public WpfButton PasteButton
+        {
+            get
+            {
+                if ((this.mPasteButton == null))
+                {
+                    this.mPasteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mPasteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Paste a customized response instead";
+                    this.mPasteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "PasteButton";
+                    this.mPasteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mPasteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mTestButton;
+        
+        private WpfButton mPasteButton;
         #endregion
     }
     
