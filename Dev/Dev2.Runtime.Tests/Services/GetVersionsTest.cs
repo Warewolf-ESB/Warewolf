@@ -36,10 +36,10 @@ using Moq;
         public void GetResourceID_ShouldReturnEmptyGuid()
         {
             //------------Setup for test--------------------------
-            var clearLog = new ClearLog();
+            var getVersions = new GetVersions();
 
             //------------Execute Test---------------------------
-            var resId = clearLog.GetResourceID(new Dictionary<string, StringBuilder>());
+            var resId = getVersions.GetResourceID(new Dictionary<string, StringBuilder>());
             //------------Assert Results-------------------------
             Assert.AreEqual(Guid.Empty, resId);
         }
@@ -50,10 +50,10 @@ using Moq;
         public void GetAuthorizationContextForService_ShouldReturnContext()
         {
             //------------Setup for test--------------------------
-            var clearLog = new ClearLog();
+            var getVersions = new GetVersions();
 
             //------------Execute Test---------------------------
-            var resId = clearLog.GetAuthorizationContextForService();
+            var resId = getVersions.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }

@@ -16,7 +16,6 @@ using System.Threading;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management;
-using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Execution;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
@@ -123,10 +122,10 @@ namespace Dev2.Tests.Runtime.Services
         public void GetResourceID_ShouldReturnEmptyGuid()
         {
             //------------Setup for test--------------------------
-            var clearLog = new ClearLog();
+            var terminateExecution = new TerminateExecution();
 
             //------------Execute Test---------------------------
-            var resId = clearLog.GetResourceID(new Dictionary<string, StringBuilder>());
+            var resId = terminateExecution.GetResourceID(new Dictionary<string, StringBuilder>());
             //------------Assert Results-------------------------
             Assert.AreEqual(Guid.Empty, resId);
         }
@@ -137,10 +136,10 @@ namespace Dev2.Tests.Runtime.Services
         public void GetAuthorizationContextForService_ShouldReturnContext()
         {
             //------------Setup for test--------------------------
-            var clearLog = new ClearLog();
+            var terminateExecution = new TerminateExecution();
 
             //------------Execute Test---------------------------
-            var resId = clearLog.GetAuthorizationContextForService();
+            var resId = terminateExecution.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }

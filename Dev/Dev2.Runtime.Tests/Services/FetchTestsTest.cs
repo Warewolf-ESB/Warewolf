@@ -23,10 +23,10 @@ namespace Dev2.Tests.Runtime.Services
         public void GetResourceID_ShouldReturnEmptyGuid()
         {
             //------------Setup for test--------------------------
-            var clearLog = new ClearLog();
+            var fetchTests = new FetchTests();
 
             //------------Execute Test---------------------------
-            var resId = clearLog.GetResourceID(new Dictionary<string, StringBuilder>());
+            var resId = fetchTests.GetResourceID(new Dictionary<string, StringBuilder>());
             //------------Assert Results-------------------------
             Assert.AreEqual(Guid.Empty, resId);
         }
@@ -37,12 +37,12 @@ namespace Dev2.Tests.Runtime.Services
         public void GetAuthorizationContextForService_ShouldReturnContext()
         {
             //------------Setup for test--------------------------
-            var clearLog = new ClearLog();
+            var fetchTests = new FetchTests();
 
             //------------Execute Test---------------------------
-            var resId = clearLog.GetAuthorizationContextForService();
+            var resId = fetchTests.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
-            Assert.AreEqual(AuthorizationContext.Any, resId);
+            Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
         [TestMethod]
