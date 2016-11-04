@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Execution;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -115,6 +116,33 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(0, service.AssociatedServices.Count);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var terminateExecution = new TerminateExecution();
+
+            //------------Execute Test---------------------------
+            var resId = terminateExecution.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var terminateExecution = new TerminateExecution();
+
+            //------------Execute Test---------------------------
+            var resId = terminateExecution.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Any, resId);
+        }
         private Dictionary<string, StringBuilder> GetDictionary()
         {
             var dict = new Dictionary<string, StringBuilder>();

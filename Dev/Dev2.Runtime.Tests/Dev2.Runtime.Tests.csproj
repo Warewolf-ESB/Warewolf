@@ -55,9 +55,9 @@
       <HintPath>..\packages\AeroWizard.2.1.7\lib\net40\AeroWizard.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
+    <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="CubicOrange.Windows.Forms.ActiveDirectory, Version=2.5.2.0, Culture=neutral, PublicKeyToken=4d9365c354fd6f36, processorArchitecture=MSIL">
       <HintPath>..\packages\TaskSchedulerEditor.2.5.20\lib\net40\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
@@ -187,7 +187,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -299,7 +299,6 @@
     <Compile Include="Services\ClearLogsTest.cs" />
     <Compile Include="Services\DeleteLogTests.cs" />
     <Compile Include="Services\FetchDebugItemFileTests.cs" />
-    <Compile Include="Services\FindLogDirectoryTests.cs" />
     <Compile Include="Services\GetDatabaseColumnsForTableTests.cs" />
     <Compile Include="Services\GetDatabaseTablesTests.cs" />
     <Compile Include="Services\GetVersionsTest.cs" />
@@ -314,7 +313,6 @@
     <Compile Include="Services\HostSecureConfigTests.cs" />
     <Compile Include="Services\MockServiceExecutionAbstract.cs" />
     <Compile Include="Services\MoveItemsServiceTest.cs" />
-    <Compile Include="Services\RenameCategoryResourceTests.cs" />
     <Compile Include="Services\RenameItemsTest.cs" />
     <Compile Include="Services\RollBackToTest.cs" />
     <Compile Include="Services\SaveScheduledResourceTest.cs" />
@@ -325,12 +323,10 @@
     <Compile Include="Services\SettingsReadTests.cs" />
     <Compile Include="Services\SettingsWriteTests.cs" />
     <Compile Include="Services\TerminateExecutionTest.cs" />
-    <Compile Include="Services\RenameResourceTests.cs" />
     <Compile Include="Services\AbstractServiceExecutionTests.cs" />
     <Compile Include="Services\PingTests.cs" />
     <Compile Include="Services\TestSettingsRead.cs" />
     <Compile Include="Services\SavePerformanceCountesTests.cs" />
-    <Compile Include="Services\FetchResourceDefinitionTests.cs" />
     <Compile Include="Util\FindResourceHelperTest.cs" />
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />

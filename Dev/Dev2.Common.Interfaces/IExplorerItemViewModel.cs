@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Security;
+
 // ReSharper disable UnusedMemberInSuper.Global
 // ReSharper disable UnusedMember.Global
 
@@ -54,5 +56,7 @@ namespace Dev2.Common.Interfaces
         void ShowErrorMessage(string errorMessage, string header);
 
         void ShowDependencies();
+
+        void SetPermissions(Permissions explorerItemPermissions, bool isDeploy = false);
     }
 }

@@ -6,6 +6,7 @@ using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -16,6 +17,34 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class FetchTestsTest
     {
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var fetchTests = new FetchTests();
+
+            //------------Execute Test---------------------------
+            var resId = fetchTests.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var fetchTests = new FetchTests();
+
+            //------------Execute Test---------------------------
+            var resId = fetchTests.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Contribute, resId);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FetchTests_HandlesType")]

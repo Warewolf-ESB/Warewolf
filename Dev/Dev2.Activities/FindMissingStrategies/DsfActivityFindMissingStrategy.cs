@@ -54,6 +54,7 @@ namespace Dev2.FindMissingStrategies
                     XElement inputMappingElement = XElement.Parse(act.InputMapping);
                     const string InputElement = "Input";
                     IEnumerable<XElement> inputs = inputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(InputElement, StringComparison.InvariantCultureIgnoreCase));
+                    // ReSharper disable once PossibleNullReferenceException
                     results.AddRange(inputs.Select(element => element.Attribute("Source").Value).Where(val => !string.IsNullOrEmpty(val)));
                 }
 
@@ -62,6 +63,7 @@ namespace Dev2.FindMissingStrategies
                     XElement outputMappingElement = XElement.Parse(act.OutputMapping);
                     const string OutputElement = "Output";
                     IEnumerable<XElement> inputs = outputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(OutputElement, StringComparison.InvariantCultureIgnoreCase));
+                    // ReSharper disable once PossibleNullReferenceException
                     results.AddRange(inputs.Select(element => element.Attribute("Value").Value).Where(val => !string.IsNullOrEmpty(val)));
                 }
 

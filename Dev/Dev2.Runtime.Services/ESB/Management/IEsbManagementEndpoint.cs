@@ -8,10 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces.Patterns;
 using Dev2.DynamicServices;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management
@@ -35,6 +37,9 @@ namespace Dev2.Runtime.ESB.Management
         /// <returns></returns>
         DynamicService CreateServiceEntry();
 
+        Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs);
+
+        AuthorizationContext GetAuthorizationContextForService();
     }
 
 

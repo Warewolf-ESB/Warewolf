@@ -211,8 +211,18 @@ namespace Dev2.Studio.ViewModels.Workflow
             SetPermission(ResourceModel.UserPermissions);
         }
 
-        public void SetPermission(Permissions permission, bool isDeploy = false)
+        public void SetPermission(Permissions permission)
         {
+            SetNonePermissions();
+
+            if (permission.HasFlag(Permissions.View))
+            {
+                SetViewPermissions();
+            }
+            if (permission.HasFlag(Permissions.Execute))
+            {
+                SetExecutePermissions();
+            }
             if (permission.HasFlag(Permissions.Contribute))
             {
                 SetContributePermissions();
@@ -221,6 +231,37 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 SetAdministratorPermissions();
             }
+        }
+
+        private void SetExecutePermissions()
+        {
+            CanDebugInputs = true;
+            CanDebugStudio = true;
+            CanDebugBrowser = true;
+            CanRunAllTests = !ResourceModel.IsNewWorkflow;
+            CanViewSwagger = !ResourceModel.IsNewWorkflow;
+            CanCopyUrl = !ResourceModel.IsNewWorkflow;
+        }
+
+        private void SetViewPermissions()
+        {
+            CanViewSwagger = true;
+            CanCopyUrl = true;
+        }
+
+        private void SetNonePermissions()
+        {
+            CanDebugInputs = false;
+            CanDebugStudio = false;
+            CanDebugBrowser = false;
+            CanCreateSchedule = false;
+            CanCreateTest = false;
+            CanRunAllTests = false;
+            CanDuplicate = false;
+            CanDeploy = false;
+            CanShowDependencies = false;
+            CanViewSwagger = false;
+            CanCopyUrl = false;
         }
 
         private void SetAdministratorPermissions()
