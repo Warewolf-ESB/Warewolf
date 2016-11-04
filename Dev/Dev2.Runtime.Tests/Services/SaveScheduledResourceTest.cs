@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Scheduler;
+using Dev2.Services.Security;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,6 +29,34 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class SaveScheduledResourceTest
     {
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var saveScheduledResource = new SaveScheduledResource();
+
+            //------------Execute Test---------------------------
+            var resId = saveScheduledResource.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var saveScheduledResource = new SaveScheduledResource();
+
+            //------------Execute Test---------------------------
+            var resId = saveScheduledResource.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Contribute, resId);
+        }
+
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Save")]
         [TestMethod]

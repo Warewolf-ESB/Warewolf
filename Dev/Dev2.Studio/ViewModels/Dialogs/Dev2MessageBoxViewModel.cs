@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 using System.Xml.Linq;
@@ -154,7 +155,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
 
         private static string GetDontShowAgainPersistencePath()
         {
-            string path = Path.Combine(new[] 
+            var path = Path.Combine(new[] 
                 { 
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
                     StringResources.App_Data_Directory, 
@@ -169,15 +170,16 @@ namespace Dev2.Studio.ViewModels.Dialogs
             return Path.Combine(path, "DontShowAgainOptions.xml");
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private static void LoadDontShowAgainOptions()
         {
             try
             {
-                IFilePersistenceProvider filePersistenceProviderInst = CustomContainer.Get<IFilePersistenceProvider>();
-                string data = filePersistenceProviderInst.Read(GetDontShowAgainPersistencePath());
+                var filePersistenceProviderInst = CustomContainer.Get<IFilePersistenceProvider>();
+                var data = filePersistenceProviderInst.Read(GetDontShowAgainPersistencePath());
                 _dontShowAgainOptions = new Dictionary<string, MessageBoxResult>();
 
-                foreach(XElement element in XElement.Parse(data).Elements())
+                foreach(var element in XElement.Parse(data).Elements())
                 {
                     var xAttribute = element.Attribute("Key");
                     if(xAttribute != null)
@@ -253,7 +255,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
             bool isError, bool isInfo, bool isQuestion, List<string> urlsFound)
         {
             // Check for don't show again option
-            Tuple<bool, MessageBoxResult> dontShowAgainOption = GetDontShowAgainOption(dontShowAgainKey);
+            var dontShowAgainOption = GetDontShowAgainOption(dontShowAgainKey);
             if(dontShowAgainOption.Item1)
             {
                 // Return the remembered option

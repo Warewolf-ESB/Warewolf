@@ -35,7 +35,6 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
 using Dev2.Explorer;
-using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
@@ -43,7 +42,6 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Dev2.Utilities;
-using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -2589,44 +2587,7 @@ namespace Dev2.Tests.Runtime.Hosting
         #endregion
 
         #region Rename Resource
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("RenameResourceService_Execute")]
-        public void RenameResourceService_Execute_DashesInNewName_ResourceFileNameChanged()
-        {
-            var workspace = Guid.NewGuid();
-            var resourceID = Guid.NewGuid();
-            const string newResourceName = "New-Name-With-Dashes";
-            const string oldResourceName = "Old Resource Name";
-
-            var getCatalog = ResourceCatalog.Instance;
-            var resource = new Resource
-            {
-                ResourceName = oldResourceName,
-                ResourceID = resourceID,
-                ResourceType = "Unknown"
-            };
-            getCatalog.SaveResource(workspace, resource, "");
-            var renameResourceService = new RenameResource();
-            var mockedWorkspace = new Mock<IWorkspace>();
-            mockedWorkspace.Setup(ws => ws.ID).Returns(workspace);
-            Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\"));
-            Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\", workspace));
-            Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\", workspace, "\\Services\\"));
-
-            //------------Execute Test---------------------------
-            var result = renameResourceService.Execute(new Dictionary<string, StringBuilder> { { "ResourceID", new StringBuilder(resourceID.ToString()) }, { "NewName", new StringBuilder(newResourceName) } }, mockedWorkspace.Object);
-
-            var obj = ConvertToMsg(result.ToString());
-            var renamedResource = getCatalog.GetResource(workspace, resourceID);
-            Assert.IsNotNull(renamedResource);
-            // Assert Resource FileName Changed
-            Assert.IsTrue(obj.Message.Contains("Renamed Resource"));
-            Assert.IsTrue(File.Exists(renamedResource.FilePath), "Resource does not exist");
-            StringAssert.Contains(renamedResource.FilePath, newResourceName + ".xml");
-        }
-
+        
         #endregion
 
         #region GetResourceList

@@ -19,7 +19,9 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
+// ReSharper disable MemberCanBeInternal
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -27,6 +29,26 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         IServerVersionRepository _serverExplorerRepository;
 
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            StringBuilder tmp;
+            requestArgs.TryGetValue("resourceId", out tmp);
+            if (tmp != null)
+            {
+                Guid resourceId;
+                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                {
+                    return resourceId;
+                }
+            }
+
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
         #region Implementation of ISpookyLoadable<string>
 
         public string HandlesType()
@@ -66,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var guid = Guid.Parse(values["resourceId"].ToString());
                     var version = values["versionNumber"].ToString();
-                    Dev2Logger.Info(String.Format("Delete Version. ResourceId:{0} VersionNumber{1}",guid,version));
+                    Dev2Logger.Info($"Delete Version. ResourceId:{guid} VersionNumber{version}");
                     StringBuilder tmp;
                     string resourcePath = "";
                     values.TryGetValue("resourcePath", out tmp);
@@ -79,7 +101,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(String.Format("Delete Version Error."),e);
+                    Dev2Logger.Error("Delete Version Error.",e);
                     execMessage.HasError = true;
                     execMessage.Message = new StringBuilder( e.Message);
                 }

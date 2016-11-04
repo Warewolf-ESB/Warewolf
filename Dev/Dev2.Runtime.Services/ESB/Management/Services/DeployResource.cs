@@ -8,16 +8,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -28,6 +32,35 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class DeployResource : IEsbManagementEndpoint
     {
+        private bool _existingResource;
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            _existingResource = false;
+            StringBuilder resourceDefinition;
+            requestArgs.TryGetValue("ResourceDefinition", out resourceDefinition);
+            if (resourceDefinition!=null && resourceDefinition.Length!=0)
+            {
+                var xml = resourceDefinition.ToXElement();
+                var resource = new Resource(xml);
+
+                var res = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
+                if (res != null)
+                {
+                    _existingResource = true;
+                    return res.ResourceID;
+                }
+            }
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            if (_existingResource)
+            {
+                return AuthorizationContext.Contribute;
+            }
+            return AuthorizationContext.DeployTo;
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             StringBuilder resourceDefinition;

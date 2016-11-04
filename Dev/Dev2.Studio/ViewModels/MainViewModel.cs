@@ -633,7 +633,10 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+                if (contextualResourceModel != null)
+                {
+                    _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+                }
             }
         }
 

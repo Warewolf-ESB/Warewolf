@@ -7,6 +7,7 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -818,6 +819,46 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsFalse(_target.Children.Any());
+            parentMock.VerifySet(it => it.Children = It.IsAny<ObservableCollection<IExplorerItemViewModel>>());
+          //  Assert.IsTrue(collection.Any());
+        }
+
+        [TestMethod]
+        public void TestCreateExplorerItemsSetsPermissions()
+        {
+            //arrange
+            var explorerItem = new Mock<IExplorerItem>();
+            explorerItem.SetupGet(it => it.DisplayName).Returns("someDisplayName");
+            explorerItem.SetupGet(it => it.ResourceId).Returns(Guid.NewGuid());
+            explorerItem.SetupGet(it => it.ResourceType).Returns("Folder");
+            explorerItem.SetupGet(it => it.IsFolder).Returns(true);
+            explorerItem.SetupGet(it => it.ResourcePath).Returns("someDisplayName");
+            var childExplorerItem = new Mock<IExplorerItem>();
+            childExplorerItem.SetupGet(it => it.DisplayName).Returns("someDisplayName");
+            childExplorerItem.SetupGet(it => it.ResourceId).Returns(Guid.NewGuid());
+            childExplorerItem.SetupGet(it => it.ResourceType).Returns("Folder");
+            childExplorerItem.SetupGet(it => it.IsFolder).Returns(true);
+            childExplorerItem.SetupGet(it => it.ResourcePath).Returns("someDisplayName");
+            var parentMock = new Mock<IExplorerTreeItem>();
+            var child = new Mock<IExplorerItemViewModel>();
+            child.SetupGet(it => it.ResourcePath).Returns("someDisplayName");
+            var collectionParent = new AsyncObservableCollection<IExplorerItemViewModel>() { child.Object };
+            parentMock.SetupGet(it => it.Children).Returns(collectionParent);
+            var collectionItem = new AsyncObservableCollection<IExplorerItem>() {childExplorerItem.Object};
+            explorerItem.SetupGet(it => it.Children).Returns(collectionItem);
+            var serverMock = new Mock<IServer>();
+            var permissions = new List<IWindowsGroupPermission>();
+            serverMock.SetupGet(it => it.Permissions).Returns(permissions);
+            var items = new List<IExplorerItem>() {explorerItem.Object};
+            _target.SelectAction = (a) => { };
+
+            //act
+            _target.CreateExplorerItemsSync(items,serverMock.Object,parentMock.Object,true,true);
+
+            //assert
+            Assert.IsFalse(_target.Children.Any());
+
+            child.Verify(model => model.SetPermissions(It.IsAny<Permissions>(),It.IsAny<bool>()));
             parentMock.VerifySet(it => it.Children = It.IsAny<ObservableCollection<IExplorerItemViewModel>>());
           //  Assert.IsTrue(collection.Any());
         }

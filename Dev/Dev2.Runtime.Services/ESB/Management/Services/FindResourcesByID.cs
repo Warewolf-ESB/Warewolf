@@ -20,6 +20,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -30,8 +31,17 @@ namespace Dev2.Runtime.ESB.Management.Services
     // ReSharper disable InconsistentNaming
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FindResourcesByID : IEsbManagementEndpoint
-    // ReSharper restore InconsistentNaming
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+           return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -52,8 +62,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     type = tmp.ToString();
                 }
-                Dev2Logger.Info("Find Resource By Id. " + guidCsv);
-                // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
 
                 var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", guidCsv }, { "type", type } });
 
