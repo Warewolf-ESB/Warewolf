@@ -638,6 +638,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void SetPermission(Permissions permission, bool isDeploy = false)
         {
+            SetNonePermissions();
             if (permission.HasFlag(Permissions.DeployFrom))
             {
                 CanDeploy = true;
@@ -658,11 +659,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 SetAdministratorPermissions();
             }
-
-            if (permission.Equals(Permissions.None))
-            {
-                SetNonePermissions();
-            }
+            
         }
 
         private void SetNonePermissions()
@@ -670,11 +667,18 @@ namespace Warewolf.Studio.ViewModels
             CanRename = false;
             CanEdit = false;
             CanDuplicate = false;
+            CanDebugInputs = false;
+            CanDebugStudio = false;
+            CanDebugBrowser = false;
+            CanCreateSchedule = false;
+            CanCreateTest = false;
+            CanViewRunAllTests = false;
             CanCreateTest = false;
             CanDelete = false;
             CanCreateFolder = false;
             CanDeploy = false;
             CanCreateWorkflowService = false;
+            CanShowDependencies = false;
             CanCreateSource = false;
             CanView = false;
             CanViewApisJson = false;
@@ -700,12 +704,12 @@ namespace Warewolf.Studio.ViewModels
             CanMove = true;
             CanViewSwagger = true;
             CanShowVersions = true;
+            CanShowDependencies = true;
             CanDebugInputs = true;
             CanDebugStudio = true;
             CanDebugBrowser = true;
             CanCreateSchedule = true;
             CanCreateTest = true;
-            CanViewRunAllTests = true;
         }
 
         private void SetContributePermissions(bool isDeploy)
@@ -718,6 +722,7 @@ namespace Warewolf.Studio.ViewModels
             CanViewRunAllTests = true;
             CanDelete = true;
             CanCreateFolder = true;
+            CanShowDependencies = true;
             CanCreateWorkflowService = true;
             CanCreateSource = true;
             CanShowVersions = true;

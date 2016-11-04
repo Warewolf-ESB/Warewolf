@@ -67,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public AuthorizationContext GetAuthorizationContextForService()
         {
-            return AuthorizationContext.Any;
+            return AuthorizationContext.Contribute;
         }
 
         public IExplorerServerResourceRepository ServerExplorerRepo

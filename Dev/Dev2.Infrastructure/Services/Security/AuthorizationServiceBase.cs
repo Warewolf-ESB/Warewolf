@@ -153,12 +153,12 @@ namespace Dev2.Services.Security
 
         protected bool IsAuthorizedToConnect(IPrincipal principal)
         {
-            return IsAuthorized(AuthorizationContext.Any, () => GetGroupPermissions(principal));
+            return IsAuthorized(AuthorizationContext.Any, principal, () => GetGroupPermissions(principal));
         }
 
         public bool IsAuthorized(IPrincipal principal, AuthorizationContext context, string resource)
         {
-            return IsAuthorized(context, () => GetGroupPermissions(principal, resource));
+            return IsAuthorized(context,principal, () => GetGroupPermissions(principal, resource));
         }
 
         protected void DumpPermissionsOnError(IPrincipal principal)
@@ -183,10 +183,15 @@ namespace Dev2.Services.Security
             }
         }
 
-        static bool IsAuthorized(AuthorizationContext context, Func<IEnumerable<WindowsGroupPermission>> getGroupPermissions)
+        bool IsAuthorized(AuthorizationContext context,IPrincipal principal, Func<IEnumerable<WindowsGroupPermission>> getGroupPermissions)
         {
             var contextPermissions = context.ToPermissions();
             var groupPermissions = getGroupPermissions();
+            if (context == AuthorizationContext.Any)
+            {
+                groupPermissions = _securityService.Permissions.Where(p => IsInRole(principal, p)).ToList();
+                return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
+            }
             return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
         }
 
@@ -214,7 +219,7 @@ namespace Dev2.Services.Security
             return groupPermissions;
         }
 
-        protected virtual bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
+        private bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
         {
             var isInRole = false;
             if(principal == null)
