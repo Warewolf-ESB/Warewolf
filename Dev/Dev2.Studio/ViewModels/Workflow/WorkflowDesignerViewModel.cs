@@ -225,9 +225,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void SetAdministratorPermissions()
         {
-            CanDebugInputs = !ResourceModel.IsNewWorkflow;
-            CanDebugStudio = !ResourceModel.IsNewWorkflow;
-            CanDebugBrowser = !ResourceModel.IsNewWorkflow;
+            CanDebugInputs = true;
+            CanDebugStudio = true;
+            CanDebugBrowser = true;
             CanCreateSchedule = !ResourceModel.IsNewWorkflow;
             CanCreateTest = !ResourceModel.IsNewWorkflow;
             CanRunAllTests = !ResourceModel.IsNewWorkflow;
@@ -240,9 +240,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void SetContributePermissions()
         {
-            CanDebugInputs = !ResourceModel.IsNewWorkflow;
-            CanDebugStudio = !ResourceModel.IsNewWorkflow;
-            CanDebugBrowser = !ResourceModel.IsNewWorkflow;
+            CanDebugInputs = true;
+            CanDebugStudio = true;
+            CanDebugBrowser = true;
             CanCreateSchedule = !ResourceModel.IsNewWorkflow;
             CanCreateTest = !ResourceModel.IsNewWorkflow;
             CanRunAllTests = !ResourceModel.IsNewWorkflow;
