@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 
         private void SetupCommonViewModelProperties()
         {
-            ShowLarge = true;
+            ShowLarge = false;
             ThumbVisibility = Visibility.Visible;
 
             EditRabbitMQSourceCommand = new RelayCommand(o => EditRabbitMQSource(), o => IsRabbitMQSourceSelected);
