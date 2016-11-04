@@ -2734,6 +2734,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="StartNodeCopyUrlToolTip" xml:space="preserve">
     <value>Copy the current resource Url</value>
   </data>
+  <data name="NoPermissionsToolTip" xml:space="preserve">
+    <value>You do not have permissions to execute this command</value>
+  </data>
   <data name="StartNodeDisabledToolTip" xml:space="preserve">
     <value>Cannot execute this command on an unsaved workflow</value>
   </data>
@@ -3750,5 +3753,93 @@ Please contact your Warewolf System Administrator.</value>
   </data>
 <data name="NoReturnedDataExecuteSuccess" xml:space="preserve">
     <value>{0} executed successfully and returned no data.</value>
+  </data>
+
+  <data name="NewServerSourceTooltip" xml:space="preserve">
+    <value>NewServerSourceTooltip</value>
+  </data>
+  <data name="NewDataBaseSourceTooltip" xml:space="preserve">
+    <value>NewDataBaseSourceTooltip</value>
+  </data>
+  <data name="NewWebSourceTooltip" xml:space="preserve">
+    <value>NewWebSourceTooltip</value>
+  </data>
+  <data name="NewPluginSourceTooltip" xml:space="preserve">
+    <value>NewPluginSourceTooltip</value>
+  </data>
+  <data name="NewComPluginSourceTooltip" xml:space="preserve">
+    <value>NewComPluginSourceTooltip</value>
+  </data>
+  <data name="NewEmailSourceTooltip" xml:space="preserve">
+    <value>NewEmailSourceTooltip</value>
+  </data>
+  <data name="NewExchangeSourceTooltip" xml:space="preserve">
+    <value>NewExchangeSourceTooltip</value>
+  </data>
+  <data name="NewRabbitMqSourceTooltip" xml:space="preserve">
+    <value>NewRabbitMqSourceTooltip</value>
+  </data>
+  <data name="NewDropboxSourceTooltip" xml:space="preserve">
+    <value>NewDropboxSourceTooltip</value>
+  </data>
+  <data name="NewSharepointSourceTooltip" xml:space="preserve">
+    <value>NewSharepointSourceTooltip</value>
+  </data>
+  <data name="ViewApisJsonTooltip" xml:space="preserve">
+    <value>ViewApisJsonTooltip</value>
+  </data>
+  <data name="ViewApisJsonAllowedTooltip" xml:space="preserve">
+    <value>ViewApisJsonAllowedTooltip</value>
+  </data>
+  <data name="NewServiceTooltip" xml:space="preserve">
+    <value>NewServiceTooltip</value>
+  </data>
+  <data name="RenameTooltip" xml:space="preserve">
+    <value>RenameTooltip</value>
+  </data>
+  <data name="DuplicateTooltip" xml:space="preserve">
+    <value>DuplicateTooltip</value>
+  </data>
+  <data name="CreateTestTooltip" xml:space="preserve">
+    <value>CreateTestTooltip</value>
+  </data>
+  <data name="RunAllTestsTooltip" xml:space="preserve">
+    <value>RunAllTestsTooltip</value>
+  </data>
+  <data name="DeleteTooltip" xml:space="preserve">
+    <value>DeleteTooltip</value>
+  </data>
+  <data name="NewFolderTooltip" xml:space="preserve">
+    <value>NewFolderTooltip</value>
+  </data>
+  <data name="NewFolderNotAllowedTooltip" xml:space="preserve">
+    <value>NewFolderNotAllowedTooltip</value>
+  </data>
+  <data name="DeployTooltip" xml:space="preserve">
+    <value>DeployTooltip</value>
+  </data>
+  <data name="DependenciesTooltip" xml:space="preserve">
+    <value>DependenciesTooltip</value>
+  </data>
+  <data name="ShowHideVersionsTooltip" xml:space="preserve">
+    <value>ShowHideVersionsTooltip</value>
+  </data>
+  <data name="OpenVersionTooltip" xml:space="preserve">
+    <value>OpenVersionTooltip</value>
+  </data>
+  <data name="OpenVersionNotAllowedTooltip" xml:space="preserve">
+    <value>OpenVersionNotAllowedTooltip</value>
+  </data>
+  <data name="RollbackTooltip" xml:space="preserve">
+    <value>RollbackTooltip</value>
+  </data>
+  <data name="RollbackTooltipNotAllowedTooltip" xml:space="preserve">
+    <value>RollbackTooltipNotAllowedTooltip</value>
+  </data>
+  <data name="DependenciesNotAllowedTooltip" xml:space="preserve">
+    <value>DependenciesNotAllowedTooltip</value>
+  </data>
+  <data name="ServerVersionTooltip" xml:space="preserve">
+    <value>ServerVersionTooltip</value>
   </data>
 </root>
