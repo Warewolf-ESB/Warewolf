@@ -13,7 +13,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -352,15 +351,16 @@ namespace Dev2.Studio.Views
         {
             try
             {
+                var window = e.Window;
                 var resourceDictionary = System.Windows.Application.Current.Resources;
                 var style = resourceDictionary["WarewolfToolWindow"] as Style;
                 if (style != null)
                 {
-                    var window = e.Window;
+                    
                     window.UseOSNonClientArea = false;
                     window.Style = style;
 
-                    e.Window.PreviewMouseDown += WindowOnPreviewMouseDown;
+                    window.PreviewMouseLeftButtonUp += WindowOnPreviewMouseDown;
                 }
 
                 if (e.Source.GetType() == typeof(XamDockManager))
@@ -369,16 +369,16 @@ namespace Dev2.Studio.Views
                     e.Window.SetBinding(DataContextProperty, binding);
 
                     MainViewModel mainViewModel = DataContext as MainViewModel;
-                    var paneToolWindow = e.Window;
+                    PaneToolWindow = window;
 
-                    if (paneToolWindow.Pane.Panes != null && paneToolWindow.Pane.Panes.Count > 0)
+                    if (PaneToolWindow.Pane.Panes != null && PaneToolWindow.Pane.Panes.Count > 0)
                     {
-                        var workSurfaceContextViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
+                        var workSurfaceContextViewModel = PaneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
                         mainViewModel?.ActivateItem(workSurfaceContextViewModel);
-                        paneToolWindow.Name = "FloatingWindow";
+                        PaneToolWindow.Name = "FloatingWindow";
                         if (string.IsNullOrWhiteSpace(e.Window.Title))
                         {
-                            paneToolWindow.Title = Title;
+                            PaneToolWindow.Title = Title;
                         }
                         else
                         {
@@ -386,46 +386,46 @@ namespace Dev2.Studio.Views
                             if (dockManager?.DataContext.GetType() == typeof (WorkflowDesignerViewModel))
                             {
                                 var workflowDesignerViewModel = dockManager?.DataContext as WorkflowDesignerViewModel;
-                                var title = paneToolWindow.Title;
+                                var title = PaneToolWindow.Title;
                                 var newTitle = " - " + workflowDesignerViewModel?.DisplayName.Replace("*", "").TrimEnd();
                                 if (!title.Contains(newTitle))
                                 {
                                     if (!string.IsNullOrWhiteSpace(workflowDesignerViewModel?.DisplayName))
                                     {
-                                        paneToolWindow.Title = paneToolWindow.Title + " - " + workflowDesignerViewModel?.DisplayName;
+                                        PaneToolWindow.Title = PaneToolWindow.Title + " - " + workflowDesignerViewModel?.DisplayName;
                                     }
                                 }
                             }
                             else if (dockManager?.DataContext.GetType() == typeof(StudioTestViewModel))
                             {
                                 var studioTestViewModel = dockManager?.DataContext as StudioTestViewModel;
-                                var title = paneToolWindow.Title;
+                                var title = PaneToolWindow.Title;
                                 var newTitle = " - " + studioTestViewModel?.DisplayName.Replace("*", "").TrimEnd();
                                 if (!title.Contains(newTitle))
                                 {
                                     if (!string.IsNullOrWhiteSpace(studioTestViewModel?.DisplayName))
                                     {
-                                        paneToolWindow.Title = paneToolWindow.Title + " - " + studioTestViewModel?.DisplayName;
+                                        PaneToolWindow.Title = PaneToolWindow.Title + " - " + studioTestViewModel?.DisplayName;
                                     }
                                 }
                             }
                             else if (dockManager?.DataContext.GetType() == typeof(SchedulerViewModel))
                             {
                                 var schedulerViewModel = dockManager?.DataContext as SchedulerViewModel;
-                                var title = paneToolWindow.Title;
+                                var title = PaneToolWindow.Title;
                                 var newTitle = " - " + schedulerViewModel?.DisplayName.Replace("*", "").TrimEnd();
                                 if (!title.Contains(newTitle))
                                 {
                                     if (!string.IsNullOrWhiteSpace(schedulerViewModel?.DisplayName))
                                     {
-                                        paneToolWindow.Title = paneToolWindow.Title + " - " + schedulerViewModel?.DisplayName;
+                                        PaneToolWindow.Title = PaneToolWindow.Title + " - " + schedulerViewModel?.DisplayName;
                                     }
                                 }
                             }
                         }
                         if (workSurfaceContextViewModel?.ContextualResourceModel != null)
                         {
-                            paneToolWindow.ToolTip = "Floating window for - " + workSurfaceContextViewModel?.ContextualResourceModel.DisplayName;
+                            PaneToolWindow.ToolTip = "Floating window for - " + workSurfaceContextViewModel?.ContextualResourceModel.DisplayName;
                         }
                     }
                 }
@@ -435,6 +435,8 @@ namespace Dev2.Studio.Views
                 Dev2Logger.Error(ex);
             }
         }
+
+        public PaneToolWindow PaneToolWindow { get; set; }
 
         private void WindowOnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -446,44 +448,20 @@ namespace Dev2.Studio.Views
                     var paneToolWindow = sender as PaneToolWindow;
                     if (paneToolWindow?.Pane?.Panes.Count > 0)
                     {
-                        var frameworkElement = paneToolWindow.Pane.Panes[0] as TabGroupPane;
-
-                        if (frameworkElement?.Items.Count >= 1)
+                        var contentPane = paneToolWindow.Pane.Panes[0] as ContentPane;
+                        if (contentPane != null)
                         {
-                            var textBlock = e.OriginalSource as TextBlock;
-                            var border = e.OriginalSource as Border;
-                            if (textBlock != null)
-                            {
-                                var data = textBlock.DataContext as WorkflowDesignerViewModel;
-                                if (data != null)
-                                {
-                                    mainViewModel.AddWorkSurfaceContext(data.ResourceModel);
-                                }
-                            }
-                            else if (border != null)
-                            {
-                                var data = border.DataContext as WorkflowDesignerViewModel;
-                                if (data != null)
-                                {
-                                    mainViewModel.AddWorkSurfaceContext(data.ResourceModel);
-                                }
-                            }
+                            var workSurfaceContextViewModel = contentPane.DataContext as WorkSurfaceContextViewModel;
+                            mainViewModel.ActivateItem(workSurfaceContextViewModel);
                         }
                         else
                         {
-                            if (paneToolWindow.Pane.Panes != null && paneToolWindow.Pane.Panes.Count > 0)
+                            var tabGroupPane = paneToolWindow.Pane.Panes[0] as TabGroupPane;
+                            if (tabGroupPane?.Items.Count >= 1)
                             {
-                                var workSurfaceContextViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
-                                if (workSurfaceContextViewModel != null)
-                                {
-                                    mainViewModel?.ActivateItem(workSurfaceContextViewModel);
-                                }
-                                else
-                                {
-                                    var workflowDesignerViewModel = paneToolWindow.Pane.Panes[0].DataContext as WorkflowDesignerViewModel;
-                                    if (workflowDesignerViewModel != null)
-                                        mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
-                                }
+                                var selectedContent = tabGroupPane.SelectedContent as ContentPane;
+                                var workSurfaceContextViewModel = selectedContent?.DataContext as WorkSurfaceContextViewModel;
+                                mainViewModel.ActivateItem(workSurfaceContextViewModel);
                             }
                         }
                     }
@@ -729,7 +707,9 @@ namespace Dev2.Studio.Views
                         paneToolWindow.Title = Title;
                     }
                 }
+                
             }
         }
+        
     }
 }

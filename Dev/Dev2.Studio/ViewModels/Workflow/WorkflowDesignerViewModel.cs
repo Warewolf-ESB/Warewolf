@@ -30,7 +30,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xaml;
 using System.Xml.Linq;
@@ -68,7 +67,6 @@ using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -89,6 +87,9 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ViewModels;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable ConvertToAutoProperty
+// ReSharper disable UnusedMember.Global
 
 
 // ReSharper disable CheckNamespace
@@ -100,7 +101,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                                              IHandle<AddStringListToDataListMessage>,
                                              IHandle<EditActivityMessage>,
                                              IHandle<SaveUnsavedWorkflowMessage>,
-                                             IHandle<UpdateResourceMessage>,
                                              IWorkflowDesignerViewModel
     {
         static readonly Type[] DecisionSwitchTypes = { typeof(FlowSwitch<string>), typeof(FlowDecision) };
@@ -208,6 +208,357 @@ namespace Dev2.Studio.ViewModels.Workflow
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
             DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
             _firstWorkflowChange = true;
+            SetPermission(ResourceModel.UserPermissions);
+        }
+
+        public void SetPermission(Permissions permission, bool isDeploy = false)
+        {
+            if (permission.HasFlag(Permissions.Contribute))
+            {
+                SetContributePermissions();
+            }
+            if (permission.HasFlag(Permissions.Administrator))
+            {
+                SetAdministratorPermissions();
+            }
+        }
+
+        private void SetAdministratorPermissions()
+        {
+            CanDebugInputs = true;
+            CanDebugStudio = true;
+            CanDebugBrowser = true;
+            CanCreateSchedule = !ResourceModel.IsNewWorkflow;
+            CanCreateTest = !ResourceModel.IsNewWorkflow;
+            CanRunAllTests = !ResourceModel.IsNewWorkflow;
+            CanDuplicate = !ResourceModel.IsNewWorkflow;
+            CanDeploy = !ResourceModel.IsNewWorkflow;
+            CanShowDependencies = !ResourceModel.IsNewWorkflow;
+            CanViewSwagger = !ResourceModel.IsNewWorkflow;
+            CanCopyUrl = !ResourceModel.IsNewWorkflow;
+        }
+
+        private void SetContributePermissions()
+        {
+            CanDebugInputs = true;
+            CanDebugStudio = true;
+            CanDebugBrowser = true;
+            CanCreateSchedule = !ResourceModel.IsNewWorkflow;
+            CanCreateTest = !ResourceModel.IsNewWorkflow;
+            CanRunAllTests = !ResourceModel.IsNewWorkflow;
+            CanDuplicate = !ResourceModel.IsNewWorkflow;
+            CanDeploy = !ResourceModel.IsNewWorkflow;
+            CanShowDependencies = !ResourceModel.IsNewWorkflow;
+            CanViewSwagger = !ResourceModel.IsNewWorkflow;
+            CanCopyUrl = !ResourceModel.IsNewWorkflow;
+        }
+
+        public bool CanCopyUrl
+        {
+            get { return _canCopyUrl; }
+            set
+            {
+                _canCopyUrl = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    CopyUrlTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    CopyUrlTooltip = _canCopyUrl ? Warewolf.Studio.Resources.Languages.Core.CopyUrlToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanCopyUrl");
+            }
+        }
+
+        public string CopyUrlTooltip
+        {
+            get { return _copyUrlTooltip; }
+            set
+            {
+                _copyUrlTooltip = value; 
+                OnPropertyChanged("CopyUrlTooltip");
+            }
+        }
+
+        public bool CanViewSwagger
+        {
+            get { return _canViewSwagger; }
+            set
+            {
+                _canViewSwagger = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    ViewSwaggerTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    ViewSwaggerTooltip = _canViewSwagger ? Warewolf.Studio.Resources.Languages.Core.ViewSwaggerToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanViewSwagger");
+            }
+        }
+
+        public string ViewSwaggerTooltip
+        {
+            get { return _viewSwaggerTooltip; }
+            set
+            {
+                _viewSwaggerTooltip = value;
+                OnPropertyChanged("ViewSwaggerTooltip");
+            }
+        }
+
+        public bool CanShowDependencies
+        {
+            get { return _canShowDependencies; }
+            set
+            {
+                _canShowDependencies = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    ShowDependenciesTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    ShowDependenciesTooltip = _canShowDependencies ? Warewolf.Studio.Resources.Languages.Core.DependenciesToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanShowDependencies");
+            }
+        }
+
+        public string ShowDependenciesTooltip
+        {
+            get { return _showDependenciesTooltip; }
+            set
+            {
+                _showDependenciesTooltip = value;
+                OnPropertyChanged("ShowDependenciesTooltip");
+            }
+        }
+
+        public bool CanDeploy
+        {
+            get { return _canDeploy; }
+            set
+            {
+                _canDeploy = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    DeployTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    DeployTooltip = _canDeploy ? Warewolf.Studio.Resources.Languages.Core.DeployToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanDeploy");
+            }
+        }
+
+        public string DeployTooltip
+        {
+            get { return _deployTooltip; }
+            set
+            {
+                _deployTooltip = value;
+                OnPropertyChanged("DeployTooltip");
+            }
+        }
+
+        public bool CanDuplicate
+        {
+            get { return _canDuplicate; }
+            set
+            {
+                _canDuplicate = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    DuplicateTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    DuplicateTooltip = _canDuplicate ? Warewolf.Studio.Resources.Languages.Core.DuplicateToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanDuplicate");
+            }
+        }
+
+        public string DuplicateTooltip
+        {
+            get { return _duplicateTooltip; }
+            set
+            {
+                _duplicateTooltip = value;
+                OnPropertyChanged("DuplicateTooltip");
+            }
+        }
+
+        public bool CanRunAllTests
+        {
+            get { return _canRunAllTests; }
+            set
+            {
+                _canRunAllTests = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    RunAllTestsTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    RunAllTestsTooltip = _canRunAllTests ? Warewolf.Studio.Resources.Languages.Core.RunAllTestsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanRunAllTests");
+            }
+        }
+
+        public string RunAllTestsTooltip
+        {
+            get { return _runAllTestsTooltip; }
+            set
+            {
+                _runAllTestsTooltip = value;
+                OnPropertyChanged("RunAllTestsTooltip");
+            }
+        }
+
+        public bool CanCreateTest
+        {
+            get { return _canCreateTest; }
+            set
+            {
+                _canCreateTest = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    CreateTestTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    CreateTestTooltip = _canCreateTest ? Warewolf.Studio.Resources.Languages.Core.TestEditorToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanCreateTest");
+            }
+        }
+
+        public string CreateTestTooltip
+        {
+            get { return _createTestTooltip; }
+            set
+            {
+                _createTestTooltip = value;
+                OnPropertyChanged("CreateTestTooltip");
+            }
+        }
+
+        public bool CanCreateSchedule
+        {
+            get { return _canCreateSchedule; }
+            set
+            {
+                _canCreateSchedule = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    ScheduleTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    ScheduleTooltip = _canCreateSchedule ? Warewolf.Studio.Resources.Languages.Core.ScheduleToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanCreateSchedule");
+            }
+        }
+
+        public string ScheduleTooltip
+        {
+            get { return _scheduleTooltip; }
+            set
+            {
+                _scheduleTooltip = value;
+                OnPropertyChanged("ScheduleTooltip");
+            }
+        }
+
+        public bool CanDebugBrowser
+        {
+            get { return _debugBrowser; }
+            set
+            {
+                _debugBrowser = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    DebugBrowserTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    DebugBrowserTooltip = _debugBrowser ? Warewolf.Studio.Resources.Languages.Core.DebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanDebugBrowser");
+            }
+        }
+
+        public string DebugBrowserTooltip
+        {
+            get { return _debugBrowserTooltip; }
+            set
+            {
+                _debugBrowserTooltip = value;
+                OnPropertyChanged("DebugBrowserTooltip");
+            }
+        }
+
+        public bool CanDebugStudio
+        {
+            get { return _canDebugStudio; }
+            set
+            {
+                _canDebugStudio = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    DebugStudioTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    DebugStudioTooltip = _canDebugStudio ? Warewolf.Studio.Resources.Languages.Core.DebugStudioToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanDebugStudio");
+            }
+        }
+
+        public string DebugStudioTooltip
+        {
+            get { return _debugStudioTooltip; }
+            set
+            {
+                _debugStudioTooltip = value;
+                OnPropertyChanged("DebugStudioTooltip");
+            }
+        }
+
+        public bool CanDebugInputs
+        {
+            get { return _canDebugInputs; }
+            set
+            {
+                _canDebugInputs = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    DebugInputsTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    DebugInputsTooltip = _canDebugInputs ? Warewolf.Studio.Resources.Languages.Core.DebugInputsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanDebugInputs");
+            }
+        }
+
+        public string DebugInputsTooltip
+        {
+            get { return _debugInputsTooltip; }
+            set
+            {
+                _debugInputsTooltip = value;
+                OnPropertyChanged("DebugInputsTooltip");
+            }
         }
 
         private void SetOriginalDataList(IContextualResourceModel contextualResourceModel)
@@ -672,12 +1023,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         void AddSwitch(ModelItem mi)
-        // ReSharper restore ExcessiveIndentation
         {
-            if (mi.Parent != null &&
-                   mi.Parent.Parent != null &&
-                   mi.Parent.Parent.Parent != null &&
-                   mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
+            if (mi.Parent?.Parent != null && mi.Parent.Parent.Parent != null && mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
             {
                 ModelProperty activityExpression = mi.Parent.Parent.Parent.Properties["Expression"];
                 if (activityExpression != null)
@@ -704,21 +1051,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 if (tmpProperty != null)
                 {
-                    if (tmpProperty.Value != null)
+                    var tmp = tmpProperty.Value?.ToString();
+
+                    if (!string.IsNullOrEmpty(tmp))
                     {
-                        var tmp = tmpProperty.Value.ToString();
+                        int start = tmp.IndexOf("(", StringComparison.Ordinal);
+                        int end = tmp.IndexOf(",", StringComparison.Ordinal);
 
-                        if (!string.IsNullOrEmpty(tmp))
+                        if (start < end && start >= 0)
                         {
-                            int start = tmp.IndexOf("(", StringComparison.Ordinal);
-                            int end = tmp.IndexOf(",", StringComparison.Ordinal);
-
-                            if (start < end && start >= 0)
-                            {
-                                start += 2;
-                                end -= 1;
-                                switchExpressionValue = tmp.Substring(start, (end - start));
-                            }
+                            start += 2;
+                            end -= 1;
+                            switchExpressionValue = tmp.Substring(start, (end - start));
                         }
                     }
                 }
@@ -1136,7 +1480,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         //selectedItem = innerActivity;
                     }
                 }
-                Selection.Union(_wd.Context, selectedItem);
+                //Selection.Union(_wd.Context, selectedItem);
             }
             return false;
         }
@@ -1181,7 +1525,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.Measure(new Size(2000, 2000));
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
-                _wd.View.MouseEnter+=ViewOnMouseEnter;
                 _wd.View.PreviewKeyDown += ViewOnKeyDown;
                 _wd.View.LostFocus += OnViewOnLostFocus;
 
@@ -1217,22 +1560,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 SubscribeToDebugSelectionChanged();
             }
         }
-
-        private void ViewOnMouseEnter(object sender, MouseEventArgs mouseEventArgs)
-        {
-            var senderAsFrameworkElement = ModelService.Root.View as FrameworkElement;
-            var freePormPanel = senderAsFrameworkElement?.FindChildren<AdornerLayer>(layer => layer.IsEnabled);
-            if (freePormPanel != null)
-            {
-                var ad = freePormPanel.FirstOrDefault();
-                if (ad != null)
-                {
-                    
-                }
-            }
-            
-        }
-
+        
         private void SetHashTable()
         {
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
@@ -1356,25 +1684,32 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual ModelItem GetSelectedModelItem(Guid itemId, Guid parentId)
         {
-            var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
-            // ReSharper disable MaximumChainedReferences
-            var selectedModelItem = (from mi in modelItems let instanceID = ModelItemUtils.GetUniqueID(mi) where instanceID == itemId || instanceID == parentId select mi).FirstOrDefault();
-            // ReSharper restore MaximumChainedReferences
+            if (ModelService != null)
+            {
+                var modelItems = ModelService.Find(ModelService.Root, typeof (IDev2Activity));
+                // ReSharper disable MaximumChainedReferences
+                var selectedModelItem = (from mi in modelItems
+                    let instanceID = ModelItemUtils.GetUniqueID(mi)
+                    where instanceID == itemId || instanceID == parentId
+                    select mi).FirstOrDefault();
+                // ReSharper restore MaximumChainedReferences
 
-            if (selectedModelItem == null)
-            {
-                // Find the root flow chart
-                selectedModelItem = ModelService.Find(ModelService.Root, typeof(Flowchart)).FirstOrDefault();
-            }
-            else
-            {
-                if (DecisionSwitchTypes.Contains(selectedModelItem.Parent.ItemType))
+                if (selectedModelItem == null)
                 {
-                    // Decision/switches activities are represented by their parents in the designer!
-                    selectedModelItem = selectedModelItem.Parent;
+                    // Find the root flow chart
+                    selectedModelItem = ModelService.Find(ModelService.Root, typeof (Flowchart)).FirstOrDefault();
                 }
+                else
+                {
+                    if (DecisionSwitchTypes.Contains(selectedModelItem.Parent.ItemType))
+                    {
+                        // Decision/switches activities are represented by their parents in the designer!
+                        selectedModelItem = selectedModelItem.Parent;
+                    }
+                }
+                return selectedModelItem;
             }
-            return selectedModelItem;
+            return null;
         }
 
         private void SelectSingleModelItem(ModelItem selectedModelItem)
@@ -1397,11 +1732,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         private void AddModelItemToSelection(ModelItem selectedModelItem)
-        {
+        {            
             if (SelectedDebugItems.Contains(selectedModelItem))
             {
                 return;
-            }
+            }          
             Selection.Union(_wd.Context, selectedModelItem);
 
             ModelService modelService = _wd.Context.Services.GetService<ModelService>();
@@ -1481,7 +1816,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     // log the trace for fetch ;)
                     Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
-                    _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
+                    var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
+                    _wd.Load(activityBuilder);
                     BindToModel();
                 }
                 else
@@ -1500,7 +1836,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void SetDesignerText(StringBuilder xaml)
         {
             var designerText = _workflowHelper.SanitizeXaml(xaml);
-            _wd.Text = designerText.ToString();
+            if (designerText != null)
+                _wd.Text = designerText.ToString();
         }
 
         private void SelectedItemChanged(Selection item)
@@ -1681,18 +2018,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = HandleMouseClick(e.LeftButton, e.ClickCount, e.OriginalSource as DependencyObject, e.Source as DesignerView);
-            if (!(e.OriginalSource is Path) && !(e.OriginalSource is Rectangle))
-            {
-                var item = sender as Grid;
-                var context = item?.DataContext as WorkflowDesignerViewModel;
-                var selectedModelItem = context?.SelectedModelItem as ModelItem;
-                if (selectedModelItem != null)
-                {
-                    ClearSelection();
-                    Selection.Subscribe(_wd.Context, SelectedItemChanged);
-                    Selection.Union(_wd.Context, selectedModelItem);
-                }
-            }
         }
 
         /// <summary>
@@ -1946,6 +2271,28 @@ namespace Dev2.Studio.ViewModels.Workflow
         private ICommand _copyUrlCommand;
         private DebugOutputViewModel _debugOutputViewModel;
         private IDataListViewModel _dataListViewModel;
+        private bool _canDebugInputs;
+        private bool _canDebugStudio;
+        private bool _debugBrowser;
+        private bool _canCreateSchedule;
+        private bool _canCreateTest;
+        private bool _canRunAllTests;
+        private bool _canDuplicate;
+        private bool _canDeploy;
+        private bool _canShowDependencies;
+        private bool _canViewSwagger;
+        private bool _canCopyUrl;
+        private string _copyUrlTooltip;
+        private string _viewSwaggerTooltip;
+        private string _debugInputsTooltip;
+        private string _debugStudioTooltip;
+        private string _debugBrowserTooltip;
+        private string _scheduleTooltip;
+        private string _createTestTooltip;
+        private string _runAllTestsTooltip;
+        private string _duplicateTooltip;
+        private string _deployTooltip;
+        private string _showDependenciesTooltip;
 
         /// <summary>
         /// Models the service model changed.
@@ -2140,31 +2487,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
-
-        /// <summary>
-        /// Handles the specified message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public void Handle(UpdateResourceMessage message)
-        {
-            Dev2Logger.Debug(message.GetType().Name);
-            if (ContexttualResourceModelEqualityComparer.Current.Equals(message.ResourceModel, _resourceModel))
-            {
-                IObservableReadOnlyList<IErrorInfo> currentErrors = null;
-                if (message.ResourceModel.Errors != null && message.ResourceModel.Errors.Count > 0)
-                {
-                    currentErrors = message.ResourceModel.Errors;
-                }
-                _resourceModel.Update(message.ResourceModel);
-                if (currentErrors != null && currentErrors.Count > 0)
-                {
-                    foreach (var currentError in currentErrors)
-                    {
-                        _resourceModel.AddError(currentError);
-                    }
-                }
-            }
-        }
+       
         /// <summary>
         /// Gets the work surface context.
         /// </summary>
@@ -2212,29 +2535,44 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
-            Dev2Logger.Info("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
-            EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(message.ResourceModel, false));
             var resourceModel = message.ResourceModel;
             WorkspaceItemRepository.Instance.Remove(resourceModel);
             resourceModel.Environment.ResourceRepository.DeleteResource(resourceModel);
             var unsavedName = resourceModel.ResourceName;
-            BindToModel();
             UpdateResourceModel(message, resourceModel, unsavedName);
             PublishMessages(resourceModel);
-            if (message.KeepTabOpen)
-            {
-                Dev2Logger.Debug("Publish message of type - " + typeof(AddWorkSurfaceMessage));
-                EventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel));
-            }
+            OnDispose();
+            ActivityDesignerHelper.AddDesignerAttributes(this);
+            NotifyOfPropertyChange(()=>DesignerView);
             NewWorkflowNames.Instance.Remove(unsavedName);
         }
 
         private void PublishMessages(IContextualResourceModel resourceModel)
         {
+            UpdateResource(resourceModel);
             Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage));
             EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
         }
 
+        private void UpdateResource(IContextualResourceModel resourceModel)
+        {
+            if (ContexttualResourceModelEqualityComparer.Current.Equals(resourceModel, _resourceModel))
+            {
+                IObservableReadOnlyList<IErrorInfo> currentErrors = null;
+                if (resourceModel.Errors != null && resourceModel.Errors.Count > 0)
+                {
+                    currentErrors = resourceModel.Errors;
+                }
+                _resourceModel.Update(resourceModel);
+                if (currentErrors != null && currentErrors.Count > 0)
+                {
+                    foreach (var currentError in currentErrors)
+                    {
+                        _resourceModel.AddError(currentError);
+                    }
+                }
+            }
+        }
         private static void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
         {
             resourceModel.ResourceName = message.ResourceName;

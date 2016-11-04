@@ -9,6 +9,7 @@
 */
 
 using Dev2.Studio.Core.Interfaces;
+// ReSharper disable CheckNamespace
 
 namespace Dev2.Messages
 {

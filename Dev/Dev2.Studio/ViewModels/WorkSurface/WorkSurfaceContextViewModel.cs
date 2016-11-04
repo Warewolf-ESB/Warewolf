@@ -565,7 +565,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             FindMissing();
 
-            if (DataListViewModel != null && DataListViewModel.HasErrors)
+            if (DataListViewModel != null && DataListViewModel.HasErrors && !isLocalSave)
             {
                 _popupController.Show(string.Format(StringResources.Saving_Error + System.Environment.NewLine + System.Environment.NewLine + DataListViewModel.DataListErrorMessage),
                                       StringResources.Saving_Error_Title,

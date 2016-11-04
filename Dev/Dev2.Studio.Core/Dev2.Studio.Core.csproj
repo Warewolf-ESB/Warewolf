@@ -310,13 +310,11 @@
     <Compile Include="Interfaces\IContextualResourceModel.cs" />
     <Compile Include="Factories\ServiceDebugInfoModelFactory.cs" />
     <Compile Include="Factories\WebActivityFactory.cs" />
-    <Compile Include="InterfaceImplementors\ObjectCloner.cs" />
     <Compile Include="InterfaceImplementors\WebActivity.cs" />
     <Compile Include="Interfaces\DataList\IDataListViewModel.cs" />
     <Compile Include="Interfaces\IEnvironmentConnection.cs" />
     <Compile Include="Interfaces\IEnvironmentRepository.cs" />
     <Compile Include="Interfaces\IIntellisenseProvider.cs" />
-    <Compile Include="Interfaces\IObjectCloner.cs" />
     <Compile Include="Interfaces\IOperatorType.cs" />
     <Compile Include="AppResources\Repositories\EnvironmentRepository.cs" />
     <Compile Include="AppResources\Repositories\ResourceRepository.cs" />
@@ -356,7 +354,6 @@
     <Compile Include="Messages\IResourceMessage.cs" />
     <Compile Include="Messages\SaveAllOpenTabsMessage.cs" />
     <Compile Include="Messages\SaveResourceMessage.cs" />
-    <Compile Include="Messages\SetSelectedIContextualResourceModel.cs" />
     <Compile Include="Messages\ShowDependenciesMessage.cs" />
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />

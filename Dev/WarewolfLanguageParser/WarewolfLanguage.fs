@@ -411,7 +411,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 54 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                                                                                          {Name = _2; Column = _7; Index =tryParseIndex(_4) ;}
+                                                                                                          {Name = tryParseRecsetName(_2); Column = tryParseColumn(_7); Index =tryParseIndex(_4) ;}
                    )
 # 54 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.RecordSetColumnIdentifier));
@@ -423,7 +423,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 55 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                                                                                      {Name = _2; Column = _7; Index =Star ;}
+                                                                                                      {Name = tryParseRecsetName(_2); Column = tryParseColumn(_7); Index =Star ;}
                    )
 # 55 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.RecordSetColumnIdentifier));
@@ -435,7 +435,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 56 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                                                                                    {Name = _2; Column = _6; Index =Last ;}
+                                                                                                    {Name = tryParseRecsetName(_2); Column = tryParseColumn(_6); Index =Last ;}
                    )
 # 56 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.RecordSetColumnIdentifier));
@@ -448,7 +448,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 57 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                                                                                                {Name = _2; Column = _7; Index = IndexExpression _4 ;}
+                                                                                                                {Name = tryParseRecsetName(_2); Column = tryParseColumn(_7); Index = IndexExpression _4 ;}
                    )
 # 57 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.RecordSetColumnIdentifier));
@@ -660,7 +660,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 81 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                                                                       {Name = _2;Index = Last;}
+                                                                                       {Name = tryParseRecsetName(_2);Index = Last;}
                    )
 # 81 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'recsetName));
@@ -672,7 +672,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 82 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                                                                          {Name = _2; Index = _4;}
+                                                                                          {Name = tryParseRecsetName(_2); Index = _4;}
                    )
 # 82 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'recsetName));
@@ -683,7 +683,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 83 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                                                                         {Name = _2; Index = Star;}
+                                                                                         {Name = tryParseRecsetName(_2); Index = Star;}
                    )
 # 83 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'recsetName));
@@ -695,7 +695,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 84 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                                                                                   {Name = _2;Index = IndexExpression _4;}
+                                                                                                   {Name = tryParseRecsetName(_2);Index = IndexExpression _4;}
                    )
 # 84 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'recsetName));

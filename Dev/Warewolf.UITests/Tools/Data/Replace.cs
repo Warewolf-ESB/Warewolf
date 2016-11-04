@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Replace
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Data Tools")]
         public void ReplaceTool_OpenLargeViewUITest()
         {                        
             Uimap.Open_Replace_Tool_Large_View();

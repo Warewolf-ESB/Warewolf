@@ -27,11 +27,9 @@ using Dev2.Activities.Designers2.CountRecordsNullHandler;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.Service;
-using Dev2.Collections;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Core.Tests.Environments;
@@ -41,7 +39,6 @@ using Dev2.Data.Interfaces;
 using Dev2.Diagnostics.Debug;
 using Dev2.Factory;
 using Dev2.Messages;
-using Dev2.Providers.Errors;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
@@ -1068,31 +1065,6 @@ namespace Dev2.Core.Tests.Workflows
 
         #region UpdateMode Resource Message Handler
 
-        //2013.02.11: Ashley Lewis - Bug 8553
-        [TestMethod]
-        public void UpdateResourceMessage_WhenResourceExistsChangedCategory_Expects_CategoryChanged()
-        {
-            var eventAggregator = new EventAggregator();
-
-            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
-
-            var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
-            //var designerAttributes = new Dictionary<Type, Type>();
-            //workflowDesigner.InitializeDesigner(designerAttributes);
-
-            mockResourceModel.Setup(r => r.Category).Returns("Testing");
-            var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
-            workflowDesigner.Handle(updatemsg);
-
-            mockResourceModel.Setup(r => r.Category).Returns("Testing2");
-            updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
-            workflowDesigner.Handle(updatemsg);
-
-            Assert.AreEqual("Testing2", workflowDesigner.ResourceModel.Category);
-            workflowDesigner.Dispose();
-        }
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkflowDesignerViewModel_BuildDataPart")]
@@ -1790,7 +1762,6 @@ namespace Dev2.Core.Tests.Workflows
 
             var eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>())).Verifiable();
-            eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>())).Verifiable();
 
             #endregion
@@ -1806,11 +1777,11 @@ namespace Dev2.Core.Tests.Workflows
             wd.Handle(saveUnsavedWorkflowMessage);
             //------------Assert Results-------------------------
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());
-            eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>()), Times.Once());
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Never());
             repo.Verify(repository => repository.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
             repo.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Once());
             repo.Verify(repository => repository.DeleteResource(It.IsAny<IResourceModel>()), Times.Once());
+            wd.Dispose();
 
 
         }
@@ -1896,8 +1867,6 @@ namespace Dev2.Core.Tests.Workflows
             wd.Handle(saveUnsavedWorkflowMessage);
             //------------Assert Results-------------------------
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());
-            eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>()), Times.Once());
-            eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Once());
             repo.Verify(repository => repository.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
             repo.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Once());
             repo.Verify(repository => repository.DeleteResource(It.IsAny<IResourceModel>()), Times.Once());
@@ -2932,54 +2901,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual(0, result);
         }
 
-
-        [TestMethod]
-        [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
-        [Owner("Trevor Williams-Ros")]
-        public void WorkflowDesignerViewModel_DebugSelectionChanged_DesignerViewHidden_DoesNothing()
-        {
-            //----------------------- Setup -----------------------//
-            var workflow = new ActivityBuilder
-            {
-                Implementation = new Flowchart
-                {
-                    StartNode = CreateFlowNode(Guid.NewGuid(), "SelectionChangedTest1", true, typeof(TestActivity))
-                }
-            };
-
-            #region Setup viewModel
-
-            var resourceRep = new Mock<IResourceRepository>();
-            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
-
-            var resourceModel = new Mock<IContextualResourceModel>();
-            var envConn = new Mock<IEnvironmentConnection>();
-            var serverEvents = new Mock<IEventPublisher>();
-            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
-            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
-            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 6");
-            var workflowHelper = new Mock<IWorkflowHelper>();
-            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
-
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
-            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
-
-            #endregion
-
-            viewModel.SetIsDesignerViewVisible(false);
-
-            //----------------------- Execute -----------------------//
-            EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = new DebugState(), SelectionType = ActivitySelectionType.Single });
-
-            var result = viewModel.GetSelectedModelItemHitCount;
-
-            viewModel.Dispose();
-
-            //----------------------- Assert -----------------------//
-            Assert.AreEqual(0, result);
-        }
+        
 
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
@@ -4005,49 +3927,6 @@ namespace Dev2.Core.Tests.Workflows
             //------------Assert Results-------------------------
             resourceRep.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Never());
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("WorkflowDesignerViewModel_HandleUpdateResourceMessage")]
-        public void WorkflowDesignerViewModel_HandleUpdateResourceMessage_WhenMessageHasErrors_ResourceModelShouldHaveErrors()
-        {
-            //------------Setup for test--------------------------
-            var workflow = new ActivityBuilder
-            {
-                Implementation = new Flowchart
-                {
-                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
-                }
-            };
-
-
-            var resourceRep = new Mock<IResourceRepository>();
-            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
-            resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            var envConn = new Mock<IEnvironmentConnection>();
-            var serverEvents = new Mock<IEventPublisher>();
-            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
-            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
-            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-            resourceModel.Setup(model => model.IsNewWorkflow).Returns(false);
-            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 11");
-            var workflowHelper = new Mock<IWorkflowHelper>();
-            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
-
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
-            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
-            resourceModel.SetupGet(model => model.Errors);
-            resourceModel.Setup(model => model.Errors).Returns(new ObservableReadOnlyList<IErrorInfo>(new List<IErrorInfo> { new ErrorInfo() }));
-            resourceModel.Setup(model => model.AddError(It.IsAny<IErrorInfo>())).Verifiable();
-            var updateResourceMessage = new UpdateResourceMessage(resourceModel.Object);
-
-            //------------Execute Test---------------------------
-            viewModel.Handle(updateResourceMessage);
-            //------------Assert Results-------------------------
-            resourceModel.Verify(model => model.AddError(It.IsAny<IErrorInfo>()), Times.Once());
         }
 
         static IEnvironmentRepository SetupEnvironmentRepo(Guid environmentId)

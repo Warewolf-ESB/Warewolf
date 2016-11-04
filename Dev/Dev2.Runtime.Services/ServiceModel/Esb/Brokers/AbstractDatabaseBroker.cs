@@ -19,6 +19,8 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
 using Unlimited.Framework.Converters.Graph;
+// ReSharper disable UnusedMemberHierarchy.Global
+// ReSharper disable UnusedParameter.Global
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
@@ -206,7 +208,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             var parameter = command.CreateParameter();
 
-            parameter.ParameterName = string.Format("@{0}", methodParameter.Name);
+            parameter.ParameterName = $"@{methodParameter.Name.Replace("`", "")}";
             parameter.Value = methodParameter.Value;
 
             return parameter;

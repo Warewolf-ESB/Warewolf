@@ -50,6 +50,22 @@ namespace Warewolf.Studio.ViewModels
         private string _deployResourceCheckboxTooltip;
         private bool? _isResource;
         private string _filter;
+        private string _newServiceTooltip;
+        private string _newServerSourceTooltip;
+        private string _newDataBaseSourceTooltip;
+        private string _newWebSourceTooltip;
+        private string _newPluginSourceTooltip;
+        private string _newComPluginSourceTooltip;
+        private string _newEmailSourceTooltip;
+        private string _newExchangeSourceTooltip;
+        private string _newRabbitMqSourceTooltip;
+        private string _newDropboxSourceTooltip;
+        private string _newSharepointSourceTooltip;
+        private bool _canCreateSource;
+        private string _newFolderTooltip;
+        private bool _canViewApisJson;
+        private string _viewApisJsonTooltip;
+        private string _serverVersionTooltip;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
         {            
@@ -247,6 +263,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canCreateWorkflowService = value;
+                NewServiceTooltip = _canCreateWorkflowService ? Resources.Languages.Core.NewServiceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanCreateWorkflowService);
             }
         }
@@ -387,7 +404,16 @@ namespace Warewolf.Studio.ViewModels
         public bool IsReservedService { get; set; }
         public bool IsServer { get; set; }
         public bool IsResourceVersion { get; set; }
-        public bool CanViewApisJson { get; set; }
+        public bool CanViewApisJson
+        {
+            get { return _canViewApisJson; }
+            set
+            {
+                _canViewApisJson = value;
+                ViewApisJsonTooltip = _canViewApisJson ? Resources.Languages.Core.ViewApisJsonTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                OnPropertyChanged(() => CanViewApisJson);
+            }
+        }
 
         public void SelectItem(string path, Action<IExplorerItemViewModel> foundAction)
         {
@@ -501,6 +527,124 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public string NewServiceTooltip
+        {
+            get { return _newServiceTooltip; }
+            set
+            {
+                _newServiceTooltip = value;
+                OnPropertyChanged(() => NewServiceTooltip);
+            }
+        }
+        public string NewServerSourceTooltip
+        {
+            get { return _newServerSourceTooltip; }
+            set
+            {
+                _newServerSourceTooltip = value;
+                OnPropertyChanged(() => NewServerSourceTooltip);
+            }
+        }
+        public string NewDataBaseSourceTooltip
+        {
+            get { return _newDataBaseSourceTooltip; }
+            set
+            {
+                _newDataBaseSourceTooltip = value;
+                OnPropertyChanged(() => NewDataBaseSourceTooltip);
+            }
+        }
+        public string NewWebSourceTooltip
+        {
+            get { return _newWebSourceTooltip; }
+            set
+            {
+                _newWebSourceTooltip = value;
+                OnPropertyChanged(() => NewWebSourceTooltip);
+            }
+        }
+        public string NewPluginSourceTooltip
+        {
+            get { return _newPluginSourceTooltip; }
+            set
+            {
+                _newPluginSourceTooltip = value;
+                OnPropertyChanged(() => NewPluginSourceTooltip);
+            }
+        }
+        public string NewComPluginSourceTooltip
+        {
+            get { return _newComPluginSourceTooltip; }
+            set
+            {
+                _newComPluginSourceTooltip = value;
+                OnPropertyChanged(() => NewComPluginSourceTooltip);
+            }
+        }
+        public string NewEmailSourceTooltip
+        {
+            get { return _newEmailSourceTooltip; }
+            set
+            {
+                _newEmailSourceTooltip = value;
+                OnPropertyChanged(() => NewEmailSourceTooltip);
+            }
+        }
+        public string NewExchangeSourceTooltip
+        {
+            get { return _newExchangeSourceTooltip; }
+            set
+            {
+                _newExchangeSourceTooltip = value;
+                OnPropertyChanged(() => NewExchangeSourceTooltip);
+            }
+        }
+        public string NewRabbitMqSourceTooltip
+        {
+            get { return _newRabbitMqSourceTooltip; }
+            set
+            {
+                _newRabbitMqSourceTooltip = value;
+                OnPropertyChanged(() => NewRabbitMqSourceTooltip);
+            }
+        }
+        public string NewDropboxSourceTooltip
+        {
+            get { return _newDropboxSourceTooltip; }
+            set
+            {
+                _newDropboxSourceTooltip = value;
+                OnPropertyChanged(() => NewDropboxSourceTooltip);
+            }
+        }
+        public string NewSharepointSourceTooltip
+        {
+            get { return _newSharepointSourceTooltip; }
+            set
+            {
+                _newSharepointSourceTooltip = value;
+                OnPropertyChanged(() => NewSharepointSourceTooltip);
+            }
+        }
+        public string NewFolderTooltip
+        {
+            get { return _newFolderTooltip; }
+            set
+            {
+                _newFolderTooltip = value;
+                OnPropertyChanged(() => NewFolderTooltip);
+            }
+        }
+        public string ViewApisJsonTooltip
+        {
+            get { return _viewApisJsonTooltip; }
+            set
+            {
+                _viewApisJsonTooltip = value;
+                OnPropertyChanged(() => ViewApisJsonTooltip);
+            }
+        }
+
         public string ResourceName { get; set; }
         public Guid ResourceId { get; set; }
 
@@ -510,7 +654,27 @@ namespace Warewolf.Studio.ViewModels
             set { }
         }
 
-        public bool CanCreateSource { get; set; }
+        public bool CanCreateSource
+        {
+            get { return _canCreateSource; }
+            set
+            {
+                _canCreateSource = value;
+
+                NewServerSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewServerSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewDataBaseSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewDataBaseSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewWebSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewWebSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewPluginSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewPluginSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewComPluginSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewComPluginSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewEmailSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewEmailSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewExchangeSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewExchangeSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewRabbitMqSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewRabbitMqSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewDropboxSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewDropboxSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewSharepointSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewSharepointSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+
+                OnPropertyChanged(() => CanCreateSource);
+            }
+        }
         public bool CanRename { get; set; }
         public bool CanDelete { get; set; }
 
@@ -527,6 +691,7 @@ namespace Warewolf.Studio.ViewModels
                     _canCreateFolder = value;
                     OnPropertyChanged(() => CanCreateFolder);
                 }
+                NewFolderTooltip = _canCreateFolder ? Resources.Languages.Core.NewFolderTooltip : Resources.Languages.Core.NoPermissionsToolTip;
             }
         }
 
@@ -588,7 +753,18 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canShowServerVersion = value;
+                ServerVersionTooltip = _canShowServerVersion ? Resources.Languages.Core.ServerVersionTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanShowServerVersion);
+            }
+        }
+
+        public string ServerVersionTooltip
+        {
+            get { return _serverVersionTooltip; }
+            set
+            {
+                _serverVersionTooltip = value;
+                OnPropertyChanged(() => ServerVersionTooltip);
             }
         }
 

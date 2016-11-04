@@ -56,7 +56,7 @@ namespace Dev2.Activities.Scripting
         [Inputs("IncludeFile")]
         public string IncludeFile { get; set; }
 
-        IStringScriptSources _sources;
+        readonly IStringScriptSources _sources;
 
 
         #region Overrides of DsfNativeActivity<string>

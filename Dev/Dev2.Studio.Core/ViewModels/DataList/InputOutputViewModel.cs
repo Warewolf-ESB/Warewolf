@@ -19,12 +19,13 @@ using Dev2.DataList.Contract;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Views;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
+// ReSharper disable VirtualMemberCallInConstructor
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
@@ -191,13 +192,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        //public ObservableCollection<IDataListItemModel> DataList
-        //{
-        //    get
-        //    {
-        //        return _dataList;
-        //    }
-        //}
 
         public string DefaultValue { get; set; }
 
@@ -309,17 +303,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if(RecordSetName == string.Empty)
             {
-                // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 DisplayName = Name;
-                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
             else
             {
-                // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 DisplayName = RecordSetName + "(*)." + Name;
-                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
             ViewComplexObjectsCommand = new RelayCommand(item =>
             {
@@ -339,11 +327,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public object Clone()
         {
-
-            // ReSharper disable once ObjectCreationAsStatement
-            // ReSharper disable ObjectCreationAsStatement
-            new ObjectCloner<IDataListItemModel>();
-            // ReSharper restore ObjectCreationAsStatement
             IInputOutputViewModel result = new InputOutputViewModel(Name, Value, MapsTo, DefaultValue, Required, RecordSetName, EmptyToNull);
 
             return result;

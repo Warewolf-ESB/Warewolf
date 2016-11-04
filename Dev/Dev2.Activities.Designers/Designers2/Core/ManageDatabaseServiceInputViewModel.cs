@@ -37,6 +37,10 @@ namespace Dev2.Activities.Designers2.Core
         private IDatabaseService _model;
         private bool _inputCountExpandAllowed;
         private bool _outputCountExpandAllowed;
+        private bool _testPassed;
+        private bool _testFailed;
+        private string _testMessage;
+        private bool _showTestMessage;
 
         public ManageDatabaseServiceInputViewModel(IDatabaseServiceViewModel model, IDbServiceModel serviceModel)
         {
@@ -81,14 +85,13 @@ namespace Dev2.Activities.Designers2.Core
         {
             IsEnabled = false;
             _viewmodel.GenerateOutputsVisible = false;
+            _viewmodel.SetDisplayName("");
             InputArea.IsEnabled = false;
             OutputArea.IsEnabled = false;
+            ResetTestForExecute();
             TestResults = new DataTable();
             TestResultsAvailable = false;
             Errors.Clear();
-
-            _viewmodel.SetDisplayName("");
-            _viewmodel.ErrorMessage(new Exception(), false);
         }
 
         public void ExecuteClose()
@@ -136,20 +139,19 @@ namespace Dev2.Activities.Designers2.Core
             // ReSharper disable once LoopCanBeConvertedToQuery
             if (testResults != null)
             {
-                if (testResults.Columns.Count < 1)
+                if (testResults.Columns.Count > 1)
                 {
-                    _viewmodel.OutputsRegion.RecordsetName = String.Empty;
-                    throw new Exception("Invalid table returned. Please check parameter or stored procedure.");
+                    var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? Model.Action.Name.Replace(".", "_") : testResults.TableName;
+                    _viewmodel.OutputsRegion.RecordsetName = recordsetName;
+                    for (int i = 0; i < testResults.Columns.Count; i++)
+                    {
+                        var column = testResults.Columns[i];
+                        var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString().Replace(" ", ""), recordsetName);
+                        mappings.Add(dbOutputMapping);
+                    }
+                    return mappings;
                 }
-                var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? Model.Action.Name.Replace(".", "_") : testResults.TableName;
-                _viewmodel.OutputsRegion.RecordsetName = recordsetName;
-                for (int i = 0; i < testResults.Columns.Count; i++)
-                {
-                    var column = testResults.Columns[i];
-                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString().Replace(" ", ""), recordsetName);
-                    mappings.Add(dbOutputMapping);
-                }
-                return mappings;
+                _viewmodel.OutputsRegion.RecordsetName = String.Empty;
             }
             return new List<IServiceOutputMapping>();
         }
@@ -157,10 +159,8 @@ namespace Dev2.Activities.Designers2.Core
         public void ExecuteTest()
         {
             OutputArea.IsEnabled = true;
-            TestResults = null;
             IsTesting = true;
-            Errors = new List<string>();
-            _viewmodel.ErrorMessage(new Exception(""), false);
+            ResetTestForExecute();
             try
             {
                 TestResults = _serverModel.TestService(Model);
@@ -171,21 +171,24 @@ namespace Dev2.Activities.Designers2.Core
                 }
                 if (TestResults != null)
                 {
-                    if (TestResults.Columns.Count < 1)
+                    if (TestResults.Columns.Count > 1)
                     {
-                        throw new Exception("Invalid table returned. Please check parameter or stored procedure.");
-                    }
-                    TestResultsAvailable = TestResults.Rows.Count != 0;
-                    IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
-                    _generateOutputArea.IsEnabled = true;
-                    OutputCountExpandAllowed = TestResults.Rows.Count > 3;
+                        TestResultsAvailable = TestResults.Rows.Count != 0;
+                        IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
+                        _generateOutputArea.IsEnabled = true;
+                        OutputCountExpandAllowed = TestResults.Rows.Count > 3;
 
-                    if (!OutputCountExpandAllowed)
-                    {
-                        InputCountExpandAllowed = true;
+                        if (!OutputCountExpandAllowed)
+                        {
+                            InputCountExpandAllowed = true;
+                        }
                     }
-
                     IsTesting = false;
+                    TestPassed = true;
+                    ShowTestMessage = TestResults.Columns.Count < 1;
+                    if (ShowTestMessage)
+                        TestMessage = Warewolf.Studio.Resources.Languages.Core.NoReturnedDataExecuteSuccess;
+                    TestFailed = false;
                 }
             }
             catch (Exception e)
@@ -195,8 +198,21 @@ namespace Dev2.Activities.Designers2.Core
                 TestResultsAvailable = false;
                 _generateOutputArea.IsEnabled = false;
                 _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
+                TestPassed = false;
+                TestFailed = true;
                 _viewmodel.ErrorMessage(e, true);
             }
+        }
+
+        private void ResetTestForExecute()
+        {
+            TestResults = null;
+            TestPassed = false;
+            TestFailed = false;
+            TestMessage = string.Empty;
+            ShowTestMessage = false;
+            Errors = new List<string>();
+            _viewmodel.ErrorMessage(new Exception(""), false);
         }
 
         public bool IsGenerateInputsEmptyRows
@@ -252,6 +268,47 @@ namespace Dev2.Activities.Designers2.Core
 
         public Action TestAction { get; set; }
         public ICommand TestCommand { get; private set; }
+
+        public bool TestPassed
+        {
+            get { return _testPassed; }
+            set
+            {
+                _testPassed = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public bool TestFailed
+        {
+            get { return _testFailed; }
+            set
+            {
+                _testFailed = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TestMessage
+        {
+            get { return _testMessage; }
+            set
+            {
+                _testMessage = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ShowTestMessage
+        {
+            get { return _showTestMessage; }
+            set
+            {
+                _showTestMessage = value; 
+                OnPropertyChanged();
+            }
+        }
+
         public bool TestResultsAvailable
         {
             get

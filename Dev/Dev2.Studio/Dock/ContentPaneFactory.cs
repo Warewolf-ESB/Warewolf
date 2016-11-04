@@ -18,6 +18,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
@@ -142,14 +143,14 @@ namespace Dev2.Studio.Dock
 
                 //Juries attach to events when viewmodel is closed/deactivated to close view.
                 WorkSurfaceContextViewModel model = item as WorkSurfaceContextViewModel;
-                if(model != null)
+                if (model != null)
                 {
                     var vm = model;
                     vm.Deactivated += ViewModelDeactivated;
                 }
 
 
-                if(RemoveItemOnClose)
+                if (RemoveItemOnClose)
                 {
                     IEditableCollectionView cv = CollectionViewSource.GetDefaultView(ItemsSource) as IEditableCollectionView;
 
@@ -220,10 +221,13 @@ namespace Dev2.Studio.Dock
                     WorkSurfaceContextViewModel model = sender as WorkSurfaceContextViewModel;
                     if(model != null)
                     {
-                        var vm = model.WorkSurfaceViewModel;
                         var toRemove = container.Items.Cast<ContentPane>().ToList()
-                            .FirstOrDefault(p => p.Content != null && p.Content == vm);
-                        RemovePane(toRemove);
+                            .FirstOrDefault(p => p.Content != null && p.Content == model.WorkSurfaceViewModel);
+
+                        if (toRemove != null)
+                        {
+                            RemovePane(toRemove);
+                        }
                         if(toRemove != null &&
                             Application.Current != null &&
                             !Application.Current.Dispatcher.HasShutdownStarted)
@@ -582,21 +586,34 @@ namespace Dev2.Studio.Dock
 
                     if (resource != null && !resource.IsWorkflowSaved)
                     {
-                        var vm = model;
-                        vm.TryClose();
-                        var mainVm = vm.Parent as MainViewModel;
-                        if (mainVm != null)
+                        CloseCurrent(e, model);
+                    }
+                    else
+                    {
+                        var sourceView = model.WorkSurfaceViewModel as IStudioTab;
+                        if (sourceView != null && sourceView.IsDirty)
                         {
-                            if (mainVm.CloseCurrent)
-                            {
-                                //vm.Dispose();
-                            }
-                            else
-                            {
-                                e.Cancel = true;
-                            }
+                            CloseCurrent(e, model);
                         }
                     }
+                }
+            }
+        }
+
+        private static void CloseCurrent(PaneClosingEventArgs e, WorkSurfaceContextViewModel model)
+        {
+            var vm = model;
+            vm.TryClose();
+            var mainVm = vm.Parent as MainViewModel;
+            if(mainVm != null)
+            {
+                if(mainVm.CloseCurrent)
+                {
+                    //vm.Dispose();
+                }
+                else
+                {
+                    e.Cancel = true;
                 }
             }
         }

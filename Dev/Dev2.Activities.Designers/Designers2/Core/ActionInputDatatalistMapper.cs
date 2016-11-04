@@ -11,7 +11,7 @@ namespace Dev2.Activities.Designers2.Core
     {
         #region Implementation of IActionInputDatatalistMapper
 
-        public void MappInputsToDatalist(IEnumerable<IServiceInput> inputs)
+        public void MapInputsToDatalist(IEnumerable<IServiceInput> inputs)
         {
             if (inputs != null)
             {

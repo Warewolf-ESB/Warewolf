@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Warewolf.Studio.Core;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Views
 {
     /// <summary>
