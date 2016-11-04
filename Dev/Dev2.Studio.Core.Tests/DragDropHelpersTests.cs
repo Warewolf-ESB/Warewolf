@@ -134,6 +134,28 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(canDoDrop);
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DragDropHelpers_PreventDrop")]
+        public void DragDropHelpers_PreventDrop_EmptyService_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            AppSettings.LocalHost = "http://localhost";
+            var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourceType = "WorkflowService" };
+            var dataContext = new Mock<IWorkflowDesignerViewModel>();
+
+            var differentEnvironment = new Mock<IEnvironmentModel>();
+            differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
+            dataContext.Setup(model => model.EnvironmentModel).Returns(differentEnvironment.Object);
+            differentEnvironment.Setup(a => a.IsLocalHost).Returns(false);
+            var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext.Object));
+            CustomContainer.Register(new Mock<IPopupController>().Object);
+            //------------Execute Test---------------------------
+            bool canDoDrop = dragDropHelpers.PreventDrop(GetMockDataObjectWithFormatData(new[] { "FromToolBox", "ExplorerItemViewModel" }, data));
+            //------------Assert Results-------------------------
+            Assert.IsFalse(canDoDrop);
+        }
         [TestMethod]
         [Owner("Massimo.Guerrera")]
         [TestCategory("DragDropHelpers_PreventDrop")]
