@@ -39,22 +39,20 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            if (requestArgs == null)
+            if (requestArgs != null)
             {
-                throw new ArgumentNullException(nameof(requestArgs));
-            }
-            StringBuilder itemBeingDeleted;
-            if (!requestArgs.TryGetValue("itemToDelete", out itemBeingDeleted))
-            {
-                throw new ArgumentException(string.Format(ErrorResource.IsBlank, "itemToDelete"));
-            }
-
-            if (itemBeingDeleted != null)
-            {
-                var itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
-                if (itemToDelete != null)
+                StringBuilder itemBeingDeleted;
+                if (requestArgs.TryGetValue("itemToDelete", out itemBeingDeleted))
                 {
-                    return itemToDelete.ResourceId;
+
+                    if (itemBeingDeleted != null)
+                    {
+                        var itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
+                        if (itemToDelete != null)
+                        {
+                            return itemToDelete.ResourceId;
+                        }
+                    }
                 }
             }
             return Guid.Empty;

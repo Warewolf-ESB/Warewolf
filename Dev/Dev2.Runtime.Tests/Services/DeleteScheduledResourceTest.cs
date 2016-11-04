@@ -34,10 +34,10 @@ namespace Dev2.Tests.Runtime.Services
         public void GetResourceID_ShouldReturnEmptyGuid()
         {
             //------------Setup for test--------------------------
-            var clearLog = new ClearLog();
+            var service = new DeleteScheduledResource();
 
             //------------Execute Test---------------------------
-            var resId = clearLog.GetResourceID(new Dictionary<string, StringBuilder>());
+            var resId = service.GetResourceID(new Dictionary<string, StringBuilder>());
             //------------Assert Results-------------------------
             Assert.AreEqual(Guid.Empty, resId);
         }
@@ -48,12 +48,12 @@ namespace Dev2.Tests.Runtime.Services
         public void GetAuthorizationContextForService_ShouldReturnContext()
         {
             //------------Setup for test--------------------------
-            var clearLog = new ClearLog();
+            var service = new DeleteScheduledResource();
 
             //------------Execute Test---------------------------
-            var resId = clearLog.GetAuthorizationContextForService();
+            var resId = service.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
-            Assert.AreEqual(AuthorizationContext.Any, resId);
+            Assert.AreEqual(AuthorizationContext.Administrator, resId);
         }
 
 

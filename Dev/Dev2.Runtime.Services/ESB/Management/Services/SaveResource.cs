@@ -14,11 +14,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 
@@ -30,14 +32,32 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SaveResource : IEsbManagementEndpoint
     {
+
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {           
+        {
+            if (requestArgs != null && requestArgs.Count > 0)
+            {
+                StringBuilder resourceDefinition;
+                requestArgs.TryGetValue("ResourceXml", out resourceDefinition);
+                if (resourceDefinition != null && resourceDefinition.Length > 0)
+                {
+                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    resourceDefinition = new StringBuilder(serializer.Deserialize<CompressedExecuteMessage>(resourceDefinition).GetDecompressedMessage());
+                    var xml = resourceDefinition.ToXElement();
+                    var resource = new Resource(xml);
+                    var res = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
+                    if (res != null)
+                    {
+                        return res.ResourceID;
+                    }
+                }
+            }
             return Guid.Empty;
         }
 
         public AuthorizationContext GetAuthorizationContextForService()
         {
-            return AuthorizationContext.Contribute;
+            return AuthorizationContext.Contribute;            
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
