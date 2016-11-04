@@ -2491,7 +2491,7 @@ namespace Warewolf.UITests
         public void Debug_Workflow_With_Ribbon_Button()
         {
             Click_Debug_Ribbon_Button();
-            Click_DebugInput_Debug_Button_For_UnpinnedWindow();
+            Click_DebugInput_Debug_Button();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
@@ -2566,14 +2566,10 @@ namespace Warewolf.UITests
             switch (RowNumber)
             {
                 case 2:
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params.TextboxText = VariableText;
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params.TextboxText = ValueText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2();
                     Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2.");
                     break;
                 default:
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText = VariableText;
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params.TextboxText = ValueText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
                     Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1.");
                     break;
