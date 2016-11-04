@@ -777,6 +777,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy the current resource Url.
+        /// </summary>
+        public static string CopyUrlToolTip {
+            get {
+                return ResourceManager.GetString("CopyUrlToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To Count the number of records/indexes in a recordset, put the recordset name in here. E.g. [[Customer()]]	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset()]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CountHelpRecordset {
@@ -1751,6 +1760,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F7].
+        /// </summary>
+        public static string DebugBrowserToolTip {
+            get {
+                return ResourceManager.GetString("DebugBrowserToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warewolf was unable to download the debug output values from the server.{0}Please ensure that the server is accessible..
         /// </summary>
         public static string DebugCouldNotGetDebugItemsError {
@@ -1783,6 +1801,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DebugCouldNotGetRemoteDebugItemsErrorHeader {
             get {
                 return ResourceManager.GetString("DebugCouldNotGetRemoteDebugItemsErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F5].
+        /// </summary>
+        public static string DebugInputsToolTip {
+            get {
+                return ResourceManager.GetString("DebugInputsToolTip", resourceCulture);
             }
         }
         
@@ -1837,6 +1864,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DebugOutputViewOptionsHelp {
             get {
                 return ResourceManager.GetString("DebugOutputViewOptionsHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F6].
+        /// </summary>
+        public static string DebugStudioToolTip {
+            get {
+                return ResourceManager.GetString("DebugStudioToolTip", resourceCulture);
             }
         }
         
@@ -2001,11 +2037,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DependenciesTooltip.
+        ///   Looks up a localized string similar to View which resources are dependant on the current resource.
         /// </summary>
-        public static string DependenciesTooltip {
+        public static string DependenciesToolTip {
             get {
-                return ResourceManager.GetString("DependenciesTooltip", resourceCulture);
+                return ResourceManager.GetString("DependenciesToolTip", resourceCulture);
             }
         }
         
@@ -2136,11 +2172,20 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DeployTooltip.
+        ///   Looks up a localized string similar to Move current resource between Warewolf servers.
         /// </summary>
-        public static string DeployTooltip {
+        public static string DeployToolTip {
             get {
-                return ResourceManager.GetString("DeployTooltip", resourceCulture);
+                return ResourceManager.GetString("DeployToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot execute this command on an unsaved workflow.
+        /// </summary>
+        public static string DisabledToolTip {
+            get {
+                return ResourceManager.GetString("DisabledToolTip", resourceCulture);
             }
         }
         
@@ -2391,11 +2436,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DuplicateTooltip.
+        ///   Looks up a localized string similar to Duplicate the current resource.
         /// </summary>
-        public static string DuplicateTooltip {
+        public static string DuplicateToolTip {
             get {
-                return ResourceManager.GetString("DuplicateTooltip", resourceCulture);
+                return ResourceManager.GetString("DuplicateToolTip", resourceCulture);
             }
         }
         
@@ -5343,7 +5388,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} executed successfully and returned no data..
+        ///   Looks up a localized string similar to No data returned.   .
         /// </summary>
         public static string NoReturnedDataExecuteSuccess {
             get {
@@ -6487,11 +6532,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RunAllTestsTooltip.
+        ///   Looks up a localized string similar to Run all tests in browser for this resource.
         /// </summary>
-        public static string RunAllTestsTooltip {
+        public static string RunAllTestsToolTip {
             get {
-                return ResourceManager.GetString("RunAllTestsTooltip", resourceCulture);
+                return ResourceManager.GetString("RunAllTestsToolTip", resourceCulture);
             }
         }
         
@@ -6818,6 +6863,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SchedulerUnsavedTaskMessage {
             get {
                 return ResourceManager.GetString("SchedulerUnsavedTaskMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule a service to run.
+        /// </summary>
+        public static string ScheduleToolTip {
+            get {
+                return ResourceManager.GetString("ScheduleToolTip", resourceCulture);
             }
         }
         
@@ -8876,114 +8930,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copy the current resource Url.
-        /// </summary>
-        public static string StartNodeCopyUrlToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeCopyUrlToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Run and debug your workflow service [F7].
-        /// </summary>
-        public static string StartNodeDebugBrowserToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeDebugBrowserToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Run and debug your workflow service [F5].
-        /// </summary>
-        public static string StartNodeDebugInputsToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeDebugInputsToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Run and debug your workflow service [F6].
-        /// </summary>
-        public static string StartNodeDebugStudioToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeDebugStudioToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View which resources are dependant on the current resource.
-        /// </summary>
-        public static string StartNodeDependenciesToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeDependenciesToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Move current resource between Warewolf servers.
-        /// </summary>
-        public static string StartNodeDeployToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeDeployToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot execute this command on an unsaved workflow.
-        /// </summary>
-        public static string StartNodeDisabledToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeDisabledToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Duplicate the current resource.
-        /// </summary>
-        public static string StartNodeDuplicateToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeDuplicateToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Run all tests in browser for this resource.
-        /// </summary>
-        public static string StartNodeRunAllTestsToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeRunAllTestsToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Schedule a service to run.
-        /// </summary>
-        public static string StartNodeScheduleToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeScheduleToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View the current tests for this resource.
-        /// </summary>
-        public static string StartNodeTestEditorToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeTestEditorToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View Swagger source for the current resource.
-        /// </summary>
-        public static string StartNodeViewSwaggerToolTip {
-            get {
-                return ResourceManager.GetString("StartNodeViewSwaggerToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The Switch tool cannot be dropped onto this tool..
         /// </summary>
         public static string SwitchDropNotAllowedMessage {
@@ -9035,6 +8981,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string TestConnectionLabel {
             get {
                 return ResourceManager.GetString("TestConnectionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View the current tests for this resource.
+        /// </summary>
+        public static string TestEditorToolTip {
+            get {
+                return ResourceManager.GetString("TestEditorToolTip", resourceCulture);
             }
         }
         
@@ -10084,6 +10039,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ViewJsonObjectTooltip {
             get {
                 return ResourceManager.GetString("ViewJsonObjectTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Swagger source for the current resource.
+        /// </summary>
+        public static string ViewSwaggerToolTip {
+            get {
+                return ResourceManager.GetString("ViewSwaggerToolTip", resourceCulture);
             }
         }
         
