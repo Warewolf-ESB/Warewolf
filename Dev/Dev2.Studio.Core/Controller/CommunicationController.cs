@@ -97,9 +97,8 @@ namespace Dev2.Controller
             ServicePayload.AddArgument(key, value);
         }
 
-        private static string ContainsAuthorizationError(ExecuteMessage message, IExplorerRepositoryResult explorerRepositoryResult, out bool containsAuthorization)
+        private static string ContainsAuthorizationError(string authorizationError, out bool containsAuthorization)
         {
-            var executeMessage = message;
             var authorizationErrors = new List<string>
             {
                 ErrorResource.NotAuthorizedToCreateException,
@@ -110,7 +109,6 @@ namespace Dev2.Controller
                 ErrorResource.NotAuthorizedToExecuteException,
                 ErrorResource.NotAuthorizedToDeployToException,
             };
-            var authorizationError = executeMessage?.Message.ToString() ?? explorerRepositoryResult.Message;
             if (string.IsNullOrEmpty(authorizationError))
             {
                 containsAuthorization = false;
@@ -154,46 +152,46 @@ namespace Dev2.Controller
                 StringBuilder payload = connection.ExecuteCommand(toSend, workspaceId);
                 ValidatePayload(connection, payload, popupController);
                 var executeCommand = serializer.Deserialize<T>(payload);
-                return CheckAuthorization(executeCommand, serializer, payload);                
+                if (executeCommand==null)
+                {
+                    var execMessage = serializer.Deserialize<ExecuteMessage>(payload);
+                    if (execMessage != null)
+                    {
+                        return CheckAuthorization<T>(execMessage);
+                    }
+                }
+                return executeCommand;
             }
             return default(T);
         }
 
-        private static T CheckAuthorization<T>(T executeCommand, Dev2JsonSerializer serializer, StringBuilder payload) where T : class
+
+        private static T CheckAuthorization<T>(ExecuteMessage message) where T:class
         {
-            IExplorerRepositoryResult explorerRepositoryResult = null;
-            ExecuteMessage message = null;
-            if(executeCommand != null)
-            {
-                explorerRepositoryResult = executeCommand as IExplorerRepositoryResult;
-            }
-            else
-            {
-                message = serializer.Deserialize<ExecuteMessage>(payload);
-            }
-            if (explorerRepositoryResult == null)
-            {
-                message = executeCommand as ExecuteMessage;
-            }
-            if(message != null || explorerRepositoryResult != null)
+            if (message != null)
             {
                 bool containsAuthorization;
-                var s = ContainsAuthorizationError(message, explorerRepositoryResult, out containsAuthorization);
-                if(containsAuthorization)
+                var s = ContainsAuthorizationError(message.Message.ToString(), out containsAuthorization);
+                if (containsAuthorization)
                 {
                     ShowAuthorizationErrorPopup(s);
-                    if (message != null)
+                    if (typeof(T) == typeof(IExplorerRepositoryResult))
                     {
-                        message.HasError = true;
-                        message.Message = new StringBuilder(s);
-                        return message as T;
+                       var explorerRepositoryResult = new ExplorerRepositoryResult(ExecStatus.Fail, s);
+                       return explorerRepositoryResult as T;
                     }
-                    explorerRepositoryResult.Status = ExecStatus.Fail;
-                    explorerRepositoryResult.Message = s;
-                    return explorerRepositoryResult as T;
-                }
+                    if (typeof(T) == typeof(ExecuteMessage))
+                    {
+                        var returnMessage = new ExecuteMessage
+                        {
+                            HasError = true,
+                            Message = new StringBuilder(s)
+                        };
+                        return returnMessage as T;
+                    }                   
+                }                
             }
-            return executeCommand;
+            return default(T);
         }
 
         private static void ValidatePayload(IEnvironmentConnection connection, StringBuilder payload, IPopupController popupController)
@@ -247,7 +245,7 @@ namespace Dev2.Controller
                     {
                         var popupController = CustomContainer.Get<IPopupController>();
                         popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
-                                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK, 
+                                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
                                               MessageBoxImage.Information, "", false, false, true, false);
                     }
                 }
@@ -256,17 +254,24 @@ namespace Dev2.Controller
             {
                 try
                 {
-                            // now bundle it up into a nice string builder ;)
-                            if (ServicePayload == null)
-                            {
-                                ServicePayload = new EsbExecuteRequest();
-                            }
+                    if (ServicePayload == null)
+                    {
+                        ServicePayload = new EsbExecuteRequest();
+                    }
 
-                            ServicePayload.ServiceName = ServiceName;
-                            StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                            var payload = await connection.ExecuteCommandAsync(toSend, workspaceId);
-                            var executeCommand = serializer.Deserialize<T>(payload);
-                    return CheckAuthorization(executeCommand, serializer, payload);
+                    ServicePayload.ServiceName = ServiceName;
+                    StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
+                    var payload = await connection.ExecuteCommandAsync(toSend, workspaceId);
+                    var executeCommand = serializer.Deserialize<T>(payload);
+                    if (executeCommand == null)
+                    {
+                        var execMessage = serializer.Deserialize<ExecuteMessage>(payload);
+                        if (execMessage != null)
+                        {
+                            return CheckAuthorization<T>(execMessage);
+                        }
+                    }
+                    return executeCommand;
 
                 }
                 catch (ServiceNotAuthorizedException ex)
@@ -284,7 +289,7 @@ namespace Dev2.Controller
                         ShowAuthorizationErrorPopup(ex.Message);
                         return default(T);
                     }
-                  
+
                 }
             }
             return default(T);
@@ -337,7 +342,7 @@ namespace Dev2.Controller
         }
 
 
-        public T ExecuteCompressedCommand<T>(IEnvironmentConnection connection, Guid workspaceId)
+        public T ExecuteCompressedCommand<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class
         {
             // build the service request payload ;)
             var serializer = new Dev2JsonSerializer();
