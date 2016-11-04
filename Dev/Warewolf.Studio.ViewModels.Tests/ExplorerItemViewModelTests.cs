@@ -1826,7 +1826,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanDelete);
             Assert.IsTrue(_target.CanMove);
             Assert.IsFalse(_target.CanCreateFolder);
-            Assert.IsTrue(_target.CanDeploy);
+            Assert.IsFalse(_target.CanDeploy);
             Assert.IsTrue(_target.CanShowVersions);
             Assert.IsTrue(_target.CanCreateWorkflowService);
             Assert.IsTrue(_target.CanCreateSource);

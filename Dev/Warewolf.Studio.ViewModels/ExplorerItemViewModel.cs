@@ -645,11 +645,11 @@ namespace Warewolf.Studio.ViewModels
             }
             if (permission.HasFlag(Permissions.View))
             {
-                CanView = !isDeploy;
+                SetViewPermissions(isDeploy);
             }
             if (permission.HasFlag(Permissions.Execute))
             {
-                CanExecute = IsService && !isDeploy;
+                SetExecutePermissions(isDeploy);
             }
             if (permission.HasFlag(Permissions.Contribute))
             {
@@ -657,9 +657,28 @@ namespace Warewolf.Studio.ViewModels
             }
             if (permission.HasFlag(Permissions.Administrator))
             {
-                SetAdministratorPermissions();
+                SetAdministratorPermissions(isDeploy);
             }
             
+        }
+
+        private void SetExecutePermissions(bool isDeploy)
+        {
+            CanExecute = IsService && !isDeploy;
+            CanViewApisJson = true;
+            CanViewSwagger = true;
+            CanDebugInputs = true;
+            CanDebugStudio = true;
+            CanDebugBrowser = true;
+        }
+
+        private void SetViewPermissions(bool isDeploy)
+        {
+            CanView = !isDeploy;
+            CanShowDependencies = true;
+            CanShowVersions = true;
+            CanViewApisJson = true;
+            CanViewSwagger = true;            
         }
 
         private void SetNonePermissions()
@@ -687,10 +706,10 @@ namespace Warewolf.Studio.ViewModels
             CanShowVersions = false;
         }
 
-        private void SetAdministratorPermissions()
+        private void SetAdministratorPermissions(bool isDeploy)
         {
             CanRename = true;
-            CanEdit = true;
+            CanEdit = !isDeploy;
             CanDuplicate = true;
             CanCreateTest = true;
             CanViewRunAllTests = true;
@@ -729,7 +748,6 @@ namespace Warewolf.Studio.ViewModels
             CanMove = true;
             CanViewApisJson = true;
             CanViewSwagger = true;
-            CanDeploy = true;
             CanDebugInputs = true;
             CanDebugStudio = true;
             CanDebugBrowser = true;
