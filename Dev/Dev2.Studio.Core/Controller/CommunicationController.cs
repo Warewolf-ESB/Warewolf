@@ -160,7 +160,14 @@ namespace Dev2.Controller
                         return CheckAuthorization<T>(execMessage);
                     }
                 }
-                return executeCommand;
+                else
+                {
+                    if (typeof(T) == typeof(ExecuteMessage))
+                    {
+                        return CheckAuthorization<T>(executeCommand as ExecuteMessage);
+                    }
+                    return executeCommand;
+                }
             }
             return default(T);
         }
@@ -188,7 +195,14 @@ namespace Dev2.Controller
                             Message = new StringBuilder(s)
                         };
                         return returnMessage as T;
-                    }                   
+                    }
+                }
+                else
+                {
+                    if (typeof(T) == typeof(ExecuteMessage))
+                    {
+                        return message as T;
+                    }
                 }                
             }
             return default(T);
@@ -271,7 +285,14 @@ namespace Dev2.Controller
                             return CheckAuthorization<T>(execMessage);
                         }
                     }
-                    return executeCommand;
+                    else
+                    {
+                        if (typeof(T) == typeof(ExecuteMessage))
+                        {
+                            return CheckAuthorization<T>(executeCommand as ExecuteMessage);
+                        }
+                        return executeCommand;
+                    }
 
                 }
                 catch (ServiceNotAuthorizedException ex)

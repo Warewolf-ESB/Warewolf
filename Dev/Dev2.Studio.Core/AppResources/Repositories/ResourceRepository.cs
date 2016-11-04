@@ -265,7 +265,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 if (result != null && ((result.ResourceType == ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0) || fetchPayload))
                 {
                     var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, result.ID, prepairForDeployment);
-                    if (msg != null)
+                    if (msg != null && !msg.HasError)
                     {
                         result.WorkflowXaml = msg.Message;
                     }
@@ -557,7 +557,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 if (fetchXaml)
                 {
                     var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, id, prepairForDeployment);
-                    if(msg == null)
+                    if(msg == null || msg.HasError)
                         return null;
                     resource.WorkflowXaml = msg.Message;
                 }
