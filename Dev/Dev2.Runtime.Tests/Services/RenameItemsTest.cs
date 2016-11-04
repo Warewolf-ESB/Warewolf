@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Explorer;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -29,6 +30,34 @@ namespace Dev2.Tests.Runtime.Services
     // ReSharper disable InconsistentNaming
     public class RenameItemsTest
     {
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var clearLog = new ClearLog();
+
+            //------------Execute Test---------------------------
+            var resId = clearLog.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var clearLog = new ClearLog();
+
+            //------------Execute Test---------------------------
+            var resId = clearLog.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Any, resId);
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("RenameItem_HandlesType")]
