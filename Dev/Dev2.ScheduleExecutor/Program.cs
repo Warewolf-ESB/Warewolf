@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -324,6 +325,7 @@ namespace Dev2.ScheduleExecutor
 
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         // ReSharper disable once ReturnTypeCanBeEnumerable.Local
         private static List<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
         {

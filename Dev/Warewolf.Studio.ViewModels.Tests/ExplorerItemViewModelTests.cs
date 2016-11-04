@@ -1786,6 +1786,30 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestNonrPermissionsSameResource()
+        {
+            //arrange
+            _target.ResourceId = Guid.NewGuid();
+            _target.ResourceType = "WorkflowService";
+            _target.IsService = true;           
+            //act
+            _target.SetPermissions(Permissions.None);
+            //assert
+            Assert.IsFalse(_target.CanEdit);
+            Assert.IsFalse(_target.CanView);
+            Assert.IsFalse(_target.CanRename);
+            Assert.IsFalse(_target.CanDuplicate);
+            Assert.IsFalse(_target.CanCreateTest);
+            Assert.IsFalse(_target.CanDelete);
+            Assert.IsFalse(_target.CanMove);
+            Assert.IsFalse(_target.CanCreateFolder);
+            Assert.IsFalse(_target.CanDeploy);
+            Assert.IsFalse(_target.CanShowVersions);
+            Assert.IsFalse(_target.CanCreateWorkflowService);
+            Assert.IsFalse(_target.CanCreateSource);
+        }
+
+        [TestMethod]
         public void TestSetPermissions_ContributePermission_AllowsMove()
         {
             //arrange
@@ -1802,7 +1826,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanDelete);
             Assert.IsTrue(_target.CanMove);
             Assert.IsFalse(_target.CanCreateFolder);
-            Assert.IsTrue(_target.CanDeploy);
+            Assert.IsFalse(_target.CanDeploy);
             Assert.IsTrue(_target.CanShowVersions);
             Assert.IsTrue(_target.CanCreateWorkflowService);
             Assert.IsTrue(_target.CanCreateSource);

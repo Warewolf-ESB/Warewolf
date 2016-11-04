@@ -638,17 +638,18 @@ namespace Warewolf.Studio.ViewModels
 
         public void SetPermission(Permissions permission, bool isDeploy = false)
         {
+            SetNonePermissions();
             if (permission.HasFlag(Permissions.DeployFrom))
             {
                 CanDeploy = true;
             }
             if (permission.HasFlag(Permissions.View))
             {
-                CanView = !isDeploy;
+                SetViewPermissions(isDeploy);
             }
             if (permission.HasFlag(Permissions.Execute))
             {
-                CanExecute = IsService && !isDeploy;
+                SetExecutePermissions(isDeploy);
             }
             if (permission.HasFlag(Permissions.Contribute))
             {
@@ -656,15 +657,59 @@ namespace Warewolf.Studio.ViewModels
             }
             if (permission.HasFlag(Permissions.Administrator))
             {
-                SetAdministratorPermissions();
+                SetAdministratorPermissions(isDeploy);
             }
-
+            
         }
 
-        private void SetAdministratorPermissions()
+        private void SetExecutePermissions(bool isDeploy)
+        {
+            CanExecute = IsService && !isDeploy;
+            CanViewApisJson = true;
+            CanViewSwagger = true;
+            CanDebugInputs = true;
+            CanDebugStudio = true;
+            CanDebugBrowser = true;
+        }
+
+        private void SetViewPermissions(bool isDeploy)
+        {
+            CanView = !isDeploy;
+            CanShowDependencies = true;
+            CanShowVersions = true;
+            CanViewApisJson = true;
+            CanViewSwagger = true;            
+        }
+
+        private void SetNonePermissions()
+        {
+            CanRename = false;
+            CanEdit = false;
+            CanDuplicate = false;
+            CanDebugInputs = false;
+            CanDebugStudio = false;
+            CanDebugBrowser = false;
+            CanCreateSchedule = false;
+            CanCreateTest = false;
+            CanViewRunAllTests = false;
+            CanCreateTest = false;
+            CanDelete = false;
+            CanCreateFolder = false;
+            CanDeploy = false;
+            CanCreateWorkflowService = false;
+            CanShowDependencies = false;
+            CanCreateSource = false;
+            CanView = false;
+            CanViewApisJson = false;
+            CanMove = false;
+            CanViewSwagger = false;
+            CanShowVersions = false;
+        }
+
+        private void SetAdministratorPermissions(bool isDeploy)
         {
             CanRename = true;
-            CanEdit = true;
+            CanEdit = !isDeploy;
             CanDuplicate = true;
             CanCreateTest = true;
             CanViewRunAllTests = true;
@@ -678,12 +723,12 @@ namespace Warewolf.Studio.ViewModels
             CanMove = true;
             CanViewSwagger = true;
             CanShowVersions = true;
+            CanShowDependencies = true;
             CanDebugInputs = true;
             CanDebugStudio = true;
             CanDebugBrowser = true;
             CanCreateSchedule = true;
             CanCreateTest = true;
-            CanViewRunAllTests = true;
         }
 
         private void SetContributePermissions(bool isDeploy)
@@ -696,13 +741,13 @@ namespace Warewolf.Studio.ViewModels
             CanViewRunAllTests = true;
             CanDelete = true;
             CanCreateFolder = true;
+            CanShowDependencies = true;
             CanCreateWorkflowService = true;
             CanCreateSource = true;
             CanShowVersions = true;
             CanMove = true;
             CanViewApisJson = true;
             CanViewSwagger = true;
-            CanDeploy = true;
             CanDebugInputs = true;
             CanDebugStudio = true;
             CanDebugBrowser = true;

@@ -16,6 +16,7 @@ using System.Threading;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -64,6 +65,34 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         #region Execute
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var deleteLog = new DeleteLog();
+
+            //------------Execute Test---------------------------
+            var resId = deleteLog.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var deleteLog = new DeleteLog();
+
+            //------------Execute Test---------------------------
+            var resId = deleteLog.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Administrator, resId);
+        }
 
         [TestMethod]
         public void DeleteLogExecuteWithNullFilePathExpectedReturnsError()

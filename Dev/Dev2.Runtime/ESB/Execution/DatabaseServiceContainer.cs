@@ -13,6 +13,7 @@ using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Services.Execution;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -55,6 +56,11 @@ namespace Dev2.Runtime.ESB.Execution
             var result = _databaseServiceExecution.Execute(out errors, update);
             _databaseServiceExecution.AfterExecution(errors);
             return result;
+        }
+
+        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
+        {
+            return true;
         }
 
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)

@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Explorer;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -29,6 +30,34 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class FetchExplorerItemsTest
     {
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var fetchExplorerItems = new FetchExplorerItems();
+
+            //------------Execute Test---------------------------
+            var resId = fetchExplorerItems.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var fetchExplorerItems = new FetchExplorerItems();
+
+            //------------Execute Test---------------------------
+            var resId = fetchExplorerItems.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Any, resId);
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("FetchExplorerItems_HandlesType")]
@@ -83,6 +112,7 @@ namespace Dev2.Tests.Runtime.Services
             var message = serializer.Deserialize<CompressedExecuteMessage>(execute);
             Assert.AreEqual(serializer.Deserialize<IExplorerItem>(message.GetDecompressedMessage()).ResourceId, item.ResourceId);
         }
+        
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -100,5 +130,5 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);
         }
     }
-  
+
 }

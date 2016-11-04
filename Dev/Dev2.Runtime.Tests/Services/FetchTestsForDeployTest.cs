@@ -6,6 +6,7 @@ using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -16,6 +17,34 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class FetchTestsForDeployTest
     {
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var fetchTestsForDeploy = new FetchTestsForDeploy();
+
+            //------------Execute Test---------------------------
+            var resId = fetchTestsForDeploy.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var fetchTestsForDeploy = new FetchTestsForDeploy();
+
+            //------------Execute Test---------------------------
+            var resId = fetchTestsForDeploy.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Any, resId);
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("FetchTests_HandlesType")]
@@ -119,51 +148,6 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(listOfTests[0].TestName,testModels[0].TestName);
             Assert.AreEqual(resourceID,resID);
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("FetchTests_Execute")]
-        public void FetchTests_ExecuteExpect_ExpectTestListWithEncryptedPassword()
-        {
-            //------------Setup for test--------------------------
-            var fetchTests = new FetchTestsForDeploy();
-
-            const string password = "nathi";
-            var listOfTests = new List<IServiceTestModelTO>
-            {
-                new ServiceTestModelTO
-                {
-                    AuthenticationType = AuthenticationType.Public,
-                    Enabled = true,
-                    TestName = "Test MyWF",
-                    Password = password
-                }
-            };
-            var repo = new Mock<ITestCatalog>();
-            var ws = new Mock<IWorkspace>();
-            var resID = Guid.Empty;
-            repo.Setup(a => a.Fetch(It.IsAny<Guid>())).Callback((Guid id)=>
-            {
-                resID = id;
-            }).Returns(listOfTests).Verifiable();
-
-            var serializer = new Dev2JsonSerializer();
-            var inputs = new Dictionary<string, StringBuilder>();
-            var resourceID = Guid.NewGuid();
-            inputs.Add("resourceID", new StringBuilder(resourceID.ToString()));            
-            fetchTests.TestCatalog = repo.Object;
-            //------------Execute Test---------------------------
-            var res = fetchTests.Execute(inputs, ws.Object);
-            var msg = serializer.Deserialize<CompressedExecuteMessage>(res);
-            var testModels = serializer.Deserialize<List<IServiceTestModelTO>>(msg.GetDecompressedMessage());
-            //------------Assert Results-------------------------
-            repo.Verify(a => a.Fetch(It.IsAny<Guid>()));
-            Assert.AreEqual(listOfTests.Count,testModels.Count);
-            Assert.AreEqual(listOfTests[0].TestName,testModels[0].TestName);
-            Assert.AreEqual(listOfTests[0].TestName,testModels[0].TestName);
-            var encrypt = SecurityEncryption.Encrypt(password);
-            Assert.AreEqual(listOfTests[0].Password, encrypt);
-            Assert.AreEqual(resourceID,resID);
-        }        
+        
     }
 }

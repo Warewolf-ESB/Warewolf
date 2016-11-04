@@ -41,7 +41,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             var xml = GetPostData(ctx);
 
-            if(!String.IsNullOrEmpty(xml))
+            if (!string.IsNullOrEmpty(xml))
             {
                 formData.RawRequestPayload = xml;
             }
@@ -50,9 +50,9 @@ namespace Dev2.Runtime.WebServer.Handlers
             formData.InstanceID = instanceId;
             formData.Bookmark = bookmark;
             formData.WebServerUrl = ctx.Request.Uri.ToString();
-            formData.Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
+            formData.Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}";
 
-            if(ExecutingUser == null)
+            if (ExecutingUser == null)
             {
                 throw new Exception(ErrorResource.NullExecutingUser);
             }
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     Thread.CurrentPrincipal = ExecutingUser;
 
-                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders(),ctx.Request.User);
+                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders(), ctx.Request.User);
                     ctx.Send(responseWriter);
                 });
 
@@ -72,7 +72,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 t.Join();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 // ReSharper disable InvokeAsExtensionMethod
                 Dev2Logger.Error(this, e);
@@ -103,7 +103,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     isDebug = false;
                 }
             }
-
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
             if (isDebug)
             {
@@ -114,6 +114,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.ServiceName = request.ServiceName;
 
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
+
             var isManagementResource = false;
             if (resource != null)
             {
@@ -125,7 +126,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
             }
-            
+
             dataObject.ClientID = Guid.Parse(connectionId);
             Common.Utilities.OrginalExecutingUser = ExecutingUser;
             dataObject.ExecutingUser = ExecutingUser;
@@ -165,6 +166,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                                 }
                             }
                         }
+                        
                         channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
                     });
 
@@ -186,10 +188,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return new StringBuilder();
             }
 
-            ExecuteMessage msg = new ExecuteMessage {HasError = true};
-            msg.SetMessage(String.Join(Environment.NewLine, dataObject.Environment.Errors));
+            
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            ExecuteMessage msg = new ExecuteMessage { HasError = true };
+            msg.SetMessage(string.Join(Environment.NewLine, dataObject.Environment.Errors));
+
             return serializer.SerializeToBuilder(msg);
         }
     }

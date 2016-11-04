@@ -16,7 +16,7 @@ namespace Dev2.Services.Security
 {
     public interface IAuthorizationRequest
     {
-        Tuple<string, string> Key { get; }
+        Tuple<string, string, AuthorizationContext> Key { get; }
         WebServerRequestType RequestType { get; }
         IPrincipal User { get; }
         Uri Url { get; }

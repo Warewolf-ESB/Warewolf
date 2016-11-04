@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -25,6 +26,35 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class RollBackToTest
     {
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var rollbackTo = new RollbackTo();
+
+            //------------Execute Test---------------------------
+            var resId = rollbackTo.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var rollbackTo = new RollbackTo();
+
+            //------------Execute Test---------------------------
+            var resId = rollbackTo.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Any, resId);
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("RolbackTo_Name")]

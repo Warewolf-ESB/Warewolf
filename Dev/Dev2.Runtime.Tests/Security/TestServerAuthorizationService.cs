@@ -19,6 +19,7 @@ namespace Dev2.Tests.Runtime.Security
         public TestServerAuthorizationService(ISecurityService securityService)
             : base(securityService)
         {
+            ClearCaches();
         }
 
         public Guid RemovedResourceID { get; set; }
