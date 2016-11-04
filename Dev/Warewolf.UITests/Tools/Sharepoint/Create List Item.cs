@@ -7,7 +7,7 @@ namespace Warewolf.UITests
     public class Create_List_Item
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Create_Small_View_UITest()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.Server.Exists, "Server combobox does not exist on small view after tool has been dragged from the toolbox.");
@@ -18,7 +18,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Create_Large_View_UITest()
         {
             UIMap.Open_Sharepoint_Create_Tool_Large_View();

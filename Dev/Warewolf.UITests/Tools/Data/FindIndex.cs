@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class FindIndex
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Data Tools")]
         public void FindIndexToolUITest()
         {            
             Uimap.Open_Find_Index_Tool_Large_View();

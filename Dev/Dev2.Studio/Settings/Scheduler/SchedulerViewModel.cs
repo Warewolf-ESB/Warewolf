@@ -90,7 +90,7 @@ namespace Dev2.Settings.Scheduler
         {
         }
 
-        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IEnvironmentModel> toEnvironmentModel,Task<IResourcePickerDialog> getResourcePicker = null)
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IEnvironmentModel> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker = null)
             : base(eventPublisher)
         {
             SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
@@ -372,11 +372,11 @@ namespace Dev2.Settings.Scheduler
                 if (ScheduledResourceModel != null && SelectedTask != null && _history == null && !SelectedTask.IsNewItem)
                 {
                     _asyncWorker.Start(() =>
-                   {
-                       IsHistoryTabVisible = false;
-                       IsProgressBarVisible = true;
-                       _history = ScheduledResourceModel.CreateHistory(SelectedTask).ToList();
-                   }
+                    {
+                        IsHistoryTabVisible = false;
+                        IsProgressBarVisible = true;
+                        _history = ScheduledResourceModel.CreateHistory(SelectedTask).ToList();
+                    }
                    , () =>
                    {
                        IsHistoryTabVisible = true;
@@ -637,7 +637,7 @@ namespace Dev2.Settings.Scheduler
                        (_deleteCommand = new DelegateCommand(param =>
                        {
                            var taskToBeDeleted = param as IScheduledResource;
-                           if(taskToBeDeleted == null) return;
+                           if (taskToBeDeleted == null) return;
                            SelectedTask = taskToBeDeleted;
                            SchedulerTaskManager.DeleteTask();
                        }));
@@ -793,7 +793,7 @@ namespace Dev2.Settings.Scheduler
                 if (SelectedTask != null && SelectedTask.IsDirty)
                 {
                     MessageBoxResult showSchedulerCloseConfirmation = _popupController.ShowSchedulerCloseConfirmation();
-                    switch(showSchedulerCloseConfirmation)
+                    switch (showSchedulerCloseConfirmation)
                     {
                         case MessageBoxResult.Cancel:
                         case MessageBoxResult.None:
@@ -812,7 +812,7 @@ namespace Dev2.Settings.Scheduler
         protected internal virtual void ShowSaveErrorDialog(string error)
         {
             _popupController.ShowSaveErrorDialog(error);
-        }       
+        }
 
         public string HelpText
         {

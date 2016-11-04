@@ -89,7 +89,13 @@ namespace Warewolf.UITests.Tools.Control_Flow
             Uimap.Drag_Toolbox_Sequence_Onto_DesignSurface();
         }
 
-        UIMap Uimap
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
+        }
+            UIMap Uimap
         {
             get
             {

@@ -17,6 +17,7 @@ using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Dev2.Utils;
+using Newtonsoft.Json;
 
 namespace Dev2.Settings.Logging
 {
@@ -31,7 +32,7 @@ namespace Dev2.Settings.Logging
         DEBUG,
         TRACE
     }
-    public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings,IUpdatesHelp
+    public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
         public IEnvironmentModel CurrentEnvironment
         {
@@ -42,7 +43,9 @@ namespace Dev2.Settings.Logging
             set
             {
                 _currentEnvironment = value;
+                // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged("CanEditStudioLogSettings");
+                // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged("CanEditLogSettings");
             }
         }
@@ -55,6 +58,13 @@ namespace Dev2.Settings.Logging
         private IEnvironmentModel _currentEnvironment;
         private LogLevel _serverFileLogLevel;
         private LogLevel _studioFileLogLevel;
+        private LogSettingsViewModel _item;
+
+        // ReSharper disable once UnusedMember.Global
+        public LogSettingsViewModel()
+        {
+
+        }
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IEnvironmentModel currentEnvironment)
         {
@@ -65,7 +75,7 @@ namespace Dev2.Settings.Logging
             GetStudioLogFileCommand = new DelegateCommand(OpenStudioLogFile);
             LogLevel serverFileLogLevel;
             LogLevel serverEventLogLevel;
-            if (Enum.TryParse(logging.FileLoggerLogLevel,out serverFileLogLevel))
+            if (Enum.TryParse(logging.FileLoggerLogLevel, out serverFileLogLevel))
             {
                 _serverFileLogLevel = serverFileLogLevel;
             }
@@ -109,7 +119,7 @@ namespace Dev2.Settings.Logging
             var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
             _serverLogFile = Path.Combine(GlobalConstants.TempLocation, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
             client.DownloadFileAsync(managementServiceUri, _serverLogFile);
-           
+
         }
 
         [ExcludeFromCodeCoverage]
@@ -131,7 +141,7 @@ namespace Dev2.Settings.Logging
         {
             var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var logFile = Path.Combine(localAppDataFolder, "Warewolf", "Studio Logs", "Warewolf Studio.log");
-            if(File.Exists(logFile))
+            if (File.Exists(logFile))
             {
                 Process.Start(logFile);
             }
@@ -152,12 +162,38 @@ namespace Dev2.Settings.Logging
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
-            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(),StudioEventLogLevel.ToString(), settingsConfigFile,"Warewolf Studio");
+            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio");
+
+            SetItem(this);
         }
 
         protected override void CloseHelp()
         {
             //Implement if help is done for the log settings.
+        }
+
+        [JsonIgnore]
+        public LogSettingsViewModel Item
+        {
+            private get { return _item; }
+            set
+            {
+                _item = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void SetItem(LogSettingsViewModel model)
+        {
+            Item = Clone(model);
+        }
+
+        public LogSettingsViewModel Clone(LogSettingsViewModel model)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings { ContractResolver = resolver });
+            LogSettingsViewModel clone = JsonConvert.DeserializeObject<LogSettingsViewModel>(ser);
+            return clone;
         }
 
         public ICommand GetServerLogFileCommand { get; }
@@ -171,7 +207,7 @@ namespace Dev2.Settings.Logging
             set
             {
                 _serverEventLogLevel = value;
-                IsDirty = true;
+                IsDirty = !Equals(Item);
                 OnPropertyChanged();
             }
         }
@@ -184,7 +220,7 @@ namespace Dev2.Settings.Logging
             set
             {
                 _studioEventLogLevel = value;
-                IsDirty = true;
+                IsDirty = !Equals(Item);
                 OnPropertyChanged();
             }
         }
@@ -198,7 +234,7 @@ namespace Dev2.Settings.Logging
             set
             {
                 _serverFileLogLevel = value;
-                IsDirty = true;
+                IsDirty = !Equals(Item);
                 OnPropertyChanged();
             }
         }
@@ -211,7 +247,7 @@ namespace Dev2.Settings.Logging
             set
             {
                 _studioFileLogLevel = value;
-                IsDirty = true;
+                IsDirty = !Equals(Item);
                 OnPropertyChanged();
             }
         }
@@ -224,18 +260,18 @@ namespace Dev2.Settings.Logging
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_serverLogMaxSize))
                 {
                     _serverLogMaxSize = "0";
-                    IsDirty = true;
                 }
                 else
                 {
                     int val;
                     if (value.IsWholeNumber(out val))
                     {
-                        IsDirty = true;
+                        IsDirty = !Equals(Item);
                         _serverLogMaxSize = value;
                         OnPropertyChanged();
                     }
                 }
+
             }
         }
 
@@ -247,18 +283,18 @@ namespace Dev2.Settings.Logging
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_studioLogMaxSize))
                 {
                     _studioLogMaxSize = "0";
-                    IsDirty = true;
                 }
                 else
                 {
                     int val;
                     if (value.IsWholeNumber(out val))
                     {
-                        IsDirty = true;
+                        IsDirty = !Equals(Item);
                         _studioLogMaxSize = value;
                         OnPropertyChanged();
                     }
                 }
+              
             }
         }
 
@@ -270,6 +306,27 @@ namespace Dev2.Settings.Logging
         }
 
         #endregion
+
+        private bool Equals(LogSettingsViewModel other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            return EqualsSeq(other);
+        }
+
+        private bool EqualsSeq(LogSettingsViewModel other)
+        {
+            var equalsSeq = string.Equals(_serverEventLogLevel.ToString(), other._serverEventLogLevel.ToString()) &&
+                            string.Equals(_studioEventLogLevel.ToString(), other._studioEventLogLevel.ToString()) &&
+                            string.Equals(_serverFileLogLevel.ToString(), other._serverFileLogLevel.ToString()) &&
+                            string.Equals(_studioFileLogLevel.ToString(), other._studioFileLogLevel.ToString()) &&
+                            int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize) &&
+                            int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
+            return equalsSeq;
+        }
     }
 
     public interface ILogSettings

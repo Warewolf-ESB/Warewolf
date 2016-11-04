@@ -59,6 +59,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ServiceInputTests.cs" />
     <Compile Include="ServiceOutputMappingTests.cs" />
   </ItemGroup>
   <ItemGroup>

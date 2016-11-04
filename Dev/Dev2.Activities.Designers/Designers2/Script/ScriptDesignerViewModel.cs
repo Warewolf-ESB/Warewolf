@@ -107,13 +107,13 @@ namespace Dev2.Activities.Designers2.Script
 
         public void ChooseScriptSources()
         {
-            const string separator = @";";
+            const string Separator = @";";
             var chooserMessage = new FileChooserMessage();
             if (IncludeFile == null)
             {
                 IncludeFile = "";
             }
-            chooserMessage.SelectedFiles = IncludeFile?.Split(separator.ToCharArray());
+            chooserMessage.SelectedFiles = IncludeFile?.Split(Separator.ToCharArray());
             chooserMessage.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == @"SelectedFiles")
@@ -122,11 +122,11 @@ namespace Dev2.Activities.Designers2.Script
                     {
                         if (string.IsNullOrEmpty(IncludeFile))
                         {
-                            IncludeFile = string.Join(separator, chooserMessage.SelectedFiles);
+                            IncludeFile = string.Join(Separator, chooserMessage.SelectedFiles);
                         }
                         else
                         {
-                            IncludeFile += separator + string.Join(separator, chooserMessage.SelectedFiles);
+                            IncludeFile += Separator + string.Join(Separator, chooserMessage.SelectedFiles);
                         }
                     }
                 }

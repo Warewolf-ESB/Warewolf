@@ -52,8 +52,14 @@ $FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.UITests\bin\Debu
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\MSTest.exe`" $FullArgsList
 
+# Start Studio under test
+cmd.exe /c $SolutionDir\TestScripts\Studio\Startup.bat
+
 # Run VSTest with full argument string.
 Start-Process -FilePath "$env:vs140comntools..\IDE\MSTest.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
+
+# Stop Studio under test
+cmd.exe /c $SolutionDir\TestScripts\Studio\Cleanup.bat
 
 # Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"
