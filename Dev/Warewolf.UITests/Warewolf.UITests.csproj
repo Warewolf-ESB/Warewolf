@@ -66,9 +66,9 @@
     <Compile Include="EmailSource\EmailSourceTests.cs" />
     <Compile Include="Explorer\Rename.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
-    <Compile Include="ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
-    <Compile Include="ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
-    <Compile Include="ConfigureSettings\ConfigureSettingsLoggingTests.cs" />
+    <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
+    <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
+    <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsLoggingTests.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Tools\StudioTooling.cs" />
     <Compile Include="Tools\Recordset\CountTest.cs" />
