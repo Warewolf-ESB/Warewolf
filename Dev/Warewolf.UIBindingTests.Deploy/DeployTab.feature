@@ -113,7 +113,6 @@ Scenario: Filtering and clearing filter on source side
 	 And visibility of "Examples\File and Folder - Copy" from Source Server is "Visible"
 	 And visibility of "Examples\File and Folder - Create" from Source Server is "Visible"
 
-@ignore
 Scenario: Deploying with filter enabled
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
