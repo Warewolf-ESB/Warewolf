@@ -173,8 +173,9 @@
                                                                     Command="{Binding Path=Data.NewServiceCommand}"
                                                                     Header="New Workflow Service"
                                                                     InputGestureText="[Ctrl+W]"
-                                                                    Visibility="{Binding Path=Data.CanCreateWorkflowService,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateWorkflowService}"
+                                                                    ToolTip="{Binding Path=Data.NewServiceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewServiceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -182,8 +183,9 @@
                                                     <ig:XamMenuItem Name="NewServerSource"
                                                                     Command="{Binding Path=Data.NewServerCommand}"
                                                                     Header="New Server Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewServerSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewServerSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -191,8 +193,9 @@
                                                     <ig:XamMenuItem Name="NewDataBaseSource"
                                                                     Command="{Binding Path=Data.NewDatabaseSourceCommand}"
                                                                     Header="New Database Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewDataBaseSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewDataBaseSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -201,8 +204,9 @@
                                                                     Command="{Binding Path=Data.NewWebSourceSourceCommand}"
                                                                     CommandParameter="WebSource"
                                                                     Header="New Web Service Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewWebSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewWebSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -210,8 +214,9 @@
                                                     <ig:XamMenuItem Name="NewPluginSource"
                                                                     Command="{Binding Path=Data.NewPluginSourceCommand}"
                                                                     Header="New DotNet Plugin Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewPluginSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -219,8 +224,9 @@
                                                     <ig:XamMenuItem Name="NewComPluginSource"
                                                                     Command="{Binding Path=Data.NewComPluginSourceCommand}"
                                                                     Header="New COM Plugin Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewComPluginSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -228,8 +234,9 @@
                                                     <ig:XamMenuItem Name="NewEmailSource"
                                                                     Command="{Binding Path=Data.NewEmailSourceSourceCommand}"
                                                                     Header="New Email Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewEmailSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -237,8 +244,9 @@
                                                     <ig:XamMenuItem Name="NewExchangeSource"
                                                                     Command="{Binding Path=Data.NewExchangeSourceSourceCommand}"
                                                                     Header="New Exchange Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewExchangeSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -246,8 +254,9 @@
                                                     <ig:XamMenuItem Name="NewRabbitMqSource"
                                                                     Command="{Binding Path=Data.NewRabbitMQSourceSourceCommand}"
                                                                     Header="New RabbitMQ Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource, 
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewRabbitMqSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewRabbitMqSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -255,8 +264,9 @@
                                                     <ig:XamMenuItem Name="NewDropboxSource"
                                                                     Command="{Binding Path=Data.NewDropboxSourceSourceCommand}"
                                                                     Header="New Dropbox Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewDropboxSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewDropboxSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -264,31 +274,34 @@
                                                     <ig:XamMenuItem Name="NewSharepointSource"
                                                                     Command="{Binding Path=Data.NewSharepointSourceSourceCommand}"
                                                                     Header="New Sharepoint Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewSharepointSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewSharepointSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
-                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanCreateSource, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    <ig:XamMenuSeparator />
                                                     
                                                     <ig:XamMenuItem Name="NewFolder"
                                                                     Command="{Binding Path=Data.CreateFolderCommand}"
                                                                     CommandParameter="Folder"
                                                                     Header="{x:Static languages:Core.NewFolderLabel}"
                                                                     InputGestureText="[Ctrl+Shift+F]"
-                                                                    Visibility="{Binding Path=Data.CanCreateFolder,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateFolder}" 
+                                                                    ToolTip="{Binding Path=Data.NewFolderTooltip}"/>
 
-                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanDeploy, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    <ig:XamMenuSeparator />
 
                                                     <ig:XamMenuItem Name="Deploy"
                                                                     Command="{Binding Path=Data.DeployCommand}"
                                                                     CommandParameter="{Binding Path=Data}"
                                                                     Header="Deploy"
-                                                                    Visibility="{Binding Path=Data.CanDeploy,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanDeploy}"
+                                                                    ToolTip="{Binding Path=Data.DeployTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <fa:FontAwesome FontSize="12"
                                                                             FontWeight="Light"
@@ -299,14 +312,16 @@
                                                     <ig:XamMenuItem Name="ServerVersion"
                                                                     Command="{Binding Path=Data.ShowServerVersionCommand}"
                                                                     Header="Server Version"
-                                                                    Visibility="{Binding Path=Data.CanShowServerVersion,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanShowServerVersion}" 
+                                                                    ToolTip="{Binding Path=Data.ServerVersionTooltip}"/>
 
                                                     <ig:XamMenuItem Name="ViewApisJson"
                                                                     Command="{Binding Path=Data.ViewApisJsonCommand}"
                                                                     Header="View Apis.Json"
-                                                                    Visibility="{Binding Path=Data.CanViewApisJson,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" >
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanViewApisJson}" 
+                                                                    ToolTip="{Binding Path=Data.ViewApisJsonTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource ViewApisJsonIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -489,14 +504,17 @@
                                                                     Command="{Binding Path=Data.OpenCommand}"
                                                                     CommandParameter="WorkflowService"
                                                                     Header="Open"
-                                                                    Visibility="{Binding Path=Data.CanView,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanView}" 
+                                                                    ToolTip="{Binding Path=Data.OpenTooltip}"/>
+                                                    
                                                     <ig:XamMenuItem Name="NewService"
                                                                     Command="{Binding Path=Data.NewServiceCommand}"
                                                                     Header="New Workflow Service"
                                                                     InputGestureText="[Ctrl+W]"
-                                                                    Visibility="{Binding Path=Data.CanCreateWorkflowService,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateWorkflowService}"
+                                                                    ToolTip="{Binding Path=Data.NewServiceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewServiceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -506,11 +524,13 @@
                                                                         Modifiers="Control" />
                                                         </ig:XamMenuItem.InputBindings>
                                                     </ig:XamMenuItem>
+                                                    
                                                     <ig:XamMenuItem Name="NewServerSource"
                                                                     Command="{Binding Path=Data.NewServerCommand}"
                                                                     Header="New Server Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewServerSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewServerSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -518,8 +538,9 @@
                                                     <ig:XamMenuItem Name="NewDataBaseSource"
                                                                     Command="{Binding Path=Data.NewDatabaseSourceCommand}"
                                                                     Header="New Database Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewDataBaseSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewDataBaseSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -527,8 +548,9 @@
                                                     <ig:XamMenuItem Name="NewWebSource"
                                                                     Command="{Binding Path=Data.NewWebSourceSourceCommand}"
                                                                     Header="New Web Service Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewWebSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewWebSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -536,8 +558,9 @@
                                                     <ig:XamMenuItem Name="NewPluginSource"
                                                                     Command="{Binding Path=Data.NewPluginSourceCommand}"
                                                                     Header="New DotNet Plugin Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewPluginSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -546,8 +569,9 @@
                                                     <ig:XamMenuItem Name="NewComPluginSource"
                                                                     Command="{Binding Path=Data.NewComPluginSourceCommand}"
                                                                     Header="New COM Plugin Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewComPluginSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -555,8 +579,9 @@
                                                     <ig:XamMenuItem Name="NewEmailSource"
                                                                     Command="{Binding Path=Data.NewEmailSourceSourceCommand}"
                                                                     Header="New Email Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewEmailSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -564,8 +589,9 @@
                                                     <ig:XamMenuItem Name="NewExchangeSource"
                                                                     Command="{Binding Path=Data.NewExchangeSourceSourceCommand}"
                                                                     Header="New Exchange Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewExchangeSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -573,8 +599,9 @@
                                                     <ig:XamMenuItem Name="NewRabbitMqSource"
                                                                     Command="{Binding Path=Data.NewRabbitMQSourceSourceCommand}"
                                                                     Header="New RabbitMQ Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource, 
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewRabbitMqSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewRabbitMqSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -582,8 +609,9 @@
                                                     <ig:XamMenuItem Name="NewDropboxSource"
                                                                     Command="{Binding Path=Data.NewDropboxSourceSourceCommand}"
                                                                     Header="New Dropbox Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewDropboxSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewDropboxSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -591,21 +619,22 @@
                                                     <ig:XamMenuItem Name="NewSharepointSource"
                                                                     Command="{Binding Path=Data.NewSharepointSourceSourceCommand}"
                                                                     Header="New Sharepoint Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSource,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSource}"
+                                                                    ToolTip="{Binding Path=Data.NewSharepointSourceTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewSharepointSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
-                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanViewSwagger, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    <ig:XamMenuSeparator />
                                                     
                                                     <ig:XamMenuItem Name="DebugInputs"
                                                                     Command="{Binding Path=Data.DebugCommand}"
                                                                     Header="Debug Inputs"
-                                                                    ToolTip="{x:Static languages:Core.StartNodeDebugInputsToolTip}"
-                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanDebugInputs}"
+                                                                    ToolTip="{Binding Path=Data.DebugInputsTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
                                                         </ig:XamMenuItem.Icon>
@@ -614,9 +643,9 @@
                                                     <ig:XamMenuItem Name="DebugStudio"
                                                                     Command="{Binding Path=Data.DebugStudioCommand}"
                                                                     Header="Debug Studio"
-                                                                    ToolTip="{x:Static languages:Core.StartNodeDebugStudioToolTip}"
-                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanDebugStudio}"
+                                                                    ToolTip="{Binding Path=Data.DebugStudioTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
                                                         </ig:XamMenuItem.Icon>
@@ -625,9 +654,9 @@
                                                     <ig:XamMenuItem Name="DebugBrowser"
                                                                     Command="{Binding Path=Data.DebugBrowserCommand}"
                                                                     Header="Debug Browser"
-                                                                    ToolTip="{x:Static languages:Core.StartNodeDebugBrowserToolTip}"
-                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanDebugBrowser}"
+                                                                    ToolTip="{Binding Path=Data.DebugBrowserTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
                                                         </ig:XamMenuItem.Icon>
@@ -636,31 +665,33 @@
                                                     <ig:XamMenuItem Name="Schedule"
                                                                     Command="{Binding Path=Data.ScheduleCommand}"
                                                                     Header="Schedule"
-                                                                    IsEnabled="{Binding IsCommandEnabled}"
-                                                                    ToolTip="{x:Static languages:Core.StartNodeScheduleToolTip}"
-                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateSchedule}"
+                                                                    ToolTip="{Binding Path=Data.ScheduleTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
-                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanCreateSource, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    <ig:XamMenuSeparator />
 
                                                     <ig:XamMenuItem Name="NewFolderFromItem"
                                                                     Command="{Binding Path=Data.CreateFolderCommand}"
                                                                     CommandParameter="Folder"
                                                                     Header="New Folder"
                                                                     InputGestureText="[Ctrl+Shift+F]"
-                                                                    Visibility="{Binding Path=Data.CanCreateFolder,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanCreateFolder}" 
+                                                                    ToolTip="{Binding Path=Data.NewFolderTooltip}"/>
+                                                    
                                                     <ig:XamMenuItem Name="Rename"
                                                                     Command="{Binding Path=Data.RenameCommand}"
                                                                     CommandParameter="{Binding Data}"
                                                                     Header="Rename"
                                                                     InputGestureText="[F2]"
-                                                                    Visibility="{Binding Path=Data.CanRename,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanRename}"
+                                                                    ToolTip="{Binding Path=Data.RenameTooltip}">
                                                         <i:Interaction.Behaviors>
                                                             <views:RenameTreeNode DataContext="{Binding Data}"
                                                                                   Node="{Binding Node}"
@@ -671,8 +702,9 @@
                                                                     Command="{Binding Path=Data.DeleteCommand}"
                                                                     CommandParameter="{Binding Data}"
                                                                     Header="Delete"
-                                                                    Visibility="{Binding Path=Data.CanDelete,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanDelete}"
+                                                                    ToolTip="{Binding Path=Data.DeleteTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <fa:FontAwesome Margin="0,2,0,0"
                                                                             FontSize="12"
@@ -685,8 +717,9 @@
                                                                     Command="{Binding Path=Data.DuplicateCommand}"
                                                                     CommandParameter="{Binding Path=Data}"
                                                                     Header="Duplicate"
-                                                                    Visibility="{Binding Path=Data.CanDuplicate,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanDuplicate}"
+                                                                    ToolTip="{Binding Path=Data.DuplicateTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <fa:FontAwesome Margin="0,2,0,0"
                                                                             FontSize="12"
@@ -695,14 +728,15 @@
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
-                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanDeploy, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    <ig:XamMenuSeparator />
 
                                                   <ig:XamMenuItem Name="Test"
                                                                   Command="{Binding Path=Data.CreateTestCommand}"
                                                                   CommandParameter="{Binding Path=Data}"
                                                                   Header="Tests"
-                                                                  Visibility="{Binding Path=Data.CanCreateTest,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                  ToolTipService.ShowOnDisabled="True"
+                                                                  IsEnabled="{Binding Path=Data.CanCreateTest}"
+                                                                  ToolTip="{Binding Path=Data.CreateTestTooltip}">
                                                     <ig:XamMenuItem.Icon>
                                                       <fa:FontAwesome FontSize="14"
                                                                       FontWeight="Light"
@@ -713,9 +747,9 @@
                                                     <ig:XamMenuItem Name="RunAllTests"
                                                                     Command="{Binding Path=Data.RunAllTestsCommand}"
                                                                     Header="Run All Tests"
-                                                                    ToolTip="{x:Static languages:Core.StartNodeRunAllTestsToolTip}"
-                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanViewRunAllTests}"
+                                                                    ToolTip="{Binding Path=Data.RunAllTestsTooltip}">
                                                     </ig:XamMenuItem>
 
                                                     <ig:XamMenuItem Name="Deploy"
@@ -723,8 +757,9 @@
                                                                     CommandParameter="{Binding Path=Data}"
                                                                     InputGestureText="[Ctrl+D]"
                                                                     Header="Deploy"
-                                                                    Visibility="{Binding Path=Data.CanDeploy,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanDeploy}"
+                                                                    ToolTip="{Binding Path=Data.DeployTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <fa:FontAwesome Margin="0,2,0,0"
                                                                             FontSize="12"
@@ -736,8 +771,9 @@
                                                                     Command="{Binding Path=Data.ShowDependenciesCommand}"
                                                                     CommandParameter="{Binding Data}"
                                                                     Header="Show Dependencies"
-                                                                    Visibility="{Binding Path=Data.CanShowDependencies,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanShowDependencies}"
+                                                                    ToolTip="{Binding Path=Data.DependenciesTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <fa:FontAwesome Margin="0,2,0,0"
                                                                             FontSize="12"
@@ -749,8 +785,9 @@
                                                     <ig:XamMenuItem Name="ViewSwagger"
                                                                     Command="{Binding Path=Data.ViewSwaggerCommand}"
                                                                     Header="View Swagger"
-                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" >
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanViewSwagger}" 
+                                                                    ToolTip="{Binding Path=Data.ViewSwaggerTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource ViewSwaggerIcon}" Margin="-2,0,0,0"/>
                                                         </ig:XamMenuItem.Icon>
@@ -759,27 +796,21 @@
                                                     <ig:XamMenuItem Name="ViewApisJson"
                                                                     Command="{Binding Path=Data.ViewApisJsonCommand}"
                                                                     Header="View Apis.Json"
-                                                                    Visibility="{Binding Path=Data.CanViewApisJson,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" >
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanViewApisJson}" 
+                                                                    ToolTip="{Binding Path=Data.ViewApisJsonTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource ViewApisJsonIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
-                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                                    <!--<ig:XamMenuItem Name="CopyUrl"
-                                                                    Command="{Binding Path=Data.CopyUrlCommand}"
-                                                                    Header="Copy URL to Clipboard"
-                                                                    ToolTip="{x:Static languages:Core.StartNodeCopyUrlToolTip}"
-                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
-                                                    </ig:XamMenuItem>-->
+                                                    <ig:XamMenuSeparator />
                                                     <ig:XamMenuItem Name="ShowHideVersions"
                                                                     Command="{Binding Path=Data.ShowVersionHistory}"
                                                                     Header="{Binding Path=Data.VersionHeader}"
-                                                                    Visibility="{Binding Path=Data.CanShowVersions,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.CanShowVersions}"
+                                                                    ToolTip="{Binding Path=Data.ShowHideVersionsTooltip}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource ShowHideVersionsIcon}"/>
                                                         </ig:XamMenuItem.Icon>
@@ -788,14 +819,17 @@
                                                                     Command="{Binding Path=Data.RollbackCommand}"
                                                                     CommandParameter="{Binding Data}"
                                                                     Header="Make Current Version"
-                                                                    Visibility="{Binding Path=Data.IsVersion,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.IsVersion}" 
+                                                                    ToolTip="{Binding Path=Data.RollbackTooltip}"/>
+                                                    
                                                     <ig:XamMenuItem Name="OpenVersion"
                                                                     Command="{Binding Path=Data.OpenVersionCommand}"
                                                                     CommandParameter="{Binding Data}"
                                                                     Header="Open Version"
-                                                                    Visibility="{Binding Path=Data.IsVersion,
-                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                    ToolTipService.ShowOnDisabled="True"
+                                                                    IsEnabled="{Binding Path=Data.IsVersion}" 
+                                                                    ToolTip="{Binding Path=Data.OpenVersionTooltip}"/>
 
                                                 </ig:XamContextMenu>
                                             </ig:ContextMenuManager.ContextMenu>
