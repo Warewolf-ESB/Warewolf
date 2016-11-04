@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var resId = settingsWrite.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
-            Assert.AreEqual(AuthorizationContext.Administrator, resId);
+            Assert.AreEqual(AuthorizationContext.Any, resId);
         }
     }
 }
