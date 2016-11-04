@@ -945,8 +945,8 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton;
-            WpfButton pasteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.PasteButton;
-            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.TestButton;
+            WpfButton pasteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DsfWebDeleteOutputsLargeView.PasteButton;
+            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DsfWebDeleteOutputsLargeView.TestButton;
             #endregion
 
             // Click 'Generate Outputs' button
@@ -33780,6 +33780,18 @@ namespace Warewolf.UITests
                 return this.mPrefixcontainsinvaliText;
             }
         }
+        
+        public DsfWebDeleteOutputsLargeView DsfWebDeleteOutputsLargeView
+        {
+            get
+            {
+                if ((this.mDsfWebDeleteOutputsLargeView == null))
+                {
+                    this.mDsfWebDeleteOutputsLargeView = new DsfWebDeleteOutputsLargeView(this);
+                }
+                return this.mDsfWebDeleteOutputsLargeView;
+            }
+        }
         #endregion
         
         #region Fields
@@ -33952,6 +33964,8 @@ namespace Warewolf.UITests
         private WpfText mErrors;
         
         private PrefixcontainsinvaliText mPrefixcontainsinvaliText;
+        
+        private DsfWebDeleteOutputsLargeView mDsfWebDeleteOutputsLargeView;
         #endregion
     }
     
@@ -36047,8 +36061,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DELETE Web Method - Outputs(WebServiceDeleteDesigner)";
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "WebServiceDeleteDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DELETE Web Method(WebServiceDeleteDesigner)";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -81882,6 +81895,63 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfHyperlink mPrefixcontainsinvaliHyperlink;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DsfWebDeleteOutputsLargeView : WpfCustom
+    {
+        
+        public DsfWebDeleteOutputsLargeView(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WebServiceDeleteDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DELETE Web Method - Outputs(WebServiceDeleteDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton TestButton
+        {
+            get
+            {
+                if ((this.mTestButton == null))
+                {
+                    this.mTestButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
+                    this.mTestButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Test the procedure or function";
+                    this.mTestButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestButton;
+            }
+        }
+        
+        public WpfButton PasteButton
+        {
+            get
+            {
+                if ((this.mPasteButton == null))
+                {
+                    this.mPasteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mPasteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Paste a customized response instead";
+                    this.mPasteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "PasteButton";
+                    this.mPasteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mPasteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mTestButton;
+        
+        private WpfButton mPasteButton;
         #endregion
     }
     
