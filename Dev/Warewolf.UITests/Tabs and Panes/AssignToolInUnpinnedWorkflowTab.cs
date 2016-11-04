@@ -18,9 +18,9 @@ namespace Warewolf.UITests.Tools.Data
         public void AssignToolInUnpinnedWorkflowTabOpenAndCloseLargeViewWithExpandAllToggleUITest()
         {
             UIMap.Click_Unpinned_Workflow_ExpandAll();
-            Assert.IsTrue(UIMap.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.Exists,"Multiassign large view does not exist after openning it with the expand all button on unpinned tab.");
+            Assert.IsTrue(UIMap.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.Exists,"Multiassign large view does not exist after openning it with the expand all button on unpinned tab.");
             UIMap.Click_Unpinned_Workflow_CollapseAll();
-            Assert.IsTrue(UIMap.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.Exists, "Multiassign small view does not exist after collapsing it with the collapse all button on unpinned tab.");
+            Assert.IsTrue(UIMap.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.Exists, "Multiassign small view does not exist after collapsing it with the collapse all button on unpinned tab.");
         }
 
         [TestMethod]
@@ -49,11 +49,11 @@ namespace Warewolf.UITests.Tools.Data
             const string Variable1Name = "SomeVariable";
             const string Variable1Value = "50";
             UIMap.Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab("[[" + Variable1Name + "]]", Variable1Value, 1);
-            Assert.AreEqual(Variable1Name, UIMap.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
+            Assert.AreEqual(Variable1Name, UIMap.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
             const string Variable2Name = "SomeOtherVariable";
             const string Variable2Value = "100";
             UIMap.Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab("[[" + Variable2Name + "]]", Variable2Value, 2);
-            Assert.AreEqual(Variable2Name, UIMap.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 2.");
+            Assert.AreEqual(Variable2Name, UIMap.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 2.");
             UIMap.Remove_Assign_Row_1_With_Context_Menu_On_Unpinned_Tab();
         }
 

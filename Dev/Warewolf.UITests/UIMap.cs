@@ -994,7 +994,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Unpinned_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariabeName()
         {
             #region Variable Declarations
-            WpfEdit textbox = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfEdit textbox = this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
             #endregion
 
             // Type '[[SomeVariable]]' in 'UI__Row1_FieldName_AutoID' text box
@@ -2499,11 +2499,11 @@ namespace Warewolf.UITests
         {            
             #region Variable Declarations
             WpfButton debugF6Button = this.MainStudioWindow.DebugInputDialog.DebugF6Button;
-            WpfCustom debugOutput = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput;
-            WpfButton settingsButton = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.SettingsButton;
-            WpfButton expandCollapseButton = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.ExpandCollapseButton;
-            WpfEdit searchTextBox = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.SearchTextBox;
-            WpfTree debugOutputTree = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree;
+            WpfCustom debugOutput = this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput;
+            WpfButton settingsButton = this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.SettingsButton;
+            WpfButton expandCollapseButton = this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.ExpandCollapseButton;
+            WpfEdit searchTextBox = this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.SearchTextBox;
+            WpfTree debugOutputTree = this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree;
             #endregion
 
             // Verify that the 'Enabled' property of 'Debug (F6)' button equals 'True'
@@ -2535,7 +2535,7 @@ namespace Warewolf.UITests
         {
             Click_Debug_Ribbon_Button();
             Click_DebugInput_Debug_Button_For_UnpinnedWindow();
-            StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.StatusBar.DrawHighlight();
+            this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.SplitPaneRight.DebugOutput.StatusBar.DrawHighlight();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
@@ -2548,11 +2548,11 @@ namespace Warewolf.UITests
 
         public void Remove_Assign_Row_1_With_Context_Menu_On_Unpinned_Tab()
         {            
-            StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.DrawHighlight();
-            Mouse.Click(StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
+            this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.DrawHighlight();
+            Mouse.Click(this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
             StartNodePopupWindow.DesignSurfaceMenu.DeleteRowMenuItem.DrawHighlight();
             Mouse.Click(StartNodePopupWindow.DesignSurfaceMenu.DeleteRowMenuItem, MouseButtons.Left, ModifierKeys.None, new Point(6, 6));
-            Assert.IsFalse(ControlExistsNow(StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1 on unpinned tab.");
+            Assert.IsFalse(ControlExistsNow(this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1 on unpinned tab.");
         }
 
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
@@ -2582,16 +2582,12 @@ namespace Warewolf.UITests
             switch (RowNumber)
             {
                 case 2:
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextboxText = VariableText;
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams.TextboxText = ValueText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tab();
-                    Assert.IsTrue(StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2 on unpinned tab.");
+                    Assert.IsTrue(this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2 on unpinned tab.");
                     break;
                 default:
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextboxText = VariableText;
-                    Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams.TextboxText = ValueText;
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tab();
-                    Assert.IsTrue(StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1 on unpinned tab.");
+                    Assert.IsTrue(this.MainStudioWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1 on unpinned tab.");
                     break;
             }
         }
@@ -3486,11 +3482,10 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
-            WpfCustom flowchart = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom multiAssign1 = StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            WpfCustom flowchart = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom multiAssign1 = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
             #endregion
 
-            flowchart.DrawHighlight();
             // Type 'Assign' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams.SearchTextBoxText;
             Playback.Wait(1500);
