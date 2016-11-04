@@ -1732,11 +1732,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         private void AddModelItemToSelection(ModelItem selectedModelItem)
-        {
-            if(selectedModelItem.ItemType == typeof(Flowchart))
-            {
-                return;
-            }
+        {            
             if (SelectedDebugItems.Contains(selectedModelItem))
             {
                 return;
