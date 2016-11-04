@@ -2701,43 +2701,43 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="MenuDatabaseToolTip" xml:space="preserve">
     <value>Create a new database source</value>
   </data>
-  <data name="StartNodeDebugInputsToolTip" xml:space="preserve">
+  <data name="DebugInputsToolTip" xml:space="preserve">
     <value>Run and debug your workflow service [F5]</value>
   </data>
-  <data name="StartNodeDebugStudioToolTip" xml:space="preserve">
+  <data name="DebugStudioToolTip" xml:space="preserve">
     <value>Run and debug your workflow service [F6]</value>
   </data>
-  <data name="StartNodeDebugBrowserToolTip" xml:space="preserve">
+  <data name="DebugBrowserToolTip" xml:space="preserve">
     <value>Run and debug your workflow service [F7]</value>
   </data>
-  <data name="StartNodeScheduleToolTip" xml:space="preserve">
+  <data name="ScheduleToolTip" xml:space="preserve">
     <value>Schedule a service to run</value>
   </data>
-  <data name="StartNodeTestEditorToolTip" xml:space="preserve">
+  <data name="TestEditorToolTip" xml:space="preserve">
     <value>View the current tests for this resource</value>
   </data>
-  <data name="StartNodeRunAllTestsToolTip" xml:space="preserve">
+  <data name="RunAllTestsToolTip" xml:space="preserve">
     <value>Run all tests in browser for this resource</value>
   </data>
-  <data name="StartNodeDuplicateToolTip" xml:space="preserve">
+  <data name="DuplicateToolTip" xml:space="preserve">
     <value>Duplicate the current resource</value>
   </data>
-  <data name="StartNodeDeployToolTip" xml:space="preserve">
+  <data name="DeployToolTip" xml:space="preserve">
     <value>Move current resource between Warewolf servers</value>
   </data>
-  <data name="StartNodeDependenciesToolTip" xml:space="preserve">
+  <data name="DependenciesToolTip" xml:space="preserve">
     <value>View which resources are dependant on the current resource</value>
   </data>
-  <data name="StartNodeViewSwaggerToolTip" xml:space="preserve">
+  <data name="ViewSwaggerToolTip" xml:space="preserve">
     <value>View Swagger source for the current resource</value>
   </data>
-  <data name="StartNodeCopyUrlToolTip" xml:space="preserve">
+  <data name="CopyUrlToolTip" xml:space="preserve">
     <value>Copy the current resource Url</value>
   </data>
   <data name="NoPermissionsToolTip" xml:space="preserve">
     <value>You do not have permissions to execute this command</value>
   </data>
-  <data name="StartNodeDisabledToolTip" xml:space="preserve">
+  <data name="DisabledToolTip" xml:space="preserve">
     <value>Cannot execute this command on an unsaved workflow</value>
   </data>
   <data name="MappingsObjectOutputTooltip" xml:space="preserve">
@@ -3797,14 +3797,8 @@ Please contact your Warewolf System Administrator.</value>
   <data name="RenameTooltip" xml:space="preserve">
     <value>RenameTooltip</value>
   </data>
-  <data name="DuplicateTooltip" xml:space="preserve">
-    <value>DuplicateTooltip</value>
-  </data>
   <data name="CreateTestTooltip" xml:space="preserve">
     <value>CreateTestTooltip</value>
-  </data>
-  <data name="RunAllTestsTooltip" xml:space="preserve">
-    <value>RunAllTestsTooltip</value>
   </data>
   <data name="DeleteTooltip" xml:space="preserve">
     <value>DeleteTooltip</value>
@@ -3814,12 +3808,6 @@ Please contact your Warewolf System Administrator.</value>
   </data>
   <data name="NewFolderNotAllowedTooltip" xml:space="preserve">
     <value>NewFolderNotAllowedTooltip</value>
-  </data>
-  <data name="DeployTooltip" xml:space="preserve">
-    <value>DeployTooltip</value>
-  </data>
-  <data name="DependenciesTooltip" xml:space="preserve">
-    <value>DependenciesTooltip</value>
   </data>
   <data name="ShowHideVersionsTooltip" xml:space="preserve">
     <value>ShowHideVersionsTooltip</value>
