@@ -942,15 +942,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CreateTestTooltip.
-        /// </summary>
-        public static string CreateTestTooltip {
-            get {
-                return ResourceManager.GetString("CreateTestTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To create a file or folder, put the full path and file or folder name here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
@@ -1913,6 +1904,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete the folder and its resources.
+        /// </summary>
+        public static string DeleteFolderTooltip {
+            get {
+                return ResourceManager.GetString("DeleteFolderTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.	To Delete a file or folder, put the full path and file or folder name to delete in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DeleteHelpFileFolder {
@@ -1958,11 +1958,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DeleteTooltip.
+        ///   Looks up a localized string similar to Delete the resource.
         /// </summary>
-        public static string DeleteTooltip {
+        public static string DeleteItemTooltip {
             get {
-                return ResourceManager.GetString("DeleteTooltip", resourceCulture);
+                return ResourceManager.GetString("DeleteItemTooltip", resourceCulture);
             }
         }
         
@@ -2024,15 +2024,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DeleteVariableListObjectTooltip {
             get {
                 return ResourceManager.GetString("DeleteVariableListObjectTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DependenciesNotAllowedTooltip.
-        /// </summary>
-        public static string DependenciesNotAllowedTooltip {
-            get {
-                return ResourceManager.GetString("DependenciesNotAllowedTooltip", resourceCulture);
             }
         }
         
@@ -5235,7 +5226,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewComPluginSourceTooltip.
+        ///   Looks up a localized string similar to Create a new com plugin source.
         /// </summary>
         public static string NewComPluginSourceTooltip {
             get {
@@ -5244,7 +5235,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewDataBaseSourceTooltip.
+        ///   Looks up a localized string similar to Create a new Aatabase source.
         /// </summary>
         public static string NewDataBaseSourceTooltip {
             get {
@@ -5253,7 +5244,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewDropboxSourceTooltip.
+        ///   Looks up a localized string similar to Create a new dropbox source.
         /// </summary>
         public static string NewDropboxSourceTooltip {
             get {
@@ -5262,7 +5253,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewEmailSourceTooltip.
+        ///   Looks up a localized string similar to Create a new email source.
         /// </summary>
         public static string NewEmailSourceTooltip {
             get {
@@ -5271,7 +5262,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewExchangeSourceTooltip.
+        ///   Looks up a localized string similar to Create a new exchange source.
         /// </summary>
         public static string NewExchangeSourceTooltip {
             get {
@@ -5289,16 +5280,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewFolderNotAllowedTooltip.
-        /// </summary>
-        public static string NewFolderNotAllowedTooltip {
-            get {
-                return ResourceManager.GetString("NewFolderNotAllowedTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to NewFolderTooltip.
+        ///   Looks up a localized string similar to Create a new folder.
         /// </summary>
         public static string NewFolderTooltip {
             get {
@@ -5307,7 +5289,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewPluginSourceTooltip.
+        ///   Looks up a localized string similar to Create a new plugin source.
         /// </summary>
         public static string NewPluginSourceTooltip {
             get {
@@ -5325,7 +5307,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewRabbitMqSourceTooltip.
+        ///   Looks up a localized string similar to Create a new rabbitmq source.
         /// </summary>
         public static string NewRabbitMqSourceTooltip {
             get {
@@ -5343,7 +5325,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewServerSourceTooltip.
+        ///   Looks up a localized string similar to Create a new server source.
         /// </summary>
         public static string NewServerSourceTooltip {
             get {
@@ -5352,7 +5334,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewServiceTooltip.
+        ///   Looks up a localized string similar to Create a new service [CTRL+W].
         /// </summary>
         public static string NewServiceTooltip {
             get {
@@ -5361,7 +5343,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewSharepointSourceTooltip.
+        ///   Looks up a localized string similar to Create a new sharepoint source.
         /// </summary>
         public static string NewSharepointSourceTooltip {
             get {
@@ -5370,7 +5352,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewWebSourceTooltip.
+        ///   Looks up a localized string similar to Create a new web source.
         /// </summary>
         public static string NewWebSourceTooltip {
             get {
@@ -5415,16 +5397,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OpenVersionNotAllowedTooltip.
-        /// </summary>
-        public static string OpenVersionNotAllowedTooltip {
-            get {
-                return ResourceManager.GetString("OpenVersionNotAllowedTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to OpenVersionTooltip.
+        ///   Looks up a localized string similar to Open this version.
         /// </summary>
         public static string OpenVersionTooltip {
             get {
@@ -6285,6 +6258,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rename folder.
+        /// </summary>
+        public static string RenameFolderTooltip {
+            get {
+                return ResourceManager.GetString("RenameFolderTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.	To rename a file or folder, put the full path and file or folder name in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RenameHelpFileFolder {
@@ -6339,11 +6321,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RenameTooltip.
+        ///   Looks up a localized string similar to Rename resource.
         /// </summary>
-        public static string RenameTooltip {
+        public static string RenameItemTooltip {
             get {
-                return ResourceManager.GetString("RenameTooltip", resourceCulture);
+                return ResourceManager.GetString("RenameItemTooltip", resourceCulture);
             }
         }
         
@@ -6505,20 +6487,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RollbackTooltip.
+        ///   Looks up a localized string similar to Rool back to this version.
         /// </summary>
         public static string RollbackTooltip {
             get {
                 return ResourceManager.GetString("RollbackTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to RollbackTooltipNotAllowedTooltip.
-        /// </summary>
-        public static string RollbackTooltipNotAllowedTooltip {
-            get {
-                return ResourceManager.GetString("RollbackTooltipNotAllowedTooltip", resourceCulture);
             }
         }
         
@@ -7207,7 +7180,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerVersionTooltip.
+        ///   Looks up a localized string similar to View the version of this server.
         /// </summary>
         public static string ServerVersionTooltip {
             get {
@@ -8604,7 +8577,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ShowHideVersionsTooltip.
+        ///   Looks up a localized string similar to Show or hide the versions of this resource.
         /// </summary>
         public static string ShowHideVersionsTooltip {
             get {
@@ -10003,15 +9976,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string VariablesInput_Information_Title {
             get {
                 return ResourceManager.GetString("VariablesInput_Information_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ViewApisJsonAllowedTooltip.
-        /// </summary>
-        public static string ViewApisJsonAllowedTooltip {
-            get {
-                return ResourceManager.GetString("ViewApisJsonAllowedTooltip", resourceCulture);
             }
         }
         
