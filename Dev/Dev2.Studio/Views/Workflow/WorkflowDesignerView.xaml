@@ -25,85 +25,51 @@
 
             <ContextMenu x:Key ="StartNodeContextMenu" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true">
                 <MenuItem Name="DebugInputs"
-                                Command="{Binding DebugInputsCommand}"
-                                Header="Debug Inputs"
-                                InputGestureText="[F5]" >
-                    <MenuItem.Style>
-                        <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="True">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDebugInputsToolTip}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
+                          Command="{Binding DebugInputsCommand}"
+                          Header="Debug Inputs"
+                          InputGestureText="[F5]" 
+                          IsEnabled="{Binding CanDebugInputs}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTipService.ShowOnDisabled="True"
+                          ToolTip="{Binding DebugInputsTooltip}">
                     <MenuItem.Icon>
                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
                     </MenuItem.Icon>
                 </MenuItem>
 
                 <MenuItem Name="DebugStudio"
-                                Command="{Binding DebugStudioCommand}"
-                                Header="Debug Studio"
-                                InputGestureText="[F6]">
-                    <MenuItem.Style>
-                        <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="True">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDebugStudioToolTip}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
+                          Command="{Binding DebugStudioCommand}"
+                          Header="Debug Studio"
+                          InputGestureText="[F6]"
+                          IsEnabled="{Binding CanDebugStudio}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTipService.ShowOnDisabled="True"
+                          ToolTip="{Binding DebugStudioTooltip}">
                     <MenuItem.Icon>
                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
                     </MenuItem.Icon>
                 </MenuItem>
 
                 <MenuItem Name="DebugBrowser"
-                                Command="{Binding DebugBrowserCommand}"
-                                Header="Debug Browser"
-                                InputGestureText="[F7]">
-                    <MenuItem.Style>
-                        <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="True">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDebugBrowserToolTip}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
+                          Command="{Binding DebugBrowserCommand}"
+                          Header="Debug Browser"
+                          InputGestureText="[F7]"
+                          IsEnabled="{Binding CanDebugBrowser}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTipService.ShowOnDisabled="True"
+                          ToolTip="{Binding DebugBrowserTooltip}">
                     <MenuItem.Icon>
                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
                     </MenuItem.Icon>
                 </MenuItem>
 
                 <MenuItem Name="Schedule"
-                                Command="{Binding ScheduleCommand}"
-                                Header="Schedule"
-                                ToolTipService.ShowOnDisabled="True"
-                                IsEnabled="{Binding IsCommandEnabled}">
-                    <MenuItem.Style>
-                        <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="True">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeScheduleToolTip}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
+                          Command="{Binding ScheduleCommand}"
+                          Header="Schedule"
+                          ToolTipService.ShowOnDisabled="True"
+                          IsEnabled="{Binding CanCreateSchedule}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTip="{Binding ScheduleTooltip}">
                     <MenuItem.Icon>
                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
                     </MenuItem.Icon>
@@ -112,87 +78,47 @@
                 <Separator />
 
                 <MenuItem Name="TestEditor"
-                                Command="{Binding TestEditorCommand}"
-                                Header="Test Editor"
-                                ToolTipService.ShowOnDisabled="True"
-                                IsEnabled="{Binding IsCommandEnabled}">
-                    <MenuItem.Style>
-                        <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="True">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeTestEditorToolTip}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
+                          Command="{Binding TestEditorCommand}"
+                          Header="Test Editor"
+                          ToolTipService.ShowOnDisabled="True"
+                          IsEnabled="{Binding CanCreateTest}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTip="{Binding CreateTestTooltip}">
                     <MenuItem.Icon>
                         <fa:FontAwesome Margin="0,2,0,0" FontSize="14" FontWeight="Light" Icon="Flask" />
                     </MenuItem.Icon>
                 </MenuItem>
 
                 <MenuItem Name="RunAllTests"
-                                Command="{Binding RunAllTestsCommand}"
-                                Header="Run All Tests"
-                                ToolTipService.ShowOnDisabled="True"
-                                IsEnabled="{Binding IsCommandEnabled}">
-                    <MenuItem.Style>
-                        <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="True">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeRunAllTestsToolTip}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
+                          Command="{Binding RunAllTestsCommand}"
+                          Header="Run All Tests"
+                          ToolTipService.ShowOnDisabled="True"
+                          IsEnabled="{Binding CanRunAllTests}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTip="{Binding RunAllTestsTooltip}">
                 </MenuItem>
 
                 <Separator />
 
                 <MenuItem Name="Duplicate"
-                                Command="{Binding DuplicateCommand}"
-                                Header="Duplicate"
-                                ToolTipService.ShowOnDisabled="True"
-                                IsEnabled="{Binding IsCommandEnabled}">
-                    <MenuItem.Style>
-                        <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="True">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDuplicateToolTip}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
+                          Command="{Binding DuplicateCommand}"
+                          Header="Duplicate"
+                          ToolTipService.ShowOnDisabled="True"
+                          IsEnabled="{Binding CanDuplicate}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTip="{Binding DuplicateTooltip}">
                     <MenuItem.Icon>
                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Clone" />
                     </MenuItem.Icon>
                 </MenuItem>
 
                 <MenuItem Name="Deploy"
-                                Command="{Binding DeployCommand}"
-                                Header="Deploy"
-                                ToolTipService.ShowOnDisabled="True"
-                                IsEnabled="{Binding IsCommandEnabled}">
-                    <MenuItem.Style>
-                        <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="True">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDeployToolTip}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
+                          Command="{Binding DeployCommand}"
+                          Header="Deploy"
+                          ToolTipService.ShowOnDisabled="True"
+                          IsEnabled="{Binding CanDeploy}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTip="{Binding DeployTooltip}">
                     <MenuItem.Icon>
                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
                     </MenuItem.Icon>
@@ -201,44 +127,24 @@
                 <Separator />
 
                 <MenuItem Name="Dependencies"
-                                Command="{Binding ShowDependenciesCommand}"
-                                Header="Show Dependencies"
-                                ToolTipService.ShowOnDisabled="True"
-                                IsEnabled="{Binding IsCommandEnabled}">
-                    <MenuItem.Style>
-                        <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="True">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDependenciesToolTip}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
+                          Command="{Binding ShowDependenciesCommand}"
+                          Header="Show Dependencies"
+                          ToolTipService.ShowOnDisabled="True"
+                          IsEnabled="{Binding CanShowDependencies}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTip="{Binding ShowDependenciesTooltip}">
                     <MenuItem.Icon>
                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Sitemap" />
                     </MenuItem.Icon>
                 </MenuItem>
 
                 <MenuItem Name="ViewSwagger"
-                                Command="{Binding ViewSwaggerCommand}"
-                                Header="View Swagger" 
-                                ToolTipService.ShowOnDisabled="True"
-                                IsEnabled="{Binding IsCommandEnabled}">
-                    <MenuItem.Style>
-                        <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="True">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeViewSwaggerToolTip}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
+                          Command="{Binding ViewSwaggerCommand}"
+                          Header="View Swagger" 
+                          ToolTipService.ShowOnDisabled="True"
+                          IsEnabled="{Binding CanViewSwagger}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTip="{Binding ViewSwaggerTooltip}">
                     <MenuItem.Icon>
                         <Image Style="{StaticResource ViewSwaggerIcon}" Margin="-2,-2,0,0"/>
                     </MenuItem.Icon>
@@ -247,22 +153,12 @@
                 <Separator />
 
                 <MenuItem Name="CopyUrl"
-                                Command="{Binding CopyUrlCommand}"
-                                Header="Copy URL to Clipboard"
-                                ToolTipService.ShowOnDisabled="True"
-                                IsEnabled="{Binding IsCommandEnabled}">
-                    <MenuItem.Style>
-                        <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeDisabledToolTip}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="True">
-                                    <Setter Property="ToolTip" Value="{x:Static languages:Core.StartNodeCopyUrlToolTip}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
+                          Command="{Binding CopyUrlCommand}"
+                          Header="Copy URL to Clipboard"
+                          ToolTipService.ShowOnDisabled="True"
+                          IsEnabled="{Binding CanCopyUrl}"
+                          Style="{StaticResource MenuItemStyle}"
+                          ToolTip="{Binding CopyUrlTooltip}">
                 </MenuItem>
             </ContextMenu>
         </ResourceDictionary>
