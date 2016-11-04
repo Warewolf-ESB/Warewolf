@@ -1862,14 +1862,16 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.ResourceType = "WorkflowService";
-            _target.IsService = true;
             _target.CanView = true;
+            _target.IsService = true;
+            _target.IsSource = false;
+            
             //act
 
             //assert
             Assert.IsTrue(_target.IsService);
             Assert.IsTrue(_target.CanViewSwagger);
-            Assert.IsFalse(_target.CanViewApisJson);
+            Assert.IsTrue(_target.CanViewApisJson);
         }
 
         [TestMethod]
@@ -1877,6 +1879,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.ResourceType = "Folder";
+            _target.CanView = true;
             _target.IsService = false;
             _target.IsFolder = true;
             //act
@@ -1892,6 +1895,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.ResourceType = "Folder";
+            _target.CanView = true;
             _target.IsService = false;
             _target.IsFolder = true;
             //act
@@ -1900,22 +1904,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsFolder);
             Assert.IsFalse(_target.CanViewSwagger);
             Assert.IsTrue(_target.CanViewApisJson);
-        }
-
-        [TestMethod]
-        public void TestCanViewApisJsonIsNotVisible()
-        {
-            //arrange
-            _target.ResourceType = "WorkflowService";
-            _target.IsService = true;
-            _target.IsFolder = false;
-            _target.CanView = true;
-            //act
-
-            //assert
-            Assert.IsTrue(_target.IsService);
-            Assert.IsTrue(_target.CanViewSwagger);
-            Assert.IsFalse(_target.CanViewApisJson);
         }
 
         [TestMethod]
