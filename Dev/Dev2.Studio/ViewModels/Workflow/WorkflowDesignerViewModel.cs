@@ -208,6 +208,357 @@ namespace Dev2.Studio.ViewModels.Workflow
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
             DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
             _firstWorkflowChange = true;
+            SetPermission(ResourceModel.UserPermissions);
+        }
+
+        public void SetPermission(Permissions permission, bool isDeploy = false)
+        {
+            if (permission.HasFlag(Permissions.Contribute))
+            {
+                SetContributePermissions();
+            }
+            if (permission.HasFlag(Permissions.Administrator))
+            {
+                SetAdministratorPermissions();
+            }
+        }
+
+        private void SetAdministratorPermissions()
+        {
+            CanDebugInputs = true;
+            CanDebugStudio = true;
+            CanDebugBrowser = true;
+            CanCreateSchedule = !ResourceModel.IsNewWorkflow;
+            CanCreateTest = !ResourceModel.IsNewWorkflow;
+            CanRunAllTests = !ResourceModel.IsNewWorkflow;
+            CanDuplicate = !ResourceModel.IsNewWorkflow;
+            CanDeploy = !ResourceModel.IsNewWorkflow;
+            CanShowDependencies = !ResourceModel.IsNewWorkflow;
+            CanViewSwagger = !ResourceModel.IsNewWorkflow;
+            CanCopyUrl = !ResourceModel.IsNewWorkflow;
+        }
+
+        private void SetContributePermissions()
+        {
+            CanDebugInputs = true;
+            CanDebugStudio = true;
+            CanDebugBrowser = true;
+            CanCreateSchedule = !ResourceModel.IsNewWorkflow;
+            CanCreateTest = !ResourceModel.IsNewWorkflow;
+            CanRunAllTests = !ResourceModel.IsNewWorkflow;
+            CanDuplicate = !ResourceModel.IsNewWorkflow;
+            CanDeploy = !ResourceModel.IsNewWorkflow;
+            CanShowDependencies = !ResourceModel.IsNewWorkflow;
+            CanViewSwagger = !ResourceModel.IsNewWorkflow;
+            CanCopyUrl = !ResourceModel.IsNewWorkflow;
+        }
+
+        public bool CanCopyUrl
+        {
+            get { return _canCopyUrl; }
+            set
+            {
+                _canCopyUrl = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    CopyUrlTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    CopyUrlTooltip = _canCopyUrl ? Warewolf.Studio.Resources.Languages.Core.CopyUrlToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanCopyUrl");
+            }
+        }
+
+        public string CopyUrlTooltip
+        {
+            get { return _copyUrlTooltip; }
+            set
+            {
+                _copyUrlTooltip = value; 
+                OnPropertyChanged("CopyUrlTooltip");
+            }
+        }
+
+        public bool CanViewSwagger
+        {
+            get { return _canViewSwagger; }
+            set
+            {
+                _canViewSwagger = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    ViewSwaggerTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    ViewSwaggerTooltip = _canViewSwagger ? Warewolf.Studio.Resources.Languages.Core.ViewSwaggerToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanViewSwagger");
+            }
+        }
+
+        public string ViewSwaggerTooltip
+        {
+            get { return _viewSwaggerTooltip; }
+            set
+            {
+                _viewSwaggerTooltip = value;
+                OnPropertyChanged("ViewSwaggerTooltip");
+            }
+        }
+
+        public bool CanShowDependencies
+        {
+            get { return _canShowDependencies; }
+            set
+            {
+                _canShowDependencies = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    ShowDependenciesTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    ShowDependenciesTooltip = _canShowDependencies ? Warewolf.Studio.Resources.Languages.Core.DependenciesToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanShowDependencies");
+            }
+        }
+
+        public string ShowDependenciesTooltip
+        {
+            get { return _showDependenciesTooltip; }
+            set
+            {
+                _showDependenciesTooltip = value;
+                OnPropertyChanged("ShowDependenciesTooltip");
+            }
+        }
+
+        public bool CanDeploy
+        {
+            get { return _canDeploy; }
+            set
+            {
+                _canDeploy = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    DeployTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    DeployTooltip = _canDeploy ? Warewolf.Studio.Resources.Languages.Core.DeployToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanDeploy");
+            }
+        }
+
+        public string DeployTooltip
+        {
+            get { return _deployTooltip; }
+            set
+            {
+                _deployTooltip = value;
+                OnPropertyChanged("DeployTooltip");
+            }
+        }
+
+        public bool CanDuplicate
+        {
+            get { return _canDuplicate; }
+            set
+            {
+                _canDuplicate = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    DuplicateTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    DuplicateTooltip = _canDuplicate ? Warewolf.Studio.Resources.Languages.Core.DuplicateToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanDuplicate");
+            }
+        }
+
+        public string DuplicateTooltip
+        {
+            get { return _duplicateTooltip; }
+            set
+            {
+                _duplicateTooltip = value;
+                OnPropertyChanged("DuplicateTooltip");
+            }
+        }
+
+        public bool CanRunAllTests
+        {
+            get { return _canRunAllTests; }
+            set
+            {
+                _canRunAllTests = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    RunAllTestsTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    RunAllTestsTooltip = _canRunAllTests ? Warewolf.Studio.Resources.Languages.Core.RunAllTestsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanRunAllTests");
+            }
+        }
+
+        public string RunAllTestsTooltip
+        {
+            get { return _runAllTestsTooltip; }
+            set
+            {
+                _runAllTestsTooltip = value;
+                OnPropertyChanged("RunAllTestsTooltip");
+            }
+        }
+
+        public bool CanCreateTest
+        {
+            get { return _canCreateTest; }
+            set
+            {
+                _canCreateTest = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    CreateTestTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    CreateTestTooltip = _canCreateTest ? Warewolf.Studio.Resources.Languages.Core.TestEditorToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanCreateTest");
+            }
+        }
+
+        public string CreateTestTooltip
+        {
+            get { return _createTestTooltip; }
+            set
+            {
+                _createTestTooltip = value;
+                OnPropertyChanged("CreateTestTooltip");
+            }
+        }
+
+        public bool CanCreateSchedule
+        {
+            get { return _canCreateSchedule; }
+            set
+            {
+                _canCreateSchedule = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    ScheduleTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    ScheduleTooltip = _canCreateSchedule ? Warewolf.Studio.Resources.Languages.Core.ScheduleToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanCreateSchedule");
+            }
+        }
+
+        public string ScheduleTooltip
+        {
+            get { return _scheduleTooltip; }
+            set
+            {
+                _scheduleTooltip = value;
+                OnPropertyChanged("ScheduleTooltip");
+            }
+        }
+
+        public bool CanDebugBrowser
+        {
+            get { return _debugBrowser; }
+            set
+            {
+                _debugBrowser = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    DebugBrowserTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    DebugBrowserTooltip = _debugBrowser ? Warewolf.Studio.Resources.Languages.Core.DebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanDebugBrowser");
+            }
+        }
+
+        public string DebugBrowserTooltip
+        {
+            get { return _debugBrowserTooltip; }
+            set
+            {
+                _debugBrowserTooltip = value;
+                OnPropertyChanged("DebugBrowserTooltip");
+            }
+        }
+
+        public bool CanDebugStudio
+        {
+            get { return _canDebugStudio; }
+            set
+            {
+                _canDebugStudio = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    DebugStudioTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    DebugStudioTooltip = _canDebugStudio ? Warewolf.Studio.Resources.Languages.Core.DebugStudioToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanDebugStudio");
+            }
+        }
+
+        public string DebugStudioTooltip
+        {
+            get { return _debugStudioTooltip; }
+            set
+            {
+                _debugStudioTooltip = value;
+                OnPropertyChanged("DebugStudioTooltip");
+            }
+        }
+
+        public bool CanDebugInputs
+        {
+            get { return _canDebugInputs; }
+            set
+            {
+                _canDebugInputs = value;
+                if (ResourceModel.IsNewWorkflow)
+                {
+                    DebugInputsTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                }
+                else
+                {
+                    DebugInputsTooltip = _canDebugInputs ? Warewolf.Studio.Resources.Languages.Core.DebugInputsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                }
+                OnPropertyChanged("CanDebugInputs");
+            }
+        }
+
+        public string DebugInputsTooltip
+        {
+            get { return _debugInputsTooltip; }
+            set
+            {
+                _debugInputsTooltip = value;
+                OnPropertyChanged("DebugInputsTooltip");
+            }
         }
 
         private void SetOriginalDataList(IContextualResourceModel contextualResourceModel)
@@ -1381,11 +1732,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         private void AddModelItemToSelection(ModelItem selectedModelItem)
-        {
-            if(selectedModelItem.ItemType == typeof(Flowchart))
-            {
-                return;
-            }
+        {            
             if (SelectedDebugItems.Contains(selectedModelItem))
             {
                 return;
@@ -1924,6 +2271,28 @@ namespace Dev2.Studio.ViewModels.Workflow
         private ICommand _copyUrlCommand;
         private DebugOutputViewModel _debugOutputViewModel;
         private IDataListViewModel _dataListViewModel;
+        private bool _canDebugInputs;
+        private bool _canDebugStudio;
+        private bool _debugBrowser;
+        private bool _canCreateSchedule;
+        private bool _canCreateTest;
+        private bool _canRunAllTests;
+        private bool _canDuplicate;
+        private bool _canDeploy;
+        private bool _canShowDependencies;
+        private bool _canViewSwagger;
+        private bool _canCopyUrl;
+        private string _copyUrlTooltip;
+        private string _viewSwaggerTooltip;
+        private string _debugInputsTooltip;
+        private string _debugStudioTooltip;
+        private string _debugBrowserTooltip;
+        private string _scheduleTooltip;
+        private string _createTestTooltip;
+        private string _runAllTestsTooltip;
+        private string _duplicateTooltip;
+        private string _deployTooltip;
+        private string _showDependenciesTooltip;
 
         /// <summary>
         /// Models the service model changed.
