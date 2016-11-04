@@ -91,7 +91,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.And("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
- testRunner.And("I Click Explorer Refresh Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Refresh Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
  testRunner.And("I Click ConfigureSetting From Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
