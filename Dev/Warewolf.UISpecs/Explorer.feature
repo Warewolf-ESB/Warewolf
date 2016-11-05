@@ -10,8 +10,7 @@ Scenario: Explorer Context Menu Items
 	And I Click Subworkflow Done Button
 	And I Drag Dice Onto Dice On The DesignSurface
 	And I Click Workflow CollapseAll
-	And I Save With Ribbon Button And Dialog As "Local_DoubleDice"
-	And I Click Close Workflow Tab Button
+	And I Save With Ribbon Button And Dialog As "Local_DoubleDice"	
 	And I Filter the Explorer with "Local_DoubleDice"
 	And I Open Explorer First Item Dependancies With Context Menu
 	And I Click ViewSwagger From ExplorerContextMenu
