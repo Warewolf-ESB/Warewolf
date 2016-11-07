@@ -55,6 +55,7 @@ namespace Dev2.Studio.Views.Workflow
                             {
                                 grid.ContextMenu.IsOpen = true;
                                 grid.ContextMenu.DataContext = DataContext;
+
                             }
                         }
                         else if (rect != null)

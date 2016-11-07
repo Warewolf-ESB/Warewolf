@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Move
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("File Tools")]
         public void MoveTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Move_Tool_Large_View();
@@ -24,13 +24,6 @@ namespace Warewolf.UITests.Tools
 #endif
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Move_Onto_DesignSurface();
-        }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
         }
 
         UIMap UIMap

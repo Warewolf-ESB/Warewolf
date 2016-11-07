@@ -65,6 +65,7 @@
     <Compile Include="SaveDialogWindow\SaveDialogWindowTets.cs" />
     <Compile Include="Deploy\DeployViewOnlyServiceUITest.cs" />
     <Compile Include="ContextMenu\ContextMenuTests.cs" />
+    <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
     <Compile Include="EmailSource\EmailSourceTests.cs" />
     <Compile Include="Explorer\Rename.cs" />
@@ -100,7 +101,6 @@
     <Compile Include="Tools\HTTP Web Methods\HttpWebGet.cs" />
     <Compile Include="Tools\HTTP Web Methods\HttpWebPut.cs" />
     <Compile Include="Tools\HTTP Web Methods\HttpWebDelete.cs" />
-    <Compile Include="Tabs and Panes\AssignToolInUnpinnedWorkflowTab.cs" />
     <Compile Include="Tabs and Panes\PinUnpinPanes.cs" />
     <Compile Include="Tools\Loop Constructs\Selectandapply.cs" />
     <Compile Include="Tools\Loop Constructs\ForEach.cs" />

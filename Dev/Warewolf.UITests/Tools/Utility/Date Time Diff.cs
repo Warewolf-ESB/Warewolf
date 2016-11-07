@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Utility
     public class Date_Time_Diff
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void DateTimeDiffTool_OpenLargeViewUITest()
         {
             UIMap.Open_DateTimeDiff_LargeView();

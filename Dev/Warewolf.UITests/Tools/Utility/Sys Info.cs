@@ -7,14 +7,14 @@ namespace Warewolf.UITests.Tools
     public class Sys_Info
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void SysInfoTool_OpenLargeViewUITest()
         {            
             UIMap.Open_System_Information_Tool_Large_View();
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void SysInfoTool_OpenQVIUITest()
         {
             UIMap.Open_System_Information_Tool_Qvi_Large_View();

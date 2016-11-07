@@ -7,14 +7,14 @@ namespace Warewolf.UITests.Tools
     public class Format_Number
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Utility Tools")]
         public void FormatNumberTool_OpenLargeViewUITest()
         {
             UIMap.Open_NumberFormat_Toolbox_Large_View();
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void FormatNumberTool_SetRoundingType_None_ExpectedRoundingInputIsDisabled_UITest()
         {            
             UIMap.Open_NumberFormat_Toolbox_Large_View();
@@ -23,7 +23,7 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void FormatNumberTool_ChangeRoundingType_None_Expected_RoundingInputBecomesDisabledAndEmpty_UITest()
         {            
             UIMap.Open_NumberFormat_Toolbox_Large_View();

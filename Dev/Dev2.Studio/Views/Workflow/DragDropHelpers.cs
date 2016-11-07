@@ -41,6 +41,7 @@ namespace Dev2.Studio.Views.Workflow
                 return false;
             }
 
+
             //if it is a ReourceTreeViewModel, get the data for this string
             var modelItemString = formats.FirstOrDefault(s => s.IndexOf(@"ExplorerItemViewModel", StringComparison.Ordinal) >= 0);
 
@@ -56,8 +57,14 @@ namespace Dev2.Studio.Views.Workflow
                 }
             }
 
-            
-            if(string.IsNullOrEmpty(modelItemString))
+            var serviceFromToolBox = formats.FirstOrDefault(s => s.IndexOf(@"FromToolBox", StringComparison.Ordinal) >= 0);
+            if (!string.IsNullOrEmpty(serviceFromToolBox))
+            {
+                return false;
+            }
+
+
+            if (string.IsNullOrEmpty(modelItemString))
             {
                 return false;
             }
@@ -84,6 +91,7 @@ namespace Dev2.Studio.Views.Workflow
                     {
                         return true;
                     }
+                    
                     if (explorerItemViewModel.CanExecute && explorerItemViewModel.CanView && explorerItemViewModel.IsService && !explorerItemViewModel.IsSource)
                     {
                         return false;

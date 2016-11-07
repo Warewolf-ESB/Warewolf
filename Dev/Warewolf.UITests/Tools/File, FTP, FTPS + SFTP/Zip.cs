@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Zip
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("File Tools")]
         public void ZipTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Zip_Tool_Large_View();
@@ -26,6 +26,12 @@ namespace Warewolf.UITests.Tools
             UIMap.Drag_Toolbox_Zip_Onto_DesignSurface();
         }
 
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         UIMap UIMap
         {
             get

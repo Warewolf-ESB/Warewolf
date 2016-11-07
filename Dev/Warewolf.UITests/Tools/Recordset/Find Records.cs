@@ -8,14 +8,14 @@ namespace Warewolf.UITests.Tools
     public class Find_Records
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Recordset Tools")]
         public void FindRecordsTool__OpenLargeViewUITest()
         {
             UIMap.Open_Find_Record_Index_Tool_Large_View();
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Recordset Tools")]
         public void ToolDesigners_FindRecordslargeView_TabbingToResultBox_FocusIsSetToResultBox_UITest()
         {
             UIMap.Open_Find_Record_Index_Tool_Large_View();
@@ -24,7 +24,7 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Recordset Tools")]
         public void ToolDesigners_FindRecordsSmallView_SelectingOptionInDopdownWithKeyboard_MatchesBoxEnabled_UITest()
         {
             Keyboard.SendKeys(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex, "{Tab}", ModifierKeys.None);
@@ -45,14 +45,7 @@ namespace Warewolf.UITests.Tools
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Find_Record_Index_Onto_DesignSurface();
         }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-            
-        }
+        
         UIMap UIMap
         {
             get
