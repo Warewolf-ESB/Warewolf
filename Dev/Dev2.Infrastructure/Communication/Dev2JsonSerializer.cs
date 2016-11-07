@@ -73,8 +73,7 @@ namespace Dev2.Communication
             return result;
         }
 
-        // Please use this for all your deserialize needs ;)
-        public T Deserialize<T>(StringBuilder message)
+        public T Deserialize<T>(StringBuilder message) where T : class
         {
             if(message != null && message.Length > 0)
             {
@@ -112,8 +111,8 @@ namespace Dev2.Communication
                         {
                             using(JsonReader jr = new JsonTextReader(sr))
                             {
-                                var result = serializer.Deserialize<T>(jr);
-                                return result;
+                                var result = serializer.Deserialize(jr,typeof(T));
+                                return result as T;
                             }
                         }
                     }

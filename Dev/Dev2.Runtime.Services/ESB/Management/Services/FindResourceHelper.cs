@@ -72,8 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             };
         }
 
-
-        internal IAuthorizationService AuthorizationService
+        private IAuthorizationService AuthorizationService
         {
             get
             {

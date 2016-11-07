@@ -21,8 +21,11 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Scheduler;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -31,6 +34,15 @@ namespace Dev2.Runtime.ESB.Management.Services
         private IServerSchedulerFactory _schedulerFactory;
         ISecurityWrapper _securityWrapper;
         private IResourceCatalog _catalog;
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
 
         public string HandlesType()
         {
@@ -45,7 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                if(tmp != null)
+                if (tmp != null)
                 {
 
                     var res = serializer.Deserialize<IScheduledResource>(tmp);
@@ -68,7 +80,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             values.TryGetValue("PreviousResource", out previousTask);
 
                             model.Save(res, userName.ToString(), password.ToString());
-                            if(previousTask != null && !String.IsNullOrEmpty(previousTask.ToString()) && previousTask.ToString() != res.Name)
+                            if(previousTask != null && !string.IsNullOrEmpty(previousTask.ToString()) && previousTask.ToString() != res.Name)
                             {
                                 model.DeleteSchedule(new ScheduledResource(previousTask.ToString(), SchedulerStatus.Disabled, DateTime.MaxValue, null, null,Guid.NewGuid().ToString()));
                             }
@@ -84,7 +96,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             catch(Exception e)
             {
                 Dev2Logger.Error(e);
-                result.Message.Append(string.Format("Error while saving: {0}", e.Message.Remove(e.Message.IndexOf('.'))));
+                result.Message.Append($"Error while saving: {e.Message.Remove(e.Message.IndexOf('.'))}");
                 result.HasError = true;
             }
             return serializer.SerializeToBuilder(result);

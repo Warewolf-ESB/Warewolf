@@ -25,10 +25,7 @@ namespace Dev2.Studio.Core.Activities.Services
 
         protected void OnExpandAllRequested()
         {
-            if(ExpandAllRequested != null)
-            {
-                ExpandAllRequested(this, new EventArgs());
-            }
+            ExpandAllRequested?.Invoke(this, new EventArgs());
         }
 
         #endregion ExpandAllRequested
@@ -39,10 +36,7 @@ namespace Dev2.Studio.Core.Activities.Services
 
         protected void OnCollapseAllRequested()
         {
-            if(CollapseAllRequested != null)
-            {
-                CollapseAllRequested(this, new EventArgs());
-            }
+            CollapseAllRequested?.Invoke(this, new EventArgs());
         }
 
         #endregion CollapseAllRequested
@@ -53,10 +47,7 @@ namespace Dev2.Studio.Core.Activities.Services
 
         protected void OnRestoreAllRequested()
         {
-            if(RestoreAllRequested != null)
-            {
-                RestoreAllRequested(this, new EventArgs());
-            }
+            RestoreAllRequested?.Invoke(this, new EventArgs());
         }
 
         #endregion RestoreAllRequested
@@ -76,11 +67,11 @@ namespace Dev2.Studio.Core.Activities.Services
         {
             if(rootModel == null)
             {
-                throw new ArgumentNullException("rootModel");
+                throw new ArgumentNullException(nameof(rootModel));
             }
             if(resourceRepository == null)
             {
-                throw new ArgumentNullException("resourceRepository");
+                throw new ArgumentNullException(nameof(resourceRepository));
             }
             //VerifyArgument.IsNotNull("rootModel", rootModel);
             //VerifyArgument.IsNotNull("resourceRepository", resourceRepository);

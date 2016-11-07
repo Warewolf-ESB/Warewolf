@@ -11,7 +11,7 @@ Scenario: Checking and Unchecking Permissions Checkboxes
 	And I Enter Dice Roll Values 
 	And I Save With Ribbon Button And Dialog As "Dice1"
 	And I Click Close Workflow Tab Button 
-	And I Click Explorer Refresh Button 
+	And I Refresh Explorer
 	And I Click ConfigureSetting From Menu 
 	And I Check Public Contribute 
 	And I Check Public Administrator 

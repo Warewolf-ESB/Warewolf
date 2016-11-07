@@ -18,6 +18,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -32,39 +33,32 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-
-            
-            string type = null;
-            StringBuilder tmp;
-            values.TryGetValue("Type", out tmp);
-            if(tmp != null)
-            {
-                type = tmp.ToString();
-            }
-
-            if(string.IsNullOrEmpty(type))
-            {
-                // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("type");
-                // ReSharper restore NotResolvedInText
-            }
-            Dev2Logger.Info("Find Sources By Type. "+type);
-            enSourceType sourceType;
-            if(Enum.TryParse(type, true, out sourceType))
-            {
-                // TODO : Based upon the enum type return correct JSON model ;)
-                // NOTE : Current types are : Email, SqlDatabase, Dev2Server
-
-                // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog re-factor
-                var result = ResourceCatalog.Instance.GetModels(theWorkspace.ID, sourceType);
-                if(result != null)
+                string type = null;
+                StringBuilder tmp;
+                values.TryGetValue("Type", out tmp);
+                if (tmp != null)
                 {
-                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                    return serializer.SerializeToBuilder(result);
+                    type = tmp.ToString();
                 }
-            }
 
-            return new StringBuilder();
+                if (string.IsNullOrEmpty(type))
+                {
+                    // ReSharper disable NotResolvedInText
+                    throw new ArgumentNullException("type");
+                    // ReSharper restore NotResolvedInText
+                }
+                Dev2Logger.Info("Find Sources By Type. " + type);
+                enSourceType sourceType;
+                if (Enum.TryParse(type, true, out sourceType))
+                {
+                    var result = ResourceCatalog.Instance.GetModels(theWorkspace.ID, sourceType);
+                    if (result != null)
+                    {
+                        Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                        return serializer.SerializeToBuilder(result);
+                    }
+                }
+                return new StringBuilder();
             }
             catch (Exception err)
             {
@@ -86,6 +80,16 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string HandlesType()
         {
             return "FindSourcesByType";
+        }
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
         }
     }
 }

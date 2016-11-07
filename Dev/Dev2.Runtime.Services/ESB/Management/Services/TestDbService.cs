@@ -22,6 +22,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Unlimited.Framework.Converters.Graph.Ouput;
 
@@ -30,6 +31,18 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class TestDbService : IEsbManagementEndpoint
     {
+
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
@@ -46,16 +59,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 // ReSharper disable MaximumChainedReferences
                 var parameters = src.Inputs?.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
                 // ReSharper restore MaximumChainedReferences
-                var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
-                if (source == null)
-                {
-                    source = new DbSource();
-                    source.DatabaseName = src.Source.DbName;
-                    source.ResourceID = src.Source.Id;
-                    source.ServerType = src.Source.Type;
-                    source.ResourceType = "DbSource";
-                }
-                
+                var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id) ?? new DbSource
+                             {
+                                 DatabaseName = src.Source.DbName,
+                                 ResourceID = src.Source.Id,
+                                 ServerType = src.Source.Type,
+                                 ResourceType = "DbSource"
+                             };
+
                 var res = new DbService
                 {
                     Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), src.Action.Name),

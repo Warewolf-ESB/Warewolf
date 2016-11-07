@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Scheduler;
+using Dev2.Services.Security;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,6 +28,34 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class DeleteScheduledResourceTest
     {
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var service = new DeleteScheduledResource();
+
+            //------------Execute Test---------------------------
+            var resId = service.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var service = new DeleteScheduledResource();
+
+            //------------Execute Test---------------------------
+            var resId = service.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Administrator, resId);
+        }
+
 
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Delete")]

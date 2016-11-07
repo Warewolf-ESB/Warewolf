@@ -19,6 +19,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 // ReSharper disable MemberCanBePrivate.Global
@@ -27,6 +28,27 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class MoveItemService : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            StringBuilder tmp;
+            requestArgs.TryGetValue("itemToMove", out tmp);
+            if (tmp != null)
+            {
+                Guid resourceId;
+                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                {
+                    return resourceId;
+                }
+            }
+
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
+
         private IExplorerServerResourceRepository _serverExplorerRepository;
 
         public string HandlesType()
@@ -62,7 +84,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
 
                 var itemToMove = ServerExplorerRepo.Find(Guid.Parse(itemToBeRenamed.ToString())) ?? ServerExplorerRepo.Find(a => a.ResourcePath == itemToBeRenamedPath.ToString());
-                Dev2Logger.Info(String.Format("Move Item. Path:{0} NewPath:{1}", itemToBeRenamed, newPath));
+                Dev2Logger.Info($"Move Item. Path:{itemToBeRenamed} NewPath:{newPath}");
                 item = ServerExplorerRepo.MoveItem(itemToMove, newPath.ToString(), GlobalConstants.ServerWorkspaceID);               
             }
             catch (Exception e)
