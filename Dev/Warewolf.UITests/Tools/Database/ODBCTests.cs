@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class ODBCTests
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Database Tools")]
         public void ODBCTool_OpenLargeViewUITest()
         {            
             UIMap.Open_ODBC_Tool_Large_View();
@@ -26,12 +26,6 @@ namespace Warewolf.UITests.Tools
             UIMap.Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurface();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
         UIMap UIMap
         {
             get

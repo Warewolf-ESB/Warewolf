@@ -7,14 +7,14 @@ namespace Warewolf.UITests.Tools
     public class HttpWebPost
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("HTTP Tools")]
         public void HttpWebPostToolClickLargeViewDoneButton()
         {
             UIMap.Open_PostWeb_RequestTool_Large_View();
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("HTTP Tools")]
         public void HttpWebPostToolClickAddNewSourceButtonOpensNewSourceWizardTab()
         {
             UIMap.Open_PostWeb_RequestTool_Large_View();
@@ -22,7 +22,7 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("HTTP Tools")]
         public void HttpWebPostToolClickTestInputsDoneButton()
         {
             UIMap.Open_PostWeb_RequestTool_Large_View();
@@ -32,7 +32,7 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("HTTP Tools")]
         public void HttpWebPostToolClickPasteResponseButton()
         {
             UIMap.Open_PostWeb_RequestTool_Large_View();

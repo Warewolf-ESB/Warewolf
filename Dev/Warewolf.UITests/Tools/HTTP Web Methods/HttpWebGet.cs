@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class HttpWebGet
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("HTTP Tools")]
         public void HttpWebGetToolClickLargeViewDoneButton()
         {
             UIMap.Open_GET_Web_Connector_Tool_Large_View();
@@ -15,7 +15,7 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("HTTP Tools")]
         public void HttpWebGetToolClickAddNewSourceButtonOpensNewSourceWizardTab()
         {
             UIMap.Open_GET_Web_Connector_Tool_Large_View();
@@ -23,7 +23,7 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("HTTP Tools")]
         public void HttpWebGetToolClickTestInputsDoneButton()
         {
             UIMap.Open_GET_Web_Connector_Tool_Large_View();

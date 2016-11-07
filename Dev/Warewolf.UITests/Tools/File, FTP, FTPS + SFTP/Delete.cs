@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Delete
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("File Tools")]
         public void DeleteTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Delete_Tool_Large_View();

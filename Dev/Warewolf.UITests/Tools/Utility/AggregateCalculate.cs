@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Utility
     public class AggregateCalculate
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void AggregateCalculateTool_OpenLargeViewUITest()
         {            
             UIMap.Open_AggregateCalculate_Tool_large_view();
@@ -25,14 +25,7 @@ namespace Warewolf.UITests.Tools.Utility
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_AggregateCalculate_Onto_DesignSurface();
         }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
-
+        
         UIMap UIMap
         {
             get

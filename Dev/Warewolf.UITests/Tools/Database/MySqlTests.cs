@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class MySqlTests
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Database Tools")]
         public void MySqlTool_OpenLargeViewUITest()
         {            
             UIMap.Open_MySql_Database_Tool_Large_View();
@@ -27,15 +27,7 @@ namespace Warewolf.UITests.Tools
             UIMap.Drag_Toolbox_MySql_Database_Onto_DesignSurface();
         }
 
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
-
-            UIMap UIMap
+        UIMap UIMap
         {
             get
             {

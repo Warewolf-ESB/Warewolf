@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Web_Request
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void WebRequestTool_OpenLArgeViewUITest()
         {            
             UIMap.Open_WebRequest_LargeView();

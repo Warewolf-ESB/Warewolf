@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Utility
     public class RabbitMQPublish
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void RabbitMQPublishTool_OpenLargerViewUITest()
         {
             UIMap.Open_RabbitMqPublish_LargeView();
