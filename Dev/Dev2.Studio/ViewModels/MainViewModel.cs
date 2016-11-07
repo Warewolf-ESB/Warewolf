@@ -106,7 +106,7 @@ namespace Dev2.Studio.ViewModels
         bool _canDebug = true;
         bool _menuExpanded;
 
-        public Common.Interfaces.Studio.Controller.IPopupController PopupProvider { get; set; }
+        public IPopupController PopupProvider { get; set; }
 
         private IEnvironmentRepository EnvironmentRepository { get; }
 
@@ -416,7 +416,7 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            Common.Interfaces.Studio.Controller.IPopupController popupController = null, IExplorerViewModel explorer = null)
+            IPopupController popupController = null, IExplorerViewModel explorer = null)
             : base(eventPublisher)
         {
             if (environmentRepository == null)
@@ -1019,7 +1019,7 @@ namespace Dev2.Studio.ViewModels
                     ActivateItem(_previousActive);
                 }
 
-                //base.DeactivateItem(item, close);
+                base.DeactivateItem(item, close);
                 item.Dispose();
                 CloseCurrent = true;
             }

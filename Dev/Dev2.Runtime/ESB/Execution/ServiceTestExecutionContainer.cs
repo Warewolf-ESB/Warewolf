@@ -98,13 +98,13 @@ namespace Dev2.Runtime.ESB.Execution
 
 
             ErrorResultTO to = errors;
-            var serviceTestModelTO = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
-            if (serviceTestModelTO == null)
+            var serviceTestModelTo = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
+            if (serviceTestModelTo == null)
             {
                 TestCatalog.Instance.Load();
-                serviceTestModelTO = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
+                serviceTestModelTo = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
             }
-            if (serviceTestModelTO == null)
+            if (serviceTestModelTo == null)
             {
 
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -118,12 +118,12 @@ namespace Dev2.Runtime.ESB.Execution
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                 return Guid.NewGuid();
             }
-            if (serviceTestModelTO.Enabled)
+            if (serviceTestModelTo.Enabled)
             {
-                if (serviceTestModelTO.AuthenticationType == AuthenticationType.User)
+                if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
                 {
                     Impersonator impersonator = new Impersonator();
-                    var userName = serviceTestModelTO.UserName;
+                    var userName = serviceTestModelTo.UserName;
                     var domain = "";
                     if (userName.Contains("\\"))
                     {
@@ -137,21 +137,21 @@ namespace Dev2.Runtime.ESB.Execution
                         userName = userName.Substring(0, atIndex);
                         domain = userName.Substring(atIndex + 1);
                     }
-                    var hasImpersonated = impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTO.Password));
+                    var hasImpersonated = impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTo.Password));
                     if (!hasImpersonated)
                     {
                         DataObject.Environment.AllErrors.Add("Unauthorized to execute this resource.");
                         DataObject.StopExecution = true;
                     }
                 }
-                else if (serviceTestModelTO.AuthenticationType == AuthenticationType.Public)
+                else if (serviceTestModelTo.AuthenticationType == AuthenticationType.Public)
                 {
                     Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
                 }
                 var userPrinciple = Thread.CurrentPrincipal;
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
                 {
-                    result = ExecuteWf(to, serviceTestModelTO);
+                    result = ExecuteWf(to, serviceTestModelTo);
                 });
                 foreach (var err in DataObject.Environment.Errors)
                 {
@@ -165,6 +165,11 @@ namespace Dev2.Runtime.ESB.Execution
                 Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
             }
             return result;
+        }
+
+        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
+        {
+            return true;
         }
 
         private static void AddRecordsetsInputs(IEnumerable<IServiceTestInput> recSets, IExecutionEnvironment environment)
@@ -207,7 +212,7 @@ namespace Dev2.Runtime.ESB.Execution
             Guid result = new Guid();
             var wfappUtils = new WfApplicationUtils();
             ErrorResultTO invokeErrors = new ErrorResultTO();
-            var resourceID = DataObject.ResourceID;
+            var resourceId = DataObject.ResourceID;
             if (test?.Inputs != null)
             {
                 AddRecordsetsInputs(test.Inputs.Where(input => DataListUtil.IsValueRecordset(input.Variable) && !input.Variable.Contains("@")), DataObject.Environment);
@@ -241,7 +246,7 @@ namespace Dev2.Runtime.ESB.Execution
                     wfappUtils.WriteDebug(DataObject, debugState);
                 }
 
-                var testRunResult = Eval(resourceID, DataObject, test);
+                var testRunResult = Eval(resourceId, DataObject, test);
 
                 if (DataObject.IsDebugMode())
                 {
@@ -262,7 +267,7 @@ namespace Dev2.Runtime.ESB.Execution
                 if (testRunResult != null)
                 {
                     if (test != null)
-                        test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
+                        test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
                     _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                 }
                 result = DataObject.DataListID;
@@ -273,8 +278,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var msg = iwe.Message;
 
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
-                if (to != null)
-                    to.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
+                to?.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
                 var failureMessage = DataObject.Environment.FetchErrors();
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), failureMessage, out invokeErrors, DataObject.StartTime, false, true);
 
@@ -286,7 +290,7 @@ namespace Dev2.Runtime.ESB.Execution
                 test.LastRunDate = DateTime.Now;
 
 
-                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceID, test); });
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceId, test); });
 
                 var testRunResult = new TestRunResult { TestName = test.TestName };
                 if (test.TestInvalid)
@@ -295,7 +299,7 @@ namespace Dev2.Runtime.ESB.Execution
                     testRunResult.Message = failureMessage;
                     Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in exception for no start node");
                 }
-                testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
+                testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
                 if (_request != null)
                     _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
             }
@@ -313,7 +317,7 @@ namespace Dev2.Runtime.ESB.Execution
                 test.LastRunDate = DateTime.Now;
 
 
-                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceID, test); });
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceId, test); });
 
                 var testRunResult = new TestRunResult { TestName = test.TestName };
                 if (test.TestInvalid)
@@ -322,16 +326,16 @@ namespace Dev2.Runtime.ESB.Execution
                     testRunResult.Message = ex.Message;
                     Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in general exception");
                 }
-                testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
+                testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
             }
             return result;
         }
 
-        private IServiceTestModelTO Eval(Guid resourceID, IDSFDataObject dataObject, IServiceTestModelTO test)
+        private IServiceTestModelTO Eval(Guid resourceId, IDSFDataObject dataObject, IServiceTestModelTO test)
         {
             Dev2Logger.Debug("Getting Resource to Execute");
-            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
+            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceId);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var execPlan = serializer.SerializeToBuilder(resource);
             var clonedExecPlan = serializer.Deserialize<IDev2Activity>(execPlan);
@@ -415,11 +419,11 @@ namespace Dev2.Runtime.ESB.Execution
                     testRunResult.RunTestResult = RunResult.TestInvalid;
                 }
                 test.Result = testRunResult;
-                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceID, test); });
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceId, test); });
 
                 return test;
             }
-            throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceID}");
+            throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceId}");
         }
 
 
