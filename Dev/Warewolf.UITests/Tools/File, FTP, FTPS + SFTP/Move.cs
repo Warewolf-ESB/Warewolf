@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Move
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("File Tools")]
         public void MoveTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Move_Tool_Large_View();

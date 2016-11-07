@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Copy
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("File Tools")]
         public void CopyTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Copy_Tool_Large_View();

@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Rename
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("File Tools")]
         public void RenameTool_OpenLargeViewUITest()
         {
             UIMap.Open_Rename_Tool_Large_View();

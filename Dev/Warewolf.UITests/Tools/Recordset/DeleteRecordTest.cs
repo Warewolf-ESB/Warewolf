@@ -7,7 +7,7 @@ namespace Warewolf.UITests
     public class DeleteRecordTest
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Recordset Tools")]
         public void DeleteRecord_OpenLargeViewUITest()
         {            
             UIMap.Open_DeleteRecords_Large_View();            

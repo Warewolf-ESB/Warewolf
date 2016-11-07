@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Create
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("File Tools")]
         public void CreateTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Create_Tool_Large_View();
