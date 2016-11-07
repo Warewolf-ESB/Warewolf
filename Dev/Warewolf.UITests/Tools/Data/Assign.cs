@@ -122,6 +122,32 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.Remove_Assign_Row_1_With_Context_Menu();
         }
 
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void AssignToolInUnpinnedWorkflowTabDebugOutputUITest()
+        {
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tab();
+            UIMap.Debug_Unpinned_Workflow_With_Ribbon_Button();
+            UIMap.Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_Tab();
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void AssignToolInUnpinnedWorkflowTabAddRemoveVariablesUITest()
+        {
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            const string Variable1Name = "SomeVariable";
+            const string Variable1Value = "50";
+            UIMap.Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab("[[" + Variable1Name + "]]", Variable1Value, 1);
+            Assert.AreEqual(Variable1Name, UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
+            const string Variable2Name = "SomeOtherVariable";
+            const string Variable2Value = "100";
+            UIMap.Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab("[[" + Variable2Name + "]]", Variable2Value, 2);
+            Assert.AreEqual(Variable2Name, UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 2.");
+            UIMap.Remove_Assign_Row_1_With_Context_Menu_On_Unpinned_Tab();
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

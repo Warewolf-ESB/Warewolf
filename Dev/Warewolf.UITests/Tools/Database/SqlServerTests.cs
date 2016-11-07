@@ -7,11 +7,12 @@ namespace Warewolf.UITests.Tools
     public class SqlServerTests
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Database Tools")]
         public void SqlServerToolUITest()
         {            
             UIMap.Open_Sql_Server_Tool_Large_View();
         }
+
         #region Additional test attributes
 
         [TestInitialize]

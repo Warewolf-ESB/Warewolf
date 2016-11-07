@@ -7,10 +7,9 @@ namespace Warewolf.UITests.Tools.Recordset
     public class Length
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Recordset Tools")]
         public void LengthToolUITest()
         {
-            Uimap.Drag_Toolbox_Length_Onto_DesignSurface();
             Uimap.Open_Length_Tool_Large_View();
         }
 
@@ -24,25 +23,8 @@ namespace Warewolf.UITests.Tools.Recordset
             Uimap.CloseHangingDialogs();
 #endif
             Uimap.InitializeABlankWorkflow();
+            Uimap.Drag_Toolbox_Length_Onto_DesignSurface();
         }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {
