@@ -2566,10 +2566,11 @@ namespace Warewolf.UITests
 
         public void Debug_Unpinned_Workflow_With_Ribbon_Button()
         {
+            Toggle_Between_Studio_and_Unpinned_Tab();
             Click_Debug_Ribbon_Button();
             Click_DebugInput_Debug_Button_For_UnpinnedWindow();
-            this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.StatusBar.DrawHighlight();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            Toggle_Between_Studio_and_Unpinned_Tab();
+            WaitForSpinner(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
         public void Remove_Assign_Row_1_With_Context_Menu()
@@ -3547,6 +3548,11 @@ namespace Warewolf.UITests
         }
 
         private Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams mDrag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurfaceParams;
+
+        public void Toggle_Between_Studio_and_Unpinned_Tab()
+        {
+            Keyboard.SendKeys(MainStudioWindow, "{ALT}{TAB}");
+        }
     }
     /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_AssignObject_Onto_Sequence_Tool'
