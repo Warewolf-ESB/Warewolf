@@ -134,14 +134,7 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
         }
-
-        //[TestCleanup]
-        //public void MyTestCleanup()
-        //{
-        //    UIMap.Click_Close_Workflow_Tab_Button();
-        //    UIMap.Click_MessageBox_No();
-        //}
-
+        
         UIMap UIMap
         {
             get

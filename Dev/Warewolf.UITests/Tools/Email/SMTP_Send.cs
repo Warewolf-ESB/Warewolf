@@ -12,12 +12,6 @@ namespace Warewolf.UITests.Tools
         {
             UIMap.Drag_Toolbox_SMTP_Email_Onto_DesignSurface();
             UIMap.Open_SMTP_Email_Tool_Large_View();
-            //UIMap.Enter_Values_Into_SMTP_Email_Tool_Large_View();
-            //UIMap.Click_SMTP_Email_Tool_Large_View_Done_Button();
-            //UIMap.Click_SMTP_Email_Tool_QVI_Button();
-            //UIMap.Click_Debug_Bibbon_Button();
-            //UIMap.Click_Debug_Input_Dialog_Debug_ButtonParams.SMTPEmailToolDebugOutputExists = true;
-            //UIMap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
         #region Additional test attributes
@@ -32,6 +26,12 @@ namespace Warewolf.UITests.Tools
             UIMap.InitializeABlankWorkflow();
         }
 
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
