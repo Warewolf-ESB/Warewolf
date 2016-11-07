@@ -7,7 +7,7 @@ namespace Warewolf.UITests
     public class UniqueRecordsTests
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Recordset Tools")]
         public void UniqueRecords_OpenLargeViewUITest()
         {            
             UIMap.Open_UniqueRecords_Large_View();
