@@ -110,7 +110,7 @@ namespace Dev2.Common
             var rootLogger = h.Root;
 
             var appender = rootLogger?.GetAppender("EventLogLogger") as EventLogAppender;
-            if(appender != null)
+            if(appender != null && appender.Threshold != null)
             {
                 return appender.Threshold.DisplayName;
             }
