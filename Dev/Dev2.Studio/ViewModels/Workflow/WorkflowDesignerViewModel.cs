@@ -96,6 +96,10 @@ using Warewolf.Studio.ViewModels;
 namespace Dev2.Studio.ViewModels.Workflow
 // ReSharper restore CheckNamespace
 {
+    public class FromToolBox
+    {
+        
+    }
 
     public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
                                              IHandle<AddStringListToDataListMessage>,
@@ -2255,6 +2259,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if (res != null)
                     {
                         dataObject.SetData(res);
+                        dataObject.SetData(new FromToolBox());
                         DataObject = res;
                     }
                     if (res == null)

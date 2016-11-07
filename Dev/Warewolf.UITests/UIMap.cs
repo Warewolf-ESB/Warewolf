@@ -886,7 +886,7 @@ namespace Warewolf.UITests
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = ServiceName;
             Click_Service_Picker_Dialog_Refresh_Button();
-            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1, new Point(91, 9));
+            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1);
             Assert.IsTrue(ServicePickerDialog.OK.Enabled, "Service picker dialog OK button is not enabled.");
             Click_Service_Picker_Dialog_OK();
         }
@@ -3435,7 +3435,7 @@ namespace Warewolf.UITests
         }
 
         [Then("Dice Is Selected InSettings Tab Permissions Row 1")]
-        [When(@"I Assert Dice Is Selected InSettings Tab Permissions Row (.*)")]
+        [When(@"I Assert Dice Is Selected InSettings Tab Permissions Row1")]
         public void Assert_Dice_Is_Selected_InSettings_Tab_Permissions_Row_1()
         {
             Assert.AreEqual("Dice1", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");

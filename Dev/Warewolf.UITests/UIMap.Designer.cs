@@ -3825,7 +3825,8 @@ namespace Warewolf.UITests
             // Type 'Download' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams.SearchTextBoxText;
 
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(307, 131));
             Mouse.StartDragging(download, new Point(30, 8));
             Mouse.StopDragging(flowchart, new Point(307, 131));
@@ -4195,7 +4196,7 @@ namespace Warewolf.UITests
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 130));
-            Mouse.StartDragging(mySQL, new Point(4, 2));
+            Mouse.StartDragging(mySQL, new Point(10, 15));
             Mouse.StopDragging(flowchart, new Point(306, 130));
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
@@ -4220,7 +4221,7 @@ namespace Warewolf.UITests
             // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(306, 130));
-            Mouse.StartDragging(oDBC, new Point(4, 2));
+            Mouse.StartDragging(oDBC, new Point(10, 15));
             Mouse.StopDragging(flowchart, new Point(306, 130));
         }
         
@@ -4242,7 +4243,7 @@ namespace Warewolf.UITests
             // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(306, 130));
-            Mouse.StartDragging(oracle, new Point(4, 2));
+            Mouse.StartDragging(oracle, new Point(11, 20));
             Mouse.StopDragging(flowchart, new Point(306, 130));
         }
         
@@ -4264,7 +4265,7 @@ namespace Warewolf.UITests
             // Wait for 1 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             Playback.Wait(1000);
             flowchart.EnsureClickable(new Point(306, 130));
-            Mouse.StartDragging(postgre, new Point(4, 2));
+            Mouse.StartDragging(postgre, new Point(10, 15));
             Mouse.StopDragging(flowchart, new Point(306, 130));
         }
         
@@ -4978,7 +4979,7 @@ namespace Warewolf.UITests
             // Wait for 2 seconds for user delay between actions; Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             Playback.Wait(1500);
             flowchart.EnsureClickable(new Point(304, 129));
-            Mouse.StartDragging(sQLBulkInsert, new Point(11, 16));
+            Mouse.StartDragging(sQLBulkInsert, new Point(10, 15));
             Mouse.StopDragging(flowchart, new Point(304, 129));
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
@@ -8933,7 +8934,6 @@ namespace Warewolf.UITests
             WpfComboBox databaseComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox;
             WpfListItem testingDb = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox.TestingDb;
             WpfComboBox tableNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.TableNameComboBox;
-            WpfListItem dboBig = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.TableNameComboBox.DboBig;
             #endregion
 
             // Click 'UI__Database_AutoID' combo box
@@ -8944,12 +8944,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Enabled' property of 'UI__TableName_AutoID' combo box equals 'True'
             Assert.AreEqual(this.Select_DatabaseAndTable_From_BulkInsert_ToolParams.TableNameComboBoxEnabled, tableNameComboBox.Enabled, "Table combobox is not Enabled after selecting the database");
-
-            // Click 'UI__TableName_AutoID' combo box
-            Mouse.Click(tableNameComboBox, new Point(174, 7));
-
-            // Click 'dbo.[Big]' list item
-            Mouse.Click(dboBig, new Point(43, 15));
         }
         
         /// <summary>
