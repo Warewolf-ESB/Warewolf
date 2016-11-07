@@ -110,6 +110,7 @@
         <Setter Property="TextBoxStyle" Value="{StaticResource NoAcceptReturnTextBoxStyle}"/>
         <Setter Property="MinWidth" Value="45" />
         <Setter Property="Height" Value="25"/>
+        <Setter Property="Padding" Value="2,3,0,3"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:AutoCompleteBox">
@@ -123,8 +124,6 @@
                                 <TextBlock x:Name="PART_CalculateModePrefix"
                                            Text="fx"
                                            VerticalAlignment="Top"
-                                           Height="23"
-                                           Padding="2,3,0,3"
                                            Visibility="Collapsed"
                                            Foreground="Gray"
                                            FontStyle="Italic" />
@@ -194,7 +193,7 @@
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           IsHitTestVisible="False"
-                                          Margin="{TemplateBinding Padding}"
+                                          Margin="0"
                                           Visibility="Collapsed" />
                         <Popup x:Name="Popup">
                             <Grid Opacity="{TemplateBinding Opacity}">
@@ -342,8 +341,7 @@
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
                                 <Setter Property="Style" TargetName="Text" Value="{StaticResource AcceptReturnTextBoxStyle}" />
-                                <Setter Property="Height" Value="Auto" />
-                                <Setter Property="Padding" Value="3,6,0,0"/>
+                                <Setter TargetName="Text" Property="Padding" Value="2,6,0,3"/>
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                         <MultiTrigger>
@@ -352,7 +350,7 @@
                                 <Condition Property="Text" Value="" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
-                                <Setter Property="Margin" TargetName="PART_DefaultTextHost" Value="3,3,0,0"></Setter>
+                                <Setter Property="Margin" TargetName="PART_DefaultTextHost" Value="0"></Setter>
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                         <Trigger SourceName="Text" Property="IsMouseOver" Value="True">

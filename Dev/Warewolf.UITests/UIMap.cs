@@ -499,6 +499,35 @@ namespace Warewolf.UITests
             }
         }
 
+        [When(@"I Try Remove ""(.*)"" From Explorer")]
+        public void WhenITryRemoveFromExplorer(string ResourceName)
+        {
+            Filter_Explorer(ResourceName);
+            try
+            {
+                var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
+                if (File.Exists(resourcesFolder + @"\" + ResourceName + ".xml"))
+                {
+                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                    if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
+                    {
+                        RightClick_Explorer_Localhost_First_Item();
+                        Select_Delete_FromExplorerContextMenu();
+                        Click_MessageBox_Yes();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove resource " + ResourceName + " from the explorer.\n" + e.Message);
+            }
+            finally
+            {
+                TryClearExplorerFilter();
+            }
+        }
+
+        /*
         [When(@"I Try Remove ""(.*)"" from Explorer")]
         public void TryRemoveFromExplorer(string ResourceName)
         {
@@ -526,7 +555,7 @@ namespace Warewolf.UITests
                 TryClearExplorerFilter();
             }
         }
-
+        */
         public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
         {
             #region Variable Declarations
@@ -852,6 +881,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");
         }
 
+        [When(@"I Select ""(.*)"" From Service Picker")]
         public void Select_Service_From_Service_Picker_Dialog(string ServiceName)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = ServiceName;
@@ -1542,6 +1572,7 @@ namespace Warewolf.UITests
             Click_Close_Workflow_Tab_Button();
         }
 
+        [When(@"I UnCheck Public Administrator")]
         public void UnCheck_Public_Administrator()
         {
             #region Variable Declarations
@@ -1552,7 +1583,7 @@ namespace Warewolf.UITests
             WpfCheckBox public_DeployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox;
             WpfCheckBox public_DeployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox;
             #endregion
-
+            
             public_AdministratorCheckBox.Checked = false;
             Assert.IsFalse(public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Administrator.");
             Assert.IsTrue(public_ViewCheckBox.Checked, "Public View checkbox is unchecked after unChecking Administrator.");
@@ -1561,6 +1592,8 @@ namespace Warewolf.UITests
             Assert.IsTrue(public_DeployFromCheckBox.Checked, "Public DeplotFrom checkbox is unchecked after unChecking Administrator.");
             Assert.IsTrue(public_DeployToCheckBox.Checked, "Public DeployTo checkbox is unchecked after unChecking Administrator.");
         }
+
+        [When(@"I Check Resource Contribute")]
         public void Check_Resource_Contribute()
         {
             WpfCheckBox resource_ContributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ContributeCell.ContributeCheckBox;
@@ -1574,6 +1607,10 @@ namespace Warewolf.UITests
             Assert.IsTrue(resource_DeleteButton.Enabled, "Resource Delete button is disabled");
 
         }
+        
+       
+
+        [When(@"I Check Public Contribute")]
         public void Check_Public_Contribute()
         {
             #region Variable Declarations
@@ -1593,6 +1630,7 @@ namespace Warewolf.UITests
             Mouse.MoveScrollWheel(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable, -1);
         }
 
+        [When(@"I UnCheck Public View")]
         public void UnCheck_Public_View()
         {
             #region Variable Declarations
@@ -1837,6 +1875,7 @@ namespace Warewolf.UITests
             return property;
         }
 
+        
         public void Select_Service_From_Service_Picker(string serviceName, bool inSubFolder = false)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = serviceName;
@@ -1930,6 +1969,7 @@ namespace Warewolf.UITests
             Click_Save_Ribbon_Button_With_No_Save_Dialog(2000);
         }
 
+        [When(@"I Click Save Ribbon Button With No Save Dialog")]
         public void Click_Save_Ribbon_Button_With_No_Save_Dialog(int WaitForSave = 2000)
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
@@ -2576,6 +2616,7 @@ namespace Warewolf.UITests
             }
         }
 
+        
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1 on unpinned tab")]
         public void Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab(string VariableText, string ValueText, int RowNumber)
         {
@@ -3401,6 +3442,7 @@ namespace Warewolf.UITests
         }
 
         [Then("Dice Is Selected InSettings Tab Permissions Row 1")]
+        [When(@"I Assert Dice Is Selected InSettings Tab Permissions Row (.*)")]
         public void Assert_Dice_Is_Selected_InSettings_Tab_Permissions_Row_1()
         {
             Assert.AreEqual("Dice1", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
