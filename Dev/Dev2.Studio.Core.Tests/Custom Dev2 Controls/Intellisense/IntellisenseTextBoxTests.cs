@@ -538,6 +538,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Assert.IsNotNull(textBox.AllowMultipleVariables);
             Assert.IsNotNull(textBox.AllowMultilinePaste);
             Assert.IsNotNull(textBox.AllowUserCalculateMode);
+            Assert.AreEqual(25, textBox.Height);
             Assert.IsFalse(textBox.SelectAllOnGotFocus);
             Assert.IsTrue(textBox.IsUndoEnabled);
             Assert.IsFalse(textBox.HasError);
