@@ -130,6 +130,7 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tab();
             UIMap.Debug_Unpinned_Workflow_With_Ribbon_Button();
             UIMap.Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_Tab();
+            UIMap.TryPin_Unpinned_Pane_To_Default_Position();
         }
 
         [TestMethod]
@@ -146,6 +147,7 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab("[[" + Variable2Name + "]]", Variable2Value, 2);
             Assert.AreEqual(Variable2Name, UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 2.");
             UIMap.Remove_Assign_Row_1_With_Context_Menu_On_Unpinned_Tab();
+            UIMap.TryPin_Unpinned_Pane_To_Default_Position();
         }
 
         #region Additional test attributes
@@ -160,13 +162,6 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
         }
-
-        //[TestCleanup]
-        //public void MyTestCleanup()
-        //{
-        //    UIMap.Click_Close_Workflow_Tab_Button();
-        //    UIMap.Click_MessageBox_No();
-        //}
 
         UIMap UIMap
         {
