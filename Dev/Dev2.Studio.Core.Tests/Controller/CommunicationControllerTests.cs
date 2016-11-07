@@ -60,7 +60,11 @@ namespace Dev2.Core.Tests.Controller
             connection.Setup(environmentConnection => environmentConnection.IsConnected).Returns(true);
             var serializer = new Dev2JsonSerializer();
 
-            var message = new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.NotAuthorizedToCreateException);
+            var message = new ExecuteMessage
+            {
+                HasError = true,
+                Message = new StringBuilder(ErrorResource.NotAuthorizedToExecuteException)
+            };
 
             var serializeToBuilder = serializer.SerializeToBuilder(message);
             connection.Setup(environmentConnection => environmentConnection.ExecuteCommand(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID))
@@ -86,7 +90,11 @@ namespace Dev2.Core.Tests.Controller
             connection.Setup(environmentConnection => environmentConnection.IsConnected).Returns(true);
             var serializer = new Dev2JsonSerializer();
 
-            var message = new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.NotAuthorizedToCreateException);
+            var message = new ExecuteMessage
+            {
+                HasError = true,
+                Message = new StringBuilder(ErrorResource.NotAuthorizedToExecuteException)
+            };
 
             var serializeToBuilder = serializer.SerializeToBuilder(message);
             connection.Setup(environmentConnection => environmentConnection.ExecuteCommandAsync(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID))
