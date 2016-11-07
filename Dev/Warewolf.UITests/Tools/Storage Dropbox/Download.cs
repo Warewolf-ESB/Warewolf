@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Storage_Dropbox
     public class Download
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Dropbox Tools")]
         public void Click_Dropbox_Download_Large_View_Done_Button_With_Invalid_Large_View()
         {
             UIMap.Open_DropboxFileOperation_Large_View();
@@ -26,14 +26,7 @@ namespace Warewolf.UITests.Tools.Storage_Dropbox
             UIMap.Drag_Toolbox_Dropbox_Download_Onto_DesignSurface();
         }
 
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
-            UIMap UIMap
+        UIMap UIMap
         {
             get
             {

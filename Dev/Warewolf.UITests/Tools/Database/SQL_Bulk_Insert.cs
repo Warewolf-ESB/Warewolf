@@ -8,14 +8,14 @@ namespace Warewolf.UITests.Tools
     public class SQL_Bulk_Insert
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Database Tools")]
         public void SQLBulkInsertToolUITest()
         {
             UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();            
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Database Tools")]
         public void SqlBulkInsertTest_OpenLargeViewAndEnterAnInvalidBatchAndTimeoutSizeAndClickDone_CorrectingErrorsAndClickDoneWillReturnToSmallView_UITest()
         {
             UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();
@@ -28,7 +28,7 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Database Tools")]
         public void SQLBulkInsertTool_OpenQVIUITest()
         {
             UIMap.Open_SQL_Bulk_Insert_Tool_Qvi_Large_View();

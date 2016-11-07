@@ -32,14 +32,7 @@ namespace Warewolf.UITests
             UIMap.Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
-
-            UIMap UIMap
+        UIMap UIMap
         {
             get
             {

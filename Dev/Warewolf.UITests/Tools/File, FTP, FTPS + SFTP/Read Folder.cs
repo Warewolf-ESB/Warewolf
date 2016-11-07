@@ -8,7 +8,7 @@ namespace Warewolf.UITests.Tools
     public class Read_Folder
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("File Tools")]
         public void ReadFolderTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Read_Folder_Tool_Large_View();

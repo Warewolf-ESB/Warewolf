@@ -7,7 +7,7 @@ namespace Warewolf.UITests
     public class SortTest
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Recordset Tools")]
         public void Sort_OpenLargeViewUITest()
         {                        
             UIMap.Open_SortRecords_Large_View();
@@ -25,13 +25,8 @@ namespace Warewolf.UITests
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Sort_Record_Onto_DesignSurface();
         }
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
-            UIMap UIMap
+
+        UIMap UIMap
         {
             get
             {

@@ -1214,6 +1214,164 @@ namespace Dev2.Activities.Designers.Tests.Service
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
+        public void ServiceDesignerViewModel_WhenSourceIsTheSameAsCurrentLocation_ShouldNotSetFriendlySourceName()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+            environment.Setup(model => model.IsLocalHost).Returns(false);
+            environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
+
+            var errors = new ObservableReadOnlyList<IErrorInfo>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceName).Returns("TestResource");
+            resourceModel.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
+            resourceModel.Setup(m => m.Errors).Returns(errors);
+            resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(m => m.Environment).Returns(environment.Object);
+            resourceModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            resourceModel.Setup(m => m.HasErrors).Returns(() => false);
+            resourceModel.SetupProperty(m => m.IsValid);
+            resourceModel.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
+
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(resourceID);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
+
+
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = new InArgument<Guid>(Guid.Empty),
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
+                OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>",
+                FriendlySourceName = "www.youtube.com"
+
+            };
+            var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(model => model.Connection.WebServerUri).Returns(new Uri("https://www.youtube.com/watch?v=O_AC6ad7j9o"));
+            envRepository.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(envModel.Object);
+            var modelItem = CreateModelItem(activity);
+            var resRepo = new Mock<IResourceRepository>();
+            var srcRes = new Mock<IResourceModel>();
+            srcRes.Setup(a => a.DisplayName).Returns("bob");
+            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(srcRes.Object);
+
+            environment.Setup(a => a.ResourceRepository).Returns(resRepo.Object);
+            //------------Execute Test---------------------------
+            bool wasSet = false;
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            viewModel.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == "FriendlySourceName")
+                {
+                    wasSet = true;
+                }
+            };
+            //------------Assert Results-------------------------
+            Assert.AreEqual("www.youtube.com", viewModel.Properties.FirstOrDefault(a => a.Key == "Source :").Value);
+            Assert.IsFalse(wasSet);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
+        public void ServiceDesignerViewModel_WhenSourceIsNotTheSameAsCurrentLocation_ShouldSetFriendlySourceName()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+            environment.Setup(model => model.IsLocalHost).Returns(false);
+            environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
+
+            var errors = new ObservableReadOnlyList<IErrorInfo>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceName).Returns("TestResource");
+            resourceModel.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
+            resourceModel.Setup(m => m.Errors).Returns(errors);
+            resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(m => m.Environment).Returns(environment.Object);
+            resourceModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            resourceModel.Setup(m => m.HasErrors).Returns(() => false);
+            resourceModel.SetupProperty(m => m.IsValid);
+            resourceModel.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
+
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(resourceID);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
+
+
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = new InArgument<Guid>(Guid.Empty),
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
+                OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>",
+                FriendlySourceName = "www.Dev2.com"
+
+            };
+            var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(model => model.Connection.WebServerUri).Returns(new Uri("https://www.youtube.com/watch?v=O_AC6ad7j9o"));
+            envRepository.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(envModel.Object);
+            var modelItem = CreateModelItem(activity);
+            var resRepo = new Mock<IResourceRepository>();
+            var srcRes = new Mock<IResourceModel>();
+            srcRes.Setup(a => a.DisplayName).Returns("bob");
+            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(srcRes.Object);
+
+            environment.Setup(a => a.ResourceRepository).Returns(resRepo.Object);
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+           
+            //------------Assert Results-------------------------
+            Assert.AreEqual("www.youtube.com", viewModel.Properties.FirstOrDefault(a => a.Key == "Source :").Value);
+
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
         public void ServiceDesignerViewModel_WhenRemoteResource_ShouldSubscibeToResourcesLoaded()

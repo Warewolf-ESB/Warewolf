@@ -7,7 +7,7 @@ namespace Warewolf.UITests
     public class CountTest
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Recordset Tools")]
         public void Count_OpenLargeViewUITest()
         {            
             UIMap.Open_CountRecords_Large_View();            
