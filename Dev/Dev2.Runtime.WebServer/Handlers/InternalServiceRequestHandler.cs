@@ -116,14 +116,14 @@ namespace Dev2.Runtime.WebServer.Handlers
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
 
             var isManagementResource = false;
+            if (!string.IsNullOrEmpty(request.TestName))
+            {
+                dataObject.TestName = request.TestName;
+                dataObject.IsServiceTestExecution = true;
+            }
             if (resource != null)
             {
                 dataObject.ResourceID = resource.ResourceID;
-                if (!string.IsNullOrEmpty(request.TestName))
-                {
-                    dataObject.TestName = request.TestName;
-                    dataObject.IsServiceTestExecution = true;
-                }
                 isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
             }
 
