@@ -141,10 +141,12 @@ namespace Dev2.Activities.Designers2.Service
                 }
             }
             var environmentModel = environmentRepository.Get(EnvironmentID);
-            if(environmentModel?.Connection?.WebServerUri != null)
+            if (environmentModel?.Connection?.WebServerUri != null)
             {
                 var servUri = new Uri(environmentModel.Connection.WebServerUri.ToString());
-                FriendlySourceName = servUri.Host;
+                var host = servUri.Host;
+                if (!host.Equals(FriendlySourceName, StringComparison.InvariantCultureIgnoreCase))
+                    FriendlySourceName = host;
             }
 
             InitializeProperties();
@@ -170,7 +172,7 @@ namespace Dev2.Activities.Designers2.Service
         {
             if (item != null)
             {
-                var window = new JsonObjectsView {Height = 280};
+                var window = new JsonObjectsView { Height = 280 };
                 var contentPresenter = window.FindChild<TextBox>();
                 if (contentPresenter != null)
                 {
@@ -215,7 +217,7 @@ namespace Dev2.Activities.Designers2.Service
 
         private bool HasNoPermission()
         {
-            var hasNoPermission = ResourceModel!=null && ResourceModel.UserPermissions == Permissions.None;
+            var hasNoPermission = ResourceModel != null && ResourceModel.UserPermissions == Permissions.None;
             return hasNoPermission;
         }
 
@@ -377,19 +379,19 @@ namespace Dev2.Activities.Designers2.Service
         string ActionName => GetProperty<string>();
 
 
-        private string FriendlySourceName   
+        private string FriendlySourceName
         {
             get
             {
                 var friendlySourceName = GetProperty<string>();
-              
+
                 return friendlySourceName;
             }
             set
             {
                 SetProperty(value);
                 OnPropertyChanged("FriendlySourceName");
-                
+
             }
         }
 
@@ -487,7 +489,7 @@ namespace Dev2.Activities.Designers2.Service
             {
                 NewModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
 
-            }            
+            }
         }
 
         public IContextualResourceModel NewModel { get; set; }
@@ -505,7 +507,7 @@ namespace Dev2.Activities.Designers2.Service
                 ResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
 
             }
-            if(!CheckSourceMissing())
+            if (!CheckSourceMissing())
             {
                 return false;
             }
@@ -524,18 +526,18 @@ namespace Dev2.Activities.Designers2.Service
                     var xe = workflowXml?.Replace("&", "&amp;").ToXElement();
                     srcId = xe?.AttributeSafe("SourceID");
                 }
-                catch(XmlException xe)
+                catch (XmlException xe)
                 {
                     Dev2Logger.Error(xe);
                     srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
                 }
 
                 Guid sourceId;
-                if(Guid.TryParse(srcId, out sourceId))
+                if (Guid.TryParse(srcId, out sourceId))
                 {
                     SourceId = sourceId;
                     var sourceResource = _environment.ResourceRepository.LoadContextualResourceModel(sourceId);
-                    if(sourceResource == null)
+                    if (sourceResource == null)
                     {
                         ValidationMemoManager.UpdateLastValidationMemoWithSourceNotFoundError();
                         return false;
@@ -583,7 +585,7 @@ namespace Dev2.Activities.Designers2.Service
             switch (actionType)
             {
                 case Common.Interfaces.Core.DynamicServices.enActionType.Workflow:
-                    if(string.IsNullOrEmpty(ServiceUri))
+                    if (string.IsNullOrEmpty(ServiceUri))
                     {
                         ResourceType = "WorkflowService";
                         return "Workflow-32";
@@ -653,7 +655,7 @@ namespace Dev2.Activities.Designers2.Service
             GC.SuppressFinalize(this);
             base.OnDispose();
         }
-        
+
         void Dispose(bool disposing)
         {
             if (!_isDisposed)
