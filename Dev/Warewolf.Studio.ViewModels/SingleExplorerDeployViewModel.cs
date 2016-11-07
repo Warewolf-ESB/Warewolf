@@ -43,7 +43,7 @@ namespace Warewolf.Studio.ViewModels
         IList<IExplorerTreeItem> _newItems;
         string _errorMessage;
         string _deploySuccessMessage;
-        
+
         #region Implementation of IDeployViewModel
 
 
@@ -97,9 +97,20 @@ namespace Warewolf.Studio.ViewModels
                 _stats.Calculate(_source?.SourceLoadedItems?.ToList());
             }
             _stats.Calculate(_source?.SourceLoadedItems?.ToList());
-        }        
+        }
 
-        private bool CanSelectDependencies => Source.SelectedItems.Count > 0;
+        public bool CanSelectDependencies
+        {
+            get
+            {
+                var canSelectDependencies = Source.SelectedItems.Count > 0;
+                _canDeployTests = canSelectDependencies;
+                OnPropertyChanged(() => CanDeployTests);
+                return canSelectDependencies;
+            }
+        }
+        private bool _canDeployTests;
+        public bool CanDeployTests => _canDeployTests;
 
         public IList<IExplorerTreeItem> NewItems
         {
@@ -138,7 +149,7 @@ namespace Warewolf.Studio.ViewModels
             //    Destination.SelectedEnvironment.Children.AddRange(Source.SelectedEnvironment.Children.Where(a => a.IsResourceChecked == true));
             ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
             _stats.Calculate(Source?.SourceLoadedItems?.ToList());
-            OnPropertyChanged(() => CanDeploy);            
+            OnPropertyChanged(() => CanDeploy);
         }
 
         void ViewOverrides()
@@ -233,6 +244,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     canDeploy = true;
                 }
+
                 if (!canDeploy)
                 {
                     ViewOverrides();
@@ -241,12 +253,15 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var selectedItems = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
                     var explorerTreeItems = selectedItems as IExplorerTreeItem[] ?? selectedItems.ToArray();
-                  
+
                     var notfolders = explorerTreeItems.Select(a => a.ResourceId).ToList();
                     _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders, Destination.DeployTests);
                     DeploySuccessfull = true;
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
-                
+                    var showDeploySuccessful = PopupController.ShowDeploySuccessful(DeploySuccessMessage);
+                    if(showDeploySuccessful == MessageBoxResult.OK)
+                        DeploySuccessfull = false;
+
                     await Destination.RefreshSelectedEnvironment();
                     UpdateServerCompareChanged(this, Guid.Empty);
                     _stats.ReCalculate();
@@ -258,7 +273,7 @@ namespace Warewolf.Studio.ViewModels
                 ErrorMessage = "Deploy error. " + e.Message;
             }
             IsDeploying = false;
-            
+
         }
 
         void CheckResourceNameConflict()
@@ -282,7 +297,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-         void CheckVersionConflict()
+        void CheckVersionConflict()
         {
             Version sourceVersionNumber = Source.ServerVersion;
 
@@ -364,7 +379,7 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (IsDeploying)
-                    return false;                
+                    return false;
                 if (Source.SelectedEnvironment == null || !Source.SelectedEnvironment.IsConnected)
                 {
                     ErrorMessage = Resources.Languages.Core.DeploySourceNotConnected;
@@ -384,7 +399,7 @@ namespace Warewolf.Studio.ViewModels
 
                 if (Source.SelectedItems == null || Source.SelectedItems.Count <= 0)
                 {
-                    ErrorMessage = Resources.Languages.Core.DeploySourceDestinationAreSame;
+                    ErrorMessage = Resources.Languages.Core.DeployNoResourcesSelected;
                     return false;
                 }
 
@@ -600,7 +615,7 @@ namespace Warewolf.Studio.ViewModels
                 _errorMessage = value;
                 if (!String.IsNullOrEmpty(DeploySuccessMessage) && !String.IsNullOrEmpty(value))
                 {
-                    DeploySuccessMessage = String.Empty;
+                    DeploySuccessMessage = String.Empty;                    
                     DeploySuccessfull = false;
                 }
                 OnPropertyChanged(() => ErrorMessage);

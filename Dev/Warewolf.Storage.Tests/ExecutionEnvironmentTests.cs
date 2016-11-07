@@ -489,8 +489,15 @@ namespace Warewolf.Storage.Tests
         public void GivenEmptyStringAndName_ExecutionEnvironmentAssignWithFrame_ShouldReturn()
         {
             Assert.IsNotNull(_environment);
-            _environment.AssignWithFrame(new AssignValue(string.Empty, "Value"), 0);
             _environment.AssignWithFrame(new AssignValue(PersonNameExpression, "Value"), 0);
+            try
+            {
+                _environment.AssignWithFrame(new AssignValue(string.Empty, "Value"), 0);
+            }
+            catch(Exception e)
+            {
+                Assert.AreEqual("invalid variable assigned to ", e.Message);                
+            }            
         }
 
         [TestMethod]

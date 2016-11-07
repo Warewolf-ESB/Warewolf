@@ -12,6 +12,19 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {
             Uimap.Drag_Toolbox_Decision_Onto_DesignSurface();
             Uimap.Click_Decision_Dialog_Done_Button();
+            Uimap.Open_Decision_Large_View();
+            Uimap.Click_Decision_Dialog_Cancel_Button();
+        }
+
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void CopyDecisionsWithContextMenuAndPasteExpectedNoWizardsDisplayed_UITest()
+        {
+            Uimap.Drag_Toolbox_Decision_Onto_DesignSurface();
+            Assert.IsTrue(Uimap.DecisionOrSwitchDialog.Exists);
+            Uimap.Click_Decision_Dialog_Done_Button();
+            Uimap.CopyAndPaste_Decision_Tool_On_The_Designer();
+            Assert.IsFalse(Uimap.DecisionOrSwitchDialog.Exists);
         }
 
         #region Additional test attributes
@@ -25,6 +38,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
 #endif
             Uimap.InitializeABlankWorkflow();
         }
+        
 
         UIMap Uimap
         {

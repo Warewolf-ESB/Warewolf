@@ -7,10 +7,19 @@ namespace Warewolf.UITests.Tools.Utility
     public class Comment
     {
         [TestMethod]
-		[TestCategory("Tools")]
-        public void CommentToolUITest()
+        [TestCategory("Tools")]
+        public void CommentTool_OpenLargeViewUITest()
         {
-            Uimap.Drag_Toolbox_Comment_Onto_DesignSurface();
+            UIMap.Drag_Toolbox_Comment_Onto_DesignSurface();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void ToolDesigners_CommentSmallView_Debug_DebugOutputWorksFine_UITest()
+        {
+            UIMap.Drag_Toolbox_Comment_Onto_DesignSurface();
+            UIMap.Press_F6();
+            Assert.AreEqual("Comment", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CommentTreeItem.CommentButton.DisplayText);
         }
 
         #region Additional test attributes
@@ -18,27 +27,28 @@ namespace Warewolf.UITests.Tools.Utility
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();            
         }
 
-        UIMap Uimap
+
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

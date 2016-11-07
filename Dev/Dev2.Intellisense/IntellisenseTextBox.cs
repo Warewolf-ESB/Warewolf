@@ -50,6 +50,7 @@ namespace Dev2.UI
             ItemsSource = IntellisenseResults;
             _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
             DataObject.AddPastingHandler(this, OnPaste);
+            SetTextBoxHeight(Text);
         }
 
         void OnPaste(object sender, DataObjectPastingEventArgs dataObjectPastingEventArgs)
@@ -313,7 +314,7 @@ namespace Dev2.UI
             }
         }
 
-        void EnsureErrorStatus()
+        protected void EnsureErrorStatus()
         {
             var currentText = Text;
             if (string.IsNullOrEmpty(currentText)) return;
@@ -367,6 +368,7 @@ namespace Dev2.UI
         protected override void OnTextChanged(RoutedEventArgs e)
         {
             var text = Text ?? string.Empty;
+            SetTextBoxHeight(text);
             if (CheckHasUnicodeInText(text))
             {
                 return;
@@ -378,30 +380,127 @@ namespace Dev2.UI
             _desiredResultSet = string.IsNullOrEmpty(text) ? IntellisenseDesiredResultSet.EntireSet : IntellisenseDesiredResultSet.ClosestMatch;
         }
 
-
-        private void ValidateText(string text)
+        private void SetTextBoxHeight(string text)
         {
-            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
-            if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
+            if (string.IsNullOrEmpty(text))
             {
-                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset";
-                HasError = true;
-            }
-            else if (FilterType == enIntellisensePartType.ScalarsOnly && !error.Item1.IsScalarExpression)
-            {
-                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid scalar";
-                HasError = true;
-            }
-            else if (FilterType == enIntellisensePartType.RecordsetFields && !error.Item1.IsRecordSetExpression)
-            {
-                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
-                HasError = true;
+                Height = 25;
             }
             else
             {
-                ToolTip = error.Item2 != string.Empty ? error.Item2 : ToolTip ?? string.Empty;
-                HasError = error.Item2 != string.Empty;
+                Height = text.Contains("\r\n") ? double.NaN : 25;
             }
+        }
+
+        private void ValidateText(string text)
+        {
+            if (!HasError)
+            {
+                _originalToolTip = ToolTip;
+            }
+            if (FilterType == enIntellisensePartType.JsonObject)
+            {
+                var isValid = ValidateJsonInputs(text);
+                if(!isValid)
+                {
+                    HasError = true;
+                }
+                else
+                {
+                    ToolTip = _originalToolTip;
+                    HasError = false;
+                }
+            }
+            else
+            {
+                var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
+                if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
+                {
+                    ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset";
+                    HasError = true;
+                }
+                else if (FilterType == enIntellisensePartType.ScalarsOnly && !error.Item1.IsScalarExpression)
+                {
+                    ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid scalar";
+                    HasError = true;
+                }
+                else if (FilterType == enIntellisensePartType.RecordsetFields && !error.Item1.IsRecordSetExpression)
+                {
+                    ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
+                    HasError = true;
+                }               
+                else
+                {
+                    if (error.Item2 != string.Empty)
+                    {
+                        ToolTip = error.Item2;
+                        HasError = true;
+                    }
+                    else
+                    {
+                        ToolTip = _originalToolTip;
+                        HasError = false;
+                    }
+                }
+                if (FilterType != enIntellisensePartType.RecordsetsOnly)
+                {
+                    if (text.EndsWith(")") || text.EndsWith(")]]"))
+                    {
+                        HasError = true;
+                        ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
+                    }
+                    if (text.Contains("@"))
+                    {
+                        HasError = true;
+                        ToolTip = "Variable name " + text + " contains invalid character(s)";
+                    }
+                    if (text.Contains("."))
+                    {
+                        var replaceOpenBracket = text.Replace("[[", "");
+                        var replaceCloseBracket = replaceOpenBracket.Replace("]]", "");
+                        var fields = replaceCloseBracket.Split('.');
+                        foreach (var field in fields)
+                            if (!string.IsNullOrEmpty(field) && char.IsNumber(field[0]))
+                            {
+                                HasError = true;
+                                ToolTip = "Variable name " + field + " begins with a number";
+                            }
+                    }
+                }
+            }
+        }
+        private bool ValidateJsonInputs(string text)
+        {
+            bool isValid = false;
+            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
+            if(error == null)
+                isValid = true;
+            else
+            {
+                ToolTip = error.Item2;
+                if(text.Contains("@") && (text.IndexOf("@", StringComparison.Ordinal) == 2))
+                {
+                    if(char.IsNumber(text[3]))
+                        ToolTip = "Variable name " + text + " begins with a number";
+                    if(!char.IsNumber(text[3]) && !char.IsLetter(text[3]))
+                        ToolTip = "Variable name " + text + " contains invalid character(s)";
+                }
+                if(text.Contains('.'))
+                {
+                    var indexOfFullStop = text.IndexOf(".", StringComparison.Ordinal);
+                    if(indexOfFullStop + 1 >= text.Length)
+                        ToolTip = "Variable name " + text + " contains invalid character(s)";
+                    else
+                    {
+                        char charecterAfterFullStop = text[indexOfFullStop + 1];
+                        if(charecterAfterFullStop > text.Length && !char.IsLetter(charecterAfterFullStop))
+                            ToolTip = "Variable name " + text + " begins with a number";
+                    }
+                }
+            }
+            if (string.IsNullOrEmpty(ToolTip.ToString()))
+                return true;
+            return isValid;
         }
 
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
@@ -764,7 +863,6 @@ namespace Dev2.UI
 
         public static readonly DependencyProperty WrapInBracketsProperty = DependencyProperty.Register("WrapInBrackets", typeof(bool), typeof(IntellisenseTextBox), new UIPropertyMetadata(false));
 
-        public static readonly DependencyProperty ErrorToolTipTextProperty = DependencyProperty.Register("ErrorToolTip", typeof(string), typeof(IntellisenseTextBox), new UIPropertyMetadata(string.Empty, ErrorTextChanged));
         public bool WrapInBrackets
         {
             get
@@ -774,34 +872,6 @@ namespace Dev2.UI
             set
             {
                 SetValue(WrapInBracketsProperty, value);
-            }
-        }
-
-        public string ErrorToolTip
-        {
-            get
-            {
-                return (string)GetValue(ErrorToolTipTextProperty);
-            }
-            set
-            {
-                SetValue(ErrorToolTipTextProperty, value);
-            }
-        }
-
-        static void ErrorTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            var errorText = dependencyPropertyChangedEventArgs.NewValue as string;
-            if (string.IsNullOrEmpty(errorText))
-            {
-                return;
-            }
-
-            var box = dependencyObject as IntellisenseTextBox;
-            var toolTip = box?.ToolTip as ToolTip;
-            if (toolTip != null)
-            {
-                toolTip.Content = errorText;
             }
         }
 
@@ -822,6 +892,7 @@ namespace Dev2.UI
         private readonly ToolTip _toolTip;
         private List<IntellisenseProviderResult> _intellisenseResults;
         private IntellisenseDesiredResultSet _desiredResultSet;
+        private object _originalToolTip;
 
         [ExcludeFromCodeCoverage]
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
@@ -852,11 +923,6 @@ namespace Dev2.UI
 
         void ExecWrapBrackets()
         {
-            if (IsDropDownOpen && !IsKeyboardFocusWithin)
-            {
-               // CloseDropDown(true, false);
-            }
-
             if (WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
             {
                 Text = AddBracketsToExpression(Text);
@@ -867,7 +933,6 @@ namespace Dev2.UI
         public string AddBracketsToExpression(string expression)
         {
             string result = expression.Trim();
-
             if (!result.StartsWith("[["))
             {
                 result = string.Concat(!result.StartsWith("[") ? "[[" : "[", result);
@@ -876,7 +941,7 @@ namespace Dev2.UI
             if (!result.EndsWith("]]"))
             {
                 result = string.Concat(result, !expression.EndsWith("]") ? "]]" : "]");
-            }
+            }            
             if (FilterType == enIntellisensePartType.JsonObject && !result.Contains("@"))
             {
                 result = result.Insert(2, "@");

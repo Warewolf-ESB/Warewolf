@@ -862,24 +862,26 @@
 
                                 <TextBlock Grid.Column="0" Text="Error" FontWeight="Bold"/>
                                 <RadioButton x:Name="NoErrorRadioButton"
-											Grid.Column="1"
-											Padding="0,0,5,0" 
-											ToolTip="{x:Static languages:Core.ServiceTestNoErrorExpectedTooltip}" 
-											VerticalAlignment="Center" 
-											HorizontalAlignment="Left" 
-											IsChecked="{Binding SelectedServiceTest.NoErrorExpected, Mode=TwoWay}"
-											Content="No Error">
+                                             Grid.Column="1"
+                                             GroupName="NoError_Settings"
+                                             Padding="0,0,5,0" 
+                                             ToolTip="{x:Static languages:Core.ServiceTestNoErrorExpectedTooltip}" 
+                                             VerticalAlignment="Center" 
+                                             HorizontalAlignment="Left" 
+                                             IsChecked="{Binding SelectedServiceTest.NoErrorExpected, Mode=TwoWay}"
+                                             Content="No Error">
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestNoErrorExpectedHelpText}" DataContext="{Binding}" />
                                     </i:Interaction.Behaviors>
                                 </RadioButton>
                                 <RadioButton x:Name="ErrorRadioButton" 
-											Grid.Column="2"
-											ToolTip="{x:Static languages:Core.ServiceTestErrorExpectedTooltip}" 
-											VerticalAlignment="Center" 
-											HorizontalAlignment="Left" 
-											IsChecked="{Binding SelectedServiceTest.ErrorExpected, Mode=TwoWay}" 
-											Content="Error">
+                                             Grid.Column="2"
+                                             GroupName="Error_Settings"
+                                             ToolTip="{x:Static languages:Core.ServiceTestErrorExpectedTooltip}" 
+                                             VerticalAlignment="Center" 
+                                             HorizontalAlignment="Left" 
+                                             IsChecked="{Binding SelectedServiceTest.ErrorExpected, Mode=TwoWay}" 
+                                             Content="Error">
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestErrorExpectedHelpText}" DataContext="{Binding}" />
                                     </i:Interaction.Behaviors>

@@ -18,8 +18,13 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Interfaces;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Workspaces;
 using Infragistics;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
@@ -131,21 +136,21 @@ namespace Dev2.Studio.Dock
             {
                 pane.PreviewLostKeyboardFocus += pane_PreviewLostKeyboardFocus;
                 pane.PreviewGotKeyboardFocus += pane_PreviewLostKeyboardFocus;
-
+                pane.PreviewMouseDown+=PaneOnPreviewMouseDown;
                 // always hook the closed
                 pane.Closed += OnPaneClosed;
                 pane.Closing += OnPaneClosing;
 
                 //Juries attach to events when viewmodel is closed/deactivated to close view.
                 WorkSurfaceContextViewModel model = item as WorkSurfaceContextViewModel;
-                if(model != null)
+                if (model != null)
                 {
                     var vm = model;
                     vm.Deactivated += ViewModelDeactivated;
                 }
 
 
-                if(RemoveItemOnClose)
+                if (RemoveItemOnClose)
                 {
                     IEditableCollectionView cv = CollectionViewSource.GetDefaultView(ItemsSource) as IEditableCollectionView;
 
@@ -160,8 +165,50 @@ namespace Dev2.Studio.Dock
             }
         }
 
+        private void PaneOnPreviewMouseDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+            if (mvm?.ActiveItem != null)
+            {
+                var item = sender as ContentPane;
+                var workSurfaceContextViewModel = item?.DataContext as WorkSurfaceContextViewModel;
+                if (mvm.ActiveItem != workSurfaceContextViewModel)
+                {
+                    mvm.ActiveItem = workSurfaceContextViewModel;
+                }
+            }
+        }
+
         void pane_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
+            var contentPane = sender as ContentPane;
+
+            if (contentPane != null)
+            {
+                var tabGroupPane = contentPane.Parent as TabGroupPane;
+                var splitPane = tabGroupPane?.Parent as SplitPane;
+                var paneToolWindow = splitPane?.Parent as PaneToolWindow;
+                if (paneToolWindow != null)
+                {
+                    if (string.IsNullOrWhiteSpace(paneToolWindow.Title))
+                    {
+                        if (Application.Current != null)
+                        {
+                            if (Application.Current.MainWindow != null)
+                            {
+                                if (Application.Current.MainWindow.DataContext != null)
+                                {
+                                    var mainViewModel = Application.Current.MainWindow.DataContext as MainViewModel;
+                                    if (mainViewModel != null)
+                                    {
+                                        paneToolWindow.Title = mainViewModel.DisplayName;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void ViewModelDeactivated(object sender, DeactivationEventArgs e)
@@ -174,10 +221,13 @@ namespace Dev2.Studio.Dock
                     WorkSurfaceContextViewModel model = sender as WorkSurfaceContextViewModel;
                     if(model != null)
                     {
-                        var vm = model.WorkSurfaceViewModel;
                         var toRemove = container.Items.Cast<ContentPane>().ToList()
-                            .FirstOrDefault(p => p.Content != null && p.Content == vm);
-                        RemovePane(toRemove);
+                            .FirstOrDefault(p => p.Content != null && p.Content == model.WorkSurfaceViewModel);
+
+                        if (toRemove != null)
+                        {
+                            RemovePane(toRemove);
+                        }
                         if(toRemove != null &&
                             Application.Current != null &&
                             !Application.Current.Dispatcher.HasShutdownStarted)
@@ -524,26 +574,46 @@ namespace Dev2.Studio.Dock
         public void OnPaneClosing(object sender, PaneClosingEventArgs e)
         {
             ContentPane contentPane = sender as ContentPane;
-            if(contentPane != null)
+            if (contentPane != null)
             {
                 var pane = contentPane;
+
                 WorkSurfaceContextViewModel model = pane.DataContext as WorkSurfaceContextViewModel;
-                if(model != null)
+                if (model != null)
                 {
-                    var vm = model;
-                    vm.TryClose();
-                    var mainVm = vm.Parent as MainViewModel;
-                    if(mainVm != null)
+                    var workflowVm = model.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
+                    IContextualResourceModel resource = workflowVm?.ResourceModel;
+
+                    if (resource != null && !resource.IsWorkflowSaved)
                     {
-                        if(mainVm.CloseCurrent)
+                        CloseCurrent(e, model);
+                    }
+                    else
+                    {
+                        var sourceView = model.WorkSurfaceViewModel as IStudioTab;
+                        if (sourceView != null && sourceView.IsDirty)
                         {
-                            //vm.Dispose();
-                        }
-                        else
-                        {
-                            e.Cancel = true;
+                            CloseCurrent(e, model);
                         }
                     }
+                }
+            }
+        }
+
+        private static void CloseCurrent(PaneClosingEventArgs e, WorkSurfaceContextViewModel model)
+        {
+            var vm = model;
+            vm.TryClose();
+            var mainVm = vm.Parent as MainViewModel;
+            if(mainVm != null)
+            {
+                if(mainVm.CloseCurrent)
+                {
+                    //vm.Dispose();
+                }
+                else
+                {
+                    e.Cancel = true;
                 }
             }
         }
@@ -568,6 +638,9 @@ namespace Dev2.Studio.Dock
                 {
                     var dataItem = GetItemForContainer(pane);
                     cv.Remove(dataItem);
+                    var item = pane.Content as WorkflowDesignerViewModel;
+                    if (item?.ResourceModel != null)
+                        WorkspaceItemRepository.Instance.Remove(item.ResourceModel);
                 }
             }
         }
@@ -618,6 +691,7 @@ namespace Dev2.Studio.Dock
             {
                 cp.SetValue(closeProp, oldValue);
             }
+            cp.PreviewMouseDown -= PaneOnPreviewMouseDown;
         }
         #endregion //RemovePane
 

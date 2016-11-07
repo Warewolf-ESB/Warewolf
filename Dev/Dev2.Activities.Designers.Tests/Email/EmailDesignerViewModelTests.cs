@@ -1265,6 +1265,10 @@ namespace Dev2.Activities.Designers.Tests.Email
 
         static TestEmailDesignerViewModel CreateViewModel(List<EmailSource> sources, ModelItem modelItem, IEventAggregator eventPublisher, IResourceModel resourceModel)
         {
+            if (CustomContainer.Get<IShellViewModel>() == null)
+            {
+                CustomContainer.Register(new Mock<IShellViewModel>().Object);
+            }
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.ResourceRepository.FindSourcesByType<EmailSource>(It.IsAny<IEnvironmentModel>(), enSourceType.EmailSource))
                 .Returns(sources);

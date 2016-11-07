@@ -48,6 +48,6 @@ namespace Dev2.Common.Interfaces.Communication
         /// <typeparam name="T"></typeparam>
         /// <param name="message">The message.</param>
         /// <returns></returns>
-        T Deserialize<T>(StringBuilder message);
+        T Deserialize<T>(StringBuilder message) where T : class;
     }
 }

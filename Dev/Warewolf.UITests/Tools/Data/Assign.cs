@@ -3,68 +3,159 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools.Data
 {
-    /// <summary>
-    /// Summary description for WorkflowDesignSurface
-    /// </summary>
     [CodedUITest]
     public class Assign
     {
-        const string WorkflowName = "SomeWorkflow";
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void Assign_Tool_Small_View_UITest()
+        {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Exists, "Assign tool DataGrid does not exist on large view after dragging tool in from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 1 variable textbox does not exist on large view after dragging tool in from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 1 value textbox does not exist on large view after dragging tool in from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.VariableCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 2 variable textbox does not exist on large view after dragging tool in from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.ValueCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 2 value textbox does not exist on large view after dragging tool in from the toolbox.");
+        }
 
         [TestMethod]
-		[TestCategory("Tools")]
-        public void AssignToolUITest()
+        [TestCategory("Data Tools")]
+        public void Assign_Tool_Open_Large_View_With_Double_Click_UITest()
         {
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Uimap.Open_Assign_Tool_Large_View();
-            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            Uimap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
-            Uimap.Click_Assign_Tool_Large_View_Done_Button();
-            Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense();
-            Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();
-            Uimap.Click_Assign_Tool_ExpandAll();
-            Uimap.Assign_Value_To_Variable_With_Assign_Tool_large_View_Row_1();
-            Uimap.Click_Workflow_CollapseAll();
-            Uimap.Click_Assign_Tool_url();
-            Uimap.Open_Assign_Tool_Qvi_Large_View();
-            Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_DebugInput_Debug_Button();
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            Uimap.Click_Debug_Output_Assign_Cell();
-            Uimap.Click_Assign_Tool_ExpandAll();
-            Uimap.Click_Assign_Tool_Remove_Variable_From_Tool();
-            Uimap.RightClick_Assign_OnDesignSurface();
-            Uimap.Select_Delete_FromContextMenu();
-            Assert.IsFalse(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool still exists on design surface after deleting with context menu.");
+            UIMap.Open_Assign_Tool_Large_View();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Exists, "Assign tool DataGrid does not exist on large view after openning it by double clicking the small view on the design surface.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 1 variable textbox does not exist on large view after openning it by double clicking the small view on the design surface.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 1 value textbox does not exist on large view after openning it by double clicking the small view on the design surface.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.VariableCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 2 variable textbox does not exist on large view after openning it by double clicking the small view on the design surface.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.ValueCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 2 value textbox does not exist on large view after openning it by double clicking the small view on the design surface.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.OnErrorPane.Exists, "Assign tool OnError pane does not exist on large view after openning it by double clicking the small view on the design surface.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton.Exists, "Assign tool done button does not exist on large view after openning it by double clicking the small view on the design surface.");
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void Assign_Tool_Click_Done_Button_UITest()
+        {
+            UIMap.Open_Assign_Tool_Large_View();
+            UIMap.Click_Assign_Tool_Large_View_Done_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Exists, "Assign tool DataGrid does not exist on small view after clicking done button.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 1 variable textbox does not exist on small view after clicking done button.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 1 value textbox does not exist on small view after clicking done button.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.VariableCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 2 variable textbox does not exist on small view after clicking done button.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.ValueCell.IntellisenseCombobox.Textbox.Exists, "Assign tool Row 2 value textbox does not exist on small view after clicking done button.");
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void AssignToolOpenAndCloseLargeViewWithExpandAllToggleUITest()
+        {
+            UIMap.Click_Workflow_ExpandAll();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.Exists, "Assign tool large view does not exist after clicking expand all toggle button.");
+            UIMap.Click_Workflow_CollapseAll();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.Exists, "Assign tool small view does not exist after clicking collapse all toggle button.");
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void AssignDeleteToolUITest()
+        {
+            UIMap.Delete_Assign_With_Context_Menu();
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void AssignToolUrlUITest()
+        {
+            UIMap.Click_Assign_Tool_url();
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void ResizeAdornerMappings_Expected_AdornerMappingIsResized_UITest()
+        {
+            UIMap.Open_Assign_Tool_Large_View();
+            var heightBefore = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Height;
+            UIMap.Resize_Assign_LargeTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Height > heightBefore);            
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void QuickVariableInputFromListTest()
+        {
+            UIMap.Open_Assign_Tool_Qvi_Large_View();
+            UIMap.Enter_Text_Into_Assign_QviLarge_View();
+            UIMap.Click_Assign_Tool_QviLarge_Preview();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PrefixcontainsinvaliText.Exists);
+            UIMap.Click_PrefixContainsInvalidText_Hyperlink();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.PrefixEdit.HasFocus);
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void AssignTool_OpenQviUITest()
+        {
+            UIMap.Open_Assign_Tool_Qvi_Large_View();
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void AssignToolDebugOutputUITest()
+        {
+            UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
+            UIMap.Press_F6();            
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            UIMap.Click_Debug_Output_Assign_Cell();
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void AssignToolAddRemoveVariablesUITest()
+        {
+            const string Variable1Name = "SomeVariable";
+            const string Variable1Value = "50";
+            UIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable1Name + "]]", Variable1Value, 1);
+            Assert.AreEqual(Variable1Name, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
+            const string Variable2Name = "SomeOtherVariable";
+            const string Variable2Value = "100";
+            UIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable2Name + "]]", Variable2Value, 2);
+            Assert.AreEqual(Variable2Name, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 2.");
+            UIMap.Remove_Assign_Row_1_With_Context_Menu();
         }
 
         #region Additional test attributes
-        
+
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
         }
 
-        UIMap Uimap
+        //[TestCleanup]
+        //public void MyTestCleanup()
+        //{
+        //    UIMap.Click_Close_Workflow_Tab_Button();
+        //    UIMap.Click_MessageBox_No();
+        //}
+
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

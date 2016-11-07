@@ -1,10 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:fa="http://schemas.fontawesome.io/icons/"
-                    xmlns:ig="http://schemas.infragistics.com/xaml"
                     xmlns:igDock="http://infragistics.com/DockManager"
                     xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
-                    xmlns:igWinThemes="http://infragistics.com/Themes"
                     xmlns:igWindows="http://infragistics.com/Windows"
                     xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework"
                     xmlns:presentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
@@ -15,7 +13,7 @@
         <ResourceDictionary Source="../../Common/Styles.xaml" />
         <ResourceDictionary Source="../../Common/Brushes.xaml" />
         <ResourceDictionary Source="../../Elements/xamMenu.xaml" />
-
+        <ResourceDictionary Source="../../Elements/MenuBar/MenuBar.xaml" />
 
         <!--  IMAGES  -->
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Images/System-Pin.xaml" />
@@ -764,6 +762,7 @@
 
                         <Trigger Property="IsMouseOverTab" Value="true">
                             <Setter TargetName="closeBtn" Property="Foreground" Value="{StaticResource WareWolfOrangeBrush}" />
+                            <Setter TargetName="closeBtn" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="AllowClosing" Value="False">
                             <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
@@ -974,14 +973,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type igWindows:ToolWindow}">
-                    <Grid Background="White" SnapsToDevicePixels="true">
-                        <Border x:Name="windowOuterBorder"
-                                BorderBrush="White"
-                                BorderThickness="0" />
-                        <Border x:Name="windowInnerBorder"
-                                Margin="0"
-                                BorderBrush="{StaticResource MenuPanelGradient}"
-                                BorderThickness="1" />
+                    <Grid Background="{StaticResource WareWolfBackGroundBrush}" SnapsToDevicePixels="true">
                         <Border x:Name="windowCenterBorder"
                                 Margin="0"
                                 Background="{StaticResource WarewolfPanelGreyBrush}"
@@ -989,36 +981,35 @@
                                 BorderThickness="1">
                             <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition x:Name="captionRow" Height="28" />
+                                    <RowDefinition x:Name="captionRow" Height="25" />
                                     <RowDefinition x:Name="contentRow" Height="*" />
                                 </Grid.RowDefinitions>
                                 <!--  AS 6/24/11 FloatingWindowCaptionSource - Bind Visibility  -->
-                                <Border BorderBrush="{StaticResource MenuPanelGradient}" BorderThickness="0,0,0,1">
+                                <Border Height="25" BorderBrush="{StaticResource MenuPanelGradient}" BorderThickness="0,0,0,1">
                                     <igWindows:CardPanel x:Name="PART_Caption"
-                                                         Background="White"
+                                                         Background="{StaticResource WareWolfBackGroundBrush}"
                                                          Visibility="{TemplateBinding CaptionVisibility}">
-                                        <DockPanel x:Name="captionPanel" Margin="3,0">
+                                        <DockPanel x:Name="captionPanel">
                                             <Button x:Name="MaximizeButton"
-                                                    Width="20"
-                                                    Height="20"
-                                                    Margin="0,5,5,5"
+                                                    Width="25"
+                                                    Height="25"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
                                                     Command="{x:Static igWindows:ToolWindow.MaximizeCommand}"
                                                     DockPanel.Dock="Right"
-                                                    Style="{StaticResource MetroWindowButtonStyle}"
-                                                    Visibility="{TemplateBinding MaximizeButtonVisibility}">
-                                                <Path Width="10"
-                                                      Margin="0,0,0,0"
-                                                      Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
-                                                      Fill="Black"
-                                                      Stretch="Uniform" />
-                                            </Button>
+                                                    Style="{StaticResource PanToolWindowButtonStyle}"
+                                                    Visibility="{TemplateBinding MaximizeButtonVisibility}"/>
+                                            <Image Source="{StaticResource System-Logo}"
+                                                   Margin="5,0,0,0"
+                                                   Height="20"/>
                                             <TextBlock x:Name="txtCaption"
+                                                       Margin="5,0,0,0"
+                                                       FontSize="16"
                                                        Foreground="#FFAAAAAA"
                                                        IsHitTestVisible="False"
                                                        Text="{TemplateBinding Title}"
-                                                       TextTrimming="CharacterEllipsis" />
+                                                       TextTrimming="CharacterEllipsis" >
+                                            </TextBlock>
                                         </DockPanel>
                                     </igWindows:CardPanel>
                                 </Border>
@@ -1091,11 +1082,7 @@
                             <Setter TargetName="Content" Property="Margin" Value="0" />
                         </MultiTrigger>
                         <Trigger Property="IsActive" Value="True">
-                            <Setter TargetName="txtCaption" Property="Foreground" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCaptionTextFillKey}}" />
-                            <Setter TargetName="windowOuterBorder" Property="BorderBrush" Value="White" />
-                            <Setter TargetName="windowInnerBorder" Property="BorderBrush" Value="{StaticResource MenuPanelGradient}" />
                             <Setter TargetName="windowCenterBorder" Property="Background" Value="{StaticResource WarewolfPanelGreyBrush}" />
-                            <Setter TargetName="PART_Caption" Property="Background" Value="White" />
                         </Trigger>
                         <!--  Do not allow resizing unless canresize or canresizewithgrip  -->
                         <MultiTrigger>
@@ -1132,8 +1119,6 @@
                         <Trigger Property="IsUsingOSNonClientArea" Value="True">
                             <Setter TargetName="PART_Caption" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="Content" Property="Margin" Value="0,0,0,0" />
-                            <Setter TargetName="windowOuterBorder" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="windowInnerBorder" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="windowCenterBorder" Property="Background" Value="Transparent" />
                             <Setter TargetName="windowCenterBorder" Property="Padding" Value="0,0,0,0" />
                             <Setter TargetName="windowCenterBorder" Property="Margin" Value="0,0,0,0" />
@@ -1153,8 +1138,6 @@
                                 <Condition Property="WindowState" Value="Maximized" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="windowCenterBorder" Property="Margin" Value="0" />
-                            <Setter TargetName="windowInnerBorder" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="windowOuterBorder" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="Content" Property="Margin" Value="0" />
                         </MultiTrigger>
                         <!--  AS 1/4/12 TFS85418  -->

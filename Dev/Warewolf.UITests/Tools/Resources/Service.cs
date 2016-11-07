@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools
@@ -8,10 +9,52 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void ServiceToolUITest()
+        public void ResourcePickerTests_CodedUI_DropWorkflowFromToolbox_ExpectResourcePickerToBehaveCorrectly_UITest()
         {
-            Uimap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
-            Uimap.Click_Service_Picker_Dialog_Cancel();
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            UIMap.Select_FirstItem_From_ServicePicker_Tree();
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            UIMap.Filter_ServicePicker_Explorer("Hello World");
+            UIMap.Select_FirstItem_From_ServicePicker_Tree();
+            Assert.IsTrue(UIMap.ServicePickerDialog.OK.Enabled);
+            
+            //Cleanup
+            UIMap.Click_Service_Picker_Dialog_Cancel();
+            UIMap.Click_Close_Workflow_Tab_Button();
+        }
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void SelectResource_FromResourcePickerTestsAndClickCancel_UITest()
+        {
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            UIMap.Filter_ServicePicker_Explorer("Hello World");
+            UIMap.Select_FirstItem_From_ServicePicker_Tree();
+            UIMap.Click_Service_Picker_Dialog_Cancel();
+            Point newPoint;
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.TryGetClickablePoint(out newPoint));
+        }
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void SelectResource_FromResourcePickerTestsAndClickOK_UITest()
+        {
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            UIMap.Filter_ServicePicker_Explorer("Hello World");
+            UIMap.Select_FirstItem_From_ServicePicker_Tree();
+            UIMap.Click_Service_Picker_Dialog_OK();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists
+                , "Hello World work flow does not exist after selecting OK from Service Picker");
+        }
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void SelectResource_FromResourcePickerAndClickOK_ThenDeleteWorkFlowAndDragServiceAgain_UITest()
+        {
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            UIMap.Filter_ServicePicker_Explorer("Hello World");
+            UIMap.Select_FirstItem_From_ServicePicker_Tree();
+            UIMap.Click_Service_Picker_Dialog_OK();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists
+                , "Hello World work flow does not exist after selecting OK from Service Picker");
+            UIMap.Delete_HelloWorld_With_Context_Menu();
         }
 
         #region Additional test attributes
@@ -19,13 +62,20 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
         }
 
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -44,20 +94,20 @@ namespace Warewolf.UITests.Tools
 
         private TestContext testContextInstance;
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if ((_uiMap == null))
+                if ((_UIMap == null))
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

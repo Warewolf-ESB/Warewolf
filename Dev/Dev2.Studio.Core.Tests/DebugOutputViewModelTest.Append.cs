@@ -294,8 +294,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             viewModel.Append(content);
 
-            // Assert Nothing Appended
-            Assert.AreEqual(0, viewModel.RootItems.Count);
+            Assert.AreEqual(1, viewModel.RootItems.Count);
         }
 
         [TestMethod]

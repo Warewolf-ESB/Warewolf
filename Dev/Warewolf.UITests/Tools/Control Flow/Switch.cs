@@ -7,13 +7,13 @@ namespace Warewolf.UITests.Tools.Control_Flow
     public class Switch
     {
         [TestMethod]
-		[TestCategory("Tools")]
+        [TestCategory("Tools")]
         public void SwitchToolUITest()
         {
             Uimap.Drag_Toolbox_Switch_Onto_DesignSurface();
+            Assert.IsTrue(Uimap.DecisionOrSwitchDialog.DoneButton.Exists, "Switch dialog done button does not exist after dragging switch tool in from the toolbox.");
+            Assert.IsTrue(Uimap.DecisionOrSwitchDialog.CancelButton.Exists, "Switch dialog cancel button does not exist after dragging switch tool in from the toolbox.");
             Uimap.Click_Switch_Dialog_Done_Button();
-            Uimap.First_Drag_Toolbox_Comment_Onto_Switch_Left_Arm_On_DesignSurface();
-            Uimap.Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurface();
         }
 
         #region Additional test attributes

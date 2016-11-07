@@ -7,17 +7,38 @@ namespace Warewolf.UITests.Tools.Data
     public class Data_Merge
     {
         [TestMethod]
-		[TestCategory("Tools")]
+        [TestCategory("Data Tools")]
         public void DataMergeUITest()
         {
-            Uimap.Drag_Toolbox_Data_Merge_Onto_DesignSurface();
-            Uimap.Open_Data_Merge_Large_View();
-            //Uimap.Enter_Values_Into_Data_Merge_Tool_Large_View();
-            //Uimap.Click_Data_Merge_Tool_Large_View_Done_Button();
-            Uimap.Open_Data_Merge_Tool_Qvi_Large_View();
-            //Uimap.Click_Debug_Bibbon_Button();
-            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.DataMergeToolDebugOutputExists = true;
-            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row2.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void DataMergeTool_OpenLargeViewUITest()
+        {
+            UIMap.Open_Data_Merge_Large_View();
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void DataMergeTool_OpenQVIUITest()
+        {
+            UIMap.Open_Data_Merge_Tool_Qvi_Large_View();
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void DataMerge_ScrollingUITest()
+        {
+            UIMap.Open_Data_Merge_Large_View();
+            UIMap.Enter_Values_Into_Data_Merge_Tool_Large_View();
+            UIMap.Close_Data_Merge_LargeView();
+            UIMap.Scroll_Down_Then_Up_On_The_DataMerge_SmallView();
+            Assert.AreEqual("1", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row.UsingCell.Row1UsingDComboBox.TextEdit.Text);
+            Assert.AreEqual("2", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row2.UsingCell.Row2UsingComboBox.TextEdit.Text);
         }
 
         #region Additional test attributes
@@ -25,27 +46,35 @@ namespace Warewolf.UITests.Tools.Data
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Data_Merge_Onto_DesignSurface();
         }
 
-        UIMap Uimap
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
+
+            UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

@@ -69,7 +69,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             var controller = CommunicationControllerFactory.CreateController("DeleteItemService");
             controller.AddPayloadArgument("itemToDelete", id.ToString());
             var result = controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
-            if (result.Status != ExecStatus.Success)
+            if (result?.Status != ExecStatus.Success)
             {
                 throw new WarewolfSaveException(result.Message, null);
             }

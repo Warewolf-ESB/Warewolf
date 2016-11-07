@@ -55,9 +55,9 @@
       <HintPath>..\packages\AeroWizard.2.1.7\lib\net40\AeroWizard.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
+    <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="CubicOrange.Windows.Forms.ActiveDirectory, Version=2.5.2.0, Culture=neutral, PublicKeyToken=4d9365c354fd6f36, processorArchitecture=MSIL">
       <HintPath>..\packages\TaskSchedulerEditor.2.5.20\lib\net40\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
@@ -77,6 +77,19 @@
     </Reference>
     <Reference Include="HgCo.WindowsLive.SkyDriveServiceClient">
       <HintPath>..\Binaries\HgCo.WindowsLive.SkyDriveServiceClient.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataPresenter.CalculationAdapter.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.CalculationAdapter.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Math.Calculators.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Math.Calculators.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -138,6 +151,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="policy.2.3.FSharp.Core">
+      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.37.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
@@ -171,7 +187,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -206,7 +222,6 @@
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
     <Compile Include="Hosting\ExplorerItemFactoryTests.cs" />
-    <Compile Include="Hosting\ResourceDuplicateProviderTests.cs" />
     <Compile Include="Hosting\ResourceUpgraderTests.cs" />
     <Compile Include="Hosting\ResourceUpgradeTest.cs" />
     <Compile Include="Hosting\ServerExplorerRepositoryTests.cs" />
@@ -284,13 +299,16 @@
     <Compile Include="Services\ClearLogsTest.cs" />
     <Compile Include="Services\DeleteLogTests.cs" />
     <Compile Include="Services\FetchDebugItemFileTests.cs" />
-    <Compile Include="Services\FindLogDirectoryTests.cs" />
     <Compile Include="Services\GetDatabaseColumnsForTableTests.cs" />
     <Compile Include="Services\GetDatabaseTablesTests.cs" />
     <Compile Include="Services\GetVersionsTest.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
+    <None Include="..\Dev2.Server\app.config">
+      <Link>app.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="DynamicServicesHostTests.cs" />
     <Compile Include="Services\HostSecureConfigTests.cs" />
     <Compile Include="Services\MockServiceExecutionAbstract.cs" />
@@ -307,12 +325,10 @@
     <Compile Include="Services\SettingsReadTests.cs" />
     <Compile Include="Services\SettingsWriteTests.cs" />
     <Compile Include="Services\TerminateExecutionTest.cs" />
-    <Compile Include="Services\RenameResourceTests.cs" />
     <Compile Include="Services\AbstractServiceExecutionTests.cs" />
     <Compile Include="Services\PingTests.cs" />
     <Compile Include="Services\TestSettingsRead.cs" />
     <Compile Include="Services\SavePerformanceCountesTests.cs" />
-    <Compile Include="Services\FetchResourceDefinitionTests.cs" />
     <Compile Include="Util\FindResourceHelperTest.cs" />
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />
@@ -387,7 +403,7 @@
       <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
-      <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.WebServer\Dev2.Runtime.WebServer.csproj">
@@ -442,12 +458,6 @@
       <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Calculate_RecordSet_Subtract.xml" />

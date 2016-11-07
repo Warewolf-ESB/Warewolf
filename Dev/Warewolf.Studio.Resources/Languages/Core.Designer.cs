@@ -777,6 +777,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy the current resource Url.
+        /// </summary>
+        public static string CopyUrlToolTip {
+            get {
+                return ResourceManager.GetString("CopyUrlToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To Count the number of records/indexes in a recordset, put the recordset name in here. E.g. [[Customer()]]	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset()]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CountHelpRecordset {
@@ -1742,6 +1751,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F7].
+        /// </summary>
+        public static string DebugBrowserToolTip {
+            get {
+                return ResourceManager.GetString("DebugBrowserToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warewolf was unable to download the debug output values from the server.{0}Please ensure that the server is accessible..
         /// </summary>
         public static string DebugCouldNotGetDebugItemsError {
@@ -1774,6 +1792,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DebugCouldNotGetRemoteDebugItemsErrorHeader {
             get {
                 return ResourceManager.GetString("DebugCouldNotGetRemoteDebugItemsErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F5].
+        /// </summary>
+        public static string DebugInputsToolTip {
+            get {
+                return ResourceManager.GetString("DebugInputsToolTip", resourceCulture);
             }
         }
         
@@ -1850,6 +1877,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F6].
+        /// </summary>
+        public static string DebugStudioToolTip {
+            get {
+                return ResourceManager.GetString("DebugStudioToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run and debug your workflow service  [F5] or [F6] or [F7].
         /// </summary>
         public static string DebugToolTip {
@@ -1882,6 +1918,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DeleteConfirmation {
             get {
                 return ResourceManager.GetString("DeleteConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the folder and its resources.
+        /// </summary>
+        public static string DeleteFolderTooltip {
+            get {
+                return ResourceManager.GetString("DeleteFolderTooltip", resourceCulture);
             }
         }
         
@@ -1927,6 +1972,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DeleteHelpUsername {
             get {
                 return ResourceManager.GetString("DeleteHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the resource.
+        /// </summary>
+        public static string DeleteItemTooltip {
+            get {
+                return ResourceManager.GetString("DeleteItemTooltip", resourceCulture);
             }
         }
         
@@ -1992,6 +2046,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View which resources are dependant on the current resource.
+        /// </summary>
+        public static string DependenciesToolTip {
+            get {
+                return ResourceManager.GetString("DependenciesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deploy the selected Source files to the Destination Server..
         /// </summary>
         public static string DeployCommandHelp {
@@ -2046,7 +2109,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please rename either the source or destination before continueing.
+        ///   Looks up a localized string similar to Please rename either the source or destination before continuing.
         /// </summary>
         public static string DeployRenameBeforeContinue {
             get {
@@ -2073,7 +2136,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The following resources have the same path and name on the source and destination server but different Ids.
+        ///   Looks up a localized string similar to The following resources have the same path and name on the source and destination server but different IDs.
         /// </summary>
         public static string DeployResourcesSamePathAndName {
             get {
@@ -2114,6 +2177,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DeploySourceNotConnected {
             get {
                 return ResourceManager.GetString("DeploySourceNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move current resource between Warewolf servers.
+        /// </summary>
+        public static string DeployToolTip {
+            get {
+                return ResourceManager.GetString("DeployToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot execute this command on an unsaved workflow.
+        /// </summary>
+        public static string DisabledToolTip {
+            get {
+                return ResourceManager.GetString("DisabledToolTip", resourceCulture);
             }
         }
         
@@ -2360,6 +2441,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DuplicateCheckBoxTooltip {
             get {
                 return ResourceManager.GetString("DuplicateCheckBoxTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate the current resource.
+        /// </summary>
+        public static string DuplicateToolTip {
+            get {
+                return ResourceManager.GetString("DuplicateToolTip", resourceCulture);
             }
         }
         
@@ -5154,11 +5244,74 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new com plugin source.
+        /// </summary>
+        public static string NewComPluginSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewComPluginSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new Aatabase source.
+        /// </summary>
+        public static string NewDataBaseSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewDataBaseSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new dropbox source.
+        /// </summary>
+        public static string NewDropboxSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewDropboxSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new email source.
+        /// </summary>
+        public static string NewEmailSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewEmailSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new exchange source.
+        /// </summary>
+        public static string NewExchangeSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewExchangeSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Folder.
         /// </summary>
         public static string NewFolderLabel {
             get {
                 return ResourceManager.GetString("NewFolderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new folder.
+        /// </summary>
+        public static string NewFolderTooltip {
+            get {
+                return ResourceManager.GetString("NewFolderTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new plugin source.
+        /// </summary>
+        public static string NewPluginSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewPluginSourceTooltip", resourceCulture);
             }
         }
         
@@ -5172,11 +5325,74 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new rabbitmq source.
+        /// </summary>
+        public static string NewRabbitMqSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewRabbitMqSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Remote Server....
         /// </summary>
         public static string NewServerLabel {
             get {
                 return ResourceManager.GetString("NewServerLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new server source.
+        /// </summary>
+        public static string NewServerSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewServerSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new service [CTRL+W].
+        /// </summary>
+        public static string NewServiceTooltip {
+            get {
+                return ResourceManager.GetString("NewServiceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new sharepoint source.
+        /// </summary>
+        public static string NewSharepointSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewSharepointSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new web source.
+        /// </summary>
+        public static string NewWebSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewWebSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You do not have permissions to execute this command.
+        /// </summary>
+        public static string NoPermissionsToolTip {
+            get {
+                return ResourceManager.GetString("NoPermissionsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No data returned.   .
+        /// </summary>
+        public static string NoReturnedDataExecuteSuccess {
+            get {
+                return ResourceManager.GetString("NoReturnedDataExecuteSuccess", resourceCulture);
             }
         }
         
@@ -5195,6 +5411,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string OAuthSourceRedirectUri {
             get {
                 return ResourceManager.GetString("OAuthSourceRedirectUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open this version.
+        /// </summary>
+        public static string OpenVersionTooltip {
+            get {
+                return ResourceManager.GetString("OpenVersionTooltip", resourceCulture);
             }
         }
         
@@ -6051,6 +6276,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rename folder.
+        /// </summary>
+        public static string RenameFolderTooltip {
+            get {
+                return ResourceManager.GetString("RenameFolderTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.	To rename a file or folder, put the full path and file or folder name in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RenameHelpFileFolder {
@@ -6101,6 +6335,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RenameHelpUsername {
             get {
                 return ResourceManager.GetString("RenameHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename resource.
+        /// </summary>
+        public static string RenameItemTooltip {
+            get {
+                return ResourceManager.GetString("RenameItemTooltip", resourceCulture);
             }
         }
         
@@ -6262,11 +6505,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rool back to this version.
+        /// </summary>
+        public static string RollbackTooltip {
+            get {
+                return ResourceManager.GetString("RollbackTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ruby.
         /// </summary>
         public static string ruby_Tag {
             get {
                 return ResourceManager.GetString("ruby_Tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run all tests in browser for this resource.
+        /// </summary>
+        public static string RunAllTestsToolTip {
+            get {
+                return ResourceManager.GetString("RunAllTestsToolTip", resourceCulture);
             }
         }
         
@@ -6334,11 +6595,40 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Workflow requires that you have Execute permission on the &apos;{0}&apos; Workflow. 
+        ///Please contact your Warewolf System Administrator..
+        /// </summary>
+        public static string SchedulerExecutePermissionError {
+            get {
+                return ResourceManager.GetString("SchedulerExecutePermissionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The task name may not contain the following characters.
+        /// </summary>
+        public static string SchedulerInvalidCharactersError {
+            get {
+                return ResourceManager.GetString("SchedulerInvalidCharactersError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error while saving: Logon failure: unknown user name or bad password.
         /// </summary>
         public static string SchedulerLoginErrorMessage {
             get {
                 return ResourceManager.GetString("SchedulerLoginErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This task requires that the user account specified has &apos;Log On As Batch&apos; job rights. 
+        ///Please contact your Windows System Administrator..
+        /// </summary>
+        public static string SchedulerLogOnAsBatchError {
+            get {
+                return ResourceManager.GetString("SchedulerLogOnAsBatchError", resourceCulture);
             }
         }
         
@@ -6550,6 +6840,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save before continuing.
+        /// </summary>
+        public static string SchedulerUnsavedTaskHeader {
+            get {
+                return ResourceManager.GetString("SchedulerUnsavedTaskHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please save currently edited Task(s) before creating a new one..
+        /// </summary>
+        public static string SchedulerUnsavedTaskMessage {
+            get {
+                return ResourceManager.GetString("SchedulerUnsavedTaskMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule a service to run.
+        /// </summary>
+        public static string ScheduleToolTip {
+            get {
+                return ResourceManager.GetString("ScheduleToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your variables might contain values like &apos;\t&apos; or &apos;\n&apos; etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences..
         /// </summary>
         public static string ScriptingHelpEscapeScript {
@@ -6728,6 +7045,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server: {0} has disconnected..
+        /// </summary>
+        public static string ServerDisconnected {
+            get {
+                return ResourceManager.GetString("ServerDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnected Server.
+        /// </summary>
+        public static string ServerDisconnectedHeader {
+            get {
+                return ResourceManager.GetString("ServerDisconnectedHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server Name:.
         /// </summary>
         public static string ServerNameLabel {
@@ -6742,6 +7077,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServerProtocolHelp {
             get {
                 return ResourceManager.GetString("ServerProtocolHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please reconnect before performing any actions.
+        /// </summary>
+        public static string ServerReconnectForActions {
+            get {
+                return ResourceManager.GetString("ServerReconnectForActions", resourceCulture);
             }
         }
         
@@ -6850,6 +7194,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServerTestConnectionHelp {
             get {
                 return ResourceManager.GetString("ServerTestConnectionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View the version of this server.
+        /// </summary>
+        public static string ServerVersionTooltip {
+            get {
+                return ResourceManager.GetString("ServerVersionTooltip", resourceCulture);
             }
         }
         
@@ -8386,6 +8739,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show or hide the versions of this resource.
+        /// </summary>
+        public static string ShowHideVersionsTooltip {
+            get {
+                return ResourceManager.GetString("ShowHideVersionsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To Sort a recordset enter the field in the recordset you would like to sort on.	To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SortHelpSortField {
@@ -8754,6 +9116,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string TestConnectionLabel {
             get {
                 return ResourceManager.GetString("TestConnectionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View the current tests for this resource.
+        /// </summary>
+        public static string TestEditorToolTip {
+            get {
+                return ResourceManager.GetString("TestEditorToolTip", resourceCulture);
             }
         }
         
@@ -9334,7 +9705,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to object.
         /// </summary>
         public static string Tool_Utility_Create_JSON_Tags {
             get {
@@ -9415,7 +9786,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to xml.
         /// </summary>
         public static string Tool_Utility_Xpath_Tags {
             get {
@@ -9771,6 +10142,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ViewApisJsonTooltip.
+        /// </summary>
+        public static string ViewApisJsonTooltip {
+            get {
+                return ResourceManager.GetString("ViewApisJsonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View Results In Browser.
         /// </summary>
         public static string ViewInBrowserLabel {
@@ -9785,6 +10165,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ViewJsonObjectTooltip {
             get {
                 return ResourceManager.GetString("ViewJsonObjectTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Swagger source for the current resource.
+        /// </summary>
+        public static string ViewSwaggerToolTip {
+            get {
+                return ResourceManager.GetString("ViewSwaggerToolTip", resourceCulture);
             }
         }
         

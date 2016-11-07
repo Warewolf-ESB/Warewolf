@@ -11,9 +11,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Caliburn.Micro;
 using Dev2.Common.Interfaces;
-using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
@@ -26,19 +24,10 @@ namespace Dev2.Studio.Views.DataList
     /// </summary>
     public partial class DataListView : IView,ICheckControlEnabledView
     {
-        readonly IEventAggregator _eventPublisher;
 
         public DataListView()
-            : this(EventPublishers.Aggregator)
-        {
-        }
-
-        public DataListView(IEventAggregator eventPublisher)
         {
             InitializeComponent();
-
-            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _eventPublisher = eventPublisher;
             KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
         }
 
@@ -50,18 +39,12 @@ namespace Dev2.Studio.Views.DataList
             if(vm != null)
             {
                 TextBox txtbox = sender as TextBox;
-                if(txtbox != null)
+                IDataListItemModel itemThatChanged = txtbox?.DataContext as IDataListItemModel;
+                if (itemThatChanged != null)
                 {
-                    IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
-                    if (itemThatChanged != null)
-                    {
-                        itemThatChanged.IsExpanded = true;
-                    }
-                    if(itemThatChanged != null)
-                    {
-                        vm.AddBlankRow(itemThatChanged);
-                    }
+                    itemThatChanged.IsExpanded = true;
                 }
+                vm.AddBlankRow(null);
             }
         }
 
@@ -119,7 +102,7 @@ namespace Dev2.Studio.Views.DataList
             IDataListViewModel vm = DataContext as IDataListViewModel;
             if (vm != null && !vm.IsSorting)
             {
-                vm?.WriteToResourceModel();
+                vm.WriteToResourceModel();
             }
         }
 
@@ -150,10 +133,5 @@ namespace Dev2.Studio.Views.DataList
         }
 
         #endregion
-
-        private void DataListView_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            WriteToResourceModel();
-        }
     }
 }

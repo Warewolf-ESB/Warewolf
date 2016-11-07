@@ -124,21 +124,14 @@ namespace Dev2.Services.Security
         {
             LogStart();
             var handler = PermissionsChanged;
-            if(handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            handler?.Invoke(this, EventArgs.Empty);
             LogEnd();
         }
 
         protected virtual void RaisePermissionsModified(PermissionsModifiedEventArgs e)
         {
             LogStart();
-            var handler = PermissionsModified;
-            if(handler != null)
-            {
-                handler(this, e);
-            }
+            PermissionsModified?.Invoke(this, e);
             LogEnd();
         }
 

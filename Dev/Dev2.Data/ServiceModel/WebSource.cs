@@ -95,17 +95,17 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             var result = base.ToXml();
             var connectionString = string.Join(";",
-                string.Format("Address={0}", Address),
-                string.Format("DefaultQuery={0}", DefaultQuery),
-                string.Format("AuthenticationType={0}", AuthenticationType)
+                $"Address={Address}",
+                $"DefaultQuery={DefaultQuery}",
+                $"AuthenticationType={AuthenticationType}"
                 );
 
             if(AuthenticationType == AuthenticationType.User)
             {
                 connectionString = string.Join(";",
                     connectionString,
-                    string.Format("UserName={0}", UserName),
-                    string.Format("Password={0}", Password)
+                    $"UserName={UserName}",
+                    $"Password={Password}"
                     );
             }
 

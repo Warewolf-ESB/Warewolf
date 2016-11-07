@@ -1083,8 +1083,14 @@
   <data name="ServerconnectionDropped" xml:space="preserve">
     <value>Server connection has dropped during execution of command.</value>
   </data>
-  <data name="ServerDissconnected" xml:space="preserve">
+  <data name="ServerDisconnected" xml:space="preserve">
     <value>Server: {0} has disconnected.</value>
+  </data>
+  <data name="ServerDisconnectedHeader" xml:space="preserve">
+    <value>Disconnected Server</value>
+  </data>
+  <data name="ServerReconnectForActions" xml:space="preserve">
+    <value>Please reconnect before performing any actions</value>
   </data>
   <data name="ToServiceDefinitionDoesNotRupportResourcesOfTypeSource" xml:space="preserve">
     <value>ToServiceDefinition doesn't support resources of type source. Sources are meant to be managed through the Web API.</value>
@@ -1264,5 +1270,29 @@ Please contact your Windows System Administrator.</value>
   </data>
   <data name="InvalidMovePermissionErrorMessage" xml:space="preserve">
     <value>You do not have permission to move this item. Contribute permission is required to move an item.</value>
+  </data>
+  <data name="NotAuthorizedToAdministratorException" xml:space="preserve">
+    <value>Administrator rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToContributeException" xml:space="preserve">
+    <value>Contribute rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToCreateException" xml:space="preserve">
+    <value>Create rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToDeployFromException" xml:space="preserve">
+    <value>DeployFrom  rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToDeployToException" xml:space="preserve">
+    <value>DeployTo rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToExecuteException" xml:space="preserve">
+    <value>Execute rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToViewException" xml:space="preserve">
+    <value>View rights required to perfom this action.</value>
+  </data>
+  <data name="ServiceNotAuthorizedExceptionHeader" xml:space="preserve">
+    <value>Not Authorized</value>
   </data>
 </root>

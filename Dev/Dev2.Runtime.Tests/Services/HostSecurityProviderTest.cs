@@ -18,6 +18,8 @@ using Dev2.Runtime.Security;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable PossibleNullReferenceException
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -164,6 +166,7 @@ namespace Dev2.Tests.Runtime.Services
                 HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic));
             var provider = new HostSecurityProviderImpl(config.Object);
 
+            // ReSharper disable once PossibleNullReferenceException
             var originalID = Guid.Parse(TestXml.Attribute("ServerID").Value);
             var signedXml = provider.SignXml(new StringBuilder(TestXml.ToString()));
 

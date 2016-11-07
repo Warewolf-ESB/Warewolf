@@ -25,6 +25,7 @@ namespace Dev2.SignalR.Wrappers.New
         private HubConnectionWrapper(HubConnection wrapped)
         {
             _wrapped = wrapped;
+            _wrapped.DeadlockErrorTimeout = TimeSpan.FromSeconds(30);
         }
 
         public HubConnectionWrapper(string uriString)

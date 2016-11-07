@@ -31,8 +31,10 @@ using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.Dialogs;
 using Dev2.Interfaces;
+using Dev2.Providers.Events;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
@@ -40,6 +42,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Warewolf.Studio.AntiCorruptionLayer;
@@ -74,6 +77,7 @@ namespace Dev2.Settings.Scheduler
         private IScheduledResourceModel _scheduledResourceModel;
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
         private bool _errorShown;
+        private DebugOutputViewModel _debugOutputViewModel;
 
         // ReSharper disable once MemberCanBeProtected.Global
         public SchedulerViewModel()
@@ -86,7 +90,7 @@ namespace Dev2.Settings.Scheduler
         {
         }
 
-        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IEnvironmentModel> toEnvironmentModel,Task<IResourcePickerDialog> getResourcePicker = null)
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IEnvironmentModel> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker = null)
             : base(eventPublisher)
         {
             SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
@@ -110,11 +114,14 @@ namespace Dev2.Settings.Scheduler
             directoryObjectPicker1.ShowAdvancedView = false;
 
             InitializeHelp();
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
 
-           
             Server = server;
             SetupServer(server);
         }
+
+        public override bool HasVariables => false;
+        public override bool HasDebugOutput => true;
 
         public override string DisplayName
         {
@@ -365,11 +372,11 @@ namespace Dev2.Settings.Scheduler
                 if (ScheduledResourceModel != null && SelectedTask != null && _history == null && !SelectedTask.IsNewItem)
                 {
                     _asyncWorker.Start(() =>
-                   {
-                       IsHistoryTabVisible = false;
-                       IsProgressBarVisible = true;
-                       _history = ScheduledResourceModel.CreateHistory(SelectedTask).ToList();
-                   }
+                    {
+                        IsHistoryTabVisible = false;
+                        IsProgressBarVisible = true;
+                        _history = ScheduledResourceModel.CreateHistory(SelectedTask).ToList();
+                    }
                    , () =>
                    {
                        IsHistoryTabVisible = true;
@@ -397,14 +404,26 @@ namespace Dev2.Settings.Scheduler
                     return;
                 }
                 _selectedHistory = value;
-                EventPublisher.Publish(new DebugOutputMessage(value.DebugOutput));
+                DebugOutputViewModel.Clear();
+                if (value.DebugOutput != null)
+                {
+                    foreach (var debugState in value.DebugOutput)
+                    {
+                        if (debugState != null)
+                        {
+                            debugState.StateType = StateType.Clear;
+                            debugState.SessionID = DebugOutputViewModel.SessionID;
+                            DebugOutputViewModel.Append(debugState);
+                        }
+                    }
+                }
                 NotifyOfPropertyChange(() => SelectedHistory);
             }
         }
 
         public ObservableCollection<IScheduledResource> TaskList => ScheduledResourceModel != null ? ScheduledResourceModel.ScheduledResources : new ObservableCollection<IScheduledResource>();
 
-        public string TriggerText => SelectedTask != null ? SelectedTask.Trigger.Trigger.Instance.ToString() : string.Empty;
+        public string TriggerText => SelectedTask?.Trigger.Trigger.Instance.ToString() ?? string.Empty;
 
         public IScheduledResource SelectedTask
         {
@@ -618,7 +637,7 @@ namespace Dev2.Settings.Scheduler
                        (_deleteCommand = new DelegateCommand(param =>
                        {
                            var taskToBeDeleted = param as IScheduledResource;
-                           if(taskToBeDeleted == null) return;
+                           if (taskToBeDeleted == null) return;
                            SelectedTask = taskToBeDeleted;
                            SchedulerTaskManager.DeleteTask();
                        }));
@@ -649,8 +668,6 @@ namespace Dev2.Settings.Scheduler
 
             return toggle;
         }
-
-        
 
         void SetupServer(IServer tmpEnv)
         {
@@ -776,7 +793,7 @@ namespace Dev2.Settings.Scheduler
                 if (SelectedTask != null && SelectedTask.IsDirty)
                 {
                     MessageBoxResult showSchedulerCloseConfirmation = _popupController.ShowSchedulerCloseConfirmation();
-                    switch(showSchedulerCloseConfirmation)
+                    switch (showSchedulerCloseConfirmation)
                     {
                         case MessageBoxResult.Cancel:
                         case MessageBoxResult.None:
@@ -795,7 +812,7 @@ namespace Dev2.Settings.Scheduler
         protected internal virtual void ShowSaveErrorDialog(string error)
         {
             _popupController.ShowSaveErrorDialog(error);
-        }       
+        }
 
         public string HelpText
         {
@@ -822,6 +839,21 @@ namespace Dev2.Settings.Scheduler
             {
                 return _popupController;
             }
+        }
+
+        public DebugOutputViewModel DebugOutputViewModel
+        {
+            get { return _debugOutputViewModel; }
+            set
+            {
+                _debugOutputViewModel = value;
+                NotifyOfPropertyChange(() => DebugOutputViewModel);
+            }
+        }
+
+        public void UpdateScheduleWithResourceDetails(string resourcePath, Guid id, string resourceName)
+        {
+            SchedulerTaskManager.UpdateScheduleWithResourceDetails(resourcePath, id, resourceName);
         }
     }
 

@@ -2248,6 +2248,69 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrator rights required to perfom this action..
+        /// </summary>
+        public static string NotAuthorizedToAdministratorException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToAdministratorException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contribute rights required to perfom this action..
+        /// </summary>
+        public static string NotAuthorizedToContributeException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToContributeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create rights required to perfom this action..
+        /// </summary>
+        public static string NotAuthorizedToCreateException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToCreateException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeployFrom  rights required to perfom this action..
+        /// </summary>
+        public static string NotAuthorizedToDeployFromException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToDeployFromException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeployTo rights required to perfom this action..
+        /// </summary>
+        public static string NotAuthorizedToDeployToException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToDeployToException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute rights required to perfom this action..
+        /// </summary>
+        public static string NotAuthorizedToExecuteException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToExecuteException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View rights required to perfom this action..
+        /// </summary>
+        public static string NotAuthorizedToViewException {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToViewException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no text for object &apos;{0}&apos;..
         /// </summary>
         public static string NoTextForObject {
@@ -2954,9 +3017,18 @@ namespace Warewolf.Resource.Errors {
         /// <summary>
         ///   Looks up a localized string similar to Server: {0} has disconnected..
         /// </summary>
-        public static string ServerDissconnected {
+        public static string ServerDisconnected {
             get {
-                return ResourceManager.GetString("ServerDissconnected", resourceCulture);
+                return ResourceManager.GetString("ServerDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnected Server.
+        /// </summary>
+        public static string ServerDisconnectedHeader {
+            get {
+                return ResourceManager.GetString("ServerDisconnectedHeader", resourceCulture);
             }
         }
         
@@ -2966,6 +3038,15 @@ namespace Warewolf.Resource.Errors {
         public static string ServerInputPathEmpty {
             get {
                 return ResourceManager.GetString("ServerInputPathEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please reconnect before performing any actions.
+        /// </summary>
+        public static string ServerReconnectForActions {
+            get {
+                return ResourceManager.GetString("ServerReconnectForActions", resourceCulture);
             }
         }
         
@@ -3011,6 +3092,15 @@ namespace Warewolf.Resource.Errors {
         public static string ServiceIsNull {
             get {
                 return ResourceManager.GetString("ServiceIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Authorized.
+        /// </summary>
+        public static string ServiceNotAuthorizedExceptionHeader {
+            get {
+                return ResourceManager.GetString("ServiceNotAuthorizedExceptionHeader", resourceCulture);
             }
         }
         

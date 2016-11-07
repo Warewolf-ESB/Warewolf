@@ -32,7 +32,6 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
-using Warewolf.Resource.Errors;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -189,10 +188,6 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             Errors.Clear();
 
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-            if (!OutputsRegion.IsEnabled)
-            {
-                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = string.Format(ErrorResource.ValidateBeforeMinimising, "Database get")} };
-            }
             if (SourceRegion.Errors.Count > 0)
             {
                 foreach (var designValidationError in SourceRegion.Errors)
@@ -239,7 +234,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 {
                     _worstDesignError = value;
                     IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
-                    WorstError = value == null ? ErrorType.None : value.ErrorType;
+                    WorstError = value?.ErrorType ?? ErrorType.None;
                 }
             }
         }
@@ -329,10 +324,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion
@@ -344,12 +336,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.SqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.SqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
                 ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
-                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error },()=>{})).ToList();
+                    var errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
                     UpdateDesignValidationErrors(errorInfos);
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };

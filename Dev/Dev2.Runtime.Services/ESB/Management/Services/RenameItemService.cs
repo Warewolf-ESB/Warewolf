@@ -21,6 +21,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Explorer;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -28,6 +29,27 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class RenameItemService : IEsbManagementEndpoint
     {
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            StringBuilder tmp;
+            requestArgs.TryGetValue("itemToRename", out tmp);
+            if (tmp != null)
+            {
+                Guid resourceId;
+                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                {
+                    return resourceId;
+                }
+            }
+
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
         private IExplorerServerResourceRepository _serverExplorerRepository;
 
         public string HandlesType()
@@ -43,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 if(values == null)
                 {
-                    throw new ArgumentNullException("values");
+                    throw new ArgumentNullException(nameof(values));
                 }
                 StringBuilder itemToBeRenamed;
                 StringBuilder newName;
@@ -63,7 +85,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (itemToBeRenamed != null)
                 {
                     explorerItem = ServerExplorerRepo.Find(Guid.Parse(itemToBeRenamed.ToString()));
-                    Dev2Logger.Info(String.Format("Rename Item. Path:{0} NewPath:{1}", explorerItem.ResourcePath, newName));
+                    if (explorerItem == null)
+                    {
+                        throw new ArgumentException(string.Format(ErrorResource.FailedToFindResource, "newName"));
+                    }
+                    Dev2Logger.Info($"Rename Item. Path:{explorerItem.ResourcePath} NewPath:{newName}");
                     item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
                 }
                 else if (folderToBeRenamed != null)
@@ -75,6 +101,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     };
                     item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
+                    
                 }
             }
             catch(Exception e)

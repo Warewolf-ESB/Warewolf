@@ -116,13 +116,10 @@ namespace Warewolf.Storage
         {
             try
             {
-                if (string.IsNullOrEmpty(values.Name))
-                {
-                    return;
-                }
 
                 var envTemp = PublicFunctions.EvalAssignWithFrame(values, update, _env);
                 _env = envTemp;
+                
             }
             catch (Exception err)
             {

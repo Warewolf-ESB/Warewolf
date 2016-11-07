@@ -24,6 +24,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
@@ -31,6 +32,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
+using Dev2.Threading;
 using Infragistics.Windows.DockManager;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Core;
@@ -191,7 +193,7 @@ namespace Dev2.Studio
         }
 
         private void ShowSplash()
-        {
+        {            
             // Create the window 
             var server = new Warewolf.Studio.AntiCorruptionLayer.Server(EnvironmentRepository.Instance.Source);
             server.Connect();
@@ -207,6 +209,7 @@ namespace Dev2.Studio
             CustomContainer.Register<IHelpWindowViewModel>(helpViewModel);
             CustomContainer.Register<IEventAggregator>(new EventAggregator());
             CustomContainer.Register<IPopupController>(new PopupController());
+            CustomContainer.Register<IAsyncWorker>(new AsyncWorker());
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
             //CustomContainer.RegisterInstancePerRequestType<ICreateDuplicateResourceView>(() => new CreateDuplicateResourceDialog());
             
@@ -222,7 +225,7 @@ namespace Dev2.Studio
             // Now that the window is created, allow the rest of the startup to run 
             _resetSplashCreated?.Set();
             splashViewModel.ShowServerVersion();
-            Dispatcher.Run();
+            Dispatcher.Run();           
         }
 
         protected override void OnExit(ExitEventArgs e)

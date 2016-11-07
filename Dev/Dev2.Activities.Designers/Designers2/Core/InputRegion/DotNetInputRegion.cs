@@ -25,13 +25,16 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         bool _isEnabled;
         private IList<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
+        private readonly IActionInputDatatalistMapper _datatalistMapper;
 
+        // ReSharper disable once UnusedMember.Global
         public DotNetInputRegion()
         {
             ToolRegionName = "DotNetInputRegion";
         }
 
         public DotNetInputRegion(ModelItem modelItem, IActionToolRegion<IPluginAction> action)
+            : this(new ActionInputDatatalistMapper())
         {
             ToolRegionName = "DotNetInputRegion";
             _modelItem = modelItem;
@@ -41,7 +44,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             Inputs = new List<IServiceInput>(inputsFromModel ?? new List<IServiceInput>());
             if (inputsFromModel == null)
                 UpdateOnActionSelection();
-            IsEnabled = action != null && action.SelectedAction != null;
+            IsEnabled = action?.SelectedAction != null;
+        }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        public DotNetInputRegion(IActionInputDatatalistMapper datatalistMapper)
+        {
+            _datatalistMapper = datatalistMapper;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -68,20 +77,18 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void CallErrorsEventHandler()
         {
-            if (ErrorsHandler != null)
-            {
-                ErrorsHandler(this, new List<string>(Errors));
-            }
+            ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
         private void UpdateOnActionSelection()
         {
             Inputs = new List<IServiceInput>();
             IsEnabled = false;
-            if (_action != null && _action.SelectedAction != null)
+            if (_action?.SelectedAction != null)
             {
 
                 Inputs = _action.SelectedAction.Inputs;
+                _datatalistMapper.MapInputsToDatalist(Inputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
             }
@@ -172,10 +179,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #region Implementation of IDotNetInputRegion

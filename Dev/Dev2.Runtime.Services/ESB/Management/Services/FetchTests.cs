@@ -9,7 +9,10 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
+// ReSharper disable MemberCanBeInternal
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -19,6 +22,29 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchTests : IEsbManagementEndpoint
     {
+
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            StringBuilder tmp;
+            requestArgs.TryGetValue("resourceID", out tmp);
+            if (tmp != null)
+            {
+                Guid resourceId;
+                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                {
+                    return resourceId;
+                }
+            }
+
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
+
         private ITestCatalog _testCatalog;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -39,7 +65,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-
                 var tests = TestCatalog.Fetch(resourceId);
                 CompressedExecuteMessage message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(tests));

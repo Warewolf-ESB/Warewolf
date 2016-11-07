@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -107,14 +108,11 @@ namespace Dev2.Common
         {
             var h = (Hierarchy)LogManager.GetRepository();
             var rootLogger = h.Root;
-            
-            if(rootLogger != null)
+
+            var appender = rootLogger?.GetAppender("EventLogLogger") as EventLogAppender;
+            if(appender != null && appender.Threshold != null)
             {
-                var appender = rootLogger.GetAppender("EventLogLogger") as EventLogAppender;
-                if(appender != null)
-                {
-                    return appender.Threshold.DisplayName;
-                }
+                return appender.Threshold.DisplayName;
             }
             return "";
         }
@@ -132,6 +130,7 @@ namespace Dev2.Common
             return 0;
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile,string applicationNameForEventLog)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
@@ -141,6 +140,7 @@ namespace Dev2.Common
                 var appenderElements = log4netElement.Elements("appender");
                 var appenders = appenderElements as IList<XElement> ?? appenderElements.ToList();
                 UpdateFileSizeForFileLogAppender(maxLogSize, appenders);
+                // ReSharper disable once PossibleNullReferenceException
                 var eventAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.EventLogAppender");
                 var rootElement = log4netElement.Element("root");
                 if(eventAppender == null)
@@ -153,6 +153,7 @@ namespace Dev2.Common
             }
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public static void AddEventLogging(string settingsConfigFile,string applicationNameForEventLog)
         {
              var settingsDocument = XDocument.Load(settingsConfigFile);
@@ -161,9 +162,11 @@ namespace Dev2.Common
             {
                 var appenderElements = log4netElement.Elements("appender");
                 var appenders = appenderElements as IList<XElement> ?? appenderElements.ToList();
+                // ReSharper disable once PossibleNullReferenceException
                 var eventAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.EventLogAppender");
                 if (eventAppender == null)
                 {
+                    // ReSharper disable once PossibleNullReferenceException
                     var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
                     ConfigureEventLoggerAppender(applicationNameForEventLog,"ERROR", fileAppender);
                     var rootElement = log4netElement.Element("root");
@@ -174,20 +177,16 @@ namespace Dev2.Common
         }
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private static void UpdateFileSizeForFileLogAppender(string maxLogSize, IList<XElement> appenders)
         {
+            // ReSharper disable once PossibleNullReferenceException
             var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
-            if(fileAppender != null)
+            var maxFileSizeElement = fileAppender?.Element("maximumFileSize");
+            var maxFileSizeElementValueAttrib = maxFileSizeElement?.Attribute("value");
+            if(maxFileSizeElementValueAttrib != null)
             {
-                var maxFileSizeElement = fileAppender.Element("maximumFileSize");
-                if(maxFileSizeElement != null)
-                {
-                    var maxFileSizeElementValueAttrib = maxFileSizeElement.Attribute("value");
-                    if(maxFileSizeElementValueAttrib != null)
-                    {
-                        maxFileSizeElementValueAttrib.Value = maxLogSize + "MB";
-                    }
-                }
+                maxFileSizeElementValueAttrib.Value = maxLogSize + "MB";
             }
         }
 

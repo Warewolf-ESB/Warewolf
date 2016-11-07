@@ -41,7 +41,6 @@ using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Workspaces;
@@ -403,26 +402,6 @@ namespace Dev2.Core.Tests
                     .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
             MainViewModel.DeactivateItem(activetx, false);
             MockWorkspaceRepo.Verify(c => c.Remove(FirstResource.Object), Times.Never());
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("MainViewModel_ChangeActiveItem")]
-        public void MainViewModel_ChangeActiveItem_WhenHasContextWithNoDataListViewModel_ClearsCollectionsOnNewItem()
-        {
-            //------------Setup for test--------------------------
-            string errorString;
-            CreateFullExportsAndVm();
-            FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
-            var firstCtx = MainViewModel.WorksurfaceContextManager.FindWorkSurfaceContextViewModel(FirstResource.Object);
-            var mockDataListViewModel = new Mock<IDataListViewModel>();
-            firstCtx.DataListViewModel = mockDataListViewModel.Object;
-            MainViewModel.ActiveItem = MainViewModel.Items.FirstOrDefault(c => c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
-            //------------Execute Test---------------------------
-            MainViewModel.ActivateItem(firstCtx);
-            //------------Assert Results-------------------------
-            mockDataListViewModel.Verify(model => model.ClearCollections(), Times.Once());
-            mockDataListViewModel.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
         }
 
         [TestMethod]

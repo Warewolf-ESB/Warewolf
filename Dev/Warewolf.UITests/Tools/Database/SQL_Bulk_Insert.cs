@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools
@@ -10,9 +11,27 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Tools")]
         public void SQLBulkInsertToolUITest()
         {
-            Uimap.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface();
-            Uimap.Open_SQL_Bulk_Insert_Tool_Large_View();
-            Uimap.Open_SQL_Bulk_Insert_Tool_Qvi_Large_View();
+            UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();            
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void SqlBulkInsertTest_OpenLargeViewAndEnterAnInvalidBatchAndTimeoutSizeAndClickDone_CorrectingErrorsAndClickDoneWillReturnToSmallView_UITest()
+        {
+            UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();
+            UIMap.Click_SqlBulkInsert_Done_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Errors.Exists);
+            UIMap.Select_DatabaseAndTable_From_BulkInsert_Tool();
+            Point newPoint;
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem2.TryGetClickablePoint(out newPoint));
+            UIMap.Click_SqlBulkInsert_Done_Button();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void SQLBulkInsertTool_OpenQVIUITest()
+        {
+            UIMap.Open_SQL_Bulk_Insert_Tool_Qvi_Large_View();
         }
 
         #region Additional test attributes
@@ -20,61 +39,29 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface();
         }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
+        
+        UIMap UIMap
         {
             get
             {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
-
-        UIMap Uimap
-        {
-            get
-            {
-                if ((_uiMap == null))
+                if ((_UIMap == null))
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
-
-        public UIMap UIMap
-        {
-            get
-            {
-                if ((this.map == null))
-                {
-                    this.map = new UIMap();
-                }
-
-                return this.map;
-            }
-        }
-
-        private UIMap map;
     }
 }

@@ -68,8 +68,8 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowNotConnected()
         {
             Buttons = MessageBoxButton.OK;
-            Header = "Server is not connected";
-            Description = "You can not change the settings for a server that is offline.";
+            Header = "Server Unreachable";
+            Description = "You can not change the settings for a server that is unreachable.";
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -126,8 +126,8 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowServerNotConnected(string server)
         {
             Buttons = MessageBoxButton.OK;
-            Header = "Server is not connected";
-            Description = "The server " + server + " is unreachable and will be removed from your explorer tab. Please reconnect to save any unsaved work.";
+            Header = "Server Unreachable";
+            Description = "The server " + server + " is unreachable. \n \nPlease make sure the Warewolf Server service is running on that machine.";
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -164,7 +164,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowCorruptTaskResult(string errorMessage)
         {
             Buttons = MessageBoxButton.OK;
-            Header = "Scheduler load error";
+            Header = "Scheduler Load Error";
             Description = "Unable to retrieve tasks." + Environment.NewLine +
                           "ERROR: " + errorMessage + ". " + Environment.NewLine +
                           "Please check that there a no corrupt files." + Environment.NewLine +
@@ -180,7 +180,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowNameChangedConflict(string oldName, string newName)
         {
             Buttons = MessageBoxButton.YesNoCancel;
-            Header = "Rename conflict";
+            Header = "Rename Conflicts";
             Description = "The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task." + Environment.NewLine +
                           " Would you like to save the new name?" + Environment.NewLine +
                           "-----------------------------------------------------------------" +
@@ -200,7 +200,7 @@ namespace Dev2.Studio.Controller
         {
             string correctDesc = String.Empty;
             Buttons = MessageBoxButton.OKCancel;
-            Header = "Deploy conflicts";
+            Header = "Deploy Conflicts";
             if (conflictCount == 1)
             {
                 correctDesc = "There is [ " + conflictCount + " ] conflict that occurs";
@@ -225,7 +225,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowDeployServerVersionConflict(string sourceServerVersion, string destinationServerVersion)
         {
             Buttons = MessageBoxButton.OKCancel;
-            Header = "Deploy Version conflicts";
+            Header = "Deploy Version Conflicts";
             Description = "There is a conflict between the two versions in this deploy." +
                 Environment.NewLine + "Source Server Version: " + sourceServerVersion +
                 Environment.NewLine + "Destination Server Version: " + destinationServerVersion +
@@ -246,7 +246,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowDeployServerMinVersionConflict(string sourceServerVersion, string destinationServerVersion)
         {
             Buttons = MessageBoxButton.OKCancel;
-            Header = "Deploy Version conflicts";
+            Header = "Deploy Version Conflicts";
             Description = "There is a conflict between the two versions in this deploy." +
                 Environment.NewLine + "Source Server Version: " + sourceServerVersion +
                 Environment.NewLine + "Destination Minimum supported version: " + destinationServerVersion +
@@ -268,7 +268,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowConnectServerVersionConflict(string selectedServerVersion, string currentServerVersion)
         {
             Buttons = MessageBoxButton.OK;
-            Header = "Server Version conflict";
+            Header = "Server Version Conflict";
             Description = "There is a version conflict with the current selected server." + Environment.NewLine +
                 Environment.NewLine + "Selected Server Version: " + selectedServerVersion +
                 Environment.NewLine + "Current Server Version: " + currentServerVersion + Environment.NewLine +
@@ -284,7 +284,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowDeployResourceNameConflict(string conflictResourceName)
         {
             Buttons = MessageBoxButton.OK;
-            Header = "Deploy ResourceName conflicts";
+            Header = "Deploy ResourceName Conflicts";
             Description = "There is a conflict between the two resources in this deploy." +
                 Environment.NewLine + "Conflict Resource Name: " + conflictResourceName +
                 Environment.NewLine + "Click OK and rename the conflicting resource/s." +
@@ -303,8 +303,8 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowDeployNameConflict(string message)
         {
 
-            Buttons = MessageBoxButton.OKCancel;
-            Header = "Deploy Name conflicts";
+            Buttons = MessageBoxButton.OK;
+            Header = "Deploy Name Conflicts";
 
             Description = message;
             ImageType = MessageBoxImage.Error;
@@ -315,10 +315,25 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowDeploySuccessful(string message)
+        {
+
+            Buttons = MessageBoxButton.OK;
+            Header = "Resource(s) Deployed Successfully";
+
+            Description = message;
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            return Show();
+        }
+
         public MessageBoxResult ShowSettingsCloseConfirmation()
         {
 
-            Header = "Settings have changed";
+            Header = "Settings Have Changed";
             var description = "Settings have not been saved." + Environment.NewLine
                               + "Would you like to save the settings? " + Environment.NewLine +
                               "-----------------------------------------------------------------" +
@@ -338,7 +353,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowSchedulerCloseConfirmation()
         {
-            Header = "Scheduler Task has changes";
+            Header = "Scheduler Task Has Changes";
             var description = "Scheduler Task has not been saved." + Environment.NewLine
                               + "Would you like to save the Task? " + Environment.NewLine +
                               "-----------------------------------------------------------------" +
@@ -374,7 +389,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowConnectionTimeoutConfirmation(string serverName)
         {
-            Header = "Server is unreachable";
+            Header = "Server Is Unreachable";
             var description = " Unable to reach " + serverName + ": Connection timed out." + Environment.NewLine
                               + " Make sure the remote computer is powered on." + Environment.NewLine
                               + Environment.NewLine
@@ -404,7 +419,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowDeleteVersionMessage(string displayName)
         {
-            Header = "Delete version";
+            Header = "Delete Version";
             var description = $"Are you sure you want to delete {displayName}?";
             Description = description;
             Buttons = MessageBoxButton.YesNo;

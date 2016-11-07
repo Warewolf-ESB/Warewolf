@@ -22,6 +22,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using MySql.Data.MySqlClient;
 using Warewolf.Resource.Errors;
@@ -31,6 +32,16 @@ namespace Dev2.Runtime.ESB.Management.Services
     // NOTE: Only use for design time in studio as errors will NOT be forwarded!
     public class GetDatabaseTables : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
+
         #region Implementation of ISpookyLoadable<string>
 
         public string HandlesType()
@@ -97,7 +108,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(string.IsNullOrEmpty(runtimeDbSource.DatabaseName) || string.IsNullOrEmpty(runtimeDbSource.Server))
             {
                 var res = new DbTableList("Invalid database sent {0}.", database);
-                Dev2Logger.Debug(String.Format("Invalid database sent {0}.", database));
+                Dev2Logger.Debug($"Invalid database sent {database}.");
                 return serializer.SerializeToBuilder(res);
             }
 

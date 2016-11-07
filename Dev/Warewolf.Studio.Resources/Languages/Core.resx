@@ -440,7 +440,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>function sum average product count max median min var stdev concatenate choose irr counta subtotal total avedev and or isnull istext npv</value>
   </data>
   <data name="Tool_Utility_Create JSON_Tags" xml:space="preserve">
-    <value />
+    <value>object</value>
   </data>
   <data name="Tool_Utility_Calculate_Tags" xml:space="preserve">
     <value>add subtract minus maths divide power compute excel exel</value>
@@ -467,7 +467,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>header page content html</value>
   </data>
   <data name="Tool_Utility_Xpath_Tags" xml:space="preserve">
-    <value />
+    <value>xml</value>
   </data>
   <data name="Tool_Utility_Rabbit MQ Publish_Tags" xml:space="preserve">
     <value>source connector</value>
@@ -534,10 +534,10 @@ The window will be reloaded when you click OK.</value>
     <value>Nothing selected to deploy.</value>
   </data>
   <data name="DeployResourcesSamePathAndName" xml:space="preserve">
-    <value>The following resources have the same path and name on the source and destination server but different Ids</value>
+    <value>The following resources have the same path and name on the source and destination server but different IDs</value>
   </data>
   <data name="DeployRenameBeforeContinue" xml:space="preserve">
-    <value>Please rename either the source or destination before continueing</value>
+    <value>Please rename either the source or destination before continuing</value>
   </data>
   <data name="DeployResourceCheckbox" xml:space="preserve">
     <value>Select this item to deploy.</value>
@@ -941,6 +941,15 @@ The window will be reloaded when you click OK.</value>
   <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="ServerDisconnected" xml:space="preserve">
+    <value>Server: {0} has disconnected.</value>
+  </data>
+  <data name="ServerDisconnectedHeader" xml:space="preserve">
+    <value>Disconnected Server</value>
+  </data>
+  <data name="ServerReconnectForActions" xml:space="preserve">
+    <value>Please reconnect before performing any actions</value>
+  </data>
   <data name="ViewInBrowserLabel" xml:space="preserve">
     <value>View Results In Browser</value>
   </data>
@@ -1048,6 +1057,12 @@ The window will be reloaded when you click OK.</value>
   </data>
   <data name="SchedulerNewTaskName" xml:space="preserve">
     <value>New Task</value>
+  </data>
+  <data name="SchedulerUnsavedTaskMessage" xml:space="preserve">
+    <value>Please save currently edited Task(s) before creating a new one.</value>
+  </data>
+  <data name="SchedulerUnsavedTaskHeader" xml:space="preserve">
+    <value>Save before continuing</value>
   </data>
   <data name="SchedulerConnectionError" xml:space="preserve">
     <value>You don't have permission to schedule on this server. You need Administrator permission.</value>
@@ -2686,6 +2701,45 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="MenuDatabaseToolTip" xml:space="preserve">
     <value>Create a new database source</value>
   </data>
+  <data name="DebugInputsToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service [F5]</value>
+  </data>
+  <data name="DebugStudioToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service [F6]</value>
+  </data>
+  <data name="DebugBrowserToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service [F7]</value>
+  </data>
+  <data name="ScheduleToolTip" xml:space="preserve">
+    <value>Schedule a service to run</value>
+  </data>
+  <data name="TestEditorToolTip" xml:space="preserve">
+    <value>View the current tests for this resource</value>
+  </data>
+  <data name="RunAllTestsToolTip" xml:space="preserve">
+    <value>Run all tests in browser for this resource</value>
+  </data>
+  <data name="DuplicateToolTip" xml:space="preserve">
+    <value>Duplicate the current resource</value>
+  </data>
+  <data name="DeployToolTip" xml:space="preserve">
+    <value>Move current resource between Warewolf servers</value>
+  </data>
+  <data name="DependenciesToolTip" xml:space="preserve">
+    <value>View which resources are dependant on the current resource</value>
+  </data>
+  <data name="ViewSwaggerToolTip" xml:space="preserve">
+    <value>View Swagger source for the current resource</value>
+  </data>
+  <data name="CopyUrlToolTip" xml:space="preserve">
+    <value>Copy the current resource Url</value>
+  </data>
+  <data name="NoPermissionsToolTip" xml:space="preserve">
+    <value>You do not have permissions to execute this command</value>
+  </data>
+  <data name="DisabledToolTip" xml:space="preserve">
+    <value>Cannot execute this command on an unsaved workflow</value>
+  </data>
   <data name="MappingsObjectOutputTooltip" xml:space="preserve">
     <value>MappingsObjectOutputTooltip</value>
   </data>
@@ -3733,6 +3787,83 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
   </data>
   <data name="python_Tag" xml:space="preserve">
     <value>python</value>
+  </data>
+  <data name="SchedulerLogOnAsBatchError" xml:space="preserve">
+    <value>This task requires that the user account specified has 'Log On As Batch' job rights. 
+Please contact your Windows System Administrator.</value>
+  </data>
+  <data name="SchedulerExecutePermissionError" xml:space="preserve">
+    <value>This Workflow requires that you have Execute permission on the '{0}' Workflow. 
+Please contact your Warewolf System Administrator.</value>
+  </data>
+  <data name="SchedulerInvalidCharactersError" xml:space="preserve">
+    <value>The task name may not contain the following characters</value>
+  </data>
+<data name="NoReturnedDataExecuteSuccess" xml:space="preserve">
+    <value>No data returned.   </value>
+  </data>
+  <data name="NewServerSourceTooltip" xml:space="preserve">
+    <value>Create a new server source</value>
+  </data>
+  <data name="NewDataBaseSourceTooltip" xml:space="preserve">
+    <value>Create a new Aatabase source</value>
+  </data>
+  <data name="NewWebSourceTooltip" xml:space="preserve">
+    <value>Create a new web source</value>
+  </data>
+  <data name="NewPluginSourceTooltip" xml:space="preserve">
+    <value>Create a new plugin source</value>
+  </data>
+  <data name="NewComPluginSourceTooltip" xml:space="preserve">
+    <value>Create a new com plugin source</value>
+  </data>
+  <data name="NewEmailSourceTooltip" xml:space="preserve">
+    <value>Create a new email source</value>
+  </data>
+  <data name="NewExchangeSourceTooltip" xml:space="preserve">
+    <value>Create a new exchange source</value>
+  </data>
+  <data name="NewRabbitMqSourceTooltip" xml:space="preserve">
+    <value>Create a new rabbitmq source</value>
+  </data>
+  <data name="NewDropboxSourceTooltip" xml:space="preserve">
+    <value>Create a new dropbox source</value>
+  </data>
+  <data name="NewSharepointSourceTooltip" xml:space="preserve">
+    <value>Create a new sharepoint source</value>
+  </data>
+  <data name="ViewApisJsonTooltip" xml:space="preserve">
+    <value>ViewApisJsonTooltip</value>
+  </data>
+  <data name="NewServiceTooltip" xml:space="preserve">
+    <value>Create a new service [CTRL+W]</value>
+  </data>
+  <data name="RenameItemTooltip" xml:space="preserve">
+    <value>Rename resource</value>
+  </data>
+  <data name="RenameFolderTooltip" xml:space="preserve">
+    <value>Rename folder</value>
+  </data>
+  <data name="DeleteItemTooltip" xml:space="preserve">
+    <value>Delete the resource</value>
+  </data>
+  <data name="DeleteFolderTooltip" xml:space="preserve">
+    <value>Delete the folder and its resources</value>
+  </data>
+  <data name="NewFolderTooltip" xml:space="preserve">
+    <value>Create a new folder</value>
+  </data>
+  <data name="ShowHideVersionsTooltip" xml:space="preserve">
+    <value>Show or hide the versions of this resource</value>
+  </data>
+  <data name="OpenVersionTooltip" xml:space="preserve">
+    <value>Open this version</value>
+  </data>
+  <data name="RollbackTooltip" xml:space="preserve">
+    <value>Rool back to this version</value>
+  </data>
+  <data name="ServerVersionTooltip" xml:space="preserve">
+    <value>View the version of this server</value>
   </data>
   <data name="DebugOutputViewAddNewTestHelp" xml:space="preserve">
     <value>DebugOutputViewAddNewTestHelp</value>

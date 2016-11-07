@@ -44,8 +44,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro">
-      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
+    <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
       <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
@@ -84,7 +85,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xaml" />
@@ -125,12 +126,14 @@
     <Compile Include="Core\ComDll\ComDllActionRegionTest.cs" />
     <Compile Include="Core\ComDll\ComNamespaceRegionTest.cs" />
     <Compile Include="Core\ComDll\ComDllSourceRegionTest.cs" />
+    <Compile Include="Core\DotNetInputRegionTests.cs" />
     <Compile Include="Core\DotNet\DotNetSourceRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetActionRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetNamespaceRegionTest.cs" />
     <Compile Include="Core\DropboxSourceManagerTests.cs" />
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
     <Compile Include="Core\ScriptChooserTests.cs" />
+    <Compile Include="Core\WcfInputRegionTests.cs" />
     <Compile Include="Core\WebDeleteInputRegionTest.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
     <Compile Include="Core\WebOutputsRegion.cs" />
@@ -335,7 +338,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="..\Dev2.Studio\App.config">
+      <Link>App.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
