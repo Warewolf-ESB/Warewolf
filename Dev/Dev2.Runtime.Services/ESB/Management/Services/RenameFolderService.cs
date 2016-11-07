@@ -20,6 +20,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -28,6 +29,15 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class RenameFolderService : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
         public string HandlesType()
         {
             return "RenameFolderService";
@@ -40,11 +50,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 if(values == null)
                 {
-                    throw new ArgumentNullException("values");
+                    throw new ArgumentNullException(nameof(values));
                 }
                 if(theWorkspace == null)
                 {
-                    throw new ArgumentNullException("theWorkspace");
+                    throw new ArgumentNullException(nameof(theWorkspace));
                 }
                 StringBuilder path;
                 if(!values.TryGetValue("path", out path))
@@ -56,7 +66,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "newPath"));
                 }
-                Dev2Logger.Info(String.Format("Reanme Folder. Path:{0} NewPath:{1}",path,newPath));
+                Dev2Logger.Info($"Reanme Folder. Path:{path} NewPath:{newPath}");
                 item = ServerExplorerRepository.Instance.RenameFolder(path.ToString(), newPath.ToString(), theWorkspace.ID);
             }
             catch(Exception e)

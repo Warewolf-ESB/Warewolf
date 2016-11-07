@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Runtime.Interfaces;
+using Dev2.Services.Security;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -23,6 +25,16 @@ namespace Dev2.Runtime.ESB.Management.Services
         private IExplorerServerResourceRepository _serverExplorerRepository;
         private IResourceCatalog _resourceCatalogue;
 
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();

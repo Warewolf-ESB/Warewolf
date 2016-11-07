@@ -18,9 +18,9 @@ namespace Warewolf.UITests.Tools.Data
         public void AssignToolInUnpinnedWorkflowTabOpenAndCloseLargeViewWithExpandAllToggleUITest()
         {
             UIMap.Click_Unpinned_Workflow_ExpandAll();
-            Assert.IsTrue(UIMap.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.Exists,"Multiassign large view does not exist after openning it with the expand all button on unpinned tab.");
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.Exists,"Multiassign large view does not exist after openning it with the expand all button on unpinned tab.");
             UIMap.Click_Unpinned_Workflow_CollapseAll();
-            Assert.IsTrue(UIMap.StartNodePopupWindow.FloatingWindowCustom.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.Exists, "Multiassign small view does not exist after collapsing it with the collapse all button on unpinned tab.");
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.Exists, "Multiassign small view does not exist after collapsing it with the collapse all button on unpinned tab.");
         }
 
         [TestMethod]

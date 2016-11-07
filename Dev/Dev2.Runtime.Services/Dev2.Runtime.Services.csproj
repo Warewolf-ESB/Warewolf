@@ -45,9 +45,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
+    <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ChinhDo.Transactions">
       <HintPath>..\packages\TxFileManager.1.3\lib\net20\ChinhDo.Transactions.dll</HintPath>
@@ -106,7 +106,10 @@
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -164,6 +167,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -204,7 +211,6 @@
     <Compile Include="ESB\Management\Services\FetchExchangeSources.cs" />
     <Compile Include="ESB\Management\Services\FetchDropboxSource.cs" />
     <Compile Include="ESB\Management\Services\FetchResourceDuplicates.cs" />
-    <Compile Include="ESB\Management\Services\FetchListSysExplorerStructure.cs" />
     <Compile Include="ESB\Management\Services\FetchPerfCounters.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginActions.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginNamespaces.cs" />
@@ -254,26 +260,20 @@
     <Compile Include="ESB\Management\Services\DeleteResource.cs" />
     <Compile Include="ESB\Management\Services\DeleteScheduledResource.cs" />
     <Compile Include="ESB\Management\Services\FetchResourceDefinition.cs" />
-    <Compile Include="ESB\Management\Services\FindDirectory.cs" />
-    <Compile Include="ESB\Management\Services\FindDrive.cs" />
     <Compile Include="ESB\Management\Services\FindResourceHelper.cs" />
     <Compile Include="ESB\Management\Services\GetDatabaseColumnsForTable.cs" />
     <Compile Include="ESB\Management\Services\GetDatabaseTables.cs" />
     <Compile Include="ESB\Management\Services\GetScheduledResourceHistory.cs" />
     <Compile Include="ESB\Management\Services\GetScheduledResources.cs" />
-    <Compile Include="ESB\Management\Services\RenameCategoryResource.cs" />
     <Compile Include="ESB\Management\Services\FetchDebugItemFile.cs" />
     <Compile Include="ESB\Management\Services\FetchRemoteDebugMessages.cs" />
     <Compile Include="ESB\Management\Services\DeleteLog.cs" />
     <Compile Include="ESB\Management\Services\FetchCurrentServerLog.cs" />
-    <Compile Include="ESB\Management\Services\FindLogDirectory.cs" />
     <Compile Include="Compiler\CompileRules\CompileRulesRepo.cs" />
     <Compile Include="Compiler\CompileRules\IServiceCompileRule.cs" />
     <Compile Include="Compiler\CompileRules\Workflow_MappingChangeRule.cs" />
-    <Compile Include="ESB\Management\Services\FetchCompileMessages.cs" />
     <Compile Include="ESB\Management\Services\FetchDependantCompileMessages.cs" />
     <Compile Include="ESB\Management\Services\GetDependanciesOnList.cs" />
-    <Compile Include="ESB\Management\Services\RenameResource.cs" />
     <Compile Include="ESB\Management\Services\SaveServerSource.cs" />
     <Compile Include="ESB\Management\Services\SaveSharePointServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveTests.cs" />
@@ -299,11 +299,9 @@
     <Compile Include="ESB\Management\Services\TestWebserviceSourceService.cs" />
     <Compile Include="ESB\Management\Services\TestEmailServiceSource.cs" />
     <Compile Include="ESB\Management\Services\TestSharepointServerService.cs" />
-    <Compile Include="ESB\Management\Services\TestNetworkService.cs" />
     <Compile Include="Execution\ExecutionToken.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />
     <Compile Include="Hosting\ExplorerItemFactory.cs" />
-    <Compile Include="Hosting\ExplorerRepositoryResult.cs" />
     <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
     <Compile Include="Hosting\ResourceCatalogPluginContainer.cs" />
     <Compile Include="Hosting\ResourceCatalogResultBuilder.cs" />
@@ -333,16 +331,11 @@
     <Compile Include="ESB\Management\EsbManagementServiceLocator.cs" />
     <Compile Include="ESB\Management\IEsbManagementEndpoint.cs" />
     <Compile Include="ESB\Management\Services\SaveResource.cs" />
-    <Compile Include="ESB\Management\Services\CheckCredentials.cs" />
-    <Compile Include="ESB\Management\Services\CheckPermissions.cs" />
     <Compile Include="ESB\Management\Services\DeployResource.cs" />
     <Compile Include="ESB\Management\Services\FindDependencies.cs" />
-    <Compile Include="ESB\Management\Services\FindNetworkComputers.cs" />
     <Compile Include="ESB\Management\Services\FindResource.cs" />
     <Compile Include="ESB\Management\Services\FindResourcesByID.cs" />
-    <Compile Include="ESB\Management\Services\FindServerUsername.cs" />
     <Compile Include="ESB\Management\Services\FindSourcesByType.cs" />
-    <Compile Include="ESB\Management\Services\GetLatest.cs" />
     <Compile Include="ESB\Management\Services\Ping.cs" />
     <Compile Include="ESB\Management\Services\ReloadResource.cs" />
     <Compile Include="ESB\Management\Services\TerminateExecution.cs" />
@@ -522,6 +515,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

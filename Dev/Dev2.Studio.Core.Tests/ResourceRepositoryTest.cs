@@ -774,6 +774,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
 
             var msg = new ExecuteMessage();
+            msg.HasError = false;
             var payload = JsonConvert.SerializeObject(msg);
 
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -806,6 +807,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
 
             var msg = new ExecuteMessage();
+            msg.HasError = false;
             var payload = JsonConvert.SerializeObject(msg);
 
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -874,6 +876,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
 
             var msg = new ExecuteMessage();
+            msg.HasError = false;
             var payload = JsonConvert.SerializeObject(msg);
 
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -2218,6 +2221,11 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Assert Results-------------------------
 
+        }
+
+        private void Marshal(System.Action action)
+        {
+            
         }
 
         #endregion

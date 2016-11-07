@@ -19,6 +19,7 @@ using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Scheduler;
+using Dev2.Services.Security;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,6 +31,34 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class GetScheduledResourceHistoryTest
     {
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ShouldReturnEmptyGuid()
+        {
+            //------------Setup for test--------------------------
+            var scheduledResourceHistory = new GetScheduledResourceHistory();
+
+            //------------Execute Test---------------------------
+            var resId = scheduledResourceHistory.GetResourceID(new Dictionary<string, StringBuilder>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, resId);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetAuthorizationContextForService_ShouldReturnContext()
+        {
+            //------------Setup for test--------------------------
+            var scheduledResourceHistory = new GetScheduledResourceHistory();
+
+            //------------Execute Test---------------------------
+            var resId = scheduledResourceHistory.GetAuthorizationContextForService();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Any, resId);
+        }
+
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_GetHistory")]
         [TestMethod]

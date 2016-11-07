@@ -13,7 +13,9 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -24,8 +26,17 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SaveServerSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
 
-        private static int GETSpecifiedIndexOf(string str, char ch, int index)
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
+
+        private static int GetSpecifiedIndexOf(string str, char ch, int index)
         {
             int i = 0, o = 1;
             while ((i = str.IndexOf(ch, i)) != -1)
@@ -42,7 +53,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-
                 Dev2Logger.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
 
@@ -51,7 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 IServerSource src = serializer.Deserialize<ServerSource>(resourceDefinition);
                 Connection con = new Connection();
 
-                int portIndex = GETSpecifiedIndexOf(src.Address, ':', 2);
+                int portIndex = GetSpecifiedIndexOf(src.Address, ':', 2);
                 string port = src.Address.Substring(portIndex + 1);
 
                 con.Address = src.Address;
