@@ -8,11 +8,15 @@ namespace Warewolf.UITests.Tools.Utility
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void CreateJSONToolUITest()
-        {
-            Uimap.Drag_Toolbox_JSON_Onto_DesignSurface();
-            Uimap.Open_Json_Tool_Large_View();
-            Uimap.Open_Json_Tool_Qvi_Large_View();
+        public void CreateJSONTool_OpenLargeViewUITest()
+        {            
+            UIMap.Open_Json_Tool_Large_View();         
+        }
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void CreateJSONTool_OpenQVIUITest()
+        {            
+            UIMap.Open_Json_Tool_Qvi_Large_View();
         }
 
         #region Additional test attributes
@@ -20,13 +24,21 @@ namespace Warewolf.UITests.Tools.Utility
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_JSON_Onto_DesignSurface();
         }
-        
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
+
         public TestContext TestContext
         {
             get
@@ -41,20 +53,20 @@ namespace Warewolf.UITests.Tools.Utility
 
         private TestContext testContextInstance;
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
-                if (_uiMap == null)
+                if (_UIMap == null)
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

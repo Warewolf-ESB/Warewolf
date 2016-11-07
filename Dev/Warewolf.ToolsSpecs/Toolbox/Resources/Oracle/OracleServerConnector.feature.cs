@@ -103,7 +103,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Empty is Null"});
             table1.AddRow(new string[] {
                         "EID",
-                        "",
+                        "[[EID]]",
                         "false"});
 #line 18
  testRunner.And("Inputs appear az", ((string)(null)), table1, "And ");
@@ -308,7 +308,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Empty is Null"});
             table11.AddRow(new string[] {
                         "ProductId",
-                        "",
+                        "[[ProductId]]",
                         "false"});
 #line 92
  testRunner.And("Inputs appear az", ((string)(null)), table11, "And ");

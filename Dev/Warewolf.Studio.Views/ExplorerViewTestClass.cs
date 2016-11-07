@@ -7,7 +7,9 @@ using System.Windows.Data;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Threading;
 using Infragistics.Controls.Menus;
 using Warewolf.Resource.Errors;
 using Warewolf.Studio.ViewModels;
@@ -111,6 +113,7 @@ namespace Warewolf.Studio.Views
             var foundFolder = VerifyItemExists(originalFolderName).Data as IExplorerTreeItem;
             if (foundFolder != null)
             {
+                CustomContainer.Register<IAsyncWorker>(new SynchronousAsyncWorker());
                 foundFolder.RenameCommand.Execute(null);
                 foundFolder.ResourceName = newFolderName;
             }
@@ -156,10 +159,12 @@ namespace Warewolf.Studio.Views
                     var env = childnode.Data as IExplorerTreeItem;
                     if (env != null)
                     {
+                        CustomContainer.Register<IAsyncWorker>(new SynchronousAsyncWorker());
                         env.CreateFolderCommand.Execute(null);
                         var explorerItemViewModel = env.Children.FirstOrDefault(a => a != null && a.IsRenaming);
                         if (explorerItemViewModel != null)
                         {
+                            explorerItemViewModel.IsRenaming = true;
                             explorerItemViewModel.ResourceName = folder;
                             explorerItemViewModel.IsRenaming = false;
                         }

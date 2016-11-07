@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
@@ -60,6 +59,7 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
+using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
 
 // ReSharper disable CatchAllClause
 // ReSharper disable InconsistentNaming
@@ -470,9 +470,9 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(AddWorkSurfaceMessage message)
         {
+            IsNewWorkflowSaved = true;
             Dev2Logger.Info(message.GetType().Name);
             _worksurfaceContextManager.AddWorkSurface(message.WorkSurfaceObject);
-
             if (message.ShowDebugWindowOnLoad)
             {
                 if (ActiveItem != null && _canDebug)
@@ -481,6 +481,8 @@ namespace Dev2.Studio.ViewModels
                 }
             }
         }
+
+        public bool IsNewWorkflowSaved { get; set; }
 
         public void Handle(DeleteResourcesMessage message)
         {
@@ -520,11 +522,14 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 environmentModel.ResourceRepository.LoadResourceFromWorkspace(resourceId, Guid.Empty);
-                var resource = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId, true);
-                var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
-                contextualResourceModel.Update(resource);
-                contextualResourceModel.ID = resourceId;
-                _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
+                if (server.IsConnected)
+                {
+                    var resource = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId, true);
+                    var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
+                    contextualResourceModel.Update(resource);
+                    contextualResourceModel.ID = resourceId;
+                    _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
+                }
             }
         }
 
@@ -584,6 +589,46 @@ namespace Dev2.Studio.ViewModels
             ActiveItem.DebugCommand.Execute(null);
         }
 
+        public void StudioDebug(Guid resourceId, IServer server)
+        {
+            DebugStudio(resourceId, server.EnvironmentID);
+        }
+        public void DebugStudio(Guid resourceId, Guid environmentId)
+        {
+            var environmentModel = EnvironmentRepository.Get(environmentId);
+            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            if (contextualResourceModel != null)
+            {
+                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+                QuickDebugCommand.Execute(contextualResourceModel);
+            }
+        }
+
+        public void NewSchedule(Guid resourceId)
+        {
+            CreateNewSchedule(resourceId);
+        }
+
+        public void BrowserDebug(Guid resourceId, IServer server)
+        {
+            OpenBrowser(resourceId, server.EnvironmentID);
+        }
+        public void OpenBrowser(Guid resourceId, Guid environmentId)
+        {
+            var environmentModel = EnvironmentRepository.Get(environmentId);
+            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            if (contextualResourceModel != null)
+            {
+                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+                QuickViewInBrowserCommand.Execute(contextualResourceModel);
+            }
+        }
+
+        public void SetRefreshExplorerState(bool refresh)
+        {
+            ExplorerViewModel.IsRefreshing = refresh;
+        }
+
         public void OpenResource(Guid resourceId, IServer server)
         {
             OpenResource(resourceId, server.EnvironmentID);
@@ -594,9 +639,33 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+                if (contextualResourceModel != null)
+                {
+                    _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+                }
             }
         }
+
+        public void CopyUrlLink(Guid resourceId, IServer server)
+        {
+            GetCopyUrlLink(resourceId, server.EnvironmentID);
+        }
+
+        private void GetCopyUrlLink(Guid resourceId, Guid environmentId)
+        {
+            var environmentModel = EnvironmentRepository.Get(environmentId);
+            if (environmentModel != null)
+            {
+                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+
+                var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, "", UrlType.Json, false);
+                if (workflowUri != null)
+                {
+                    Clipboard.SetText(workflowUri.ToString());
+                }
+            }
+        }
+
         public void ViewSwagger(Guid resourceId, IServer server)
         {
             ViewSwagger(resourceId, server.EnvironmentID);
@@ -636,6 +705,16 @@ namespace Dev2.Studio.ViewModels
             BrowserPopupController.ShowPopup(url.ToString());
         }
 
+        public void CreateNewSchedule(Guid resourceId)
+        {
+            var environmentModel = EnvironmentRepository.Get(ActiveEnvironment.ID);
+            if (environmentModel != null)
+            {
+                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+                _worksurfaceContextManager.CreateNewScheduleWorkSurface(contextualResourceModel);
+            }
+        }
+
         public void CreateTest(Guid resourceId)
         {
             var environmentModel = EnvironmentRepository.Get(ActiveEnvironment.ID);
@@ -644,11 +723,25 @@ namespace Dev2.Studio.ViewModels
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
 
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer);
-                workSurfaceKey.EnvironmentID = contextualResourceModel.Environment.ID;
-                workSurfaceKey.ResourceID = contextualResourceModel.ID;
-                workSurfaceKey.ServerID = contextualResourceModel.ServerID;
+                if (contextualResourceModel != null)
+                {
+                    workSurfaceKey.EnvironmentID = contextualResourceModel.Environment.ID;
+                    workSurfaceKey.ResourceID = contextualResourceModel.ID;
+                    workSurfaceKey.ServerID = contextualResourceModel.ServerID;
 
-                _worksurfaceContextManager.ViewTestsForService(contextualResourceModel, workSurfaceKey);
+                    _worksurfaceContextManager.ViewTestsForService(contextualResourceModel, workSurfaceKey);
+                }
+            }
+        }
+
+        public void RunAllTests(Guid resourceId)
+        {
+            var environmentModel = EnvironmentRepository.Get(ActiveEnvironment.ID);
+            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+
+            if (contextualResourceModel != null)
+            {
+                _worksurfaceContextManager.RunAllTestsForService(contextualResourceModel);
             }
         }
 
@@ -789,10 +882,25 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.NewComPluginSource(resourcePath);
         }
 
+        private void ShowServerDisconnectedPopup()
+        {
+            var controller = CustomContainer.Get<IPopupController>();
+            controller?.Show(string.Format(Warewolf.Studio.Resources.Languages.Core.ServerDisconnected, ActiveServer.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
+                             Warewolf.Studio.Resources.Languages.Core.ServerReconnectForActions, Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK,
+                MessageBoxImage.Error, "", false, true, false, false);
+        }
+
         public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
         {
-            _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
-            ExplorerViewModel?.RefreshEnvironment(ActiveServer.EnvironmentID);
+            if (!ActiveServer.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+            }
+            else
+            {
+                _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
+                ExplorerViewModel?.RefreshEnvironment(ActiveServer.EnvironmentID);
+            }
         }
 
         public void NewDropboxSource(string resourcePath)
@@ -846,12 +954,13 @@ namespace Dev2.Studio.ViewModels
             var isActiveEnvironmentConnected = ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute;
             if (ActiveEnvironment.IsConnected)
             {
-                if (ToolboxViewModel.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0)
+                if (ToolboxViewModel != null && (ToolboxViewModel.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0))
                 {
                     ToolboxViewModel.BuildToolsList();
                 }
             }
-            ToolboxViewModel.IsVisible = isActiveEnvironmentConnected;
+            if(ToolboxViewModel != null)
+                ToolboxViewModel.IsVisible = isActiveEnvironmentConnected;
             return isActiveEnvironmentConnected;
         }
 
@@ -881,15 +990,6 @@ namespace Dev2.Studio.ViewModels
 
         protected override void ChangeActiveItem(WorkSurfaceContextViewModel newItem, bool closePrevious)
         {
-            if (_previousActive != null)
-            {
-                if (newItem?.DataListViewModel != null)
-                {
-                    string errors;
-                    newItem.DataListViewModel.ClearCollections();
-                    newItem.DataListViewModel.CreateListsOfIDataListItemModelToBindTo(out errors);
-                }
-            }
             base.ChangeActiveItem(newItem, closePrevious);
             RefreshActiveEnvironment();
         }
@@ -898,6 +998,7 @@ namespace Dev2.Studio.ViewModels
         {
             base.DeactivateItem(item, close);
         }
+        public bool DontPrompt { get; set; }
         public override void DeactivateItem(WorkSurfaceContextViewModel item, bool close)
         {
             if (item == null)
@@ -908,7 +1009,7 @@ namespace Dev2.Studio.ViewModels
             bool success = true;
             if (close)
             {
-                success = _worksurfaceContextManager.CloseWorkSurfaceContext(item, null);
+                success = _worksurfaceContextManager.CloseWorkSurfaceContext(item, null, DontPrompt);
             }
 
             if (success)
@@ -996,32 +1097,13 @@ namespace Dev2.Studio.ViewModels
         public override void ActivateItem(WorkSurfaceContextViewModel item)
         {
             _previousActive = ActiveItem;
-            if (_previousActive?.DebugOutputViewModel != null)
-            {
-                _previousActive.DebugOutputViewModel.PropertyChanged -= DebugOutputViewModelOnPropertyChanged;
-            }
             base.ActivateItem(item);
+            ActiveItemChanged?.Invoke(item);
             if (item?.ContextualResourceModel == null) return;
-            if (item.DebugOutputViewModel != null)
-            {
-                item.DebugOutputViewModel.PropertyChanged += DebugOutputViewModelOnPropertyChanged;
-            }
             SetActiveEnvironment(item.Environment);
         }
 
-        void DebugOutputViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs args)
-        {
-            if (args.PropertyName == "IsProcessing")
-            {
-                if (MenuViewModel != null)
-                {
-                    if (ActiveItem.DebugOutputViewModel != null)
-                    {
-                        MenuViewModel.IsProcessing = ActiveItem.DebugOutputViewModel.IsProcessing;
-                    }
-                }
-            }
-        }
+        public Action<WorkSurfaceContextViewModel> ActiveItemChanged;
 
         private bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)
         {
@@ -1309,7 +1391,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public bool IsDownloading()
+       public bool IsDownloading()
         {
             return false;
         }

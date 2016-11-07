@@ -262,7 +262,7 @@ namespace Dev2.Runtime.Hosting
                 }
 
             }
-
+            Dev2Logger.Debug("Generated Service Graph");
             return result;
         }
 

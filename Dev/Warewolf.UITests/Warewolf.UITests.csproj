@@ -64,28 +64,61 @@
     <Compile Include="DebugOutputWindow\DebugOutputWindowTests.cs" />
     <Compile Include="SaveDialogWindow\SaveDialogWindowTets.cs" />
     <Compile Include="Deploy\DeployViewOnlyServiceUITest.cs" />
+    <Compile Include="ContextMenu\ContextMenuTests.cs" />
+    <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
+    <Compile Include="EmailSource\EmailSourceTests.cs" />
+    <Compile Include="Explorer\Rename.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
-    <Compile Include="ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
-    <Compile Include="ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
-    <Compile Include="ConfigureSettings\ConfigureSettingsLoggingTests.cs" />
+    <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
+    <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
+    <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsLoggingTests.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
-    <Compile Include="Explorer\ItemDragAndDrop.cs" />
-    <Compile Include="Sharepoint\SharepointCreateUITest.cs" />
+    <Compile Include="Tools\StudioTooling.cs" />
+    <Compile Include="Tools\Recordset\CountTest.cs" />
+    <Compile Include="Tools\Recordset\DeleteRecordTest.cs" />
+    <Compile Include="Tools\Recordset\LengthTest.cs" />
+    <Compile Include="Tools\Recordset\SortTest.cs" />
+    <Compile Include="Tools\Recordset\UniqueRecordsTests.cs" />
+    <Compile Include="Tools\Sharepoint\Copy File.cs" />
+    <Compile Include="Tools\Sharepoint\Delete File.cs" />
+    <Compile Include="Tools\Sharepoint\Read List Item.cs" />
+    <Compile Include="Tools\Sharepoint\Read Folder.cs" />
+    <Compile Include="Tools\Sharepoint\Download File.cs" />
+    <Compile Include="Tools\Sharepoint\Move File.cs" />
+    <Compile Include="Tools\Sharepoint\Update List Item.cs" />
+    <Compile Include="Tools\Sharepoint\Upload File.cs" />
+    <Compile Include="Tools\Sharepoint\Update File.cs" />
+    <Compile Include="Explorer\DragAndDropService.cs" />
+    <Compile Include="Tools\Database\ODBCTests.cs" />
+    <Compile Include="Tools\Database\OracleDatabaseTests.cs" />
+    <Compile Include="Tools\Database\PostgreSqlTests.cs" />
+    <Compile Include="Tools\Database\MySqlTests.cs" />
+    <Compile Include="Tools\Database\SqlServerTests.cs" />
+    <Compile Include="Tools\Sharepoint\Create List Item.cs" />
+    <Compile Include="Tools\Data\AssignObject.cs" />
+    <Compile Include="Tools\Data\FindIndex.cs" />
+    <Compile Include="Tools\HTTP Web Methods\HttpWebGet.cs" />
+    <Compile Include="Tools\HTTP Web Methods\HttpWebPut.cs" />
+    <Compile Include="Tools\HTTP Web Methods\HttpWebDelete.cs" />
+    <Compile Include="Tabs and Panes\AssignToolInUnpinnedWorkflowTab.cs" />
+    <Compile Include="Tabs and Panes\PinUnpinPanes.cs" />
+    <Compile Include="Tools\Loop Constructs\Selectandapply.cs" />
+    <Compile Include="Tools\Loop Constructs\ForEach.cs" />
     <Compile Include="Tools\Scripting\Ruby.cs" />
     <Compile Include="Tools\Scripting\Python.cs" />
+    <Compile Include="Tools\Storage Dropbox\Download.cs" />
+    <Compile Include="Tools\Utility\RabbitMQPublish.cs" />
+    <Compile Include="Tools\Utility\RabbitMQConsume.cs" />
+    <Compile Include="Tools\Utility\AggregateCalculate.cs" />
     <Compile Include="Variables\Variables.cs" />
     <Compile Include="WorkflowTesting\TestsResults.cs" />
     <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
-    <Compile Include="Tools\HTTP Web Methods\Create_WEB_Source_From_Tool.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
-    <Compile Include="Explorer\WebConnector.cs" />
     <Compile Include="Explorer\Refresh.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Control Flow\Sequence.cs" />
     <Compile Include="Tools\Control Flow\Switch.cs" />
-    <Compile Include="Tools\Control Flow\For Each.cs" />
     <Compile Include="Tools\Control Flow\Decision.cs" />
-    <Compile Include="Tools\Database\Create_SQL_Server_Source_From_Tool.cs" />
     <Compile Include="Tools\Database\SQL_Bulk_Insert.cs" />
     <Compile Include="Tools\Data\Base Convert.cs" />
     <Compile Include="Tools\Data\Case Convert.cs" />
@@ -103,7 +136,7 @@
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Delete.cs" />
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Create.cs" />
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Copy.cs" />
-    <Compile Include="Tools\HTTP Web Methods\POST.cs" />
+    <Compile Include="Tools\HTTP Web Methods\HttpWebPost.cs" />
     <Compile Include="Tools\Recordset\Length.cs" />
     <Compile Include="Tools\Recordset\Find Records.cs" />
     <Compile Include="Tools\Resources\Service.cs" />
@@ -118,7 +151,6 @@
     <Compile Include="Tools\Utility\Format Number.cs" />
     <Compile Include="Tools\Utility\Date Time.cs" />
     <Compile Include="Tools\Utility\Date Time Diff.cs" />
-    <Compile Include="Tools\Utility\Create JSON.cs" />
     <Compile Include="Tools\Utility\Comment.cs" />
     <Compile Include="UIMap.cs">
       <DependentUpon>UIMap.uitest</DependentUpon>
@@ -136,11 +168,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tools\Loop Constructs\" />
-    <Folder Include="Tools\Sharepoint\" />
-    <Folder Include="Tools\Storage Dropbox\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Properties\DefaultWorkspaceLayout.xml" />
     <Content Include="Tools\ToolUITestTemplate.txt" />
@@ -174,7 +202,7 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>powershell.exe -nologo -noprofile -file "$(ProjectDir)\SpecFlow-Attribute-Map.ps1"</PreBuildEvent>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file "$(ProjectDir)SpecFlow-Attribute-Map.ps1"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

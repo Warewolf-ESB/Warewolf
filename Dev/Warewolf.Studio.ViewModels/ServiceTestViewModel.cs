@@ -1165,7 +1165,7 @@ namespace Warewolf.Studio.ViewModels
         {
             AsyncWorker.Start(() =>
             {
-                var contextModel = ResourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
+                var contextModel = ResourceModel?.Environment?.ResourceRepository?.LoadContextualResourceModel(resourceId);
                 _resourceModel = contextModel;
                 return GetTests();
             }, models =>
@@ -1896,6 +1896,13 @@ namespace Warewolf.Studio.ViewModels
                 Password = to.Password,
                 ParentId = to.ResourceId,
                 TestInvalid = to.TestInvalid,
+                Inputs = to.Inputs?.Select(input =>
+                {
+                    var serviceTestInput = new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput;
+                    serviceTestInput.EmptyIsNull = input.EmptyIsNull;
+                    return serviceTestInput;
+                }).ToObservableCollection(),
+                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToObservableCollection()
                 TestSteps = to.TestSteps?.Select(step => CreateServiceTestStep(step) as IServiceTestStep).ToObservableCollection(),
                 Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToObservableCollection(),
                 Outputs = to.Outputs?.Select(output =>

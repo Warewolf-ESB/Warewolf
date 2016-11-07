@@ -100,6 +100,8 @@ namespace Dev2.Studio.ViewModels
         void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource);
         void AddSettingsWorkSurface();
         void AddSchedulerWorkSurface();
+        void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel);
+
         void AddWorkspaceItem(IContextualResourceModel model);
         void DeleteContext(IContextualResourceModel model);
         T ActivateOrCreateUniqueWorkSurface<T>(WorkSurfaceContext context)where T : IWorkSurfaceViewModel;
@@ -109,6 +111,7 @@ namespace Dev2.Studio.ViewModels
         void AddWorkSurface(IWorkSurfaceObject obj);
         bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false);
         void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
+        void RunAllTestsForService(IContextualResourceModel resourceModel);
     }
 
     public class WorksurfaceContextManager : IWorksurfaceContextManager
@@ -230,6 +233,13 @@ namespace Dev2.Studio.ViewModels
             var key = workSurfaceKey as WorkSurfaceKey;
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void RunAllTestsForService(IContextualResourceModel resourceModel)
+        {
+            var workflow = new WorkflowDesignerViewModel(resourceModel);
+            var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow);
+            testViewModel.RunAllTestsInBrowserCommand.Execute(null);
         }
 
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
@@ -372,7 +382,7 @@ namespace Dev2.Studio.ViewModels
         public void NewComPluginSource(string resourcePath)
         {
 
-            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.PluginSourceNewHeaderLabel);
+            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.ComPluginSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ComPluginSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
@@ -907,7 +917,44 @@ namespace Dev2.Studio.ViewModels
 
         public void AddSchedulerWorkSurface()
         {
-            ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
+           ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
+        }
+
+        public void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
+        {
+            if (resourceModel != null)
+            {
+                WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateEnvKey(WorkSurfaceContext.Scheduler, ActiveServer.EnvironmentID) as WorkSurfaceKey;
+                var workSurfaceContextViewModel = FindWorkSurfaceContextViewModel(key);
+                if (workSurfaceContextViewModel != null)
+                {
+                    var workSurfaceViewModel = workSurfaceContextViewModel.WorkSurfaceViewModel;
+                    if (workSurfaceViewModel != null)
+                    {
+                        var findWorkSurfaceContextViewModel = (SchedulerViewModel) workSurfaceViewModel;
+                        
+                        if (findWorkSurfaceContextViewModel.IsDirty)
+                        {
+                            _mainViewModel.PopupProvider.Show(Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskMessage, 
+                                Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskHeader, 
+                                MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                            ActivateAndReturnWorkSurfaceIfPresent(key);
+                        }
+                        else
+                        {
+                            ActivateAndReturnWorkSurfaceIfPresent(key);
+                            findWorkSurfaceContextViewModel.CreateNewTask();
+                            findWorkSurfaceContextViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
+                        }
+                    }
+                }
+                else
+                {
+                    var schedulerViewModel = ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
+                    schedulerViewModel.CreateNewTask();
+                    schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
+                }
+            }
         }
 
         public void AddWorkspaceItem(IContextualResourceModel model)

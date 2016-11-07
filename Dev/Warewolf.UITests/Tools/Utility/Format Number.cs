@@ -7,56 +7,61 @@ namespace Warewolf.UITests.Tools
     public class Format_Number
     {
         [TestMethod]
-		[TestCategory("Tools")]
-        public void FormatNumberToolUITest()
+        [TestCategory("Tools")]
+        public void FormatNumberTool_OpenLargeViewUITest()
         {
-            Uimap.Drag_Toolbox_Format_Number_Onto_DesignSurface();
+            UIMap.Open_NumberFormat_Toolbox_Large_View();
         }
+
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void FormatNumberTool_SetRoundingType_None_ExpectedRoundingInputIsDisabled_UITest()
+        {            
+            UIMap.Open_NumberFormat_Toolbox_Large_View();
+            Assert.AreEqual("None", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.SelectedItem);
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingInputComboBox.Enabled);
+        }
+
+        [TestMethod]
+		[TestCategory("Tools")]
+        public void FormatNumberTool_ChangeRoundingType_None_Expected_RoundingInputBecomesDisabledAndEmpty_UITest()
+        {            
+            UIMap.Open_NumberFormat_Toolbox_Large_View();
+            UIMap.Select_RoundingType_Normal();
+            Assert.AreEqual("Normal", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.SelectedItem);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingInputComboBox.Enabled);
+            UIMap.Select_RoundingType_None();
+            Assert.AreEqual("None", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.SelectedItem);
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingInputComboBox.Enabled);
+        }        
 
         #region Additional test attributes
 
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Format_Number_Onto_DesignSurface();
         }
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
+        UIMap UIMap
         {
             get
             {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
-
-        UIMap Uimap
-        {
-            get
-            {
-                if ((_uiMap == null))
+                if ((_UIMap == null))
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

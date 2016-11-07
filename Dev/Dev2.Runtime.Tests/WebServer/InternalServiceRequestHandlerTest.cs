@@ -87,34 +87,5 @@ namespace Dev2.Tests.Runtime.WebServer
 
         }
 
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("InternalServiceRequestHandler_ProcessRequest")]
-        public void InternalServiceRequestHandler_ProcessRequest_WhenExecutingUserInFirstOverload_ExpectThreadHasCorrectUserContext()
-        {
-            //------------Setup for test--------------------------
-            Mock<IPrincipal> principle = new Mock<IPrincipal>();
-            principle.Setup(p => p.Identity.Name).Returns("FakeUser");
-            principle.Setup(p => p.Identity.Name).Verifiable();
-
-            Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
-            NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
-            NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
-            ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
-            ctx.Setup(c => c.Request.QueryString).Returns(queryString);
-            ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost"));
-            ctx.Setup(c => c.Request.User).Returns(new GenericPrincipal(new GenericIdentity("FakeUser"), new []{(string)null}));
-
-            var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = principle.Object };
-
-            //------------Execute Test---------------------------
-            internalServiceRequestHandler.ProcessRequest(ctx.Object);
-
-            //------------Assert Results-------------------------
-            principle.Verify(p => p.Identity.Name, Times.AtLeast(1));
-
-        }
-
     }
 }

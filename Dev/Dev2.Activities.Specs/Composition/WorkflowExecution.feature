@@ -2798,6 +2798,29 @@ Scenario: Workflow with Assign  Delete and testing variables that hasn"t been as
 	  |                       |
 	  | [[result1]] = Failure |
 
+Scenario: Workflow with Assign  DeleteNullHandler and testing variables that hasn"t been assigned
+	  Given I have a workflow "WorkflowWithAssignDelete12"
+	  And "WorkflowWithAssignDelete12" contains an Assign "DelRec" as
+	  | variable    | value |
+	  | [[rec().a]] | 50    |
+	  And "WorkflowWithAssignDelete12" contains NullHandlerDelete "Delet12" as
+	  | Variable   | result      |
+	  | [[Del(1)]] | [[result1]] |
+	  When "WorkflowWithAssignDelete12" is executed
+      Then the workflow execution has "NO" error
+	  And the "DelRec" in WorkFlow "WorkflowWithAssignDelete12" debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | 50        |
+	  And the "DelRec" in Workflow "WorkflowWithAssignDelete12" debug outputs as  
+	  | # |                   |
+	  | 1 | [[rec(1).a]] = 50 |
+	  And the "Delet12" in WorkFlow "WorkflowWithAssignDelete12" debug inputs as
+	  | Records      |
+	  | [[Del(1)]] = |
+	  And the "Delet12" in Workflow "WorkflowWithAssignDelete12" debug outputs as  
+	  |                       |
+	  | [[result1]] = Failure |
+
 
 Scenario: Workflow with Assign Sort and testing variables that hasn"t been assigned
       Given I have a workflow "workflowithAssignandsortingrec12"
@@ -3058,6 +3081,16 @@ Examples:
     | WorkflowName                  | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestMySqlWFWithMySqlStarIndex | MySqlEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
 
+Scenario Outline: Database MySqlDB Database service using char in param name
+     Given I have a workflow "TestMySqlWFWithMySqlCharParamName"
+	 And "TestMySqlWFWithMySqlCharParamName" contains a mysql database service "procWithCharNoOutput" with mappings as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  | id               | 445           |                     |             |
+	  | val              | bart01        |                     |             |
+      When "TestMySqlWFWithMySqlCharParamName" is executed
+     Then the workflow execution has "NO" error
+
+
 Scenario Outline: Database MySqlDB Database service using int indexes
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -3100,8 +3133,6 @@ Scenario Outline: Database MySqlDB Database service scalar outputs
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
 	  |                      |
-	  | [[name]] = Monk |
-	  | [[email]] = dora@explorers.com |
 Examples: 
     | WorkflowName               | ServiceName | nameVariable | emailVariable | errorOccured |
     | TestMySqlWFWithMySqlScalar | MySqlEmail  | [[name]]     | [[email]]     | NO           |

@@ -121,7 +121,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         #endregion
-
+        
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsRead_CreateSecurityReadEndPoint")]

@@ -8,56 +8,45 @@ namespace Warewolf.UITests.Tools.Resources
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void DotNetDLLToolUITest()
-        {
-            Uimap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
-            Uimap.Open_DotNet_DLL_Connector_Tool_Large_View();
-        }
+        public void DotNetDLLTool_OpenLargeViewUITest()
+        {            
+            UIMap.Open_DotNet_DLL_Connector_Tool_Large_View();
+        }        
 
         #region Additional test attributes
 
-        [TestInitialize]
+       [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
 #if !DEBUG
-            Uimap.CloseHangingDialogs();
+            UIMap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
         }
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
+        
+        UIMap UIMap
         {
             get
             {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
-
-        UIMap Uimap
-        {
-            get
-            {
-                if ((_uiMap == null))
+                if ((_UIMap == null))
                 {
-                    _uiMap = new UIMap();
+                    _UIMap = new UIMap();
                 }
 
-                return _uiMap;
+                return _UIMap;
             }
         }
 
-        private UIMap _uiMap;
+        private UIMap _UIMap;
 
         #endregion
     }

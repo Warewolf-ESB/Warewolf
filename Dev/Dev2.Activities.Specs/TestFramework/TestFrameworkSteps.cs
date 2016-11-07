@@ -104,6 +104,12 @@ namespace Dev2.Activities.Specs.TestFramework
         [When(@"test folder is cleaned")]
         public void GivenTestFolderIsCleaned()
         {
+            DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
+            commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+
             //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
@@ -397,6 +403,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             var count = serviceTest.SelectedServiceTest.DebugForTest.Any(state => state.DisplayName == "Hello World");
+            var count = serviceTest.SelectedServiceTest.DebugForTest.All(state => state.DisplayName == "WorkflowWithTests");
             Assert.IsTrue(count);
         }
 
@@ -457,6 +464,7 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(new Guid("0bdc3207-ff6b-4c01-a5eb-c7060222f75d"));
                 var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
+                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 MyContext.Add("testFramework", testFramework);
@@ -888,6 +896,8 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"I close the test builder")]
         public void ThenICloseTheTestBuilder()
         {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest?.Dispose();
             ScenarioContext.Current.Remove("testFramework");
         }
 
@@ -1720,6 +1730,15 @@ namespace Dev2.Activities.Specs.TestFramework
             return null;
         }
 
+        [AfterScenario("TestFramework")]
+        public void CleanupTestFramework()
+        {
+            ServiceTestViewModel serviceTest;
+            if (ScenarioContext.TryGetValue("testFramework", out serviceTest))
+            {
+                serviceTest?.Dispose();
+            }
+        }
 
     }
 }

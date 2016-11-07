@@ -17,7 +17,7 @@ namespace Dev2.Runtime.WebServer.Security
 {
     public class AuthorizationRequest : IAuthorizationRequest
     {
-        public Tuple<string, string> Key => new Tuple<string, string>(User.Identity.Name, Url.OriginalString);
+        public Tuple<string, string, AuthorizationContext> Key => new Tuple<string, string, AuthorizationContext>(User.Identity.Name, Url.OriginalString,AuthorizationContext.Any);
         public WebServerRequestType RequestType { get; set; }
         public IPrincipal User { get; set; }
         public Uri Url { get; set; }

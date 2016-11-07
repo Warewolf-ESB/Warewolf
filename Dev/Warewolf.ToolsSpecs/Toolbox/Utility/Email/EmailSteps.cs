@@ -186,59 +186,5 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
                 Assert.AreEqual(expectedResult, actualValue);
             }
         }
-
-        [Given(@"Password is ""(.*)""")]
-        public void GivenPasswordIs(int p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"the Bcc is ""(.*)""")]
-        public void GivenTheBccIs(int p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"the Cc is ""(.*)""")]
-        public void GivenTheCcIs(int p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"the attachment is ""(.*)""")]
-        public void GivenTheAttachmentIs(string p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"the execution has ""(.*)"" error")]
-        public void GivenTheExecutionHasError(string p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"Result is ""(.*)""")]
-        public void GivenResultIs(string p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"I  want to attach an item")]
-        public void GivenIWantToAttachAnItem()
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [When(@"I expand the Email tool")]
-        public void WhenIExpandTheEmailTool()
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Then(@"the webs file chooser dialog opens")]
-        public void ThenTheWebsFileChooserDialogOpens()
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
     }
 }

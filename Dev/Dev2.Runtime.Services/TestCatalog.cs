@@ -122,6 +122,12 @@ namespace Dev2.Runtime
             }
         }
 
+        public void ReloadAllTests()
+        {
+            Tests.Clear();
+            Load();
+        }
+
         private void UpdateOutputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> outputDefs)
         {
             if (outputDefs.Count == 0)

@@ -14,7 +14,6 @@
              xmlns:dataList1="clr-namespace:Dev2.Studio.ViewModels.DataList;assembly=Dev2.Studio.Core"
              xmlns:dataList3="clr-namespace:Dev2.Studio.Core.Models.DataList;assembly=Dev2.Studio.Core"
              LostKeyboardFocus="UserControlLostKeyboardFocus"
-             MouseEnter="DataListView_OnMouseEnter"
              KeyboardNavigation.DirectionalNavigation="Continue" KeyboardNavigation.TabNavigation="Cycle"
              x:Name="DataListViewControl"
              AutomationProperties.AutomationId="UI_DataListView_AutoID"
@@ -33,7 +32,6 @@
     </i:Interaction.Behaviors>
     <Grid x:Name="MainGrid"
           LostKeyboardFocus="UIElement_OnLostKeyboardFocus" 
-          MouseEnter="DataListView_OnMouseEnter"
           Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -86,7 +84,7 @@
         </Grid>
 
         <Grid Grid.Row="1" Focusable="False">
-            <TreeView ItemsSource="{Binding Path=BaseCollection,Mode=TwoWay}"
+            <TreeView ItemsSource="{Binding Path=BaseCollection,Mode=TwoWay, IsAsync=True}"
                       HorizontalAlignment="Stretch"
                       Margin="{StaticResource ElementBorderTop}"
                       x:Name="ScalarExplorer"
@@ -94,7 +92,14 @@
                       HorizontalContentAlignment="Stretch"
                       Style="{StaticResource VariablesTreeViewStyle}"
                       Grid.IsSharedSizeScope="True"
-                      AutomationProperties.AutomationId="UI_VariableTreeView_AutoID">
+                      AutomationProperties.AutomationId="UI_VariableTreeView_AutoID"
+                      ScrollViewer.CanContentScroll="True"
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                      VirtualizingPanel.IsVirtualizingWhenGrouping="True" 
+                      VirtualizingStackPanel.ScrollUnit="Pixel"  
+                      VirtualizingStackPanel.CacheLength="20,20"
+                      VirtualizingStackPanel.CacheLengthUnit="Item">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type dataList3:ScalarItemModel}">
                         <Grid HorizontalAlignment="Stretch" 
@@ -118,7 +123,6 @@
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
                                                                 aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -184,7 +188,7 @@
                             </CheckBox>
                         </Grid>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type dataList3:RecordSetItemModel}" ItemsSource="{Binding Path=Children}">
+                    <HierarchicalDataTemplate DataType="{x:Type dataList3:RecordSetItemModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
                         <Grid HorizontalAlignment="Stretch" 
                               Visibility="{Binding IsVisible,Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
@@ -206,7 +210,6 @@
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
                                                                 aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -272,7 +275,7 @@
                             </CheckBox>
                         </Grid>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type dataList3:RecordSetFieldItemModel}" ItemsSource="{Binding Path=Children}">
+                    <HierarchicalDataTemplate DataType="{x:Type dataList3:RecordSetFieldItemModel}">
                         <Grid HorizontalAlignment="Stretch" 
                               Visibility="{Binding IsVisible,Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
@@ -294,7 +297,6 @@
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
                                                                 aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -360,7 +362,7 @@
                             </CheckBox>
                         </Grid>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type dataList3:ComplexObjectItemModel}" ItemsSource="{Binding Path=Children}">
+                    <HierarchicalDataTemplate DataType="{x:Type dataList3:ComplexObjectItemModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
                         <Grid HorizontalAlignment="Stretch" 
                               Visibility="{Binding IsVisible,Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
@@ -384,7 +386,6 @@
                                                                     Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                     ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                     DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                    AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
                                                                     ViewComplexObjectsCommand="{Binding DataContext.ViewComplexObjectsCommand,ElementName=DataListViewControl}"
                                                                     Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                     IsUsed="{Binding Path=IsUsed}"
@@ -452,7 +453,7 @@
                             </CheckBox>
                         </Grid>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type dataList3:DataListHeaderItemModel}" ItemsSource="{Binding Path=Children}">
+                    <HierarchicalDataTemplate DataType="{x:Type dataList3:DataListHeaderItemModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
                         <StackPanel>
                             <Grid Height="24" Margin="{StaticResource ControlBorderRight}">
                                 <Grid.ColumnDefinitions>

@@ -7,17 +7,17 @@ namespace Warewolf.UITests.Tools.Data
     public class Case_Convert
     {
         [TestMethod]
-		[TestCategory("Tools")]
-        public void CaseConvertUITest()
+		[TestCategory("Data Tools")]
+        public void CaseConvertTool_OpenLargeViewUITest()
         {
-            Uimap.Drag_Toolbox_Case_Conversion_Onto_DesignSurface();
-            //Uimap.Open_Case_Conversion_Tool_Large_View();
-            //Uimap.Enter_Values_Into_Case_Conversion_Tool_Large_View();
-            //Uimap.Click_Case_Conversion_Tool_Large_View_Done_Button();
+            Uimap.Open_Case_Conversion_Tool_Large_View();
+        }
+
+        [TestMethod]
+		[TestCategory("Data Tools")]
+        public void CaseConvertTool_OpenQVIUITest()
+        {
             Uimap.Open_Case_Conversion_Tool_Qvi_Large_View();
-            //Uimap.Click_Debug_Bibbon_Button();
-            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.CaseConversionToolDebugOutputExists = true;
-            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
         #region Additional test attributes
@@ -29,9 +29,15 @@ namespace Warewolf.UITests.Tools.Data
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Drag_Toolbox_Case_Conversion_Onto_DesignSurface();
         }
-
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
+        }
         UIMap Uimap
         {
             get

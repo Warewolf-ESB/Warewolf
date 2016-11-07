@@ -490,8 +490,16 @@ namespace Dev2.Studio.Dock
             switch(e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    for(int i = 0; i < e.NewItems.Count; i++)
-                        InsertItem(i + e.NewStartingIndex, e.NewItems[i]);
+                    //Count should always be 1, but add the else in case of some inconsistant adding
+                    if (e.NewItems.Count == 1)
+                    {
+                        InsertItem(e.NewStartingIndex, e.NewItems[0]);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < e.NewItems.Count; i++)
+                            InsertItem(i + e.NewStartingIndex, e.NewItems[i]);
+                    }
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     foreach(object newItem in e.OldItems)

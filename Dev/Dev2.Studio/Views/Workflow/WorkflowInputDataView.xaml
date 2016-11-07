@@ -52,6 +52,7 @@
                         <ig:XamGrid ItemsSource="{Binding WorkflowInputs}" 
                                     AutoGenerateColumns="False"
                                     Style="{StaticResource XamGridStyle}"
+                                    RowHeight="Dynamic"
                                     BorderThickness="0"       
                                     HeaderVisibility="Hidden"
                                     KeyboardNavigation="CurrentLayout"

@@ -25,6 +25,8 @@
         <ResourceDictionary Source="Elements/ProgressBar.xaml" />
         <ResourceDictionary Source="Elements/RadioButton.xaml" />
         <ResourceDictionary Source="Elements/Slider.xaml" />
+        <ResourceDictionary Source="Elements/ContextMenu.xaml" />
+        <ResourceDictionary Source="Elements/MenuItem.xaml" />
         
         <ResourceDictionary Source="Elements/TabControl.xaml" />
         <ResourceDictionary Source="Elements/TextBlock.xaml" />

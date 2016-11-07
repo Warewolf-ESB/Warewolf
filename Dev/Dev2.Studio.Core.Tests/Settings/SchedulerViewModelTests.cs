@@ -431,7 +431,7 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.SelectedHistory = selectedHistory; //Fires DebugOutMessage for set SelectedHistory
             //------------Assert Results-------------------------
             Assert.IsNotNull(schedulerViewModel.SelectedHistory);
-            eventAggregator.Verify(c => c.Publish(It.IsAny<DebugOutputMessage>()), Times.Exactly(2));
+            eventAggregator.Verify(c => c.Publish(It.IsAny<DebugOutputMessage>()), Times.Exactly(1));
 
             schedulerViewModel.SelectedHistory = selectedHistory;
             Assert.IsNotNull(schedulerViewModel.SelectedHistory);
@@ -1617,6 +1617,10 @@ namespace Dev2.Core.Tests.Settings
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
             schedulerViewModel.ScheduledResourceModel = resourceModel.Object;
             schedulerViewModel.Server = svr.Object;
+            if (Application.Current != null)
+            {
+                Application.Current.Shutdown();
+            }
             //------------Execute Test---------------------------
 
             Assert.AreEqual(2, schedulerViewModel.TaskList.Count);

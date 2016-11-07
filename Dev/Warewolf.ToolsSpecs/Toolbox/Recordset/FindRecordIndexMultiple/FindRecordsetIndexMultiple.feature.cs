@@ -11572,6 +11572,149 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Not Text multiple results usi" +
+            "ng recordset result")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotTextMultipleResultsUsingRecordsetResult()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Text multiple results usi" +
+                    "ng recordset result", ((string[])(null)));
+#line 2437
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table288 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table288.AddRow(new string[] {
+                        "rs().field",
+                        "45"});
+            table288.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table288.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table288.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table288.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table288.AddRow(new string[] {
+                        "rs().field",
+                        "741"});
+            table288.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 2438
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table288, "Given ");
+#line 2447
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2448
+ testRunner.And("search the recordset with type \"Not Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2449
+ testRunner.Then("the find records index multiple result should is \"[[res().val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2450
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2451
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table289 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "#",
+                        "",
+                        "",
+                        "",
+                        "And",
+                        "Require All Fields To Match",
+                        "Require All Matches To Be True"});
+            table289.AddRow(new string[] {
+                        "In Field(s)",
+                        "[[rs(1).field]] = 45",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table289.AddRow(new string[] {
+                        "",
+                        "[[rs(2).field]] = You",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table289.AddRow(new string[] {
+                        "",
+                        "[[rs(3).field]] = are",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table289.AddRow(new string[] {
+                        "",
+                        "[[rs(4).field]] = the",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table289.AddRow(new string[] {
+                        "",
+                        "[[rs(5).field]] = best",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table289.AddRow(new string[] {
+                        "",
+                        "[[rs(6).field]] = 741",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table289.AddRow(new string[] {
+                        "",
+                        "[[rs(7).field]] = user",
+                        "1",
+                        "Not Text",
+                        "",
+                        "",
+                        "",
+                        "NO",
+                        "NO"});
+#line 2452
+ testRunner.And("the debug inputs as", ((string)(null)), table289, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table290 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table290.AddRow(new string[] {
+                        "[[res(1).val]] =  1"});
+            table290.AddRow(new string[] {
+                        "[[res(2).val]] =  6"});
+#line 2461
+ testRunner.And("the debug output as", ((string)(null)), table290, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

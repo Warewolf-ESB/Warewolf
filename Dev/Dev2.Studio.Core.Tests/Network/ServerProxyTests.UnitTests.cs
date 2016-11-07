@@ -10,15 +10,12 @@
 
 using System;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.SignalR.Wrappers;
 using Dev2.SignalR.Wrappers.New;
 using Dev2.Threading;
-using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable InconsistentNaming
@@ -143,117 +140,6 @@ namespace Dev2.Core.Tests.Network
             //------------Assert Results-------------------------
             Assert.AreEqual(x,serverProxy.ID);
         }
-
-        [TestMethod, Timeout(3000)]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerProxy_Wait")]
-        public void ServerProxy_Wait_TaskThrowsHttpRequestException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsFalse()
-        {
-            //------------Setup for test--------------------------
-            const string ExMessage = "Server unavailable.";
-            var result = new StringBuilder();
-            var task = new Task<string>(() =>
-            {
-                throw new HttpRequestException(ExMessage);
-            });
-
-
-            var serverProxy = new TestServerProxy
-            {
-                IsConnected = true
-            };
-
-            //------------Execute Test---------------------------
-            serverProxy.TestWait(task, result);
-
-            //------------Assert Results-------------------------
-            StringAssert.Contains(result.ToString(), ExMessage);
-            Assert.IsTrue(task.IsFaulted);
-            Assert.IsFalse(serverProxy.IsConnected);
-        }
-
-        [TestMethod, Timeout(3000)]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ServerProxy_Wait")]
-        public void ServerProxy_Wait_TaskThrowsHttpClientException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
-        {
-            //------------Setup for test--------------------------
-            const string ExMessage = "StatusCode: 403";
-            var result = new StringBuilder();
-            var task = new Task<string>(() =>
-            {
-                throw new HttpClientException(ExMessage);
-            });
-
-
-            var serverProxy = new TestServerProxy
-            {
-                IsConnected = true
-            };
-
-            //------------Execute Test---------------------------
-            serverProxy.TestWait(task, result);
-
-            //------------Assert Results-------------------------
-            StringAssert.Contains(result.ToString(), ExMessage);
-            Assert.IsTrue(task.IsFaulted);
-            Assert.IsTrue(serverProxy.IsConnected);
-        }
-
-        [TestMethod, Timeout(3000)]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ServerProxy_Wait")]
-        public void ServerProxy_Wait_TaskThrowsException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
-        {
-            //------------Setup for test--------------------------
-            const string ExMessage = "Unknown Error Occurred";
-            var result = new StringBuilder();
-            var task = new Task<string>(() =>
-            {
-                throw new Exception(ExMessage);
-            });
-
-
-            var serverProxy = new TestServerProxy
-            {
-                IsConnected = true
-            };
-
-            //------------Execute Test---------------------------
-            serverProxy.TestWait(task, result);
-
-            //------------Assert Results-------------------------
-            StringAssert.Contains(result.ToString(), ExMessage);
-            Assert.IsTrue(task.IsFaulted);
-            Assert.IsTrue(serverProxy.IsConnected);
-        }
-
-        [TestMethod, Timeout(3000)]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerProxy_Wait")]
-        public void ServerProxy_Wait_TaskThrowsReconnectingBeforeInvocationInvalidOperationException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
-        {
-            //------------Setup for test--------------------------
-            const string ExMessage = "Connection started reconnecting before invocation result was received";
-            var result = new StringBuilder();
-            var task = new Task<string>(() =>
-            {
-                throw new InvalidOperationException(ExMessage);
-            });
-
-            var serverProxy = new TestServerProxy
-            {
-                IsConnected = true
-            };
-
-            //------------Execute Test---------------------------
-            serverProxy.TestWait(task, result);
-
-            //------------Assert Results-------------------------
-            StringAssert.Contains(result.ToString(), ExMessage);
-            Assert.IsTrue(task.IsFaulted);
-            Assert.IsTrue(serverProxy.IsConnected);
-        } 
         
         [TestMethod, Timeout(3000)]
         [Owner("Hagashen Naidu")]
@@ -394,19 +280,9 @@ namespace Dev2.Core.Tests.Network
             EsbProxy = hubProxy;
         }
 
-        public T TestWait<T>(Task<T> task, StringBuilder result)
-        {
-            task.Start();
-            return Wait(task, result, 10);
-        }
 
         #region Overrides of ServerProxy
 
-        protected override T Wait<T>(Task<T> task, StringBuilder result)
-        {
-            task.Start();
-            return task.Result;
-        }
 
         protected override void Wait(Task task)
         {

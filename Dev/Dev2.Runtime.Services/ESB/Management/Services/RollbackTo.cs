@@ -19,6 +19,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -26,6 +27,16 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class RollbackTo : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Any;
+        }
+
         IServerVersionRepository _serverExplorerRepository;
 
         #region Implementation of ISpookyLoadable<string>
@@ -67,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var guid = Guid.Parse(values["resourceId"].ToString());
                     var version = values["versionNumber"].ToString();
-                    Dev2Logger.Info(String.Format("Rollback to. ResourceId:{0} Version:{1}",guid,version));
+                    Dev2Logger.Info($"Rollback to. ResourceId:{guid} Version:{version}");
                     var res = ServerVersionRepo.RollbackTo(guid,version);
                     execMessage.Message = serializer.SerializeToBuilder(res); 
                 }

@@ -150,9 +150,9 @@ namespace Dev2.Activities.Specs.Composition
             string parentWorkflowName;
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
-            if(hasError == "AN")
+            if (hasError == "AN")
             {
                 var hasErrorState = debugStates.FirstOrDefault(state => state.HasError);
                 Assert.IsNotNull(hasErrorState);
@@ -166,9 +166,9 @@ namespace Dev2.Activities.Specs.Composition
             string parentWorkflowName;
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
-            if(hasError == "AN")
+            if (hasError == "AN")
             {
                 var innerWfHasErrorState = debugStates.FirstOrDefault(state => state.HasError && state.DisplayName.Equals(workflowName));
                 var parentWfhasErrorState = debugStates.FirstOrDefault(state => state.HasError && state.DisplayName.Equals(parentWorkflowName));
@@ -362,7 +362,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
 
             if(parentWorkflowName == forEachName)
@@ -388,7 +388,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
 
             if(parentWorkflowName == forEachName)
@@ -420,7 +420,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
 
             if(parentWorkflowName == forEachName)
@@ -458,7 +458,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
 
             if(parentWorkflowName == forEachName)
@@ -942,7 +942,7 @@ namespace Dev2.Activities.Specs.Composition
             string parentWorkflowName;
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             Guid workflowId = Guid.Empty;
 
             if(parentWorkflowName != workflowName)
@@ -972,7 +972,7 @@ namespace Dev2.Activities.Specs.Composition
             string parentWorkflowName;
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList(); 
             
             var end = debugStates.First(wf => wf.Name.Equals("End"));
             Assert.IsTrue(end.Duration.Ticks > 0);
@@ -985,7 +985,7 @@ namespace Dev2.Activities.Specs.Composition
             string parentWorkflowName;
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList(); 
 
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
@@ -1002,7 +1002,7 @@ namespace Dev2.Activities.Specs.Composition
             string parentWorkflowName;
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id =
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
@@ -1017,7 +1017,7 @@ namespace Dev2.Activities.Specs.Composition
             string parentWorkflowName;
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
             id.ForEach(x => Assert.AreEqual(childCount, debugStates.Count(a => a.ParentID == x.ID && a.DisplayName == toolName)));
@@ -1031,7 +1031,7 @@ namespace Dev2.Activities.Specs.Composition
             string parentWorkflowName;
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
             id.ForEach(x => Assert.AreEqual(1, debugStates.Count(a => a.ParentID == x.ID && a.DisplayName == nestedToolName)));
@@ -1111,7 +1111,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
 
             if (parentWorkflowName == workflowName)
@@ -1140,7 +1140,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             Guid workflowId = Guid.Empty;
 
             if(parentWorkflowName != workflowName)
@@ -1160,9 +1160,18 @@ namespace Dev2.Activities.Specs.Composition
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            var outputState = toolSpecificDebug.FirstOrDefault();
+            if (toolSpecificDebug.Count > 1)
+            {
+                if(toolSpecificDebug.Any(state => state.StateType == StateType.End))
+                {
+                    outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
+                }
+            }
+
             
-            _commonSteps.ThenTheDebugOutputAs(table, toolSpecificDebug
-                                                    .SelectMany(s => s.Outputs)
+            // ReSharper disable once PossibleNullReferenceException
+            _commonSteps.ThenTheDebugOutputAs(table, outputState.Outputs
                                                     .SelectMany(s => s.ResultsList).ToList(), isDataMergeDebug);
         }
 
@@ -1333,7 +1342,7 @@ namespace Dev2.Activities.Specs.Composition
                 dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
                 WebServer.Send(resourceModel, dataList.ToString(), new SynchronousAsyncWorker());
-                _resetEvt.WaitOne(120000);
+                _resetEvt.WaitOne(1000);
             }
         }
 
@@ -1506,7 +1515,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
 
             if(parentWorkflowName == workflowName)
@@ -1531,7 +1540,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("resourceRepo", out repository);
 
 
-            var debugStates = Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             debugStates.Clear();
 
             ExecuteWorkflow(resourceModel);
@@ -1632,6 +1641,23 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
         public void GivenItContainsDeleteAs(string parentName, string activityName, Table table)
         {
+            DsfDeleteRecordActivity nullHandlerActivity = new DsfDeleteRecordActivity { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var result = tableRow["result"];
+                var variable = tableRow["Variable"];
+
+                _commonSteps.AddVariableToVariableList(result);
+                nullHandlerActivity.RecordsetName = variable;
+                nullHandlerActivity.Result = result;
+            }
+
+            _commonSteps.AddActivityToActivityList(parentName, activityName, nullHandlerActivity);
+        }
+
+        [Given(@"""(.*)"" contains NullHandlerDelete ""(.*)"" as")]
+        public void GivenContainsNullHandlerDeleteAs(string parentName, string activityName, Table table)
+        {
             DsfDeleteRecordNullHandlerActivity nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
@@ -1645,6 +1671,7 @@ namespace Dev2.Activities.Specs.Composition
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, nullHandlerActivity);
         }
+
 
         [Given(@"""(.*)"" contains Find Record Index ""(.*)"" search ""(.*)"" and result ""(.*)"" as")]
         public void GivenItContainsFindRecordIndexSearchAndResultAs(string parentName, string activityName, string recsetToSearch, string resultVariable, Table table)

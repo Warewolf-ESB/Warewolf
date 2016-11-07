@@ -124,6 +124,7 @@ namespace Warewolf.UIBindingTests.Deploy
                     DeployTo = true
                 }
             });
+            server.Setup(a => a.ConnectAsync()).Returns(Task.FromResult(true));
             server.Setup(a => a.DisplayName).Returns("LocalHost");
             server.Setup(a => a.ResourceName).Returns("LocalHost");
             server.Setup(a => a.IsConnected).Returns(true);

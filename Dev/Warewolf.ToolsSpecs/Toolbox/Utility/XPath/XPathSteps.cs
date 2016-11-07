@@ -157,11 +157,5 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
                 Assert.AreEqual(tableRows[i][0], recordSetValues[i]);
             }
         }
-
-        [Given(@"The path variable is ""(.*)"" equals ""(.*)""(.*)""(.*)""")]
-        public void GivenThePathVariableIsEquals(string p0, string p1, int p2, string p3)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
     }
 }

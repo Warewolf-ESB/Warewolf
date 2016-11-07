@@ -89,7 +89,7 @@ namespace Warewolf.Core
 
         public ServiceInput(string name, string value)
         {
-            Name = name;
+            Name = name.Replace("`","");
             Value = value;
             RequiredField = true;
             EmptyIsNull = true;

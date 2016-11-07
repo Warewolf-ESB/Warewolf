@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -116,10 +115,6 @@ namespace Dev2.Runtime.ESB.WF
                 var debugDispatcher = _getDebugDispatcher();
                 if(debugState.StateType == StateType.End)
                 {
-                    while(!debugDispatcher.IsQueueEmpty)
-                    {
-                        Thread.Sleep(100);
-                    }
                     debugDispatcher.Write(debugState, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
                 }
                 else

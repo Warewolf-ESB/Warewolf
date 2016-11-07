@@ -827,6 +827,25 @@
                            Style="{StaticResource MenuTextBlockStyle}"
                            Visibility="{Binding IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                    <TextBlock TextWrapping="WrapWithOverflow" 
+                               x:Name="ErrorTextBlock" 
+                               TextTrimming="CharacterEllipsis"
+                               Text="{Binding TestMessage}" 
+                               Visibility="{Binding ShowTestMessage,Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <fa:ImageAwesome Width="14" 
+                             Height="14" 
+                             Margin="{StaticResource ControlBorderRight}" 
+                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                             Visibility="{Binding TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                             Icon="Check" 
+                             HorizontalAlignment="Right" />
+                    <fa:ImageAwesome Width="14" 
+                             Height="14" 
+                             Margin="{StaticResource ControlBorderRight}" 
+                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                             Visibility="{Binding TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                             Icon="Ban" 
+                             HorizontalAlignment="Right" />
                     <customControls:CircularProgressBar Width="25"
                                                         HorizontalAlignment="Right" 
                                                         Margin="{StaticResource ControlBorderRight}"
@@ -1050,6 +1069,20 @@
                            Style="{StaticResource MenuTextBlockStyle}"
                            Visibility="{Binding IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                    <fa:ImageAwesome Width="14" 
+                             Height="14" 
+                             Margin="{StaticResource ControlBorderRight}" 
+                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                             Visibility="{Binding TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                             Icon="Check" 
+                             HorizontalAlignment="Right" />
+                    <fa:ImageAwesome Width="14" 
+                             Height="14" 
+                             Margin="{StaticResource ControlBorderRight}" 
+                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                             Visibility="{Binding TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                             Icon="Ban" 
+                             HorizontalAlignment="Right" />
                     <customControls:CircularProgressBar Width="25"
                                                     HorizontalAlignment="Right" 
                                                     Margin="{StaticResource ControlBorderRight}"
@@ -1246,6 +1279,20 @@
                            Style="{StaticResource MenuTextBlockStyle}"
                            Visibility="{Binding IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                    <fa:ImageAwesome Width="14" 
+                             Height="14" 
+                             Margin="{StaticResource ControlBorderRight}" 
+                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                             Visibility="{Binding TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                             Icon="Check" 
+                             HorizontalAlignment="Right" />
+                    <fa:ImageAwesome Width="14" 
+                             Height="14" 
+                             Margin="{StaticResource ControlBorderRight}" 
+                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                             Visibility="{Binding TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                             Icon="Ban" 
+                             HorizontalAlignment="Right" />
                     <customControls:CircularProgressBar Width="25"
                                                     HorizontalAlignment="Right" 
                                                     Margin="{StaticResource ControlBorderRight}"

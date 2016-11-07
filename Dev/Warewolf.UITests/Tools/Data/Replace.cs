@@ -7,17 +7,10 @@ namespace Warewolf.UITests.Tools
     public class Replace
     {
         [TestMethod]
-		[TestCategory("Tools")]
-        public void ReplaceToolUITest()
-        {
-            Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();
-            //Uimap.Open_Replace_Tool_Large_View();
-            //Uimap.Enter_Values_Into_Replace_Tool_Large_View();
-            //Uimap.Click_Replace_Tool_Large_View_Done_Button();
-            //Uimap.Click_Replace_Tool_QVI_Button();
-            //Uimap.Click_Debug_Bibbon_Button();
-            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.ReplaceToolDebugOutputExists = true;
-            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
+		[TestCategory("Data Tools")]
+        public void ReplaceTool_OpenLargeViewUITest()
+        {                        
+            Uimap.Open_Replace_Tool_Large_View();
         }
 
         #region Additional test attributes
@@ -29,22 +22,9 @@ namespace Warewolf.UITests.Tools
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();
         }
-        
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {

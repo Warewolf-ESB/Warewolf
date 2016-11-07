@@ -7,17 +7,17 @@ namespace Warewolf.UITests.Tools.Data
     public class Data_Split
     {
         [TestMethod]
-		[TestCategory("Tools")]
-        public void DataSplitToolUITest()
+		[TestCategory("Data Tools")]
+        public void DataSplitTool_OpenLargeViewUITest()
         {
-            Uimap.Drag_Toolbox_Data_Split_Onto_DesignSurface();
             Uimap.Open_Data_Split_Large_View();
-            //Uimap.Enter_Values_Into_Data_Split_Tool_Large_View();
-            //Uimap.Click_Data_Split_Tool_Large_View_Done_Button();
+        }
+
+        [TestMethod]
+		[TestCategory("Data Tools")]
+        public void DataSplitTool_OpenQVIUITest()
+        {
             Uimap.Open_Data_Split_Tool_Qvi_Large_View();
-            //Uimap.Click_Debug_Bibbon_Button();
-            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.DataSplitToolDebugOutputExists = true;
-            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
         #region Additional test attributes
@@ -29,23 +29,15 @@ namespace Warewolf.UITests.Tools.Data
 #if !DEBUG
             Uimap.CloseHangingDialogs();
 #endif
-            Uimap.InitializeABlankWorkflow();
+            Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Drag_Toolbox_Data_Split_Onto_DesignSurface();
         }
-        
-        public TestContext TestContext
+        [TestCleanup]
+        public void MyTestCleanup()
         {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Click_MessageBox_No();
         }
-
-        private TestContext testContextInstance;
-
         UIMap Uimap
         {
             get

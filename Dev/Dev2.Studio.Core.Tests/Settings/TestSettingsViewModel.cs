@@ -46,6 +46,9 @@ namespace Dev2.Core.Tests.Settings
             base.ShowError(header, description);
         }
 
+        public override bool HasVariables => false;
+        public override bool HasDebugOutput => true;
+
         public SecurityViewModel TheSecurityViewModel
         {
             get

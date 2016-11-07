@@ -30,6 +30,8 @@ using Dev2.Validation;
 using Warewolf.Core;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+// ReSharper disable GenericEnumeratorNotDisposed
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -155,14 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(!positions.ContainsKey(a.OutputVariable))
                     {
-                        if (update == 0)
-                        {
-                            positions.Add(a.OutputVariable, 1);
-                        }
-                        else
-                        {
-                            positions.Add(a.OutputVariable, update);
-                        }
+                        positions.Add(a.OutputVariable, update == 0 ? 1 : update);
                     }
                     IsSingleValueRule.ApplyIsSingleValueRule(a.OutputVariable, allErrors);
                 });

@@ -68,16 +68,41 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PluginConnector.feature</DependentUpon>
     </Compile>
+    <Compile Include="SaveDialog.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SaveDialog.feature</DependentUpon>
+    </Compile>
     <Compile Include="SetDefaultPlaybackSettings.cs" />
     <Compile Include="Explorer.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Explorer.feature</DependentUpon>
     </Compile>
+    <Compile Include="SettingsTab.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettingsTab.feature</DependentUpon>
+    </Compile>
+    <Compile Include="SharepointConnectors.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharepointConnectors.feature</DependentUpon>
+    </Compile>
+    <Compile Include="SwitchTool.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SwitchTool.feature</DependentUpon>
+    </Compile>
     <Compile Include="WebConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WebConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="WorkflowTestingTab.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowTestingTab.feature</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -97,9 +122,29 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginConnector.feature.cs</LastGenOutput>
     </None>
+    <None Include="SaveDialog.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SaveDialog.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SettingsTab.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SettingsTab.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SharepointConnectors.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SharepointConnectors.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SwitchTool.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SwitchTool.feature.cs</LastGenOutput>
+    </None>
     <None Include="WebConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WebConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="WorkflowTestingTab.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WorkflowTestingTab.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

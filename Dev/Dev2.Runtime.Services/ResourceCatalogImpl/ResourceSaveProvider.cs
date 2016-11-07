@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Transactions;
 using System.Xml.Linq;
 using ChinhDo.Transactions;
@@ -135,7 +136,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 if (workspaceID == GlobalConstants.ServerWorkspaceID)
                 {
-                    CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
+                    Task.Run(() =>
+                    {
+                        CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
+                    });
+                    
                     SavedResourceCompileMessage(workspaceID, resource, result.Message);
                 }
                 if (ResourceSaved != null)

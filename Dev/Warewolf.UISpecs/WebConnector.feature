@@ -4,6 +4,7 @@
 	I want to perform a composition of recorded actions
 
 Scenario: Web Connector
+	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Click New Web Source Ribbon Button
 	And I Type TestSite into Web Source Wizard Address Textbox

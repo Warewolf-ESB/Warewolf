@@ -9,6 +9,7 @@ using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -17,6 +18,18 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class TestSharepointServerService : IEsbManagementEndpoint
     {
+
+
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        {
+            return Guid.Empty;
+        }
+
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
+
         #region Implementation of ISpookyLoadable<string>
 
         public string HandlesType()
@@ -53,8 +66,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(string.IsNullOrEmpty(serializedSource))
             {
-                var res = new ExecuteMessage();
-                res.HasError = true;
+                var res = new ExecuteMessage { HasError = true };
                 res.SetMessage(ErrorResource.NoSharepointServerSet);
                 Dev2Logger.Debug(ErrorResource.NoSharepointServerSet);
                 return serializer.SerializeToBuilder(res);

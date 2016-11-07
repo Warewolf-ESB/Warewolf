@@ -583,21 +583,62 @@ Scenario: Example Executing Scripting - Script example workflow
   | Input to Service | From Variable | Output from Service | To Variable     |
   When "Scripting - Script Test" is executed
   Then the workflow execution has "NO" error
-  And the "Script1" in WorkFlow "Scripting - Script" debug inputs as	
+  And the "Ruby" in WorkFlow "Scripting - Script" debug inputs as	
   | Language | Script   |
   | Ruby     | sleep(5) | 
-  And the "Script1" in Workflow "Scripting - Script" debug outputs as    
-  |                |
-  | [[Result]] = 5 | 
-  And the "Script2" in WorkFlow "Scripting - Script" debug inputs as	
+  And the "Ruby" in Workflow "Scripting - Script" debug outputs as    
+  |                    |
+  | [[RubyResult]] = 5 |
+  And the "JavaScript" in WorkFlow "Scripting - Script" debug inputs as	
   | Language   | Script          |
   | JavaScript | String = String |
-  And the "Script2" in Workflow "Scripting - Script" debug outputs as    
-  |                |
-  | [[Result]] = 7 | 
-  And the "Script3" in WorkFlow "Scripting - Script" debug inputs as	
+  And the "JavaScript" in Workflow "Scripting - Script" debug outputs as      
+  |                          |
+  | [[JavaScriptResult]] = 7 |
+  And the "Python" in WorkFlow "Scripting - Script" debug inputs as	
   | Language | Script          |
   | Python   | String = String |
-  And the "Script3" in Workflow "Scripting - Script" debug outputs as    
+  And the "Python" in Workflow "Scripting - Script" debug outputs as    
   |                  |
-  | [[Result]] = not one or two |
+  | [[PythonResult]] = not one or two |
+  
+  
+ Scenario: Example Executing Scripting - Ruby example workflow
+  Given I have a workflow "Scripting - Ruby Test"
+  And "Scripting - Ruby Test" contains "Scripting - Ruby" from server "localhost" with mapping as
+  | Input to Service | From Variable | Output from Service | To Variable     |
+  When "Scripting - Ruby Test" is executed
+  Then the workflow execution has "NO" error
+  And the "Ruby" in WorkFlow "Scripting - Ruby" debug inputs as	
+  | Language | Script   |
+  | Ruby     | sleep(5) | 
+  And the "Ruby" in Workflow "Scripting - Ruby" debug outputs as    
+  |                    |
+  | [[RubyResult]] = 5 |
+  
+ Scenario: Example Executing Scripting - Python example workflow
+  Given I have a workflow "Scripting - Python Test"
+  And "Scripting - Python Test" contains "Scripting - Python" from server "localhost" with mapping as
+  | Input to Service | From Variable | Output from Service | To Variable     |
+  When "Scripting - Python Test" is executed
+  Then the workflow execution has "NO" error 
+   And the "Python" in WorkFlow "Scripting - Python" debug inputs as	
+  | Language | Script          |
+  | Python   | String = String |
+  And the "Python" in Workflow "Scripting - Python" debug outputs as    
+  |                                   |
+  | [[PythonResult]] = not one or two |
+  
+ Scenario: Example Executing Scripting - Javascript example workflow
+  Given I have a workflow "Scripting - JavaScript Test"
+  And "Scripting - JavaScript Test" contains "Scripting - JavaScript" from server "localhost" with mapping as
+  | Input to Service | From Variable | Output from Service | To Variable     |
+  When "Scripting - JavaScript Test" is executed
+  Then the workflow execution has "NO" error 
+   And the "JavaScript" in WorkFlow "Scripting - JavaScript" debug inputs as	
+  | Language   | Script          |
+  | JavaScript | String = String |
+  And the "JavaScript" in Workflow "Scripting - JavaScript" debug outputs as    
+  |                          |
+  | [[JavaScriptResult]] = 7 |
+ 

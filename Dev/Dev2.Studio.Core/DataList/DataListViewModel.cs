@@ -154,6 +154,8 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+
+
         public ObservableCollection<IScalarItemModel> ScalarCollection
         {
             get
@@ -586,31 +588,22 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if (itemToRemove is IScalarItemModel)
             {
-                var item = ScalarCollection.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
-                if (item != null)
-                {
-                    ScalarCollection.Remove(item);
-                }
+                var item = itemToRemove as IScalarItemModel;
+                ScalarCollection.Remove(item);
                 CheckDataListItemsForDuplicates(DataList);
             }
             else if (itemToRemove is IRecordSetItemModel)
             {
-                var item = RecsetCollection.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
-                if (item != null)
-                {
-                    RecsetCollection.Remove(item);
-                }
+                var item = itemToRemove as IRecordSetItemModel;
+                RecsetCollection.Remove(item);
                 CheckDataListItemsForDuplicates(DataList);
             }
             else
             {
                 foreach (var recset in RecsetCollection)
                 {
-                    var item = recset.Children.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
-                    if (item != null)
-                    {
-                        recset.Children.Remove(item);
-                    }
+                    var item = itemToRemove as IRecordSetFieldItemModel;
+                    recset.Children.Remove(item);
                     CheckDataListItemsForDuplicates(recset.Children);
                 }
             }
@@ -633,13 +626,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 Resource.DataList = result;
             }
 
-            if (BaseCollection.Count >= 1)
-            {
-                BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
-                BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
-                BaseCollection[2].Children = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);
-                AddBlankRow(null);
-            }
             return result;
         }
 
@@ -722,13 +708,15 @@ namespace Dev2.Studio.ViewModels.DataList
             if (RecsetCollection != null)
             {
                 hasUnused = RecsetCollection.Any(sc => !sc.IsUsed);
+                if (!hasUnused)
+                {
+                    hasUnused = RecsetCollection.SelectMany(sc => sc.Children).Any(sc => !sc.IsUsed);
+                }
                 if (hasUnused)
                 {
                     DeleteCommand.RaiseCanExecuteChanged();
                     return true;
                 }
-
-                hasUnused = RecsetCollection.SelectMany(sc => sc.Children).Any(sc => !sc.IsUsed);
             }
 
             if (ComplexObjectCollection != null)
@@ -819,6 +807,13 @@ namespace Dev2.Studio.ViewModels.DataList
 
             DataListHeaderItemModel complexObjectNode = DataListItemModelFactory.CreateDataListHeaderItem("Object");
             BaseCollection.Add(complexObjectNode);
+
+            AddBlankRow(null);
+
+            BaseCollection[0].Children = ScalarCollection;
+            BaseCollection[1].Children = RecsetCollection;
+            BaseCollection[2].Children = ComplexObjectCollection;
+
             WriteToResourceModel();
         }
 
@@ -1058,6 +1053,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         public ISuggestionProvider Provider { get; set; }
+        
 
         private static string BuildErrorMessage(IDataListItemModel model)
         {

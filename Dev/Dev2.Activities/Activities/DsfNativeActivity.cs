@@ -42,6 +42,7 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
+// ReSharper disable NonReadonlyMemberInGetHashCode
 // ReSharper disable ReturnTypeCanBeEnumerable.Global
 
 // ReSharper disable CheckNamespace
@@ -615,34 +616,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Dev2Logger.Info("Debug Already Started");
             }
 
-            if (_debugState != null)
-            {
-                var type = GetType();
-                var instance = Activator.CreateInstance(type);
-                var activity = instance as Activity;
-                if (activity != null)
+                if (_debugState != null)
                 {
-                    _debugState.Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription();
-                }
-                var act = instance as DsfActivity;
-                try
-                {
-                    var debugInputs = GetDebugInputs(dataObject.Environment, update);
-                    Copy(debugInputs, _debugState.Inputs);
-                }
-                catch (Exception err)
-                {
-                    Dev2Logger.Error("DispatchDebugState", err);
-                    AddErrorToDataList(err, dataObject);
-                    var errorMessage = dataObject.Environment.FetchErrors();
-                    _debugState.ErrorMessage = errorMessage;
-                    _debugState.HasError = true;
-                    var debugError = err as DebugCopyException;
-                    if (debugError != null)
+                    var type = GetType();
+                    var instance = Activator.CreateInstance(type);
+                    var activity = instance as Activity;
+                    if (activity != null)
                     {
-                        _debugState.Inputs.Add(debugError.Item);
+                        _debugState.Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription();
                     }
-                }
+                    var act = instance as DsfActivity;
+                    try
+                    {
+                        var debugInputs = GetDebugInputs(dataObject.Environment, update);
+                        Copy(debugInputs, _debugState.Inputs);
+                    }
+                    catch (Exception err)
+                    {
+                        Dev2Logger.Error("DispatchDebugState", err);
+                        AddErrorToDataList(err, dataObject);
+                        var errorMessage = dataObject.Environment.FetchErrors();
+                        _debugState.ErrorMessage = errorMessage;
+                        _debugState.HasError = true;
+                        var debugError = err as DebugCopyException;
+                        if (debugError != null)
+                        {
+                            _debugState.Inputs.Add(debugError.Item);
+                        }
+                    }
 
                 if (dataObject.RemoteServiceType == "Workflow" && act != null && !_debugState.HasError)
                 {
@@ -1314,7 +1315,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </returns>
         public override int GetHashCode()
         {
-            return UniqueID != null ? UniqueID.GetHashCode() : 0;
+            return UniqueID?.GetHashCode() ?? 0;
         }
 
         public static bool operator ==(DsfNativeActivity<T> left, DsfNativeActivity<T> right)

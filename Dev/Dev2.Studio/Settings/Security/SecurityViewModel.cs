@@ -21,16 +21,14 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
-using Warewolf.Studio.AntiCorruptionLayer;
+using Newtonsoft.Json;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
@@ -45,7 +43,11 @@ namespace Dev2.Settings.Security
         readonly IEnvironmentModel _environment;
         bool _isUpdatingHelpText;
         private static IDomain _domain;
-        
+
+        public SecurityViewModel()
+        {
+            
+        }
 
         internal SecurityViewModel(SecuritySettingsTO securitySettings, IWin32Window parentWindow, IEnvironmentModel environment)
             : this(securitySettings, new DirectoryObjectPickerDialog(), parentWindow, environment)
@@ -62,16 +64,8 @@ namespace Dev2.Settings.Security
 
         static IEnvironmentViewModel GetEnvironment()
         {
-            var environment = EnvironmentRepository.Instance.ActiveEnvironment;
-
-            IServer server = new Server(environment);
-
-            if (server.Permissions == null)
-            {
-                server.Permissions = new List<IWindowsGroupPermission>();
-                server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
-            }
-            var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var env = new EnvironmentViewModel(shellViewModel.ActiveServer, shellViewModel, true);
             return env;
         }
 
@@ -82,10 +76,10 @@ namespace Dev2.Settings.Security
             VerifyArgument.IsNotNull(@"parentWindow", parentWindow);
             VerifyArgument.IsNotNull(@"environment", environment);
 
+            _environment = environment;
+            _parentWindow = parentWindow;
             _resourcePicker = (createfunc ?? CreateResourcePickerDialog)();
             _directoryObjectPicker = directoryObjectPicker;
-            _parentWindow = parentWindow;
-            _environment = environment;
             _directoryObjectPicker.AllowedObjectTypes = ObjectTypes.BuiltInGroups | ObjectTypes.Groups;
             _directoryObjectPicker.DefaultObjectTypes = ObjectTypes.Groups;
             _directoryObjectPicker.AllowedLocations = Locations.All;
@@ -103,24 +97,46 @@ namespace Dev2.Settings.Security
             _domain = new DomainWrapper();
         }
 
-        public ObservableCollection<WindowsGroupPermission> ServerPermissions { get; private set; }
+        public ObservableCollection<WindowsGroupPermission> ServerPermissions
+        {
+            get { return _serverPermissions; }
+            private set
+            {
+                _serverPermissions = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public ObservableCollection<WindowsGroupPermission> ResourcePermissions { get; private set; }
+        public ObservableCollection<WindowsGroupPermission> ResourcePermissions
+        {
+            get { return _resourcePermissions; }
+            private set
+            {
+                _resourcePermissions = value;
+                OnPropertyChanged();
+            }
+        }
 
+        [JsonIgnore]
         public ActivityDesignerToggle ServerHelpToggle { get; private set; }
 
+        [JsonIgnore]
         public ActivityDesignerToggle ResourceHelpToggle { get; private set; }
 
+        [JsonIgnore]
         public ICommand PickWindowsGroupCommand { get; private set; }
 
+        [JsonIgnore]
         public ICommand PickResourceCommand { get; private set; }
 
+        [JsonIgnore]
         public bool IsServerHelpVisible
         {
             get { return (bool)GetValue(IsServerHelpVisibleProperty); }
             set { SetValue(IsServerHelpVisibleProperty, value); }
         }
 
+        [JsonIgnore]
         public static readonly DependencyProperty IsServerHelpVisibleProperty = DependencyProperty.Register(@"IsServerHelpVisible", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false, IsServerHelpVisiblePropertyChanged));
 
         static void IsServerHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
@@ -128,13 +144,19 @@ namespace Dev2.Settings.Security
             ((SecurityViewModel)d).UpdateHelpText(HelpType.Server);
         }
 
+        [JsonIgnore]
         public bool IsResourceHelpVisible
         {
             get { return (bool)GetValue(IsResourceHelpVisibleProperty); }
             set { SetValue(IsResourceHelpVisibleProperty, value); }
         }
 
+        [JsonIgnore]
         public static readonly DependencyProperty IsResourceHelpVisibleProperty = DependencyProperty.Register(@"IsResourceHelpVisible", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false, IsResourceHelpVisiblePropertyChanged));
+        private ObservableCollection<WindowsGroupPermission> _serverPermissions;
+        private ObservableCollection<WindowsGroupPermission> _resourcePermissions;
+        private ObservableCollection<WindowsGroupPermission> _itemResourcePermissions;
+        private ObservableCollection<WindowsGroupPermission> _itemServerPermissions;
 
         static void IsResourceHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
@@ -148,6 +170,8 @@ namespace Dev2.Settings.Security
             securitySettings.WindowsGroupPermissions.Clear();
             Copy(ServerPermissions, securitySettings.WindowsGroupPermissions);
             Copy(ResourcePermissions, securitySettings.WindowsGroupPermissions);
+
+            SetItem(this);
         }
 
         void Copy(IList<WindowsGroupPermission> source, IList<WindowsGroupPermission> target)
@@ -224,13 +248,10 @@ namespace Dev2.Settings.Security
         {
             if (permission != null && permission.ResourceID != Guid.Empty)
             {
-                if (_environment.ResourceRepository != null)
+                var foundResourceModel = _environment.ResourceRepository?.FindSingle(model => model.ID == permission.ResourceID);
+                if (foundResourceModel != null)
                 {
-                    var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == permission.ResourceID);
-                    if (foundResourceModel != null)
-                    {
-                        _resourcePicker.SelectResource(foundResourceModel.ID);
-                    }
+                    _resourcePicker.SelectResource(foundResourceModel.ID);
                 }
             }
             var hasResult = _resourcePicker.ShowDialog(_environment);
@@ -314,7 +335,7 @@ namespace Dev2.Settings.Security
 
         void OnPermissionPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            IsDirty = true;
+            IsDirty = !Equals(ItemServerPermissions, ItemResourcePermissions);
             UpdateOverridingPermission(sender as WindowsGroupPermission, args.PropertyName);
             if (args.PropertyName == @"WindowsGroup" || args.PropertyName == @"ResourceName")
             {
@@ -490,6 +511,7 @@ namespace Dev2.Settings.Security
 
         #endregion
 
+        [JsonIgnore]
         public Visibility Visibility => IsInDomain();
 
         private static Visibility IsInDomain()
@@ -507,9 +529,184 @@ namespace Dev2.Settings.Security
 
 
         }
+
+        #region CloneItems
+
+        public void SetItem(SecurityViewModel model)
+        {
+            ItemServerPermissions = CloneServerPermissions(model.ServerPermissions);
+            ItemResourcePermissions = CloneResourcePermissions(model.ResourcePermissions);
+        }
+
+        public ObservableCollection<WindowsGroupPermission> ItemResourcePermissions
+        {
+            get { return _itemResourcePermissions; }
+            set
+            {
+                _itemResourcePermissions = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<WindowsGroupPermission> ItemServerPermissions
+        {
+            get { return _itemServerPermissions; }
+            set
+            {
+                _itemServerPermissions = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<WindowsGroupPermission> CloneResourcePermissions(ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(resourcePermissions, new JsonSerializerSettings { ContractResolver = resolver });
+            ObservableCollection<WindowsGroupPermission> clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
+            return clone;
+        }
+
+        private ObservableCollection<WindowsGroupPermission> CloneServerPermissions(ObservableCollection<WindowsGroupPermission> serverPermissions)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(serverPermissions, new JsonSerializerSettings { ContractResolver = resolver });
+            ObservableCollection<WindowsGroupPermission> clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
+            return clone;
+        }
+
+        private bool Equals(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        {
+            if (ReferenceEquals(null, serverPermissions))
+            {
+                return false;
+            }
+            if (ReferenceEquals(null, resourcePermissions))
+            {
+                return false;
+            }
+
+            return EqualsSeq(serverPermissions, resourcePermissions);
+        }
+
+        private bool EqualsSeq(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        {
+            var serverPermissionCompare = ServerPermissionsCompare(serverPermissions, true);
+            var resourcePermissionCompare = ResourcePermissionsCompare(resourcePermissions, true);
+            var @equals = serverPermissionCompare && resourcePermissionCompare;
+
+            return @equals;
+        }
+
+        private bool ServerPermissionsCompare(ObservableCollection<WindowsGroupPermission> serverPermissions, bool serverPermissionCompare)
+        {
+            if (_serverPermissions == null)
+            {
+                return true;
+            }
+            if (_serverPermissions.Count != serverPermissions.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _serverPermissions.Count; i++)
+            {
+                if (ServerPermissions[i].ResourceName != serverPermissions[i].ResourceName)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].WindowsGroup != serverPermissions[i].WindowsGroup)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].DeployTo != serverPermissions[i].DeployTo)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].DeployFrom != serverPermissions[i].DeployFrom)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].Administrator != serverPermissions[i].Administrator)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].View != serverPermissions[i].View)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].Execute != serverPermissions[i].Execute)
+                {
+                    serverPermissionCompare = false;
+                }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].Contribute != serverPermissions[i].Contribute)
+                {
+                    serverPermissionCompare = false;
+                }
+            }
+            return serverPermissionCompare;
+        }
+
+        private bool ResourcePermissionsCompare(ObservableCollection<WindowsGroupPermission> resourcePermissions, bool resourcePermissionCompare)
+        {
+            if (_resourcePermissions == null)
+            {
+                return true;
+            }
+            if (_resourcePermissions.Count != resourcePermissions.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _resourcePermissions.Count; i++)
+            {
+                if (ResourcePermissions[i].ResourceName != resourcePermissions[i].ResourceName)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].WindowsGroup != resourcePermissions[i].WindowsGroup)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].DeployTo != resourcePermissions[i].DeployTo)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].DeployFrom != resourcePermissions[i].DeployFrom)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].Administrator != resourcePermissions[i].Administrator)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].View != resourcePermissions[i].View)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].Execute != resourcePermissions[i].Execute)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].Contribute != resourcePermissions[i].Contribute)
+                {
+                    resourcePermissionCompare = false;
+                }
+            }
+            return resourcePermissionCompare;
+        }
+
+        #endregion
     }
-
-
-
-
 }
