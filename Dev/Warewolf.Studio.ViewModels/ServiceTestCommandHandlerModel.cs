@@ -117,13 +117,21 @@ namespace Warewolf.Studio.ViewModels
                 {
                     selectedServiceTest.TestFailing = res.Result.RunTestResult == RunResult.TestFailed;
                     selectedServiceTest.TestPassed = res.Result.RunTestResult == RunResult.TestPassed;
-                    selectedServiceTest.TestInvalid = res.Result.RunTestResult == RunResult.TestInvalid;
+                    selectedServiceTest.TestInvalid = res.Result.RunTestResult == RunResult.TestInvalid || res.Result.RunTestResult == RunResult.TestResourceDeleted;
                     selectedServiceTest.TestPending = res.Result.RunTestResult != RunResult.TestFailed &&
                                                       res.Result.RunTestResult != RunResult.TestPassed &&
                                                       res.Result.RunTestResult != RunResult.TestInvalid &&
                                                       res.Result.RunTestResult != RunResult.TestResourceDeleted &&
                                                       res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
 
+                    if (res.Result.RunTestResult == RunResult.TestResourceDeleted)
+                    {
+                        selectedServiceTest.IsTestRunning = false;
+                        var popupController = CustomContainer.Get<IPopupController>();
+                        popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                        var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                        shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.ID);
+                    }
 
                     selectedServiceTest.Outputs = res.Outputs?.Select(output =>
                     {
@@ -157,13 +165,6 @@ namespace Warewolf.Studio.ViewModels
                         }
                     }
 
-                    if (res.Result.RunTestResult == RunResult.TestResourceDeleted)
-                    {
-                        var popupController = CustomContainer.Get<IPopupController>();
-                        popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
-                        var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                        shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.ID);
-                    }
                     if (selectedServiceTest.Enabled)
                     {
                         selectedServiceTest.DebugForTest = res.Result.DebugForTest;
