@@ -97,7 +97,6 @@
     <Compile Include="Tools\HTTP Web Methods\HttpWebGet.cs" />
     <Compile Include="Tools\HTTP Web Methods\HttpWebPut.cs" />
     <Compile Include="Tools\HTTP Web Methods\HttpWebDelete.cs" />
-    <Compile Include="Tabs and Panes\AssignToolInUnpinnedWorkflowTab.cs" />
     <Compile Include="Tabs and Panes\PinUnpinPanes.cs" />
     <Compile Include="Tools\Loop Constructs\Selectandapply.cs" />
     <Compile Include="Tools\Loop Constructs\ForEach.cs" />
