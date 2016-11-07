@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Write
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("File Tools")]
         public void WriteTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Write_File_Tool_Large_View();

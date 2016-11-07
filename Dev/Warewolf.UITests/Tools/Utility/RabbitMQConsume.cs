@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Utility
     public class RabbitMQConsume
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void RabbitMQConsumeTool_OpenLargeViewUITest()
         {
             UIMap.Open_RabbitMqConsume_LargeView();

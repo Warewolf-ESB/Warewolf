@@ -7,14 +7,14 @@ namespace Warewolf.UITests.Tools.Utility
     public class Comment
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Utility Tools")]
         public void CommentTool_OpenLargeViewUITest()
         {
             UIMap.Drag_Toolbox_Comment_Onto_DesignSurface();
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Utility Tools")]
         public void ToolDesigners_CommentSmallView_Debug_DebugOutputWorksFine_UITest()
         {
             UIMap.Drag_Toolbox_Comment_Onto_DesignSurface();

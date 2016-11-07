@@ -7,7 +7,7 @@ namespace Warewolf.UITests
     public class CountTest
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Recordset Tools")]
         public void Count_OpenLargeViewUITest()
         {            
             UIMap.Open_CountRecords_Large_View();            
@@ -26,6 +26,12 @@ namespace Warewolf.UITests
             UIMap.Drag_Toolbox_Count_Records_Onto_DesignSurface();
         }
 
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
         UIMap UIMap
         {
             get

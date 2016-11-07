@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Random
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void RandomTool_OpenLargeViewUITest()
         {
             UIMap.Open_Random_Large_Tool();

@@ -56,7 +56,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(string.IsNullOrEmpty(serviceName))
             {
-                throw new ArgumentNullException("serviceName");
+                throw new ArgumentNullException(nameof(serviceName));
             }
             ToolboxFriendlyName = toolboxFriendlyName;
             IconPath = iconPath;

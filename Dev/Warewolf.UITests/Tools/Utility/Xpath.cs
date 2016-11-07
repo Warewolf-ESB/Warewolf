@@ -7,21 +7,21 @@ namespace Warewolf.UITests.Tools
     public class Xpath
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void XpathTool_OpenLargeViewUITest()
         {
             UIMap.Open_Xpath_Tool_Large_View();
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void XpathTool_OpenQVIUITest()
         {                                
             UIMap.Open_Xpath_Tool_Qvi_Large_View();
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void ToolDesigners_XpathlargeView_TabbingToDone_FocusIsSetToDone()
         {
             UIMap.Open_Xpath_Tool_Large_View();

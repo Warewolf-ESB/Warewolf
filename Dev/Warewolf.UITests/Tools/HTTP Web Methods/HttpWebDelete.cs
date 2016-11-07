@@ -7,14 +7,14 @@ namespace Warewolf.UITests.Tools
     public class HttpWebDelete
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("HTTP Tools")]
         public void HttpWebDeleteToolClickLargeViewDoneButton()
         {
             UIMap.Open_DeleteWeb_Tool_Large_View();
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("HTTP Tools")]
         public void HttpWebDeleteToolClickAddNewSourceButtonOpensNewSourceWizardTab()
         {
             UIMap.Open_DeleteWeb_Tool_Large_View();
@@ -22,7 +22,7 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("HTTP Tools")]
         public void HttpWebDeleteToolClickTestInputsDoneButton()
         {
             UIMap.Open_DeleteWeb_Tool_Large_View();
@@ -42,12 +42,7 @@ namespace Warewolf.UITests.Tools
             UIMap.InitializeABlankWorkflow();
             UIMap.Drag_DeleteWeb_Toolbox_Onto_Workflow_Surface();
         }
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
+
         UIMap UIMap
         {
             get
