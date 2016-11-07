@@ -6504,10 +6504,10 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Open_Explorer_First_Item_Dependancies_With_Context_Menu - Use 'Open_Explorer_First_Item_Dependancies_With_Context_MenuParams' to pass parameters into this method.
+        /// I_Open_Explorer_First_Item_Context_Menu - Use 'I_Open_Explorer_First_Item_Context_MenuParams' to pass parameters into this method.
         /// </summary>
-        [When(@"I Open Explorer First Item Dependancies With Context Menu")]
-        public void Open_Explorer_First_Item_Dependancies_With_Context_Menu()
+        [When(@"I I Open Explorer First Item Context Menu")]
+        public void I_Open_Explorer_First_Item_Context_Menu()
         {
             #region Variable Declarations
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
@@ -6519,13 +6519,13 @@ namespace Warewolf.UITests
             Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
 
             // Verify that the 'Exists' property of 'Show Version History' menu item equals 'True'
-            Assert.AreEqual(this.Open_Explorer_First_Item_Dependancies_With_Context_MenuParams.ShowVersionHistoryExists, showVersionHistory.Exists, "Show version history does not exist after right clicking a resource");
+            Assert.AreEqual(this.I_Open_Explorer_First_Item_Context_MenuParams.ShowVersionHistoryExists, showVersionHistory.Exists, "Show version history does not exist after right clicking a resource");
 
             // Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
-            Assert.AreEqual(this.Open_Explorer_First_Item_Dependancies_With_Context_MenuParams.ViewSwaggerExists, viewSwagger.Exists, "View Swagger button does not exist");
+            Assert.AreEqual(this.I_Open_Explorer_First_Item_Context_MenuParams.ViewSwaggerExists, viewSwagger.Exists, "View Swagger button does not exist");
 
             // Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
-            Assert.AreEqual(this.Open_Explorer_First_Item_Dependancies_With_Context_MenuParams.ViewSwaggerEnabled, viewSwagger.Enabled, "View swagger is disabled");
+            Assert.AreEqual(this.I_Open_Explorer_First_Item_Context_MenuParams.ViewSwaggerEnabled, viewSwagger.Enabled, "View swagger is disabled");
         }
         
         /// <summary>
@@ -12761,15 +12761,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Open_Explorer_First_Item_Dependancies_With_Context_MenuParams Open_Explorer_First_Item_Dependancies_With_Context_MenuParams
+        public virtual I_Open_Explorer_First_Item_Context_MenuParams I_Open_Explorer_First_Item_Context_MenuParams
         {
             get
             {
-                if ((this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams == null))
+                if ((this.mI_Open_Explorer_First_Item_Context_MenuParams == null))
                 {
-                    this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams = new Open_Explorer_First_Item_Dependancies_With_Context_MenuParams();
+                    this.mI_Open_Explorer_First_Item_Context_MenuParams = new I_Open_Explorer_First_Item_Context_MenuParams();
                 }
-                return this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams;
+                return this.mI_Open_Explorer_First_Item_Context_MenuParams;
             }
         }
         
@@ -14437,7 +14437,7 @@ namespace Warewolf.UITests
         
         private Open_DotNet_DLL_Connector_Tool_Large_ViewParams mOpen_DotNet_DLL_Connector_Tool_Large_ViewParams;
         
-        private Open_Explorer_First_Item_Dependancies_With_Context_MenuParams mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams;
+        private I_Open_Explorer_First_Item_Context_MenuParams mI_Open_Explorer_First_Item_Context_MenuParams;
         
         private Open_Explorer_First_Item_Tests_With_Context_MenuParams mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
         
@@ -19319,10 +19319,10 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Open_Explorer_First_Item_Dependancies_With_Context_Menu'
+    /// Parameters to be passed into 'I_Open_Explorer_First_Item_Context_Menu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Explorer_First_Item_Dependancies_With_Context_MenuParams
+    public class I_Open_Explorer_First_Item_Context_MenuParams
     {
         
         #region Fields
