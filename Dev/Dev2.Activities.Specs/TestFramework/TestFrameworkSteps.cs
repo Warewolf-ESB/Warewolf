@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Hosting;
@@ -111,9 +112,9 @@ namespace Dev2.Activities.Specs.TestFramework
             commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
 
             //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
-            var environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
-            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
+            //var environmentModel = EnvironmentRepository.Instance.Source;
+            //environmentModel.Connect();
+            //((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
         }
 
         [Then(@"test folder is cleaned")]
@@ -403,7 +404,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             var count = serviceTest.SelectedServiceTest.DebugForTest.Any(state => state.DisplayName == "Hello World");
-            var count = serviceTest.SelectedServiceTest.DebugForTest.All(state => state.DisplayName == "WorkflowWithTests");
+            //var count = serviceTest.SelectedServiceTest.DebugForTest.All(state => state.DisplayName == "WorkflowWithTests");
             Assert.IsTrue(count);
         }
 
@@ -464,7 +465,7 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(new Guid("0bdc3207-ff6b-4c01-a5eb-c7060222f75d"));
                 var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
-                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+                //var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 MyContext.Add("testFramework", testFramework);
@@ -1734,7 +1735,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void CleanupTestFramework()
         {
             ServiceTestViewModel serviceTest;
-            if (ScenarioContext.TryGetValue("testFramework", out serviceTest))
+            if (MyContext.TryGetValue("testFramework", out serviceTest))
             {
                 serviceTest?.Dispose();
             }

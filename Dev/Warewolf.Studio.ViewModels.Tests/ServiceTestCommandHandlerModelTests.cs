@@ -505,6 +505,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var dupTest=testFrameworkViewModel.DuplicateTest(serviceTestModel, 1);
             //---------------Test Result -----------------------
+            Assert.IsTrue(dupTest.IsDirty);
             Assert.AreEqual("Test 1", dupTest.TestName);
             Assert.AreEqual("Test 1 *", dupTest.NameForDisplay);
             Assert.AreEqual(resourceId, dupTest.ParentId);

@@ -208,7 +208,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(60, properties.Length);
+            Assert.AreEqual(61, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
