@@ -166,7 +166,17 @@ namespace Dev2.Studio.ViewModels
                     }
                     else
                     {
-                        serviceTestViewModel?.CreateTestCommand.Execute(message);
+                        if (serviceTestViewModel != null)
+                        {
+                            if (serviceTestViewModel.IsDirty)
+                            {
+                                serviceTestViewModel.CreateTestCommand.Execute(message);
+                            }
+                            else
+                            {
+                                serviceTestViewModel.PrepopulateTestsUsingDebug(message.RootItems);
+                            }
+                        }
                     }
                 }
                 AddAndActivateWorkSurface(found);

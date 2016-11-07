@@ -134,7 +134,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        private void PrepopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models)
+        public void PrepopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models)
         {
             CreateTests();
             AddFromDebug(models);
