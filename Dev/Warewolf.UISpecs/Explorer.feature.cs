@@ -93,17 +93,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
  testRunner.And("I Filter the Explorer with \"Local_DoubleDice\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
- testRunner.And("I Open Explorer First Item Dependancies With Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Open Explorer First Item Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
  testRunner.And("I Click ViewSwagger From ExplorerContextMenu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.And("I Open Explorer First Item Dependancies With Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Open Explorer First Item Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
  testRunner.And("I Open Explorer First Item Version History With Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
  testRunner.And("I Rename LocalWorkflow To SecodWorkFlow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
- testRunner.And("I Open Explorer First Item Dependancies With Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Open Explorer First Item Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
  testRunner.And("I Click Duplicate From Explorer Context Menu for Service \"SecondWorkFlow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
@@ -115,7 +115,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.And("I Filter the Explorer with \"SecondWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
- testRunner.And("I Open Explorer First Item Dependancies With Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Open Explorer First Item Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
  testRunner.And("I Select Show Dependencies In Explorer Context Menu for service \"SecondWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28

@@ -12,18 +12,18 @@ Scenario: Explorer Context Menu Items
 	And I Click Workflow CollapseAll
 	And I Save With Ribbon Button And Dialog As "Local_DoubleDice"	
 	And I Filter the Explorer with "Local_DoubleDice"
-	And I Open Explorer First Item Dependancies With Context Menu
+	And I Open Explorer First Item Context Menu
 	And I Click ViewSwagger From ExplorerContextMenu
-	And I Open Explorer First Item Dependancies With Context Menu 
+	And I Open Explorer First Item Context Menu 
 	And I Open Explorer First Item Version History With Context Menu 
 	And I Rename LocalWorkflow To SecodWorkFlow 
-	And I Open Explorer First Item Dependancies With Context Menu 
+	And I Open Explorer First Item Context Menu 
 	And I Click Duplicate From Explorer Context Menu for Service "SecondWorkFlow"
 	And I Enter Duplicate workflow name 
 	And I Click UpdateDuplicateRelationships 
 	And I Click Duplicate From Duplicate Dialog 
 	And I Filter the Explorer with "SecondWorkflow"
-	And I Open Explorer First Item Dependancies With Context Menu 
+	And I Open Explorer First Item Context Menu 
 	And I Select Show Dependencies In Explorer Context Menu for service "SecondWorkflow"
 	And I Click Close Dependecy Tab 
 	And I Click View Api From Context Menu

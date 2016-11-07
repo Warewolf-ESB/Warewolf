@@ -2476,6 +2476,13 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton, new Point(35, 10));
         }
 
+        [When(@"I Open Explorer First Item Context Menu")]
+        public void WhenIOpenExplorerFirstItemContextMenu()
+        {
+            Open_Explorer_First_Item_With_Context_Menu();
+        }
+
+
         [Given(@"That The First Test ""(.*)"" Passing")]
         [Then(@"The First Test ""(.*)"" Passing")]
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Passing(string IsIsNot)
