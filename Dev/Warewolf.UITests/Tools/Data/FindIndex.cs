@@ -25,12 +25,7 @@ namespace Warewolf.UITests.Tools
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Drag_Toolbox_Find_Index_Onto_DesignSurface();
         }
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.Click_Close_Workflow_Tab_Button();
-            Uimap.Click_MessageBox_No();
-        }
+
         UIMap Uimap
         {
             get

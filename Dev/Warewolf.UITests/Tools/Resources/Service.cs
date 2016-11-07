@@ -53,6 +53,7 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists
                 , "Hello World work flow does not exist after selecting OK from Service Picker");
             UIMap.Delete_HelloWorld_With_Context_Menu();
+            UIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
         }
 
         #region Additional test attributes
@@ -67,30 +68,6 @@ namespace Warewolf.UITests.Tools
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
         }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap UIMap
         {

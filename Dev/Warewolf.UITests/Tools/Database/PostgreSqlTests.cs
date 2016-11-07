@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class PostgreSqlTests
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Database Tools")]
         public void PostgreSqlTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Postgre_Tool_Large_View();
@@ -27,13 +27,7 @@ namespace Warewolf.UITests.Tools
             UIMap.Drag_Toolbox_PostgreSql_Onto_DesignSurface();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
-            UIMap UIMap
+        UIMap UIMap
         {
             get
             {
