@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Utility
     public class Date_Time
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void DateTimeTool_OpenLargeViewUITest()
         {
             UIMap.Open_DateTime_LargeView();
