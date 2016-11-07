@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Utility
     public class Calculate
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Utility Tools")]
         public void CalculateToolUITest()
         {
             UIMap.Open_Calculate_Tool_Large_View();
