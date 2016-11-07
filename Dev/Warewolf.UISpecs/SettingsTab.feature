@@ -18,11 +18,11 @@ Scenario: Checking and Unchecking Permissions Checkboxes
 	And I UnCheck Public View 
 	And I Check Public Administrator 
 	And I UnCheck Public Administrator 
-	And I Click Save Ribbon Button With No Save Dialog 
+	And I Click Save Ribbon Button Without Expecting a Dialog
 	And I Click Select Resource Button From Resource Permissions 
-	And I Select "Dice1" From Service Picker
-	And I Assert Dice Is Selected InSettings Tab Permissions Row 1 
+	And I Select "Dice1" From Service Picker	
 	And I Enter Public As Windows Group 
 	And I Check Resource Contribute 
-	And I Click Save Ribbon Button With No Save Dialog 
+	And I Assert Dice Is Selected InSettings Tab Permissions Row1
+	And I Click Save Ribbon Button Without Expecting a Dialog
 	And I Click Close Settings Tab Button 
