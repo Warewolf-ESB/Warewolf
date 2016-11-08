@@ -11,6 +11,7 @@ namespace Warewolf.UITests.Tools.Storage_Dropbox
         public void Click_Dropbox_Download_Large_View_Done_Button_With_Invalid_Large_View()
         {
             UIMap.Open_DropboxFileOperation_Large_View();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD.Exists);
         }
 
         #region Additional test attributes
