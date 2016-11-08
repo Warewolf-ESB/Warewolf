@@ -50,7 +50,6 @@ namespace Dev2.UI
             ItemsSource = IntellisenseResults;
             _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
             DataObject.AddPastingHandler(this, OnPaste);
-            SetTextBoxHeight(Text);
         }
 
         void OnPaste(object sender, DataObjectPastingEventArgs dataObjectPastingEventArgs)
@@ -368,7 +367,6 @@ namespace Dev2.UI
         protected override void OnTextChanged(RoutedEventArgs e)
         {
             var text = Text ?? string.Empty;
-            SetTextBoxHeight(text);
             if (CheckHasUnicodeInText(text))
             {
                 return;
@@ -378,18 +376,6 @@ namespace Dev2.UI
             base.OnTextChanged(e);
             ValidateText(text);
             _desiredResultSet = string.IsNullOrEmpty(text) ? IntellisenseDesiredResultSet.EntireSet : IntellisenseDesiredResultSet.ClosestMatch;
-        }
-
-        private void SetTextBoxHeight(string text)
-        {
-            if (string.IsNullOrEmpty(text))
-            {
-                Height = 25;
-            }
-            else
-            {
-                Height = text.Contains("\r\n") ? double.NaN : 25;
-            }
         }
 
         private void ValidateText(string text)
