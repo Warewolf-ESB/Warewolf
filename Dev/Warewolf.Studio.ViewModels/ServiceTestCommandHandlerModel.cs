@@ -106,6 +106,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
+            selectedServiceTest = selectedServiceTest as ServiceTestModel;
             if (selectedServiceTest == null || resourceModel == null || asyncWorker == null || selectedServiceTest.IsNewTest)
             {
                 return;
@@ -115,6 +116,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (res?.Result != null)
                 {
+                    if (res.Result.RunTestResult == RunResult.TestResourceDeleted)
+                    {
+                        selectedServiceTest.IsTestRunning = false;
+                        var popupController = CustomContainer.Get<IPopupController>();
+                        popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                        var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                        shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.ID);
+                        return;
+                    }
+
                     selectedServiceTest.TestFailing = res.Result.RunTestResult == RunResult.TestFailed;
                     selectedServiceTest.TestPassed = res.Result.RunTestResult == RunResult.TestPassed;
                     selectedServiceTest.TestInvalid = res.Result.RunTestResult == RunResult.TestInvalid || res.Result.RunTestResult == RunResult.TestResourceDeleted;
@@ -123,15 +134,6 @@ namespace Warewolf.Studio.ViewModels
                                                       res.Result.RunTestResult != RunResult.TestInvalid &&
                                                       res.Result.RunTestResult != RunResult.TestResourceDeleted &&
                                                       res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
-
-                    if (res.Result.RunTestResult == RunResult.TestResourceDeleted)
-                    {
-                        selectedServiceTest.IsTestRunning = false;
-                        var popupController = CustomContainer.Get<IPopupController>();
-                        popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
-                        var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                        shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.ID);
-                    }
 
                     selectedServiceTest.Outputs = res.Outputs?.Select(output =>
                     {
@@ -148,18 +150,30 @@ namespace Warewolf.Studio.ViewModels
                             var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
                             foreach (var serviceTestStep in serviceTestSteps)
                             {
-                                serviceTestStep.Result = resTestStep.Result;
-
-                                foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == serviceTestStep.UniqueId))
+                                var resServiceTestStep = serviceTestStep as ServiceTestStep;
+                                if (resServiceTestStep != null)
                                 {
-                                    serviceTestStep.Result = testStep.Result;
+                                    resServiceTestStep.Result = resTestStep.Result;
 
-                                    serviceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, serviceTestStep as ServiceTestStep);
-                                }
-                                var children = resTestStep.Children;
-                                if (children.Count > 0)
-                                {
-                                    SetChildrenTestResult(children, serviceTestStep.Children);
+                                    if (resServiceTestStep.MockSelected)
+                                    {
+                                        resServiceTestStep.TestPending = false;
+                                        resServiceTestStep.TestPassed = false;
+                                        resServiceTestStep.TestFailing = false;
+                                        resServiceTestStep.TestInvalid = false;
+                                    }
+
+                                    foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == resServiceTestStep.UniqueId))
+                                    {
+                                        resServiceTestStep.Result = testStep.Result;
+
+                                        resServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, resServiceTestStep);
+                                    }
+                                    var children = resTestStep.Children;
+                                    if (children.Count > 0)
+                                    {
+                                        SetChildrenTestResult(children, resServiceTestStep.Children);
+                                    }
                                 }
                             }
                         }
@@ -214,6 +228,14 @@ namespace Warewolf.Studio.ViewModels
                     OptionsForValue = serviceTestOutput.OptionsForValue,
                     Result = serviceTestOutput.Result
                 };
+                
+                if (testStep.MockSelected)
+                {
+                    testOutput.TestPending = false;
+                    testOutput.TestPassed = false;
+                    testOutput.TestFailing = false;
+                    testOutput.TestInvalid = false;
+                }
 
                 stepOutputs.Add(testOutput);
             }

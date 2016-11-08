@@ -153,14 +153,25 @@ namespace Warewolf.Studio.ViewModels
 
                 if (_result != null)
                 {
-                    TestPassed = _result.RunTestResult == RunResult.TestPassed;
-                    TestFailing = _result.RunTestResult == RunResult.TestFailed;
-                    TestInvalid = _result.RunTestResult == RunResult.TestInvalid || _result.RunTestResult == RunResult.TestResourceDeleted || _result.RunTestResult == RunResult.TestResourcePathUpdated;
-                    TestPending = _result.RunTestResult != RunResult.TestFailed &&
-                                  _result.RunTestResult != RunResult.TestPassed &&
-                                  _result.RunTestResult != RunResult.TestInvalid &&
-                                  _result.RunTestResult != RunResult.TestResourceDeleted &&
-                                  _result.RunTestResult != RunResult.TestResourcePathUpdated;
+                    if (MockSelected)
+                    {
+                        TestPassed = false;
+                        TestFailing = false;
+                        TestInvalid = false;
+                        TestPending = false;
+                    }
+                    else
+                    {
+                        TestPassed = _result.RunTestResult == RunResult.TestPassed;
+                        TestFailing = _result.RunTestResult == RunResult.TestFailed;
+                        TestInvalid = _result.RunTestResult == RunResult.TestInvalid || _result.RunTestResult == RunResult.TestResourceDeleted || _result.RunTestResult == RunResult.TestResourcePathUpdated;
+                        TestPending = _result.RunTestResult != RunResult.TestFailed &&
+                                      _result.RunTestResult != RunResult.TestPassed &&
+                                      _result.RunTestResult != RunResult.TestInvalid &&
+                                      _result.RunTestResult != RunResult.TestResourceDeleted &&
+                                      _result.RunTestResult != RunResult.TestResourcePathUpdated;
+                    }
+                    
                 }
 
                 OnPropertyChanged(()=> Result);
