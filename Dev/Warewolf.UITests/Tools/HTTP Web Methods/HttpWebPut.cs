@@ -26,8 +26,8 @@ namespace Warewolf.UITests.Tools
         public void HttpWebPutToolClickTestInputsDoneButton()
         {
             UIMap.Open_PutWeb_Tool_large_view();
-            //Uimap.Select_WebPut_Source();
-            //Uimap.Click_PutWeb_GenerateOutputs_Button();
+            UIMap.Select_TestingReturnText_Web_Put_Source();
+            UIMap.Click_PutWeb_GenerateOutputs_Button();
             //Uimap.Click_PutWeb_Test_Inputs_Done_Button();
         }
 
