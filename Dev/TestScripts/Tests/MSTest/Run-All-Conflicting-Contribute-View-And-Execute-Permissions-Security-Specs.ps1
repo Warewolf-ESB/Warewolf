@@ -29,37 +29,40 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalOtherUITests.testsettings"
+$TestSettingsFile = "$PSScriptRoot\LocalSecuritySpecs.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
-  name=`"ExampleWorkflowExecutionSpecs`"
-  enableDefaultDataCollectors=`"false`"
+  name="ConflictingPermissionsSecuritySpecs"
+  enableDefaultDataCollectors="false"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run example workflow execution specs.</Description>
-  <Deployment enabled=`"false`" />
-  <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
+  <Description>Run conflicting permissions security specs.</Description>
+  <Deployment enabled="false" />
   <Execution>
-    <Timeouts testTimeout=`"300000`" />
+    <Timeouts testTimeout=`"180000`" />
   </Execution>
 </TestSettings>
 "@)
 
-# Create full VSTest argument string.
-$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /resultsfile:TestResults\OtherUITestResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"!Tools&!Data Tools&!Database Tools&!Dropbox Tools&!File Tools&!HTTP Tools&!Recordset Tools&!Sharepoint Tools&!Utility Tools`""
+if ($TestList -eq "") {
+	# Create full VSTest argument string.
+	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:TestResults\ConflictingContributeViewExecutePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"ConflictingContributeViewExecutePermissionsSecurity`""
+} else {
+	# Create full VSTest argument string.
+	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:TestResults\ConflictingContributeViewExecutePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+}
+# Start server under test
+cmd.exe /c $SolutionDir\TestScripts\Server\Service\Startup.bat
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\MSTest.exe`" $FullArgsList
 
-# Start Studio under test
-cmd.exe /c $SolutionDir\TestScripts\Studio\Startup.bat
-
 # Run VSTest with full argument string.
 Start-Process -FilePath "$env:vs140comntools..\IDE\MSTest.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
 
-# Stop Studio under test
-cmd.exe /c $SolutionDir\TestScripts\Studio\Cleanup.bat
+# Stop server under test
+cmd.exe /c $SolutionDir\TestScripts\Server\Service\Cleanup.bat
 
 # Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"

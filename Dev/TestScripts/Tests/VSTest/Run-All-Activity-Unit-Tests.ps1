@@ -28,21 +28,8 @@ if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /Tests:"
 }
 
-# Create assemblies list.
-$TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Filter Warewolf.*.Tests ) {
-	if ($file.Name -ne "Warewolf.Studio.ViewModels.Tests.dll")) {
-		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
-	}
-}
-foreach ($file in Get-ChildItem $SolutionDir -Filter Dev2.*.Tests ) {
-	if (($file.Name -ne "Dev2.Activities.Designers.Tests.dll" -and $file.Name -ne "Dev2.Activities.Tests.dll") {
-		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
-	}
-}
-
 # Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList
+$FullArgsList = " `"$WorkspaceDir\Dev2.Activities.Tests.dll`" /logger:trx" + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
