@@ -39,7 +39,7 @@ namespace Warewolf.UITests.Tools.Storage_Dropbox
             UIMap.CloseHangingDialogs();
 #endif
             UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Drag_Toolbox_Dropbox_FileList_Onto_DesignSurface();
+            //UIMap.Drag_Toolbox_Dropbox_FileList_Onto_DesignSurface();
         }
 
         UIMap UIMap
