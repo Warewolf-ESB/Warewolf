@@ -430,13 +430,13 @@ namespace Dev2.Activities
             if (NameOfArmToReturn == falseArmText)
             {
                 NextNodes = _dsfDecision.FalseArm;
-                AddDebugOutputItem(new DebugItemStaticDataParams(falseArmText, ""));
+                AddDebugOutputItem(new DebugItemStaticDataParams(falseArmText, "", true));
                 hasResult = true;
             }
             if (NameOfArmToReturn == trueArmText)
             {
                 NextNodes = _dsfDecision.TrueArm;
-                AddDebugOutputItem(new DebugItemStaticDataParams(trueArmText, ""));
+                AddDebugOutputItem(new DebugItemStaticDataParams(trueArmText, "", true));
                 hasResult = true;
             }
             if (dataObject.IsDebugMode() && hasResult)
