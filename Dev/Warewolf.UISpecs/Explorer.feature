@@ -1,4 +1,5 @@
-﻿Feature: Explorer
+﻿@Explorer
+Feature: Explorer
 	In order to manage services
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions

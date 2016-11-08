@@ -15,5 +15,10 @@ namespace Dev2.Data
         public bool HasOptionsForValue { get; set; }
         public List<string> OptionsForValue { get; set; }
         public TestRunResult Result { get; set; }
+
+        public void OnSearchTypeChanged()
+        {
+            throw new NotImplementedException("not implemented in ServiceTestOutputTO");
+        }
     }
 }

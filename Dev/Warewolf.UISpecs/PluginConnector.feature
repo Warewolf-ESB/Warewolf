@@ -1,4 +1,5 @@
-﻿Feature: PluginConnector
+﻿@PluginConnector
+Feature: PluginConnector
 	In order to connect to plugin services
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions

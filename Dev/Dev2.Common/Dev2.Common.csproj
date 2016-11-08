@@ -150,6 +150,7 @@
     <Compile Include="Interfaces\IDateTimeFormatPartsForDotNet.cs" />
     <Compile Include="Interfaces\IDateTimeParserBuilder.cs" />
     <Compile Include="Interfaces\IDatetimeParserHelper.cs" />
+    <Compile Include="Interfaces\ITestResultCompiler.cs" />
     <Compile Include="Interfaces\ITimeFormatPartBuilder.cs" />
     <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />

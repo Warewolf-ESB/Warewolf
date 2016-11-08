@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.DataList;
@@ -355,8 +356,10 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         [JsonIgnore]
+        [ExcludeFromCodeCoverage]
         public Action AddNewAction { get; set; }
         [JsonIgnore]
+        [ExcludeFromCodeCoverage]
         public Action<string> AddStepOutputRow { get; set; }
 
        

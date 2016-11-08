@@ -47,7 +47,7 @@ $TestSettingsFile = "$PSScriptRoot\LocalOtherUITests.testsettings"
 "@)
 
 # Create full VSTest argument string.
-$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /resultsfile:TestResults\OtherUITestResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"!Tools&!Data Tools&!Sharepoint Tools`""
+$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /resultsfile:TestResults\OtherUITestResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"!Tools&!Data Tools&!Database Tools&!Dropbox Tools&!File Tools&!HTTP Tools&!Recordset Tools&!Sharepoint Tools&!Utility Tools`""
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\MSTest.exe`" $FullArgsList
