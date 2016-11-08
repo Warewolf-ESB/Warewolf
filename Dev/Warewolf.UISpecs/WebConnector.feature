@@ -1,4 +1,5 @@
-﻿Feature: WebConnector
+﻿@WebConnector
+Feature: WebConnector
 	In order to connecto to web services
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions
