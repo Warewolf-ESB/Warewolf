@@ -23,6 +23,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         int GroupIndex { get; set; }
         string MoreLink { get; set; }
         bool HasError { get; set; }
+        bool MockSelected { get; set; }
 
         string GetMoreLinkItem();
     }

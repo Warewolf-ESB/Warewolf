@@ -30,10 +30,10 @@ namespace Dev2.Diagnostics.Debug
                     var key = new Tuple<Guid, string>(resourceID,testName);
                     if(_data.TryGetValue(key, out list))
                     {
-                        if (ds.StateType != StateType.Duration)
+                        if (list.Contains(ds))
                         {
                             var existingItem = list.FirstOrDefault(state => state.Equals(ds));
-                            if(existingItem != null && ds.StateType!=StateType.Duration)
+                            if (existingItem != null && ds.StateType != StateType.Duration)
                             {
                                 list.Add(ds);
                             }
