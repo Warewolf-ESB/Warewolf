@@ -122,16 +122,9 @@ namespace Dev2.Studio.Core
                 {
                     foreach (var debugItemResult in debugItem.ResultsList)
                     {
-                        if (debugItemResult.HasError)
-                        {
-                            HasError = true;
-                            HasNoError = false;
-                        }
-                        else
-                        {
-                            HasError = false;
-                            HasNoError = true;
-                        }
+                        HasError = debugItemResult.HasError;
+                        HasNoError = !debugItemResult.HasError;
+                        MockSelected = debugItemResult.MockSelected;
                     }
                 }
             }

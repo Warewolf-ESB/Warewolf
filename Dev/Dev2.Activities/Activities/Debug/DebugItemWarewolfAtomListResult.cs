@@ -23,8 +23,9 @@ namespace Dev2.Activities.Debug
         readonly CommonFunctions.WarewolfEvalResult _oldValue;
         readonly string _assignedToVariableName;
         readonly string _newValue;
+        private bool _mockSelected;
 
-        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate = false)
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate = false, bool mockSelected = false)
         {
             _labelText = "";
             _operand = operand;
@@ -36,9 +37,10 @@ namespace Dev2.Activities.Debug
             _warewolfAtomListresult = warewolfAtomListresult;
             _oldValue = oldResult;
             _assignedToVariableName = assignedToVariableName;
+            _mockSelected = mockSelected;
         }
 
-        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate=false)
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate=false, bool mockSelected = false)
         {
             _labelText = "";
             _operand = operand;
@@ -51,6 +53,7 @@ namespace Dev2.Activities.Debug
             _newValue = newValue;
             _oldValue = null;
             _assignedToVariableName = assignedToVariableName;
+            _mockSelected = mockSelected;
         }
 
 
@@ -134,7 +137,8 @@ namespace Dev2.Activities.Debug
                             Operator = debugOperator,
                             GroupName = groupName,
                             Value = item,
-                            GroupIndex = grpIdx
+                            GroupIndex = grpIdx,
+                            MockSelected = _mockSelected
                         });
                     }
                 }
@@ -148,7 +152,8 @@ namespace Dev2.Activities.Debug
                         Operator = _operand,
                         GroupName = null,
                         Value = "",
-                        GroupIndex = grpIdx
+                        GroupIndex = grpIdx,
+                        MockSelected = _mockSelected
                     });
                 }
             }
@@ -170,7 +175,8 @@ namespace Dev2.Activities.Debug
                                 Operator = string.IsNullOrEmpty(_operand) ? "" : "=",
                                 GroupName = null,
                                 Value = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item),
-                                GroupIndex = 0
+                                GroupIndex = 0,
+                                MockSelected = _mockSelected
                             });
                         }
                     }
@@ -240,7 +246,8 @@ namespace Dev2.Activities.Debug
                                     Operator = debugOperator,
                                     GroupName = groupName,
                                     Value = ExecutionEnvironment.WarewolfAtomToString(item),
-                                    GroupIndex = grpIdx
+                                    GroupIndex = grpIdx,
+                                    MockSelected = _mockSelected
                                 };
                                 results.Add(debugItemResult);
                             }
@@ -257,7 +264,8 @@ namespace Dev2.Activities.Debug
                         Operator = "=",
                         GroupName = null,
                         Value = _newValue,
-                        GroupIndex = 0
+                        GroupIndex = 0,
+                        MockSelected = _mockSelected
                     };
                     results.Add(debugItemResult);
                 }
@@ -326,7 +334,8 @@ namespace Dev2.Activities.Debug
                             Operator = debugOperator,
                             GroupName = groupName,
                             Value = ExecutionEnvironment.WarewolfAtomToString(item),
-                            GroupIndex = grpIdx
+                            GroupIndex = grpIdx,
+                            MockSelected = _mockSelected
                         });
                     }
                 }
@@ -339,7 +348,8 @@ namespace Dev2.Activities.Debug
                         Operator = _operand,
                         GroupName = null,
                         Value = "",
-                        GroupIndex = grpIdx
+                        GroupIndex = grpIdx,
+                        MockSelected = _mockSelected
                     });
                 }
             }
