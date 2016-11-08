@@ -61,9 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
-    <Compile Include="DebugOutputWindow\DebugOutputWindowTests.cs" />
-    <Compile Include="SaveDialogWindow\SaveDialogWindowTets.cs" />
-    <Compile Include="Deploy\DeployViewOnlyServiceUITest.cs" />
     <Compile Include="ContextMenu\ContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
@@ -74,6 +71,9 @@
     <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
     <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsLoggingTests.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
+    <Compile Include="Tools\Storage Dropbox\Delete.cs" />
+    <Compile Include="Tools\Storage Dropbox\List Contents.cs" />
+    <Compile Include="Tools\Storage Dropbox\Upload.cs" />
     <Compile Include="Tools\StudioTooling.cs" />
     <Compile Include="Tools\Recordset\CountTest.cs" />
     <Compile Include="Tools\Recordset\DeleteRecordTest.cs" />
