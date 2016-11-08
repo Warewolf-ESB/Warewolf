@@ -12,11 +12,11 @@ if ($Args.Count -gt 0) {
 	    [xml]$playlistContent = Get-Content $_.FullName
 	    if ($playlistContent.Playlist.Add.count -gt 0) {
 	        foreach( $TestName in $playlistContent.Playlist.Add) {
-		        $TestList += " /test:" + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
+		        $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
 	        }
 	    } else {        
             if ($playlistContent.Playlist.Add.Test -ne $null) {
-                $TestList = " /test:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
+                $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
             } else {
 	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
 	            Continue
@@ -29,40 +29,37 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalSecuritySpecs.testsettings"
+$TestSettingsFile = "$PSScriptRoot\LocalUISpecs.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
-  name="ExampleWorkflowExecutionSpecs"
-  enableDefaultDataCollectors="false"
+  name=`"UISpecs`"
+  enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run example workflow execution specs.</Description>
-  <Deployment enabled="false" />
+  <Description>Run UI specs.</Description>
+  <Deployment enabled=`"false`" />
+  <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
-    <Timeouts testTimeout=`"180000`" />
+    <Timeouts testTimeout=`"300000`" />
   </Execution>
 </TestSettings>
 "@)
 
-if ($TestList -eq "") {
-	# Create full VSTest argument string.
-	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:TestResults\ConflictingPermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"ConflictingPermissionsSecurity`""
-} else {
-	# Create full VSTest argument string.
-	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:TestResults\ConflictingPermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
-}
-# Start server under test
-cmd.exe /c $SolutionDir\TestScripts\Server\Service\Startup.bat
+# Create full VSTest argument string.
+$FullArgsList = "`"" + $SolutionDir + "\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"TestCategory=PluginConnector`""
 
 # Display full command including full argument string.
-Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\MSTest.exe`" $FullArgsList
+Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
+
+# Start studio under test
+cmd.exe /c $SolutionDir\TestScripts\Studio\Startup.bat
 
 # Run VSTest with full argument string.
-Start-Process -FilePath "$env:vs140comntools..\IDE\MSTest.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
+Start-Process -FilePath "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
 
-# Stop server under test
-cmd.exe /c $SolutionDir\TestScripts\Server\Service\Cleanup.bat
+# Stop studio under test
+cmd.exe /c $SolutionDir\TestScripts\Studio\Cleanup.bat
 
 # Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"

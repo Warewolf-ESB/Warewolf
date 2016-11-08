@@ -31,7 +31,8 @@ namespace Warewolf.UISpecs
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SharepointConnector", "\tIn order to connect to sharepoint servers\r\n\tAs a Warewolf Studio user\r\n\tI want t" +
-                    "o perform a composition of recorded actions", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "o perform a composition of recorded actions", ProgrammingLanguage.CSharp, new string[] {
+                        "SharepointConnector"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -71,11 +72,10 @@ namespace Warewolf.UISpecs
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Source From Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SharepointConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mytag")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SharepointConnector")]
         public virtual void CreateSourceFromTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Source From Tool", new string[] {
-                        "mytag"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Source From Tool", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8

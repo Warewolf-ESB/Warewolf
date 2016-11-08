@@ -1,4 +1,5 @@
-﻿Feature: DBConnector
+﻿@DBConnector
+Feature: DBConnector
 	In order to connect to databases
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions
