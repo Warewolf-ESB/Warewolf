@@ -6540,6 +6540,60 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_Dropbox_Delete_Tool_Large_View_With_Double_Click - Use 'Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Dropbox Delete Tool Large View With Double Click")]
+        public void Open_Dropbox_Delete_Tool_Large_View_With_Double_Click()
+        {
+            #region Variable Declarations
+            WpfCustom dropboxDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete;
+            WpfCustom largeViewContentCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete.LargeViewContentCustom;
+            #endregion
+
+            // Double-Click 'DsfDropBoxDeleteFileActivity' custom control
+            Mouse.DoubleClick(dropboxDelete, new Point(174, 12));
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams.LargeViewContentCustomExists, largeViewContentCustom.Exists, "Tool large does not exist after openning it with a double click.");
+        }
+        
+        /// <summary>
+        /// Open_Dropbox_List_Contents_Tool_Large_View_With_Double_Click - Use 'Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Dropbox List Contents Tool Large View With Double Click")]
+        public void Open_Dropbox_List_Contents_Tool_Large_View_With_Double_Click()
+        {
+            #region Variable Declarations
+            WpfCustom dropboxFileList = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList;
+            WpfCustom largeViewContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList.LargeViewContent;
+            #endregion
+
+            // Double-Click 'DsfDropBoxFileListActivity' custom control
+            Mouse.DoubleClick(dropboxFileList, new Point(166, 9));
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams.LargeViewContentExists, largeViewContent.Exists, "Tool large does not exist after openning it with a double click.");
+        }
+        
+        /// <summary>
+        /// Open_Dropbox_Upload_Tool_Large_View_With_Double_Click - Use 'Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams' to pass parameters into this method.
+        /// </summary>
+        [When(@"I Open Dropbox Upload Tool Large View With Double Click")]
+        public void Open_Dropbox_Upload_Tool_Large_View_With_Double_Click()
+        {
+            #region Variable Declarations
+            WpfCustom dropboxUpload = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxUpload;
+            WpfCustom largeViewContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxUpload.LargeViewContent;
+            #endregion
+
+            // Double-Click 'DsfDropBoxUploadFileActivity' custom control
+            Mouse.DoubleClick(dropboxUpload, new Point(151, 8));
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams.LargeViewContentExists, largeViewContent.Exists, "Tool large does not exist after openning it with a double click.");
+        }
+        
+        /// <summary>
         /// Open_DropboxFileOperation_Large_View
         /// </summary>
         [When(@"I Open DropboxFileOperation Large View")]
@@ -12850,6 +12904,42 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams
+        {
+            get
+            {
+                if ((this.mOpen_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams == null))
+                {
+                    this.mOpen_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams = new Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams();
+                }
+                return this.mOpen_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams;
+            }
+        }
+        
+        public virtual Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams
+        {
+            get
+            {
+                if ((this.mOpen_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams == null))
+                {
+                    this.mOpen_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams = new Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams();
+                }
+                return this.mOpen_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams;
+            }
+        }
+        
+        public virtual Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams
+        {
+            get
+            {
+                if ((this.mOpen_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams == null))
+                {
+                    this.mOpen_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams = new Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams();
+                }
+                return this.mOpen_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams;
+            }
+        }
+        
         public virtual Open_Explorer_First_Item_Tests_With_Context_MenuParams Open_Explorer_First_Item_Tests_With_Context_MenuParams
         {
             get
@@ -14507,6 +14597,12 @@ namespace Warewolf.UITests
         private Open_DeleteWeb_Tool_Large_ViewParams mOpen_DeleteWeb_Tool_Large_ViewParams;
         
         private Open_DotNet_DLL_Connector_Tool_Large_ViewParams mOpen_DotNet_DLL_Connector_Tool_Large_ViewParams;
+        
+        private Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams mOpen_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams;
+        
+        private Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams mOpen_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams;
+        
+        private Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams mOpen_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams;
         
         private Open_Explorer_First_Item_Tests_With_Context_MenuParams mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
         
@@ -19447,6 +19543,51 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'LargeDataGrid' table equals 'True'
         /// </summary>
         public bool InputsTableExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Dropbox_Delete_Tool_Large_View_With_Double_Click'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// </summary>
+        public bool LargeViewContentCustomExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Dropbox_List_Contents_Tool_Large_View_With_Double_Click'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// </summary>
+        public bool LargeViewContentExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Dropbox_Upload_Tool_Large_View_With_Double_Click'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// </summary>
+        public bool LargeViewContentExists = true;
         #endregion
     }
     
