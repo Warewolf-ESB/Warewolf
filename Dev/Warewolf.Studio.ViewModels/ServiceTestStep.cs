@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Media;
 using Dev2.Common.Interfaces;
@@ -56,6 +57,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         [JsonIgnore]
+        [ExcludeFromCodeCoverage]
         public ImageSource StepIcon
         {
             get { return _stepIcon; }
@@ -276,8 +278,7 @@ namespace Warewolf.Studio.ViewModels
                     if (StepOutputs != null)
                         foreach (var serviceTestOutput in StepOutputs)
                         {
-                            var item = serviceTestOutput as ServiceTestOutput;
-                            item?.OnSearchTypeChanged();
+                            serviceTestOutput?.OnSearchTypeChanged();
                         }
                 }
                 OnPropertyChanged(() => AssertSelected);
@@ -337,12 +338,8 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    var serviceTestOutput = new ServiceTestOutput(varName,"","","");
-                    serviceTestOutput.AddNewAction = ()=>AddNewOutput(varName);
-                    //if (StepOutputs.FirstOrDefault(output => output.Variable.Equals(varName, StringComparison.InvariantCultureIgnoreCase)) == null)
-                    {
-                        StepOutputs.Add(serviceTestOutput);
-                    }
+                    var serviceTestOutput = new ServiceTestOutput(varName, "", "", "") { AddNewAction = () => AddNewOutput(varName) };
+                    StepOutputs.Add(serviceTestOutput);
                 }
             }
         }
