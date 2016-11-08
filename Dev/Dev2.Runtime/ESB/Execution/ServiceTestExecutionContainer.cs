@@ -395,7 +395,20 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 if (test.TestSteps != null)
                 {
-                    testPassed = testPassed && test.TestSteps.All(step => step.Result?.RunTestResult == RunResult.TestPassed);
+                    var testStepPassed = true;
+                    foreach (var serviceTestStep in test.TestSteps)
+                    {
+                        if (serviceTestStep.Type != StepType.Mock)
+                        {
+                            testStepPassed = serviceTestStep.Result?.RunTestResult == RunResult.TestPassed;
+                        }
+                        if (!testStepPassed)
+                        {
+                            break;
+                        }
+                    }
+
+                    testPassed = testPassed && testStepPassed;
                     test.FailureMessage = failureMessage.AppendLine(string.Join("", test.TestSteps.Select(step => step.Result?.Message))).ToString();
                     test.TestFailing = !testPassed;
                     test.TestPassed = testPassed;

@@ -1924,6 +1924,13 @@ namespace Warewolf.Studio.ViewModels
                 Result = step.Result
             };
             testStep.StepOutputs = CreateServiceTestOutputFromStep(step.StepOutputs, testStep);
+            if (testStep.MockSelected)
+            {
+                testStep.TestPending = false;
+                testStep.TestPassed = false;
+                testStep.TestFailing = false;
+                testStep.TestInvalid = false;
+            }
             SetStepIcon(testStep.ActivityType, testStep);
             if (step.Children != null)
             {
@@ -1948,6 +1955,13 @@ namespace Warewolf.Studio.ViewModels
                     OptionsForValue = serviceTestOutput.OptionsForValue,
                     Result = serviceTestOutput.Result
                 };
+                if (testStep.MockSelected)
+                {
+                    testOutput.TestPending = false;
+                    testOutput.TestPassed = false;
+                    testOutput.TestFailing = false;
+                    testOutput.TestInvalid = false;
+                }
 
                 stepOutputs.Add(testOutput);
             }
