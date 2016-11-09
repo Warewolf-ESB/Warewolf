@@ -313,7 +313,6 @@ namespace Warewolf.UITests
                     System.Windows.Forms.MessageBox.Show(messageText);
 #else
                     Console.WriteLine(messageText);
-                    return;
 #endif
                     parent.DrawHighlight();
 #if DEBUG
@@ -332,7 +331,6 @@ namespace Warewolf.UITests
                 System.Windows.Forms.MessageBox.Show(type + "\n" + message);
 #else
                 Console.WriteLine(message);
-                return;
 #endif
                 (exceptionSource as UITestControl).DrawHighlight();
 #if DEBUG
@@ -350,7 +348,6 @@ namespace Warewolf.UITests
                 System.Windows.Forms.MessageBox.Show(type + "\n" + message);
 #else
                 Console.WriteLine(message);
-                return;
 #endif
                 (exceptionSource as UITestControl).DrawHighlight();
 #if DEBUG
