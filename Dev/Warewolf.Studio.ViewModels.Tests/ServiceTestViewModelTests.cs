@@ -57,8 +57,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("TestFrameworkViewModel_Constructor")]

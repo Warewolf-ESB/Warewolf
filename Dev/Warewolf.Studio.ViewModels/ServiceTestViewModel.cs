@@ -1422,7 +1422,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public Guid ResourceID => ResourceModel?.ID ?? Guid.Empty;
+        public Guid ResourceID
+        {
+            get
+            {
+                return ResourceModel?.ID ?? Guid.Empty;
+            }
+        }
 
         public void Save()
         {
@@ -1936,10 +1942,30 @@ namespace Warewolf.Studio.ViewModels
             return testStep;
         }
 
-        private ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromStep(ObservableCollection<IServiceTestOutput> stepStepOutputs, IServiceTestStep testStep)
+        private ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromStep(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
         {
-            var serviceTestOutputs = ServiceTestCommandHandler.CreateServiceTestOutputFromResult(stepStepOutputs, testStep);
-            return serviceTestOutputs;
+            var stepOutputs = new ObservableCollection<IServiceTestOutput>();
+            foreach (var serviceTestOutput in stepStepOutputs)
+            {
+                var testOutput = new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value, serviceTestOutput.From, serviceTestOutput.To)
+                {
+                    AddStepOutputRow = testStep.AddNewOutput,
+                    AssertOp = serviceTestOutput.AssertOp,
+                    HasOptionsForValue = serviceTestOutput.HasOptionsForValue,
+                    OptionsForValue = serviceTestOutput.OptionsForValue,
+                    Result = serviceTestOutput.Result
+                };
+                if (testStep.MockSelected)
+                {
+                    testOutput.TestPending = false;
+                    testOutput.TestPassed = false;
+                    testOutput.TestFailing = false;
+                    testOutput.TestInvalid = false;
+                }
+
+                stepOutputs.Add(testOutput);
+            }
+            return stepOutputs;
         }
 
         public ICommand DeleteTestCommand { get; set; }
