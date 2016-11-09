@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using Dev2.Activities.Specs.Scheduler;
 using Dev2.Network;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
@@ -39,6 +40,7 @@ namespace Dev2.Activities.Specs.Permissions
         [BeforeFeature("@Security")]
         public static void InitializeFeature()
         {
+            SetupUser();
             var securitySpecsUser = GetSecuritySpecsUser();
             var securitySpecsPassword = GetSecuritySpecsPassword();
             var userGroup = GetUserGroup();
@@ -87,36 +89,6 @@ namespace Dev2.Activities.Specs.Permissions
         private static string GetSecuritySpecsUser()
         {
             return ConfigurationManager.AppSettings["SecuritySpecsUser"];
-        }
-
-        [BeforeScenario("Security")]
-        public void ClearSecuritySettings()
-        {
-            /*AppSettings.LocalHost = $"http://{Environment.MachineName.ToLowerInvariant()}:3142";
-            var environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
-            while (!environmentModel.IsConnected)
-            {
-                environmentModel.Connect();
-            }
-
-            var currentSettings = environmentModel.ResourceRepository.ReadSettings(environmentModel);
-            scenarioContext.Add("initialSettings", currentSettings);
-            Data.Settings.Settings settings = new Data.Settings.Settings
-            {
-                Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
-            };
-
-            environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
-            environmentModel.Disconnect();*/
-        }
-
-        [Given(@"I have a server ""(.*)""")]
-        public void GivenIHaveAServer(string serverName)
-        {
-            //AppSettings.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
-            //var environmentModel = EnvironmentRepository.Instance.Source;
-            //scenarioContext.Add("environment", environmentModel);
         }
 
         [Given(@"it has ""(.*)"" with ""(.*)""")]
@@ -176,6 +148,36 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.Disconnect();
         }
 
+        [Given(@"I have Users with ""(.*)""")]
+        public void GivenIHaveUsersWith(string groupRights)
+        {
+            var groupPermssions = new WindowsGroupPermission
+            {
+                WindowsGroup = "Users",
+                ResourceID = Guid.Empty,
+                IsServer = true
+            };
+            var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var permissionsString in permissionsStrings)
+            {
+                SecPermissions permission;
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                {
+                    groupPermssions.Permissions |= permission;
+                }
+            }
+            Data.Settings.Settings settings = new Data.Settings.Settings
+            {
+                Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
+            };
+
+            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("environment");
+            EnsureEnvironmentConnected(environmentModel);
+            environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
+            environmentModel.Disconnect();
+        }
+
+
 
         static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel)
         {
@@ -184,20 +186,22 @@ namespace Dev2.Activities.Specs.Permissions
                 environmentModel.Connect();
             }
         }
-        bool IsUserInGroup(string name, string group)
+
+        static void SetupUser()
         {
-            PrincipalContext context = new PrincipalContext(ContextType.Machine);
-            GroupPrincipal usersGroup = GroupPrincipal.FindByIdentity(context, group);
-            if (usersGroup != null)
+            var securitySpecsUser = GetSecuritySpecsUser();
+            var accountExists = SchedulerSteps.AccountExists(securitySpecsUser);
+            if (!accountExists)
             {
-                var principalCollection = usersGroup.Members;
-                if ((from member in principalCollection
-                     select name.Equals(member.Name, StringComparison.InvariantCultureIgnoreCase)).Any())
+                try
                 {
-                    return true;
+                    SchedulerSteps.CreateLocalWindowsAccount(GetSecuritySpecsUser(), GetSecuritySpecsPassword(), GetUserGroup());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(@"error creating user" + ex.Message);
                 }
             }
-            return false;
         }
 
         [When(@"connected as user part of ""(.*)""")]
