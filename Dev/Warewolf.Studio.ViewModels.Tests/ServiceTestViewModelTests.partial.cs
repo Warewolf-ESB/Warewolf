@@ -678,6 +678,56 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void RefreshCommands_ShouldUpdateDisplayName()
+        {
+            //---------------Set up test pack-------------------
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var env = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
+            resourceModel.Setup(model => model.Environment).Returns(env.Object);
+            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
+            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
+            bool wasCalled = false;
+            testViewModel.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == "DisplayName")
+                {
+                    wasCalled = true;
+                }
+            };
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            testViewModel.RefreshCommands();
+            //---------------Test Result -----------------------
+            Assert.IsTrue(wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ToServiceTestModel_GivenToWithInputs_ShouldMapSelectedServiceTestInputs()
+        {
+            //---------------Set up test pack-------------------
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var env = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
+            resourceModel.Setup(model => model.Environment).Returns(env.Object);
+            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
+            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("ToServiceTestModel", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            methodInfo.Invoke(testViewModel, new object[] { });
+
+            //---------------Test Result -----------------------
+        }
 
     }
 }
