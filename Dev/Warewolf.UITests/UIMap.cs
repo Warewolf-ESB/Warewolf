@@ -3606,6 +3606,7 @@ namespace Warewolf.UITests
         public void Toggle_Between_Studio_and_Unpinned_Tab()
         {
             Keyboard.SendKeys(MainStudioWindow, "{ALT}{TAB}");
+            Playback.Wait(100);
         }
     }
     /// <summary>
