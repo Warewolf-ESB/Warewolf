@@ -10,6 +10,7 @@ namespace Warewolf.UITests
         const string HelloWorld = "Hello World";
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void Run_Failing_Test()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
@@ -23,6 +24,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void Run_Passing_Test()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
@@ -33,6 +35,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void Show_Duplicate_Test_Dialog()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
@@ -45,6 +48,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void Show_Save_Before_Running_Tests_Dialog()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
@@ -55,6 +59,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void RunTestAsSpecificUser()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
@@ -66,6 +71,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void Delete_Test()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
@@ -78,6 +84,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void Click_Duplicate_Test_Button()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
