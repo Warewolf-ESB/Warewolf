@@ -104,64 +104,67 @@ namespace Warewolf.Studio.ViewModels
             return clone;
         }
 
-        public void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
+        public void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel,
+            IAsyncWorker asyncWorker)
         {
             selectedServiceTest = selectedServiceTest as ServiceTestModel;
-            if (selectedServiceTest == null || resourceModel == null || asyncWorker == null || selectedServiceTest.IsNewTest)
+            if (selectedServiceTest == null || resourceModel == null || asyncWorker == null ||
+                selectedServiceTest.IsNewTest)
             {
                 return;
             }
             selectedServiceTest.IsTestRunning = true;
             asyncWorker.Start(() => resourceModel.Environment.ResourceRepository.ExecuteTest(resourceModel, selectedServiceTest.TestName), res =>
-            {
-                if (res?.Result != null)
                 {
-                    if (res.Result.RunTestResult == RunResult.TestResourceDeleted)
+                    if (res?.Result != null)
                     {
-                        selectedServiceTest.IsTestRunning = false;
-                        var popupController = CustomContainer.Get<IPopupController>();
-                        popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
-                        var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                        shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.ID);
-                        return;
-                    }
-
-                    selectedServiceTest.TestFailing = res.Result.RunTestResult == RunResult.TestFailed;
-                    selectedServiceTest.TestPassed = res.Result.RunTestResult == RunResult.TestPassed;
-                    selectedServiceTest.TestInvalid = res.Result.RunTestResult == RunResult.TestInvalid || res.Result.RunTestResult == RunResult.TestResourceDeleted;
-                    selectedServiceTest.TestPending = res.Result.RunTestResult != RunResult.TestFailed &&
-                                                      res.Result.RunTestResult != RunResult.TestPassed &&
-                                                      res.Result.RunTestResult != RunResult.TestInvalid &&
-                                                      res.Result.RunTestResult != RunResult.TestResourceDeleted &&
-                                                      res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
-
-                    selectedServiceTest.Outputs = res.Outputs?.Select(output =>
-                    {
-                        var serviceTestOutput = new ServiceTestOutput(output.Variable, output.Value, output.From, output.To) as IServiceTestOutput;
-                        serviceTestOutput.AssertOp = output.AssertOp;
-                        serviceTestOutput.Result = output.Result;
-                        return serviceTestOutput;
-                    }).ToObservableCollection();
-
-                    if (selectedServiceTest.TestSteps != null)
-                    {
-                        foreach (var resTestStep in res.TestSteps)
+                        if (res.Result.RunTestResult == RunResult.TestResourceDeleted)
                         {
-                            var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
-                            foreach (var serviceTestStep in serviceTestSteps)
-                            {
-                                var resServiceTestStep = serviceTestStep as ServiceTestStep;
-                                if (resServiceTestStep != null)
-                                {
-                                    resServiceTestStep.Result = resTestStep.Result;
+                            selectedServiceTest.IsTestRunning = false;
+                            var popupController = CustomContainer.Get<IPopupController>();
+                            popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                            shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.ID);
+                            return;
+                        }
 
-                                    if (resServiceTestStep.MockSelected)
+                        selectedServiceTest.TestFailing = res.Result.RunTestResult == RunResult.TestFailed;
+                        selectedServiceTest.TestPassed = res.Result.RunTestResult == RunResult.TestPassed;
+                        selectedServiceTest.TestInvalid = res.Result.RunTestResult == RunResult.TestInvalid ||
+                                                          res.Result.RunTestResult == RunResult.TestResourceDeleted;
+                        selectedServiceTest.TestPending = res.Result.RunTestResult != RunResult.TestFailed &&
+                                                          res.Result.RunTestResult != RunResult.TestPassed &&
+                                                          res.Result.RunTestResult != RunResult.TestInvalid &&
+                                                          res.Result.RunTestResult != RunResult.TestResourceDeleted &&
+                                                          res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
+
+                        selectedServiceTest.Outputs = res.Outputs?.Select(output =>
+                        {
+                            var serviceTestOutput = new ServiceTestOutput(output.Variable, output.Value, output.From, output.To) as IServiceTestOutput;
+                            serviceTestOutput.AssertOp = output.AssertOp;
+                            serviceTestOutput.Result = output.Result;
+                            return serviceTestOutput;
+                        }).ToObservableCollection();
+
+                        if (selectedServiceTest.TestSteps != null)
+                        {
+                            foreach (var resTestStep in res.TestSteps)
+                            {
+                                var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
+                                foreach (var serviceTestStep in serviceTestSteps)
+                                {
+                                    var resServiceTestStep = serviceTestStep as ServiceTestStep;
+                                    if (resServiceTestStep != null)
                                     {
-                                        resServiceTestStep.TestPending = false;
-                                        resServiceTestStep.TestPassed = false;
-                                        resServiceTestStep.TestFailing = false;
-                                        resServiceTestStep.TestInvalid = false;
-                                    }
+                                        resServiceTestStep.Result = resTestStep.Result;
+
+                                        if (resServiceTestStep.MockSelected)
+                                        {
+                                            resServiceTestStep.TestPending = false;
+                                            resServiceTestStep.TestPassed = false;
+                                            resServiceTestStep.TestFailing = false;
+                                            resServiceTestStep.TestInvalid = false;
+                                        }
 
                                         var serviceTestOutputs = resTestStep.StepOutputs;
                                         if (serviceTestOutputs.Count > 0)
@@ -177,23 +180,22 @@ namespace Warewolf.Studio.ViewModels
                                 }
                             }
                         }
-                    }
 
-                    if (selectedServiceTest.Enabled)
-                    {
-                        selectedServiceTest.DebugForTest = res.Result.DebugForTest;
+                        if (selectedServiceTest.Enabled)
+                        {
+                            selectedServiceTest.DebugForTest = res.Result.DebugForTest;
+                        }
+                        selectedServiceTest.LastRunDate = DateTime.Now;
+                        selectedServiceTest.LastRunDateVisibility = true;
                     }
-                    selectedServiceTest.LastRunDate = DateTime.Now;
-                    selectedServiceTest.LastRunDateVisibility = true;
-                }
-                else
-                {
-                    selectedServiceTest.TestPassed = false;
-                    selectedServiceTest.TestFailing = false;
-                    selectedServiceTest.TestInvalid = true;
-                }
-                selectedServiceTest.IsTestRunning = false;
-            });
+                    else
+                    {
+                        selectedServiceTest.TestPassed = false;
+                        selectedServiceTest.TestFailing = false;
+                        selectedServiceTest.TestInvalid = true;
+                    }
+                    selectedServiceTest.IsTestRunning = false;
+                });
         }
 
         private void SetChildrenTestResult(ObservableCollection<IServiceTestStep> resTestStepchildren, ObservableCollection<IServiceTestStep> serviceTestStepChildren)
