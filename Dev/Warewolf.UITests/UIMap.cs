@@ -79,9 +79,9 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging message box to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
             }
         }
 
@@ -98,9 +98,9 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging debug input dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
             }
         }
 
@@ -117,9 +117,9 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging save dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
             }
         }
 
@@ -136,9 +136,9 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging unpinned pane to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
             }
         }
 
@@ -155,9 +155,9 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging service picker dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
             }
         }
 
@@ -174,9 +174,9 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging select windows group dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
             }
         }
 
@@ -193,9 +193,9 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging error dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
             }
         }
 
@@ -212,9 +212,9 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging critical error dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
             }
         }
 
