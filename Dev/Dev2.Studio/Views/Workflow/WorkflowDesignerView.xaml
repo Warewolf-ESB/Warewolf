@@ -10,7 +10,6 @@
              xmlns:workflow="clr-namespace:Dev2.Studio.ViewModels.Workflow"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
-             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              AllowDrop="True"
              AutomationProperties.AutomationId="UI_WorkflowDesigner_AutoID"
              mc:Ignorable="d"
