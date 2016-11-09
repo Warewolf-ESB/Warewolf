@@ -2898,7 +2898,7 @@ namespace Warewolf.UITests
         public void Unpin_Tab_With_Drag(UITestControl Tab)
         {
             Mouse.StartDragging(Tab);
-            Mouse.StopDragging(15, 21);
+            Mouse.StopDragging(0, 21);
         }
 
         public void Enter_Recordset_On_Length_tool()
