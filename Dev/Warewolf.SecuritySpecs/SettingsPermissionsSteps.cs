@@ -39,9 +39,9 @@ namespace Dev2.Activities.Specs.Permissions
         [BeforeFeature("@Security")]
         public static void InitializeFeature()
         {
-            var securitySpecsUser = ConfigurationManager.AppSettings["SecuritySpecsUser"];
-            var securitySpecsPassword = ConfigurationManager.AppSettings["SecuritySpecsPassword"];
-            var userGroup = ConfigurationManager.AppSettings["userGroup"];
+            var securitySpecsUser = GetSecuritySpecsUser();
+            var securitySpecsPassword = GetSecuritySpecsPassword();
+            var userGroup = GetUserGroup();
             AppSettings.LocalHost = $"http://{Environment.MachineName.ToLowerInvariant()}:3142";
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
@@ -74,9 +74,20 @@ namespace Dev2.Activities.Specs.Permissions
 
         }
 
+        private static string GetUserGroup()
+        {
+            return ConfigurationManager.AppSettings["userGroup"];
+        }
 
+        private static string GetSecuritySpecsPassword()
+        {
+            return ConfigurationManager.AppSettings["SecuritySpecsPassword"];
+        }
 
-
+        private static string GetSecuritySpecsUser()
+        {
+            return ConfigurationManager.AppSettings["SecuritySpecsUser"];
+        }
 
         [BeforeScenario("Security")]
         public void ClearSecuritySettings()
@@ -130,8 +141,8 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
-
-            var environmentModel = scenarioContext.Get<IEnvironmentModel>("environment");
+            
+            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
@@ -173,43 +184,6 @@ namespace Dev2.Activities.Specs.Permissions
                 environmentModel.Connect();
             }
         }
-
-        [When(@"connected as user part of ""(.*)""")]
-        public void WhenConnectedAsUserPartOf(string userGroup)
-        {
-          /*  if (SchedulerSteps.AccountExists("SpecsUser"))
-            {
-                if (!IsUserInGroup("SpecsUser", userGroup))
-                {
-                    try
-                    {
-                        SecurityIdentifier id = SchedulerSteps.GetUserSecurityIdentifier("SpecsUser");
-                        PrincipalContext context = new PrincipalContext(ContextType.Machine);
-                        UserPrincipal userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
-                        SchedulerSteps.AddUserToGroup(userGroup, context, userPrincipal);
-                    }
-                    catch (Exception)
-                    {
-                        Assert.Fail("User not found");
-                    }
-                }
-            }
-            else
-            {
-                SchedulerSteps.CreateLocalWindowsAccount("SpecsUser", "T35t3r!@#", userGroup);
-            }
-            var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#")) { Name = "Other Connection" };
-            try
-            {
-                reconnectModel.Connect();
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
-            }
-            scenarioContext.Add("currentEnvironment", reconnectModel);*/
-        }
-
         bool IsUserInGroup(string name, string group)
         {
             PrincipalContext context = new PrincipalContext(ContextType.Machine);
@@ -224,6 +198,24 @@ namespace Dev2.Activities.Specs.Permissions
                 }
             }
             return false;
+        }
+
+        [When(@"connected as user part of ""(.*)""")]
+        public void WhenConnectedAsUserPartOf(string userGroup)
+        {
+            var securitySpecsUser = GetSecuritySpecsUser();
+
+            var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, securitySpecsUser, GetSecuritySpecsPassword())) { Name = "Other Connection" };
+            try
+            {
+                
+                reconnectModel.Connect();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
+            }
+            FeatureContext.Current["currentEnvironment"] = reconnectModel;
         }
 
         [Then(@"resources should have ""(.*)""")]
@@ -288,7 +280,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)""")]
         public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
         {
-            var environmentModel = scenarioContext.Get<IEnvironmentModel>("environment");
+            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("environment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             var settings = resourceRepository.ReadSettings(environmentModel);
