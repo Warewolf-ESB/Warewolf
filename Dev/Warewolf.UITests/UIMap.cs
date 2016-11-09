@@ -46,6 +46,7 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackError -= OnError;
             Playback.PlaybackError += OnError;
+            Mouse.MouseDragSpeed = 450;
         }
 
         [Given("The Warewolf Studio is running")]
