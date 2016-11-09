@@ -364,7 +364,7 @@ namespace Warewolf.Studio.ViewModels
                     TestPassed = false;
                 }
                 OnPropertyChanged(() => TestInvalid);
-
+               
             }
         }
 
@@ -708,11 +708,6 @@ namespace Warewolf.Studio.ViewModels
                 var otherChildStepOutputs = otherStepChildren[c].StepOutputs;
                 stepCompare = StepOutputsCompare(childStepOutputs, otherChildStepOutputs);
 
-                if (!stepCompare)
-                {
-                    return false;//No need to compare children if parent fails equality
-                }
-
                 if (stepChildren[c].Children.Count > 0)
                 {
                     var stepChildren1 = stepChildren[c].Children;
@@ -727,39 +722,27 @@ namespace Warewolf.Studio.ViewModels
         private static bool StepOutputsCompare(ObservableCollection<IServiceTestOutput> stepOutputs, ObservableCollection<IServiceTestOutput> otherStepOutputs)
         {
             bool stepCompare = true;
-            try
+            for (int c = 0; c < stepOutputs.Count; c++)
             {
-                for (int c = 0; c < stepOutputs.Count; c++)
+                if (stepOutputs[c].AssertOp != otherStepOutputs[c].AssertOp)
                 {
-
-                    var serviceTestOutput = otherStepOutputs[c];
-                    var stepOutput = stepOutputs[c];
-                    if (stepOutput.AssertOp != serviceTestOutput.AssertOp)
-                    {
-                        stepCompare = false;
-                    }
-                    if (!stepCompare) continue;
-                    if (stepOutput.Value != serviceTestOutput.Value)
-                    {
-                        stepCompare = false;
-                    }
-                    if (!stepCompare) continue;
-                    if (stepOutput.From != serviceTestOutput.From)
-                    {
-                        stepCompare = false;
-                    }
-                    if (!stepCompare) continue;
-                    if (stepOutput.To != serviceTestOutput.To)
-                    {
-                        stepCompare = false;
-                    }
-
-
+                    stepCompare = false;
                 }
-            }
-            catch (Exception)
-            {
-                stepCompare = false;
+                if (!stepCompare) continue;
+                if (stepOutputs[c].Value != otherStepOutputs[c].Value)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                if (stepOutputs[c].From != otherStepOutputs[c].From)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                if (stepOutputs[c].To != otherStepOutputs[c].To)
+                {
+                    stepCompare = false;
+                }
             }
             return stepCompare;
         }
@@ -770,7 +753,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return true;
             }
-            if (_inputs.Count != other?._inputs.Count)
+            if (_inputs.Count != other._inputs.Count)
             {
                 return false;
             }

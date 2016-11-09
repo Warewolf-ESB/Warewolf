@@ -1,6 +1,5 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Media;
 using Dev2.Common.Interfaces;
@@ -13,7 +12,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestStep : BindableBase, IServiceTestStep
     {
-        private readonly ITestResultCompiler _testResultCompiler;
         private string _stepDescription;
         private StepType _type;
         private string _activityType;
@@ -33,7 +31,6 @@ namespace Warewolf.Studio.ViewModels
         private TestRunResult _result;
 
         public ServiceTestStep(Guid uniqueId, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
-            : this(new TestResultCompiler())
         {
             UniqueId = uniqueId;
             ActivityType = activityTypeName;
@@ -48,11 +45,6 @@ namespace Warewolf.Studio.ViewModels
             TestPending = true;
         }
 
-        public ServiceTestStep(ITestResultCompiler testResultCompiler)
-        {
-            _testResultCompiler = testResultCompiler;
-        }
-
         public Guid UniqueId
         {
             get { return _uniqueId; }
@@ -64,7 +56,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
         [JsonIgnore]
-        [ExcludeFromCodeCoverage]
         public ImageSource StepIcon
         {
             get { return _stepIcon; }
@@ -113,7 +104,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             var testOutput = serviceTestOutput as ServiceTestOutput;
                             if (testOutput != null)
-                                testOutput.AssertOps = new ObservableCollection<string> { "=" };
+                                testOutput.AssertOps = new ObservableCollection<string> {"="};
                         }
                     }
                 }
@@ -162,14 +153,25 @@ namespace Warewolf.Studio.ViewModels
 
                 if (_result != null)
                 {
-                    TestPassed = _result.RunTestResult == RunResult.TestPassed;
-                    TestFailing = _result.RunTestResult == RunResult.TestFailed;
-                    TestInvalid = _result.RunTestResult == RunResult.TestInvalid || _result.RunTestResult == RunResult.TestResourceDeleted || _result.RunTestResult == RunResult.TestResourcePathUpdated;
-                    TestPending = _result.RunTestResult != RunResult.TestFailed &&
-                                  _result.RunTestResult != RunResult.TestPassed &&
-                                  _result.RunTestResult != RunResult.TestInvalid &&
-                                  _result.RunTestResult != RunResult.TestResourceDeleted &&
-                                  _result.RunTestResult != RunResult.TestResourcePathUpdated;
+                    if (MockSelected)
+                    {
+                        TestPassed = false;
+                        TestFailing = false;
+                        TestInvalid = false;
+                        TestPending = false;
+                    }
+                    else
+                    {
+                        TestPassed = _result.RunTestResult == RunResult.TestPassed;
+                        TestFailing = _result.RunTestResult == RunResult.TestFailed;
+                        TestInvalid = _result.RunTestResult == RunResult.TestInvalid || _result.RunTestResult == RunResult.TestResourceDeleted || _result.RunTestResult == RunResult.TestResourcePathUpdated;
+                        TestPending = _result.RunTestResult != RunResult.TestFailed &&
+                                      _result.RunTestResult != RunResult.TestPassed &&
+                                      _result.RunTestResult != RunResult.TestInvalid &&
+                                      _result.RunTestResult != RunResult.TestResourceDeleted &&
+                                      _result.RunTestResult != RunResult.TestResourcePathUpdated;
+                    }
+                    
                 }
 
                 OnPropertyChanged(()=> Result);
@@ -188,7 +190,7 @@ namespace Warewolf.Studio.ViewModels
                     TestFailing = false;
                     TestInvalid = false;
                 }
-                OnPropertyChanged(() => TestPassed);
+                OnPropertyChanged(()=> TestPassed);
             }
         }
 
@@ -274,7 +276,8 @@ namespace Warewolf.Studio.ViewModels
                     if (StepOutputs != null)
                         foreach (var serviceTestOutput in StepOutputs)
                         {
-                            serviceTestOutput?.OnSearchTypeChanged();
+                            var item = serviceTestOutput as ServiceTestOutput;
+                            item?.OnSearchTypeChanged();
                         }
                 }
                 OnPropertyChanged(() => AssertSelected);
@@ -325,7 +328,7 @@ namespace Warewolf.Studio.ViewModels
                         intIndex++;
                         var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);
                         var indexedName = DataListUtil.ReplaceRecordsetBlankWithIndex(blankName, intIndex);
-                        if (StepOutputs.FirstOrDefault(output => output.Variable.Equals(indexedName, StringComparison.InvariantCultureIgnoreCase)) == null)
+                        if (StepOutputs.FirstOrDefault(output=>output.Variable.Equals(indexedName,StringComparison.InvariantCultureIgnoreCase))==null)
                         {
                             var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
                             StepOutputs.Add(serviceTestOutput);
@@ -334,8 +337,12 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    var serviceTestOutput = new ServiceTestOutput(varName, "", "", "") { AddNewAction = () => AddNewOutput(varName) };
-                    StepOutputs.Add(serviceTestOutput);
+                    var serviceTestOutput = new ServiceTestOutput(varName,"","","");
+                    serviceTestOutput.AddNewAction = ()=>AddNewOutput(varName);
+                    //if (StepOutputs.FirstOrDefault(output => output.Variable.Equals(varName, StringComparison.InvariantCultureIgnoreCase)) == null)
+                    {
+                        StepOutputs.Add(serviceTestOutput);
+                    }
                 }
             }
         }
