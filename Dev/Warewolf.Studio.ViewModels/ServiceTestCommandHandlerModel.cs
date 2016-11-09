@@ -225,21 +225,21 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(IEnumerable<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
+        public ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(IEnumerable<IServiceTestOutput> stepStepOutputs, IServiceTestStep testStep)
         {
             var stepOutputs = new ObservableCollection<IServiceTestOutput>();
             foreach (var serviceTestOutput in stepStepOutputs)
             {
                 var testOutput = new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value, serviceTestOutput.From, serviceTestOutput.To)
                 {
-                    AddStepOutputRow = testStep.AddNewOutput,
+                    AddStepOutputRow = ((ServiceTestStep)testStep).AddNewOutput,
                     AssertOp = serviceTestOutput.AssertOp,
                     HasOptionsForValue = serviceTestOutput.HasOptionsForValue,
                     OptionsForValue = serviceTestOutput.OptionsForValue,
                     Result = serviceTestOutput.Result
                 };
 
-                if (testStep.MockSelected)
+                if (((ServiceTestStep)testStep).MockSelected)
                 {
                     testOutput.TestPending = false;
                     testOutput.TestPassed = false;
