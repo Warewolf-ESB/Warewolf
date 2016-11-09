@@ -166,10 +166,9 @@ namespace Warewolf.Studio.ViewModels
                                             resServiceTestStep.TestInvalid = false;
                                         }
 
-                                        foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == resServiceTestStep.UniqueId))
+                                        var serviceTestOutputs = resTestStep.StepOutputs;
+                                        if (serviceTestOutputs.Count > 0)
                                         {
-                                            resServiceTestStep.Result = testStep.Result;
-
                                             resServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, resServiceTestStep);
                                         }
                                         var children = resTestStep.Children;

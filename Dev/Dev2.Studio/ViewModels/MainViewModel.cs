@@ -20,6 +20,7 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -1049,6 +1050,14 @@ namespace Dev2.Studio.ViewModels
                 if (wfItem != null)
                 {
                     _worksurfaceContextManager.AddWorkspaceItem(wfItem.ResourceModel);
+                }
+                var studioTestViewModel = item?.WorkSurfaceViewModel as StudioTestViewModel;
+                if (studioTestViewModel != null)
+                {
+                    var serviceTestViewModel = studioTestViewModel.ViewModel as ServiceTestViewModel;
+                    EventPublisher.Publish(serviceTestViewModel?.SelectedServiceTest != null
+                        ? new DebugOutputMessage(serviceTestViewModel.SelectedServiceTest?.DebugForTest ?? new List<IDebugState>())
+                        : new DebugOutputMessage(new List<IDebugState>()));
                 }
                 NotifyOfPropertyChange(() => SaveCommand);
                 NotifyOfPropertyChange(() => DebugCommand);
