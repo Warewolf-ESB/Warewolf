@@ -15,17 +15,23 @@ namespace Dev2.Activities.Debug
         readonly string _variable;
         readonly string _assignFromVariable;
         readonly DebugItemResultType _type;
+        private readonly bool _mockSelected;
 
-        public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel)
+        public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel, bool mockSelected = false)
         {
             _value = value;
             _leftLabel = leftLabel;
             _variable = variable;
             _type = DebugItemResultType.Variable;
             _operand = "=";
+            _mockSelected = mockSelected;
+            if (_mockSelected)
+            {
+                _value = variable + " " + _operand + " " + value;
+            }
         }
 
-        public DebugItemWarewolfAtomResult(string value, string newValue, string variable, string assignFromVariable, string leftLabel, string rightLabel, string operand)
+        public DebugItemWarewolfAtomResult(string value, string newValue, string variable, string assignFromVariable, string leftLabel, string rightLabel, string operand, bool mockSelected = false)
         {
             _value = value;
             _newValue = newValue;
@@ -35,6 +41,7 @@ namespace Dev2.Activities.Debug
             _variable = variable;
             _assignFromVariable = assignFromVariable;
             _type = DebugItemResultType.Variable;
+            _mockSelected = mockSelected;
         }
 
         public string Value => _value;
@@ -58,7 +65,8 @@ namespace Dev2.Activities.Debug
                     Value = _value,
                     Label = _leftLabel,
                     Variable = Variable,
-                    Operator = _operand
+                    Operator = _operand,
+                    MockSelected = _mockSelected
                 };
                 debugItemsResults.Add(debugItem);
             }
@@ -69,7 +77,8 @@ namespace Dev2.Activities.Debug
                     Type = Type,
                     Value = _value,
                     Variable = Variable,
-                    Operator = _operand
+                    Operator = _operand,
+                    MockSelected = _mockSelected
                 };
                 debugItemsResults.Add(debugItem);
             }
@@ -82,7 +91,8 @@ namespace Dev2.Activities.Debug
                     Value = _newValue,
                     Variable = DataListUtil.IsEvaluated(_assignFromVariable)?_assignFromVariable:null,
                     Label = _rightLabel,
-                    Operator = DataListUtil.IsEvaluated(_assignFromVariable) ? "=" : ""
+                    Operator = DataListUtil.IsEvaluated(_assignFromVariable) ? "=" : "",
+                    MockSelected = _mockSelected
                 };
                 debugItemsResults.Add(debugItem);
             }

@@ -8,26 +8,29 @@ namespace Dev2.Activities.Debug
     {
         readonly string _operand;
 
-        public DebugItemServiceTestStaticDataParams(string value, bool hasError = false)
+        public DebugItemServiceTestStaticDataParams(string value, bool hasError = false, bool mockSelected = false)
         {
             Value = value;
             Type = DebugItemResultType.Value;
             HasError = hasError;
+            MockSelected = mockSelected;
         }
 
-        public DebugItemServiceTestStaticDataParams(string value, string variable)
+        public DebugItemServiceTestStaticDataParams(string value, string variable, bool mockSelected = false)
         {
             Value = value;
             Variable = variable;
             Type = DebugItemResultType.Variable;
+            MockSelected = mockSelected;
         }
 
-        public DebugItemServiceTestStaticDataParams(string value, string variable, string operand)
+        public DebugItemServiceTestStaticDataParams(string value, string variable, string operand, bool mockSelected = false)
         {
             Value = value;
             _operand = operand;
             Variable = variable;
             Type = DebugItemResultType.Variable;
+            MockSelected = mockSelected;
         }
 
         public string Value { get; }
@@ -37,6 +40,8 @@ namespace Dev2.Activities.Debug
         public string Variable { get; }
 
         public bool HasError { get; }
+
+        public bool MockSelected { get; }
 
         public DebugItemResultType Type { get; }
 
@@ -51,6 +56,7 @@ namespace Dev2.Activities.Debug
                         Label = LabelText,
                         Variable = Variable,
                         HasError = HasError,
+                        MockSelected = MockSelected,
                         Operator = string.IsNullOrWhiteSpace(_operand) ? "" : "="
                     }};
             return debugItemsResults;

@@ -298,6 +298,28 @@
                     </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
+            
+            <Style x:Key="MockBorderStyle" TargetType="Border">
+                <Style.Setters>
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Width" Value="4" />
+                    <Setter Property="Margin" Value="0,3,10,0" />
+                    <Setter Property="CornerRadius" Value="2" />
+                </Style.Setters>
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding MockSelected, Converter={StaticResource BoolToVisibilityConverterPositive}}" Value="Visible" />
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="Background" Value="Black" />
+                            <Setter Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
         </Grid.Resources>
 
         <Grid.RowDefinitions>
@@ -598,6 +620,7 @@
 
                                 <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource ErrorBorderStyle}" />
                                 <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource NoErrorBorderStyle}" />
+                                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource MockBorderStyle}" />
                                 
 
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Content.ActivityType, Converter={StaticResource EnumToStringConverter}}" Margin="-4,0,0,0"/>
@@ -656,7 +679,7 @@
                                                   AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
                                 </StackPanel>
 
-                                <TextBlock Grid.Row="8" Grid.Column="1" Text="Assert :" Style="{StaticResource AssertResultVisibility}" />
+                                <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding TestDescription}" Style="{StaticResource AssertResultVisibility}" />
                                 <StackPanel Grid.Row="8"
                                             Grid.Column="2"
                                             Orientation="Horizontal"

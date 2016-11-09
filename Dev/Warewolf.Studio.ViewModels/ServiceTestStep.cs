@@ -13,6 +13,7 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestStep : BindableBase, IServiceTestStep
     {
+        private readonly ITestResultCompiler _testResultCompiler;
         private string _stepDescription;
         private StepType _type;
         private string _activityType;
@@ -32,6 +33,7 @@ namespace Warewolf.Studio.ViewModels
         private TestRunResult _result;
 
         public ServiceTestStep(Guid uniqueId, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
+            : this(new TestResultCompiler())
         {
             UniqueId = uniqueId;
             ActivityType = activityTypeName;
@@ -44,6 +46,11 @@ namespace Warewolf.Studio.ViewModels
             IsTestStepExpanded = StepOutputs?.Count > 0;
             IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
             TestPending = true;
+        }
+
+        public ServiceTestStep(ITestResultCompiler testResultCompiler)
+        {
+            _testResultCompiler = testResultCompiler;
         }
 
         public Guid UniqueId
@@ -106,7 +113,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             var testOutput = serviceTestOutput as ServiceTestOutput;
                             if (testOutput != null)
-                                testOutput.AssertOps = new ObservableCollection<string> {"="};
+                                testOutput.AssertOps = new ObservableCollection<string> { "=" };
                         }
                     }
                 }
@@ -155,25 +162,14 @@ namespace Warewolf.Studio.ViewModels
 
                 if (_result != null)
                 {
-                    if (MockSelected)
-                    {
-                        TestPassed = false;
-                        TestFailing = false;
-                        TestInvalid = false;
-                        TestPending = false;
-                    }
-                    else
-                    {
-                        TestPassed = _result.RunTestResult == RunResult.TestPassed;
-                        TestFailing = _result.RunTestResult == RunResult.TestFailed;
-                        TestInvalid = _result.RunTestResult == RunResult.TestInvalid || _result.RunTestResult == RunResult.TestResourceDeleted || _result.RunTestResult == RunResult.TestResourcePathUpdated;
-                        TestPending = _result.RunTestResult != RunResult.TestFailed &&
-                                      _result.RunTestResult != RunResult.TestPassed &&
-                                      _result.RunTestResult != RunResult.TestInvalid &&
-                                      _result.RunTestResult != RunResult.TestResourceDeleted &&
-                                      _result.RunTestResult != RunResult.TestResourcePathUpdated;
-                    }
-                    
+                    TestPassed = _result.RunTestResult == RunResult.TestPassed;
+                    TestFailing = _result.RunTestResult == RunResult.TestFailed;
+                    TestInvalid = _result.RunTestResult == RunResult.TestInvalid || _result.RunTestResult == RunResult.TestResourceDeleted || _result.RunTestResult == RunResult.TestResourcePathUpdated;
+                    TestPending = _result.RunTestResult != RunResult.TestFailed &&
+                                  _result.RunTestResult != RunResult.TestPassed &&
+                                  _result.RunTestResult != RunResult.TestInvalid &&
+                                  _result.RunTestResult != RunResult.TestResourceDeleted &&
+                                  _result.RunTestResult != RunResult.TestResourcePathUpdated;
                 }
 
                 OnPropertyChanged(()=> Result);
@@ -192,7 +188,7 @@ namespace Warewolf.Studio.ViewModels
                     TestFailing = false;
                     TestInvalid = false;
                 }
-                OnPropertyChanged(()=> TestPassed);
+                OnPropertyChanged(() => TestPassed);
             }
         }
 
@@ -329,7 +325,7 @@ namespace Warewolf.Studio.ViewModels
                         intIndex++;
                         var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);
                         var indexedName = DataListUtil.ReplaceRecordsetBlankWithIndex(blankName, intIndex);
-                        if (StepOutputs.FirstOrDefault(output=>output.Variable.Equals(indexedName,StringComparison.InvariantCultureIgnoreCase))==null)
+                        if (StepOutputs.FirstOrDefault(output => output.Variable.Equals(indexedName, StringComparison.InvariantCultureIgnoreCase)) == null)
                         {
                             var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
                             StepOutputs.Add(serviceTestOutput);

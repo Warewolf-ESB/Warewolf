@@ -205,14 +205,18 @@ namespace Dev2.Activities
             if (dsfSwitchSwitches.ContainsKey(ConditionToUse))
             {
                 NextNodes = new List<IDev2Activity> { dsfSwitchSwitches[ConditionToUse] };
-                AddDebugOutputItem(new DebugItemStaticDataParams(ConditionToUse, "Flow Arm:"));
+                var debugItemStaticDataParams = new DebugItemStaticDataParams(ConditionToUse, "Flow Arm:", true);
+                AddDebugOutputItem(debugItemStaticDataParams);
+                AddDebugAssertResultItem(debugItemStaticDataParams);
                 hasResult = true;
             }
             if (_dsfSwitch.Default != null)
             {
                 var activity = _dsfSwitch.Default;
                 NextNodes = activity;
-                AddDebugOutputItem(new DebugItemStaticDataParams("Default", "Flow Arm:"));
+                var debugItemStaticDataParams = new DebugItemStaticDataParams("Default", "Flow Arm:", true);
+                AddDebugOutputItem(debugItemStaticDataParams);
+                AddDebugAssertResultItem(debugItemStaticDataParams);
                 hasResult = true;
             }
 
