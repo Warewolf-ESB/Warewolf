@@ -68,6 +68,7 @@ namespace Warewolf.UITests
         [When(@"I Try Click Message Box OK")]
         public void TryClickMessageBoxOK()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MessageBoxWindow.OKButton))
@@ -81,12 +82,17 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Message Box dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingDebugInputDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
@@ -100,12 +106,17 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Debug Input dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingSaveDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(SaveDialogWindow.CancelButton))
@@ -119,12 +130,17 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Save dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
@@ -138,12 +154,17 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to Pin Unpinned Pane To Default Position before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         private void TryCloseHangingServicePickerDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(ServicePickerDialog.Cancel))
@@ -157,12 +178,17 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Service Picker dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingWindowsGroupDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(SelectWindowsGroupDialog))
@@ -176,12 +202,17 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Windows Group dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingErrorDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(ErrorWindow))
@@ -195,12 +226,17 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Error dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingCriticalErrorDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(CriticalErrorWindow))
@@ -214,7 +250,11 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Critical Error dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
