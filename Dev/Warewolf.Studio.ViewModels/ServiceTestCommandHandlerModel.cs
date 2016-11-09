@@ -217,6 +217,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         private ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
         {
             var stepOutputs = new ObservableCollection<IServiceTestOutput>();
@@ -224,6 +225,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var testOutput = new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value, serviceTestOutput.From, serviceTestOutput.To)
                 {
+                    // ReSharper disable once RedundantCast
                     AddStepOutputRow = ((ServiceTestStep)testStep).AddNewOutput,
                     AssertOp = serviceTestOutput.AssertOp,
                     HasOptionsForValue = serviceTestOutput.HasOptionsForValue,
