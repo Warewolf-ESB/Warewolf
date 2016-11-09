@@ -29,7 +29,7 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalOtherUITests.testsettings"
+$TestSettingsFile = "$PSScriptRoot\LocalToolsUITesting.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
@@ -47,19 +47,13 @@ $TestSettingsFile = "$PSScriptRoot\LocalOtherUITests.testsettings"
 "@)
 
 # Create full VSTest argument string.
-$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /resultsfile:TestResults\OtherUITestResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"!Tools&!Data Tools&!Database Tools&!Dropbox Tools&!File Tools&!HTTP Tools&!Recordset Tools&!Sharepoint Tools&!Utility Tools&!Explorer&!Tabs and Panes&!Deploy&!Debug Input&!Workflow Testing`""
+$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /resultsfile:TestResults\ToolUITestsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"Workflow Testing`""
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\MSTest.exe`" $FullArgsList
 
-# Start Studio under test
-cmd.exe /c $SolutionDir\TestScripts\Studio\Startup.bat
-
 # Run VSTest with full argument string.
 Start-Process -FilePath "$env:vs140comntools..\IDE\MSTest.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
-
-# Stop Studio under test
-cmd.exe /c $SolutionDir\TestScripts\Studio\Cleanup.bat
 
 # Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"
