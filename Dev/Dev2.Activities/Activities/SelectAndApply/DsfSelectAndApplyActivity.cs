@@ -57,6 +57,7 @@ namespace Dev2.Activities.SelectAndApply
         public ActivityFunc<string, bool> ApplyActivityFunc { get; set; }
 
         private string _previousParentId;
+        private Guid _originalUniqueID;
         private string _childUniqueID;
 
         /// <summary>
@@ -70,7 +71,12 @@ namespace Dev2.Activities.SelectAndApply
         public override void UpdateDebugParentID(IDSFDataObject dataObject)
         {
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
-            UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
+            var isNestedForEach = dataObject.ForEachNestingLevel > 0;
+            if (!isNestedForEach || _originalUniqueID == Guid.Empty)
+            {
+                _originalUniqueID = WorkSurfaceMappingId;
+            }
+            UniqueID = isNestedForEach ? Guid.NewGuid().ToString() : UniqueID;
         }
 
         protected override void OnBeforeExecute(NativeActivityContext context)
@@ -227,14 +233,21 @@ namespace Dev2.Activities.SelectAndApply
                             }
                         }
                     }
-                    var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == WorkSurfaceMappingId);
+                    var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
                     var serviceTestSteps = serviceTestStep?.Children;
                     UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList());
                     DispatchDebugState(dataObject, StateType.End, update, startTime, DateTime.Now);
                 }
-                dataObject.ParentInstanceID = _previousParentId;
-                dataObject.IsDebugNested = false;
+                OnCompleted(dataObject);
             }
+        }
+
+        void OnCompleted(IDSFDataObject dataObject)
+        {
+            dataObject.IsDebugNested = false;
+            dataObject.ParentInstanceID = _previousParentId;
+            dataObject.ForEachNestingLevel--;
+            UniqueID = _originalUniqueID.ToString();
         }
 
         public override enFindMissingType GetFindMissingType()
