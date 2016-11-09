@@ -16,6 +16,7 @@ namespace Warewolf.UITests.DebugInputWindow
     public class DebugInputWindowTests
     {
         [TestMethod]
+        [TestCategory("Debug Input")]
         public void DebugInputWindow_InputDataTab()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.DebugF6Button.Exists, "Debug button in Debug Input window does not exist.");

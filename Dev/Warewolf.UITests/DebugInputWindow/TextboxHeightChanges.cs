@@ -9,6 +9,7 @@ namespace Warewolf.UITests
     public class TextboxHeightChanges
     {
         [TestMethod]
+        [TestCategory("Debug Input")]
         public void DebugInputTextboxHeightChangesUITest()
         {
             UIMap.Filter_Explorer("Hello World");
