@@ -145,34 +145,37 @@ namespace Warewolf.Studio.ViewModels
 
                     if (selectedServiceTest.TestSteps != null)
                     {
-                        foreach (var resTestStep in res.TestSteps)
+                        if(res.TestSteps != null)
                         {
-                            var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
-                            foreach (var serviceTestStep in serviceTestSteps)
+                            foreach (var resTestStep in res.TestSteps)
                             {
-                                var resServiceTestStep = serviceTestStep as ServiceTestStep;
-                                if (resServiceTestStep != null)
+                                var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
+                                foreach (var serviceTestStep in serviceTestSteps)
                                 {
-                                    resServiceTestStep.Result = resTestStep.Result;
-
-                                    if (resServiceTestStep.MockSelected)
+                                    var resServiceTestStep = serviceTestStep as ServiceTestStep;
+                                    if (resServiceTestStep != null)
                                     {
-                                        resServiceTestStep.TestPending = false;
-                                        resServiceTestStep.TestPassed = false;
-                                        resServiceTestStep.TestFailing = false;
-                                        resServiceTestStep.TestInvalid = false;
-                                    }
+                                        resServiceTestStep.Result = resTestStep.Result;
 
-                                    foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == resServiceTestStep.UniqueId))
-                                    {
-                                        resServiceTestStep.Result = testStep.Result;
+                                        if (resServiceTestStep.MockSelected)
+                                        {
+                                            resServiceTestStep.TestPending = false;
+                                            resServiceTestStep.TestPassed = false;
+                                            resServiceTestStep.TestFailing = false;
+                                            resServiceTestStep.TestInvalid = false;
+                                        }
 
-                                        resServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, resServiceTestStep);
-                                    }
-                                    var children = resTestStep.Children;
-                                    if (children.Count > 0)
-                                    {
-                                        SetChildrenTestResult(children, resServiceTestStep.Children);
+                                        foreach (var testStep in res.TestSteps.Where(testStep => testStep.UniqueId == resServiceTestStep.UniqueId))
+                                        {
+                                            resServiceTestStep.Result = testStep.Result;
+
+                                            resServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, resServiceTestStep);
+                                        }
+                                        var children = resTestStep.Children;
+                                        if (children.Count > 0)
+                                        {
+                                            SetChildrenTestResult(children, resServiceTestStep.Children);
+                                        }
                                     }
                                 }
                             }
@@ -215,6 +218,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         private ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
         {
             var stepOutputs = new ObservableCollection<IServiceTestOutput>();
@@ -222,6 +226,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var testOutput = new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value, serviceTestOutput.From, serviceTestOutput.To)
                 {
+                    // ReSharper disable once RedundantCast
                     AddStepOutputRow = ((ServiceTestStep)testStep).AddNewOutput,
                     AssertOp = serviceTestOutput.AssertOp,
                     HasOptionsForValue = serviceTestOutput.HasOptionsForValue,
