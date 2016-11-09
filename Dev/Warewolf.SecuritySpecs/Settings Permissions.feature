@@ -32,29 +32,28 @@ Examples:
 @ResourcePermissionsSecurity
 Scenario Outline: Setting Selected Resource Permissions for users 
         Given I have a server "localhost"
-        And it has "<Group>" with "<Given rights>" 
-        And Resource "<Resource Name>" has rights "<Resource Rights>" for "<User Group>"
+        And Resource "<Resource>" has rights "<Resource Rights>" for "<User Group>"
         When connected as user part of "<User Group>"
         Then "<Resource>" should have "<Permissions>"
 		And resources should not have "<Rights>" 
 Examples: 
-        | No | Group                   | Given rights              | Resource Name                                 | Resource Rights           | User Group | Resources | Rights | Resource                                      | Permissions               |
-        | 1  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
-        | 2  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
-        | 3  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
-        | 4  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
-        | 5  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | Execute                   | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Execute                   |
-        | 6  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | Execute                   | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Execute                   |
-        | 7  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | Execute                   | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Execute                   |
-        | 7  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | Execute                   | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Execute                   |
-        | 8  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
-        | 9  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
-        | 10 | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
-        | 11 | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
-        | 12 | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View, Execute             | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View, Execute             |
-        | 13 | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View, Execute             | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View, Execute             |
-        | 14 | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View, Execute             | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View, Execute             |
-        | 15 | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View, Execute             | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View, Execute             |
+        | No | Resource Rights           | User Group | Resources | Rights              | Resource                                      | Permissions               |
+        | 1  | View                      | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View                      |
+        | 2  | View                      | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View                      |
+        | 3  | View                      | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View                      |
+        | 4  | View                      | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View                      |
+        | 5  | Execute                   | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Execute                   |
+        | 6  | Execute                   | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Execute                   |
+        | 7  | Execute                   | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Execute                   |
+        | 7  | Execute                   | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Execute                   |
+        | 8  | Contribute, View, Execute | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
+        | 9  | Contribute, View, Execute | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
+        | 10 | Contribute, View, Execute | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
+        | 11 | Contribute, View, Execute | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
+        | 12 | View, Execute             | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View, Execute             |
+        | 13 | View, Execute             | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View, Execute             |
+        | 14 | View, Execute             | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View, Execute             |
+        | 15 | View, Execute             | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View, Execute             |
 
 @OverlappingUserGroupsPermissionsSecurity
 Scenario Outline: Setting Selected Resource Permissions for users overlapping groups
