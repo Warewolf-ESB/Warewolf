@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common.Interfaces;
-using Dev2.Communication;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
@@ -11,9 +10,8 @@ using Newtonsoft.Json;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestOutput : BindableBase, IServiceTestOutput, ICloneable
+    public class ServiceTestOutput : BindableBase, IServiceTestOutput
     {
-        private readonly ITestResultCompiler _testResultCompiler;
         private string _variable;
         private string _value;
         private string _assertOp;
@@ -37,16 +35,10 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper disable once UnusedMember.Global
         public ServiceTestOutput()
         {
-
-        }
-
-        public ServiceTestOutput(ITestResultCompiler testResultCompiler)
-        {
-            _testResultCompiler = testResultCompiler;
+            
         }
 
         public ServiceTestOutput(string variable, string value, string from, string to)
-           :this(new TestResultCompiler())
         {
             if (variable == null)
                 throw new ArgumentNullException(nameof(variable));
@@ -235,11 +227,14 @@ namespace Warewolf.Studio.ViewModels
 
                 if (_result != null)
                 {
-                    TestPassed = _testResultCompiler.GetPassingResult(_result.RunTestResult);
-                    TestFailing = _testResultCompiler.GetFailingResult(_result.RunTestResult);
-                    TestInvalid = _testResultCompiler.GetTestInvalidResult(_result.RunTestResult);
-                    TestPending = _testResultCompiler.GetTestPendingResult(_result.RunTestResult);
-
+                    TestPassed = _result.RunTestResult == RunResult.TestPassed;
+                    TestFailing = _result.RunTestResult == RunResult.TestFailed;
+                    TestInvalid = _result.RunTestResult == RunResult.TestInvalid || _result.RunTestResult == RunResult.TestResourceDeleted || _result.RunTestResult == RunResult.TestResourcePathUpdated;
+                    TestPending = _result.RunTestResult != RunResult.TestFailed &&
+                                  _result.RunTestResult != RunResult.TestPassed &&
+                                  _result.RunTestResult != RunResult.TestInvalid &&
+                                  _result.RunTestResult != RunResult.TestResourceDeleted &&
+                                  _result.RunTestResult != RunResult.TestResourcePathUpdated;
                 }
 
                 OnPropertyChanged(() => Result);
@@ -364,23 +359,6 @@ namespace Warewolf.Studio.ViewModels
         [JsonIgnore]
         public Action<string> AddStepOutputRow { get; set; }
 
-        #region Implementation of ICloneable
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>
-        /// A new object that is a copy of this instance.
-        /// </returns>
-        public object Clone()
-        {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            IServiceTestOutput serviceTestModel = this;
-            var ser = serializer.SerializeToBuilder(serviceTestModel);
-            IServiceTestOutput clone = serializer.Deserialize<IServiceTestOutput>(ser);
-            return clone;
-        }
-
-        #endregion
+       
     }
 }
