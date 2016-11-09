@@ -26,6 +26,8 @@ namespace Dev2.Studio.Core
         bool _isSelected;
         TContent _content;
         IDebugTreeViewItemViewModel _parent;
+        private bool? _mockSelected;
+        private string _testDescription;
 
         protected DebugTreeViewItemViewModel()
         {
@@ -95,7 +97,29 @@ namespace Dev2.Studio.Core
                 OnPropertyChanged("HasNoError");
             }
         }
+        public bool? MockSelected
+        {
+            get
+            {
+                return _mockSelected;
+            }
+            set
+            {
+                _mockSelected = value;
+                OnPropertyChanged("MockSelected");
+            }
+        }
         public string ActivityTypeName { get; set; }
+
+        public string TestDescription
+        {
+            get { return _testDescription; }
+            set
+            {
+                _testDescription = value;
+                OnPropertyChanged("TestDescription");
+            }
+        }
 
         public void VerifyErrorState()
         {

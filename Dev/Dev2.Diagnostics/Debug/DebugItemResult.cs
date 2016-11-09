@@ -29,6 +29,7 @@ namespace Dev2.Diagnostics
         public int GroupIndex { get; set; }
         public string MoreLink { get; set; }
         public bool HasError { get; set; }
+        public bool MockSelected { get; set; }
 
         #region IXmlSerializable
 
@@ -173,6 +174,13 @@ namespace Dev2.Diagnostics
                     HasError = hasError;
                 }
 
+                if (reader.IsStartElement("MockSelected"))
+                {
+                    bool mockSelected;
+                    bool.TryParse(reader.ReadElementString("MockSelected"), out mockSelected);
+                    MockSelected = mockSelected;
+                }
+
                 if (reader.NodeType == XmlNodeType.EndElement && reader.Name == "DebugItemResult")
                 {
                     reader.ReadEndElement();
@@ -199,6 +207,7 @@ namespace Dev2.Diagnostics
             writer.WriteElementString("Operator", Operator);
             writer.WriteElementString("Value", Value);
             writer.WriteElementString("HasError", HasError.ToString());
+            writer.WriteElementString("MockSelected", MockSelected.ToString());
 
             if(!string.IsNullOrWhiteSpace(MoreLink))
             {

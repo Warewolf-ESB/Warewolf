@@ -12,6 +12,7 @@ namespace Dev2.Studio.Core.Interfaces
         IDebugTreeViewItemViewModel Parent { get; set; }
         bool? HasError { get; set; }
         bool? HasNoError { get; set; }
+        bool? MockSelected { get; set; }
         string ActivityTypeName { get; set; }
         void VerifyErrorState();
     }
