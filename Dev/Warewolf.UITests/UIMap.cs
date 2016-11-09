@@ -258,15 +258,6 @@ namespace Warewolf.UITests
             }
         }
 
-        public void Click_Assign_tool_VariableTextbox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox);
-        }
-        public void Click_Assign_tool_ValueTextbox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox);
-        }
-
         bool OnErrorHandlerDisabled = false;
         public void OnError(object sender, PlaybackErrorEventArgs e)
         {
@@ -318,13 +309,15 @@ namespace Warewolf.UITests
                     string parentProperties = string.Empty;
                     parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \'" + prop.PropertyValue + "\'\n"; });
                     var messageText = type + "\n" + message + "\n" + "Search actually failed at: " + parent.FriendlyName + "\n" + parentProperties;
-                    parent.DrawHighlight();
 #if DEBUG
                     System.Windows.Forms.MessageBox.Show(messageText);
-                    throw e;
 #else
                     Console.WriteLine(messageText);
                     return;
+#endif
+                    parent.DrawHighlight();
+#if DEBUG
+                    throw e;
 #endif
                 }
             }
@@ -335,13 +328,15 @@ namespace Warewolf.UITests
             var exceptionSource = e.ExceptionSource;
             if (exceptionSource is UITestControl)
             {
-                (exceptionSource as UITestControl).DrawHighlight();
 #if DEBUG
                 System.Windows.Forms.MessageBox.Show(type + "\n" + message);
-                throw e;
 #else
                 Console.WriteLine(message);
                 return;
+#endif
+                (exceptionSource as UITestControl).DrawHighlight();
+#if DEBUG
+                throw e;
 #endif
             }
         }
@@ -351,13 +346,15 @@ namespace Warewolf.UITests
             var exceptionSource = e.ExceptionSource;
             if (exceptionSource is UITestControl)
             {
-                (exceptionSource as UITestControl).DrawHighlight();
 #if DEBUG
                 System.Windows.Forms.MessageBox.Show(type + "\n" + message);
-                throw e;
 #else
                 Console.WriteLine(message);
                 return;
+#endif
+                (exceptionSource as UITestControl).DrawHighlight();
+#if DEBUG
+                throw e;
 #endif
             }
         }
@@ -396,6 +393,18 @@ namespace Warewolf.UITests
             {
                 Console.WriteLine("Error during test cleanup: " + e.Message);
             }
+        }
+
+        [When(@"I Click Assign tool VariableTextbox")]
+        public void Click_Assign_tool_VariableTextbox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox);
+        }
+
+        [When(@"I Click Assign tool ValueTextbox")]
+        public void Click_Assign_tool_ValueTextbox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox);
         }
 
         public void TryClearExplorerFilter()
@@ -2889,7 +2898,7 @@ namespace Warewolf.UITests
         public void Unpin_Tab_With_Drag(UITestControl Tab)
         {
             Mouse.StartDragging(Tab);
-            Mouse.StopDragging(25, 40);
+            Mouse.StopDragging(15, 21);
         }
 
         public void Enter_Recordset_On_Length_tool()

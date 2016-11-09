@@ -1819,6 +1819,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_PutWeb_GenerateOutputs_Button
+        /// </summary>
+        [When(@"I Click PutWeb GenerateOutputs Button")]
+        public void Click_PutWeb_GenerateOutputs_Button()
+        {
+            #region Variable Declarations
+            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.GenerateOutputsButton;
+            #endregion
+
+            // Click 'Generate Outputs' button
+            Mouse.Click(generateOutputsButton, new Point(34, 13));
+        }
+        
+        /// <summary>
         /// Click_Read_Done_Button
         /// </summary>
         [When(@"I Click Read Done Button")]
@@ -10399,20 +10413,6 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
-        }
-        
-        /// <summary>
-        /// Click_PutWeb_GenerateOutputs_Button
-        /// </summary>
-        [When(@"I Click PutWeb GenerateOutputs Button")]
-        public void Click_PutWeb_GenerateOutputs_Button()
-        {
-            #region Variable Declarations
-            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.GenerateOutputsButton;
-            #endregion
-
-            // Click 'Generate Outputs' button
-            Mouse.Click(generateOutputsButton, new Point(34, 13));
         }
         
         #region Properties
