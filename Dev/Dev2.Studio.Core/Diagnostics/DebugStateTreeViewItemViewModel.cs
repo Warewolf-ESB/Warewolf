@@ -125,6 +125,7 @@ namespace Dev2.Studio.Core
                         HasError = debugItemResult.HasError;
                         HasNoError = !debugItemResult.HasError;
                         MockSelected = debugItemResult.MockSelected;
+                        TestDescription = debugItemResult.MockSelected ? "Mock :" : "Assert :";
                     }
                 }
             }

@@ -27,6 +27,7 @@ namespace Dev2.Studio.Core
         TContent _content;
         IDebugTreeViewItemViewModel _parent;
         private bool? _mockSelected;
+        private string _testDescription;
 
         protected DebugTreeViewItemViewModel()
         {
@@ -109,6 +110,16 @@ namespace Dev2.Studio.Core
             }
         }
         public string ActivityTypeName { get; set; }
+
+        public string TestDescription
+        {
+            get { return _testDescription; }
+            set
+            {
+                _testDescription = value;
+                OnPropertyChanged("TestDescription");
+            }
+        }
 
         public void VerifyErrorState()
         {

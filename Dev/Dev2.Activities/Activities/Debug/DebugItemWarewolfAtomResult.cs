@@ -25,6 +25,10 @@ namespace Dev2.Activities.Debug
             _type = DebugItemResultType.Variable;
             _operand = "=";
             _mockSelected = mockSelected;
+            if (_mockSelected)
+            {
+                _value = variable + " " + _operand + " " + value;
+            }
         }
 
         public DebugItemWarewolfAtomResult(string value, string newValue, string variable, string assignFromVariable, string leftLabel, string rightLabel, string operand, bool mockSelected = false)

@@ -679,7 +679,7 @@
                                                   AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
                                 </StackPanel>
 
-                                <TextBlock Grid.Row="8" Grid.Column="1" Text="Assert :" Style="{StaticResource AssertResultVisibility}" />
+                                <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding TestDescription}" Style="{StaticResource AssertResultVisibility}" />
                                 <StackPanel Grid.Row="8"
                                             Grid.Column="2"
                                             Orientation="Horizontal"
