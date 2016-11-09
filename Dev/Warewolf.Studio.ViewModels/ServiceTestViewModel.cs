@@ -603,11 +603,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    if (activity.GetType() == typeof(DsfForEachActivity))
+                    if (activity != null && activity.GetType() == typeof(DsfForEachActivity))
                     {
                         AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
                     }
-                    else if (activity.GetType() == typeof(DsfSelectAndApplyActivity))
+                    else if (activity != null && activity.GetType() == typeof(DsfSelectAndApplyActivity))
                     {
                         AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
                     }
@@ -771,8 +771,11 @@ namespace Warewolf.Studio.ViewModels
                 if (flowSwitch == null)
                 {
                     var modelItemParent = modelItem.Parent;
-                    flowSwitch = modelItemParent.GetCurrentValue() as FlowSwitch<string>;
-                    condition = modelItemParent.GetProperty("Expression");
+                    if(modelItemParent != null)
+                    {
+                        flowSwitch = modelItemParent.GetCurrentValue() as FlowSwitch<string>;
+                        condition = modelItemParent.GetProperty("Expression");
+                    }
                     activity = (DsfFlowNodeActivity<string>)condition;
                 }
                 if (flowSwitch != null)
@@ -1045,7 +1048,7 @@ namespace Warewolf.Studio.ViewModels
             }
             Type type = Types.FirstOrDefault(x => x.Name == typeName);
 
-            if (type.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
+            if (type != null && type.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
             {
                 var desc = GetDescriptorFromAttribute(type);
                 if (serviceTestStep != null)
@@ -1422,13 +1425,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public Guid ResourceID
-        {
-            get
-            {
-                return ResourceModel?.ID ?? Guid.Empty;
-            }
-        }
+        public Guid ResourceID => ResourceModel?.ID ?? Guid.Empty;
 
         public void Save()
         {
