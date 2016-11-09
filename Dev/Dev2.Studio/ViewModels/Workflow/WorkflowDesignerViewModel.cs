@@ -534,7 +534,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    DebugBrowserTooltip = _debugBrowser ? Warewolf.Studio.Resources.Languages.Core.DebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugBrowserTooltip = _debugBrowser ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugBrowser");
             }
@@ -562,7 +562,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    DebugStudioTooltip = _canDebugStudio ? Warewolf.Studio.Resources.Languages.Core.DebugStudioToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugStudioTooltip = _canDebugStudio ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugStudioToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugStudio");
             }
@@ -590,7 +590,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    DebugInputsTooltip = _canDebugInputs ? Warewolf.Studio.Resources.Languages.Core.DebugInputsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugInputsTooltip = _canDebugInputs ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugInputsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugInputs");
             }
