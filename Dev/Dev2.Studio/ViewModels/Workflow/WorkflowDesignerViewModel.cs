@@ -940,10 +940,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                             var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
                             foreach (var environmentViewModel in environmentViewModels)
                             {
-                                explorerItem = environmentViewModel.Children.FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                                explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
                             }
-                            
-                            mvm.DuplicateResource(explorerItem);
+
+                            if (explorerItem != null)
+                                mvm.DuplicateResource(explorerItem);
                         }
                     }
                 }));
@@ -965,7 +966,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
                             foreach (var environmentViewModel in environmentViewModels)
                             {
-                                explorerItem = environmentViewModel.Children.FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                                explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
                             }
                             if (explorerItem != null)
                                 mvm.AddDeploySurface(explorerItem.AsList().Union(new[] {explorerItem}));
