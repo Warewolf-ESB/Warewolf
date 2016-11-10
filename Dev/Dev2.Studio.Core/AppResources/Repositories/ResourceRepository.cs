@@ -558,7 +558,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 if (fetchXaml)
                 {
                     var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, id, prepairForDeployment);
-                    if(msg == null || msg.HasError)
+                    if (msg == null || msg.HasError)
                         return null;
                     resource.WorkflowXaml = msg.Message;
                 }
@@ -600,7 +600,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             CompressedExecuteMessage message = new CompressedExecuteMessage();
             message.SetMessage(serializer.Serialize(tests));
             comsController.AddPayloadArgument("resourceID", resource.ID.ToString());
-            comsController.AddPayloadArgument("resourcePath", resource.Category);
+            comsController.AddPayloadArgument("resourcePath", string.IsNullOrEmpty(resource.Category) ? resource.ResourceName : resource.Category);
             comsController.AddPayloadArgument("testDefinitions", serializer.SerializeToBuilder(message));
 
             var result = comsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
@@ -644,7 +644,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        public void DeleteAlltests(List<string> ignoreList )
+        public void DeleteAlltests(List<string> ignoreList)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeToBuilder = serializer.SerializeToBuilder(ignoreList);

@@ -716,8 +716,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("a", selectedServiceTest.Outputs.Single().From);
             Assert.AreEqual("a", selectedServiceTest.Outputs.Single().To);
             Assert.AreEqual("a", selectedServiceTest.Outputs.Single().Value);
-            Assert.AreNotEqual(default(DateTime), selectedServiceTest.LastRunDate);
-            Assert.AreEqual(true, selectedServiceTest.LastRunDateVisibility);
 
         }
 

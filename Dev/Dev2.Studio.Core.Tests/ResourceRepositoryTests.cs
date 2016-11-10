@@ -56,7 +56,7 @@ namespace BusinessDesignStudio.Unit.Tests
     /// Summary description for ResourceRepositoryTest
     /// </summary>
     [TestClass]
-    public class ResourceRepositoryTest
+    public class ResourceRepositoryTests
     {
 
         #region Variables
@@ -652,6 +652,67 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreEqual(serviceTestModel.TestSteps.Count,serviceTestModelTos[0].TestSteps.Count);
             Assert.AreEqual(1,serviceTestModelTos[0].TestSteps.Count);
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Savetests_GivenEmptyCategory_ShouldUseResourceName()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModelTO
+            {
+                TestName = "Test Input",
+                AuthenticationType = AuthenticationType.Public,
+                Enabled = true,
+                ErrorExpected = false,
+                NoErrorExpected = true,
+                Inputs = new List<IServiceTestInput> { new ServiceTestInputTO { Variable = "var", Value = "val" } },
+                Outputs = new List<IServiceTestOutput> { new ServiceTestOutputTO { Variable = "var", Value = "val" } },
+                ResourceId = Guid.NewGuid(),
+                TestSteps = new List<IServiceTestStep> { new ServiceTestStep(Guid.NewGuid(), "type", new ObservableCollection<IServiceTestOutput>(), StepType.Mock) }
+            };
+            var retVal = new StringBuilder();
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.IsConnected).Returns(true);
+            conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
+            {
+                retVal = o;
+            });
+
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
+            var resourceId = Guid.NewGuid();
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var resourceModel = new Mock<IResourceModel>();
+            resourceModel.SetupGet(p => p.ID).Returns(resourceId);
+            resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
+            resourceModel.SetupGet(p => p.Category).Returns(string.Empty);
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+
+            resourceRepository.SaveTests(resourceModel.Object, new List<IServiceTestModelTO> { serviceTestModel });
+            //---------------Test Result -----------------------
+            var ser = new Dev2JsonSerializer();
+            var retMsg = ser.Deserialize<EsbExecuteRequest>(retVal.ToString());
+            Assert.IsNotNull(retMsg);
+            Assert.AreEqual("SaveTests", retMsg.ServiceName);
+            Assert.AreEqual(3, retMsg.Args.Count);
+            Assert.AreEqual(resourceId.ToString(), retMsg.Args["resourceID"].ToString());
+            Assert.AreEqual("My WF", retMsg.Args["resourcePath"].ToString());
+            var compressedMessage = ser.Deserialize<CompressedExecuteMessage>(retMsg.Args["testDefinitions"].ToString());
+            Assert.IsNotNull(compressedMessage);
+            var serviceTestModelTos = ser.Deserialize<List<ServiceTestModelTO>>(compressedMessage.GetDecompressedMessage());
+            Assert.IsNotNull(serviceTestModelTos);
+            Assert.AreEqual(1, serviceTestModelTos.Count);
+            Assert.AreEqual(serviceTestModel.TestName, serviceTestModelTos[0].TestName);
+            Assert.AreEqual(serviceTestModel.TestSteps.Count, serviceTestModelTos[0].TestSteps.Count);
+            Assert.AreEqual(1, serviceTestModelTos[0].TestSteps.Count);
+        }
+
+       
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
