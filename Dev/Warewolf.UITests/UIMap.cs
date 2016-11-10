@@ -46,6 +46,7 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackError -= OnError;
             Playback.PlaybackError += OnError;
+            Mouse.MouseDragSpeed = 450;
         }
 
         [Given("The Warewolf Studio is running")]
@@ -68,6 +69,7 @@ namespace Warewolf.UITests
         [When(@"I Try Click Message Box OK")]
         public void TryClickMessageBoxOK()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MessageBoxWindow.OKButton))
@@ -79,14 +81,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging message box to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Message Box dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingDebugInputDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
@@ -98,14 +105,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging debug input dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Debug Input dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingSaveDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(SaveDialogWindow.CancelButton))
@@ -117,14 +129,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging save dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Save dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
@@ -136,14 +153,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging unpinned pane to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to Pin Unpinned Pane To Default Position before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         private void TryCloseHangingServicePickerDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(ServicePickerDialog.Cancel))
@@ -155,14 +177,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging service picker dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Service Picker dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingWindowsGroupDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(SelectWindowsGroupDialog))
@@ -174,14 +201,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging select windows group dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Windows Group dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingErrorDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(ErrorWindow))
@@ -193,14 +225,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging error dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Error dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingCriticalErrorDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(CriticalErrorWindow))
@@ -212,19 +249,14 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging critical error dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Critical Error dialog before the test starts.");
             }
-        }
-
-        public void Click_Assign_tool_VariableTextbox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox);
-        }
-        public void Click_Assign_tool_ValueTextbox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox);
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
+            }
         }
 
         bool OnErrorHandlerDisabled = false;
@@ -278,13 +310,14 @@ namespace Warewolf.UITests
                     string parentProperties = string.Empty;
                     parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \'" + prop.PropertyValue + "\'\n"; });
                     var messageText = type + "\n" + message + "\n" + "Search actually failed at: " + parent.FriendlyName + "\n" + parentProperties;
-                    parent.DrawHighlight();
 #if DEBUG
                     System.Windows.Forms.MessageBox.Show(messageText);
-                    throw e;
 #else
                     Console.WriteLine(messageText);
-                    return;
+#endif
+                    parent.DrawHighlight();
+#if DEBUG
+                    throw e;
 #endif
                 }
             }
@@ -295,13 +328,14 @@ namespace Warewolf.UITests
             var exceptionSource = e.ExceptionSource;
             if (exceptionSource is UITestControl)
             {
-                (exceptionSource as UITestControl).DrawHighlight();
 #if DEBUG
                 System.Windows.Forms.MessageBox.Show(type + "\n" + message);
-                throw e;
 #else
                 Console.WriteLine(message);
-                return;
+#endif
+                (exceptionSource as UITestControl).DrawHighlight();
+#if DEBUG
+                throw e;
 #endif
             }
         }
@@ -311,13 +345,14 @@ namespace Warewolf.UITests
             var exceptionSource = e.ExceptionSource;
             if (exceptionSource is UITestControl)
             {
-                (exceptionSource as UITestControl).DrawHighlight();
 #if DEBUG
                 System.Windows.Forms.MessageBox.Show(type + "\n" + message);
-                throw e;
 #else
                 Console.WriteLine(message);
-                return;
+#endif
+                (exceptionSource as UITestControl).DrawHighlight();
+#if DEBUG
+                throw e;
 #endif
             }
         }
@@ -356,6 +391,18 @@ namespace Warewolf.UITests
             {
                 Console.WriteLine("Error during test cleanup: " + e.Message);
             }
+        }
+
+        [When(@"I Click Assign tool VariableTextbox")]
+        public void Click_Assign_tool_VariableTextbox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox);
+        }
+
+        [When(@"I Click Assign tool ValueTextbox")]
+        public void Click_Assign_tool_ValueTextbox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox);
         }
 
         public void TryClearExplorerFilter()
@@ -2849,7 +2896,7 @@ namespace Warewolf.UITests
         public void Unpin_Tab_With_Drag(UITestControl Tab)
         {
             Mouse.StartDragging(Tab);
-            Mouse.StopDragging(25, 40);
+            Mouse.StopDragging(0, 21);
         }
 
         public void Enter_Recordset_On_Length_tool()
@@ -3559,6 +3606,7 @@ namespace Warewolf.UITests
         public void Toggle_Between_Studio_and_Unpinned_Tab()
         {
             Keyboard.SendKeys(MainStudioWindow, "{ALT}{TAB}");
+            Playback.Wait(100);
         }
 
         /// <summary>

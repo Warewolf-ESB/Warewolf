@@ -1767,6 +1767,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_PutWeb_GenerateOutputs_Button
+        /// </summary>
+        public void Click_PutWeb_GenerateOutputs_Button()
+        {
+            #region Variable Declarations
+            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.GenerateOutputsButton;
+            #endregion
+
+            // Click 'Generate Outputs' button
+            Mouse.Click(generateOutputsButton, new Point(34, 13));
+        }
+        
+        /// <summary>
         /// Click_Read_Done_Button
         /// </summary>
         public void Click_Read_Done_Button()
@@ -6287,6 +6300,57 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_Dropbox_Delete_Tool_Large_View_With_Double_Click - Use 'Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams' to pass parameters into this method.
+        /// </summary>
+        public void Open_Dropbox_Delete_Tool_Large_View_With_Double_Click()
+        {
+            #region Variable Declarations
+            WpfCustom dropboxDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete;
+            WpfCustom largeViewContentCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete.LargeViewContentCustom;
+            #endregion
+
+            // Double-Click 'DsfDropBoxDeleteFileActivity' custom control
+            Mouse.DoubleClick(dropboxDelete, new Point(174, 12));
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams.LargeViewContentCustomExists, largeViewContentCustom.Exists, "Tool large does not exist after openning it with a double click.");
+        }
+        
+        /// <summary>
+        /// Open_Dropbox_List_Contents_Tool_Large_View_With_Double_Click - Use 'Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams' to pass parameters into this method.
+        /// </summary>
+        public void Open_Dropbox_List_Contents_Tool_Large_View_With_Double_Click()
+        {
+            #region Variable Declarations
+            WpfCustom dropboxFileList = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList;
+            WpfCustom largeViewContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList.LargeViewContent;
+            #endregion
+
+            // Double-Click 'DsfDropBoxFileListActivity' custom control
+            Mouse.DoubleClick(dropboxFileList, new Point(166, 9));
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams.LargeViewContentExists, largeViewContent.Exists, "Tool large does not exist after openning it with a double click.");
+        }
+        
+        /// <summary>
+        /// Open_Dropbox_Upload_Tool_Large_View_With_Double_Click - Use 'Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams' to pass parameters into this method.
+        /// </summary>
+        public void Open_Dropbox_Upload_Tool_Large_View_With_Double_Click()
+        {
+            #region Variable Declarations
+            WpfCustom dropboxUpload = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxUpload;
+            WpfCustom largeViewContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxUpload.LargeViewContent;
+            #endregion
+
+            // Double-Click 'DsfDropBoxUploadFileActivity' custom control
+            Mouse.DoubleClick(dropboxUpload, new Point(151, 8));
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams.LargeViewContentExists, largeViewContent.Exists, "Tool large does not exist after openning it with a double click.");
+        }
+        
+        /// <summary>
         /// Open_DropboxFileOperation_Large_View
         /// </summary>
         public void Open_DropboxFileOperation_Large_View()
@@ -9644,6 +9708,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_TestingReturnText_Web_Put_Source
+        /// </summary>
+        public void Select_TestingReturnText_Web_Put_Source()
+        {
+            #region Variable Declarations
+            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox;
+            WpfListItem comboboxListItemAsTestingReturnText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox.ComboboxListItemAsTestingReturnText;
+            #endregion
+
+            // Click 'SourcesComboBox' combo box
+            Mouse.Click(sourcesComboBox, new Point(196, 11));
+
+            // Click 'TestingReturnTextWebServiceSourceListItem' list item
+            Mouse.Click(comboboxListItemAsTestingReturnText, new Point(129, 13));
+        }
+        
+        /// <summary>
         /// Select_Tests_From_Context_Menu - Use 'Select_Tests_From_Context_MenuParams' to pass parameters into this method.
         /// </summary>
         public void Select_Tests_From_Context_Menu()
@@ -12427,6 +12508,42 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams
+        {
+            get
+            {
+                if ((this.mOpen_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams == null))
+                {
+                    this.mOpen_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams = new Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams();
+                }
+                return this.mOpen_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams;
+            }
+        }
+        
+        public virtual Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams
+        {
+            get
+            {
+                if ((this.mOpen_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams == null))
+                {
+                    this.mOpen_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams = new Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams();
+                }
+                return this.mOpen_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams;
+            }
+        }
+        
+        public virtual Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams
+        {
+            get
+            {
+                if ((this.mOpen_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams == null))
+                {
+                    this.mOpen_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams = new Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams();
+                }
+                return this.mOpen_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams;
+            }
+        }
+        
         public virtual Open_Explorer_First_Item_Tests_With_Context_MenuParams Open_Explorer_First_Item_Tests_With_Context_MenuParams
         {
             get
@@ -14100,6 +14217,12 @@ namespace Warewolf.UITests
         private Open_DeleteWeb_Tool_Large_ViewParams mOpen_DeleteWeb_Tool_Large_ViewParams;
         
         private Open_DotNet_DLL_Connector_Tool_Large_ViewParams mOpen_DotNet_DLL_Connector_Tool_Large_ViewParams;
+        
+        private Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams mOpen_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams;
+        
+        private Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams mOpen_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams;
+        
+        private Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams mOpen_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams;
         
         private Open_Explorer_First_Item_Tests_With_Context_MenuParams mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
         
@@ -19071,6 +19194,51 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Open_Dropbox_Delete_Tool_Large_View_With_Double_Click'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Dropbox_Delete_Tool_Large_View_With_Double_ClickParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// </summary>
+        public bool LargeViewContentCustomExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Dropbox_List_Contents_Tool_Large_View_With_Double_Click'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Dropbox_List_Contents_Tool_Large_View_With_Double_ClickParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// </summary>
+        public bool LargeViewContentExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Dropbox_Upload_Tool_Large_View_With_Double_Click'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Dropbox_Upload_Tool_Large_View_With_Double_ClickParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// </summary>
+        public bool LargeViewContentExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Open_Explorer_First_Item_Tests_With_Context_Menu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -21138,7 +21306,6 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.SearchProperties[WpfWindow.PropertyNames.AutomationId] = "MainViewWindow";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -35400,17 +35567,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfComboBox SourcesComboBox
+        public SourcesComboBox SourcesComboBox
         {
             get
             {
                 if ((this.mSourcesComboBox == null))
                 {
-                    this.mSourcesComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mSourcesComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
-                    this.mSourcesComboBox.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSourcesComboBox = new SourcesComboBox(this);
                 }
                 return this.mSourcesComboBox;
             }
@@ -35522,7 +35685,7 @@ namespace Warewolf.UITests
         
         private WpfButton mNewSourceButton;
         
-        private WpfComboBox mSourcesComboBox;
+        private SourcesComboBox mSourcesComboBox;
         
         private WpfButton mGenerateOutputsButton;
         
@@ -35758,6 +35921,43 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourcesComboBox : WpfComboBox
+    {
+        
+        public SourcesComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem ComboboxListItemAsTestingReturnText
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsTestingReturnText == null))
+                {
+                    this.mComboboxListItemAsTestingReturnText = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsTestingReturnText.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mComboboxListItemAsTestingReturnText.SearchProperties[WpfListItem.PropertyNames.Instance] = "9";
+                    this.mComboboxListItemAsTestingReturnText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mComboboxListItemAsTestingReturnText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mComboboxListItemAsTestingReturnText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QueryStringText : WpfText
     {
         
@@ -35970,13 +36170,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public SourcesComboBox SourcesComboBox
+        public SourcesComboBox1 SourcesComboBox
         {
             get
             {
                 if ((this.mSourcesComboBox == null))
                 {
-                    this.mSourcesComboBox = new SourcesComboBox(this);
+                    this.mSourcesComboBox = new SourcesComboBox1(this);
                 }
                 return this.mSourcesComboBox;
             }
@@ -36089,7 +36289,7 @@ namespace Warewolf.UITests
         
         private WpfButton mNewSourceButton;
         
-        private SourcesComboBox mSourcesComboBox;
+        private SourcesComboBox1 mSourcesComboBox;
         
         private WpfButton mGenerateOutputsButton;
         
@@ -36325,10 +36525,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourcesComboBox : WpfComboBox
+    public class SourcesComboBox1 : WpfComboBox
     {
         
-        public SourcesComboBox(UITestControl searchLimitContainer) : 
+        public SourcesComboBox1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -38538,13 +38738,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SourcesComboBox1 SourcesComboBox
+        public SourcesComboBox2 SourcesComboBox
         {
             get
             {
                 if ((this.mSourcesComboBox == null))
                 {
-                    this.mSourcesComboBox = new SourcesComboBox1(this);
+                    this.mSourcesComboBox = new SourcesComboBox2(this);
                 }
                 return this.mSourcesComboBox;
             }
@@ -38684,7 +38884,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SourcesComboBox1 mSourcesComboBox;
+        private SourcesComboBox2 mSourcesComboBox;
         
         private ActionsComboBox mActionsComboBox;
         
@@ -38707,10 +38907,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourcesComboBox1 : WpfComboBox
+    public class SourcesComboBox2 : WpfComboBox
     {
         
-        public SourcesComboBox1(UITestControl searchLimitContainer) : 
+        public SourcesComboBox2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -42461,13 +42661,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public SourcesCombobox2 SourcesCombobox
+        public SourcesCombobox3 SourcesCombobox
         {
             get
             {
                 if ((this.mSourcesCombobox == null))
                 {
-                    this.mSourcesCombobox = new SourcesCombobox2(this);
+                    this.mSourcesCombobox = new SourcesCombobox3(this);
                 }
                 return this.mSourcesCombobox;
             }
@@ -42625,7 +42825,7 @@ namespace Warewolf.UITests
         #region Fields
         private ActionsCombobox1 mActionsCombobox;
         
-        private SourcesCombobox2 mSourcesCombobox;
+        private SourcesCombobox3 mSourcesCombobox;
         
         private InputsTable mInputsTable;
         
@@ -42686,10 +42886,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourcesCombobox2 : WpfComboBox
+    public class SourcesCombobox3 : WpfComboBox
     {
         
-        public SourcesCombobox2(UITestControl searchLimitContainer) : 
+        public SourcesCombobox3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -83530,13 +83730,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SourcesComboBox3 SourcesComboBox
+        public SourcesComboBox4 SourcesComboBox
         {
             get
             {
                 if ((this.mSourcesComboBox == null))
                 {
-                    this.mSourcesComboBox = new SourcesComboBox3(this);
+                    this.mSourcesComboBox = new SourcesComboBox4(this);
                 }
                 return this.mSourcesComboBox;
             }
@@ -83680,7 +83880,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SourcesComboBox3 mSourcesComboBox;
+        private SourcesComboBox4 mSourcesComboBox;
         
         private WpfButton mNewSourceButton;
         
@@ -83703,10 +83903,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourcesComboBox3 : WpfComboBox
+    public class SourcesComboBox4 : WpfComboBox
     {
         
-        public SourcesComboBox3(UITestControl searchLimitContainer) : 
+        public SourcesComboBox4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

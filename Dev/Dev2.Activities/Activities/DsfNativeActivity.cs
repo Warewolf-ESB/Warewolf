@@ -808,7 +808,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var dsfDecision = this as DsfDecision;
                             if (dsfDecision != null)
                             {
-
                                 assertPassed = dsfDecision.Result == serviceTestOutput.Value;
                                 if (dataObject.ServiceTest != null)
                                 {
@@ -817,9 +816,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     
                                     SetPassResult(dataObject, assertPassed, serviceTestOutput, stepToBeAsserted);
                                 }
-
-
-
                             }
                         }
                         else if (stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
@@ -892,10 +888,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             dataObject.StopExecution = !testPassed;
                         }
-
                     }
                 }
-
             }
         }
 

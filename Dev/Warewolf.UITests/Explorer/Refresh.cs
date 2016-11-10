@@ -15,6 +15,7 @@ namespace Warewolf.UITests
         const string WorkflowName = "SavedBlank";
 
         [TestMethod]
+        [TestCategory("Explorer")]
         public void RefreshExplorerAfterDeletingResourceFromDiskUITest()
         {
             UIMap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
