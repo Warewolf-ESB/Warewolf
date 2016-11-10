@@ -603,11 +603,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    if (activity.GetType() == typeof(DsfForEachActivity))
+                    if (activity != null && activity.GetType() == typeof(DsfForEachActivity))
                     {
                         AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
                     }
-                    else if (activity.GetType() == typeof(DsfSelectAndApplyActivity))
+                    else if (activity != null && activity.GetType() == typeof(DsfSelectAndApplyActivity))
                     {
                         AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
                     }
@@ -771,8 +771,11 @@ namespace Warewolf.Studio.ViewModels
                 if (flowSwitch == null)
                 {
                     var modelItemParent = modelItem.Parent;
-                    flowSwitch = modelItemParent.GetCurrentValue() as FlowSwitch<string>;
-                    condition = modelItemParent.GetProperty("Expression");
+                    if(modelItemParent != null)
+                    {
+                        flowSwitch = modelItemParent.GetCurrentValue() as FlowSwitch<string>;
+                        condition = modelItemParent.GetProperty("Expression");
+                    }
                     activity = (DsfFlowNodeActivity<string>)condition;
                 }
                 if (flowSwitch != null)
@@ -1045,7 +1048,7 @@ namespace Warewolf.Studio.ViewModels
             }
             Type type = Types.FirstOrDefault(x => x.Name == typeName);
 
-            if (type.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
+            if (type != null && type.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
             {
                 var desc = GetDescriptorFromAttribute(type);
                 if (serviceTestStep != null)
@@ -1936,10 +1939,30 @@ namespace Warewolf.Studio.ViewModels
             return testStep;
         }
 
-        private ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromStep(ObservableCollection<IServiceTestOutput> stepStepOutputs, IServiceTestStep testStep)
+        private ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromStep(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
         {
-            var serviceTestOutputs = ServiceTestCommandHandler.CreateServiceTestOutputFromResult(stepStepOutputs, testStep);
-            return serviceTestOutputs;
+            var stepOutputs = new ObservableCollection<IServiceTestOutput>();
+            foreach (var serviceTestOutput in stepStepOutputs)
+            {
+                var testOutput = new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value, serviceTestOutput.From, serviceTestOutput.To)
+                {
+                    AddStepOutputRow = testStep.AddNewOutput,
+                    AssertOp = serviceTestOutput.AssertOp,
+                    HasOptionsForValue = serviceTestOutput.HasOptionsForValue,
+                    OptionsForValue = serviceTestOutput.OptionsForValue,
+                    Result = serviceTestOutput.Result
+                };
+                if (testStep.MockSelected)
+                {
+                    testOutput.TestPending = false;
+                    testOutput.TestPassed = false;
+                    testOutput.TestFailing = false;
+                    testOutput.TestInvalid = false;
+                }
+
+                stepOutputs.Add(testOutput);
+            }
+            return stepOutputs;
         }
 
         public ICommand DeleteTestCommand { get; set; }

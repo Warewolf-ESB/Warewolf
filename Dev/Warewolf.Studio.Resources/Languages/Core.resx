@@ -2701,14 +2701,23 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="MenuDatabaseToolTip" xml:space="preserve">
     <value>Create a new database source</value>
   </data>
-  <data name="DebugInputsToolTip" xml:space="preserve">
+  <data name="StartNodeDebugInputsToolTip" xml:space="preserve">
     <value>Run and debug your workflow service [F5]</value>
   </data>
-  <data name="DebugStudioToolTip" xml:space="preserve">
+  <data name="StartNodeDebugStudioToolTip" xml:space="preserve">
     <value>Run and debug your workflow service [F6]</value>
   </data>
-  <data name="DebugBrowserToolTip" xml:space="preserve">
+  <data name="StartNodeDebugBrowserToolTip" xml:space="preserve">
     <value>Run and debug your workflow service [F7]</value>
+  </data>
+  <data name="DebugInputsToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service</value>
+  </data>
+  <data name="DebugStudioToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service</value>
+  </data>
+  <data name="DebugBrowserToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service</value>
   </data>
   <data name="ScheduleToolTip" xml:space="preserve">
     <value>Schedule a service to run</value>

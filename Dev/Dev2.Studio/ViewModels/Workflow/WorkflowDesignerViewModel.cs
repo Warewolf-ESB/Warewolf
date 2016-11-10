@@ -534,7 +534,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    DebugBrowserTooltip = _debugBrowser ? Warewolf.Studio.Resources.Languages.Core.DebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugBrowserTooltip = _debugBrowser ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugBrowser");
             }
@@ -562,7 +562,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    DebugStudioTooltip = _canDebugStudio ? Warewolf.Studio.Resources.Languages.Core.DebugStudioToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugStudioTooltip = _canDebugStudio ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugStudioToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugStudio");
             }
@@ -590,7 +590,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    DebugInputsTooltip = _canDebugInputs ? Warewolf.Studio.Resources.Languages.Core.DebugInputsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugInputsTooltip = _canDebugInputs ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugInputsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugInputs");
             }
@@ -940,10 +940,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                             var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
                             foreach (var environmentViewModel in environmentViewModels)
                             {
-                                explorerItem = environmentViewModel.Children.FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                                explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
                             }
-                            
-                            mvm.DuplicateResource(explorerItem);
+
+                            if (explorerItem != null)
+                                mvm.DuplicateResource(explorerItem);
                         }
                     }
                 }));
@@ -965,7 +966,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
                             foreach (var environmentViewModel in environmentViewModels)
                             {
-                                explorerItem = environmentViewModel.Children.FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                                explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
                             }
                             if (explorerItem != null)
                                 mvm.AddDeploySurface(explorerItem.AsList().Union(new[] {explorerItem}));

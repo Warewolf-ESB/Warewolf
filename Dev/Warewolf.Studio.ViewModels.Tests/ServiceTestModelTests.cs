@@ -28,12 +28,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
-              {
-                  if (args.PropertyName == "TestName")
-                  {
-                      _wasCalled = true;
-                  }
-              };
+            {
+                if (args.PropertyName == "TestName")
+                {
+                    _wasCalled = true;
+                }
+            };
             //------------Execute Test---------------------------
             testModel.TestName = "Test Name";
             //------------Assert Results-------------------------
@@ -1193,7 +1193,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var areEqual = methodInfo.Invoke(null, new object[] { serviceTestModel.TestSteps, serviceTestSteps });
 
             //---------------Test Result -----------------------
-            Assert.IsFalse(bool.Parse(areEqual.ToString()));
+            Assert.IsTrue(bool.Parse(areEqual.ToString()));
         }
 
         [TestMethod]
@@ -1266,7 +1266,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
-            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val","","");
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val", "", "");
             serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
             {
                 serviceTestInput,
@@ -1294,7 +1294,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
-            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val","","") {AssertOp = "="};
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val", "", "") { AssertOp = "=" };
             serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
             {
                 serviceTestInput,
@@ -1322,7 +1322,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
-            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val","a","") {};
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val", "a", "") { };
             serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
             {
                 serviceTestInput,
@@ -1350,7 +1350,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
-            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val","a","b") {};
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val", "a", "b") { };
             serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
             {
                 serviceTestInput,
@@ -1379,7 +1379,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
-            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val","","");
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val", "", "");
             serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
             {
                 serviceTestInput,
@@ -1416,9 +1416,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var areEqual = methodInfo.Invoke(null, new object[] { serviceTestModel.Outputs, default(ObservableCollection<IServiceTestOutput>) });
-            //---------------Test Result -----------------------
-            Assert.IsFalse(bool.Parse(areEqual.ToString()));
+            try
+            {
+                var areEqual = methodInfo.Invoke(null, new object[] { serviceTestModel.Outputs, default(ObservableCollection<IServiceTestOutput>) });
+            }
+            catch (TargetInvocationException ex)
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                var b = ex.InnerException.GetType() == typeof(NullReferenceException);
+                //---------------Test Result -----------------------
+                Assert.IsTrue(b);
+            }
+        
+            
         }
 
         [TestMethod]
@@ -1437,9 +1447,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { default(ServiceTestModel), true });
+            try
+            {
+                methodInfo.Invoke(serviceTestModel, new object[] { default(ServiceTestModel), true });
+            }
+            catch (TargetInvocationException ex)
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                var b = ex.InnerException.GetType() == typeof(NullReferenceException);
+
+                Assert.IsTrue(b);
+            }
+
             //---------------Test Result -----------------------
-            Assert.IsFalse(bool.Parse(areEqual.ToString()));
+
         }
 
         [TestMethod]
@@ -1460,7 +1481,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(methodInfo);
             Assert.IsNotNull(fieldInfo);
             //---------------Execute Test ----------------------
-           
+
             fieldInfo.SetValue(serviceTestModel, default(ObservableCollection<IServiceTestInput>));
             var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { new ServiceTestModel(), true });
             //---------------Test Result -----------------------
@@ -1492,7 +1513,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
 
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel , true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
@@ -1522,7 +1543,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
 
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel , true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
@@ -1555,7 +1576,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
 
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel , true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
