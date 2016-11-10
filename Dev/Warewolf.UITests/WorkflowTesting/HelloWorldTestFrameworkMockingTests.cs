@@ -56,14 +56,29 @@ namespace Warewolf.UITests
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
             UIMap.Click_Delete_On_AssignValue_TestStep();
+            Point point;
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.TryGetClickablePoint(out point));
         }
 
         [TestMethod]
-        public void SelectMockForTestStepAssignName()
+        public void SelectMockForTestStepAssignNameHidesTheTestStatusIcon()
         {
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
             UIMap.Click_MockRadioButton_On_AssignValue_TestStep();
+            Point point;
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.Pending.TryGetClickablePoint(out point));
+        }
+
+        [TestMethod]
+        public void RunTestThenEditTheWorkflowSetsTheTestToInvalid()
+        {
+            UIMap.Press_F6();
+            UIMap.Click_Create_Test_From_Debug();
+            UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
+            UIMap.EnterOutMessageValue_On_OutputMessage_TestStep(Message);
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Test_Tab();
         }
 
         [TestMethod]
