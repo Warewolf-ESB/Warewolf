@@ -160,24 +160,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     var studioTestViewModel = vm as StudioTestViewModel;
                     var serviceTestViewModel = studioTestViewModel?.ViewModel;
-                    if (serviceTestViewModel?.SelectedServiceTest != null)
-                    {
-                        serviceTestViewModel.AddDuplicateTestUsingDebug(message);
-                    }
-                    else
-                    {
-                        if (serviceTestViewModel != null)
-                        {
-                            if (serviceTestViewModel.IsDirty)
-                            {
-                                serviceTestViewModel.CreateTestCommand.Execute(message);
-                            }
-                            else
-                            {
-                                serviceTestViewModel.PrepopulateTestsUsingDebug(message.RootItems);
-                            }
-                        }
-                    }
+                    serviceTestViewModel?.CreateTestCommand.Execute(message);
                 }
                 AddAndActivateWorkSurface(found);
             }

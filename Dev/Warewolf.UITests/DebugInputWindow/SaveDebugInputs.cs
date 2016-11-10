@@ -10,6 +10,7 @@ namespace Warewolf.UITests.DebugInputWindow
         const string HelloWorld = "Hello World";
 
         [TestMethod]
+        [TestCategory("Debug Input")]
         public void SaveDebugInputsAfterCancel()
         {
             UIMap.Filter_Explorer(HelloWorld);
@@ -23,6 +24,7 @@ namespace Warewolf.UITests.DebugInputWindow
         }
 
         [TestMethod]
+        [TestCategory("Debug Input")]
         public void SaveDebugInputsAfterDebug()
         {
             UIMap.Filter_Explorer(HelloWorld);

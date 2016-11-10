@@ -212,7 +212,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
             DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ResourceModel);
             _firstWorkflowChange = true;
-            SetPermission(ResourceModel.UserPermissions);
         }
 
         public void SetPermission(Permissions permission)
@@ -1608,6 +1607,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 WorkflowDesignerIcons.Activities.Flowchart = Application.Current.TryFindResource("Explorer-WorkflowService-Icon") as DrawingBrush;
                 WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNode-Icon") as DrawingBrush;
                 SubscribeToDebugSelectionChanged();
+                SetPermission(ResourceModel.UserPermissions);
+                ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
             }
         }
         
@@ -1948,6 +1949,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
                     _workspaceSave = false;
                     NotifyOfPropertyChange(() => DisplayName);
+                    ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
                 }
                 else
                 {

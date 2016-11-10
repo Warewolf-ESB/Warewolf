@@ -1832,7 +1832,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DebugOutputViewAddNewTestHelp.
+        ///   Looks up a localized string similar to Create a test for the current workflow.
         /// </summary>
         public static string DebugOutputViewAddNewTestHelp {
             get {
@@ -1841,11 +1841,20 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DebugOutputViewAddNewTestToolTip.
+        ///   Looks up a localized string similar to Create a new test.
         /// </summary>
         public static string DebugOutputViewAddNewTestToolTip {
             get {
                 return ResourceManager.GetString("DebugOutputViewAddNewTestToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can only create a test once the workflow is saved.
+        /// </summary>
+        public static string DebugOutputViewAddNewTestUnsavedToolTip {
+            get {
+                return ResourceManager.GetString("DebugOutputViewAddNewTestUnsavedToolTip", resourceCulture);
             }
         }
         
