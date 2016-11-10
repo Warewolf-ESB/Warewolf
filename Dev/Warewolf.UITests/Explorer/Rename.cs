@@ -3,13 +3,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
 {
-    /// <summary>
-    /// Summary description for RemoteServer
-    /// </summary>
     [CodedUITest]
     public class RenameExplorerResource
     {
         [TestMethod]
+        [TestCategory("Explorer")]
         public void RenameFolder_ThenFolderItem()
         {
             UIMap.Filter_Explorer("Control Flow - Decision");
