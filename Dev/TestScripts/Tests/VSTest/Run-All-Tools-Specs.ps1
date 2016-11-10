@@ -32,20 +32,15 @@ if ($TestList.StartsWith(",")) {
 $TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding=`"UTF-8`"?>
-<TestSettings name=`"Tools Specs`" id=`"" + [guid]::NewGuid() + @"`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>These are default test settings for a local test run.</Description>
-  <NamingScheme baseName=`"ToolsSpecs`" appendTimeStamp=`"false`" useDefault=`"false`" />
+<TestSettings
+  id=`"" + [guid]::NewGuid() + @"`"
+  name="Tools Specs"
+  enableDefaultDataCollectors="false"
+  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+  <Description>Run Tool Specs.</Description>
+  <Deployment enabled="false" />
   <Execution>
-    <Hosts skipUnhostableTests=`"false`" />
-    <TestTypeSpecific>
-      <UnitTestRunConfig testTypeId=`"13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b`">
-        <AssemblyResolution>
-          <TestDirectory useLoadContext=`"true`" />
-        </AssemblyResolution>
-      </UnitTestRunConfig>
-    </TestTypeSpecific>
-    <AgentRule name=`"LocalMachineDefaultRole`">
-    </AgentRule>
+    <Timeouts testTimeout=`"180000`" />
   </Execution>
 </TestSettings>
 "@)
