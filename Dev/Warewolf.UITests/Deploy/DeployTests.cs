@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class DeployTests
     {
         [TestMethod]
+        [TestCategory("Deploy")]
         public void Deploy_Connect_And_Disconnect_Destination()
         {
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
@@ -17,6 +18,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Deploy")]
         public void Deploy_Connect_And_Disconnect_Source()
         {
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
@@ -27,6 +29,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Deploy")]
         public void Deploy_Hello_World()
         {
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();

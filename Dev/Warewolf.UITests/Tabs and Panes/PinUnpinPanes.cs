@@ -10,16 +10,17 @@ namespace Warewolf.UITests.Tabs
     public class PinUnpinPanes
     {
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinNewWorkflowTabByDraggingOnly()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
-            Playback.Wait(1000);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not dock into it's default position after being dragged onto the central dock indicator.");
         }
 
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinnedPaneContextMenuItems()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
@@ -34,6 +35,7 @@ namespace Warewolf.UITests.Tabs
         }
 
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinSettingsTab()
         {
             UIMap.Click_Settings_Ribbon_Button();
@@ -42,6 +44,7 @@ namespace Warewolf.UITests.Tabs
         }
 
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinServerSourceWizardTab()
         {
             UIMap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
@@ -50,6 +53,7 @@ namespace Warewolf.UITests.Tabs
         }
 
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinDBSourceWizardTab()
         {
             UIMap.Click_New_Database_Source_Ribbon_Button();
@@ -58,6 +62,7 @@ namespace Warewolf.UITests.Tabs
         }
 
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinPluginSourceWizardTab()
         {
             UIMap.Click_NewPluginSource_Ribbon_Button();
@@ -66,6 +71,7 @@ namespace Warewolf.UITests.Tabs
         }
 
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinWebSourceWizardTab()
         {
             UIMap.Click_New_Web_Source_Ribbon_Button();
@@ -74,6 +80,7 @@ namespace Warewolf.UITests.Tabs
         }
 
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinDeployTab()
         {
             UIMap.Click_Deploy_Ribbon_Button();
@@ -82,6 +89,7 @@ namespace Warewolf.UITests.Tabs
         }
 
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinDependencyGraphTab()
         {
             UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
@@ -90,6 +98,7 @@ namespace Warewolf.UITests.Tabs
         }
 
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinTestsTabPage()
         {
             UIMap.Filter_Explorer("Hello World");
@@ -99,6 +108,7 @@ namespace Warewolf.UITests.Tabs
         }
 
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinSchedulerTab()
         {
             UIMap.Click_Scheduler_Ribbon_Button();

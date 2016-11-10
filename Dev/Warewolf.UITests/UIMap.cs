@@ -46,6 +46,7 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackError -= OnError;
             Playback.PlaybackError += OnError;
+            Mouse.MouseDragSpeed = 450;
         }
 
         [Given("The Warewolf Studio is running")]
@@ -68,6 +69,7 @@ namespace Warewolf.UITests
         [When(@"I Try Click Message Box OK")]
         public void TryClickMessageBoxOK()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MessageBoxWindow.OKButton))
@@ -79,14 +81,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging message box to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Message Box dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingDebugInputDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
@@ -98,14 +105,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging debug input dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Debug Input dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingSaveDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(SaveDialogWindow.CancelButton))
@@ -117,14 +129,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging save dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Save dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MainStudioWindow.UnpinnedTab))
@@ -136,14 +153,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging unpinned pane to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to Pin Unpinned Pane To Default Position before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         private void TryCloseHangingServicePickerDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(ServicePickerDialog.Cancel))
@@ -155,14 +177,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging service picker dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Service Picker dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingWindowsGroupDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(SelectWindowsGroupDialog))
@@ -174,14 +201,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging select windows group dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Windows Group dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingErrorDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(ErrorWindow))
@@ -193,14 +225,19 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging error dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Error dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
             }
         }
 
         public void TryCloseHangingCriticalErrorDialog()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(CriticalErrorWindow))
@@ -212,19 +249,14 @@ namespace Warewolf.UITests
                     Console.WriteLine("No hanging critical error dialog to clean up.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Caught a null reference exception trying to close a hanging dialog before the test starts.");
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Critical Error dialog before the test starts.");
             }
-        }
-
-        public void Click_Assign_tool_VariableTextbox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox);
-        }
-        public void Click_Assign_tool_ValueTextbox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox);
+            finally
+            {
+                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
+            }
         }
 
         bool OnErrorHandlerDisabled = false;
@@ -278,13 +310,14 @@ namespace Warewolf.UITests
                     string parentProperties = string.Empty;
                     parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \'" + prop.PropertyValue + "\'\n"; });
                     var messageText = type + "\n" + message + "\n" + "Search actually failed at: " + parent.FriendlyName + "\n" + parentProperties;
-                    parent.DrawHighlight();
 #if DEBUG
                     System.Windows.Forms.MessageBox.Show(messageText);
-                    throw e;
 #else
                     Console.WriteLine(messageText);
-                    return;
+#endif
+                    parent.DrawHighlight();
+#if DEBUG
+                    throw e;
 #endif
                 }
             }
@@ -295,13 +328,14 @@ namespace Warewolf.UITests
             var exceptionSource = e.ExceptionSource;
             if (exceptionSource is UITestControl)
             {
-                (exceptionSource as UITestControl).DrawHighlight();
 #if DEBUG
                 System.Windows.Forms.MessageBox.Show(type + "\n" + message);
-                throw e;
 #else
                 Console.WriteLine(message);
-                return;
+#endif
+                (exceptionSource as UITestControl).DrawHighlight();
+#if DEBUG
+                throw e;
 #endif
             }
         }
@@ -311,13 +345,14 @@ namespace Warewolf.UITests
             var exceptionSource = e.ExceptionSource;
             if (exceptionSource is UITestControl)
             {
-                (exceptionSource as UITestControl).DrawHighlight();
 #if DEBUG
                 System.Windows.Forms.MessageBox.Show(type + "\n" + message);
-                throw e;
 #else
                 Console.WriteLine(message);
-                return;
+#endif
+                (exceptionSource as UITestControl).DrawHighlight();
+#if DEBUG
+                throw e;
 #endif
             }
         }
@@ -356,6 +391,18 @@ namespace Warewolf.UITests
             {
                 Console.WriteLine("Error during test cleanup: " + e.Message);
             }
+        }
+
+        [When(@"I Click Assign tool VariableTextbox")]
+        public void Click_Assign_tool_VariableTextbox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox);
+        }
+
+        [When(@"I Click Assign tool ValueTextbox")]
+        public void Click_Assign_tool_ValueTextbox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox);
         }
 
         public void TryClearExplorerFilter()
@@ -1576,7 +1623,7 @@ namespace Warewolf.UITests
             WpfCheckBox public_DeployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox;
             WpfCheckBox public_DeployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox;
             #endregion
-            
+
             public_AdministratorCheckBox.Checked = false;
             Assert.IsFalse(public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Administrator.");
             Assert.IsTrue(public_ViewCheckBox.Checked, "Public View checkbox is unchecked after unChecking Administrator.");
@@ -1600,8 +1647,8 @@ namespace Warewolf.UITests
             Assert.IsTrue(resource_DeleteButton.Enabled, "Resource Delete button is disabled");
 
         }
-        
-       
+
+
 
         [When(@"I Check Public Contribute")]
         public void Check_Public_Contribute()
@@ -1868,7 +1915,7 @@ namespace Warewolf.UITests
             return property;
         }
 
-        
+
         public void Select_Service_From_Service_Picker(string serviceName, bool inSubFolder = false)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = serviceName;
@@ -2536,7 +2583,7 @@ namespace Warewolf.UITests
         }
 
         public void Click_DebugInput_Debug_Button_For_UnpinnedWindow()
-        {            
+        {
             #region Variable Declarations
             WpfButton debugF6Button = this.MainStudioWindow.DebugInputDialog.DebugF6Button;
             WpfCustom debugOutput = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput;
@@ -2588,7 +2635,7 @@ namespace Warewolf.UITests
         }
 
         public void Remove_Assign_Row_1_With_Context_Menu_On_Unpinned_Tab()
-        {            
+        {
             this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.DrawHighlight();
             Mouse.Click(this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
             StartNodePopupWindow.DesignSurfaceMenu.DeleteRowMenuItem.DrawHighlight();
@@ -2617,7 +2664,7 @@ namespace Warewolf.UITests
             }
         }
 
-        
+
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1 on unpinned tab")]
         public void Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab(string VariableText, string ValueText, int RowNumber)
         {
@@ -2658,7 +2705,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Assign_QviLarge_View()
         {
             #region Variable Declarations
-                        
+
             var qviVariableListBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.QviVariableListBoxEdit;
             var qviSplitOnCharacterEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.QviSplitOnCharacterEdit;
             var prefixEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.PrefixEdit;
@@ -2849,7 +2896,7 @@ namespace Warewolf.UITests
         public void Unpin_Tab_With_Drag(UITestControl Tab)
         {
             Mouse.StartDragging(Tab);
-            Mouse.StopDragging(25, 40);
+            Mouse.StopDragging(0, 21);
         }
 
         public void Enter_Recordset_On_Length_tool()
@@ -3064,7 +3111,7 @@ namespace Warewolf.UITests
 
             fileOrFolder.Text = resourcesFolder;
             results.Text = "[[results]]";
-        }   
+        }
         public void Enter_Text_Into_Write_Tool()
         {
             var file = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests\Test File.txt";
@@ -3078,7 +3125,7 @@ namespace Warewolf.UITests
             contents.Text = "Some Content";
             overwrite.Selected = true;
             results.Text = "[[results]]";
-        }     
+        }
         public void Enter_Text_Into_Move_Tool()
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests_Copy";
@@ -3212,7 +3259,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(switchTool, new Point(13, 17));
             Mouse.StopDragging(forEach);
         }
-        
+
         public void Drag_Toolbox_Decision_Onto_Foreach_LargeTool()
         {
             #region Variable Declarations
@@ -3220,9 +3267,9 @@ namespace Warewolf.UITests
             WpfListItem decision = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision;
             WpfCustom dropActivityHereCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHereCustom;
             #endregion
-            
+
             searchTextBox.Text = "Decision";
-            
+
             dropActivityHereCustom.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(decision, new Point(13, 17));
             Mouse.StopDragging(dropActivityHereCustom);
@@ -3269,7 +3316,7 @@ namespace Warewolf.UITests
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             Mouse.StartDragging(copyFile, new Point(2, 10));
             Mouse.StopDragging(flowchart, new Point(307, 126));
-            
+
             Assert.IsTrue(sharepointTool.Exists, "Sharepoint tool does not exist on the Design Surface");
         }
         [When(@"I Click UserButton On Database Source")]
@@ -3322,9 +3369,9 @@ namespace Warewolf.UITests
             WpfListItem assignObject = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject;
             WpfCustom dropActivityHereCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHereCustom;
             #endregion
-                    
+
             searchTextBox.Text = this.Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams.SearchTextBoxText;
-            
+
             dropActivityHereCustom.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(assignObject, new Point(13, 17));
             Mouse.StopDragging(dropActivityHereCustom);
@@ -3337,14 +3384,14 @@ namespace Warewolf.UITests
             WpfListItem assignObject = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject;
             WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity;
             #endregion
-            
+
             searchTextBox.Text = this.Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams.SearchTextBoxText;
 
             sequence.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(assignObject, new Point(13, 17));
             Mouse.StopDragging(sequence);
         }
-        
+
         public void Drag_Toolbox_AssignObject_Onto_Sequence_SmallTool()
         {
             #region Variable Declarations
@@ -3352,14 +3399,14 @@ namespace Warewolf.UITests
             WpfListItem assignObject = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject;
             WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
             #endregion
-            
+
             searchTextBox.Text = this.Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams.SearchTextBoxText;
-            
+
             sequence.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(assignObject, new Point(13, 17));
             Mouse.StopDragging(sequence);
         }
-        
+
         public void Drag_Toolbox_Decision_Onto_Sequence_SmallTool()
         {
             #region Variable Declarations
@@ -3374,7 +3421,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(decision, new Point(13, 17));
             Mouse.StopDragging(sequence);
         }
-               
+
         public void Drag_Toolbox_Switch_Onto_Sequence_SmallTool()
         {
             #region Variable Declarations
@@ -3384,12 +3431,12 @@ namespace Warewolf.UITests
             #endregion
 
             searchTextBox.Text = "Switch";
-        
+
             sequence.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(switchTool, new Point(13, 17));
             Mouse.StopDragging(sequence);
         }
-      
+
         public void Drag_Toolbox_Switch_Onto_Sequence_LargeTool()
         {
             #region Variable Declarations
@@ -3399,12 +3446,12 @@ namespace Warewolf.UITests
             #endregion
 
             searchTextBox.Text = "Switch";
-      
+
             sequence.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(switchTool, new Point(13, 17));
             Mouse.StopDragging(sequence);
         }
-     
+
         public void Drag_Toolbox_Decision_Onto_Sequence_LargeTool()
         {
             #region Variable Declarations
@@ -3414,7 +3461,7 @@ namespace Warewolf.UITests
             #endregion
 
             searchTextBox.Text = "Decision";
-            
+
             sequence.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(decision, new Point(13, 17));
             Mouse.StopDragging(sequence);
@@ -3559,7 +3606,39 @@ namespace Warewolf.UITests
         public void Toggle_Between_Studio_and_Unpinned_Tab()
         {
             Keyboard.SendKeys(MainStudioWindow, "{ALT}{TAB}");
+            Playback.Wait(100);
         }
+
+        /// <summary>
+        /// Click_Create_Test_From_Debug - Use 'Click_Create_Test_From_DebugParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Create_Test_From_Debug()
+        {
+            #region Variable Declarations
+            WpfButton createTestFromDebugButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton;
+            WpfTabPage testsTabPage = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage;
+            #endregion
+
+            // Click '' button
+            Mouse.Click(createTestFromDebugButton, new Point(5, 5));
+            WaitForControlVisible(testsTabPage);
+            // Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
+            Assert.AreEqual(this.Click_Create_Test_From_DebugParams.TestsTabPageExists, testsTabPage.Exists, "Test tab does not exist after clicking Create Test from debug button");
+        }
+
+        public virtual Click_Create_Test_From_DebugParams Click_Create_Test_From_DebugParams
+        {
+            get
+            {
+                if ((this.mClick_Create_Test_From_DebugParams == null))
+                {
+                    this.mClick_Create_Test_From_DebugParams = new Click_Create_Test_From_DebugParams();
+                }
+                return this.mClick_Create_Test_From_DebugParams;
+            }
+        }
+
+        private Click_Create_Test_From_DebugParams mClick_Create_Test_From_DebugParams;
     }
     /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_AssignObject_Onto_Sequence_Tool'
@@ -3639,4 +3718,18 @@ namespace Warewolf.UITests
         #endregion
     }
 
+    /// <summary>
+    /// Parameters to be passed into 'Click_Create_Test_From_Debug'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Create_Test_From_DebugParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
+        /// </summary>
+        public bool TestsTabPageExists = true;
+        #endregion
+    }
 }

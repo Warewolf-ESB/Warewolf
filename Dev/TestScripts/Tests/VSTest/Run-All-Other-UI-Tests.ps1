@@ -34,10 +34,10 @@ $TestSettingsFile = "$PSScriptRoot\LocalOtherUITests.testsettings"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
-  name=`"ExampleWorkflowExecutionSpecs`"
+  name=`"UITests`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run example workflow execution specs.</Description>
+  <Description>Run UI Tests.</Description>
   <Deployment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
@@ -47,7 +47,7 @@ $TestSettingsFile = "$PSScriptRoot\LocalOtherUITests.testsettings"
 "@)
 
 # Create full VSTest argument string.
-$FullArgsList = "`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"(TestCategory!=Tools)&amp;(TestCategory!=Data Tools)&amp;(TestCategory!=Database Tools)&amp;(TestCategory!=Dropbox Tools)&amp;(TestCategory!=File Tools)&amp;(TestCategory!=HTTP Tools)&amp;(TestCategory!=Recordset Tools)&amp;(TestCategory!=Sharepoint Tools)&amp;(TestCategory!=Utility Tools)`""
+$FullArgsList = "`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"(TestCategory!=Tools)&(TestCategory!=Data Tools)&(TestCategory!=Database Tools)&(TestCategory!=Dropbox Tools)&(TestCategory!=File Tools)&(TestCategory!=HTTP Tools)&(TestCategory!=Recordset Tools)&(TestCategory!=Sharepoint Tools)&(TestCategory!=Utility Tools)&(TestCategory!=Explorer)&(TestCategory!=Tabs and Panes)&(TestCategory!=Deploy)&(TestCategory!=Debug Input)&(TestCategory!=Workflow Testing)`""
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList

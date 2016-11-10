@@ -808,7 +808,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var dsfDecision = this as DsfDecision;
                             if (dsfDecision != null)
                             {
-
                                 assertPassed = dsfDecision.Result == serviceTestOutput.Value;
                                 if (dataObject.ServiceTest != null)
                                 {
@@ -817,9 +816,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     
                                     SetPassResult(dataObject, assertPassed, serviceTestOutput, stepToBeAsserted);
                                 }
-
-
-
                             }
                         }
                         else if (stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
@@ -892,10 +888,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             dataObject.StopExecution = !testPassed;
                         }
-
                     }
                 }
-
             }
         }
 
@@ -952,7 +946,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var val1 = iter.FetchNextValue(c1);
                 var val2 = iter.FetchNextValue(c2);
                 var val3 = iter.FetchNextValue(c3);
-                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { val1, val2, val2 });
+                if (decisionType == enDecisionType.IsBetween)
+                {
+                    val1 = iter.FetchNextValue(c1);
+                    val2 = iter.FetchNextValue(c3);
+                    val3 = iter.FetchNextValue(c2);
+                }
+                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { val1, val2, val3 });
                 var testResult = new TestRunResult();
                 if (assertResult)
                 {

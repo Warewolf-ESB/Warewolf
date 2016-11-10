@@ -9,6 +9,7 @@ namespace Warewolf.UITests
     public class DragAndDropService
     {
         [TestMethod]
+        [TestCategory("Explorer")]
         public void DragAndDropServiceFromExplorerUITest()
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
@@ -18,6 +19,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Explorer")]
         public void MergeFoldersUITest()
         {
             var acceptanceResources = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Testing Resources";
@@ -33,6 +35,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Explorer")]
         public void DebugUsingPlayIconRemoteServerUITest()
         {
             UIMap.Filter_Explorer("Hello World");
@@ -44,6 +47,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Explorer")]
         public void DeleteResourcesWithSameNameInDifferentLocationsUITest()
         {
             UIMap.Filter_Explorer("Acceptance Tests");
@@ -58,6 +62,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Explorer")]
         public void DisconnectedRemoteServerUITest()
         {
             UIMap.Select_RemoteConnectionIntegration_From_Explorer();
@@ -74,6 +79,7 @@ namespace Warewolf.UITests
         }
     
         [TestMethod]
+        [TestCategory("Explorer")]
         public void ShowDependenciesUITest()
         {            
             UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
