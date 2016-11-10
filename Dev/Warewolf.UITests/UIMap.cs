@@ -3591,6 +3591,18 @@ namespace Warewolf.UITests
         }
 
         private Click_Create_Test_From_DebugParams mClick_Create_Test_From_DebugParams;
+
+        /// <summary>
+        /// EnterOutMessageValue_On_OutputMessage_TestStep - Use 'EnterOutMessageValue_On_OutputMessage_TestStepParams' to pass parameters into this method.
+        /// </summary>
+        public void EnterOutMessageValue_On_OutputMessage_TestStep(string message)
+        {
+            #region Variable Declarations
+            WpfEdit assertValue = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.Row1.AssertValueCell.AssertValue;
+            #endregion
+                        
+            assertValue.Text = message;
+        }
     }
     /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_AssignObject_Onto_Sequence_Tool'
@@ -3682,6 +3694,20 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
         /// </summary>
         public bool TestsTabPageExists = true;
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'EnterOutMessageValue_On_OutputMessage_TestStep'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class EnterOutMessageValue_On_OutputMessage_TestStepParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Type 'Hello There World' in 'UI_AssertValue_AutoID' text box
+        /// </summary>
+        public string AssertValueText = "Hello There World";
         #endregion
     }
 }
