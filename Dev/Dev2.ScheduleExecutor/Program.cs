@@ -171,9 +171,11 @@ namespace Dev2.ScheduleExecutor
                                 result = reader.ReadToEnd();
                             }
 
-                            if (response.StatusCode != HttpStatusCode.OK)
+                            if (response.StatusCode != HttpStatusCode.OK || result.StartsWith("<FatalError>"))
                             {
                                 Log("Error", $"Error from execution: {result}");
+                                CreateDebugState(result, workflowName, taskName);
+                                Environment.Exit(1);
                             }
                             else
                             {
