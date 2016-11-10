@@ -136,8 +136,12 @@ namespace Warewolf.Studio.ViewModels
 
         public void PrepopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models)
         {
-            CreateTests();
-            AddFromDebug(models);
+            System.Threading.Tasks.Parallel.Invoke(() =>
+            {
+                CreateTests();
+                AddFromDebug(models);
+            });
+
         }
 
 
@@ -447,7 +451,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-    
+
 
         private void OnError(Exception exception)
         {
@@ -771,7 +775,7 @@ namespace Warewolf.Studio.ViewModels
                 if (flowSwitch == null)
                 {
                     var modelItemParent = modelItem.Parent;
-                    if(modelItemParent != null)
+                    if (modelItemParent != null)
                     {
                         flowSwitch = modelItemParent.GetCurrentValue() as FlowSwitch<string>;
                         condition = modelItemParent.GetProperty("Expression");
@@ -1449,7 +1453,7 @@ namespace Warewolf.Studio.ViewModels
         {
             MarkPending(serviceTestModels);
             var serviceTestModelTos = serviceTestModels.Select(CreateServiceTestModelTO).ToList();
-            
+
             var result = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel, serviceTestModelTos);
             switch (result.Result)
             {
@@ -1469,21 +1473,21 @@ namespace Warewolf.Studio.ViewModels
                     throw new ArgumentOutOfRangeException();
             }
         }
-        
+
         private void MarkPending(List<IServiceTestModel> serviceTestModels)
         {
-            foreach(var serviceTestModel in serviceTestModels)
+            foreach (var serviceTestModel in serviceTestModels)
             {
                 serviceTestModel.TestPending = true;
-                if(serviceTestModel.TestSteps != null)
+                if (serviceTestModel.TestSteps != null)
                 {
-                    foreach(var serviceTestStep in serviceTestModel.TestSteps)
+                    foreach (var serviceTestStep in serviceTestModel.TestSteps)
                     {
                         MarkChildrenPending(serviceTestStep);
-                        if(serviceTestStep.Children != null)
+                        if (serviceTestStep.Children != null)
                         {
                             var testSteps = serviceTestStep.Children.Flatten(step => step.Children);
-                            foreach(var testStep in testSteps)
+                            foreach (var testStep in testSteps)
                             {
                                 MarkChildrenPending(testStep);
                             }
@@ -1491,15 +1495,15 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
 
-                if(serviceTestModel.Outputs != null)
+                if (serviceTestModel.Outputs != null)
                 {
-                    foreach(var serviceTestOutput in serviceTestModel.Outputs)
+                    foreach (var serviceTestOutput in serviceTestModel.Outputs)
                     {
                         var testOutput = serviceTestOutput as ServiceTestOutput;
-                        if(testOutput != null)
+                        if (testOutput != null)
                         {
                             testOutput.TestPending = true;
-                            if(testOutput.Result != null)
+                            if (testOutput.Result != null)
                             {
                                 testOutput.Result.RunTestResult = RunResult.TestPending;
                             }
@@ -1512,23 +1516,23 @@ namespace Warewolf.Studio.ViewModels
         private static void MarkChildrenPending(IServiceTestStep serviceTestStep)
         {
             var step = serviceTestStep as ServiceTestStep;
-            if(step != null)
+            if (step != null)
             {
                 step.TestPending = true;
-                if(step.Result != null)
+                if (step.Result != null)
                 {
                     step.Result.RunTestResult = RunResult.TestPending;
                 }
 
-                if(step.StepOutputs != null)
+                if (step.StepOutputs != null)
                 {
-                    foreach(var serviceTestOutput in step.StepOutputs)
+                    foreach (var serviceTestOutput in step.StepOutputs)
                     {
                         var stepOutput = serviceTestOutput as ServiceTestOutput;
-                        if(stepOutput != null)
+                        if (stepOutput != null)
                         {
                             stepOutput.TestPending = true;
-                            if(stepOutput.Result != null)
+                            if (stepOutput.Result != null)
                             {
                                 stepOutput.Result.RunTestResult = RunResult.TestPending;
                             }
@@ -1549,9 +1553,9 @@ namespace Warewolf.Studio.ViewModels
                 ErrorExpected = model.ErrorExpected,
                 NoErrorExpected = model.NoErrorExpected,
                 ErrorContainsText = model.ErrorContainsText,
-                TestSteps = model.TestSteps?.Select(step => CreateServiceTestStepTO(step, null)).ToList()?? new List<IServiceTestStep>(),
-                Inputs = model.Inputs?.Select(CreateServiceTestInputsTO).ToList()?? new List<IServiceTestInput>(),
-                Outputs = model.Outputs?.Select(CreateServiceTestOutputTO).ToList()?? new List<IServiceTestOutput>(),
+                TestSteps = model.TestSteps?.Select(step => CreateServiceTestStepTO(step, null)).ToList() ?? new List<IServiceTestStep>(),
+                Inputs = model.Inputs?.Select(CreateServiceTestInputsTO).ToList() ?? new List<IServiceTestInput>(),
+                Outputs = model.Outputs?.Select(CreateServiceTestOutputTO).ToList() ?? new List<IServiceTestOutput>(),
                 LastRunDate = model.LastRunDate,
                 OldTestName = model.OldTestName,
                 Password = model.Password,
@@ -1857,12 +1861,13 @@ namespace Warewolf.Studio.ViewModels
                 var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.ID);
                 if (loadResourceTests != null)
                 {
-                    foreach (var to in loadResourceTests)
+                    System.Threading.Tasks.Parallel.ForEach(loadResourceTests, test =>
                     {
-                        var serviceTestModel = ToServiceTestModel(to);
-                        serviceTestModel.Item = ToServiceTestModel(to);
+                        var serviceTestModel = ToServiceTestModel(test);
+                        serviceTestModel.Item = (ServiceTestModel)serviceTestModel.Clone();
                         serviceTestModels.Add(serviceTestModel);
-                    }
+                    });
+
                 }
                 return serviceTestModels.ToObservableCollection<IServiceTestModel>();
             }
