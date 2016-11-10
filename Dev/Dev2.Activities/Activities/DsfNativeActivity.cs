@@ -952,7 +952,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var val1 = iter.FetchNextValue(c1);
                 var val2 = iter.FetchNextValue(c2);
                 var val3 = iter.FetchNextValue(c3);
-                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { val1, val2, val2 });
+                if (decisionType == enDecisionType.IsBetween)
+                {
+                    val1 = iter.FetchNextValue(c1);
+                    val2 = iter.FetchNextValue(c3);
+                    val3 = iter.FetchNextValue(c2);
+                }
+                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { val1, val2, val3 });
                 var testResult = new TestRunResult();
                 if (assertResult)
                 {

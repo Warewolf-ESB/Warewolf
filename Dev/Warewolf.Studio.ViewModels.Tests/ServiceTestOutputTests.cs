@@ -189,8 +189,8 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            input.Result = new TestRunResult() {RunTestResult = RunResult.TestPassed};
-            
+            input.Result = new TestRunResult() { RunTestResult = RunResult.TestPassed };
+
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
             Assert.IsFalse(input.TestInvalid);
@@ -213,8 +213,8 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            input.Result = new TestRunResult() {RunTestResult = RunResult.TestFailed };
-            
+            input.Result = new TestRunResult() { RunTestResult = RunResult.TestFailed };
+
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
             Assert.IsFalse(input.TestInvalid);
@@ -237,8 +237,8 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            input.Result = new TestRunResult() {RunTestResult = RunResult.TestInvalid };
-            
+            input.Result = new TestRunResult() { RunTestResult = RunResult.TestInvalid };
+
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
             Assert.IsFalse(input.TestFailing);
@@ -261,8 +261,8 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            input.Result = new TestRunResult() {RunTestResult = RunResult.TestResourceDeleted};
-            
+            input.Result = new TestRunResult() { RunTestResult = RunResult.TestResourceDeleted };
+
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
             Assert.IsFalse(input.TestFailing);
@@ -285,8 +285,8 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            input.Result = new TestRunResult() {RunTestResult = RunResult.TestResourcePathUpdated };
-            
+            input.Result = new TestRunResult() { RunTestResult = RunResult.TestResourcePathUpdated };
+
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
             Assert.IsFalse(input.TestFailing);
@@ -309,8 +309,8 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            input.Result = new TestRunResult() {RunTestResult = RunResult.TestPending };
-            
+            input.Result = new TestRunResult() { RunTestResult = RunResult.TestPending };
+
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
             Assert.IsFalse(input.TestFailing);
@@ -329,8 +329,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             input.UpdateMatchVisibility("Is Email", new List<IFindRecsetOptions>() { new RsOpIsEmail() });
             //---------------Test Result -----------------------
-            
-            Assert.AreEqual(input.IsSearchCriteriaVisible,false);
+
+            Assert.AreEqual(input.IsSearchCriteriaVisible, false);
             Assert.AreEqual(input.IsBetweenCriteriaVisible, false);
             Assert.AreEqual(input.IsSinglematchCriteriaVisible, false);
         }
@@ -345,13 +345,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             input.UpdateMatchVisibility("Is Between", new List<IFindRecsetOptions>() { new RsOpIsBetween() });
             //---------------Test Result -----------------------
-            
-            Assert.AreEqual(input.IsSearchCriteriaVisible,true);
+
+            Assert.AreEqual(input.IsSearchCriteriaVisible, true);
             Assert.AreEqual(input.IsBetweenCriteriaVisible, true);
             Assert.AreEqual(input.IsSinglematchCriteriaVisible, false);
         }
 
-        
+
 
     }
 }

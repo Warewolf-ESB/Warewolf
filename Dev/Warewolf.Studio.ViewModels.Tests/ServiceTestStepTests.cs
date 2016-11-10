@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
-using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -342,7 +341,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void MockSelected_GivenIsTrue_ShouldSetUpCorrectly()
         {
             //---------------Set up test pack-------------------
-            var serviceTestOutput = new ServiceTestOutput("a","a","","");
+            var serviceTestOutput = new ServiceTestOutput("a", "a", "", "");
             var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
             { serviceTestOutput }, StepType.Mock);
             //---------------Assert Precondition----------------
@@ -355,23 +354,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(true, serviceTestOutput.IsSearchCriteriaVisible);
         }
 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void AssertSelected_GivenIsSet_ShouldFireOnSearchTypeChanged()
-        {
-            //---------------Set up test pack-------------------
-            var mock = new Mock<IServiceTestOutput>();
-            mock.Setup(output => output.OnSearchTypeChanged());
-            var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
-            { mock.Object }, StepType.Assert);
-            //---------------Assert Precondition----------------
-            Assert.IsTrue(testModel.AssertSelected);
-            Assert.IsTrue(testModel.TestPending);
-            //---------------Execute Test ----------------------
-            testModel.AssertSelected = true;
-            //---------------Test Result -----------------------
-            mock.Verify(output => output.OnSearchTypeChanged(), Times.Exactly(2));
-        }
+       
 
 
         private static ServiceTestStep CreateDecisionMock()
@@ -380,21 +363,5 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
     }
 
-    [TestClass]
-    public class ServiceTestOutputTOTests
-    {
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void OnSearchTypeChanged_ShouldThrowNewException()
-        {
-            //---------------Set up test pack-------------------
-            var a = new ServiceTestOutputTO();
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            a.OnSearchTypeChanged();
-            //---------------Test Result -----------------------
-        }
-    }
+   
 }

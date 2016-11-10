@@ -1168,7 +1168,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canRename = value;
-                if (!_isFolder)
+                if (_isFolder)
                 {
                     RenameTooltip = _canRename ? Resources.Languages.Core.RenameFolderTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 }

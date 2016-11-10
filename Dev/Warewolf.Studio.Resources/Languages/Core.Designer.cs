@@ -1751,7 +1751,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run and debug your workflow service [F7].
+        ///   Looks up a localized string similar to Run and debug your workflow service.
         /// </summary>
         public static string DebugBrowserToolTip {
             get {
@@ -1796,7 +1796,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run and debug your workflow service [F5].
+        ///   Looks up a localized string similar to Run and debug your workflow service.
         /// </summary>
         public static string DebugInputsToolTip {
             get {
@@ -1877,7 +1877,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run and debug your workflow service [F6].
+        ///   Looks up a localized string similar to Run and debug your workflow service.
         /// </summary>
         public static string DebugStudioToolTip {
             get {
@@ -9061,6 +9061,33 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string StandardStyling {
             get {
                 return ResourceManager.GetString("StandardStyling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F7].
+        /// </summary>
+        public static string StartNodeDebugBrowserToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugBrowserToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F5].
+        /// </summary>
+        public static string StartNodeDebugInputsToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugInputsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F6].
+        /// </summary>
+        public static string StartNodeDebugStudioToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugStudioToolTip", resourceCulture);
             }
         }
         

@@ -566,7 +566,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             var methodInfo = typeof(ServiceTestCommandHandlerModel).GetMethod("CreateServiceTestOutputFromResult", BindingFlags.NonPublic | BindingFlags.Instance);
-            var serviceTestOutputs = new List<IServiceTestOutput>();
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
             var testOutput = new ServiceTestOutput("a", "Micky", "", "")
             {
                 Result = new TestRunResult { Message = "Hi" },
@@ -609,7 +609,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            methodInfo.Invoke(testFrameworkViewModel, new object[] { default(IEnumerable<IServiceTestStep>), default(ObservableCollection<IServiceTestStep>) });
+            try
+            {
+                methodInfo.Invoke(testFrameworkViewModel, new object[] { default(IEnumerable<IServiceTestStep>), default(ObservableCollection<IServiceTestStep>) });
+            }
+            catch(TargetInvocationException ex)
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                var b = ex.InnerException.GetType() == typeof(NullReferenceException);
+                //---------------Test Result -----------------------
+                Assert.IsTrue(b);
+            }
+
             //---------------Test Result -----------------------
         }
         [TestMethod]
@@ -622,7 +633,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var serviceTestSteps = new List<IServiceTestStep>();
+            var serviceTestSteps = new ObservableCollection<IServiceTestStep>();
             var uniqueId = Guid.NewGuid();
             serviceTestSteps.Add(
                 new ServiceTestStep(uniqueId, "", new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
