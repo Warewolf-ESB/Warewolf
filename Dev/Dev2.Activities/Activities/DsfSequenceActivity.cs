@@ -31,6 +31,7 @@ using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities
 {
@@ -285,7 +286,7 @@ namespace Dev2.Activities
                     }
                     var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
                     debugItems = debugItems.Where(state => state.ID == stepToBeAsserted.UniqueId).ToList();
-                    var debugStates = debugItems?.LastOrDefault();
+                    var debugStates = debugItems.LastOrDefault();
                     var factory = Dev2DecisionFactory.Instance();
                     var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
                     var testRunResults = res as IList<TestRunResult> ?? res.ToList();

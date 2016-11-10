@@ -21,8 +21,6 @@ namespace Dev2.Activities
 {
     public class DsfDecision : DsfActivityAbstract<string>
     {
-
-
         // ReSharper disable MemberCanBePrivate.Global
         public IEnumerable<IDev2Activity> TrueArm { get; set; }
 
@@ -76,7 +74,6 @@ namespace Dev2.Activities
         #region Overrides of DsfNativeActivity<string>
         private IDev2Activity ExecuteDecision(IDSFDataObject dataObject)
         {
-
             InitializeDebug(dataObject);
 
             if (dataObject.IsDebugMode())
@@ -120,7 +117,6 @@ namespace Dev2.Activities
             if (dataObject.IsDebugMode())
             {
                 _debugOutputs = GetDebugOutputs(resultval.ToString());
-                //DispatchDebugState(dataObject, StateType.After, 0);
             }
             if (resultval)
             {
@@ -163,7 +159,6 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfDecision", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-
                 }
                 if (dataObject.IsDebugMode())
                 {
@@ -173,7 +168,6 @@ namespace Dev2.Activities
                     _debugOutputs = new List<DebugItem>();
                     DispatchDebugState(dataObject, StateType.Duration, update);
                 }
-
             }
 
             return null;
@@ -200,8 +194,6 @@ namespace Dev2.Activities
             List<IDebugItem> result = new List<IDebugItem>();
 
             var allErrors = new ErrorResultTO();
-
-
 
             try
             {
@@ -253,10 +245,7 @@ namespace Dev2.Activities
             }
 
             var val = result.Select(a => a as DebugItem).ToList();
-            if (_inner != null)
-            {
-                _inner.SetDebugInputs(val);
-            }
+            _inner?.SetDebugInputs(val);
             return val;
         }
 
@@ -282,8 +271,6 @@ namespace Dev2.Activities
 
             try
             {
-
-
                 resultString = GetResultString(theResult, dds);
                 
                 //AddDebugOutputItem(new DebugItemStaticDataParams(resultString, ""));
@@ -294,16 +281,11 @@ namespace Dev2.Activities
             catch (Exception)
             // ReSharper restore EmptyGeneralCatchClause
             {
-
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
-
             }
 
-            if (_inner != null)
-            {
-                _inner.SetDebugOutputs(result);
-            }
+            _inner?.SetDebugOutputs(result);
             return result;
         }
 
@@ -340,7 +322,6 @@ namespace Dev2.Activities
                     }
                     catch (NullValueInVariableException)
                     {
-
                         expressiomToStringValue = "";
                     }
                     // EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
@@ -453,7 +434,6 @@ namespace Dev2.Activities
                 throw new ArgumentException($"No matching arm for Decision Mock. Mock Arm value '{NameOfArmToReturn}'. Decision Arms True Arm: '{trueArmText}' False Arm: '{falseArmText}'");
             }
         }
-
 
         public override List<string> GetOutputs()
         {

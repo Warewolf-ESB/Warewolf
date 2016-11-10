@@ -10,10 +10,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
-using System.Security.Principal;
-using System.Threading;
 using Dev2.Activities.Specs.Scheduler;
 using Dev2.Network;
 using Dev2.Services.Security;
@@ -33,41 +32,63 @@ namespace Dev2.Activities.Specs.Permissions
 
         public SettingsPermissionsSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             this.scenarioContext = scenarioContext;
         }
 
-        [BeforeScenario("Security")]
-        public void ClearSecuritySettings()
+
+        [BeforeFeature("@Security")]
+        public static void InitializeFeature()
         {
-            AppSettings.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
+            SetupUser();
+            var securitySpecsUser = GetSecuritySpecsUser();
+            var securitySpecsPassword = GetSecuritySpecsPassword();
+            var userGroup = GetUserGroup();
+            AppSettings.LocalHost = $"http://{Environment.MachineName.ToLowerInvariant()}:3142";
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             while (!environmentModel.IsConnected)
             {
                 environmentModel.Connect();
-                Thread.Sleep(100);
             }
 
             var currentSettings = environmentModel.ResourceRepository.ReadSettings(environmentModel);
-            scenarioContext.Add("initialSettings", currentSettings);
+            FeatureContext.Current.Add("initialSettings", currentSettings);
             Data.Settings.Settings settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
             };
 
-
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
-
             environmentModel.Disconnect();
+            FeatureContext.Current.Add("environment", environmentModel);
+
+            var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
+            try
+            {
+                reconnectModel.Connect();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
+            }
+            FeatureContext.Current.Add("currentEnvironment", reconnectModel);
+
         }
 
-        [Given(@"I have a server ""(.*)""")]
-        public void GivenIHaveAServer(string serverName)
+        private static string GetUserGroup()
         {
-            AppSettings.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
-            var environmentModel = EnvironmentRepository.Instance.Source;
-            scenarioContext.Add("environment", environmentModel);
+            return ConfigurationManager.AppSettings["userGroup"];
+        }
+
+        private static string GetSecuritySpecsPassword()
+        {
+            return ConfigurationManager.AppSettings["SecuritySpecsPassword"];
+        }
+
+        private static string GetSecuritySpecsUser()
+        {
+            return ConfigurationManager.AppSettings["SecuritySpecsUser"];
         }
 
         [Given(@"it has ""(.*)"" with ""(.*)""")]
@@ -92,24 +113,93 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
+            
+            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("environment");
+            EnsureEnvironmentConnected(environmentModel);
+            environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
+            environmentModel.Disconnect();
+        }
+        [Given(@"I have Public with ""(.*)""")]
+        public void GivenIHavePublicWith(string groupRights)
+        {
+            var groupPermssions = new WindowsGroupPermission
+            {
+                WindowsGroup = "Public",
+                ResourceID = Guid.Empty,
+                IsServer = true
+            };
+            var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var permissionsString in permissionsStrings)
+            {
+                SecPermissions permission;
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                {
+                    groupPermssions.Permissions |= permission;
+                }
+            }
+            Data.Settings.Settings settings = new Data.Settings.Settings
+            {
+                Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
+            };
 
-            var environmentModel = scenarioContext.Get<IEnvironmentModel>("environment");
+            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
         }
 
+        [Given(@"I have Users with ""(.*)""")]
+        public void GivenIHaveUsersWith(string groupRights)
+        {
+            var groupPermssions = new WindowsGroupPermission
+            {
+                WindowsGroup = "Users",
+                ResourceID = Guid.Empty,
+                IsServer = true
+            };
+            var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var permissionsString in permissionsStrings)
+            {
+                SecPermissions permission;
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                {
+                    groupPermssions.Permissions |= permission;
+                }
+            }
+            Data.Settings.Settings settings = new Data.Settings.Settings
+            {
+                Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
+            };
+
+            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("environment");
+            EnsureEnvironmentConnected(environmentModel);
+            environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
+            environmentModel.Disconnect();
+        }
+
+
+
         static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel)
         {
-            var i = 0;
-            while (!environmentModel.IsConnected)
+            if (!environmentModel.IsConnected)
             {
                 environmentModel.Connect();
-                Thread.Sleep(1000);
-                i++;
-                if (i == 30)
+            }
+        }
+
+        static void SetupUser()
+        {
+            var securitySpecsUser = GetSecuritySpecsUser();
+            var accountExists = SchedulerSteps.AccountExists(securitySpecsUser);
+            if (!accountExists)
+            {
+                try
                 {
-                    Assert.Fail("Server {0} did not connect within 30 secs{1}", environmentModel.DisplayName, DateTime.Now);
+                    SchedulerSteps.CreateLocalWindowsAccount(GetSecuritySpecsUser(), GetSecuritySpecsPassword(), GetUserGroup());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(@"error creating user" + ex.Message);
                 }
             }
         }
@@ -117,53 +207,19 @@ namespace Dev2.Activities.Specs.Permissions
         [When(@"connected as user part of ""(.*)""")]
         public void WhenConnectedAsUserPartOf(string userGroup)
         {
-            if (SchedulerSteps.AccountExists("SpecsUser"))
-            {
-                if (!IsUserInGroup("SpecsUser", userGroup))
-                {
-                    try
-                    {
-                        SecurityIdentifier id = SchedulerSteps.GetUserSecurityIdentifier("SpecsUser");
-                        PrincipalContext context = new PrincipalContext(ContextType.Machine);
-                        UserPrincipal userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
-                        SchedulerSteps.AddUserToGroup(userGroup, context, userPrincipal);
-                    }
-                    catch (Exception)
-                    {
-                        Assert.Fail("User not found");
-                    }
-                }
-            }
-            else
-            {
-                SchedulerSteps.CreateLocalWindowsAccount("SpecsUser", "T35t3r!@#", userGroup);
-            }
-            var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#")) { Name = "Other Connection" };
+            var securitySpecsUser = GetSecuritySpecsUser();
+
+            var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, securitySpecsUser, GetSecuritySpecsPassword())) { Name = "Other Connection" };
             try
             {
+                
                 reconnectModel.Connect();
             }
             catch (UnauthorizedAccessException)
             {
                 Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
             }
-            scenarioContext.Add("currentEnvironment", reconnectModel);
-        }
-
-        bool IsUserInGroup(string name, string group)
-        {
-            PrincipalContext context = new PrincipalContext(ContextType.Machine);
-            GroupPrincipal usersGroup = GroupPrincipal.FindByIdentity(context, group);
-            if (usersGroup != null)
-            {
-                var principalCollection = usersGroup.Members;
-                if ((from member in principalCollection
-                     select name.Equals(member.Name, StringComparison.InvariantCultureIgnoreCase)).Any())
-                {
-                    return true;
-                }
-            }
-            return false;
+            FeatureContext.Current["currentEnvironment"] = reconnectModel;
         }
 
         [Then(@"resources should have ""(.*)""")]
@@ -188,7 +244,7 @@ namespace Dev2.Activities.Specs.Permissions
 
         IEnvironmentModel LoadResources()
         {
-            var environmentModel = scenarioContext.Get<IEnvironmentModel>("currentEnvironment");
+            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
             if (environmentModel.IsConnected)
             {
@@ -197,11 +253,11 @@ namespace Dev2.Activities.Specs.Permissions
                     environmentModel.ForceLoadResources();
                 }
             }
-//            var resourceModels = environmentModel.ResourceRepository.All();
-//            foreach (var resourceModel in resourceModels)
-//            {
-//                resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
-//            }
+            //            var resourceModels = environmentModel.ResourceRepository.All();
+            //            foreach (var resourceModel in resourceModels)
+            //            {
+            //                resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
+            //            }
             return environmentModel;
         }
 
@@ -228,7 +284,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)""")]
         public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
         {
-            var environmentModel = scenarioContext.Get<IEnvironmentModel>("environment");
+            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("environment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             var settings = resourceRepository.ReadSettings(environmentModel);
@@ -255,7 +311,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Then(@"""(.*)"" should have ""(.*)""")]
         public void ThenShouldHave(string resourceName, string resourcePerms)
         {
-            var environmentModel = scenarioContext.Get<IEnvironmentModel>("currentEnvironment");
+            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             environmentModel.ForceLoadResources();
@@ -280,11 +336,11 @@ namespace Dev2.Activities.Specs.Permissions
         public void DoCleanUp()
         {
             IEnvironmentModel currentEnvironment;
-            scenarioContext.TryGetValue("currentEnvironment", out currentEnvironment);
+            FeatureContext.Current.TryGetValue("currentEnvironment", out currentEnvironment);
             IEnvironmentModel environmentModel;
-            scenarioContext.TryGetValue("environment", out environmentModel);
+            FeatureContext.Current.TryGetValue("environment", out environmentModel);
             Data.Settings.Settings currentSettings;
-            scenarioContext.TryGetValue("initialSettings", out currentSettings);
+            FeatureContext.Current.TryGetValue("initialSettings", out currentSettings);
 
             if (environmentModel != null)
             {
@@ -298,11 +354,7 @@ namespace Dev2.Activities.Specs.Permissions
 
 
             }
-            if (currentEnvironment != null)
-            {
-
-                currentEnvironment.Disconnect();
-            }
+            currentEnvironment?.Disconnect();
         }
     }
 }

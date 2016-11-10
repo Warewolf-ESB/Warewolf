@@ -3875,9 +3875,12 @@ Please contact your Warewolf System Administrator.</value>
     <value>View the version of this server</value>
   </data>
   <data name="DebugOutputViewAddNewTestHelp" xml:space="preserve">
-    <value>DebugOutputViewAddNewTestHelp</value>
+    <value>Create a test for the current workflow</value>
   </data>
   <data name="DebugOutputViewAddNewTestToolTip" xml:space="preserve">
-    <value>DebugOutputViewAddNewTestToolTip</value>
+    <value>Create a new test</value>
+  </data>
+  <data name="DebugOutputViewAddNewTestUnsavedToolTip" xml:space="preserve">
+    <value>You can only create a test once the workflow is saved</value>
   </data>
 </root>
