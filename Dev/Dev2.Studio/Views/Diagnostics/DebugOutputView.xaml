@@ -409,7 +409,8 @@
                     FontSize="24"
                     Command="{Binding AddNewTestCommand}"
                     Margin="3,0,0,-1"
-                    ToolTip="{x:Static languages:Core.DebugOutputViewAddNewTestToolTip}"
+                    ToolTipService.ShowOnDisabled="True"
+                    ToolTip="{Binding AddNewTestTooltip}"
                     AutomationProperties.AutomationId="UI_DebugOutputAddNewTestMode_AutoID" >
                 <Button.Content>
                     <fa:FontAwesome FontSize="14"

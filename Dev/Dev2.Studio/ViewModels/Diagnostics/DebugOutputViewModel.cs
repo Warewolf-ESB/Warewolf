@@ -90,6 +90,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         bool _skipOptionsCommandExecute;
         bool _continueDebugDispatch;
         bool _dispatchLastDebugState;
+        private string _addNewTestTooltip;
 
         public DebugOutputViewModel(IEventPublisher serverEventPublisher, IEnvironmentRepository environmentRepository, IDebugOutputFilterStrategy debugOutputFilterStrategy, IContextualResourceModel contextualResourceModel = null)
         {
@@ -134,7 +135,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         private bool CanAddNewTest()
         {
-            return RootItems!=null && RootItems.Count>0;
+            var canAddNewTest = RootItems != null && RootItems.Count > 0;
+
+            if (canAddNewTest)
+            {
+                if (_contextualResourceModel != null)
+                    canAddNewTest = !_contextualResourceModel.IsNewWorkflow && _contextualResourceModel.IsWorkflowSaved;
+            }
+            AddNewTestTooltip = canAddNewTest ? Warewolf.Studio.Resources.Languages.Core.DebugOutputViewAddNewTestToolTip : Warewolf.Studio.Resources.Languages.Core.DebugOutputViewAddNewTestUnsavedToolTip;
+
+            return canAddNewTest;
         }
 
         public int PendingItemCount => _pendingItems.Count;
@@ -213,6 +223,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     _depthMax = value;
                     NotifyOfPropertyChange(() => DepthMax);
                 }
+            }
+        }
+
+        public string AddNewTestTooltip
+        {
+            get { return _addNewTestTooltip; }
+            set
+            {
+                _addNewTestTooltip = value;
+                NotifyOfPropertyChange(() => AddNewTestTooltip);
             }
         }
 
