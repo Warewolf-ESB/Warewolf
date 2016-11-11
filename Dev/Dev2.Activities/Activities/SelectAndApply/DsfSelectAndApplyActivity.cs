@@ -13,7 +13,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.Util;
 using Dev2.DataList;
-using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -129,18 +128,18 @@ namespace Dev2.Activities.SelectAndApply
             ErrorResultTO allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
 
-            if(string.IsNullOrEmpty(DataSource))
+            if (string.IsNullOrEmpty(DataSource))
             {
                 allErrors.AddError(ErrorResource.DataSourceEmpty);
             }
-            if(string.IsNullOrEmpty(Alias))
+            if (string.IsNullOrEmpty(Alias))
             {
                 allErrors.AddError(string.Format(ErrorResource.CanNotBeEmpty, "Alias"));
             }
-            if(allErrors.HasErrors())
+            if (allErrors.HasErrors())
             {
                 DisplayAndWriteError("DsfSelectAndApplyActivity", allErrors);
-                foreach(var fetchError in allErrors.FetchErrors())
+                foreach (var fetchError in allErrors.FetchErrors())
                 {
                     dataObject.Environment.AddError(fetchError);
                 }
@@ -154,82 +153,83 @@ namespace Dev2.Activities.SelectAndApply
             dataObject.ForEachNestingLevel++;
             var ds = dataObject.Environment.ToStar(DataSource);
             var expressions = dataObject.Environment.GetIndexes(ds);
-            if(expressions.Count == 0)
+            if (expressions.Count == 0)
             {
                 expressions.Add(ds);
             }
             try
             {
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(new DebugItemStaticDataParams(Alias, "As", DataSource));
                 }
 
-                var executionEnvironment = new ScopedEnvironment(dataObject.Environment, ds, Alias);
+                var scopedEnvironment = new ScopedEnvironment(dataObject.Environment, ds, Alias);
 
                 //Push the new environment
-                dataObject.PushEnvironment(executionEnvironment);
+                dataObject.PushEnvironment(scopedEnvironment);
                 dataObject.ForEachNestingLevel++;
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                 }
                 dataObject.ParentInstanceID = UniqueID;
                 dataObject.IsDebugNested = true;
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
-                foreach(var exp in expressions)
+                foreach (var exp in expressions)
                 {
                     //Assign the warewolfAtom to Alias using new environment
-                    executionEnvironment.SetDataSource(exp);
+                    scopedEnvironment.SetDataSource(exp);
 
                     var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
-                    if(exeAct != null)
+                    if (exeAct != null)
                     {
                         _childUniqueID = exeAct.UniqueID;
                         exeAct?.Execute(dataObject, 0);
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error("DSFSelectAndApply", e);
                 allErrors.AddError(e.Message);
             }
             finally
             {
+
                 dataObject.PopEnvironment();
 
                 dataObject.ForEachNestingLevel--;
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
-                    if(allErrors.HasErrors())
+                    if (allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfSelectAndApplyActivity", allErrors);
-                        foreach(var fetchError in allErrors.FetchErrors())
+                        foreach (var fetchError in allErrors.FetchErrors())
                         {
                             dataObject.Environment.AddError(fetchError);
                         }
                     }
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
-                    foreach(var expression in expressions)
+                    foreach (var expression in expressions)
                     {
                         var data = dataObject.Environment.Eval(expression, update);
-                        if(data.IsWarewolfAtomListresult)
+                        if (data.IsWarewolfAtomListresult)
                         {
                             var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                             AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", expression, "", "", "="));
                         }
                         else
                         {
-                            if(data.IsWarewolfAtomResult)
+                            if (data.IsWarewolfAtomResult)
                             {
                                 var atom = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                                if(atom != null)
+                                if (atom != null)
                                     AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), expression, ""));
                             }
                         }
@@ -259,57 +259,59 @@ namespace Dev2.Activities.SelectAndApply
 
         private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
         {
-            if (dataObject.IsServiceTestExecution && serviceTestTestSteps != null)
+            base.UpdateWithAssertions(dataObject);
+           /* if (dataObject.IsServiceTestExecution && serviceTestTestSteps != null)
             {
                 var stepToBeAsserted = serviceTestTestSteps.FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(_childUniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name);
                 if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
                 {
-                    if (stepToBeAsserted.Result != null)
-                    {
-                        stepToBeAsserted.Result.RunTestResult = RunResult.TestInvalid;
-                    }
+                    if(stepToBeAsserted.Result == null)
+                        stepToBeAsserted.Result = new TestRunResult { RunTestResult = RunResult.TestPending };
                     else
-                    {
-                        var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
-                        debugItems = debugItems.Where(state => state.ID == stepToBeAsserted.UniqueId).ToList();
-                        var debugStates = debugItems?.LastOrDefault();
-                        var factory = Dev2DecisionFactory.Instance();
-                        var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
-                        var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-                        var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
-                        var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
+                        stepToBeAsserted.Result.RunTestResult = RunResult.TestPending;
 
-                        var finalResult = new TestRunResult();
-                        if (testPassed)
-                        {
-                            finalResult.RunTestResult = RunResult.TestPassed;
-                        }
-                        if (testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
-                        {
-                            finalResult.RunTestResult = RunResult.TestFailed;
-                            finalResult.Message = serviceTestFailureMessage;
-                        }
-                        if (testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
-                        {
-                            finalResult.RunTestResult = RunResult.TestInvalid;
-                            finalResult.Message = serviceTestFailureMessage;
-                        }
-                        dataObject.ServiceTest.Result = finalResult;
-                        dataObject.ServiceTest.TestFailing = !testPassed;
-                        dataObject.ServiceTest.FailureMessage = serviceTestFailureMessage;
-                        dataObject.ServiceTest.TestPassed = testPassed;
-                        dataObject.StopExecution = !testPassed;
+                    var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                    debugItems = debugItems.Where(state => state.ID == stepToBeAsserted.UniqueId).ToList();
+                    var debugStates = debugItems?.LastOrDefault();
+                    var factory = Dev2DecisionFactory.Instance();
+                    var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
+                    var testRunResults = res as IList<TestRunResult> ?? res.ToList();
+                    var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
+                    var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
+
+                    var finalResult = new TestRunResult();
+                    if (testPassed)
+                    {
+                        finalResult.RunTestResult = RunResult.TestPassed;
                     }
+                    if (testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
+                    {
+                        finalResult.RunTestResult = RunResult.TestFailed;
+                        finalResult.Message = serviceTestFailureMessage;
+                    }
+                    if (testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
+                    {
+                        finalResult.RunTestResult = RunResult.TestInvalid;
+                        finalResult.Message = serviceTestFailureMessage;
+                    }
+                    dataObject.ServiceTest.Result = finalResult;
+                    dataObject.ServiceTest.TestFailing = !testPassed;
+                    dataObject.ServiceTest.FailureMessage = serviceTestFailureMessage;
+                    dataObject.ServiceTest.TestPassed = testPassed;
+                    dataObject.StopExecution = !testPassed;
+
                 }
-            }
+            }*/
         }
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory, IDebugState debugState)
         {
-            if (output.Result != null)
-            {
-                output.Result.RunTestResult = RunResult.TestInvalid;
-            }
+
+            if (output.Result == null)
+                output.Result = new TestRunResult { RunTestResult = RunResult.TestPending };
+            else
+                output.Result.RunTestResult = RunResult.TestPending;
+
             IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
             var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
             var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };

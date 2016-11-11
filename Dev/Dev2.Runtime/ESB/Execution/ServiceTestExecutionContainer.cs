@@ -550,7 +550,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static IDev2Activity NextActivity(IDev2Activity resource, List<IServiceTestStep> testSteps)
         {
-            var foundTestStep = testSteps?.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
+            var foundTestStep = testSteps?.FirstOrDefault(step => resource != null && step.UniqueId.ToString() == resource.UniqueID);
             if (foundTestStep != null)
             {
                 if (foundTestStep.ActivityType == typeof(DsfDecision).Name && foundTestStep.Type == StepType.Mock)
