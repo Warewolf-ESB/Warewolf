@@ -150,7 +150,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             foreach (var resTestStep in res.TestSteps)
                             {
-                                var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
+                                            var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
                                 foreach (var serviceTestStep in serviceTestSteps)
                                 {
                                     var resServiceTestStep = serviceTestStep as ServiceTestStep;

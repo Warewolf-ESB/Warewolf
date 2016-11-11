@@ -777,7 +777,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void UpdateWithAssertions(IDSFDataObject dataObject)
+        protected void UpdateWithAssertions(IDSFDataObject dataObject)
         {
             if (dataObject.IsServiceTestExecution)
             {
