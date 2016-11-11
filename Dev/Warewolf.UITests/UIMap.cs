@@ -87,7 +87,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
+                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -111,7 +111,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
+                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -135,7 +135,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
+                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -159,7 +159,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
+                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -183,7 +183,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
+                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -207,7 +207,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
+                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -231,7 +231,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
+                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -255,7 +255,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (TimeBefore - System.DateTime.Now).Seconds.ToString() + "s.");
+                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
