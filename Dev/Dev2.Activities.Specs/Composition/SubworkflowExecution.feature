@@ -286,3 +286,14 @@ Scenario: Error not bubbling up error message
 	And the "ErrorBubbleUp" in Workflow "Wolf-1212_2" debug outputs as
 	  |                   |
 	  | [[Result]] = Pass |
+
+Scenario: Rabbit MQ Test
+	  Given I have a workflow "RabbitMQ Test WF"
+	  And "RabbitMQ Test WF" contains "RabbitMQTest" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "RabbitMQ Test WF" is executed
+	Then the workflow execution has "NO" error
+	  And the "RabbitMQTest" in Workflow "RabbitMQ Test WF" debug outputs as
+	  |                   |
+	  | [[Result]] = Pass |

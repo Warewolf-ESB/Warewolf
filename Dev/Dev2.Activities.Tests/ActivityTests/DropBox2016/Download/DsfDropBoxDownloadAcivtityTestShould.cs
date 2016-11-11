@@ -348,7 +348,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
                 {"ToPath","Home"}
             });
 
-            Assert.AreEqual(GlobalConstants.DropBoxSucces, execution);
+            Assert.AreEqual(GlobalConstants.DropBoxSuccess, execution);
         }
 
         [TestMethod]
@@ -545,7 +545,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         {
             // ReSharper disable once RedundantBaseQualifier
             var perfomBaseExecution = base.PerformExecution(dictionaryValues);
-            return perfomBaseExecution;
+            return perfomBaseExecution[0];
         }
     }
 }
