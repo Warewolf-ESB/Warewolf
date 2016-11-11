@@ -25,7 +25,15 @@ namespace Warewolf.UITests.Tools.Resources
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
         }
-        
+
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
+
+
         UIMap UIMap
         {
             get
