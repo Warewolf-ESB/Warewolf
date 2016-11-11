@@ -160,7 +160,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     var studioTestViewModel = vm as StudioTestViewModel;
                     var serviceTestViewModel = studioTestViewModel?.ViewModel;
-                    serviceTestViewModel?.CreateTestCommand.Execute(message);
+                    serviceTestViewModel?.PrepopulateTestsUsingDebug(message.RootItems);
                 }
                 AddAndActivateWorkSurface(found);
             }

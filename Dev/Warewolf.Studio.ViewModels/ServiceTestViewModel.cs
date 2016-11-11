@@ -106,7 +106,6 @@ namespace Warewolf.Studio.ViewModels
             WorkflowDesignerViewModel = workflowDesignerViewModel;
             WorkflowDesignerViewModel.IsTestView = true;
             WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
-
             AsyncWorker.Start(GetTests, models =>
             {
                 var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
@@ -132,22 +131,15 @@ namespace Warewolf.Studio.ViewModels
                 }
             }, OnError);
 
+
         }
 
         public void PrepopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models)
         {
             CreateTests();
-            AddFromDebug(models);
+            if (_canAddFromDebug)
+                AddFromDebug(models);
         }
-
-
-        public void AddDuplicateTestUsingDebug(NewTestFromDebugMessage message)
-        {
-            DuplicateTest();
-            SelectedServiceTest.TestSteps = new ObservableCollection<IServiceTestStep>();
-            AddFromDebug(message.RootItems);
-        }
-
 
         private void AddFromDebug(List<IDebugTreeViewItemViewModel> models)
         {
@@ -351,7 +343,23 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                AddChildren(debugState, parent);
+                if (parent.ActivityType == typeof(DsfActivity).Name)
+                {
+                    var childItem = debugState as DebugStateTreeViewItemViewModel;
+                    if (childItem != null)
+                    {
+                        var content = childItem.Content;
+                        var outputs = content.Outputs;
+                        var serviceTestStep = (ServiceTestStep)parent;
+                        AddOutputs(outputs, serviceTestStep);
+                        SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
+
+                    }
+                }
+                else
+                {
+                    AddChildren(debugState, parent);
+                }
             }
             while (parent != null)
             {
@@ -529,6 +537,8 @@ namespace Warewolf.Studio.ViewModels
                 AddSequence(sequence, null, SelectedServiceTest.TestSteps);
             }
         }
+
+
 
         private void ProcessForEach(ModelItem modelItem)
         {
@@ -1280,10 +1290,12 @@ namespace Warewolf.Studio.ViewModels
 
         private void CreateTests()
         {
+            _canAddFromDebug = true;
             SelectedServiceTest = null;
             if (IsDirty)
             {
                 PopupController?.Show(Resources.Languages.Core.ServiceTestSaveEditedTestsMessage, Resources.Languages.Core.ServiceTestSaveEditedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                _canAddFromDebug = false;
                 return;
             }
 
@@ -1292,7 +1304,7 @@ namespace Warewolf.Studio.ViewModels
             AddAndSelectTest(testModel);
             SetDisplayName();
         }
-
+        private bool _canAddFromDebug;
         private int GetNewTestNumber(string testName)
         {
             int counter = 1;
