@@ -839,10 +839,6 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfButton debugF6Button = this.MainStudioWindow.DebugInputDialog.DebugF6Button;
             WpfCustom debugOutput = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput;
-            WpfButton settingsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SettingsButton;
-            WpfButton expandCollapseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.ExpandCollapseButton;
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SearchTextBox;
-            WpfTree debugOutputTree = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree;
             #endregion
 
             // Verify that the 'Enabled' property of 'Debug (F6)' button equals 'True'
@@ -853,21 +849,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
             Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.DebugOutputExists, debugOutput.Exists, "Debug output does not exist");
-
-            // Verify that the 'Exists' property of '?' button equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SettingsButtonExists, settingsButton.Exists, "Debug output settings button does not exist");
-
-            // Verify that the 'Exists' property of '+' button equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.ExpandCollapseButtonExists, expandCollapseButton.Exists, "Debug output expand collapse button does not exist");
-
-            // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SearchTextBoxExists, searchTextBox.Exists, "Debug output filter textbox does not exist");
-
-            // Verify that the 'Exists' property of 'DebugOutputTree' tree equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.DebugOutputTreeExists, debugOutputTree.Exists, "Debug output results tree does not exist");
-
-            // Verify that the 'Exists' property of '?' button equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SettingsButtonExists1, settingsButton.Exists, "Debug output settings button does not exist");
         }
         
         /// <summary>
@@ -15324,31 +15305,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
         /// </summary>
         public bool DebugOutputExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '?' button equals 'True'
-        /// </summary>
-        public bool SettingsButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '+' button equals 'True'
-        /// </summary>
-        public bool ExpandCollapseButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
-        /// </summary>
-        public bool SearchTextBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DebugOutputTree' tree equals 'True'
-        /// </summary>
-        public bool DebugOutputTreeExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '?' button equals 'True'
-        /// </summary>
-        public bool SettingsButtonExists1 = true;
         #endregion
     }
     

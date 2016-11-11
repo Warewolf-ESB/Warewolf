@@ -2595,23 +2595,10 @@ namespace Warewolf.UITests
             // Click 'Debug (F6)' button
             Mouse.Click(debugF6Button, new Point(34, 10));
 
-            // Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.DebugOutputExists, debugOutput.Exists, "Debug output does not exist");
-            debugOutput.DrawHighlight();
-            // Verify that the 'Exists' property of '?' button equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SettingsButtonExists, settingsButton.Exists, "Debug output settings button does not exist");
-
-            // Verify that the 'Exists' property of '+' button equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.ExpandCollapseButtonExists, expandCollapseButton.Exists, "Debug output expand collapse button does not exist");
-
-            // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SearchTextBoxExists, searchTextBox.Exists, "Debug output filter textbox does not exist");
-
-            // Verify that the 'Exists' property of 'DebugOutputTree' tree equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.DebugOutputTreeExists, debugOutputTree.Exists, "Debug output results tree does not exist");
-            debugOutputTree.DrawHighlight();
-            // Verify that the 'Exists' property of '?' button equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SettingsButtonExists1, settingsButton.Exists, "Debug output settings button does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.Exists, "Debug Output does not exist after clicking Debug button from Debug Dialog");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SettingsButton.Exists, "Output SettingsButton does not exist after clicking Debug button from Debug Dialog");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SearchTextBox.Exists, "Output SearchTextBox does not exist after clicking Debug button from Debug Dialog");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Exists, "DebugOutputTree does not exist after clicking Debug button from Debug Dialog");
         }
 
         public void Debug_Unpinned_Workflow_With_Ribbon_Button()
