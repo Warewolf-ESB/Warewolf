@@ -136,12 +136,8 @@ namespace Warewolf.Studio.ViewModels
 
         public void PrepopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models)
         {
-            System.Threading.Tasks.Parallel.Invoke(() =>
-            {
-                CreateTests();
-                AddFromDebug(models);
-            });
-
+            CreateTests();
+            AddFromDebug(models);
         }
 
 
@@ -1861,12 +1857,13 @@ namespace Warewolf.Studio.ViewModels
                 var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.ID);
                 if (loadResourceTests != null)
                 {
-                    System.Threading.Tasks.Parallel.ForEach(loadResourceTests, test =>
+                    foreach(var test in loadResourceTests)
                     {
                         var serviceTestModel = ToServiceTestModel(test);
                         serviceTestModel.Item = (ServiceTestModel)serviceTestModel.Clone();
                         serviceTestModels.Add(serviceTestModel);
-                    });
+                    }
+                  
 
                 }
                 return serviceTestModels.ToObservableCollection<IServiceTestModel>();
