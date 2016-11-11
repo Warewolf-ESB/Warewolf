@@ -20,12 +20,12 @@ namespace Warewolf.UITests
         
         [TestMethod]
         public void ClickNewTestWithUnsavedExistingTest()
-        {
+        {            
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-            UIMap.Click_Create_New_Tests(true);
+            UIMap.Try_Click_Create_New_Tests();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
-            Assert.IsTrue(UIMap.MessageBoxWindow.UIPleasesavecurrentlyeText.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.SaveBeforeAddingTest.Exists);
             UIMap.Click_MessageBox_OK();
         }
         
@@ -75,7 +75,8 @@ namespace Warewolf.UITests
         {
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-            UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
+            UIMap.Click_Run_Test_Button(TestResultEnum.Pass);
+            //UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
             UIMap.EnterOutMessageValue_On_OutputMessage_TestStep(Message);
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_Test_Tab();

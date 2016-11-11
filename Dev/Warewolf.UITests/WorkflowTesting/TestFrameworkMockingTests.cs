@@ -63,7 +63,7 @@ namespace Warewolf.UITests
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
-            Assert.IsTrue(UIMap.MessageBoxWindow.UIPleasesavecurrentlyeText.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.SaveBeforeAddingTest.Exists);
             UIMap.Click_MessageBox_OK();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.Exists);
         }

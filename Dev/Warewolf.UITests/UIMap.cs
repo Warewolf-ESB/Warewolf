@@ -1596,10 +1596,10 @@ namespace Warewolf.UITests
             if (!string.IsNullOrEmpty(BrokenRule))
             {
                 if (BrokenRule.ToUpper().Equals(UnsavedResourceError))
-                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
+                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", MessageBoxWindow.SaveBeforeRunningTest.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
                             "ests.");
                 if (BrokenRule.ToUpper().Equals(DuplicateNameError))
-                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Messagebox does not show duplicated name error");
+                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", MessageBoxWindow.SaveBeforeRunningTest.DisplayText, "Messagebox does not show duplicated name error");
             }
         }
 
@@ -1830,6 +1830,11 @@ namespace Warewolf.UITests
 
             Assert_Display_Text_ContainStar(Tab, nameContainsStar, testInstance);
             Assert_Display_Text_ContainStar(Test, nameContainsStar, testInstance);
+        }
+
+        public void Try_Click_Create_New_Tests()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton, new Point(158, 10));
         }
 
         private void Assert_Display_Text_ContainStar(string control, bool containsStar, int instance = 1)
@@ -3646,11 +3651,51 @@ namespace Warewolf.UITests
         public void EnterOutMessageValue_On_OutputMessage_TestStep(string message)
         {
             #region Variable Declarations
+
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.Row1.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.Row1.AssertValueCell.DrawHighlight();
             WpfEdit assertValue = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.Row1.AssertValueCell.AssertValue;
+
             #endregion
-                        
+
             assertValue.Text = message;
         }
+
+        /// <summary>
+        /// Press_F6 - Use 'Press_F6Params' to pass parameters into this method.
+        /// </summary>
+        public void Press_F6()
+        {
+            #region Variable Declarations
+            WpfWindow mainStudioWindow = this.MainStudioWindow;
+            UITestControl workflowTab = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab;
+            #endregion
+
+            WaitForControlVisible(workflowTab);
+
+            // Type '{F6}' in 'Warewolf' window
+            Keyboard.SendKeys(mainStudioWindow, this.Press_F6Params.MainStudioWindowSendKeys, ModifierKeys.None);
+
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+        }
+
+        public virtual Press_F6Params Press_F6Params
+        {
+            get
+            {
+                if ((this.mPress_F6Params == null))
+                {
+                    this.mPress_F6Params = new Press_F6Params();
+                }
+                return this.mPress_F6Params;
+            }
+        }
+
+        private Press_F6Params mPress_F6Params;
     }
     /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_AssignObject_Onto_Sequence_Tool'
@@ -3756,6 +3801,20 @@ namespace Warewolf.UITests
         /// Type 'Hello There World' in 'UI_AssertValue_AutoID' text box
         /// </summary>
         public string AssertValueText = "Hello There World";
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Press_F6'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Press_F6Params
+    {
+
+        #region Fields
+        /// <summary>
+        /// Type '{F6}' in 'Warewolf' window
+        /// </summary>
+        public string MainStudioWindowSendKeys = "{F6}";
         #endregion
     }
 }
