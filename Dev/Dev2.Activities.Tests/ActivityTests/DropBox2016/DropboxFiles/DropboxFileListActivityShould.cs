@@ -189,7 +189,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 {"IncludeFolders", "false"}
             });
             //---------------Test Result -----------------------
-            Assert.AreEqual(execution, GlobalConstants.DropBoxSucces);
+            Assert.AreEqual(execution, GlobalConstants.DropBoxSuccess);
         }
 
         [TestMethod]
@@ -223,7 +223,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 {"IncludeFolders", "false"}
             });
             //---------------Test Result -----------------------
-            Assert.AreEqual(execution, GlobalConstants.DropBoxSucces);
+            Assert.AreEqual(execution, GlobalConstants.DropBoxSuccess);
         }
 
         [TestMethod]
@@ -560,7 +560,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         public string PerformBaseExecution(Dictionary<string, string> evaluatedValues)
         {
             // ReSharper disable once RedundantBaseQualifier
-            return base.PerformExecution(evaluatedValues);
+            return base.PerformExecution(evaluatedValues)[0];
         }
 
         public IDropboxResult DropboxResult { get; set; }

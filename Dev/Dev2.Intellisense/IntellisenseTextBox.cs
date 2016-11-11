@@ -173,7 +173,6 @@ namespace Dev2.UI
                 {
                     appendText = selectedItem.ToString();
                 }
-                //Focus();
             }
             return appendText;
         }

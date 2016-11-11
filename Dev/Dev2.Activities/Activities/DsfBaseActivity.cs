@@ -10,6 +10,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -19,7 +20,7 @@ namespace Dev2.Activities
 {
     public abstract class DsfBaseActivity : DsfActivityAbstract<string>
     {
-        private string _result;
+        private List<string> _executionResult;
         public new abstract string DisplayName { get; set; }
 
         #region Get Debug Inputs/Outputs
@@ -57,7 +58,7 @@ namespace Dev2.Activities
         {
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            //Guid executionId = DataListExecutionID.Get(context);
+            _executionResult = new List<string>();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             // Process if no errors
@@ -71,24 +72,37 @@ namespace Dev2.Activities
                 {
                     var attributes = (Inputs[])propertyInfo.GetCustomAttributes(typeof(Inputs), false);
                     var variableValue = propertyInfo.GetValue(this) as string;
-                    if (dataObject.IsDebugMode())
+                    if (!string.IsNullOrEmpty(variableValue))
                     {
-                        AddDebugInputItem(new DebugEvalResult(variableValue, attributes[0].UserVisibleName, dataObject.Environment, update));
+                        if (dataObject.IsDebugMode())
+                        {
+                            AddDebugInputItem(new DebugEvalResult(variableValue, attributes[0].UserVisibleName, dataObject.Environment, update));
+                        }
+
+                        var dtItr = CreateDataListEvaluateIterator(variableValue, dataObject.Environment, update);
+                        colItr.AddVariableToIterateOn(dtItr);
+                        iteratorPropertyDictionary.Add(propertyInfo.Name, dtItr);
                     }
-                    var dtItr = CreateDataListEvaluateIterator(variableValue, dataObject.Environment, update);
-                    colItr.AddVariableToIterateOn(dtItr);
-                    iteratorPropertyDictionary.Add(propertyInfo.Name, dtItr);
                 }
-                while (colItr.HasMoreData())
+                if (colItr.FieldCount <= 0)
                 {
-                    var evaluatedValues = new Dictionary<string, string>();
-                    foreach (var dev2DataListEvaluateIterator in iteratorPropertyDictionary)
-                    {
-                        var binaryDataListItem = colItr.FetchNextValue(dev2DataListEvaluateIterator.Value);
-                        evaluatedValues.Add(dev2DataListEvaluateIterator.Key, binaryDataListItem);
-                    }
-                    _result = PerformExecution(evaluatedValues);
+                    var evaluatedValues = new Dictionary<string, string>();                    
+                    _executionResult = PerformExecution(evaluatedValues);
                     AssignResult(dataObject, update);
+                }
+                else
+                {
+                    while (colItr.HasMoreData())
+                    {
+                        var evaluatedValues = new Dictionary<string, string>();
+                        foreach (var dev2DataListEvaluateIterator in iteratorPropertyDictionary)
+                        {
+                            var binaryDataListItem = colItr.FetchNextValue(dev2DataListEvaluateIterator.Value);
+                            evaluatedValues.Add(dev2DataListEvaluateIterator.Key, binaryDataListItem);
+                        }
+                        _executionResult = PerformExecution(evaluatedValues);
+                        AssignResult(dataObject, update);
+                    }
                 }
 
                 if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrWhiteSpace(Result))
@@ -130,11 +144,19 @@ namespace Dev2.Activities
         {
             if (!string.IsNullOrEmpty(Result))
             {
-                dataObject.Environment.Assign(Result, _result, update);
+                if (DataListUtil.IsValueScalar(Result))
+                {
+                    dataObject.Environment.Assign(Result, _executionResult.Last(), update);
+                }
+                foreach(var res in _executionResult)
+                {
+                    dataObject.Environment.Assign(Result,res, update);
+                }
+                
             }
         }
 
-        protected abstract string PerformExecution(Dictionary<string, string> evaluatedValues);
+        protected abstract List<string> PerformExecution(Dictionary<string, string> evaluatedValues);
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
