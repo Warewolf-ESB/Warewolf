@@ -1286,7 +1286,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 291
-   testRunner.Given("I have a workflow \"RabbitMQ Test WF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("I have a workflow \"RabbitMQ Tester WF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -1296,22 +1296,22 @@ this.FeatureBackground();
             table48.AddRow(new string[] {
                         "",
                         "",
-                        "Result",
-                        "[[Result]]"});
+                        "result",
+                        "[[result]]"});
 #line 292
-   testRunner.And("\"RabbitMQ Test WF\" contains \"RabbitMQTest\" from server \"localhost\" with mapping a" +
-                    "s", ((string)(null)), table48, "And ");
+   testRunner.And("\"RabbitMQ Tester WF\" contains \"RabbitMQTest\" from server \"localhost\" with mapping" +
+                    " as", ((string)(null)), table48, "And ");
 #line 295
-   testRunner.When("\"RabbitMQ Test WF\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"RabbitMQ Tester WF\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 296
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table49.AddRow(new string[] {
-                        "[[Result]] = Pass"});
+                        "[[result]] = Pass"});
 #line 297
-   testRunner.And("the \"RabbitMQTest\" in Workflow \"RabbitMQ Test WF\" debug outputs as", ((string)(null)), table49, "And ");
+   testRunner.And("the \"RabbitMQTest\" in Workflow \"RabbitMQ Tester WF\" debug outputs as", ((string)(null)), table49, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
