@@ -2855,20 +2855,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Debug_Using_Play_Icon
-        /// </summary>
-        [When(@"I Debug Using Play Icon")]
-        public void Debug_Using_Play_Icon()
-        {
-            #region Variable Declarations
-            WpfButton executeIcon = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon;
-            #endregion
-
-            // Click 'ExecuteButton' button
-            Mouse.Click(executeIcon, new Point(11, 13));
-        }
-        
-        /// <summary>
         /// Delete_Nested_Hello_World
         /// </summary>
         [When(@"I Delete Nested Hello World")]
