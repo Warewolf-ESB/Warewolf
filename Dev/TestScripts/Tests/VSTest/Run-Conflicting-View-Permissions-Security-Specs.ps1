@@ -29,15 +29,15 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalSecuritySpecs.testsettings"
+$TestSettingsFile = "$PSScriptRoot\ConflictingViewPermissionsSecuritySpecs.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
-  name="ConflictingPermissionsSecuritySpecs"
+  id=`"" + [guid]::NewGuid() + @"`"
+  name="ConflictingViewPermissionsSecuritySpecs"
   enableDefaultDataCollectors="false"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run conflicting permissions security specs.</Description>
+  <Description>Run conflicting view permissions security specs.</Description>
   <Deployment enabled="false" />
   <Execution>
     <Timeouts testTimeout=`"180000`" />
