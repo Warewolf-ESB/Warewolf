@@ -348,6 +348,10 @@ namespace Dev2.Scheduler
             created.Settings.StartWhenAvailable = resource.RunAsapIfScheduleMissed;
             created.Settings.MultipleInstances = resource.AllowMultipleIstances ? TaskInstancesPolicy.Parallel : TaskInstancesPolicy.Queue;
             created.Settings.Hidden = true;
+            if (created.Instance != null && created.Instance.Principal != null)
+            {
+                created.Instance.Principal.RunLevel = TaskRunLevel.Highest;
+            }
             return created;
         }
 
