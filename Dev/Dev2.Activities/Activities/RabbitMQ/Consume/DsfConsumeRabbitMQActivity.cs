@@ -30,6 +30,8 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 // ReSharper disable UseStringInterpolation
+// ReSharper disable CyclomaticComplexity
+// ReSharper disable FunctionComplexityOverflow
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -228,20 +230,6 @@ namespace Dev2.Activities.RabbitMQ.Consume
             string value = ReQueue ? "True" : "False";
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
-
-//            if(!string.IsNullOrEmpty(Prefetch))
-//            {
-//                debugItem = new DebugItem();
-//                AddDebugItem(new DebugItemStaticDataParams("", "Prefetch"), debugItem);
-//                AddDebugItem(new DebugEvalResult(Prefetch, "", env, update), debugItem);
-//                _debugInputs.Add(debugItem);
-//            }            
-
-//            debugItem = new DebugItem();
-//            AddDebugItem(new DebugItemStaticDataParams("", "QueueName"), debugItem);
-//            AddDebugItem(new DebugEvalResult(QueueName, "", env, update), debugItem);
-//            _debugInputs.Add(debugItem);
-
             return _debugInputs;
         }
 
