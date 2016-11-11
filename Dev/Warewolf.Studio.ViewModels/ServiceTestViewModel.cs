@@ -163,6 +163,10 @@ namespace Warewolf.Studio.ViewModels
                         {
                             ProcessInputsAndOutputs(debugItemContent);
                         }
+                        else if (debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.ActualType == typeof(DsfActivity).Name)
+                        {
+                            AddStepFromDebug(debugState, debugItemContent);
+                        }
                         else if (debugItemContent.ActivityType != ActivityType.Workflow && debugItemContent.ActualType != typeof(DsfCommentActivity).Name && debugItemContent.ActualType != typeof(TestMockDecisionStep).Name && debugItemContent.ActualType != typeof(TestMockSwitchStep).Name && debugItemContent.ActualType != typeof(TestMockStep).Name)
                         {
                             var actualType = debugItemContent.ActualType;
@@ -230,7 +234,6 @@ namespace Warewolf.Studio.ViewModels
         {
             if (debugState.Children != null && debugState.Children.Count > 0)
             {
-                var testSteps = SelectedServiceTest.TestSteps;
                 AddChildDebugItems(debugItemContent, debugState, null);
             }
             else
@@ -263,23 +266,31 @@ namespace Warewolf.Studio.ViewModels
                 var seqTypeName = typeof(DsfSequenceActivity).Name;
                 var forEachTypeName = typeof(DsfForEachActivity).Name;
                 var selectApplyTypeName = typeof(DsfSelectAndApplyActivity).Name;
-                if (debugItemContent.ActualType == seqTypeName)
+                var serviceName = typeof(DsfActivity).Name;
+                var actualType = debugItemContent.ActualType;
+                if (actualType == seqTypeName)
                 {
                     SetStepIcon(typeof(DsfSequenceActivity), testStep);
                     testStep.ActivityType = seqTypeName;
                     parent = testStep;
                 }
 
-                else if (debugItemContent.ActualType == forEachTypeName)
+                else if (actualType == forEachTypeName)
                 {
                     SetStepIcon(typeof(DsfForEachActivity), testStep);
                     testStep.ActivityType = forEachTypeName;
                     parent = testStep;
                 }
-                else if (debugItemContent.ActualType == selectApplyTypeName)
+                else if (actualType == selectApplyTypeName)
                 {
                     SetStepIcon(typeof(DsfSelectAndApplyActivity), testStep);
                     testStep.ActivityType = selectApplyTypeName;
+                    parent = testStep;
+                }
+                else if (actualType == serviceName)
+                {
+                    SetStepIcon(typeof(DsfActivity), testStep);
+                    testStep.ActivityType = serviceName;
                     parent = testStep;
                 }
                 else
@@ -299,7 +310,10 @@ namespace Warewolf.Studio.ViewModels
                     if (childItem != null)
                     {
                         if (act != null)
-                            childItem.Content.ID = Guid.Parse(act.UniqueID);
+                        {
+                            Guid guid = Guid.Parse(act.UniqueID);
+                            childItem.Content.ID = guid;
+                        }
                         var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
 
                         var childItemContent = childItem.Content;
@@ -538,6 +552,7 @@ namespace Warewolf.Studio.ViewModels
                 SetStepIcon(type, testStep);
                 var activity = forEachActivity.DataFunc.Handler;
                 var act = activity as DsfNativeActivity<string>;
+                var workFlowService = activity as DsfActivity;
                 if (act != null)
                 {
                     if (act.GetType() == typeof(DsfSequenceActivity))
@@ -561,6 +576,11 @@ namespace Warewolf.Studio.ViewModels
                         AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
                     }
 
+                }
+
+                if (workFlowService != null)
+                {
+                    AddChildActivity(workFlowService, testStep);
                 }
                 if (exists == null)
                 {
@@ -590,6 +610,7 @@ namespace Warewolf.Studio.ViewModels
                 SetStepIcon(typeof(DsfSelectAndApplyActivity), testStep);
                 var activity = selecteApplyActivity.ApplyActivityFunc.Handler;
                 var act = activity as DsfNativeActivity<string>;
+                var workFlowService = activity as DsfActivity;
                 if (act != null)
                 {
                     if (act.GetType() == typeof(DsfSequenceActivity))
@@ -611,6 +632,10 @@ namespace Warewolf.Studio.ViewModels
                     {
                         AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
                     }
+                }
+                if (workFlowService != null)
+                {
+                    AddChildActivity(workFlowService, testStep);
                 }
                 if (exists == null)
                 {
@@ -709,7 +734,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void AddChildActivity(DsfNativeActivity<string> act, ServiceTestStep testStep)
+        private void AddChildActivity<T>(DsfNativeActivity<T> act, ServiceTestStep testStep)
         {
             var outputs = act.GetOutputs();
             if (outputs != null && outputs.Count > 0)
@@ -1857,13 +1882,13 @@ namespace Warewolf.Studio.ViewModels
                 var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.ID);
                 if (loadResourceTests != null)
                 {
-                    foreach(var test in loadResourceTests)
+                    foreach (var test in loadResourceTests)
                     {
                         var serviceTestModel = ToServiceTestModel(test);
                         serviceTestModel.Item = (ServiceTestModel)serviceTestModel.Clone();
                         serviceTestModels.Add(serviceTestModel);
                     }
-                  
+
 
                 }
                 return serviceTestModels.ToObservableCollection<IServiceTestModel>();
