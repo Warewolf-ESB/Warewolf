@@ -2683,8 +2683,12 @@ namespace Warewolf.UITests
         public void Click_ViewSwagger_From_ExplorerContextMenu()
         {
             #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             WpfMenuItem viewSwagger = this.MainStudioWindow.ExplorerContextMenu.ViewSwagger;
             #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
 
             // Click 'View Swagger' menu item
             Mouse.Click(viewSwagger, new Point(82, 16));
