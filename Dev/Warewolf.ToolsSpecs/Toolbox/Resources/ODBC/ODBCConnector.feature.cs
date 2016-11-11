@@ -91,16 +91,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.Then("Inputs iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1509 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1516 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table1509.AddRow(new string[] {
+            table1516.AddRow(new string[] {
                         "EID",
                         "",
                         "false"});
 #line 14
- testRunner.And("Inputs appears az", ((string)(null)), table1509, "And ");
+ testRunner.And("Inputs appears az", ((string)(null)), table1516, "And ");
 #line 17
  testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
@@ -108,23 +108,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.When("I click Tezt", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table1510 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1517 = new TechTalk.SpecFlow.Table(new string[] {
                         "CountryID"});
-            table1510.AddRow(new string[] {
+            table1517.AddRow(new string[] {
                         "1"});
 #line 20
- testRunner.Then("Test Connector and Calculate Outputz outputs appear az", ((string)(null)), table1510, "Then ");
+ testRunner.Then("Test Connector and Calculate Outputz outputs appear az", ((string)(null)), table1517, "Then ");
 #line 23
  testRunner.When("I clicked OKay", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table1511 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1518 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1511.AddRow(new string[] {
+            table1518.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
 #line 24
- testRunner.Then("Outputs appears az", ((string)(null)), table1511, "Then ");
+ testRunner.Then("Outputs appears az", ((string)(null)), table1518, "Then ");
 #line 27
  testRunner.And("Recordset Name equal \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -152,30 +152,30 @@ this.ScenarioSetup(scenarioInfo);
 #line 35
  testRunner.And("Inputs iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1512 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1519 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table1512.AddRow(new string[] {
+            table1519.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
 #line 36
- testRunner.Then("Inputs appears az", ((string)(null)), table1512, "Then ");
+ testRunner.Then("Inputs appears az", ((string)(null)), table1519, "Then ");
 #line 39
  testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1513 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1520 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1513.AddRow(new string[] {
+            table1520.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
-            table1513.AddRow(new string[] {
+            table1520.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
 #line 40
- testRunner.Then("Outputs appears az", ((string)(null)), table1513, "Then ");
+ testRunner.Then("Outputs appears az", ((string)(null)), table1520, "Then ");
 #line 44
  testRunner.And("Recordset Name equal \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -203,30 +203,30 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
  testRunner.And("Inputs iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1514 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1521 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table1514.AddRow(new string[] {
+            table1521.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
 #line 53
- testRunner.Then("Inputs appears az", ((string)(null)), table1514, "Then ");
+ testRunner.Then("Inputs appears az", ((string)(null)), table1521, "Then ");
 #line 56
  testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1515 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1522 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1515.AddRow(new string[] {
+            table1522.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
-            table1515.AddRow(new string[] {
+            table1522.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
 #line 57
- testRunner.Then("Outputs appears az", ((string)(null)), table1515, "Then ");
+ testRunner.Then("Outputs appears az", ((string)(null)), table1522, "Then ");
 #line 61
  testRunner.And("Recordset Name equal \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
@@ -264,30 +264,30 @@ this.ScenarioSetup(scenarioInfo);
 #line 74
  testRunner.And("Inputs iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1516 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1523 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table1516.AddRow(new string[] {
+            table1523.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
 #line 75
- testRunner.Then("Inputs appears az", ((string)(null)), table1516, "Then ");
+ testRunner.Then("Inputs appears az", ((string)(null)), table1523, "Then ");
 #line 78
  testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1517 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1524 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1517.AddRow(new string[] {
+            table1524.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
-            table1517.AddRow(new string[] {
+            table1524.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
 #line 79
- testRunner.Then("Outputs appears az", ((string)(null)), table1517, "Then ");
+ testRunner.Then("Outputs appears az", ((string)(null)), table1524, "Then ");
 #line 83
  testRunner.And("Recordset Name equal \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 84
@@ -295,16 +295,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 85
  testRunner.And("Inputs iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1518 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1525 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table1518.AddRow(new string[] {
+            table1525.AddRow(new string[] {
                         "ProductId",
                         "",
                         "false"});
 #line 86
- testRunner.And("Inputs appears az", ((string)(null)), table1518, "And ");
+ testRunner.And("Inputs appears az", ((string)(null)), table1525, "And ");
 #line 89
  testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -332,46 +332,46 @@ this.ScenarioSetup(scenarioInfo);
 #line 98
  testRunner.And("Inputs iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1519 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1526 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table1519.AddRow(new string[] {
+            table1526.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
 #line 99
- testRunner.Then("Inputs appears az", ((string)(null)), table1519, "Then ");
+ testRunner.Then("Inputs appears az", ((string)(null)), table1526, "Then ");
 #line 102
  testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1520 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1527 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1520.AddRow(new string[] {
+            table1527.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
-            table1520.AddRow(new string[] {
+            table1527.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
 #line 103
- testRunner.Then("Outputs appears az", ((string)(null)), table1520, "Then ");
+ testRunner.Then("Outputs appears az", ((string)(null)), table1527, "Then ");
 #line 107
  testRunner.And("Recordset Name equal \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
  testRunner.When("Recordset Name iz changed from to \"Pr_Cities\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table1521 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1528 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1521.AddRow(new string[] {
+            table1528.AddRow(new string[] {
                         "CountryID",
                         "[[Pr_Cities().CountryID]]"});
-            table1521.AddRow(new string[] {
+            table1528.AddRow(new string[] {
                         "Description",
                         "[[Pr_Cities().Description]]"});
 #line 109
- testRunner.Then("Outputs appears az", ((string)(null)), table1521, "Then ");
+ testRunner.Then("Outputs appears az", ((string)(null)), table1528, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
