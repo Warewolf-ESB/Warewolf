@@ -866,51 +866,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 //
             }
-
-
-
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void AddDuplicateTestUsingDebug_GivenMessage_ShouldAddDebugTestSteps()
-        {
-            //---------------Set up test pack-------------------
-            var resourceModel = new Mock<IContextualResourceModel>();
-            var handler = new Mock<IServiceTestCommandHandler>();
-            handler.Setup(commandHandler => commandHandler.StopTest(resourceModel.Object));
-            resourceModel.SetupAllProperties();
-            var env = new Mock<IEnvironmentModel>();
-            var con = new Mock<IEnvironmentConnection>();
-            var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
-            resourceModel.Setup(model => model.Environment).Returns(env.Object);
-            resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
-            var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetStepIcon", BindingFlags.NonPublic | BindingFlags.Instance, null, CallingConventions.Any, new[] { typeof(string), typeof(ServiceTestStep) }, new[] { new ParameterModifier(2), });
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(methodInfo);
-            //---------------Execute Test ----------------------
-            try
-            {
-                var newTestFromDebugMessage = new NewTestFromDebugMessage
-                {
-                    RootItems = new List<IDebugTreeViewItemViewModel>()
-                };
-                testViewModel.AddDuplicateTestUsingDebug(newTestFromDebugMessage);
-                Assert.IsNotNull(testViewModel.SelectedServiceTest.TestSteps);
-            }
-            catch (Exception)
-            {
-                //
-            }
-
-
-
-
-        }
-
-
-
     }
 }
