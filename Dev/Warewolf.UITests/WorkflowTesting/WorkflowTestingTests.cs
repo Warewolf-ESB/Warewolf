@@ -45,6 +45,8 @@ namespace Warewolf.UITests
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No duplicate test error dialog when saving a test with the name of an existing test.");
             UIMap.Click_MessageBox_OK();
+            UIMap.Click_Close_Tests_Tab();
+            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
