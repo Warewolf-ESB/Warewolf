@@ -33,7 +33,7 @@ $TestSettingsFile = "$PSScriptRoot\ExampleWorkflowExecutionSpecs.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
+  id=`"" + [guid]::NewGuid() + @"`"
   name=`"ExampleWorkflowExecutionSpecs`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">

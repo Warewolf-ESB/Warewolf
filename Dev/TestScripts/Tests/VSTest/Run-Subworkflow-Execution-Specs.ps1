@@ -29,15 +29,15 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
+$TestSettingsFile = "$PSScriptRoot\SubworkflowExecutionSpecs.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
-  name="ExampleWorkflowExecutionSpecs"
+  name="SubworkflowExecutionSpecs"
   enableDefaultDataCollectors="false"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run example workflow execution specs.</Description>
+  <Description>Run Subworkflow Execution Specs.</Description>
   <Deployment enabled="false" />
   <Execution>
     <Timeouts testTimeout=`"180000`" />
