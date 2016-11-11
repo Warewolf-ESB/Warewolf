@@ -10319,32 +10319,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Show_Explorer_First_Item_Tests_With_Context_Menu - Use 'Show_Explorer_First_Item_Tests_With_Context_MenuParams' to pass parameters into this method.
-        /// </summary>
-        [When(@"I Show Explorer First Item Tests With Context Menu")]
-        public void Show_Explorer_First_Item_Tests_With_Context_Menu()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
-            WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-
-            // Verify that the 'Exists' property of 'Tests' menu item equals 'True'
-            Assert.AreEqual(this.Show_Explorer_First_Item_Tests_With_Context_MenuParams.TestsExists, tests.Exists, "View tests does not exist in explorer context menu.");
-
-            // Click 'Tests' menu item
-            Mouse.Click(tests, new Point(30, 11));
-
-            // Verify that the 'Exists' property of 'Create a new test' button equals 'True'
-            Assert.AreEqual(this.Show_Explorer_First_Item_Tests_With_Context_MenuParams.CreateTestButtonExists, createTestButton.Exists, "Create new test button does not exist on tests tab after openning it with the exp" +
-                    "lorer context menu.");
-        }
-        
-        /// <summary>
         /// Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox - Use 'Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues' to pass parameters into this method.
         /// </summary>
         [When(@"I Type 0 Into SQL Server Large View Inputs Row1 Data Textbox")]
@@ -14016,18 +13990,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Show_Explorer_First_Item_Tests_With_Context_MenuParams Show_Explorer_First_Item_Tests_With_Context_MenuParams
-        {
-            get
-            {
-                if ((this.mShow_Explorer_First_Item_Tests_With_Context_MenuParams == null))
-                {
-                    this.mShow_Explorer_First_Item_Tests_With_Context_MenuParams = new Show_Explorer_First_Item_Tests_With_Context_MenuParams();
-                }
-                return this.mShow_Explorer_First_Item_Tests_With_Context_MenuParams;
-            }
-        }
-        
         public virtual Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues
         {
             get
@@ -14809,8 +14771,6 @@ namespace Warewolf.UITests
         private Select_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams mSelect_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams;
         
         private Select_User_From_RunTestAsParams mSelect_User_From_RunTestAsParams;
-        
-        private Show_Explorer_First_Item_Tests_With_Context_MenuParams mShow_Explorer_First_Item_Tests_With_Context_MenuParams;
         
         private Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
         
@@ -21579,26 +21539,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Show_Explorer_First_Item_Tests_With_Context_Menu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Show_Explorer_First_Item_Tests_With_Context_MenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Tests' menu item equals 'True'
-        /// </summary>
-        public bool TestsExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Create a new test' button equals 'True'
-        /// </summary>
-        public bool CreateTestButtonExists = true;
         #endregion
     }
     
