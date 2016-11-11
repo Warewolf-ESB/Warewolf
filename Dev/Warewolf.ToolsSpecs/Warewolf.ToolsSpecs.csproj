@@ -215,25 +215,25 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Move\MoveSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Read File\Read File1.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Read File\Read File.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Read File.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Read File\ReadFileSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Read Folder\Read Folder1.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Read Folder\Read Folder.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Read Folder.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Read Folder\ReadFolderSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Rename\Rename2.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Rename\Rename.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Rename.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Rename\RenameSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip1.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Unzip.feature</DependentUpon>
@@ -310,7 +310,7 @@
       <DependentUpon>Length.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\LengthSteps.cs" />
-    <Compile Include="Toolbox\Recordset\Length\Length1.feature.cs">
+    <Compile Include="Toolbox\Recordset\Length\Length.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Length.feature</DependentUpon>
@@ -334,7 +334,7 @@
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
     <Compile Include="Toolbox\Resources\Database\DatabaseConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\Database\SqlServerConnector1.feature.cs">
+    <Compile Include="Toolbox\Resources\Database\SqlServerConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlServerConnector.feature</DependentUpon>
@@ -345,7 +345,7 @@
       <DependentUpon>MySqlConnector.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Resources\MySQL\MySqlConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector1.feature.cs">
+    <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PostgresSqlConnector.feature</DependentUpon>
@@ -491,7 +491,7 @@
       <DependentUpon>XPath.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\XPath\XPathSteps.cs" />
-    <Compile Include="Toolbox\WcfService\WcfServiceConnector1.feature.cs">
+    <Compile Include="Toolbox\WcfService\WcfServiceConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WcfServiceConnector.feature</DependentUpon>
@@ -572,21 +572,21 @@
     </None>
     <None Include="Toolbox\FileAndFolder\Read File\Read File.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Read File1.feature.cs</LastGenOutput>
+      <LastGenOutput>Read File.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Read Folder\Read Folder.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Read Folder1.feature.cs</LastGenOutput>
+      <LastGenOutput>Read Folder.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Rename\Rename.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Rename2.feature.cs</LastGenOutput>
+      <LastGenOutput>Rename.feature.cs</LastGenOutput>
     </None>
     <EmbeddedResource Include="Toolbox\FileAndFolder\Unzip\Test.zip" />
     <EmbeddedResource Include="Toolbox\FileAndFolder\Unzip\TestFile.zip" />
     <None Include="Toolbox\FileAndFolder\Unzip\Unzip.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Unzip1.feature.cs</LastGenOutput>
+      <LastGenOutput>Unzip.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Write File\Write File.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -638,7 +638,7 @@
     </None>
     <None Include="Toolbox\Recordset\Length\Length.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Length1.feature.cs</LastGenOutput>
+      <LastGenOutput>Length.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Sort\Sort.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -654,7 +654,7 @@
     </None>
     <None Include="Toolbox\Resources\Database\SqlServerConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SqlServerConnector1.feature.cs</LastGenOutput>
+      <LastGenOutput>SqlServerConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\MySQL\MySqlConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -662,7 +662,7 @@
     </None>
     <None Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PostgresSqlConnector1.feature.cs</LastGenOutput>
+      <LastGenOutput>PostgresSqlConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\ODBC\ODBCConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -762,7 +762,7 @@
     </None>
     <None Include="Toolbox\WcfService\WcfServiceConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WcfServiceConnector1.feature.cs</LastGenOutput>
+      <LastGenOutput>WcfServiceConnector.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

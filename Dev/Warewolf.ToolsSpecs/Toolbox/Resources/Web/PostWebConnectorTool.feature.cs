@@ -87,11 +87,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.Then("Post Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1545 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1552 = new TechTalk.SpecFlow.Table(new string[] {
                         "Header",
                         "Value"});
 #line 14
- testRunner.And("Post Header appears as", ((string)(null)), table1545, "And ");
+ testRunner.And("Post Header appears as", ((string)(null)), table1552, "And ");
 #line 16
  testRunner.And("Post Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
@@ -103,11 +103,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 20
  testRunner.And("Post Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1546 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1553 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
 #line 21
- testRunner.And("Post mapped outputs are", ((string)(null)), table1546, "And ");
+ testRunner.And("Post mapped outputs are", ((string)(null)), table1553, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -131,11 +131,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 29
  testRunner.Then("Post Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1547 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1554 = new TechTalk.SpecFlow.Table(new string[] {
                         "Header",
                         "Value"});
 #line 30
- testRunner.And("Post Header appears as", ((string)(null)), table1547, "And ");
+ testRunner.And("Post Header appears as", ((string)(null)), table1554, "And ");
 #line 32
  testRunner.And("Post Body is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
@@ -161,17 +161,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 43
  testRunner.Then("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1548 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1555 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table1548.AddRow(new string[] {
+            table1555.AddRow(new string[] {
                         "CountryID",
                         "[[CountryID]]"});
-            table1548.AddRow(new string[] {
+            table1555.AddRow(new string[] {
                         "Description",
                         "[[Description]]"});
 #line 44
- testRunner.And("Post mapped outputs are", ((string)(null)), table1548, "And ");
+ testRunner.And("Post mapped outputs are", ((string)(null)), table1555, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -207,29 +207,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 61
  testRunner.And("Post Url as \"http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1549 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1556 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table1549.AddRow(new string[] {
+            table1556.AddRow(new string[] {
                         "[[a]]",
                         "T"});
 #line 62
- testRunner.And("I add Post Header as", ((string)(null)), table1549, "And ");
+ testRunner.And("I add Post Header as", ((string)(null)), table1556, "And ");
 #line 65
  testRunner.When("I click Post Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 66
  testRunner.Then("Post the Generate Outputs window is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1550 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1557 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
-            table1550.AddRow(new string[] {
+            table1557.AddRow(new string[] {
                         "[[a]]"});
-            table1550.AddRow(new string[] {
+            table1557.AddRow(new string[] {
                         "[[extension]]"});
-            table1550.AddRow(new string[] {
+            table1557.AddRow(new string[] {
                         "[[prefix]]"});
 #line 67
- testRunner.And("Post Input variables are", ((string)(null)), table1550, "And ");
+ testRunner.And("Post Input variables are", ((string)(null)), table1557, "And ");
 #line 72
  testRunner.And("Post Test is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
@@ -241,17 +241,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 76
  testRunner.Then("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1551 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1558 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table1551.AddRow(new string[] {
+            table1558.AddRow(new string[] {
                         "CountryID",
                         "[[CountryID]]"});
-            table1551.AddRow(new string[] {
+            table1558.AddRow(new string[] {
                         "Description",
                         "[[Description]]"});
 #line 77
-    testRunner.And("Post mapped outputs are", ((string)(null)), table1551, "And ");
+    testRunner.And("Post mapped outputs are", ((string)(null)), table1558, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -319,17 +319,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 105
  testRunner.Then("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1552 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1559 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1552.AddRow(new string[] {
+            table1559.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
-            table1552.AddRow(new string[] {
+            table1559.AddRow(new string[] {
                         "b",
                         "[[rec().b]]"});
 #line 106
- testRunner.And("Post mapped outputs are", ((string)(null)), table1552, "And ");
+ testRunner.And("Post mapped outputs are", ((string)(null)), table1559, "And ");
 #line 110
  testRunner.When("I Select \"Google Address Lookup\" as a Post web Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 111
@@ -379,14 +379,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 131
  testRunner.Then("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1553 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1560 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table1553.AddRow(new string[] {
+            table1560.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
 #line 132
- testRunner.And("Post mapped outputs are", ((string)(null)), table1553, "And ");
+ testRunner.And("Post mapped outputs are", ((string)(null)), table1560, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
