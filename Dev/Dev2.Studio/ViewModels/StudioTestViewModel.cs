@@ -42,7 +42,7 @@ namespace Dev2.ViewModels
                     NotifyOfPropertyChange(() => DisplayName);
                 }
             };
-            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel);
         }
 
         public override bool HasVariables => false;
