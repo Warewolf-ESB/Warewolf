@@ -1483,7 +1483,6 @@ namespace Warewolf.UITests
             var testRunState = GetTestRunState(testInstance, currentTest);
             var selectedTestDeleteButton = GetSelectedTestDeleteButton(currentTest, testInstance);
             var beforeClick = testRunState.Checked;
-            testRunState.DrawHighlight();
 
             Mouse.Click(testRunState);
             WaitForControlVisible(testRunState);
@@ -1623,7 +1622,7 @@ namespace Warewolf.UITests
             WpfCheckBox public_DeployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox;
             WpfCheckBox public_DeployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox;
             #endregion
-            
+
             public_AdministratorCheckBox.Checked = false;
             Assert.IsFalse(public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Administrator.");
             Assert.IsTrue(public_ViewCheckBox.Checked, "Public View checkbox is unchecked after unChecking Administrator.");
@@ -1647,8 +1646,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(resource_DeleteButton.Enabled, "Resource Delete button is disabled");
 
         }
-        
-       
 
         [When(@"I Check Public Contribute")]
         public void Check_Public_Contribute()
@@ -1702,7 +1699,6 @@ namespace Warewolf.UITests
         {
             var currentTest = GetCurrentTest(testInstance);
             var selectedTestDeleteButton = GetSelectedTestDeleteButton(currentTest, testInstance);
-            selectedTestDeleteButton.DrawHighlight();
             Mouse.Click(selectedTestDeleteButton);
             Assert.IsTrue(MessageBoxWindow.Exists);
         }
@@ -1915,7 +1911,7 @@ namespace Warewolf.UITests
             return property;
         }
 
-        
+
         public void Select_Service_From_Service_Picker(string serviceName, bool inSubFolder = false)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = serviceName;
@@ -2583,7 +2579,7 @@ namespace Warewolf.UITests
         }
 
         public void Click_DebugInput_Debug_Button_For_UnpinnedWindow()
-        {            
+        {
             #region Variable Declarations
             WpfButton debugF6Button = this.MainStudioWindow.DebugInputDialog.DebugF6Button;
             WpfCustom debugOutput = this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput;
@@ -2635,7 +2631,7 @@ namespace Warewolf.UITests
         }
 
         public void Remove_Assign_Row_1_With_Context_Menu_On_Unpinned_Tab()
-        {            
+        {
             this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.DrawHighlight();
             Mouse.Click(this.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.RowNumberCell.Text, MouseButtons.Right, ModifierKeys.None, new Point(5, 5));
             StartNodePopupWindow.DesignSurfaceMenu.DeleteRowMenuItem.DrawHighlight();
@@ -2664,7 +2660,7 @@ namespace Warewolf.UITests
             }
         }
 
-        
+
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1 on unpinned tab")]
         public void Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab(string VariableText, string ValueText, int RowNumber)
         {
@@ -2705,7 +2701,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Assign_QviLarge_View()
         {
             #region Variable Declarations
-                        
+
             var qviVariableListBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.QviVariableListBoxEdit;
             var qviSplitOnCharacterEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.QviSplitOnCharacterEdit;
             var prefixEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.PrefixEdit;
@@ -3111,7 +3107,7 @@ namespace Warewolf.UITests
 
             fileOrFolder.Text = resourcesFolder;
             results.Text = "[[results]]";
-        }   
+        }
         public void Enter_Text_Into_Write_Tool()
         {
             var file = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests\Test File.txt";
@@ -3125,7 +3121,7 @@ namespace Warewolf.UITests
             contents.Text = "Some Content";
             overwrite.Selected = true;
             results.Text = "[[results]]";
-        }     
+        }
         public void Enter_Text_Into_Move_Tool()
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests_Copy";
@@ -3259,7 +3255,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(switchTool, new Point(13, 17));
             Mouse.StopDragging(forEach);
         }
-        
+
         public void Drag_Toolbox_Decision_Onto_Foreach_LargeTool()
         {
             #region Variable Declarations
@@ -3267,9 +3263,9 @@ namespace Warewolf.UITests
             WpfListItem decision = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision;
             WpfCustom dropActivityHereCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHereCustom;
             #endregion
-            
+
             searchTextBox.Text = "Decision";
-            
+
             dropActivityHereCustom.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(decision, new Point(13, 17));
             Mouse.StopDragging(dropActivityHereCustom);
@@ -3316,7 +3312,7 @@ namespace Warewolf.UITests
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             Mouse.StartDragging(copyFile, new Point(2, 10));
             Mouse.StopDragging(flowchart, new Point(307, 126));
-            
+
             Assert.IsTrue(sharepointTool.Exists, "Sharepoint tool does not exist on the Design Surface");
         }
         [When(@"I Click UserButton On Database Source")]
@@ -3369,9 +3365,9 @@ namespace Warewolf.UITests
             WpfListItem assignObject = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject;
             WpfCustom dropActivityHereCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHereCustom;
             #endregion
-                    
+
             searchTextBox.Text = this.Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams.SearchTextBoxText;
-            
+
             dropActivityHereCustom.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(assignObject, new Point(13, 17));
             Mouse.StopDragging(dropActivityHereCustom);
@@ -3384,14 +3380,14 @@ namespace Warewolf.UITests
             WpfListItem assignObject = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject;
             WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity;
             #endregion
-            
+
             searchTextBox.Text = this.Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams.SearchTextBoxText;
 
             sequence.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(assignObject, new Point(13, 17));
             Mouse.StopDragging(sequence);
         }
-        
+
         public void Drag_Toolbox_AssignObject_Onto_Sequence_SmallTool()
         {
             #region Variable Declarations
@@ -3399,14 +3395,14 @@ namespace Warewolf.UITests
             WpfListItem assignObject = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject;
             WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
             #endregion
-            
+
             searchTextBox.Text = this.Drag_Toolbox_AssignObject_Onto_Sequence_ToolParams.SearchTextBoxText;
-            
+
             sequence.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(assignObject, new Point(13, 17));
             Mouse.StopDragging(sequence);
         }
-        
+
         public void Drag_Toolbox_Decision_Onto_Sequence_SmallTool()
         {
             #region Variable Declarations
@@ -3421,7 +3417,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(decision, new Point(13, 17));
             Mouse.StopDragging(sequence);
         }
-               
+
         public void Drag_Toolbox_Switch_Onto_Sequence_SmallTool()
         {
             #region Variable Declarations
@@ -3431,12 +3427,12 @@ namespace Warewolf.UITests
             #endregion
 
             searchTextBox.Text = "Switch";
-        
+
             sequence.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(switchTool, new Point(13, 17));
             Mouse.StopDragging(sequence);
         }
-      
+
         public void Drag_Toolbox_Switch_Onto_Sequence_LargeTool()
         {
             #region Variable Declarations
@@ -3446,12 +3442,12 @@ namespace Warewolf.UITests
             #endregion
 
             searchTextBox.Text = "Switch";
-      
+
             sequence.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(switchTool, new Point(13, 17));
             Mouse.StopDragging(sequence);
         }
-     
+
         public void Drag_Toolbox_Decision_Onto_Sequence_LargeTool()
         {
             #region Variable Declarations
@@ -3461,7 +3457,7 @@ namespace Warewolf.UITests
             #endregion
 
             searchTextBox.Text = "Decision";
-            
+
             sequence.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(decision, new Point(13, 17));
             Mouse.StopDragging(sequence);
@@ -3608,6 +3604,45 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow, "{ALT}{TAB}");
             Playback.Wait(100);
         }
+
+        /// <summary>
+        /// Show_Explorer_First_Item_Tests_With_Context_Menu - Use 'Show_Explorer_First_Item_Tests_With_Context_MenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Show_Explorer_First_Item_Tests_With_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
+            WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+
+            // Verify that the 'Exists' property of 'Tests' menu item equals 'True'
+            Assert.AreEqual(this.Show_Explorer_First_Item_Tests_With_Context_MenuParams.TestsExists, tests.Exists, "View tests does not exist in explorer context menu.");
+
+            // Click 'Tests' menu item
+            Mouse.Click(tests, new Point(30, 11));
+
+            // Verify that the 'Exists' property of 'Create a new test' button equals 'True'
+            Assert.AreEqual(this.Show_Explorer_First_Item_Tests_With_Context_MenuParams.CreateTestButtonExists, createTestButton.Exists, "Create new test button does not exist on tests tab after openning it with the exp" +
+                    "lorer context menu.");
+        }
+
+        public virtual Show_Explorer_First_Item_Tests_With_Context_MenuParams Show_Explorer_First_Item_Tests_With_Context_MenuParams
+        {
+            get
+            {
+                if ((this.mShow_Explorer_First_Item_Tests_With_Context_MenuParams == null))
+                {
+                    this.mShow_Explorer_First_Item_Tests_With_Context_MenuParams = new Show_Explorer_First_Item_Tests_With_Context_MenuParams();
+                }
+                return this.mShow_Explorer_First_Item_Tests_With_Context_MenuParams;
+            }
+        }
+
+        private Show_Explorer_First_Item_Tests_With_Context_MenuParams mShow_Explorer_First_Item_Tests_With_Context_MenuParams;
     }
     /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_AssignObject_Onto_Sequence_Tool'
@@ -3687,4 +3722,23 @@ namespace Warewolf.UITests
         #endregion
     }
 
+    /// <summary>
+    /// Parameters to be passed into 'Show_Explorer_First_Item_Tests_With_Context_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Show_Explorer_First_Item_Tests_With_Context_MenuParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Tests' menu item equals 'True'
+        /// </summary>
+        public bool TestsExists = true;
+
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Create a new test' button equals 'True'
+        /// </summary>
+        public bool CreateTestButtonExists = true;
+        #endregion
+    }
 }
