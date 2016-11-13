@@ -6498,30 +6498,13 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom dotNetDll = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView;
-            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton;
-            WpfTable inputsTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.InputsTable;
             #endregion
 
             // Double-Click 'DsfDotNetDllActivity' custom control
             Mouse.DoubleClick(dotNetDll, new Point(238, 16));
 
-            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
-            Assert.AreEqual(this.Open_DotNet_DLL_Connector_Tool_Large_ViewParams.LargeViewExists, largeView.Exists, "DotNet DLL tool large view does not exist on the design surface");
-
-            // Verify that the 'Exists' property of 'NamespaceComboBox' combo box equals 'True'
-            Assert.AreEqual(this.Open_DotNet_DLL_Connector_Tool_Large_ViewParams.ClassNameComboBoxExists, classNameComboBox.Exists, "DotNet DLL tool large view namespace combobox does not exist.");
-
-            // Verify that the 'Exists' property of 'ActionsComboBox' combo box equals 'True'
-            Assert.AreEqual(this.Open_DotNet_DLL_Connector_Tool_Large_ViewParams.ActionsComboBoxExists, actionsComboBox.Exists, "DotNet DLL tool large view action combobox does not exist.");
-
-            // Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
-            Assert.AreEqual(this.Open_DotNet_DLL_Connector_Tool_Large_ViewParams.GenerateOutputsButtonExists, generateOutputsButton.Exists, "DotNet DLL large view generate outputs button does not exist.");
-
-            // Verify that the 'Exists' property of 'LargeDataGrid' table equals 'True'
-            Assert.AreEqual(this.Open_DotNet_DLL_Connector_Tool_Large_ViewParams.InputsTableExists, inputsTable.Exists, "DotNet DLL tool large view inputs table does not exist.");
+            // Verify that the 'Exists' property of 'DsfDotNetDllActivity' custom control equals 'True'
+            Assert.AreEqual(this.Open_DotNet_DLL_Connector_Tool_Large_ViewParams.DotNetDllExists, dotNetDll.Exists, "DotNet DLL tool does not exist on the design surface");
         }
         
         /// <summary>
@@ -19458,29 +19441,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'DsfDotNetDllActivity' custom control equals 'True'
         /// </summary>
-        public bool LargeViewExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'NamespaceComboBox' combo box equals 'True'
-        /// </summary>
-        public bool ClassNameComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ActionsComboBox' combo box equals 'True'
-        /// </summary>
-        public bool ActionsComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
-        /// </summary>
-        public bool GenerateOutputsButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'LargeDataGrid' table equals 'True'
-        /// </summary>
-        public bool InputsTableExists = true;
+        public bool DotNetDllExists = true;
         #endregion
     }
     

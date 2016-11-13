@@ -195,13 +195,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I Deploy \"DeployViewOnly\" From Deploy View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
  testRunner.And("I Try Click Message Box OK", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
- testRunner.And("I Select RemoteConnectionIntegrationConnected From Deploy Tab Source Server Combo" +
-                    "box", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
- testRunner.And("I Select LocalhostConnected From Deploy Tab Destination Server Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
- testRunner.And("I Deploy \"DeployViewOnly\" From Deploy View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
