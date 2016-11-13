@@ -52,10 +52,10 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
-            var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
+            var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.ToString(), "Failure: Source has been deleted.");
+            Assert.AreEqual(result[0], "Failure: Source has been deleted.");
         }
 
         [TestMethod]
@@ -75,10 +75,10 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
-            var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
+            var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.ToString(), "Failure: Queue Name is required.");
+            Assert.AreEqual(result[0], "Failure: Queue Name is required.");
         }
 
         [TestMethod]
@@ -97,9 +97,9 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var p = new PrivateObject(dsfConsumeRabbitMQActivity);
             p.SetProperty("ResourceCatalog", resourceCatalog.Object);
             //------------Execute Test---------------------------
-            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } });
+            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } }) as List<string>;
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.ToString(), "Failure: Queue Name is required.");
+            Assert.AreEqual(result[0], "Failure: Queue Name is required.");
         }
 
         [TestMethod]
@@ -242,7 +242,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             dsfConsumeRabbitMQActivity.Prefetch = "2";
 
             dsfConsumeRabbitMQActivity.Response = "[[response]]";
-            dsfConsumeRabbitMQActivity._response = "Message";
+            dsfConsumeRabbitMQActivity._messages = new List<string>{ "Message"};
 
             var debugInputs = dsfConsumeRabbitMQActivity.GetDebugInputs(dataList, It.IsAny<int>());
             var debugOutputs = dsfConsumeRabbitMQActivity.GetDebugOutputs(dataList, It.IsAny<int>());
