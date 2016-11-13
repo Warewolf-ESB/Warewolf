@@ -120,7 +120,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         #endregion Overrides of DsfBaseActivity
 
         //All units used here has been unit tested seperately
-        protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
+        protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             var writeMode = GetWriteMode();
             DropboxSingleExecutor = new DropBoxUpload(writeMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
@@ -129,7 +129,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             if (dropboxSuccessResult != null)
             {
                 FileMetadata = dropboxSuccessResult.GerFileMetadata();
-                return GlobalConstants.DropBoxSucces;
+                return new List<string> { GlobalConstants.DropBoxSuccess };
             }
             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
             if (dropboxFailureResult != null)

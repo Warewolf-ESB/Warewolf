@@ -147,10 +147,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Inputs("My Input 2")]
         public string Input2 { get; set; }
 
-        protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
+        protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             var result = evaluatedValues["Input1"] + " - " + evaluatedValues["Input2"];
-            return result;
+            return new List<string> { result };
         }
     }
     // ReSharper restore InconsistentNaming
