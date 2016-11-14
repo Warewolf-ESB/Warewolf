@@ -1334,7 +1334,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canExecute;
+                return _canExecute && !IsFolder && !IsServer;
             }
             set
             {
@@ -1364,7 +1364,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canView && !IsResourceVersion;
+                return _canView && !IsResourceVersion && !IsFolder && !IsServer;
             }
             set
             {
@@ -1538,10 +1538,10 @@ namespace Warewolf.Studio.ViewModels
                 ShowErrorMessage(ex.Message, Resources.Languages.Core.ExplorerMoveFailedHeader);
                 return false;
             }
-            finally
-            {
-                Server.UpdateRepository.FireItemSaved(true);
-            }
+            //finally
+            //{
+            //    Server.UpdateRepository.FireItemSaved(true);
+            //}
             return true;
         }
 
