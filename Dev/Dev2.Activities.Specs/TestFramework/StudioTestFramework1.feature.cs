@@ -2733,6 +2733,69 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Loop Constructs - Select and Apply Debug Run Selected Test passed with create Exa" +
+            "mple Data teststep Passes")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void LoopConstructs_SelectAndApplyDebugRunSelectedTestPassedWithCreateExampleDataTeststepPasses()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Loop Constructs - Select and Apply Debug Run Selected Test passed with create Exa" +
+                    "mple Data teststep Passes", ((string[])(null)));
+#line 955
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 956
+ testRunner.Given("the test builder is open with \"Loop Constructs - Select and Apply - For Each\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 957
+ testRunner.And("Tab Header is \"Loop Constructs - Select and Apply - For Each - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 958
+ testRunner.Then("there are 0 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 959
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 960
+ testRunner.Then("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 961
+    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 962
+ testRunner.And("I Add \"Assign (1)\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table104 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Condition",
+                        "Value"});
+            table104.AddRow(new string[] {
+                        "[[PetsName]]",
+                        "=",
+                        "The Guv"});
+#line 963
+ testRunner.And("I add StepOutputs as", ((string)(null)), table104, "And ");
+#line 966
+ testRunner.And("I Add \"Select and apply\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Condition",
+                        "Value"});
+            table105.AddRow(new string[] {
+                        "[[@Pet.Name]]",
+                        "=",
+                        "The Guv"});
+#line 967
+ testRunner.And("I add StepOutputs as", ((string)(null)), table105, "And ");
+#line 970
+ testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 971
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 972
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 973
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
