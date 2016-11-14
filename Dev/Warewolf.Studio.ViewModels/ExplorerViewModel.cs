@@ -263,18 +263,25 @@ namespace Warewolf.Studio.ViewModels
 
         public void SelectItem(Guid id)
         {
-            foreach (var environmentViewModel in Environments)
+            if (id != Guid.Empty)
             {
-                environmentViewModel.SelectItem(id, a => SelectedItem = a);
-                environmentViewModel.SelectAction = a => SelectedItem = a;
+
+                foreach (var environmentViewModel in Environments)
+                {
+                    environmentViewModel.SelectItem(id, a => SelectedItem = a);
+                    environmentViewModel.SelectAction = a => SelectedItem = a;
+                }
             }
         }
         public void SelectItem(string path)
         {
-            foreach (var environmentViewModel in Environments)
+            if (!string.IsNullOrEmpty(path))
             {
-                environmentViewModel.SelectItem(path, a => SelectedItem = a);
-                environmentViewModel.SelectAction = a => SelectedItem = a;
+                foreach (var environmentViewModel in Environments)
+                {
+                    environmentViewModel.SelectItem(path, a => SelectedItem = a);
+                    environmentViewModel.SelectAction = a => SelectedItem = a;
+                }
             }
         }
         public IList<IExplorerItemViewModel> FindItems()

@@ -74,7 +74,7 @@
     <Compile Include="Tools\Storage Dropbox\Delete.cs" />
     <Compile Include="Tools\Storage Dropbox\List Contents.cs" />
     <Compile Include="Tools\Storage Dropbox\Upload.cs" />
-    <Compile Include="Tools\StudioTooling.cs" />
+    <Compile Include="Studio\StudioTooling.cs" />
     <Compile Include="Tools\Recordset\CountTest.cs" />
     <Compile Include="Tools\Recordset\DeleteRecordTest.cs" />
     <Compile Include="Tools\Recordset\LengthTest.cs" />

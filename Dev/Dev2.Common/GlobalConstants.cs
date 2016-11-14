@@ -600,7 +600,7 @@ WHERE   n.nspname = 'public'
 
         public static string DropboxPathNotFoundException = "Dropbox location cannot be found";
         public static string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";
-        public static string DropBoxSucces = "Success";
+        public static string DropBoxSuccess = "Success";
         public static string DropBoxFailure = "Failed";
         public static string GlobalCounterName = "All";
         public static string Warewolf = "Warewolf";

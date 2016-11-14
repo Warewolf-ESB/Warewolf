@@ -1,0 +1,8 @@
+<Source ID="78899836-7c8f-4a8e-8c0a-b45eba3a522e" Name="testRabbitMQSource" ResourceType="RabbitMQSource" IsValid="false" ConnectionString="HostName=rsaklfsvrgendev;Port=5672;UserName=test;Password=test;VirtualHost=/" Type="RabbitMQSource" ServerVersion="0.0.6159.17243" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>testRabbitMQSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>RabbitMQSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-11T11:48:00.97348+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="78899836-7c8f-4a8e-8c0a-b45eba3a522e" VersionId="9b50af7a-7973-40b0-b0da-f72c1d22c846" />
+</Source>
