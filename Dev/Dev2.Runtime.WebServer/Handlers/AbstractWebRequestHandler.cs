@@ -38,7 +38,6 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 // ReSharper disable MemberCanBeProtected.Global
