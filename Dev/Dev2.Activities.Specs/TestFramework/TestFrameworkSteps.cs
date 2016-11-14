@@ -1633,6 +1633,25 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Then(@"I add StepOutputs as")]
+        public void ThenIAddStepOutputsAs(Table table)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.Single();
+            serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
+            foreach(var tableRow in table.Rows)
+            {
+                var varName = tableRow["Variable Name"];
+                var condition = tableRow["Condition"];
+                var value = tableRow["Value"];
+                serviceTestStep.StepOutputs.Add(new ServiceTestOutput(varName, value,"","")
+                {
+                    AssertOp = condition
+                });
+            }
+        }
+
+
 
 
         [Then(@"I add Assert steps as")]

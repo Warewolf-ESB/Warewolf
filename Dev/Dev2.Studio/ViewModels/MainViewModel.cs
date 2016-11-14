@@ -721,7 +721,8 @@ namespace Dev2.Studio.ViewModels
             var environmentModel = EnvironmentRepository.Get(ActiveEnvironment.ID);
             if (environmentModel != null)
             {
-                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+                var mvm = Application.Current?.MainWindow?.DataContext as MainViewModel;
+                var contextualResourceModel = mvm?.ActiveItem != null ? mvm.ActiveItem.ContextualResourceModel : environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
 
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer);
                 if (contextualResourceModel != null)

@@ -53,6 +53,7 @@ namespace Dev2.Data.Decisions.Operations
 
         public static string GetFailureMessage(enDecisionType decisionType)
         {
+            // ReSharper disable once RedundantAssignment
             string errorMsg = string.Empty;
             switch (decisionType)
             {
