@@ -179,6 +179,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // ReSharper restore FieldCanBeMadeReadOnly.Local
         readonly object _forEachExecutionObject = new object();
         private string _childUniqueID;
+        private Guid _originalUniqueID;
 
         #endregion Properties
 
@@ -214,7 +215,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateDebugParentID(IDSFDataObject dataObject)
         {
-            WorkSurfaceMappingId = Guid.Parse(UniqueID);
+            WorkSurfaceMappingId = Guid.Parse(UniqueID);           
             UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
         }
 
@@ -835,8 +836,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
                 exePayload.InnerActivity = innerA;
-
-                while(itr.HasMore())
+                var isNestedForEach = dataObject.ForEachNestingLevel > 0;
+                if (!isNestedForEach || _originalUniqueID == Guid.Empty)
+                {
+                    _originalUniqueID = WorkSurfaceMappingId;
+                }
+                while (itr.HasMore())
                 {
                     operationalData = exePayload;
                     int idx = exePayload.IndexIterator.FetchNextIndex();
@@ -853,14 +858,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(errors.HasErrors())
                 {
                     allErrors.MergeErrors(errors);
-                }
-
-                if(dataObject.IsDebugMode())
-                {                    
-                    _debugOutputs = new List<DebugItem>();
-                    _debugOutputs = new List<DebugItem>();
-                    DispatchDebugState(dataObject, StateType.Duration, 0);
-                }
+                }                
             }
             catch(Exception e)
             {
@@ -876,9 +874,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         RestoreHandlerFn();
                     }
                 }
+                var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
                 if (dataObject.IsServiceTestExecution)
                 {
-                    var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == WorkSurfaceMappingId);
                     var serviceTestSteps = serviceTestStep?.Children;
                     UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList());
                     if (serviceTestStep != null)
@@ -886,13 +884,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var testRunResult = new TestRunResult();
                         GetFinalTestRunResult(serviceTestStep, false, testRunResult);
                         serviceTestStep.Result = testRunResult;
+                        
                     }
                 }
                 dataObject.ParentInstanceID = _previousParentId;
                 dataObject.ForEachNestingLevel--;
                 dataObject.IsDebugNested = false;
+                if (dataObject.IsDebugMode())
+                {
+                    if (dataObject.IsServiceTestExecution && serviceTestStep!=null)
+                    {
+                        var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                        debugItems = debugItems.Where(state => state.WorkSurfaceMappingId == serviceTestStep.UniqueId).ToList();
+                        var debugStates = debugItems.LastOrDefault();
+
+                        var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(serviceTestStep.Result.Message, serviceTestStep.Result.RunTestResult == RunResult.TestFailed);
+                        DebugItem itemToAdd = new DebugItem();
+                        itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
+                        debugStates?.AssertResultList?.Add(itemToAdd);
+                    }
+                    DispatchDebugState(dataObject, StateType.Duration, 0);
+                }
                 // Handle Errors
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     dataObject.ParentInstanceID = _previousParentId;
                     dataObject.ForEachNestingLevel--;
@@ -951,39 +965,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
             {
-                if (stepToBeAsserted.Result != null)
+                if(stepToBeAsserted.Result != null)
                 {
                     stepToBeAsserted.Result.RunTestResult = RunResult.TestInvalid;
                 }
-                else
-                {
-                    var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
-                    debugItems = debugItems.Where(state => state.ID == stepToBeAsserted.UniqueId).ToList();
-                    var debugStates = debugItems?.LastOrDefault();
-                    var factory = Dev2DecisionFactory.Instance();
-                    var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
-                    var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-                    var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
-                    var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
+                var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                debugItems = debugItems.Where(state => state.ID == stepToBeAsserted.UniqueId).ToList();
+                var debugStates = debugItems.LastOrDefault();
+                var factory = Dev2DecisionFactory.Instance();
+                var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
+                var testRunResults = res as IList<TestRunResult> ?? res.ToList();
+                var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
+                var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
 
-                    var finalResult = new TestRunResult();
-                    if (testPassed)
-                    {
-                        finalResult.RunTestResult = RunResult.TestPassed;
-                    }
-                    if (testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
-                    {
-                        finalResult.RunTestResult = RunResult.TestFailed;
-                        finalResult.Message = serviceTestFailureMessage;
-                    }
-                    if (testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
-                    {
-                        finalResult.RunTestResult = RunResult.TestInvalid;
-                        finalResult.Message = serviceTestFailureMessage;
-                    }
-                    stepToBeAsserted.Result = finalResult;
-                    dataObject.StopExecution = !testPassed;
+                var finalResult = new TestRunResult();
+                if(testPassed)
+                {
+                    finalResult.RunTestResult = RunResult.TestPassed;
                 }
+                if(testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
+                {
+                    finalResult.RunTestResult = RunResult.TestFailed;
+                    finalResult.Message = serviceTestFailureMessage;
+                }
+                if(testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
+                {
+                    finalResult.RunTestResult = RunResult.TestInvalid;
+                    finalResult.Message = serviceTestFailureMessage;
+                }               
+                stepToBeAsserted.Result = finalResult;
+                dataObject.StopExecution = !testPassed;
             }
         }
 
