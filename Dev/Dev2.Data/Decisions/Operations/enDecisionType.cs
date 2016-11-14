@@ -174,8 +174,6 @@ namespace Dev2.Data.Decisions.Operations
                 case enDecisionType.IsNotBase64:
                     errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotBase64;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(decisionType), decisionType, null);
             }
             return errorMsg;
         }
