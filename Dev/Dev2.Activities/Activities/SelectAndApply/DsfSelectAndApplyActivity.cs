@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.Util;
 using Dev2.DataList;
+using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -72,10 +73,6 @@ namespace Dev2.Activities.SelectAndApply
         {
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
             var isNestedForEach = dataObject.ForEachNestingLevel > 0;
-            if (!isNestedForEach || _originalUniqueID == Guid.Empty)
-            {
-                _originalUniqueID = WorkSurfaceMappingId;
-            }
             UniqueID = isNestedForEach ? Guid.NewGuid().ToString() : UniqueID;
         }
 
@@ -179,6 +176,11 @@ namespace Dev2.Activities.SelectAndApply
                 {
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+                var isNestedForEach = dataObject.ForEachNestingLevel > 0;
+                if (!isNestedForEach || _originalUniqueID == Guid.Empty)
+                {
+                    _originalUniqueID = WorkSurfaceMappingId;
+                }
                 foreach (var exp in expressions)
                 {
                     //Assign the warewolfAtom to Alias using new environment
@@ -234,15 +236,52 @@ namespace Dev2.Activities.SelectAndApply
                             }
                         }
                     }
-                    var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
-                    var serviceTestSteps = serviceTestStep?.Children;
-                    UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList());
+                    if (dataObject.IsServiceTestExecution)
+                    {
+                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
+                        var serviceTestSteps = serviceTestStep?.Children;
+                        UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList());
+                        if (serviceTestStep != null)
+                        {
+                            var testRunResult = new TestRunResult();
+                            GetFinalTestRunResult(serviceTestStep, testRunResult);
+                            serviceTestStep.Result = testRunResult;
+
+                            var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                            debugItems = debugItems.Where(state => state.WorkSurfaceMappingId == serviceTestStep.UniqueId).ToList();
+                            var debugStates = debugItems.LastOrDefault();
+
+                            var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(serviceTestStep.Result.Message, serviceTestStep.Result.RunTestResult == RunResult.TestFailed);
+                            DebugItem itemToAdd = new DebugItem();
+                            itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
+                            debugStates?.AssertResultList?.Add(itemToAdd);
+
+                        }
+                    }
                     DispatchDebugState(dataObject, StateType.End, update, startTime, DateTime.Now);
                 }
                 OnCompleted(dataObject);
             }
         }
 
+        private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
+        {
+            var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Result?.RunTestResult != RunResult.TestPassed).ToList();
+            if (nonPassingSteps.Count == 0)
+            {
+                testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                testRunResult.RunTestResult = RunResult.TestPassed;
+            }
+            else
+            {
+                var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
+                testRunResult.Message = failMessage;
+                testRunResult.RunTestResult = RunResult.TestFailed;
+            }
+
+
+
+        }
         void OnCompleted(IDSFDataObject dataObject)
         {
             dataObject.IsDebugNested = false;
