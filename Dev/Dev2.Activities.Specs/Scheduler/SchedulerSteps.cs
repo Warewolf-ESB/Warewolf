@@ -73,12 +73,6 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)""")]
         public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password)
         {
-            if (userName.Contains('\\'))
-            {
-                var strings = userName.Split('\\');
-                userName = strings.Last();
-
-            }
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", password);
         }

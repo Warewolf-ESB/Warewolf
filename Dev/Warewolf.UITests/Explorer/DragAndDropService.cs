@@ -8,6 +8,7 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DragAndDropService
     {
+        const string DeleteResourcesWithSameName = "DeleteResourcesWithSameNameResource";
         [TestMethod]
         [TestCategory("Explorer")]
         public void DragAndDropServiceFromExplorerUITest()
@@ -56,7 +57,7 @@ namespace Warewolf.UITests
         {
             UIMap.Filter_Explorer("Acceptance Tests");
             UIMap.Create_Resource_In_Folder1();
-            UIMap.Save_With_Ribbon_Button_And_Dialog("Hello World");
+            UIMap.Save_With_Ribbon_Button_And_Dialog(DeleteResourcesWithSameName);
             UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Delete_Nested_Hello_World();
