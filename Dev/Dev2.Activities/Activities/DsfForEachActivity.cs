@@ -882,7 +882,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (serviceTestStep != null)
                     {
                         var testRunResult = new TestRunResult();
-                        GetFinalTestRunResult(serviceTestStep, false, testRunResult);
+                        GetFinalTestRunResult(serviceTestStep, testRunResult);
                         serviceTestStep.Result = testRunResult;
                         
                     }
@@ -926,27 +926,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, bool result, TestRunResult testRunResult)
+        private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
         {
-            foreach (var testStep in serviceTestStep.Children)
-            {
-                result = testStep.Result != null && testStep.Result.RunTestResult == RunResult.TestPassed;
-                if (!result)
-                {
-                    break;
-                }
-            }
-
-            if (result)
+            var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Result?.RunTestResult != RunResult.TestPassed).ToList();
+            if (nonPassingSteps.Count == 0)
             {
                 testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_PassedResult;
                 testRunResult.RunTestResult = RunResult.TestPassed;
             }
             else
             {
-                testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_FailureResult;
+                var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
+                testRunResult.Message = failMessage;
                 testRunResult.RunTestResult = RunResult.TestFailed;
             }
+
+
+            
         }
 
         private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
