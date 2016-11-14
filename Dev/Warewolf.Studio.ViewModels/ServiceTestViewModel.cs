@@ -46,6 +46,7 @@ using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.ViewModels
 {
+    
     public class ServiceTestViewModel : BindableBase, IServiceTestViewModel
     {
         private readonly IExternalProcessExecutor _processExecutor;
