@@ -3630,6 +3630,20 @@ namespace Warewolf.UITests
         }
 
         private Show_Explorer_First_Item_Tests_With_Context_MenuParams mShow_Explorer_First_Item_Tests_With_Context_MenuParams;
+
+        /// <summary>
+        /// Debug_Using_Play_Icon
+        /// </summary>
+        public void Debug_Using_Play_Icon()
+        {
+            #region Variable Declarations
+            WpfButton executeIcon = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon;
+            #endregion
+
+            executeIcon.DrawHighlight();
+            // Click 'ExecuteButton' button
+            Mouse.DoubleClick(executeIcon);
+        }
     }
     /// <summary>
     /// Parameters to be passed into 'Drag_Toolbox_AssignObject_Onto_Sequence_Tool'
