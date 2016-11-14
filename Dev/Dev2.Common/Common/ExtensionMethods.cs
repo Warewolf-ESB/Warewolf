@@ -450,17 +450,17 @@ namespace Dev2.Common.Common
             XElement child = elem.Element(name);
             return child == null ? string.Empty : child.ToString();
         }
-
+        /// <summary>
+        /// https://referencesource.microsoft.com/#System/compmod/system/collections/objectmodel/observablecollection.cs,cfaa9abd8b214ecb
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <returns></returns>
         public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
         {
             if (enumerable == null)
                 return new ObservableCollection<T>();
-
-            var col = new ObservableCollection<T>();
-            foreach (T cur in enumerable)
-            {
-                col.Add(cur);
-            }
+            var col = new ObservableCollection<T>(enumerable);
             return col;
         }
 

@@ -13,12 +13,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 
@@ -27,6 +29,22 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class DeleteResource : IEsbManagementEndpoint
     {
+        private readonly IResourceCatalog _resourceCatalog;
+        private readonly ITestCatalog _testCatalog;
+
+        public DeleteResource(IResourceCatalog resourceCatalog, ITestCatalog testCatalog)
+        {
+            _resourceCatalog = resourceCatalog;
+            _testCatalog = testCatalog;
+        }
+
+        public DeleteResource()
+        {
+            
+        }
+
+        ITestCatalog MyTestCatalog => _testCatalog ?? TestCatalog.Instance;
+        IResourceCatalog MyResourceCatalog => _resourceCatalog ?? ResourceCatalog.Instance;
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             StringBuilder tmp;
@@ -54,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 string type = null;
-              
+
                 StringBuilder tmp;
                 values.TryGetValue("ResourceID", out tmp);
                 Guid resourceId = Guid.Empty;
@@ -74,15 +92,19 @@ namespace Dev2.Runtime.ESB.Management.Services
                     type = tmp.ToString();
                 }
                 Dev2Logger.Info("Delete Resource Service. Resource:" + resourceId);
-                var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceId, type);
-                TestCatalog.Instance.DeleteAllTests(resourceId);
-                TestCatalog.Instance.Load();
+
+                var msg = MyResourceCatalog.DeleteResource(theWorkspace.ID, resourceId, type);
+                if (theWorkspace.ID == GlobalConstants.ServerWorkspaceID)
+                {
+                    MyTestCatalog.DeleteAllTests(resourceId);
+                    MyTestCatalog.Load();}
+                
                 var result = new ExecuteMessage { HasError = false };
                 result.SetMessage(msg.Message);
                 result.HasError = msg.Status != ExecStatus.Success;
                 return serializer.SerializeToBuilder(result);
             }
-            catch(ServiceNotAuthorizedException ex)
+            catch (ServiceNotAuthorizedException ex)
             {
                 var result = new ExecuteMessage { HasError = true };
                 result.SetMessage(ex.Message);
