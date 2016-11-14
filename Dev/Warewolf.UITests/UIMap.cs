@@ -3640,6 +3640,7 @@ namespace Warewolf.UITests
             WpfButton executeIcon = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon;
             #endregion
 
+            executeIcon.DrawHighlight();
             // Click 'ExecuteButton' button
             Mouse.DoubleClick(executeIcon);
         }
