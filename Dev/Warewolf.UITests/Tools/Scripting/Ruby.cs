@@ -6,9 +6,17 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class Ruby
     {
+
         [TestMethod]
+        [TestCategory("Tools")]
+        public void RubyScriptToolSmallViewUITest()
+        {
+            Assert.AreEqual(true, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ScriptIntellisenseCombobox.Exists, "Ruby script textbox does not exist after dragging on tool from the toolbox.");
+            Assert.AreEqual(true, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ResultIntellisenseCombobox.Exists, "Ruby result textbox does not exist after dragging on tool from the toolbox.");}
+
+    [TestMethod]
 		[TestCategory("Tools")]
-        public void RubyScriptToolUITest()
+        public void RubyScriptToolLargeViewUITest()
         {            
             UIMap.Open_Ruby_Large_View();
         }
