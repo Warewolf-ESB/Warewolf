@@ -90,6 +90,7 @@ namespace Dev2.Diagnostics.Debug
         ///     Gets or sets the parent ID.
         /// </summary>
         public Guid ParentID { get; set; }
+        public Guid SourceResourceID { get; set; }
 
         /// <summary>
         ///     Gets or sets the server ID.

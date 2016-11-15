@@ -254,6 +254,7 @@ namespace Dev2.DynamicServices
         public Guid WorkflowInstanceId { get; set; }
         public bool IsDebug { get; set; }
         public Guid WorkspaceID { get; set; }
+        public Guid SourceResourceID { get; set; }
         public Guid OriginalInstanceID { get; set; }
         public bool IsOnDemandSimulation { get; set; }
         public Guid ServerID { get; set; }
@@ -387,6 +388,7 @@ namespace Dev2.DynamicServices
             result.ExecutionToken = ExecutionToken;
             result.ForEachUpdateValue = ForEachUpdateValue;
             result.TestName = TestName;
+            result.SourceResourceID = SourceResourceID;
             result.IsServiceTestExecution = IsServiceTestExecution;
             if (ServiceTest != null)
             {

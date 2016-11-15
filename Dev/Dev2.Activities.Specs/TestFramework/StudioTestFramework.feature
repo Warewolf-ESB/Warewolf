@@ -975,7 +975,7 @@ Scenario: Loop Constructs - Select and Apply Debug Run Selected Test passed with
 	And I run the test
 	Then test result is Passed
 
-
+#Data
 Scenario: Test WF with Assign
 	Given I have a workflow "AssignTestWF"
 	And "AssignTestWF" contains an Assign "TestAssign" as
@@ -988,13 +988,36 @@ Scenario: Test WF with Assign
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestAssign" as TestStep
-	And I add StepOutputs as 
-	| Variable Name | Condition | Value |
-	| [[rec(1).a]]  | =         | yes   |
-	| [[rec(2).a]]  | =         | no    |
+	And I add new StepOutputs as 
+	| Variable Name | Condition | Value | 
+	| [[rec(1).a]]  | =         | yes   | 
+	| [[rec(2).a]]  | =         | no    | 
 	When I save
 	And I run the test
 	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
+
+Scenario: Test WF with Assign Object
+		Given I have a workflow "AssignObjectTestWF"
+		And "AssignObjectTestWF" contains an Assign Object "TestAssignObject" as 
+		 | variable            | value |
+		 | [[@Person.Name]]    | yes   |
+		 | [[@Person.Surname]] | no    |
+		 And I save workflow "AssignObjectTestWF"
+		 Then the test builder is open with "AssignObjectTestWF"
+		 And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "TestAssignObject" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name       | Condition | Value | 
+		| [[@Person.Name]]    | =         | yes   | 
+		| [[@Person.Surname]] | =         | no    | 
+			When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+
 	  
