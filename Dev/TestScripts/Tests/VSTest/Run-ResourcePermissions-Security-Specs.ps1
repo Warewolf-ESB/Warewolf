@@ -33,7 +33,9 @@ $TestSettingsFile = "$PSScriptRoot\ResourcePermissionsSecuritySpecs.testsettings
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"" + [guid]::NewGuid() + @"`"
+  id=`"
+"@ + [guid]::NewGuid() + @"
+`"
   name=`"ResourcePermissionsSecuritySpecs`"
   enableDefaultDataCollectors="false"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">

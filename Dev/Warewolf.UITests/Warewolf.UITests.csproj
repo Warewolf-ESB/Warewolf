@@ -74,7 +74,7 @@
     <Compile Include="Tools\Storage Dropbox\Delete.cs" />
     <Compile Include="Tools\Storage Dropbox\List Contents.cs" />
     <Compile Include="Tools\Storage Dropbox\Upload.cs" />
-    <Compile Include="Tools\StudioTooling.cs" />
+    <Compile Include="Studio\StudioTooling.cs" />
     <Compile Include="Tools\Recordset\CountTest.cs" />
     <Compile Include="Tools\Recordset\DeleteRecordTest.cs" />
     <Compile Include="Tools\Recordset\LengthTest.cs" />
@@ -165,7 +165,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="SpecFlow-Attribute-Map.ps1" />
     <None Include="UIMap.uitest">
       <SubType>Designer</SubType>
     </None>
@@ -204,7 +203,8 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file "$(ProjectDir)SpecFlow-Attribute-Map.ps1"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
