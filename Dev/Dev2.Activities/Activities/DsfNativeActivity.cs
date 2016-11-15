@@ -313,6 +313,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ClientID = dataObject.ClientID,
                     OriginatingResourceID = dataObject.ResourceID,
                     OriginalInstanceID = dataObject.OriginalInstanceID,
+                    SourceResourceID = dataObject.SourceResourceID,
                     Server = string.Empty,
                     Version = string.Empty,
                     SessionID = dataObject.DebugSessionID,
@@ -518,6 +519,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 _debugState.ClientID = dataObject.ClientID;
                 _debugState.OriginatingResourceID = dataObject.ResourceID;
+                _debugState.SourceResourceID = dataObject.SourceResourceID;
                 _debugDispatcher.Write(_debugState, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
 
                 if (stateType == StateType.After)
@@ -682,7 +684,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void RegularActivityAssertion(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        protected void RegularActivityAssertion(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
         {
             var factory = Dev2DecisionFactory.Instance();
             var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory));

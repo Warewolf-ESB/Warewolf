@@ -462,6 +462,7 @@ namespace Warewolf.UITests
         }
         [When(@"I Click Close Workflow Tab")]
         [Then(@"I Click Close Workflow Tab")]
+        [Given(@"I Click Close Workflow Tab")]
         public void ThenIClickCloseWorkflowTab()
         {
             Click_Close_Workflow_Tab_Button();
@@ -2005,6 +2006,46 @@ namespace Warewolf.UITests
             Click_Save_Ribbon_Button_With_No_Save_Dialog(2000);
         }
 
+        [Then(@"I click Run ""(.*)""th test expecting ""(.*)""")]
+        public void ThenIClickRunThTestExpecting(int instance, string result)
+        {
+            if (result == TestResultEnum.Pass.ToString())
+                Click_Run_Test_Button(TestResultEnum.Pass, instance);
+            else
+                Click_Run_Test_Button(instance: instance);
+        }
+
+        [Then(@"I Enter ""(.*)"" in the Output test step")]
+        public void ThenIEnterInTheOutputTestStep(string message)
+        {
+            EnterOutMessageValue_On_OutputMessage_TestStep(message);
+        }
+
+        /// <summary>
+        /// EnterOutMessageValue_On_OutputMessage_TestStep - Use 'EnterOutMessageValue_On_OutputMessage_TestStepParams' to pass parameters into this method.
+        /// </summary>
+        public void EnterOutMessageValue_On_OutputMessage_TestStep(string message)
+        {
+            #region Variable Declarations
+
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.Row1.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.Row1.AssertValueCell.DrawHighlight();
+            WpfEdit assertValue = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.Row1.AssertValueCell.AssertValue;
+
+            #endregion
+
+            assertValue.Text = message;
+        }
+        [Then(@"The Test step in now ""(.*)""")]
+        public void ThenTheTestStepInNow(string p0)
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Invalid.Exists);
+        }
+
         [When(@"I Click Save Ribbon Button With No Save Dialog")]
         public void Click_Save_Ribbon_Button_With_No_Save_Dialog(int WaitForSave = 2000)
         {
@@ -2405,6 +2446,162 @@ namespace Warewolf.UITests
         public void Click_Workflow_Testing_Tab_Create_New_Test_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton, new Point(158, 10));
+        }
+
+        [Given(@"I have Hello World workflow to test")]
+        [Then(@"I have Hello World workflow to test")]
+        [When(@"I have Hello World workflow to test")]
+        public void GivenIHaveHelloWorldWorkflowToTest()
+        {
+            Assert.IsTrue(MainStudioWindow.Exists);
+        }
+
+        [Then(@"I Open Explorer First Item Tests using Context Menu")]
+        [Given(@"I Open Explorer First Item Tests using Context Menu")]
+        [When(@"I Open Explorer First Item Tests using Context Menu")]
+        public void WhenIOpenExplorerFirstItemTestsUsingContextMenu()
+        {
+            Open_Explorer_First_Item_Tests_With_Context_Menu();
+        }
+
+        [Then(@"I click fsix")]
+        [When(@"I click fsix")]
+        [Given(@"I click fsix")]
+        public void ThenIClickFsix()
+        {
+            Press_F6();
+        }
+
+        [When(@"I Click The Create ""(.*)""th test Button")]
+        [Given(@"I Click The Create ""(.*)""th test Button")]
+        [Then(@"I Click The Create ""(.*)""th test Button")]
+        public void WhenIClickTheCreateThTestButton(int intance)
+        {
+            Click_Create_New_Tests(true, testInstance: intance);
+        }
+
+        [Then(@"I Double Click Explorer Localhost First Item")]
+        [Given(@"I Double Click Explorer Localhost First Item")]
+        [When(@"I Double Click Explorer Localhost First Item")]
+        public void ThenIDoubleClickExplorerLocalhostFirstItem()
+        {
+            DoubleClick_Explorer_Localhost_First_Item();
+        }
+
+
+        [Then(@"I Click Create Test From Debug")]
+        [Given(@"I Click Create Test From Debug")]
+        [When(@"I Click Create Test From Debug")]
+        public void ThenIClickCreateTestFromDebug()
+        {
+            Click_Create_Test_From_Debug();
+        }
+        public void Try_Click_Create_New_Tests()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton, new Point(158, 10));
+        }
+        /// <summary>
+        /// Click_Delete_On_AssignValue_TestStep
+        /// </summary>
+        public void Click_Delete_On_AssignValue_TestStep()
+        {
+            #region Variable Declarations
+            WpfButton deleteAssertButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.DeleteAssertButton;
+            #endregion
+
+            // Click '?' button
+            Mouse.Click(deleteAssertButton, new Point(5, 5));
+        }
+        /// <summary>
+        /// Click_MockRadioButton_On_AssignValue_TestStep - Use 'Click_MockRadioButton_On_AssignValue_TestStepParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_MockRadioButton_On_AssignValue_TestStep()
+        {
+            #region Variable Declarations
+            WpfRadioButton mockRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton;
+            WpfComboBox assertOperatorComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.SmallDataGridTable.Row1.AssertOperatorCell.AssertOperatorComboBox;
+            #endregion
+
+            // Click 'Mock' radio button
+            Mouse.Click(mockRadioButton, new Point(5, 5));
+
+            // Verify that the 'Enabled' property of 'UI_AssertOps_AutoID' combo box equals 'True'
+            Assert.IsTrue(assertOperatorComboBox.Enabled, "Operator combobox is enabled after selecting mock radio button");
+        }
+
+
+        /// <summary>
+        /// Click_MockRadioButton_On_Decision_TestStep - Use 'Click_MockRadioButton_On_Decision_TestStepParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_MockRadioButton_On_Decision_TestStep()
+        {
+            #region Variable Declarations
+            WpfRadioButton mockRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton;
+            WpfComboBox assertOperatorComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.AssertOperatorCell.AssertOperatorComboBox;
+            #endregion
+
+            // Click 'Mock' radio button
+            Mouse.Click(mockRadioButton, new Point(5, 5));
+
+            // Verify that the 'Enabled' property of 'UI_AssertOps_AutoID' combo box equals 'True'
+            Assert.IsTrue(assertOperatorComboBox.Enabled, "Operator combobox is still enabled");
+        }
+
+        /// <summary>
+        /// Click_Create_Test_From_Debug - Use 'Click_Create_Test_From_DebugParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Create_Test_From_Debug()
+        {
+            #region Variable Declarations
+            WpfButton createTestFromDebugButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton;
+            WpfTabPage testsTabPage = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage;
+            #endregion
+
+            // Click '' button
+            Mouse.Click(createTestFromDebugButton, new Point(5, 5));
+            WaitForControlVisible(testsTabPage);
+            // Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
+            Assert.IsTrue(testsTabPage.Exists, "Test tab does not exist after clicking Create Test from debug button");
+        }
+
+        [Then(@"Message box window appears")]
+        [When(@"Message box window appears")]
+        [Given(@"Message box window appears")]
+        public void ThenMessageBoxWindowAppears()
+        {
+            Assert.IsTrue(MessageBoxWindow.Exists);
+        }
+
+        [Then(@"Test tab is open")]
+        [Given(@"Test tab is open")]
+        [When(@"Test tab is open")]
+        public void ThenTestTabIsOpen()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists);
+        }
+
+        [Given(@"I Click Close Clean Workflow Tab")]
+        [When(@"I Click Close Clean Workflow Tab")]
+        [Then(@"I Click Close Clean Workflow Tab")]
+        public void ThenIClickCloseCleanWorkflowTab()
+        {
+            Click_Close_Workflow_Tab_Button();
+        }
+
+        [Then(@"I click Click_Close_Tests_Tab")]
+        [When(@"I click Click_Close_Tests_Tab")]
+        [Given(@"I click Click_Close_Tests_Tab")]
+        public void ThenIClickClick_Close_Tests_Tab()
+        {
+            Click_Close_Tests_Tab();
+        }
+
+        [Then(@"I click Message box OK")]
+        [When(@"I click Message box OK")]
+        [When(@"I click Message box OK")]
+        public void ThenIClickMessageBoxOK()
+        {
+            Click_MessageBox_OK();
         }
 
         [Given("The First Test Exists")]
@@ -2916,25 +3113,25 @@ namespace Warewolf.UITests
         {
             MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
         }
-        
+
         public void Enter_Person_Name_On_Assign_Object_tool()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.LargeView.DataGrid.Row1.FieldCell.FieldNameComboBox.TextEdit.Text = "[[@Person.Name]]";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.LargeView.DataGrid.Row1.FieldValueCell.FieldValueComboBox.TextEdit.Text = "Bob";
         }
-        
+
         public void Enter_Values_Into_Case_Conversion_Tool()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.SmallViewContentCustom.SmallDataGridTable.Row1.ValueCell.ValueComboBox.TextEdit.Text = "res";
         }
-        
+
         public void Connect_Assign_to_Next_tool()
         {
             Mouse.Hover(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(200, 220));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(300, 220));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, 0, 44);
         }
-        
+
         public void Enter_Values_Into_Replace_Tool_Large_View()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.InFiledsComboBox.TextEdit.Text = "[[rec().a]]";
@@ -2942,7 +3139,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.ReplaceComboBox.TextEdit.Text = "o";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.ResultComboBox.TextEdit.Text = "res";
         }
-        
+
         public void Enter_Values_Into_FindIndex_Tool()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.SmallViewContentCustom.InFieldComboBox.TextEdit.Text = "SomeLongString";
@@ -3267,7 +3464,7 @@ namespace Warewolf.UITests
         {
             Assert.AreEqual("Dice1", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
-        
+
         public void Add_Dotnet_Dll_Source(string sourceName)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourcButton, new Point(30, 4));
@@ -3278,7 +3475,7 @@ namespace Warewolf.UITests
             Save_With_Ribbon_Button_And_Dialog(sourceName, true);
             Click_Close_DotNetDll_Tab();
         }
-        
+
         public void Enter_Dice_Roll_Values()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.From.FromTextEdit.Exists, "From textbox does not exist");
@@ -3302,7 +3499,7 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow, "{ALT}{TAB}");
             Playback.Wait(100);
         }
-        
+
         public void Show_Explorer_First_Item_Tests_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
@@ -3310,7 +3507,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests, new Point(30, 11));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton.Exists, "Create new test button does not exist on tests tab after openning it with the explorer context menu.");
         }
-        
+
         public void Debug_Using_Play_Icon()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon.DrawHighlight();
@@ -12358,6 +12555,19 @@ namespace Warewolf.UITests
         private Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
         private Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues;
         #endregion
+
+        /// <summary>
+        /// Click_AssigName_From_DesignSurface
+        /// </summary>
+        public void Click_AssigName_From_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dsfMultiAssignActiviCustom = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfMultiAssignActiviCustom;
+            #endregion
+
+            // Click 'DsfMultiAssignActivity' custom control
+            Mouse.Click(dsfMultiAssignActiviCustom, new Point(5, 5));
+        }
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
