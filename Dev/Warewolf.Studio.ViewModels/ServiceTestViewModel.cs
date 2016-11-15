@@ -876,7 +876,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (step.Parent == null)
                 {
-                    SelectedServiceTest.TestSteps.Add(step);
+                    var exists = FindExistingStep(step.UniqueId.ToString());
+                    if (exists==null)
+                    {
+                        SelectedServiceTest.TestSteps.Add(step);
+                    }
                 }
                 else
                 {
