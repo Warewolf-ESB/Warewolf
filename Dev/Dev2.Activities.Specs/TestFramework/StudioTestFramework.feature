@@ -942,11 +942,12 @@ Scenario: Loop Constructs - For Each Debug Run Selected Test passed with create 
 	And I click New Test
 	Then a new test is added	
     And test name starts with "Test 1"
-	And I Add "For each" as TestStep
+	And I Add all "For each" as TestStep
 	And I add StepOutputs as 
-	| Variable Name  | Condition | Value |
-	| [[rec(1).set]] | <> |       |
-	| [[rec(2).set]] | Not Email |       |
+	| Variable Name  | Condition  | Value | stepIndex | ChildIndex |
+	| [[rec(6).set]] | <>         |       | 0         | 0          |
+	| [[rec(3).set]] | Not Email  |       | 1         | 0          |
+	| [[rec(7).set]] | Is Numeric |       | 2         | 0          |
 	And save is enabled
 	When I save
 	And I run the test

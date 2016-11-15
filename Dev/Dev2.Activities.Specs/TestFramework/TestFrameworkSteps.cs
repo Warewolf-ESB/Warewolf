@@ -1664,9 +1664,13 @@ namespace Dev2.Activities.Specs.TestFramework
                 if (childIndex < serviceTestStep.Children.Count)
                     if (serviceTestStep.Children != null)
                     {
-                        var serviceTestOutput = serviceTestStep.Children[childIndex].StepOutputs.First(output => output.Variable.Equals(varName, StringComparison.InvariantCultureIgnoreCase));
-                        serviceTestOutput.AssertOp = condition;
-                        serviceTestOutput.Value = value;
+                        serviceTestStep.Children[childIndex].StepOutputs = new ObservableCollection<IServiceTestOutput>
+                        {
+                            new ServiceTestOutput(varName, value, "", "")
+                            {
+                                AssertOp = condition,
+                            }
+                        };
 
                     }
             }
