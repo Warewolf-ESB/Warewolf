@@ -218,5 +218,11 @@ namespace Warewolf.Studio.Views
                 flag = 0;//Release Drag Operation
             }
         }
+
+        void UIElement_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            textBox?.SelectAll();
+        }
     }
 }

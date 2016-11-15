@@ -253,10 +253,10 @@
 
                                     <StackPanel Orientation="Horizontal">
                                         <Image x:Name="ResourceImage"
-                                           Width="14"
-                                           Height="14"
-                                           Source="{Binding ResourceType, Converter={StaticResource ResourceTypeToIconConverter}}"
-                                           Visibility="{Binding ResourceType, Converter={StaticResource ResourceTypeToVisibilityConverter}}">
+                                               Width="14"
+                                               Height="14"
+                                               Source="{Binding ResourceType, Converter={StaticResource ResourceTypeToIconConverter}}"
+                                               Visibility="{Binding ResourceType, Converter={StaticResource ResourceTypeToVisibilityConverter}}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonDown">
                                                     <i:InvokeCommandAction Command="{Binding Path=Expand}" />
@@ -264,34 +264,34 @@
                                             </i:Interaction.Triggers>
                                         </Image>
                                         <CheckBox x:Name="ResourceNameCheckBox"
-                                                      ClickMode="Press"
-                                                      IsChecked="{Binding Path=IsResourceChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      IsEnabled="{Binding Path=IsResourceCheckedEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      ToolTip="{Binding Path=DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      ToolTipService.ShowOnDisabled="True"
-                                                      Style="{StaticResource DeployCheckBoxStyle}"
-                                                      Visibility="{Binding Path=AllowResourceCheck, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    ClickMode="Press"
+                                                    IsChecked="{Binding Path=IsResourceChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    IsEnabled="{Binding Path=IsResourceCheckedEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    ToolTip="{Binding Path=DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    ToolTipService.ShowOnDisabled="True"
+                                                    Style="{StaticResource DeployCheckBoxStyle}"
+                                                    Visibility="{Binding Path=AllowResourceCheck, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <TextBlock x:Name="ResourceNameTextBlock"
-                                                       Height="20"
-                                                       MinWidth="5"
-                                                       HorizontalAlignment="Stretch"
-                                                       VerticalAlignment="Center"
-                                                       Focusable="True"
-                                                       Text="{Binding Path=ResourceName}"
-                                                       TextTrimming="CharacterEllipsis"
-                                                       ToolTip="{Binding Path=ResourceName}">
+                                                    Height="20"
+                                                    MinWidth="5"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Center"
+                                                    Focusable="True"
+                                                    Text="{Binding ResourceName}"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    ToolTip="{Binding ResourceName}">
                                             <TextBlock.InputBindings>
-                                                <MouseBinding Command="{Binding Path=OpenCommand}"
-                                                                  Gesture="LeftDoubleClick"
-                                                                  MouseAction="LeftDoubleClick" />
+                                                <MouseBinding Command="{Binding OpenCommand}" Gesture="LeftDoubleClick" MouseAction="LeftDoubleClick" />
                                             </TextBlock.InputBindings>
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="MouseLeftButtonDown">
                                                         <i:InvokeCommandAction Command="{Binding Path=Expand}" />
                                                     </i:EventTrigger>
                                                 </i:Interaction.Triggers>
-
                                         </TextBlock>
+                                        <!--<TextBox GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
+                                                 Style="{StaticResource ExplorerEditTextBoxStyle}"
+                                                 Text="{Binding ResourceName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />-->
                                     </StackPanel>
                                     <TextBlock Grid.Column="1"
                                                Margin="4,0,0,0"
@@ -325,6 +325,12 @@
                                                         <Setter Property="Visibility" Value="Visible" />
                                                         <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}"/>
                                                     </MultiDataTrigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsMouseOver" Value="False">
+                                                        <Setter Property="Foreground" Value="{StaticResource ButtonBackgroundBrush}" />
+                                                    </Trigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Button.Style>
@@ -352,6 +358,12 @@
                                                         <Setter Property="Visibility" Value="Visible" />
                                                         <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}"/>
                                                     </MultiDataTrigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsMouseOver" Value="False">
+                                                        <Setter Property="Foreground" Value="{StaticResource ButtonBackgroundBrush}" />
+                                                    </Trigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Button.Style>
