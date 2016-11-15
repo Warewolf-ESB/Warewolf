@@ -265,6 +265,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     SetStepIcon(typeof(DsfSequenceActivity), testStep);
                     testStep.ActivityType = seqTypeName;
+                    testStep.UniqueId = debugItemContent.WorkSurfaceMappingId;
                     parent = testStep;
                 }
 
@@ -272,12 +273,14 @@ namespace Warewolf.Studio.ViewModels
                 {
                     SetStepIcon(typeof(DsfForEachActivity), testStep);
                     testStep.ActivityType = forEachTypeName;
+                    testStep.UniqueId = debugItemContent.WorkSurfaceMappingId;
                     parent = testStep;
                 }
                 else if (actualType == selectApplyTypeName)
                 {
                     SetStepIcon(typeof(DsfSelectAndApplyActivity), testStep);
                     testStep.ActivityType = selectApplyTypeName;
+                    testStep.UniqueId = debugItemContent.WorkSurfaceMappingId;
                     parent = testStep;
                 }
                 else if (actualType == serviceName)
@@ -382,7 +385,7 @@ namespace Warewolf.Studio.ViewModels
             foreach (var debugTreeViewItemViewModel in debugState.Children)
             {
                 var childItem = debugTreeViewItemViewModel as DebugStateTreeViewItemViewModel;
-                if (childItem != null)
+                if (childItem != null && childItem.ActivityTypeName != "DsfSelectAndApplyActivity")
                 {
                     var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
 
