@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+// ReSharper disable CheckNamespace
 
 namespace Dev2.DataList
 {

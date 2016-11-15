@@ -46,6 +46,7 @@ using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.ViewModels
 {
+
     public class ServiceTestViewModel : BindableBase, IServiceTestViewModel
     {
         private readonly IExternalProcessExecutor _processExecutor;
@@ -479,37 +480,46 @@ namespace Warewolf.Studio.ViewModels
 
         private void ItemSelectedAction(ModelItem modelItem)
         {
+
             if (modelItem != null)
             {
-                if (modelItem.ItemType == typeof(Flowchart) || modelItem.ItemType == typeof(ActivityBuilder))
+                var itemType = modelItem.ItemType;
+                if (itemType == typeof(FlowStep))
+                {
+                    if (modelItem.Content?.Value != null)
+                    {
+                        itemType = modelItem.Content.Value.ItemType;
+                    }
+                }
+                if (itemType == typeof(Flowchart) || itemType == typeof(ActivityBuilder))
                 {
                     return;
                 }
-                if (modelItem.ItemType == typeof(DsfForEachActivity))
+                if (itemType == typeof(DsfForEachActivity))
                 {
                     ProcessForEach(modelItem);
                 }
-                else if (modelItem.ItemType == typeof(DsfSelectAndApplyActivity))
+                else if (itemType == typeof(DsfSelectAndApplyActivity))
                 {
                     ProcessSelectAndApply(modelItem);
                 }
-                else if (modelItem.ItemType == typeof(DsfSequenceActivity))
+                else if (itemType == typeof(DsfSequenceActivity))
                 {
                     ProcessSequence(modelItem);
                 }
-                else if (modelItem.ItemType == typeof(FlowSwitch<string>))
+                else if (itemType == typeof(FlowSwitch<string>))
                 {
                     ProcessFlowSwitch(modelItem);
                 }
-                else if (modelItem.ItemType == typeof(DsfSwitch))
+                else if (itemType == typeof(DsfSwitch))
                 {
                     ProcessSwitch(modelItem);
                 }
-                else if (modelItem.ItemType == typeof(FlowDecision))
+                else if (itemType == typeof(FlowDecision))
                 {
                     ProcessFlowDecision(modelItem);
                 }
-                else if (modelItem.ItemType == typeof(DsfDecision))
+                else if (itemType == typeof(DsfDecision))
                 {
                     ProcessDecision(modelItem);
                 }
@@ -522,7 +532,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void ProcessSequence(ModelItem modelItem)
         {
-            var sequence = modelItem.GetCurrentValue() as DsfSequenceActivity;
+            var sequence = GetCurrentActivity<DsfSequenceActivity>(modelItem);
             var buildParentsFromModelItem = BuildParentsFromModelItem(modelItem);
             if (buildParentsFromModelItem != null)
             {
@@ -538,11 +548,21 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-
+        private T GetCurrentActivity<T>(ModelItem modelItem) where T : class
+        {
+            var activity = modelItem.GetCurrentValue() as T;
+            if (activity == null)
+            {
+                if (modelItem.Content?.Value != null)
+                    activity = modelItem.Content.Value.GetCurrentValue() as T;
+            }
+            return activity;
+        }
 
         private void ProcessForEach(ModelItem modelItem)
         {
-            var forEachActivity = modelItem.GetCurrentValue() as DsfForEachActivity;
+
+            var forEachActivity = GetCurrentActivity<DsfForEachActivity>(modelItem);
             AddForEach(forEachActivity, null, SelectedServiceTest.TestSteps);
         }
 
@@ -601,7 +621,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void ProcessSelectAndApply(ModelItem modelItem)
         {
-            var selectAndApplyActivity = modelItem.GetCurrentValue() as DsfSelectAndApplyActivity;
+            var selectAndApplyActivity = GetCurrentActivity<DsfSelectAndApplyActivity>(modelItem);
             AddSelectAndApply(selectAndApplyActivity, null, SelectedServiceTest.TestSteps);
         }
 
@@ -802,13 +822,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 var condition = modelItem.GetProperty("Expression");
                 var activity = (DsfFlowNodeActivity<string>)condition;
-                var flowSwitch = modelItem.GetCurrentValue() as FlowSwitch<string>;
+                var flowSwitch = GetCurrentActivity<FlowSwitch<string>>(modelItem);
+                //var flowSwitch = modelItem.GetCurrentValue() as FlowSwitch<string>;
                 if (flowSwitch == null)
                 {
                     var modelItemParent = modelItem.Parent;
                     if (modelItemParent != null)
                     {
-                        flowSwitch = modelItemParent.GetCurrentValue() as FlowSwitch<string>;
+                        flowSwitch = GetCurrentActivity<FlowSwitch<string>>(modelItemParent);
+                        //flowSwitch = modelItemParent.GetCurrentValue() as FlowSwitch<string>;
                         condition = modelItemParent.GetProperty("Expression");
                     }
                     activity = (DsfFlowNodeActivity<string>)condition;

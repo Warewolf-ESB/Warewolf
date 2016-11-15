@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using Dev2.Activities.Specs.Scheduler;
 using Dev2.Network;

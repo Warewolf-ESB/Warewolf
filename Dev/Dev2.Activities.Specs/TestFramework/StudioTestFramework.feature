@@ -706,7 +706,6 @@ Scenario: Run a test with mock step
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	#And test folder is cleaned
 @s3
-
 @TestFramework
 Scenario: Run a test with mock step assign
 	Given the test builder is open with existing service "Hello World"	
@@ -727,7 +726,7 @@ Scenario: Run a test with mock step assign
 	| Set the output variable (1) | Message         | hello mock   | Assign        |             |           |
 	And I save
 	When I run the test
-	Then test result is Failed
+	Then test result is Passed
 	Then service debug inputs as
 		| Variable | Value |
 		| [[Name]] | Bob   |	
@@ -935,6 +934,44 @@ Scenario: Control Flow - Sequence Debug Run Selected Test passed with create Exa
 	Then test result is Passed	
 	And I run all tests
 	Then all tests pass
+
+Scenario: Loop Constructs - For Each Debug Run Selected Test passed with create Example Data teststep Passes
+	Given the test builder is open with "Loop Constructs - For Each"
+	And Tab Header is "Loop Constructs - For Each - Tests"
+	Then there are 0 tests	
+	And I click New Test
+	Then a new test is added	
+    And test name starts with "Test 1"
+	And I Add "For each" as TestStep
+	And I add StepOutputs as 
+	| Variable Name  | Condition | Value |
+	| [[rec(1).set]] | <> |       |
+	| [[rec(2).set]] | Not Email |       |
+	And save is enabled
+	When I save
+	And I run the test
+	Then test result is Passed
+
+Scenario: Loop Constructs - Select and Apply Debug Run Selected Test passed with create Example Data teststep Passes
+	Given the test builder is open with "Loop Constructs - Select and Apply - For Each"
+	And Tab Header is "Loop Constructs - Select and Apply - For Each - Tests"
+	Then there are 0 tests	
+	And I click New Test
+	Then a new test is added	
+    And test name starts with "Test 1"
+	And I Add "Assign (1)" as TestStep
+	And I add StepOutputs as 
+	| Variable Name  | Condition | Value   |
+	| [[PetsName]]   | =         | The Guv |
+	And I Add "Select and apply" as TestStep
+	And I add StepOutputs as 
+	| Variable Name  | Condition | Value   |
+	| [[@Pet.Name]]  | =         | The Guv |
+	And save is enabled
+	When I save
+	And I run the test
+	Then test result is Passed
+
 
 
 

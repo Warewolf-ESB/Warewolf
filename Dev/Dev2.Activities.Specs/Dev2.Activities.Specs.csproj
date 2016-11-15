@@ -57,6 +57,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Composition\WorkflowExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowExecution.feature</DependentUpon>
+    </Compile>
     <Compile Include="Dev2LocalSecurityWrapper.cs" />
     <Compile Include="TestFramework\StudioTestFramework1.feature.cs">
       <AutoGen>True</AutoGen>
@@ -236,11 +241,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Composition\DBSource\XmlFetch.cs" />
-    <Compile Include="Composition\WorkflowExecution.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WorkflowExecution.feature</DependentUpon>
-    </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
     <Compile Include="Scheduler\SchedulerSteps.cs" />
     <Compile Include="Scheduler\Scheduler.feature.cs">
@@ -261,6 +261,7 @@
     </None>
     <None Include="Composition\WorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WorkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>

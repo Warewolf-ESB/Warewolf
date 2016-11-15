@@ -3081,7 +3081,7 @@ Examples:
     | WorkflowName                  | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestMySqlWFWithMySqlStarIndex | MySqlEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
 
-Scenario Outline: Database MySqlDB Database service using char in param name
+Scenario: Database MySqlDB Database service using char in param name
      Given I have a workflow "TestMySqlWFWithMySqlCharParamName"
 	 And "TestMySqlWFWithMySqlCharParamName" contains a mysql database service "procWithCharNoOutput" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable |
@@ -3132,7 +3132,9 @@ Scenario Outline: Database MySqlDB Database service scalar outputs
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                      |
+	  |                                |
+	  | [[name]] = Monk                |
+	  | [[email]] = dora@explorers.com |
 Examples: 
     | WorkflowName               | ServiceName | nameVariable | emailVariable | errorOccured |
     | TestMySqlWFWithMySqlScalar | MySqlEmail  | [[name]]     | [[email]]     | NO           |
