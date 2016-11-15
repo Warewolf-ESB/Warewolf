@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LessThanServerVersion" xml:space="preserve">
-    <value>less than 0.4.19.1</value>
-  </data>
   <data name="CompareCurrentServerVersion" xml:space="preserve">
     <value>0.0.0.6</value>
   </data>
@@ -239,7 +236,7 @@
 The more information you can provide us with, the faster we can track the issue and resolve it.</value>
   </data>
   <data name="ManageOdbcServiceActionsHelpText" xml:space="preserve">
-    <value>ManageOdbcServiceActionsHelpText</value>
+    <value>The Structured Query Language (SQL) of the action you want to perform on the ODBC source.</value>
   </data>
   <data name="ServerSourceNewHeaderLabel" xml:space="preserve">
     <value>New Server Source</value>
@@ -813,10 +810,11 @@ The window will be reloaded when you click OK.</value>
     <value>If you would like the default variables in a recordset, put the recordset name in here.</value>
   </data>
   <data name="MappingsObjectOutputHelp" xml:space="preserve">
-    <value>MappingsObjectOutputHelp</value>
+    <value>Allows you to output the full response into an object (JSON representation).</value>
   </data>
   <data name="MappingsObjectNameHelp" xml:space="preserve">
-    <value>If you would like the default variables in an object, put the object name in here.</value>
+    <value>The name of the [[@Object]] you would like the output to go into.
+    After the object is added to the variable list, you can click on the { } next to the objects name to see the full shape.</value>
   </data>
   <data name="MappingsDefaultValueHelp" xml:space="preserve">
     <value>The default value to be used when mapping this field.</value>
@@ -1991,7 +1989,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>An error occured while trying to open the Windows Group Picker dialog. Please ensure that you are part of a Domain to use this feature.</value>
   </data>
   <data name="ComPluginServiceEditSourceHelp" xml:space="preserve">
-    <value>ComPluginServiceEditSourceHelp</value>
+    <value>Edits the selected COM plugin source connection.</value>
   </data>
   <data name="ComPluginServiceMethodNotSelected" xml:space="preserve">
     <value>ComPluginServiceMethodNotSelected</value>
@@ -2750,64 +2748,66 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Cannot execute this command on an unsaved workflow</value>
   </data>
   <data name="MappingsObjectOutputTooltip" xml:space="preserve">
-    <value>MappingsObjectOutputTooltip</value>
+    <value>Check this to put the output into an object</value>
   </data>
   <data name="MappingsObjectNameTooltip" xml:space="preserve">
-    <value>MappingsObjectNameTooltip</value>
+    <value>The @name of the object you want to put the result into</value>
   </data>
   <data name="ManageWebSourceViewInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser</value>
   </data>
   <data name="ServiceTestStepDeleteStepTooltip" xml:space="preserve">
-    <value>ServiceTestStepDeleteStepTooltip</value>
+    <value>Remove this step</value>
   </data>
   <data name="ServiceTestStepDeleteStepHelpText" xml:space="preserve">
-    <value>ServiceTestStepDeleteStepHelpText</value>
+    <value>Remove this step from the assert list. This step will not be asserted. To add it back, simply click on it in the workflow designer.</value>
   </data>
   <data name="ServiceTestStepAssertValueTooltip" xml:space="preserve">
-    <value>ServiceTestStepAssertValueTooltip</value>
+    <value>The Value of the item you want to assert</value>
   </data>
   <data name="ServiceTestStepAssertValueHelpText" xml:space="preserve">
-    <value>ServiceTestStepAssertValueHelpText</value>
+    <value>The Value of the item you want to assert.</value>
   </data>
   <data name="ServiceTestStepAssertFromTooltip" xml:space="preserve">
-    <value>ServiceTestStepAssertFromTooltip</value>
+    <value>The Value of the item you want to assert from</value>
   </data>
   <data name="ServiceTestStepAssertFromHelpText" xml:space="preserve">
-    <value>ServiceTestStepAssertFromHelpText</value>
+    <value>The Value of the item you want to assert from.</value>
   </data>
   <data name="ServiceTestStepAssertToTooltip" xml:space="preserve">
-    <value>ServiceTestStepAssertToTooltip</value>
+    <value>The Value of the item you want to assert</value>
   </data>
   <data name="ServiceTestStepAssertToHelpText" xml:space="preserve">
-    <value>ServiceTestStepAssertToHelpText</value>
+    <value>The Value of the item you want to assert.</value>
   </data>
   <data name="ServiceTestStepAssertOpsTooltip" xml:space="preserve">
-    <value>ServiceTestStepAssertOpsTooltip</value>
+    <value>The type of Assert you want to make</value>
   </data>
   <data name="ServiceTestStepAssertOpsHelpText" xml:space="preserve">
-    <value>ServiceTestStepAssertOpsHelpText</value>
+    <value>The type of Assert you want to make.</value>
   </data>
   <data name="ServiceTestStepOptionsForValueTooltip" xml:space="preserve">
-    <value>ServiceTestStepOptionsForValueTooltip</value>
+    <value>The Value of the item you want to assert</value>
   </data>
   <data name="ServiceTestStepOptionsForValueHelpText" xml:space="preserve">
-    <value>ServiceTestStepOptionsForValueHelpText</value>
+    <value>The Value of the item you want to assert.</value>
   </data>
   <data name="ServiceTestStepAssertRadioButtonTooltip" xml:space="preserve">
-    <value>ServiceTestStepAssertRadioButtonTooltip</value>
+    <value>Assert this step</value>
   </data>
   <data name="ServiceTestStepAssertRadioButtonHelpText" xml:space="preserve">
-    <value>ServiceTestStepAssertRadioButtonHelpText</value>
+    <value>Asserts the Result has a type of value at this step.</value>
   </data>
   <data name="ServiceTestStepMockRadioButtonTooltip" xml:space="preserve">
-    <value>ServiceTestStepMockRadioButtonTooltip</value>
+    <value>Mock this step</value>
   </data>
   <data name="ServiceTestStepMockRadioButtonHelpText" xml:space="preserve">
-    <value>ServiceTestStepMockRadioButtonHelpText</value>
+    <value>Mocked values will not execute and will set the value of a result at this step. 
+    Use this when you do not want to execute a service such as a database call or another workflow.</value>
   </data>
   <data name="ServiceTestNameHelpText" xml:space="preserve">
-    <value>The name of this test. Test names should be unique and indicate what is being tested. The test is always associated with the service running it.</value>
+    <value>The name of this test. Test names should be unique and indicate what is being tested. 
+    The test is always associated with the service running it.</value>
   </data>
   <data name="ServiceTestRunAllTestsInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser to view the tests for this workflow</value>
@@ -2895,10 +2895,11 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>The test expects an error. If this option is selected, ALL other asserts will be ignored.</value>
   </data>
   <data name="ServiceTestErrorContainsTextTooltip" xml:space="preserve">
-    <value>ServiceTestErrorContainsTextTooltip</value>
+    <value>Assert that the error contains some particular text</value>
   </data>
   <data name="ServiceTestErrorContainsTextHelpText" xml:space="preserve">
-    <value>ServiceTestErrorContainsTextHelpText</value>
+    <value>Assert that the error contains some particular text.
+    This allows you to make sure the error you receive, with certain inputs to your service, is the correct error and not due to something else.</value>
   </data>
   <data name="ServiceTestInputValueTooltip" xml:space="preserve">
     <value>Input value to test against</value>
@@ -2907,16 +2908,16 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>The input value for the service. This is the input to the service for the test you want to run.</value>
   </data>
   <data name="ServiceTestStepAssertVariableTooltip" xml:space="preserve">
-    <value>ServiceTestStepAssertVariableTooltip</value>
+    <value>Tool result item to Assert</value>
   </data>
   <data name="ServiceTestStepAssertVariableHelpText" xml:space="preserve">
-    <value>ServiceTestStepAssertVariableHelpText</value>
+    <value>The item you want to make the assert on.</value>
   </data>
   <data name="ServiceTestOutputVariableTooltip" xml:space="preserve">
-    <value>ServiceTestOutputVariableTooltip</value>
+    <value>The output you want to make the assert on</value>
   </data>
   <data name="ServiceTestOutputVariableHelpText" xml:space="preserve">
-    <value>ServiceTestOutputVariableHelpText</value>
+    <value>The final service output you want to make the assert on.</value>
   </data>
   <data name="ServiceTestOutputValueTooltip" xml:space="preserve">
     <value>Output value to test against</value>
@@ -2925,16 +2926,16 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>This is the final output of the service that will be asserted.</value>
   </data>
   <data name="ServiceTestOutputFromTooltip" xml:space="preserve">
-    <value>ServiceTestOutputFromTooltip</value>
+    <value>The Value of the item you want to assert from</value>
   </data>
   <data name="ServiceTestOutputFromHelpText" xml:space="preserve">
-    <value>ServiceTestOutputFromHelpText</value>
+    <value>The Value of the item you want to assert from.</value>
   </data>
   <data name="ServiceTestOutputToTooltip" xml:space="preserve">
-    <value>ServiceTestOutputToTooltip</value>
+    <value>The Value of the item you want to assert to</value>
   </data>
   <data name="ServiceTestOutputToHelpText" xml:space="preserve">
-    <value>ServiceTestOutputToHelpText</value>
+    <value>The Value of the item you want to assert to.</value>
   </data>
   <data name="ServiceTestRunAllTestTooltip" xml:space="preserve">
     <value>Run all tests</value>
@@ -3783,10 +3784,11 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
     <value>Unavailable</value>
   </data>
   <data name="TreatNullAsZeroToolTip" xml:space="preserve">
-    <value>TreatNullAsZeroToolTip</value>
+    <value>No recordset will be treated as a recordset with no records</value>
   </data>
   <data name="TreatNullAsZeroHelp" xml:space="preserve">
-    <value>TreatNullAsZeroHelp</value>
+    <value>If no records exist (NULL), use 0 (Zero) instead.
+    No recordset exists will be treated as a recordset with no records.</value>
   </data>
   <data name="javascript_Tag" xml:space="preserve">
     <value>javascript</value>
@@ -3808,7 +3810,7 @@ Please contact your Warewolf System Administrator.</value>
   <data name="SchedulerInvalidCharactersError" xml:space="preserve">
     <value>The task name may not contain the following characters</value>
   </data>
-<data name="NoReturnedDataExecuteSuccess" xml:space="preserve">
+  <data name="NoReturnedDataExecuteSuccess" xml:space="preserve">
     <value>No data returned.   </value>
   </data>
   <data name="NewServerSourceTooltip" xml:space="preserve">
@@ -3842,7 +3844,7 @@ Please contact your Warewolf System Administrator.</value>
     <value>Create a new sharepoint source</value>
   </data>
   <data name="ViewApisJsonTooltip" xml:space="preserve">
-    <value>ViewApisJsonTooltip</value>
+    <value>View APIs.json url and content</value>
   </data>
   <data name="NewServiceTooltip" xml:space="preserve">
     <value>Create a new service [CTRL+W]</value>
