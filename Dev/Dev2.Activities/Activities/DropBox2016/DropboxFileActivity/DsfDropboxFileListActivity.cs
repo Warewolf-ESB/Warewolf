@@ -98,7 +98,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             return singleExecutor;
         }
 
-        protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
+        protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             var toPath = evaluatedValues["ToPath"];
 
@@ -124,7 +124,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                     Files.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.PathLower).ToList());
                 }
 
-                return GlobalConstants.DropBoxSucces;
+                return new List<string> { GlobalConstants.DropBoxSuccess };
             }
             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
             if (dropboxFailureResult != null)
