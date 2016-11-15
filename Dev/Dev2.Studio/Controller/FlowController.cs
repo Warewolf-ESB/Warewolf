@@ -32,6 +32,7 @@ using Dev2.Webs.Callbacks;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Views;
+// ReSharper disable SuspiciousTypeConversion.Global
 
 #endregion
 
@@ -352,11 +353,15 @@ namespace Dev2.Studio.Controller
             else
             {
                 result = property.Value;
-
-                // BUG 9717 - 2013.06.22 - don't show wizard on copy paste
+                
                 var isCopyPaste = isNew && !string.IsNullOrEmpty(activity.ExpressionText);
                 if (result == null || isCopyPaste)
                 {
+                    var act = activity as IDev2Activity;
+                    if (act != null)
+                    {
+                        act.UniqueID = Guid.NewGuid().ToString();
+                    }
                     return null;
                 }
             }

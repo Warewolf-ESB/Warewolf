@@ -259,7 +259,7 @@ namespace Dev2.Runtime.ESB.Execution
                         {
                             msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
                         }
-                        itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg).GetDebugItemResult());
+                        itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg,test.TestFailing).GetDebugItemResult());
                     }
                     debugState.AssertResultList.Add(itemToAdd);
                     wfappUtils.WriteDebug(DataObject, debugState);
