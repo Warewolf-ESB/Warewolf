@@ -682,7 +682,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void RegularActivityAssertion(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        protected void RegularActivityAssertion(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
         {
             var factory = Dev2DecisionFactory.Instance();
             var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory));
