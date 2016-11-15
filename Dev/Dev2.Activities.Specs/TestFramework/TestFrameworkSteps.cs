@@ -480,7 +480,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 MyContext.Add("testFramework", testFramework);
             }
         }
-
+        
         [Given(@"I update inputs as")]
         [When(@"I update inputs as")]
         [Then(@"I update inputs as")]
@@ -1548,7 +1548,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             var decisionNode = foundNode as FlowDecision;
                             // ReSharper disable once PossibleNullReferenceException
                             var condition = decisionNode.Condition;
-                            var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfFlowNodeActivity<bool>)condition;
+                            var activity = (DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
                             if (expression != null)
                             {
@@ -1589,7 +1589,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         var decisionNode = foundNode as FlowStep;
                         // ReSharper disable once PossibleNullReferenceException
                         var action = decisionNode.Action;
-                        var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
+                        var activity = (DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];
                         var value = tableRow["Output Value"];
                         var from = tableRow["Output From"];
@@ -1627,16 +1627,31 @@ namespace Dev2.Activities.Specs.TestFramework
             var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
             Assert.IsNotNull(builder);
             var act = (Flowchart)builder.Implementation;
-            foreach (var flowNode in act.Nodes)
+            var actStartNode = act.StartNode;
+            if (act.Nodes.Count == 0 && actStartNode != null)
             {
-                var searchNode = flowNode as FlowStep;
+                var searchNode = actStartNode as FlowStep;
                 var isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
                 if (isCorr)
                 {
-                    var modelItem = ModelItemUtils.CreateModelItem(flowNode);
+                    var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
                     var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
                     methodInfo.Invoke(serviceTest, new object[] { modelItem });
-                    break;
+                }
+            }
+            else
+            {
+                foreach (var flowNode in act.Nodes)
+                {
+                    var searchNode = flowNode as FlowStep;
+                    var isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(flowNode);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        break;
+                    }
                 }
             }
         }
