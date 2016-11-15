@@ -1616,12 +1616,20 @@ namespace Dev2.Activities.Specs.TestFramework
             if (act.Nodes.Count == 0 && actStartNode != null)
             {
                 var searchNode = actStartNode as FlowStep;
-                var isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
-                if (isCorr)
+                while (searchNode != null)
                 {
-                    var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
-                    var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
-                    methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                    var isCorr =  searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        searchNode = null;
+                    }
+                    else
+                    {
+                        searchNode = searchNode.Next as FlowStep;
+                    }
                 }
             }
             else
@@ -1661,7 +1669,6 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
             }
         }
-
 
         [Then(@"I add StepOutputs as")]
         public void ThenIAddStepOutputsAs(Table table)
