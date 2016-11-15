@@ -2,6 +2,7 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -9,6 +10,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Hosting;
@@ -129,7 +131,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [AfterFeature("@StudioTestFramework")]
         public static void ScenarioCleaning()
         {
-        
+
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
@@ -448,39 +450,22 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (MyContext.TryGetValue(workflowName, out resourceModel))
             {
-                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
-                Assert.IsNotNull(testFramework);
-                Assert.IsNotNull(testFramework.ResourceModel);
-                MyContext.Add("testFramework", testFramework);
+                var vm = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
+                Assert.IsNotNull(vm);
+                Assert.IsNotNull(vm.ResourceModel);
+                MyContext.Add("testFramework", vm);
+                return;
             }
-            if (workflowName == "Hello World")
-            {
-                var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(new Guid("acb75027-ddeb-47d7-814e-a54c37247ec1"));
-                var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
-                Assert.IsNotNull(testFramework);
-                Assert.IsNotNull(testFramework.ResourceModel);
-                MyContext.Add("testFramework", testFramework);
-            }
-            if (workflowName == "Control Flow - Sequence")
-            {
-                var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(new Guid("0bdc3207-ff6b-4c01-a5eb-c7060222f75d"));
-                var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
-                //var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
-                Assert.IsNotNull(testFramework);
-                Assert.IsNotNull(testFramework.ResourceModel);
-                MyContext.Add("testFramework", testFramework);
-            }
-            if (workflowName == "Loop Constructs - For Each")
-            {
-                var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(new Guid("8ba79b49-226e-4c67-a732-4657fd0edb6b"));
-                var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
-                //var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
-                Assert.IsNotNull(testFramework);
-                Assert.IsNotNull(testFramework.ResourceModel);
-                MyContext.Add("testFramework", testFramework);
-            }
-        }
+            var resourceId = ConfigurationManager.AppSettings[workflowName].ToGuid();
+            var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
+            Assert.IsNotNull(testFramework);
+            Assert.IsNotNull(testFramework.ResourceModel);
+            MyContext.Add("testFramework", testFramework);
 
+
+        }
+        
         [Given(@"I update inputs as")]
         [When(@"I update inputs as")]
         [Then(@"I update inputs as")]
@@ -813,7 +798,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 foreach (var result in webResult)
                 {
                     var cleanresult = result.Replace("[", "").Replace("]", "");
-                       var jObject = JObject.Parse(cleanresult);
+                    var jObject = JObject.Parse(cleanresult);
 
                     foreach (var tableRow in table.Rows)
                     {
@@ -831,7 +816,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
                             if (resultPairs.Key == "Message")
                             {
-                                Assert.AreEqual(tableRow["Message"], resultPairs.Value.ToString().Replace("\n","").Replace("\r", "").Replace(Environment.NewLine, ""), "error message dont match");
+                                Assert.AreEqual(tableRow["Message"], resultPairs.Value.ToString().Replace("\n", "").Replace("\r", "").Replace(Environment.NewLine, ""), "error message dont match");
                             }
                         }
                     }
@@ -1548,7 +1533,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             var decisionNode = foundNode as FlowDecision;
                             // ReSharper disable once PossibleNullReferenceException
                             var condition = decisionNode.Condition;
-                            var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfFlowNodeActivity<bool>)condition;
+                            var activity = (DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
                             if (expression != null)
                             {
@@ -1589,7 +1574,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         var decisionNode = foundNode as FlowStep;
                         // ReSharper disable once PossibleNullReferenceException
                         var action = decisionNode.Action;
-                        var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
+                        var activity = (DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];
                         var value = tableRow["Output Value"];
                         var from = tableRow["Output From"];
@@ -1627,6 +1612,43 @@ namespace Dev2.Activities.Specs.TestFramework
             var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
             Assert.IsNotNull(builder);
             var act = (Flowchart)builder.Implementation;
+            var actStartNode = act.StartNode;
+            if (act.Nodes.Count == 0 && actStartNode != null)
+            {
+                var searchNode = actStartNode as FlowStep;
+                var isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                if (isCorr)
+                {
+                    var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
+                    var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                    methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                }
+            }
+            else
+            {
+                foreach (var flowNode in act.Nodes)
+                {
+                    var searchNode = flowNode as FlowStep;
+                    var isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(flowNode);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        break;
+                    }
+                }
+            }
+        }
+
+        [Then(@"I Add all ""(.*)"" as TestStep")]
+        public void ThenIAddAllAsTestStep(string actNameToFind)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            WorkflowHelper helper = new WorkflowHelper();
+            var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
+            Assert.IsNotNull(builder);
+            var act = (Flowchart)builder.Implementation;
             foreach (var flowNode in act.Nodes)
             {
                 var searchNode = flowNode as FlowStep;
@@ -1636,26 +1658,36 @@ namespace Dev2.Activities.Specs.TestFramework
                     var modelItem = ModelItemUtils.CreateModelItem(flowNode);
                     var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
                     methodInfo.Invoke(serviceTest, new object[] { modelItem });
-                    break;
                 }
             }
         }
+
 
         [Then(@"I add StepOutputs as")]
         public void ThenIAddStepOutputsAs(Table table)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.Single();
-            serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
-            foreach(var tableRow in table.Rows)
+
+            foreach (var tableRow in table.Rows)
             {
+                var index = Convert.ToInt32(tableRow["stepIndex"]);
+                var childIndex = Convert.ToInt32(tableRow["ChildIndex"]);
                 var varName = tableRow["Variable Name"];
                 var condition = tableRow["Condition"];
                 var value = tableRow["Value"];
-                serviceTestStep.StepOutputs.Add(new ServiceTestOutput(varName, value,"","")
-                {
-                    AssertOp = condition
-                });
+                var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps[index];
+                if (childIndex < serviceTestStep.Children.Count)
+                    if (serviceTestStep.Children != null)
+                    {
+                        serviceTestStep.Children[childIndex].StepOutputs = new ObservableCollection<IServiceTestOutput>
+                        {
+                            new ServiceTestOutput(varName, value, "", "")
+                            {
+                                AssertOp = condition,
+                            }
+                        };
+
+                    }
             }
         }
 
