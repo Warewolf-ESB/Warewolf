@@ -30,7 +30,9 @@ Examples:
         | 16 |  Deploy To, Deploy From, Execute                   |  Deploy To, Deploy From, Execute                   |
 
 @ResourcePermissionsSecurity
-Scenario Outline: Setting Selected Resource Permissions for users
+Scenario Outline: Setting Selected Resource Permissions for users 
+        Given I have a server "localhost"
+        And Resource "<Resource>" has rights "<Resource Rights>" for "<User Group>"
         When connected as user part of "<User Group>"
         Then "<Resource>" should have "<Permissions>"
 		And resources should not have "<Rights>" 
@@ -91,6 +93,9 @@ Examples:
 
 @ConflictingViewPermissionsSecurity		
 Scenario Outline: Setting Selected Resource Permissions for users conflicting with View permissions
+        Given I have a server "localhost"
+        And it has "<Group>" with "<Given rights>" 
+        And Resource "<Resource>" has rights "<Resource Rights>" for "<User Group>"
         When connected as user part of "<User Group>"
         Then "<Resource>" should have "<Permissions>"
 		And resources should have "<Rights>" 

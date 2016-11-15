@@ -355,5 +355,13 @@ namespace Dev2.Activities.Specs.Permissions
             }
             currentEnvironment?.Disconnect();
         }
+
+        [Given(@"I have a server ""(.*)""")]
+        public void GivenIHaveAServer(string serverName)
+        {
+            AppSettings.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            scenarioContext.Add("environment", environmentModel);
+        }
     }
 }
