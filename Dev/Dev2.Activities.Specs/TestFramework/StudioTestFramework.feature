@@ -988,10 +988,52 @@ Scenario: Test WF with Assign
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestAssign" as TestStep
-	And I add StepOutputs as 
-	| Variable Name | Condition | Value |
-	| [[rec(1).a]]  | =         | yes   |
-	| [[rec(2).a]]  | =         | no    |
+	#And I add StepOutputs as 
+	#| Variable Name | Condition | Value |
+	#| [[rec(1).a]]  | =         | yes   |
+	#| [[rec(2).a]]  | =         | no    |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+
+Scenario: Test WF with Random
+	Given I have a workflow "Workflowforrandom123"
+	And "Workflowforrandom123" contains an Assign "Values" as
+	  | variable | value |
+	  | [[a]]    | 1     |
+	  | [[b]]    | 10    |
+	  And "Workflowforrandom123" contains Random "TestRandoms" as
+	  | Type    | From | To | Result       |
+	  | Numbers | 1    | 10 | "<Variable>" |
+	And I save workflow "Workflowforrandom123"
+	Then the test builder is open with "Workflowforrandom123"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "TestRandoms" as TestStep	
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+
+Scenario: Test WF with Calculate
+	Given I have a workflow "AggregateCalcTestWF"
+	And "AggregateCalcTestWF" contains an Assign "values1" as
+      | variable       | value |
+      | [[a]]          | 1     |
+      | [[rec(1).a]]   | 2     |
+      | [[index(1).a]] | 1     |
+      | [[rec(2).a]]   | 6     |
+	And "AggregateCalcTestWF" contains Calculate "TestCalculate" with formula "[[rec([[index(1).a]]).a]]+[[a]]" into "[[result]]"
+	And I save workflow "AggregateCalcTestWF"
+	Then the test builder is open with "AggregateCalcTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "TestCalculate" as TestStep
 	When I save
 	And I run the test
 	Then test result is Passed
