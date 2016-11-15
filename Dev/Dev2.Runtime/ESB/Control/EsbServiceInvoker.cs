@@ -391,6 +391,7 @@ namespace Dev2.Runtime.ESB
                     OriginalInstanceID = dataObject.OriginalInstanceID,
                     SessionID = dataObject.DebugSessionID,
                     EnvironmentID = dataObject.EnvironmentID,
+                    SourceResourceID = dataObject.SourceResourceID,
                     ClientID = dataObject.ClientID,
                     Server = string.Empty,
                     Version = string.Empty,
