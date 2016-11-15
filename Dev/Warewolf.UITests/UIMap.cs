@@ -4082,1776 +4082,1146 @@ namespace Warewolf.UITests
         [When(@"I Click Scheduler Delete Task")]
         public void Click_Scheduler_Delete_Task()
         {
-            #region Variable Declarations
-            WpfButton deleteTaskButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.DeleteTaskButton;
-            #endregion
-            Mouse.Click(deleteTaskButton, new Point(3, 17));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.DeleteTaskButton, new Point(3, 17));
         }
+
         [When(@"I Click Scheduler Disable Task Radio Button")]
         public void Click_Scheduler_Disable_Task_Radio_Button()
         {
-            #region Variable Declarations
-            WpfRadioButton disabledRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.DisabledRadioButton;
-            #endregion
-            disabledRadioButton.Selected = Click_Scheduler_Disable_Task_Radio_ButtonParams.DisabledRadioButtonSelected;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.DisabledRadioButton.Selected = true;
         }
+
         [When(@"I Click Scheduler EditTrigger Button")]
         public void Click_Scheduler_EditTrigger_Button()
         {
-            #region Variable Declarations
-            WpfButton editTriggerButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton;
-            #endregion
-            Mouse.Click(editTriggerButton, new Point(10, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton, new Point(10, 9));
         }
+
         [When(@"I Click Scheduler Enable Task Radio Button")]
         public void Click_Scheduler_Enable_Task_Radio_Button()
         {
-            #region Variable Declarations
-            WpfCheckBox statusCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox;
-            #endregion
-            statusCheckBox.Checked = Click_Scheduler_Enable_Task_Radio_ButtonParams.StatusCheckBoxChecked;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox.Checked = true;
         }
+
         [When(@"I Click Scheduler ResourcePicker Button")]
         public void Click_Scheduler_ResourcePicker_Button()
         {
-            #region Variable Declarations
-            WpfButton resourcePickerButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton;
-            #endregion
-            Mouse.Click(resourcePickerButton, new Point(14, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton, new Point(14, 13));
         }
+
         [When(@"I Click Scheduler RunTask")]
         public void Click_Scheduler_RunTask()
         {
-            #region Variable Declarations
-            WpfCheckBox runTaskCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.RunTaskCheckBox;
-            #endregion
-            runTaskCheckBox.Checked = Click_Scheduler_RunTaskParams.RunTaskCheckBoxChecked;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.RunTaskCheckBox.Checked = true;
         }
+
         [When(@"I Click Select Resource Button")]
         public void Click_Select_Resource_Button()
         {
-            #region Variable Declarations
-            WpfButton resourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton;
-            #endregion
-            Mouse.Click(resourceButton, new Point(9, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton, new Point(9, 8));
         }
+
         [When(@"I Click Select Resource Button From Resource Permissions")]
         public void Click_Select_Resource_Button_From_Resource_Permissions()
         {
-            #region Variable Declarations
-            WpfButton itemButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
-            WpfWindow servicePickerDialog = ServicePickerDialog;
-            #endregion
-            Mouse.Click(itemButton, new Point(13, 16));
-            Assert.AreEqual(Click_Select_Resource_Button_From_Resource_PermissionsParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service window does not exist after clicking SelectResource button");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton, new Point(13, 16));
+            Assert.IsTrue(ServicePickerDialog.Exists, "Service window does not exist after clicking SelectResource button");
         }
+
         [When(@"I Click Select Windows Group Cancel Button")]
         public void Click_Select_Windows_Group_Cancel_Button()
         {
-            #region Variable Declarations
-            WinButton cancel = SelectWindowsGroupDialog.CancelPanel.Cancel;
-            #endregion
-            Assert.AreEqual(Click_Select_Windows_Group_Cancel_ButtonParams.CancelExists, cancel.Exists, "Select Windows group dialog cancel buttton does not exist.");
-            Mouse.Click(cancel, new Point(28, 9));
+            Assert.IsTrue(SelectWindowsGroupDialog.CancelPanel.Cancel.Exists, "Select Windows group dialog cancel buttton does not exist.");
+            Mouse.Click(SelectWindowsGroupDialog.CancelPanel.Cancel, new Point(28, 9));
         }
+
         [When(@"I Click Select Windows Group OK Button")]
         public void Click_Select_Windows_Group_OK_Button()
         {
-            #region Variable Declarations
-            WinButton ok = SelectWindowsGroupDialog.OKPanel.OK;
-            #endregion
-            Mouse.Click(ok, new Point(37, 9));
+            Mouse.Click(SelectWindowsGroupDialog.OKPanel.OK, new Point(37, 9));
         }
+
         [When(@"I Click Server Log File Button")]
         public void Click_Server_Log_File_Button()
         {
-            #region Variable Declarations
-            WpfHyperlink itemHyperlink = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.ServerLogs.ServerLogFile.ItemHyperlink;
-            #endregion
-            Mouse.Click(itemHyperlink, new Point(83, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.ServerLogs.ServerLogFile.ItemHyperlink, new Point(83, 6));
         }
+
         [When(@"I Click Server Source Wizard Address Protocol Dropdown")]
         public void Click_Server_Source_Wizard_Address_Protocol_Dropdown()
         {
-            #region Variable Declarations
-            WpfButton toggleDropdown = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
-            WpfCustom comboboxListItemAsHttp = MainStudioWindow.ComboboxListItemAsHttp;
-            #endregion
-            Mouse.Click(toggleDropdown, new Point(54, 8));
-            Assert.AreEqual(Click_Server_Source_Wizard_Address_Protocol_DropdownParams.ComboboxListItemAsHttpExists, comboboxListItemAsHttp.Exists, "Http does not exist in server source wizard address protocol dropdown list.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown, new Point(54, 8));
+            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsHttp.Exists, "Http does not exist in server source wizard address protocol dropdown list.");
         }
+
         [When(@"I Click Server Source Wizard Test Connection Button")]
         public void Click_Server_Source_Wizard_Test_Connection_Button()
         {
-            #region Variable Declarations
-            WpfButton testConnectionButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton;
-            WpfButton saveButton = MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
-            Mouse.Click(testConnectionButton, new Point(51, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton, new Point(51, 8));
             Playback.Wait(3000);
-            Assert.AreEqual(Click_Server_Source_Wizard_Test_Connection_ButtonParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is not enabled");
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled");
         }
+
         [When(@"I Click Service Picker Dialog First Service In Explorer")]
         public void Click_Service_Picker_Dialog_First_Service_In_Explorer()
         {
-            #region Variable Declarations
-            WpfTreeItem treeItem1 = ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1;
-            #endregion
-            Mouse.Click(treeItem1, new Point(91, 9));
+            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1, new Point(91, 9));
         }
+
         [When(@"I Click Settings Security Resource Permissions Add Resource Button")]
         public void Click_Settings_Security_Resource_Permissions_Add_Resource_Button()
         {
-            #region Variable Declarations
-            WpfButton itemButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
-            #endregion
-            Mouse.Click(itemButton, new Point(6, 15));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton, new Point(6, 15));
         }
+
         [When(@"I Click Sharepoint Server Source TestConnection")]
         public void Click_Sharepoint_Server_Source_TestConnection()
         {
-            #region Variable Declarations
-            WpfButton testConnectionButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton;
-            #endregion
-            Mouse.Click(testConnectionButton, new Point(58, 16));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton, new Point(58, 16));
         }
+
         [When(@"I Click Show Dependencies In Explorer Context Menu")]
         public void Click_Show_Dependencies_In_Explorer_Context_Menu()
         {
-            #region Variable Declarations
-            WpfMenuItem showDependencies = MainStudioWindow.ExplorerContextMenu.ShowDependencies;
-            WpfRadioButton showwhatdependsonthisRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton;
-            WpfEdit textbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox;
-            WpfButton refreshButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
-            WpfText text = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
-            #endregion
-            Mouse.Click(showDependencies, new Point(50, 15));
-            Assert.AreEqual(Click_Show_Dependencies_In_Explorer_Context_MenuParams.ShowwhatdependsonthisRadioButtonSelected, showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
-            Assert.AreEqual(Click_Show_Dependencies_In_Explorer_Context_MenuParams.TextboxExists, textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
-            Assert.AreEqual(Click_Show_Dependencies_In_Explorer_Context_MenuParams.RefreshButtonExists, refreshButton.Exists, "Refresh button does not exist on dependency graph");
-            Assert.AreEqual(Click_Show_Dependencies_In_Explorer_Context_MenuParams.TextDisplayText, text.DisplayText, "Dependant workflow not shown in dependency diagram");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton.Exists, "Refresh button does not exist on dependency graph");
+            Assert.AreEqual("RemoteServerUITestWorkflow", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text.DisplayText, "Dependant workflow not shown in dependency diagram");
         }
+
         [When(@"I Click Show Server Version Explorer Context menu")]
         public void Click_Show_Server_Version_Explorer_Context_menu()
         {
-            #region Variable Declarations
-            WpfMenuItem showServerVersion = MainStudioWindow.ExplorerContextMenu.ShowServerVersion;
-            #endregion
-            Mouse.Click(showServerVersion, new Point(45, 13));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowServerVersion, new Point(45, 13));
         }
+
         [When(@"I Click SQL Server Large View Done Button")]
         public void Click_SQL_Server_Large_View_Done_Button()
         {
-            #region Variable Declarations
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.DoneButton;
-            #endregion
-            Assert.AreEqual(Click_SQL_Server_Large_View_Done_ButtonExpectedValues.DoneButtonExists, doneButton.Exists, "SQL Server large view done button does not exist.");
-            Mouse.Click(doneButton, new Point(35, 6));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.DoneButton.Exists, "SQL Server large view done button does not exist.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.DoneButton, new Point(35, 6));
         }
+
         [When(@"I Click SQL Server Large View Generate Outputs")]
         public void Click_SQL_Server_Large_View_Generate_Outputs()
         {
-            #region Variable Declarations
-            WpfButton generateOutputsButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton;
-            WpfEdit testDataTextbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox;
-            #endregion
-            Assert.AreEqual(Click_SQL_Server_Large_View_Generate_OutputsExpectedValues.GenerateOutputsButtonExists, generateOutputsButton.Exists, "SQL Server large view does not contain a generate outputs button.");
-            Mouse.Click(generateOutputsButton, new Point(7, 7));
-            Assert.AreEqual(Click_SQL_Server_Large_View_Generate_OutputsExpectedValues.TestDataTextboxExists, testDataTextbox.Exists, "SQL Server large view test inputs row 1 test data textbox does not exist.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton.Exists, "SQL Server large view does not contain a generate outputs button.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton, new Point(7, 7));
+            Assert.AreEqual(Click_SQL_Server_Large_View_Generate_OutputsExpectedValues.TestDataTextboxExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Exists, "SQL Server large view test inputs row 1 test data textbox does not exist.");
         }
+
         [When(@"I Click SQL Server Large View Test Inputs Button")]
         public void Click_SQL_Server_Large_View_Test_Inputs_Button()
         {
-            #region Variable Declarations
-            WpfButton testInputsButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsButton;
-            #endregion
-            Mouse.Click(testInputsButton, new Point(21, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsButton, new Point(21, 11));
         }
+
         [When(@"I Click SQL Server Large View Test Inputs Done Button")]
         public void Click_SQL_Server_Large_View_Test_Inputs_Done_Button()
         {
-            #region Variable Declarations
-            WpfButton testInputsDoneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsDoneButton;
-            #endregion
-            Assert.AreEqual(Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues.TestInputsDoneButtonExists, testInputsDoneButton.Exists, "SQL Server large view test inputs done button does not exist.");
-            Mouse.Click(testInputsDoneButton, new Point(35, 6));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsDoneButton.Exists, "SQL Server large view test inputs done button does not exist.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsDoneButton, new Point(35, 6));
         }
+
         [When(@"I Click SqlBulkInsert Done Button")]
         public void Click_SqlBulkInsert_Done_Button()
         {
-            #region Variable Declarations
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.DoneButton;
-            #endregion
-            Mouse.Click(doneButton, new Point(35, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.DoneButton, new Point(35, 6));
         }
+
         [When(@"I Click Start Node")]
         public void Click_Start_Node()
         {
-            #region Variable Declarations
-            WpfCustom startNode = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
-            #endregion
-            Mouse.Click(startNode, new Point(29, 76));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, new Point(29, 76));
         }
+
         [When(@"I Click Studio Log File")]
         public void Click_Studio_Log_File()
         {
-            #region Variable Declarations
-            WpfHyperlink itemHyperlink = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink;
-            #endregion
-            Mouse.Click(itemHyperlink, new Point(79, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink, new Point(79, 10));
         }
+
         [When(@"I Click Switch Dialog Done Button")]
         public void Click_Switch_Dialog_Done_Button()
         {
-            #region Variable Declarations
-            WpfButton doneButton = DecisionOrSwitchDialog.DoneButton;
-            WpfCustom switch1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            Mouse.Click(doneButton, new Point(24, 7));
-            Assert.AreEqual(Click_Switch_Dialog_Done_ButtonParams.SwitchExists, switch1.Exists, "Switch on the design surface does not exist");
-            Assert.AreEqual(Click_Switch_Dialog_Done_ButtonParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(24, 7));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch.Exists, "Switch on the design surface does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Click System Information Tool Done Button")]
         public void Click_System_Information_Tool_Done_Button()
         {
-            #region Variable Declarations
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.DoneButton;
-            #endregion
-            Mouse.Click(doneButton, new Point(35, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.DoneButton, new Point(35, 6));
         }
+
         [When(@"I Click UnDock Explorer")]
         public void Click_UnDock_Explorer()
         {
-            #region Variable Declarations
-            WpfButton explorerUnpinBtn = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn;
-            #endregion
-            Mouse.Click(explorerUnpinBtn, new Point(177, -13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn, new Point(177, -13));
         }
+
         [When(@"I Click Unlock Ribbon Button")]
         public void Click_Unlock_Ribbon_Button()
         {
-            #region Variable Declarations
-            WpfButton lockMenuButton = MainStudioWindow.SideMenuBar.LockMenuButton;
-            #endregion
-            Mouse.Click(lockMenuButton, new Point(8, 6));
+            Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton, new Point(8, 6));
         }
+
         [When(@"I Click Unlock TopRibbon Button")]
         public void Click_Unlock_TopRibbon_Button()
         {
-            #region Variable Declarations
-            WpfButton lockStudioButton = MainStudioWindow.LockStudioButton;
-            #endregion
-            Mouse.Click(lockStudioButton, new Point(10, 12));
+            Mouse.Click(MainStudioWindow.LockStudioButton, new Point(10, 12));
         }
+
         [When(@"I Click Unpinned Workflow CollapseAll")]
         public void Click_Unpinned_Workflow_CollapseAll()
         {
-            #region Variable Declarations
-            WpfToggleButton collapseAllToggleButton = MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton;
-            #endregion
-            Assert.AreEqual(Click_Unpinned_Workflow_CollapseAllParams.CollapseAllToggleButtonExists, collapseAllToggleButton.Exists, "Expand all button does not exist");
-            collapseAllToggleButton.Pressed = Click_Unpinned_Workflow_CollapseAllParams.CollapseAllToggleButtonPressed;
+            Assert.AreEqual(Click_Unpinned_Workflow_CollapseAllParams.CollapseAllToggleButtonExists, MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Exists, "Expand all button does not exist");
+            MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Pressed = true;
         }
+
         [When(@"I Click Unpinned Workflow ExpandAll")]
         public void Click_Unpinned_Workflow_ExpandAll()
         {
-            #region Variable Declarations
-            WpfToggleButton expandAllToggleButton = MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton;
-            WpfCustom multiAssign = MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-            #endregion
-            Assert.AreEqual(Click_Unpinned_Workflow_ExpandAllParams.ExpandAllToggleButtonExists, expandAllToggleButton.Exists, "Expand all button does not exist");
-            expandAllToggleButton.Pressed = Click_Unpinned_Workflow_ExpandAllParams.ExpandAllToggleButtonPressed;
-            Assert.AreEqual(Click_Unpinned_Workflow_ExpandAllParams.MultiAssignExists, multiAssign.Exists, "Assign tool large view on the design surface does not exist");
+            Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton.Exists, "Expand all button does not exist");
+            MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton.Pressed = Click_Unpinned_Workflow_ExpandAllParams.ExpandAllToggleButtonPressed;
+            Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool large view on the design surface does not exist");
         }
+
         [When(@"I Click UnZip Done Button")]
         public void Click_UnZip_Done_Button()
         {
-            #region Variable Declarations
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.DoneButton;
-            #endregion
-            Mouse.Click(doneButton, new Point(35, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.DoneButton, new Point(35, 6));
         }
+
         [When(@"I Click UpdateDuplicateRelationships")]
         public void Click_UpdateDuplicateRelationships()
         {
-            #region Variable Declarations
-            WpfCheckBox updateDuplicatedRelat = SaveDialogWindow.UpdateDuplicatedRelat;
-            #endregion
-            updateDuplicatedRelat.Checked = Click_UpdateDuplicateRelationshipsParams.UpdateDuplicatedRelatChecked;
+            SaveDialogWindow.UpdateDuplicatedRelat.Checked = true;
         }
+
         [When(@"I Click Variable IsInput")]
         public void Click_Variable_IsInput()
         {
-            #region Variable Declarations
-            WpfCheckBox inputCheckbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox;
-            #endregion
-            Assert.AreEqual(Click_Variable_IsInputParams.InputCheckboxExists, inputCheckbox.Exists, "Input Checkbox does not exist.");
-            Assert.AreEqual(Click_Variable_IsInputParams.InputCheckboxEnabled, inputCheckbox.Enabled, "Input Checkbox is disabled.");
-            inputCheckbox.Checked = Click_Variable_IsInputParams.InputCheckboxChecked;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Exists, "Input Checkbox does not exist.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Enabled, "Input Checkbox is disabled.");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked = Click_Variable_IsInputParams.InputCheckboxChecked;
         }
+
         [When(@"I Click VariableList Recordset Row1 IsInputCheckbox")]
         public void Click_VariableList_Recordset_Row1_IsInputCheckbox()
         {
-            #region Variable Declarations
-            WpfCheckBox inputCheckbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field1.InputCheckbox;
-            #endregion
-            inputCheckbox.Checked = Click_VariableList_Recordset_Row1_IsInputCheckboxParams.InputCheckboxChecked;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.Field1.InputCheckbox.Checked = true;
         }
+
         [When(@"I Click VariableList Scalar Row1 Delete Button")]
         public void Click_VariableList_Scalar_Row1_Delete_Button()
         {
-            #region Variable Declarations
-            WpfImage image = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Image;
-            #endregion
-            Mouse.Click(image, new Point(5, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Image, new Point(5, 8));
         }
+
         [When(@"I Click VariableList Scalar Row1 IsInputCheckbox")]
         public void Click_VariableList_Scalar_Row1_IsInputCheckbox()
         {
-            #region Variable Declarations
-            WpfCheckBox inputCheckbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox;
-            #endregion
-            inputCheckbox.Checked = Click_VariableList_Scalar_Row1_IsInputCheckboxParams.InputCheckboxChecked;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked = true;
         }
+
         [When(@"I Click View Api From Context Menu")]
         public void Click_View_Api_From_Context_Menu()
         {
-            #region Variable Declarations
-            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            WpfMenuItem viewApisJsonMenuItem = MainStudioWindow.ExplorerEnvironmentContextMenu.ViewApisJsonMenuItem;
-            #endregion
-            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(85, 11));
-            Mouse.Click(viewApisJsonMenuItem, new Point(71, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(85, 11));
+            Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.ViewApisJsonMenuItem, new Point(71, 13));
         }
+
         [When(@"I Click ViewSwagger From ExplorerContextMenu")]
         public void Click_ViewSwagger_From_ExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem viewSwagger = MainStudioWindow.ExplorerContextMenu.ViewSwagger;
-            #endregion
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-            Mouse.Click(viewSwagger, new Point(82, 16));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ViewSwagger, new Point(82, 16));
         }
+
         [When(@"I Click WebRequest Tool Large View Done Button")]
         public void Click_WebRequest_Tool_Large_View_Done_Button()
         {
-            #region Variable Declarations
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.DoneButton;
-            #endregion
-            Mouse.DoubleClick(doneButton, new Point(35, 6));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.DoneButton, new Point(35, 6));
         }
+
         [When(@"I Click Workflow CollapseAll")]
         public void Click_Workflow_CollapseAll()
         {
-            #region Variable Declarations
-            WpfToggleButton collapseAllToggleButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton;
-            #endregion
-            Assert.AreEqual(Click_Workflow_CollapseAllParams.CollapseAllToggleButtonExists, collapseAllToggleButton.Exists, "Expand all button does not exist");
-            collapseAllToggleButton.Pressed = Click_Workflow_CollapseAllParams.CollapseAllToggleButtonPressed;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Exists, "Expand all button does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Pressed = true;
         }
+
         [When(@"I Click Workflow ExpandAll")]
         public void Click_Workflow_ExpandAll()
         {
-            #region Variable Declarations
-            WpfToggleButton expandAllToggleButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton;
-            WpfCustom multiAssign = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-            #endregion
-            Assert.AreEqual(Click_Workflow_ExpandAllParams.ExpandAllToggleButtonExists, expandAllToggleButton.Exists, "Expand all button does not exist");
-            expandAllToggleButton.Pressed = Click_Workflow_ExpandAllParams.ExpandAllToggleButtonPressed;
-            Assert.AreEqual(Click_Workflow_ExpandAllParams.MultiAssignExists, multiAssign.Exists, "Assign tool large view on the design surface does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton.Exists, "Expand all button does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton.Pressed = true;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool large view on the design surface does not exist");
         }
+
         [When(@"I Click Write Done Button")]
         public void Click_Write_Done_Button()
         {
-            #region Variable Declarations
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.DoneButton;
-            #endregion
-            Mouse.Click(doneButton, new Point(35, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.DoneButton, new Point(35, 6));
         }
+
         [When(@"I Click Yes On The Confirm Delete")]
         public void Click_Yes_On_The_Confirm_Delete()
         {
-            #region Variable Declarations
-            WpfButton yesButton = MessageBoxWindow.YesButton;
-            #endregion
-            Mouse.Click(yesButton, new Point(39, 17));
+            Mouse.Click(MessageBoxWindow.YesButton, new Point(39, 17));
         }
+
         [When(@"I Click Zip Done Button")]
         public void Click_Zip_Done_Button()
         {
-            #region Variable Declarations
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.DoneButton;
-            #endregion
-            Mouse.Click(doneButton, new Point(35, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.DoneButton, new Point(35, 6));
         }
+
         [When(@"I Close Data Merge LargeView")]
         public void Close_Data_Merge_LargeView()
         {
-            #region Variable Declarations
-            WpfCustom dataMerge = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
-            #endregion
-            Mouse.DoubleClick(dataMerge, new Point(257, 7));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge, new Point(257, 7));
         }
+
         [When(@"I CopyAndPaste Decision Tool On The Designer")]
         public void CopyAndPaste_Decision_Tool_On_The_Designer()
         {
-            #region Variable Declarations
-            WpfCustom decision = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision;
-            WpfMenuItem copy = MainStudioWindow.DesignSurfaceContextMenu.Copy;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfMenuItem paste = MainStudioWindow.DesignSurfaceContextMenu.Paste;
-            #endregion
-            Mouse.Click(decision, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
-            Mouse.Click(copy, new Point(64, 15));
-            Mouse.Click(flowchart, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
-            Mouse.Click(paste, new Point(64, 15));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Copy, new Point(64, 15));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Paste, new Point(64, 15));
         }
+
         [When(@"I Create SubFolder In Folder1")]
         public void Create_SubFolder_In_Folder1()
         {
-            #region Variable Declarations
-            WpfTreeItem secondItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem;
-            WpfMenuItem newFolderMenuItem = MainStudioWindow.ExplorerContextMenu.NewFolderMenuItem;
-            WpfEdit itemEdit = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem.ItemEdit;
-            WpfTreeItem firstSubItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem;
-            #endregion
-            Mouse.Click(secondItem, MouseButtons.Right, ModifierKeys.None, new Point(126, 12));
-            Mouse.Click(newFolderMenuItem, new Point(78, 15));
-            itemEdit.Text = Create_SubFolder_In_Folder1Params.ItemEditText;
-            Keyboard.SendKeys(firstSubItem, Create_SubFolder_In_Folder1Params.FirstSubItemSendKeys, ModifierKeys.None);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(126, 12));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewFolderMenuItem, new Point(78, 15));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem.ItemEdit.Text = Create_SubFolder_In_Folder1Params.ItemEditText;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem, Create_SubFolder_In_Folder1Params.FirstSubItemSendKeys, ModifierKeys.None);
         }
+
         [When(@"I Delete Nested Hello World")]
         public void Delete_Nested_Hello_World()
         {
-            #region Variable Declarations
-            WpfTreeItem firstSubItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem;
-            WpfMenuItem delete = MainStudioWindow.ExplorerContextMenu.Delete;
-            WpfButton yesButton = MessageBoxWindow.YesButton;
-            #endregion
-            Mouse.Click(firstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(93, 14));
-            Mouse.Click(delete, new Point(61, 15));
-            Mouse.Click(yesButton, new Point(7, 12));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(93, 14));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete, new Point(61, 15));
+            Mouse.Click(MessageBoxWindow.YesButton, new Point(7, 12));
         }
+
         [When(@"I DisplayStartNodeContextMenu")]
         public void DisplayStartNodeContextMenu()
         {
-            #region Variable Declarations
-            WpfCustom startNode = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
-            WpfMenuItem debugInputsMenuItem = StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugInputsMenuItem;
-            WpfMenuItem debugStudioMenuItem = StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugStudioMenuItem;
-            WpfMenuItem debugBrowserMenuItem = StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugBrowserMenuItem;
-            WpfMenuItem scheduleMenuItem = StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ScheduleMenuItem;
-            WpfMenuItem testEditorMenuItem = StartNodePopupWindow.CustomWindow.StartNodeItemMenu.TestEditorMenuItem;
-            WpfMenuItem runAllTestsMenuItem = StartNodePopupWindow.CustomWindow.StartNodeItemMenu.RunAllTestsMenuItem;
-            WpfMenuItem duplicateMenuItem = StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DuplicateMenuItem;
-            WpfMenuItem deployMenuItem = StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DeployMenuItem;
-            WpfMenuItem showDependenciesMenuItem = StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ShowDependenciesMenuItem;
-            WpfMenuItem viewSwaggerMenuItem = StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ViewSwaggerMenuItem;
-            WpfMenuItem copyURLtoClipboardMenuItem = StartNodePopupWindow.CustomWindow.StartNodeItemMenu.CopyURLtoClipboardMenuItem;
-            #endregion
-            Mouse.Click(startNode, MouseButtons.Right, ModifierKeys.None, new Point(179, 31));
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.DebugInputsMenuItemExists, debugInputsMenuItem.Exists, "Debug Inputs does not exist on the Start Node context menu");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.DebugStudioMenuItemExists, debugStudioMenuItem.Exists, "Debug Studio does not exist on the Start Node context menu");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.DebugBrowserMenuItemExists, debugBrowserMenuItem.Exists, "Debug Browser does not exist on the Start Node context menu");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.ScheduleMenuItemExists, scheduleMenuItem.Exists, "Schedule does not exist on the Start Node context menu");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.TestEditorMenuItemExists, testEditorMenuItem.Exists, "Test Editor does not exist on the Start Node context menu");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.TestEditorMenuItemEnabled, testEditorMenuItem.Enabled, "Test Editor must be disabled on a new workflow");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.DebugInputsMenuItemEnabled, debugInputsMenuItem.Enabled, "Debug Inputs must be enabled on a new workflow");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.DebugStudioMenuItemEnabled, debugStudioMenuItem.Enabled, "Debug Studio must be enabled on a new workflow");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.DebugBrowserMenuItemEnabled, debugBrowserMenuItem.Enabled, "Debug Browser must be enabled on a new workflow");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.ScheduleMenuItemEnabled, scheduleMenuItem.Enabled, "Schedule must be disabled on a new workflow");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.RunAllTestsMenuItemExists, runAllTestsMenuItem.Exists, "Run All Tests does not exist on the Start Node context menu");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.RunAllTestsMenuItemEnabled, runAllTestsMenuItem.Enabled, "Run All Tests must be disabled on a new workflow");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.DuplicateMenuItemEnabled, duplicateMenuItem.Enabled, "Duplicate must be disabled on a new workflow");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.DuplicateMenuItemExists, duplicateMenuItem.Exists, "Duplicate does not exist on the Start Node context menu");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.DeployMenuItemExists, deployMenuItem.Exists, "Deploy does not exist on the Start Node context menu");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.DeployMenuItemEnabled, deployMenuItem.Enabled, "Deploy must be disabled on a new workflow");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.ShowDependenciesMenuItemEnabled, showDependenciesMenuItem.Enabled, "Show Dependencies must be disabled on a new workflow");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.ShowDependenciesMenuItemExists, showDependenciesMenuItem.Exists, "Show Dependencies does not exist on the Start Node context menu");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.ViewSwaggerMenuItemExists, viewSwaggerMenuItem.Exists, "View Swagger does not exist on the Start Node context menu");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.ViewSwaggerMenuItemEnabled, viewSwaggerMenuItem.Enabled, "View Swagger must be disabled on a new workflow");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.CopyURLtoClipboardMenuItemEnabled, copyURLtoClipboardMenuItem.Enabled, "Copy Url to Clipboard must be disabled on a new workflow");
-            Assert.AreEqual(DisplayStartNodeContextMenuExpectedValues.CopyURLtoClipboardMenuItemExists, copyURLtoClipboardMenuItem.Exists, "Copy Url to Clipboard does not exist on the Start Node context menu");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, MouseButtons.Right, ModifierKeys.None, new Point(179, 31));
         }
+
         [When(@"I DoubleClick Explorer First Remote Server First Item")]
         public void DoubleClick_Explorer_First_Remote_Server_First_Item()
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
-            #endregion
-            Mouse.DoubleClick(firstItem, new Point(63, 11));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(63, 11));
         }
+
         [When(@"I DoubleClick Explorer Localhost First Item")]
         public void DoubleClick_Explorer_Localhost_First_Item()
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            #endregion
-            Mouse.DoubleClick(firstItem, new Point(63, 11));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(63, 11));
         }
+
         [When(@"I Drag DeleteWeb Toolbox Onto Workflow Surface")]
         public void Drag_DeleteWeb_Toolbox_Onto_Workflow_Surface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem dELETE = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.DELETE;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom webDelete = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete;
-            #endregion
-            searchTextBox.Text = Drag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(306, 126));
-            Mouse.StartDragging(dELETE, new Point(16, 25));
-            Mouse.StopDragging(flowchart, new Point(306, 126));
-            Assert.AreEqual(Drag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams.WebDeleteExists, webDelete.Exists, "Delete Web connectoer does not exist on the design surface after drag and drop fr" +
-                    "om toolbox.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "DELETE";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 126));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.DELETE, new Point(16, 25));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 126));
+            Assert.AreEqual(Drag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams.WebDeleteExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.Exists, "Delete Web connectoer does not exist on the design surface after drag and drop from toolbox.");
         }
+
         [When(@"I Drag Dice Onto Dice On The DesignSurface")]
         public void Drag_Dice_Onto_Dice_On_The_DesignSurface()
         {
-            #region Variable Declarations
-            WpfTreeItem firstSubItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector2 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector2;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton;
-            #endregion
-            flowchart.EnsureClickable(new Point(301, 228));
-            Mouse.StartDragging(firstSubItem, new Point(49, 10));
-            Mouse.StopDragging(flowchart, new Point(301, 228));
-            Assert.AreEqual(Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams.Connector2Exists, connector2.Exists, "Second connector does not exist on design surface.");
-            Assert.AreEqual(Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(301, 228));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem, new Point(49, 10));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(301, 228));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector2.Exists, "Second connector does not exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
         }
+
         [When(@"I Drag DotNet DLL Connector Onto DesignSurface")]
         public void Drag_DotNet_DLL_Connector_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem dotNetDLL = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLL;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom dotNetDll1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
-            #endregion
-            searchTextBox.Text = Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(308, 127));
-            Mouse.StartDragging(dotNetDLL, new Point(16, 25));
-            Mouse.StopDragging(flowchart, new Point(308, 127));
-            Assert.AreEqual(Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.DotNetDllExists, dotNetDll1.Exists, "DotNet DLL tool does not exist on the design surface");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 127));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLL, new Point(16, 25));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 127));
+            Assert.AreEqual(Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.AreEqual(Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.DotNetDllExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.Exists, "DotNet DLL tool does not exist on the design surface");
         }
+
         [When(@"I Drag Explorer Localhost First Item Onto Workflow Design Surface")]
         public void Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface()
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            Assert.AreEqual(Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams.FirstItemExists, firstItem.Exists, "No items to drag found in the explorer tree.");
-            Mouse.Click(firstItem, new Point(64, 5));
-            flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstItem, new Point(64, 5));
-            Mouse.StopDragging(flowchart, new Point(307, 128));
-            Assert.AreEqual(Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            Assert.AreEqual(Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams.FirstItemExists, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "No items to drag found in the explorer tree.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(64, 5));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(64, 5));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
+            Assert.AreEqual(Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Explorer Localhost First Items First Sub Item Onto Workflow Design Surface")]
         public void Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface()
         {
-            #region Variable Declarations
-            WpfTreeItem firstSubItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            Assert.AreEqual(Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.FirstSubItemExists, firstSubItem.Exists, "No items to drag found in the explorer tree.");
-            Mouse.Click(firstSubItem, new Point(90, 10));
-            flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstSubItem, new Point(90, 10));
-            Mouse.StopDragging(flowchart, new Point(307, 128));
-            Assert.AreEqual(Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            Assert.AreEqual(Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.FirstSubItemExists, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists, "No items to drag found in the explorer tree.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, new Point(90, 10));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, new Point(90, 10));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Explorer Localhost Second Items First Sub Item Onto Workflow Design Surface")]
         public void Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_Surface()
         {
-            #region Variable Declarations
-            WpfTreeItem firstSubItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            Assert.AreEqual(Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.FirstSubItemExists, firstSubItem.Exists, "No items to drag found in the explorer tree.");
-            Mouse.Click(firstSubItem, new Point(90, 10));
-            flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstSubItem, new Point(90, 10));
-            Mouse.StopDragging(flowchart, new Point(307, 128));
-            Assert.AreEqual(Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem.Exists, "No items to drag found in the explorer tree.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem, new Point(90, 10));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem, new Point(90, 10));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
+            Assert.AreEqual(Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Explorer Remote workflow1 Onto Workflow Design Surface")]
         public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom subWorkflow = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
-            #endregion
-            Assert.AreEqual(Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
-            Mouse.Click(firstItem, new Point(64, 5));
-            flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstItem, new Point(64, 5));
-            Mouse.StopDragging(flowchart, new Point(307, 128));
-            Assert.AreEqual(Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SubWorkflowExists, subWorkflow.Exists, "Workflow on the design surface does not exist");
+            Assert.AreEqual(Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.FirstItemExists, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists, "Explorer first remote server does not contain any items.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(64, 5));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(64, 5));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow.Exists, "Workflow on the design surface does not exist");
         }
+
         [When(@"I Drag GET Web Connector Onto DesignSurface")]
         public void Drag_GET_Web_Connector_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem gET = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.GET;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom webGet = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
-            #endregion
-            searchTextBox.Text = Drag_GET_Web_Connector_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(306, 126));
-            Mouse.StartDragging(gET, new Point(16, 25));
-            Mouse.StopDragging(flowchart, new Point(306, 126));
-            Assert.AreEqual(Drag_GET_Web_Connector_Onto_DesignSurfaceParams.WebGetExists, webGet.Exists, "GET Web connectoer does not exist on the design surface after drag and drop from " +
-                    "toolbox.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = Drag_GET_Web_Connector_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 126));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.GET, new Point(16, 25));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 126));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.Exists, "GET Web connectoer does not exist on the design surface after drag and drop from toolbox.");
         }
+
         [When(@"I Drag GetWeb RequestTool Onto DesignSurface")]
         public void Drag_GetWeb_RequestTool_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem webRequest = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom webRequest1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
-            #endregion
-            searchTextBox.Text = Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(305, 124));
-            Mouse.StartDragging(webRequest, new Point(12, 3));
-            Mouse.StopDragging(flowchart, new Point(305, 124));
-            Assert.AreEqual(Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.WebRequestExists, webRequest1.Exists, "Web Get Request small view does not exist on the design surface");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 124));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest, new Point(12, 3));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 124));
+            Assert.AreEqual(Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.AreEqual(Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.WebRequestExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.Exists, "Web Get Request small view does not exist on the design surface");
         }
+
         [When(@"I Drag PostWeb RequestTool Onto DesignSurface")]
         public void Drag_PostWeb_RequestTool_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem pOST = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.POST;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom webPost = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
-            #endregion
-            searchTextBox.Text = Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(306, 128));
-            Mouse.StartDragging(pOST, new Point(20, 35));
-            Mouse.StopDragging(flowchart, new Point(306, 128));
-            Assert.AreEqual(Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams.WebPostExists, webPost.Exists, "Web Post Request small view does not exist on the design surface");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.POST, new Point(20, 35));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.Exists, "Web Post Request small view does not exist on the design surface");
         }
+
         [When(@"I Drag PutWeb Tool Onto DesignSurface")]
         public void Drag_PutWeb_Tool_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem pUT = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.PUT;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom webPut = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut;
-            #endregion
-            searchTextBox.Text = Drag_PutWeb_Tool_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(306, 126));
-            Mouse.StartDragging(pUT, new Point(16, 25));
-            Mouse.StopDragging(flowchart, new Point(306, 126));
-            Assert.AreEqual(Drag_PutWeb_Tool_Onto_DesignSurfaceParams.WebPutExists, webPut.Exists, "Put Web connectoer does not exist on the design surface after drag and drop from " +
-                    "toolbox.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "PUT";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 126));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.PUT, new Point(16, 25));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 126));
+            Assert.AreEqual(Drag_PutWeb_Tool_Onto_DesignSurfaceParams.WebPutExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.Exists, "Put Web connectoer does not exist on the design surface after drag and drop from toolbox.");
         }
+
         [When(@"I Drag Toolbox AggregateCalculate Onto DesignSurface")]
         public void Drag_Toolbox_AggregateCalculate_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem aggregateCalculate = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.AggregateCalculate;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfComboBox fxComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.SmallViewContentCustom.fxComboBox;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Aggregate Calculate";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(aggregateCalculate, new Point(13, 17));
-            Mouse.StopDragging(flowchart, new Point(307, 128));
-            Assert.AreEqual(Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams.fxComboBoxExists, fxComboBox.Exists, "fx combobox does not exist after dragging Aggregate Calculate tool onto design su" +
-                    "rface");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.AggregateCalculate, new Point(13, 17));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.SmallViewContentCustom.fxComboBox.Exists, "fx combobox does not exist after dragging Aggregate Calculate tool onto design surface");
         }
+
         [When(@"I Drag Toolbox AssignObject Onto DesignSurface")]
         public void Drag_Toolbox_AssignObject_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem assignObject = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign Object";
             Playback.Wait(2000);
-            Assert.AreEqual(Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams.AssignObjectExists, assignObject.Exists, "Toolbox AssignObject does not exist");
-            flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(assignObject, new Point(13, 17));
-            Mouse.StopDragging(flowchart, new Point(307, 128));
-            Assert.AreEqual(Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject.Exists, "Toolbox AssignObject does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject, new Point(13, 17));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
+            Assert.AreEqual(Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox Base Conversion Onto DesignSurface")]
         public void Drag_Toolbox_Base_Conversion_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem baseConvert = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.BaseConvert;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom baseConvert1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Base Convert";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(303, 128));
-            Mouse.StartDragging(baseConvert, new Point(12, 12));
-            Mouse.StopDragging(flowchart, new Point(303, 128));
-            Assert.AreEqual(Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams.BaseConvertExists, baseConvert1.Exists, "Base Conversion on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(303, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.BaseConvert, new Point(12, 12));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(303, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.Exists, "Base Conversion on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Calculate Onto DesignSurface")]
         public void Drag_Toolbox_Calculate_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem calculate = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Calculate;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom calculate1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Calculate_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Calculate";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(305, 131));
-            Mouse.StartDragging(calculate, new Point(59, -17));
-            Mouse.StopDragging(flowchart, new Point(305, 131));
-            Assert.AreEqual(Drag_Toolbox_Calculate_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Calculate_Onto_DesignSurfaceParams.CalculateExists, calculate1.Exists, "Calculate tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 131));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Calculate, new Point(59, -17));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 131));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.Exists, "Calculate tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Case Conversion Onto DesignSurface")]
         public void Drag_Toolbox_Case_Conversion_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem caseConvert = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.CaseConvert;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom caseConvert1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(303, 130));
-            Mouse.StartDragging(caseConvert, new Point(19, 13));
-            Mouse.StopDragging(flowchart, new Point(303, 130));
-            Assert.AreEqual(Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams.CaseConvertExists, caseConvert1.Exists, "Case Conversion on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Case Convert";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(303, 130));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.CaseConvert, new Point(19, 13));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(303, 130));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.Exists, "Case Conversion on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox CMD Line Onto DesignSurface")]
         public void Drag_Toolbox_CMD_Line_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem cMDScript = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.CMDScript;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom executeCommandLine = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
-            WpfComboBox scriptIntellisenseTextbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ScriptIntellisenseTextbox;
-            WpfComboBox resultIntellisenseTextbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ResultIntellisenseTextbox;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(305, 122));
-            Mouse.StartDragging(cMDScript, new Point(19, 19));
-            Mouse.StopDragging(flowchart, new Point(305, 122));
-            Assert.AreEqual(Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams.ExecuteCommandLineExists, executeCommandLine.Exists, "CMD Line tool on the design surface tool does not exist");
-            Assert.AreEqual(Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams.ScriptIntellisenseTextboxExists, scriptIntellisenseTextbox.Exists, "CMD script textbox does not exist after dragging onto design surface.");
-            Assert.AreEqual(Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams.ResultIntellisenseTextboxExists, resultIntellisenseTextbox.Exists, "CMD script result textbox does not exist after dragging onto design surface.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "CMD Script";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 122));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.CMDScript, new Point(19, 19));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 122));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.Exists, "CMD Line tool on the design surface tool does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ScriptIntellisenseTextbox.Exists, "CMD script textbox does not exist after dragging onto design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ResultIntellisenseTextbox.Exists, "CMD script result textbox does not exist after dragging onto design surface.");
         }
+
         [When(@"I Drag Toolbox Comment Onto DesignSurface")]
         public void Drag_Toolbox_Comment_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem comment = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom comment1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Comment_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(308, 129));
-            Mouse.StartDragging(comment, new Point(40, 15));
-            Mouse.StopDragging(flowchart, new Point(308, 129));
-            Assert.AreEqual(Drag_Toolbox_Comment_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Comment_Onto_DesignSurfaceParams.CommentExists, comment1.Exists, "Comment tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Comment";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment, new Point(40, 15));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 129));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.Exists, "Comment tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Copy Onto DesignSurface")]
         public void Drag_Toolbox_Copy_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem copy = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Copy;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom pathCopy = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Copy_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Copy";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(310, 129));
-            Mouse.StartDragging(copy, new Point(19, -3));
-            Mouse.StopDragging(flowchart, new Point(310, 129));
-            Assert.AreEqual(Drag_Toolbox_Copy_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Copy_Onto_DesignSurfaceParams.PathCopyExists, pathCopy.Exists, "Copy on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(310, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Copy, new Point(19, -3));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(310, 129));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.Exists, "Copy on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Count Records Onto DesignSurface")]
         public void Drag_Toolbox_Count_Records_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem count = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Count;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(307, 125));
-            Mouse.StartDragging(count, new Point(13, 18));
-            Mouse.StopDragging(flowchart, new Point(307, 125));
-            Assert.AreEqual(Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Count";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 125));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Count, new Point(13, 18));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 125));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox Create Onto DesignSurface")]
         public void Drag_Toolbox_Create_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem create = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Create;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom pathCreate = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Create_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(308, 131));
-            Mouse.StartDragging(create, new Point(9, 16));
-            Mouse.StopDragging(flowchart, new Point(308, 131));
-            Assert.AreEqual(Drag_Toolbox_Create_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Create_Onto_DesignSurfaceParams.PathCreateExists, pathCreate.Exists, "Create tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Create";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 131));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Create, new Point(9, 16));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 131));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.Exists, "Create tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Data Merge Onto DesignSurface")]
         public void Drag_Toolbox_Data_Merge_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem dataMerge = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataMerge;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom dataMerge1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(305, 133));
-            Mouse.StartDragging(dataMerge, new Point(54, 23));
-            Mouse.StopDragging(flowchart, new Point(305, 133));
-            Assert.AreEqual(Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams.DataMergeExists, dataMerge1.Exists, "Data Merge on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Data Merge";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 133));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataMerge, new Point(54, 23));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 133));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.Exists, "Data Merge on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Data Split Onto DesignSurface")]
         public void Drag_Toolbox_Data_Split_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem dataSplit = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataSplit;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom dataSplit1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(308, 129));
-            Mouse.StartDragging(dataSplit, new Point(3, 8));
-            Mouse.StopDragging(flowchart, new Point(308, 129));
-            Assert.AreEqual(Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams.DataSplitExists, dataSplit1.Exists, "Data Split on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Data Split";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataSplit, new Point(3, 8));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 129));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.Exists, "Data Split on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Date And Time Onto DesignSurface")]
         public void Drag_Toolbox_Date_And_Time_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem dateTime = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTime;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom dateTime1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(304, 127));
-            Mouse.StartDragging(dateTime, new Point(20, -1));
-            Mouse.StopDragging(flowchart, new Point(304, 127));
-            Assert.AreEqual(Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams.DateTimeExists, dateTime1.Exists, "Date and Time tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Date Time";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(304, 127));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTime, new Point(20, -1));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(304, 127));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.Exists, "Date and Time tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox DateTime Difference Onto DesignSurface")]
         public void Drag_Toolbox_DateTime_Difference_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem dateTimeDifference = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTimeDifference;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom dateTimeDifference1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Date Time Diff";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(306, 131));
-            Mouse.StartDragging(dateTimeDifference, new Point(48, 7));
-            Mouse.StopDragging(flowchart, new Point(306, 131));
-            Assert.AreEqual(Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.DateTimeDifferenceExists, dateTimeDifference1.Exists, "Date And Time Difference tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 131));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTimeDifference, new Point(48, 7));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 131));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.Exists, "Date And Time Difference tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Decision Onto DesignSurface")]
         public void Drag_Toolbox_Decision_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem decision = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfButton doneButton = DecisionOrSwitchDialog.DoneButton;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Decision_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(309, 128));
-            Mouse.StartDragging(decision, new Point(16, 11));
-            Mouse.StopDragging(flowchart, new Point(309, 128));
-            Assert.AreEqual(Drag_Toolbox_Decision_Onto_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Decision dialog done button does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Decision";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(309, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision, new Point(16, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(309, 128));
+            Assert.IsTrue(DecisionOrSwitchDialog.DoneButton.Exists, "Decision dialog done button does not exist");
         }
+
         [When(@"I Drag Toolbox Delete Onto DesignSurface")]
         public void Drag_Toolbox_Delete_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem delete = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Delete;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom pathDelete = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Delete_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Delete";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(306, 125));
-            Mouse.StartDragging(delete, new Point(13, 9));
-            Mouse.StopDragging(flowchart, new Point(306, 125));
-            Assert.AreEqual(Drag_Toolbox_Delete_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Delete_Onto_DesignSurfaceParams.PathDeleteExists, pathDelete.Exists, "Delete tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 125));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Delete, new Point(13, 9));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 125));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.Exists, "Delete tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Delete Record Onto DesignSurface")]
         public void Drag_Toolbox_Delete_Record_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem delete = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Delete;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Delete";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(309, 128));
-            Mouse.StartDragging(delete, new Point(1, 15));
-            Mouse.StopDragging(flowchart, new Point(309, 128));
-            Assert.AreEqual(Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(309, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Delete, new Point(1, 15));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(309, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox Dropbox Delete Onto DesignSurface")]
         public void Drag_Toolbox_Dropbox_Delete_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem delete = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Delete;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom dropboxDelete = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(307, 127));
-            Mouse.StartDragging(delete, new Point(240, 550));
-            Mouse.StopDragging(flowchart, new Point(307, 127));
-            Assert.AreEqual(Drag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams.DropboxDeleteExists, dropboxDelete.Exists, "Dropbox delete tool does not exist on design surface after dragging in from the t" +
-                    "oolbox.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Dropbox";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 127));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Delete, new Point(240, 550));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 127));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete.Exists, "Dropbox delete tool does not exist on design surface after dragging in from the toolbox.");
         }
+
         [When(@"I Drag Toolbox Dropbox Download Onto DesignSurface")]
         public void Drag_Toolbox_Dropbox_Download_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem download = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Download;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom dropboxDownload = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(307, 129));
-            Mouse.StartDragging(download, new Point(16, 6));
-            Mouse.StopDragging(flowchart, new Point(307, 129));
-            Assert.AreEqual(Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams.DropboxDownloadExists, dropboxDownload.Exists, "Dropbox download tool does not exist on design surface after dragging in from the" +
-                    " toolbox.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Dropbox";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Download, new Point(16, 6));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 129));
+            Assert.AreEqual(Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams.DropboxDownloadExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload.Exists, "Dropbox download tool does not exist on design surface after dragging in from the toolbox.");
         }
+
         [When(@"I Drag Toolbox Dropbox FileList Onto DesignSurface")]
         public void Drag_Toolbox_Dropbox_FileList_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem listContents = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.ListContents;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom dropboxFileList = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(306, 128));
-            Mouse.StartDragging(listContents, new Point(124, 550));
-            Mouse.StopDragging(flowchart, new Point(306, 128));
-            Assert.AreEqual(Drag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams.DropboxFileListExists, dropboxFileList.Exists, "Dropbox list contents tool does not exist on design surface after dragging in fro" +
-                    "m the toolbox.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Dropbox";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.ListContents, new Point(124, 550));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList.Exists, "Dropbox list contents tool does not exist on design surface after dragging in from the toolbox.");
         }
+
         [When(@"I Drag Toolbox Dropbox Upload Onto DesignSurface")]
         public void Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem upload = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Upload;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom dropboxUpload = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxUpload;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(308, 126));
-            Mouse.StartDragging(upload, new Point(66, 550));
-            Mouse.StopDragging(flowchart, new Point(308, 126));
-            Assert.AreEqual(Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams.DropboxUploadExists, dropboxUpload.Exists, "Dropbox upload tool does not exist on design surface after dragging in from the t" +
-                    "oolbox.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Dropbox";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 126));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Upload, new Point(66, 550));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 126));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxUpload.Exists, "Dropbox upload tool does not exist on design surface after dragging in from the toolbox.");
         }
+
         [When(@"I Drag Toolbox Exchange Email Onto DesignSurface")]
         public void Drag_Toolbox_Exchange_Email_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem exchangeSend = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.ExchangeSend;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(308, 129));
-            Mouse.StartDragging(exchangeSend, new Point(16, -39));
-            Mouse.StopDragging(flowchart, new Point(308, 129));
-            Assert.AreEqual(Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Exchange Email";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.ExchangeSend, new Point(16, -39));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 129));
+            Assert.AreEqual(Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox Find Index Onto DesignSurface")]
         public void Drag_Toolbox_Find_Index_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem findIndex = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.FindIndex;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom findIndex1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(305, 131));
-            Mouse.StartDragging(findIndex, new Point(9, 5));
-            Mouse.StopDragging(flowchart, new Point(305, 131));
-            Assert.AreEqual(Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams.FindIndexExists, findIndex1.Exists, "Find Index on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Find Index";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 131));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.FindIndex, new Point(9, 5));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 131));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.Exists, "Find Index on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Find Record Index Onto DesignSurface")]
         public void Drag_Toolbox_Find_Record_Index_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem findRecords = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.FindRecords;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Find Records";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(307, 130));
-            Mouse.StartDragging(findRecords, new Point(8, 8));
-            Mouse.StopDragging(flowchart, new Point(307, 130));
-            Assert.AreEqual(Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 130));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.FindRecords, new Point(8, 8));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 130));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox For Each Onto DesignSurface")]
         public void Drag_Toolbox_For_Each_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem forEach = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.ForEach;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom forEach1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
-            WpfComboBox forEachTypeComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ForEachTypeComboBox;
-            WpfEdit textbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.FromIntellisenseTextbox.Textbox;
-            WpfCustom dropActivityHere = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHere;
-            WpfEdit textbox1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ToIntellisenseTextbox.Textbox;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(307, 129));
-            Mouse.StartDragging(forEach, new Point(40, 19));
-            Mouse.StopDragging(flowchart, new Point(307, 129));
-            Assert.AreEqual(Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.ForEachExists, forEach1.Exists, "For Each tool on the design surface does not exist");
-            Assert.AreEqual(Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.ForEachTypeComboBoxExists, forEachTypeComboBox.Exists, "Type dropdown does not exist on for each on the design surface.");
-            Assert.AreEqual(Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.TextboxExists, textbox.Exists, "Start textbox in in range foreach on the design surface does not exist.");
-            Assert.AreEqual(Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.DropActivityHereExists, dropActivityHere.Exists, "Activity drop box does not exist on for each.");
-            Assert.AreEqual(Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.TextboxExists1, textbox1.Exists, "End textbox in in range foreach on the design surface does not exist.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "ForEach";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.ForEach, new Point(40, 19));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 129));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.Exists, "For Each tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Format Number Onto DesignSurface")]
         public void Drag_Toolbox_Format_Number_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem formatNumber = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.FormatNumber;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom formatNumber1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Format Number";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(305, 131));
-            Mouse.StartDragging(formatNumber, new Point(18, 11));
-            Mouse.StopDragging(flowchart, new Point(305, 131));
-            Assert.AreEqual(Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.FormatNumberExists, formatNumber1.Exists, "Format Number tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 131));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.FormatNumber, new Point(18, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 131));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.Exists, "Format Number tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Javascript Onto DesignSurface")]
         public void Drag_Toolbox_Javascript_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem javaScript = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.JavaScript;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom javascript1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript;
-            WpfComboBox scriptIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.SmallView.ScriptIntellisenseCombobox;
-            WpfComboBox resultsIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.SmallView.ResultsIntellisenseCombobox;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Javascript_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(307, 130));
-            Mouse.StartDragging(javaScript, new Point(49, 17));
-            Mouse.StopDragging(flowchart, new Point(307, 130));
-            Assert.AreEqual(Drag_Toolbox_Javascript_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Javascript_Onto_DesignSurfaceParams.JavascriptExists, javascript1.Exists, "Javascript tool on the design surface does not exist");
-            Assert.AreEqual(Drag_Toolbox_Javascript_Onto_DesignSurfaceParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "JavaScript script textbox does not exist after dragging on tool from the toolbox." +
-                    "");
-            Assert.AreEqual(Drag_Toolbox_Javascript_Onto_DesignSurfaceParams.ResultsIntellisenseComboboxExists, resultsIntellisenseCombobox.Exists, "JavaScript result textbox does not exist after dragging on tool from the toolbox." +
-                    "");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Javascript";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 130));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.JavaScript, new Point(49, 17));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 130));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.Exists, "Javascript tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox JSON Onto DesignSurface")]
         public void Drag_Toolbox_JSON_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem createJSON = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.CreateJSON;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom createJson1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_JSON_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(305, 127));
-            Mouse.StartDragging(createJSON, new Point(0, 10));
-            Mouse.StopDragging(flowchart, new Point(305, 127));
-            Assert.AreEqual(Drag_Toolbox_JSON_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_JSON_Onto_DesignSurfaceParams.CreateJsonExists, createJson1.Exists, "Create JSON tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Create JSON";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 127));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.CreateJSON, new Point(0, 10));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 127));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.Exists, "Create JSON tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Length Onto DesignSurface")]
         public void Drag_Toolbox_Length_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem length = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Length;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom length1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Length_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Length";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(308, 125));
-            Mouse.StartDragging(length, new Point(16, 6));
-            Mouse.StopDragging(flowchart, new Point(308, 125));
-            Assert.AreEqual(Drag_Toolbox_Length_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Length_Onto_DesignSurfaceParams.LengthExists, length1.Exists, "Length tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 125));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Length, new Point(16, 6));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 125));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.Exists, "Length tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Move Onto DesignSurface")]
         public void Drag_Toolbox_Move_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem move = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Move;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom pathMove = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Move_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Move";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(306, 129));
-            Mouse.StartDragging(move, new Point(32, 4));
-            Mouse.StopDragging(flowchart, new Point(306, 129));
-            Assert.AreEqual(Drag_Toolbox_Move_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Move_Onto_DesignSurfaceParams.PathMoveExists, pathMove.Exists, "Move tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Move, new Point(32, 4));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 129));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.Exists, "Move tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox MultiAssign Onto DesignSurface")]
         public void Drag_Toolbox_MultiAssign_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem multiAssign = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfEdit textbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1000);
-            Assert.AreEqual(Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.MultiAssignExists, multiAssign.Exists, "Toolbox Multiassign does not exist");
-            Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(multiAssign, new Point(13, 17));
-            Mouse.StopDragging(flowchart, new Point(307, 128));
-            Assert.AreEqual(Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.TextboxExists, textbox.Exists, "Assign small view row 1 variable textbox does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign, new Point(13, 17));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox.Exists, "Assign small view row 1 variable textbox does not exist");
         }
+
         [When(@"I Drag Toolbox MySql Database Onto DesignSurface")]
         public void Drag_Toolbox_MySql_Database_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem mySQL = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.MySQL;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(306, 130));
-            Mouse.StartDragging(mySQL, new Point(10, 15));
-            Mouse.StopDragging(flowchart, new Point(306, 130));
-            Assert.AreEqual(Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "MySQL";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 130));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.MySQL, new Point(10, 15));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 130));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox ODBC Dtatbase Onto DesignSurface")]
         public void Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem oDBC = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.ODBC;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(306, 130));
-            Mouse.StartDragging(oDBC, new Point(10, 15));
-            Mouse.StopDragging(flowchart, new Point(306, 130));
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "ODBC";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 130));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.ODBC, new Point(10, 15));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 130));
         }
+
         [When(@"I Drag Toolbox Oracle Database Onto DesignSurface")]
         public void Drag_Toolbox_Oracle_Database_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem oracle = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.Oracle;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(306, 130));
-            Mouse.StartDragging(oracle, new Point(11, 20));
-            Mouse.StopDragging(flowchart, new Point(306, 130));
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = Drag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 130));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.Oracle, new Point(11, 20));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 130));
         }
+
         [When(@"I Drag Toolbox PostgreSql Onto DesignSurface")]
         public void Drag_Toolbox_PostgreSql_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem postgre = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.Postgre;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_PostgreSql_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(306, 130));
-            Mouse.StartDragging(postgre, new Point(10, 15));
-            Mouse.StopDragging(flowchart, new Point(306, 130));
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Postgre";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 130));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.Postgre, new Point(10, 15));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 130));
         }
+
         [When(@"I Drag Toolbox Python Onto DesignSurface")]
         public void Drag_Toolbox_Python_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem python = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Python;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom python1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python;
-            WpfComboBox scriptIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ScriptIntellisenseCombobox;
-            WpfComboBox resultIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ResultIntellisenseCombobox;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Python_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(307, 130));
-            Mouse.StartDragging(python, new Point(49, 17));
-            Mouse.StopDragging(flowchart, new Point(307, 130));
-            Assert.AreEqual(Drag_Toolbox_Python_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Python_Onto_DesignSurfaceParams.PythonExists, python1.Exists, "Python tool on the design surface does not exist");
-            Assert.AreEqual(Drag_Toolbox_Python_Onto_DesignSurfaceParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "Python script textbox does not exist after dragging on tool from the toolbox.");
-            Assert.AreEqual(Drag_Toolbox_Python_Onto_DesignSurfaceParams.ResultIntellisenseComboboxExists, resultIntellisenseCombobox.Exists, "Python result textbox does not exist after dragging on tool from the toolbox.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Python";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 130));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Python, new Point(49, 17));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 130));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.Exists, "Python tool on the design surface does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ScriptIntellisenseCombobox.Exists, "Python script textbox does not exist after dragging on tool from the toolbox.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ResultIntellisenseCombobox.Exists, "Python result textbox does not exist after dragging on tool from the toolbox.");
         }
+
         [When(@"I Drag Toolbox RabbitMqConsume Onto DesignSurface")]
         public void Drag_Toolbox_RabbitMqConsume_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem rabbitMQConsume = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.RabbitMQConsume;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom smallViewContentCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.SmallViewContentCustom;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(309, 128));
-            Mouse.StartDragging(rabbitMQConsume, new Point(16, 11));
-            Mouse.StopDragging(flowchart, new Point(309, 128));
-            Assert.AreEqual(Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.SmallViewContentCustomExists, smallViewContentCustom.Exists, "Small View does not exist after dragging RabbitMq tool onto the design surface");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "RabbitMq Consume";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(309, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.RabbitMQConsume, new Point(16, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(309, 128));
+            Assert.AreEqual(Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.SmallViewContentCustomExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.SmallViewContentCustom.Exists, "Small View does not exist after dragging RabbitMq tool onto the design surface");
         }
+
         [When(@"I Drag Toolbox RabbitMqPublish Onto DesignSurface")]
         public void Drag_Toolbox_RabbitMqPublish_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem rabbitMQPublish = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.RabbitMQPublish;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom smallViewContentCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.SmallViewContentCustom;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(309, 128));
-            Mouse.StartDragging(rabbitMQPublish, new Point(16, 11));
-            Mouse.StopDragging(flowchart, new Point(309, 128));
-            Assert.AreEqual(Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams.SmallViewContentCustomExists, smallViewContentCustom.Exists, "Small view does not exist after dragging RabbitMq publish tool onto the design su" +
-                    "rface");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "RabbitMq Publish";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(309, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.RabbitMQPublish, new Point(16, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(309, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.SmallViewContentCustom.Exists, "Small view does not exist after dragging RabbitMq publish tool onto the design surface");
         }
+
         [When(@"I Drag Toolbox Random Onto DesignSurface")]
         public void Drag_Toolbox_Random_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem random = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Random;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom random1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Random_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1500);
-            flowchart.EnsureClickable(new Point(308, 127));
-            Mouse.StartDragging(random, new Point(9, -21));
-            Mouse.StopDragging(flowchart, new Point(308, 127));
-            Assert.AreEqual(Drag_Toolbox_Random_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Random_Onto_DesignSurfaceParams.RandomExists, random1.Exists, "Random tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Random";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 127));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Random, new Point(9, -21));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 127));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.Exists, "Random tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Read File Onto DesignSurface")]
         public void Drag_Toolbox_Read_File_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem readFile = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFile;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom fileRead = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Read_File_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Read File";
             Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(304, 125));
-            Mouse.StartDragging(readFile, new Point(12, 15));
-            Mouse.StopDragging(flowchart, new Point(304, 125));
-            Assert.AreEqual(Drag_Toolbox_Read_File_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Read_File_Onto_DesignSurfaceParams.FileReadExists, fileRead.Exists, "Read File tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(304, 125));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFile, new Point(12, 15));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(304, 125));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.Exists, "Read File tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Read Folder Onto DesignSurface")]
         public void Drag_Toolbox_Read_Folder_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem readFolder = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFolder;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom folderRead = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(305, 129));
-            Mouse.StartDragging(readFolder, new Point(14, 3));
-            Mouse.StopDragging(flowchart, new Point(305, 129));
-            Assert.AreEqual(Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams.FolderReadExists, folderRead.Exists, "Read folder tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Read Folder";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFolder, new Point(14, 3));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 129));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.Exists, "Read folder tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Rename Onto DesignSurface")]
         public void Drag_Toolbox_Rename_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem rename = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Rename;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom pathRename = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Rename_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(305, 128));
-            Mouse.StartDragging(rename, new Point(6, 11));
-            Mouse.StopDragging(flowchart, new Point(305, 128));
-            Assert.AreEqual(Drag_Toolbox_Rename_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Rename_Onto_DesignSurfaceParams.PathRenameExists, pathRename.Exists, "Rename tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Rename";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Rename, new Point(6, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.Exists, "Rename tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Replace Onto DesignSurface")]
         public void Drag_Toolbox_Replace_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem replace = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.Replace;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom replace1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Replace_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(306, 121));
-            Mouse.StartDragging(replace, new Point(16, 10));
-            Mouse.StopDragging(flowchart, new Point(306, 121));
-            Assert.AreEqual(Drag_Toolbox_Replace_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Replace_Onto_DesignSurfaceParams.ReplaceExists, replace1.Exists, "Replace on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Replace";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 121));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.Replace, new Point(16, 10));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 121));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.Exists, "Replace on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Ruby Onto DesignSurface")]
         public void Drag_Toolbox_Ruby_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem ruby = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Ruby;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom ruby1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby;
-            WpfComboBox scriptIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ScriptIntellisenseCombobox;
-            WpfComboBox resultIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ResultIntellisenseCombobox;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Ruby_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(307, 130));
-            Mouse.StartDragging(ruby, new Point(49, 17));
-            Mouse.StopDragging(flowchart, new Point(307, 130));
-            Assert.AreEqual(Drag_Toolbox_Ruby_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Ruby_Onto_DesignSurfaceParams.RubyExists, ruby1.Exists, "Ruby tool on the design surface does not exist");
-            Assert.AreEqual(Drag_Toolbox_Ruby_Onto_DesignSurfaceParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "Ruby script textbox does not exist after dragging on tool from the toolbox.");
-            Assert.AreEqual(Drag_Toolbox_Ruby_Onto_DesignSurfaceParams.ResultIntellisenseComboboxExists, resultIntellisenseCombobox.Exists, "Ruby result textbox does not exist after dragging on tool from the toolbox.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Ruby";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 130));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Ruby, new Point(49, 17));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 130));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.Exists, "Ruby tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Selectandapply Onto DesignSurface")]
         public void Drag_Toolbox_Selectandapply_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem selectandapply = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.Selectandapply;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom selectAndApply1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply;
-            WpfComboBox selectFromIntellisenseTextbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.SelectFromIntellisenseTextbox;
-            WpfComboBox aliasIntellisenseTextbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.AliasIntellisenseTextbox;
-            WpfCustom dropActivityHere = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.SmallView.DropActivityHere;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(307, 129));
-            Mouse.StartDragging(selectandapply, new Point(40, 19));
-            Mouse.StopDragging(flowchart, new Point(307, 129));
-            Assert.AreEqual(Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface after dragging select and apply tool onto s" +
-                    "tart node autoconnector.");
-            Assert.AreEqual(Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.SelectAndApplyExists, selectAndApply1.Exists, "Select and apply does not exist on design surface after dragging from toolbox.");
-            Assert.AreEqual(Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.SelectFromIntellisenseTextboxExists, selectFromIntellisenseTextbox.Exists, "Select and apply select from textbox does not exist after dropping tool from tool" +
-                    "box.");
-            Assert.AreEqual(Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.AliasIntellisenseTextboxExists, aliasIntellisenseTextbox.Exists, "Select and apply alias textbox does not exist after dropping tool from toolbox.");
-            Assert.AreEqual(Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams.DropActivityHereExists, dropActivityHere.Exists, "Select and apply activity drop box does not exist after dropping tool from toolbo" +
-                    "x.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Select and apply";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.Selectandapply, new Point(40, 19));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 129));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging select and apply tool onto start node autoconnector.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.Exists, "Select and apply does not exist on design surface after dragging from toolbox.");
         }
+
         [When(@"I Drag Toolbox Sequence Onto DesignSurface")]
         public void Drag_Toolbox_Sequence_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem sequence = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Sequence;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom sequence1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Sequence_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(305, 131));
-            Mouse.StartDragging(sequence, new Point(18, -12));
-            Mouse.StopDragging(flowchart, new Point(305, 131));
-            Assert.AreEqual(Drag_Toolbox_Sequence_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Sequence_Onto_DesignSurfaceParams.SequenceExists, sequence1.Exists, "Sequence on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Sequence";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 131));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Sequence, new Point(18, -12));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 131));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.Exists, "Sequence on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Service Picker Onto DesignSurface")]
         public void Drag_Toolbox_Service_Picker_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem service = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.Service;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfWindow servicePickerDialog = ServicePickerDialog;
-            WpfButton cancel = ServicePickerDialog.Cancel;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(304, 126));
-            Mouse.StartDragging(service, new Point(50, 5));
-            Mouse.StopDragging(flowchart, new Point(304, 126));
-            Assert.AreEqual(Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker does not exist on the Design Surface");
-            Assert.AreEqual(Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams.CancelExists, cancel.Exists, "Service picker dialog cancel button does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Service";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(304, 126));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.Service, new Point(50, 5));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(304, 126));
+            Assert.IsTrue(ServicePickerDialog.Exists, "Service picker does not exist on the Design Surface");
+            Assert.IsTrue(ServicePickerDialog.Cancel.Exists, "Service picker dialog cancel button does not exist");
         }
+
         [When(@"I Drag Toolbox Sharepoint CopyFile Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem copyFile = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CopyFile;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfComboBox server = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(311, 128));
-            Mouse.StartDragging(copyFile, new Point(10, 16));
-            Mouse.StopDragging(flowchart, new Point(311, 128));
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams.ServerExists, server.Exists, "server lookup does not exist on the sharepoin smal view");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Copy File";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(311, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CopyFile, new Point(10, 16));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(311, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server.Exists, "server lookup does not exist on the sharepoin smal view");
         }
+
         [When(@"I Drag Toolbox Sharepoint Create Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem createListItems = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CreateListItems;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfComboBox server = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.Server;
-            WpfComboBox list = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.List;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(311, 128));
-            Mouse.StartDragging(createListItems, new Point(10, 16));
-            Mouse.StopDragging(flowchart, new Point(311, 128));
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams.ServerExists, server.Exists, "server lookup does not exist on the sharepoin smal view");
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams.ListExists, list.Exists, "sharepint list does not exist on the sharepoint small view");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Create List Item";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(311, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CreateListItems, new Point(10, 16));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(311, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.Server.Exists, "server lookup does not exist on the sharepoin smal view");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.List.Exists, "sharepint list does not exist on the sharepoint small view");
         }
+
         [When(@"I Drag Toolbox Sharepoint Delete Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem deleteListItems = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.DeleteListItems;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(306, 131));
-            Mouse.StartDragging(deleteListItems, new Point(16, 5));
-            Mouse.StopDragging(flowchart, new Point(306, 131));
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Delete List Item";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 131));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.DeleteListItems, new Point(16, 5));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 131));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox Sharepoint Download File Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem downloadFile = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.DownloadFile;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom smallView = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(307, 129));
-            Mouse.StartDragging(downloadFile, new Point(124, 593));
-            Mouse.StopDragging(flowchart, new Point(307, 129));
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams.SmallViewExists, smallView.Exists, "Sharepoint delete tool small view does does not exist after dragging tool from to" +
-                    "olbox.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Download";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.DownloadFile, new Point(124, 593));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 129));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView.Exists, "Sharepoint delete tool small view does does not exist after dragging tool from toolbox.");
         }
+
         [When(@"I Drag Toolbox Sharepoint MoveFile Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem moveFile = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.MoveFile;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfComboBox server = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.SmallView.Server;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(311, 128));
-            Mouse.StartDragging(moveFile, new Point(10, 16));
-            Mouse.StopDragging(flowchart, new Point(311, 128));
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams.ServerExists, server.Exists, "server lookup does not exist on the sharepoin smal view");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Move";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(311, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.MoveFile, new Point(10, 16));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(311, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.SmallView.Server.Exists, "server lookup does not exist on the sharepoin smal view");
         }
+
         [When(@"I Drag Toolbox Sharepoint Read Folder Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem readFolder = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.ReadFolder;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Read";
             Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(303, 128));
-            Mouse.StartDragging(readFolder, new Point(13, 15));
-            Mouse.StopDragging(flowchart, new Point(303, 128));
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(303, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.ReadFolder, new Point(13, 15));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(303, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox Sharepoint Read List Item Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem readListItems = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.ReadListItems;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(303, 128));
-            Mouse.StartDragging(readListItems, new Point(13, 15));
-            Mouse.StopDragging(flowchart, new Point(303, 128));
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Read List Item";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(303, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.ReadListItems, new Point(13, 15));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(303, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox Sharepoint Update Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem updateListItems = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.UpdateListItems;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1000);
-            flowchart.EnsureClickable(new Point(300, 127));
-            Mouse.StartDragging(updateListItems, new Point(17, 9));
-            Mouse.StopDragging(flowchart, new Point(300, 127));
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Update List Item";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(300, 127));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.UpdateListItems, new Point(17, 9));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(300, 127));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox Sharepoint UploadFile Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem uploadFile = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.UploadFile;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom smallView = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile.SmallView;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(311, 128));
-            Mouse.StartDragging(uploadFile, new Point(10, 16));
-            Mouse.StopDragging(flowchart, new Point(311, 128));
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams.SmallViewExists, smallView.Exists, "Small view does not exist on sharepoint upload file after dragging in from the to" +
-                    "olbox.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Upload";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(311, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.UploadFile, new Point(10, 16));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(311, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile.SmallView.Exists, "Small view does not exist on sharepoint upload file after dragging in from the toolbox.");
         }
+
         [When(@"I Drag Toolbox SMTP Email Onto DesignSurface")]
         public void Drag_Toolbox_SMTP_Email_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem sMTPSend = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.SMTPSend;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom sMTPEmail = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(308, 129));
-            Mouse.StartDragging(sMTPSend, new Point(16, -39));
-            Mouse.StopDragging(flowchart, new Point(308, 129));
-            Assert.AreEqual(Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams.SMTPEmailExists, sMTPEmail.Exists, "Email tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "SMTP Send";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.SMTPSend, new Point(16, -39));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 129));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.Exists, "Email tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Sort Record Onto DesignSurface")]
         public void Drag_Toolbox_Sort_Record_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem sort = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Sort;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(2000);
-            flowchart.EnsureClickable(new Point(300, 122));
-            Mouse.StartDragging(sort, new Point(7, 8));
-            Mouse.StopDragging(flowchart, new Point(300, 122));
-            Assert.AreEqual(Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Sort";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(300, 122));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Sort, new Point(7, 8));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(300, 122));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox SQL Bulk Insert Onto DesignSurface")]
         public void Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem sQLBulkInsert = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLBulkInsert;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom sqlBulkInsert1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams.SearchTextBoxText;
-            Playback.Wait(1500);
-            flowchart.EnsureClickable(new Point(304, 129));
-            Mouse.StartDragging(sQLBulkInsert, new Point(10, 15));
-            Mouse.StopDragging(flowchart, new Point(304, 129));
-            Assert.AreEqual(Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams.SqlBulkInsertExists, sqlBulkInsert1.Exists, "Sql Bulk Insert tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "SQL Bulk Insert";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(304, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLBulkInsert, new Point(10, 15));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(304, 129));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.Exists, "Sql Bulk Insert tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox SQL Server Tool Onto DesignSurface")]
         public void Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem sQLServer = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLServer;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(304, 127));
-            Mouse.StartDragging(sQLServer, new Point(10, -7));
-            Mouse.StopDragging(flowchart, new Point(304, 127));
-            Assert.AreEqual(Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "SQL Server";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(304, 127));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLServer, new Point(10, -7));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(304, 127));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
+
         [When(@"I Drag Toolbox Switch Onto DesignSurface")]
         public void Drag_Toolbox_Switch_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem switch1 = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfButton doneButton = DecisionOrSwitchDialog.DoneButton;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_Switch_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(303, 126));
-            Mouse.StartDragging(switch1, new Point(22, 30));
-            Mouse.StopDragging(flowchart, new Point(303, 126));
-            Assert.AreEqual(Drag_Toolbox_Switch_Onto_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Decision dialog done button does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Switch";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(303, 126));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch, new Point(22, 30));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(303, 126));
+            Assert.IsTrue(DecisionOrSwitchDialog.DoneButton.Exists, "Decision dialog done button does not exist");
         }
+
         [When(@"I Drag Toolbox System Information Onto DesignSurface")]
         public void Drag_Toolbox_System_Information_Onto_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem sysInfo = MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.SysInfo;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom gatherSystemInfo = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
-            #endregion
-            searchTextBox.Text = Drag_Toolbox_System_Information_Onto_DesignSurfaceParams.SearchTextBoxText;
-            flowchart.EnsureClickable(new Point(304, 129));
-            Mouse.StartDragging(sysInfo, new Point(8, 12));
-            Mouse.StopDragging(flowchart, new Point(304, 129));
-            Assert.AreEqual(Drag_Toolbox_System_Information_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_Toolbox_System_Information_Onto_DesignSurfaceParams.GatherSystemInfoExists, gatherSystemInfo.Exists, "System Info tool on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Sys Info";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(304, 129));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.SysInfo, new Point(8, 12));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(304, 129));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.Exists, "System Info tool on the design surface does not exist");
         }
+
         [When(@"I Drag Toolbox Unique Records Onto DesignSurface")]
         public void Drag_Toolbox_Unique_Records_Onto_DesignSurface()
         {
@@ -5861,12 +5231,12 @@ namespace Warewolf.UITests
             WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
-            searchTextBox.Text = Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams.SearchTextBoxText;
+            searchTextBox.Text = "Unique";
             Playback.Wait(2000);
             flowchart.EnsureClickable(new Point(304, 133));
             Mouse.StartDragging(uniqueRecords, new Point(43, 6));
             Mouse.StopDragging(flowchart, new Point(304, 133));
-            Assert.AreEqual(Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+            Assert.AreEqual(true, connector1.Exists, "No connectors exist on design surface.");
         }
         [When(@"I Drag Toolbox Unzip Onto DesignSurface")]
         public void Drag_Toolbox_Unzip_Onto_DesignSurface()
@@ -12775,73 +12145,70 @@ namespace Warewolf.UITests
     public class Click_Scheduler_Disable_Task_Radio_ButtonParams
     {
         #region Fields
-        public bool DisabledRadioButtonSelected = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Scheduler_Enable_Task_Radio_ButtonParams
     {
         #region Fields
-        public bool StatusCheckBoxChecked = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Scheduler_RunTaskParams
     {
         #region Fields
-        public bool RunTaskCheckBoxChecked = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Select_Resource_Button_From_Resource_PermissionsParams
     {
         #region Fields
-        public bool ServicePickerDialogExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Select_Windows_Group_Cancel_ButtonParams
     {
         #region Fields
-        public bool CancelExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Server_Source_Wizard_Address_Protocol_DropdownParams
     {
         #region Fields
-        public bool ComboboxListItemAsHttpExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Server_Source_Wizard_Test_Connection_ButtonParams
     {
         #region Fields
-        public bool SaveButtonEnabled = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Show_Dependencies_In_Explorer_Context_MenuParams
     {
         #region Fields
-        public bool ShowwhatdependsonthisRadioButtonSelected = true;
-        public bool TextboxExists = true;
-        public bool RefreshButtonExists = true;
-        public string TextDisplayText = "RemoteServerUITestWorkflow";
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_SQL_Server_Large_View_Done_ButtonExpectedValues
     {
         #region Fields
-        public bool DoneButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_SQL_Server_Large_View_Generate_OutputsExpectedValues
     {
         #region Fields
-        public bool GenerateOutputsButtonExists = true;
+
         public bool TestDataTextboxExists = true;
         #endregion
     }
@@ -12849,15 +12216,14 @@ namespace Warewolf.UITests
     public class Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues
     {
         #region Fields
-        public bool TestInputsDoneButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Switch_Dialog_Done_ButtonParams
     {
         #region Fields
-        public bool SwitchExists = true;
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12865,31 +12231,30 @@ namespace Warewolf.UITests
     {
         #region Fields
         public bool CollapseAllToggleButtonExists = true;
-        public bool CollapseAllToggleButtonPressed = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Unpinned_Workflow_ExpandAllParams
     {
         #region Fields
-        public bool ExpandAllToggleButtonExists = true;
+
         public bool ExpandAllToggleButtonPressed = true;
-        public bool MultiAssignExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_UpdateDuplicateRelationshipsParams
     {
         #region Fields
-        public bool UpdateDuplicatedRelatChecked = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Variable_IsInputParams
     {
         #region Fields
-        public bool InputCheckboxExists = true;
-        public bool InputCheckboxEnabled = true;
+
         public bool InputCheckboxChecked = true;
         #endregion
     }
@@ -12897,31 +12262,28 @@ namespace Warewolf.UITests
     public class Click_VariableList_Recordset_Row1_IsInputCheckboxParams
     {
         #region Fields
-        public bool InputCheckboxChecked = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_VariableList_Scalar_Row1_IsInputCheckboxParams
     {
         #region Fields
-        public bool InputCheckboxChecked = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Workflow_CollapseAllParams
     {
         #region Fields
-        public bool CollapseAllToggleButtonExists = true;
-        public bool CollapseAllToggleButtonPressed = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Workflow_ExpandAllParams
     {
         #region Fields
-        public bool ExpandAllToggleButtonExists = true;
-        public bool ExpandAllToggleButtonPressed = true;
-        public bool MultiAssignExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12964,7 +12326,7 @@ namespace Warewolf.UITests
     public class Drag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "DELETE";
+
         public bool WebDeleteExists = true;
         #endregion
     }
@@ -12972,8 +12334,7 @@ namespace Warewolf.UITests
     public class Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams
     {
         #region Fields
-        public bool Connector2Exists = true;
-        public bool DoneButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12998,14 +12359,14 @@ namespace Warewolf.UITests
     {
         #region Fields
         public bool FirstSubItemExists = true;
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams
     {
         #region Fields
-        public bool FirstSubItemExists = true;
+
         public bool Connector1Exists = true;
         #endregion
     }
@@ -13014,8 +12375,7 @@ namespace Warewolf.UITests
     {
         #region Fields
         public bool FirstItemExists = true;
-        public bool Connector1Exists = true;
-        public bool SubWorkflowExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13023,7 +12383,7 @@ namespace Warewolf.UITests
     {
         #region Fields
         public string SearchTextBoxText = "GET";
-        public bool WebGetExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13040,15 +12400,14 @@ namespace Warewolf.UITests
     {
         #region Fields
         public string SearchTextBoxText = "POST";
-        public bool Connector1Exists = true;
-        public bool WebPostExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_PutWeb_Tool_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "PUT";
+
         public bool WebPutExists = true;
         #endregion
     }
@@ -13056,16 +12415,14 @@ namespace Warewolf.UITests
     public class Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Aggregate Calculate";
-        public bool fxComboBoxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Assign Object";
-        public bool AssignObjectExists = true;
+
         public bool Connector1Exists = true;
         #endregion
     }
@@ -13073,149 +12430,119 @@ namespace Warewolf.UITests
     public class Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Base Convert";
-        public bool Connector1Exists = true;
-        public bool BaseConvertExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Calculate_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Calculate";
-        public bool Connector1Exists = true;
-        public bool CalculateExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Case Convert";
-        public bool Connector1Exists = true;
-        public bool CaseConvertExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "CMD Script";
-        public bool Connector1Exists = true;
-        public bool ExecuteCommandLineExists = true;
-        public bool ScriptIntellisenseTextboxExists = true;
-        public bool ResultIntellisenseTextboxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Comment_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Comment";
-        public bool Connector1Exists = true;
-        public bool CommentExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Copy_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Copy";
-        public bool Connector1Exists = true;
-        public bool PathCopyExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Count";
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Create_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Create";
-        public bool Connector1Exists = true;
-        public bool PathCreateExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Data Merge";
-        public bool Connector1Exists = true;
-        public bool DataMergeExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Data Split";
-        public bool Connector1Exists = true;
-        public bool DataSplitExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Date Time";
-        public bool Connector1Exists = true;
-        public bool DateTimeExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Date Time Diff";
-        public bool Connector1Exists = true;
-        public bool DateTimeDifferenceExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Decision_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Decision";
-        public bool DoneButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Delete_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Delete";
-        public bool Connector1Exists = true;
-        public bool PathDeleteExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Delete";
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Dropbox";
-        public bool DropboxDeleteExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Dropbox";
+
         public bool DropboxDownloadExists = true;
         #endregion
     }
@@ -13223,23 +12550,21 @@ namespace Warewolf.UITests
     public class Drag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Dropbox";
-        public bool DropboxFileListExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Dropbox";
-        public bool DropboxUploadExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Exchange Email";
+
         public bool Connector1Exists = true;
         #endregion
     }
@@ -13247,102 +12572,79 @@ namespace Warewolf.UITests
     public class Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Find Index";
-        public bool Connector1Exists = true;
-        public bool FindIndexExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Find Records";
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_For_Each_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "ForEach";
-        public bool Connector1Exists = true;
-        public bool ForEachExists = true;
-        public bool ForEachTypeComboBoxExists = true;
-        public bool TextboxExists = true;
-        public bool DropActivityHereExists = true;
-        public bool TextboxExists1 = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Format Number";
-        public bool Connector1Exists = true;
-        public bool FormatNumberExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Javascript_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Javascript";
-        public bool Connector1Exists = true;
-        public bool JavascriptExists = true;
-        public bool ScriptIntellisenseComboboxExists = true;
-        public bool ResultsIntellisenseComboboxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_JSON_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Create JSON";
-        public bool Connector1Exists = true;
-        public bool CreateJsonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Length_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Length";
-        public bool Connector1Exists = true;
-        public bool LengthExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Move_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Move";
-        public bool Connector1Exists = true;
-        public bool PathMoveExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Assign";
+
         public bool MultiAssignExists = true;
-        public bool Connector1Exists = true;
-        public bool TextboxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "MySQL";
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "ODBC";
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13356,25 +12658,21 @@ namespace Warewolf.UITests
     public class Drag_Toolbox_PostgreSql_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Postgre";
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Python_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Python";
-        public bool Connector1Exists = true;
-        public bool PythonExists = true;
-        public bool ScriptIntellisenseComboboxExists = true;
-        public bool ResultIntellisenseComboboxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "RabbitMq Consume";
+
         public bool SmallViewContentCustomExists = true;
         #endregion
     }
@@ -13382,230 +12680,182 @@ namespace Warewolf.UITests
     public class Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "RabbitMq Publish";
-        public bool SmallViewContentCustomExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Random_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Random";
-        public bool Connector1Exists = true;
-        public bool RandomExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Read_File_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Read File";
-        public bool Connector1Exists = true;
-        public bool FileReadExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Read Folder";
-        public bool Connector1Exists = true;
-        public bool FolderReadExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Rename_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Rename";
-        public bool Connector1Exists = true;
-        public bool PathRenameExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Replace_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Replace";
-        public bool Connector1Exists = true;
-        public bool ReplaceExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Ruby_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Ruby";
-        public bool Connector1Exists = true;
-        public bool RubyExists = true;
-        public bool ScriptIntellisenseComboboxExists = true;
-        public bool ResultIntellisenseComboboxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Select and apply";
-        public bool Connector1Exists = true;
-        public bool SelectAndApplyExists = true;
-        public bool SelectFromIntellisenseTextboxExists = true;
-        public bool AliasIntellisenseTextboxExists = true;
-        public bool DropActivityHereExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Sequence_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Sequence";
-        public bool Connector1Exists = true;
-        public bool SequenceExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Service";
-        public bool ServicePickerDialogExists = true;
-        public bool CancelExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Copy File";
-        public bool Connector1Exists = true;
-        public bool ServerExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Create List Item";
-        public bool Connector1Exists = true;
-        public bool ServerExists = true;
-        public bool ListExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Delete List Item";
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Download";
-        public bool SmallViewExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Move";
-        public bool Connector1Exists = true;
-        public bool ServerExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Read";
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Read List Item";
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Update List Item";
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Upload";
-        public bool Connector1Exists = true;
-        public bool SmallViewExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "SMTP Send";
-        public bool Connector1Exists = true;
-        public bool SMTPEmailExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Sort";
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "SQL Bulk Insert";
-        public bool Connector1Exists = true;
-        public bool SqlBulkInsertExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "SQL Server";
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Switch_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Switch";
-        public bool DoneButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_System_Information_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Sys Info";
-        public bool Connector1Exists = true;
-        public bool GatherSystemInfoExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams
     {
         #region Fields
-        public string SearchTextBoxText = "Unique";
-        public bool Connector1Exists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
