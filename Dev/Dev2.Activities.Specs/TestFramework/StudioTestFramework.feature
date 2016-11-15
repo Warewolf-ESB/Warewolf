@@ -997,6 +997,7 @@ Scenario: Test WF with Assign
 	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "AssignTestWF" is deleted as cleanup
 
 Scenario: Test WF with Assign Object
 		Given I have a workflow "AssignObjectTestWF"
@@ -1005,7 +1006,7 @@ Scenario: Test WF with Assign Object
 		 | [[@Person.Name]]    | yes   |
 		 | [[@Person.Surname]] | no    |
 		 And I save workflow "AssignObjectTestWF"
-		 Then the test builder is open with "AssignObjectTestWF"
+		 Then the test builder is open with "AssignObjectTestWF" new workflows
 		 And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
@@ -1019,5 +1020,134 @@ Scenario: Test WF with Assign Object
 		Then test result is Passed
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
+
+
+Scenario: Test WF with BaseConvert 
+		Given I have a workflow "BaseConvertTestWF"
+		And "BaseConvertTestWF" contains an Assign "TestAssign" as
+		  | variable | value                                                                                                    |
+		  | [[a]]    | 01001001001000000111011101100001011100110010000001101101011000010110111001100111011011000110010101100100 |
+		And "BaseConvertTestWF" contains Base convert "TestBaseConvert" as
+		  | Variable  | From | To      |
+		 | [[[[a]]]] | Text | Base 64 |
+		 And I save workflow "BaseConvertTestWF"
+		 Then the test builder is open with "BaseConvertTestWF" new workflows
+		 And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "TestBaseConvert" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name | Condition | Value         |
+		| [[a]]      | =         | I was mangled |
+			When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		
+Scenario: Test WF with CaseConvert
+		Given I have a workflow "CaseConvertTestWF"
+			And "CaseConvertTestWF" contains an Assign "TestAssign" as
+		  | variable | value                                                                                                    |
+		  | [[name]] | 01001001001000000111011101100001011100110010000001101101011000010110111001100111011011000110010101100100 |
+		And "CaseConvertTestWF" contains case convert "TestCaseConvert" as
+		 | variable | value |
+		 | [[name]] | micky |
+		 And I save workflow "CaseConvertTestWF"
+		 Then the test builder is open with "CaseConvertTestWF" new workflows
+		 And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "TestCaseConvert" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name | Condition | Value         |
+		| [[Blob]]      | =         | MICKY |
+			When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+	
+Scenario: Test WF with Data split
+		Given I have a workflow "DataSplitTestWF"
+			And "DataSplitTestWF" contains an Assign "TestAssign" as
+		 | variable     | value    |
+		 | [[a]]        | 1        |
+		 | [[b]]        | 2        |
+		 | [[rec(1).a]] | warewolf |
+		 | [[rec(2).a]] | test     |	
+		And "DataSplitTestWF" contains Data Split "TestDataSplit" as
+		 | String                  | Variable    | Type  | At | Include    | Escape |
+		 | [[result]][[split().a]] | [[rec().b]] | Index | 4  | Unselected |        |
+		 |                         | [[rec().b]] | Index | 8  | Unselected |        |
+		 And I save workflow "DataSplitTestWF"
+		 Then the test builder is open with "DataSplitTestWF" new workflows
+		 And I click New Test
+		 And a new test is added	
+		 And test name starts with "Test 1"
+		 And I Add "TestDataSplit" as TestStep
+		 And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value         |
+		 | [[Blob]]      | =         | MICKY |
+		 When  I save
+		 And I run the test
+		 Then test result is Passed
+		 When I delete "Test 1"
+		 Then The "DeleteConfirmation" popup is shown I click Ok
+		
+Scenario: Test WF with Find Index
+		Given I have a workflow "FindIndexTestWF"
+		And "FindIndexTestWF" contains an Assign "TestAssign" as
+		   | variable    | value    |
+			  | [[rec().a]] | test     |
+			  | [[rec().b]] | nothing  |
+			  | [[rec().a]] | warewolf |
+			  | [[rec().b]] | nothing  |
+		And "FindIndexTestWF" contains Find Index "TestIndex" into "[[indexResult]]" as
+		  | In Fields   | Index           | Character | Direction     |
+		  | [[rec().a]] | First Occurence | e         | Left to Right |
+		 And I save workflow "FindIndexTestWF"
+		 Then the test builder is open with "FindIndexTestWF" new workflows
+		 And I click New Test
+		 And a new test is added	
+		 And test name starts with "Test 1"
+		 And I Add "TestIndex" as TestStep
+		 And I add new StepOutputs as 
+		 | Variable Name | Condition | Value         |
+		 | [[Blob]]      | =         | MICKY |
+			When I save
+		 And I run the test
+		 Then test result is Passed
+		 When I delete "Test 1"
+	 	Then The "DeleteConfirmation" popup is shown I click Ok
+
+
+Scenario: Test WF with Data Merge
+		Given I have a workflow "DataMergeTestWF"
+		And "DataMergeTestWF" contains an Assign "TestAssign" as
+		   | variable    | value    |
+			  | [[rec().a]] | test     |
+			  | [[rec().b]] | nothing  |
+			  | [[rec().a]] | warewolf |
+			  | [[rec().b]] | nothing  |
+		And "DataMergeTestWF" contains Data Merge "TestDataMerge" into "[[result]]" as	
+		
+		  | In Fields   | Index           | Character | Direction     |
+		  | [[rec().a]] | First Occurence | e         | Left to Right |
+		 And I save workflow "DataMergeTestWF"
+		 Then the test builder is open with "DataMergeTestWF" new workflows
+		 And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "TestDataMerge" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name | Condition | Value         |
+		| [[Blob]]      | =         | MICKY |
+			When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+
 
 	  

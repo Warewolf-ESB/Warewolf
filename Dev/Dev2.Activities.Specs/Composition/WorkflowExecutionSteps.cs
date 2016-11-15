@@ -1421,9 +1421,9 @@ namespace Dev2.Activities.Specs.Composition
             TestStartNode = new FlowStep();
             flowSteps.Add(TestStartNode);
 
-            foreach(var activity in activityList)
+            foreach (var activity in activityList)
             {
-                if(TestStartNode.Action == null)
+                if (TestStartNode.Action == null)
                 {
                     TestStartNode.Action = activity.Value;
                 }
@@ -1447,8 +1447,8 @@ namespace Dev2.Activities.Specs.Composition
             WorkflowHelper helper = new WorkflowHelper();
             StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
-            resourceModel.ID = Guid.NewGuid();
             repository.SaveToServer(resourceModel);
+
         }
 
         [Then(@"workflow ""(.*)"" is deleted as cleanup")]
