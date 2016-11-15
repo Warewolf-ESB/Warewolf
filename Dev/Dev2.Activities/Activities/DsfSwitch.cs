@@ -67,46 +67,66 @@ namespace Dev2.Activities
         public new string Result { get; set; }
 
         public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
-          {
-              _debugOutputs.Clear();
-              _debugInputs.Clear();
+        {
+            _debugOutputs.Clear();
+            _debugInputs.Clear();
 
-              try
-              {
+            try
+            {
 
 
-                  Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
-                  var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable, update).FirstOrDefault();
+                Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
+                var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable, update).FirstOrDefault();
 
-                InitializeDebug(dataObject);
-                Debug(dataObject, firstOrDefault, ds);
+                if (dataObject.IsDebugMode())
+                {
+                    InitializeDebug(dataObject);
+                    Debug(dataObject, firstOrDefault, ds);
+                    DispatchDebugState(dataObject, StateType.Before, 0, null, null, true);
+                }
                 if (firstOrDefault != null)
                 {
                     var a = firstOrDefault;
                     if (Switches.ContainsKey(a))
                     {
                         Result = a;
-                        AddDebugOutputItem(new DebugItemStaticDataParams(Result,"Flow Arm:"));
-                        DispatchDebugState(dataObject, StateType.After, 0);
+                        if (dataObject.IsDebugMode())
+                        {
+                            DebugOutput(dataObject);
+                        }
+                        
                         return Switches[a];
                     }
                     if (Default != null)
                     {
                         Result = "Default";
                         var activity = Default.FirstOrDefault();
-                        AddDebugOutputItem(new DebugItemStaticDataParams(Result, "Flow Arm:"));
-                        DispatchDebugState(dataObject, StateType.After, 0);
+                        if (dataObject.IsDebugMode())
+                        {
+                            DebugOutput(dataObject);
+                        }
                         return activity;
                     }
                 }
-              }
-              catch (Exception err)
-              {
-                  dataObject.Environment.Errors.Add(err.Message);
-              }
-              
-              return null;
-          }
+            }
+            catch (Exception err)
+            {
+                dataObject.Environment.Errors.Add(err.Message);
+            }
+            finally
+            {
+                if (dataObject.IsDebugMode())
+                {
+
+                    DispatchDebugState(dataObject, StateType.After, update);
+                    _debugOutputs = new List<DebugItem>();
+                    _debugOutputs = new List<DebugItem>();
+                    DispatchDebugState(dataObject, StateType.Duration, update);
+                }
+            }
+
+            return null;
+        }
         
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
@@ -128,7 +148,7 @@ namespace Dev2.Activities
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
                 _debugInputs = result;
-                DispatchDebugState(dataObject, StateType.Before, 0);
+                
                 
                 if(Inner != null)
                 {
@@ -144,6 +164,36 @@ namespace Dev2.Activities
             }
         }
 
+        void DebugOutput(IDSFDataObject dataObject)
+        {
+            try
+            {
+
+
+                if (dataObject.IsDebugMode())
+                {
+                    List<DebugItem> result = new List<DebugItem>();
+                    var debugOutputBase = new DebugItemStaticDataParams(Result, "Switch Arm:");
+                    DebugItem itemToAdd = new DebugItem();
+                    itemToAdd.AddRange(debugOutputBase.GetDebugItemResult());
+                    result.Add(itemToAdd);
+                    _debugOutputs = result;
+
+                    if (Inner != null)
+                    {
+                        Inner.SetDebugOutputs(_debugOutputs);
+                    }
+
+                }
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+
+            }
+        }
+
         #endregion
 
         #region Overrides of DsfNativeActivity<string>
@@ -152,6 +202,12 @@ namespace Dev2.Activities
         {
             return _debugInputs;
         }
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
+        {
+            return _debugOutputs;
+        }
+
 
         #endregion
     }

@@ -71,7 +71,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _expression.ExpressionText = value;
             }
         }
-
         #endregion
 
         #region CacheMetadata
