@@ -462,11 +462,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 foreach (var debugItem in outPutState.Outputs)
                 {
-                    var variable = debugItem.ResultsList.First().Variable.Replace("[[", "").Replace("]]", "");
-                    var value = debugItem.ResultsList.First().Value;
+                    var debugItemResult = debugItem.ResultsList.First();
+                    var variable = debugItemResult.Variable.Replace("[[", "").Replace("]]", "");
+                    var value = debugItemResult.Value;
                     var serviceTestOutput = SelectedServiceTest.Outputs.FirstOrDefault(input => input.Variable.Equals(variable));
                     if (serviceTestOutput != null)
                     {
+                        if (!string.IsNullOrEmpty(debugItemResult.MoreLink))
+                        {
+                            serviceTestOutput.AssertOp = "Contains";
+                        }
                         serviceTestOutput.Value = value;
                     }
                 }
