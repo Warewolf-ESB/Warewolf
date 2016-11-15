@@ -3356,22 +3356,22 @@ namespace Warewolf.UITests
         [When(@"I Click AddNew Web Source From PostWeb tool")]
         public void Click_AddNew_Web_Source_From_PostWeb_tool()
         {
-            Assert.AreEqual(Click_AddNew_Web_Source_From_PostWeb_toolParams.NewSourceButtonExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.NewSourceButton.Exists, "NewButton does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.NewSourceButton.Exists, "NewButton does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.NewSourceButton, new Point(30, 4));
         }
 
         [When(@"I Click AddNew Web Source From tool")]
         public void Click_AddNew_Web_Source_From_tool()
         {
-            Assert.AreEqual(Click_AddNew_Web_Source_From_toolParams.NewSourceButtonExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.NewSourceButton.Exists, "NewButton does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.NewSourceButton.Exists, "NewButton does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.NewSourceButton, new Point(30, 4));
         }
 
         [When(@"I Click Assign Tool CollapseAll")]
         public void Click_Assign_Tool_CollapseAll()
         {
-            Assert.AreEqual(Click_Assign_Tool_CollapseAllParams.CollapseAllToggleButtonExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Exists, "Expand all button does not exist");
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Pressed = Click_Assign_Tool_CollapseAllParams.CollapseAllToggleButtonPressed;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Exists, "Expand all button does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Pressed = true;
         }
 
         [When(@"I Click Assign Tool ExpandAll")]
@@ -3379,7 +3379,7 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton.Exists, "Expand all button does not exist");
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton.Pressed = true;
-            Assert.AreEqual(Click_Assign_Tool_ExpandAllParams.MultiAssignExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool large view on the design surface does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool large view on the design surface does not exist");
         }
 
         [When(@"I Click Assign Tool Large View Done Button")]
@@ -3429,7 +3429,7 @@ namespace Warewolf.UITests
         public void Click_Base_Convert_Large_View_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.DoneButton, new Point(36, 11));
-            Assert.AreEqual(Click_Base_Convert_Large_View_Done_ButtonParams.ValueTextboxText, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Row1.Cell.Listbox.ValueTextbox.Text, "Base convert small view row1 variable textbox does not contain text SomeData.");
+            Assert.AreEqual("SomeData", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Row1.Cell.Listbox.ValueTextbox.Text, "Base convert small view row1 variable textbox does not contain text SomeData.");
         }
 
         [When(@"I Click Calculate Large View Done Button")]
@@ -3751,14 +3751,14 @@ namespace Warewolf.UITests
         [When(@"I Click EndThisWF On XPath LargeView")]
         public void Click_EndThisWF_On_XPath_LargeView()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.EndthisworkflowCheckBox.Checked = Click_EndThisWF_On_XPath_LargeViewParams.EndthisworkflowCheckBoxChecked;
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.EndthisworkflowCheckBox, Click_EndThisWF_On_XPath_LargeViewParams.EndthisworkflowCheckBoxSendKeys, ModifierKeys.None);
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.EndthisworkflowCheckBox.Checked = true;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.EndthisworkflowCheckBox, "{Tab}", ModifierKeys.None);
         }
 
         [When(@"I Click ExpandAndStepIn NestedWorkflow")]
         public void Click_ExpandAndStepIn_NestedWorkflow()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SubWorkflow.Expanded = Click_ExpandAndStepIn_NestedWorkflowParams.SubWorkflowExpanded;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SubWorkflow.Expanded = true;
         }
 
         [When(@"I Click Explorer Filter Clear Button")]
@@ -3791,7 +3791,7 @@ namespace Warewolf.UITests
         [When(@"I Click First Recordset Input Checkbox")]
         public void Click_First_Recordset_Input_Checkbox()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox.Checked = Click_First_Recordset_Input_CheckboxParams.InputCheckboxChecked;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox.Checked = true;
         }
 
         [When(@"I Click FormatNumber Done Button")]
@@ -3961,7 +3961,7 @@ namespace Warewolf.UITests
         [When(@"I Click Output OnVariable InVariableList")]
         public void Click_Output_OnVariable_InVariableList()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.OutputCheckbox.Checked = Click_Output_OnVariable_InVariableListParams.OutputCheckboxChecked;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.OutputCheckbox.Checked = true;
         }
 
         [When(@"I Click Pin Toggle DebugOutput")]
@@ -4277,7 +4277,7 @@ namespace Warewolf.UITests
         [When(@"I Click Unpinned Workflow CollapseAll")]
         public void Click_Unpinned_Workflow_CollapseAll()
         {
-            Assert.AreEqual(Click_Unpinned_Workflow_CollapseAllParams.CollapseAllToggleButtonExists, MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Exists, "Expand all button does not exist");
+            Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Exists, "Expand all button does not exist");
             MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Pressed = true;
         }
 
@@ -4400,8 +4400,8 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(126, 12));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewFolderMenuItem, new Point(78, 15));
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem.ItemEdit.Text = Create_SubFolder_In_Folder1Params.ItemEditText;
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem, Create_SubFolder_In_Folder1Params.FirstSubItemSendKeys, ModifierKeys.None);
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem.ItemEdit.Text = "Acceptance Testing Resources";
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem, "{Enter}", ModifierKeys.None);
         }
 
         [When(@"I Delete Nested Hello World")]
@@ -4437,7 +4437,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 126));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.DELETE, new Point(16, 25));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 126));
-            Assert.AreEqual(Drag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams.WebDeleteExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.Exists, "Delete Web connectoer does not exist on the design surface after drag and drop from toolbox.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.Exists, "Delete Web connectoer does not exist on the design surface after drag and drop from toolbox.");
         }
 
         [When(@"I Drag Dice Onto Dice On The DesignSurface")]
@@ -4453,29 +4453,29 @@ namespace Warewolf.UITests
         [When(@"I Drag DotNet DLL Connector Onto DesignSurface")]
         public void Drag_DotNet_DLL_Connector_Onto_DesignSurface()
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "DotNet DLL";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 127));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLL, new Point(16, 25));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 127));
-            Assert.AreEqual(Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.DotNetDllExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.Exists, "DotNet DLL tool does not exist on the design surface");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.Exists, "DotNet DLL tool does not exist on the design surface");
         }
 
         [When(@"I Drag Explorer Localhost First Item Onto Workflow Design Surface")]
         public void Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface()
         {
-            Assert.AreEqual(Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams.FirstItemExists, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "No items to drag found in the explorer tree.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "No items to drag found in the explorer tree.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(64, 5));
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(64, 5));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
-            Assert.AreEqual(Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
 
         [When(@"I Drag Explorer Localhost First Items First Sub Item Onto Workflow Design Surface")]
         public void Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface()
         {
-            Assert.AreEqual(Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.FirstSubItemExists, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists, "No items to drag found in the explorer tree.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists, "No items to drag found in the explorer tree.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, new Point(90, 10));
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, new Point(90, 10));
@@ -4491,13 +4491,13 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem, new Point(90, 10));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
-            Assert.AreEqual(Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
 
         [When(@"I Drag Explorer Remote workflow1 Onto Workflow Design Surface")]
         public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
         {
-            Assert.AreEqual(Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.FirstItemExists, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists, "Explorer first remote server does not contain any items.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists, "Explorer first remote server does not contain any items.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(64, 5));
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(64, 5));
@@ -4509,7 +4509,7 @@ namespace Warewolf.UITests
         [When(@"I Drag GET Web Connector Onto DesignSurface")]
         public void Drag_GET_Web_Connector_Onto_DesignSurface()
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = Drag_GET_Web_Connector_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "GET";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 126));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.GET, new Point(16, 25));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 126));
@@ -4519,18 +4519,18 @@ namespace Warewolf.UITests
         [When(@"I Drag GetWeb RequestTool Onto DesignSurface")]
         public void Drag_GetWeb_RequestTool_Onto_DesignSurface()
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Web Request";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 124));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest, new Point(12, 3));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 124));
-            Assert.AreEqual(Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
-            Assert.AreEqual(Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.WebRequestExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.Exists, "Web Get Request small view does not exist on the design surface");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.Exists, "Web Get Request small view does not exist on the design surface");
         }
 
         [When(@"I Drag PostWeb RequestTool Onto DesignSurface")]
         public void Drag_PostWeb_RequestTool_Onto_DesignSurface()
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "POST";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.POST, new Point(20, 35));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 128));
@@ -4545,14 +4545,13 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 126));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.PUT, new Point(16, 25));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 126));
-            Assert.AreEqual(Drag_PutWeb_Tool_Onto_DesignSurfaceParams.WebPutExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.Exists, "Put Web connectoer does not exist on the design surface after drag and drop from toolbox.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.Exists, "Put Web connectoer does not exist on the design surface after drag and drop from toolbox.");
         }
 
         [When(@"I Drag Toolbox AggregateCalculate Onto DesignSurface")]
         public void Drag_Toolbox_AggregateCalculate_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Aggregate Calculate";
-            Playback.Wait(2000);
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.AggregateCalculate, new Point(13, 17));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
@@ -4563,19 +4562,17 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_AssignObject_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign Object";
-            Playback.Wait(2000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject.Exists, "Toolbox AssignObject does not exist");
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject, new Point(13, 17));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
-            Assert.AreEqual(Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
 
         [When(@"I Drag Toolbox Base Conversion Onto DesignSurface")]
         public void Drag_Toolbox_Base_Conversion_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Base Convert";
-            Playback.Wait(2000);
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(303, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.BaseConvert, new Point(12, 12));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(303, 128));
@@ -4587,7 +4584,6 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Calculate_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Calculate";
-            Playback.Wait(2000);
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 131));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Calculate, new Point(59, -17));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 131));
@@ -4700,7 +4696,6 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_DateTime_Difference_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Date Time Diff";
-            Playback.Wait(2000);
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 131));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTimeDifference, new Point(48, 7));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 131));
@@ -4722,7 +4717,6 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Delete_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Delete";
-            Playback.Wait(2000);
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 125));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Delete, new Point(13, 9));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 125));
@@ -4734,7 +4728,6 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Delete_Record_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Delete";
-            Playback.Wait(2000);
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(309, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Delete, new Point(1, 15));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(309, 128));
@@ -4758,7 +4751,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 129));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Download, new Point(16, 6));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 129));
-            Assert.AreEqual(Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams.DropboxDownloadExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload.Exists, "Dropbox download tool does not exist on design surface after dragging in from the toolbox.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload.Exists, "Dropbox download tool does not exist on design surface after dragging in from the toolbox.");
         }
 
         [When(@"I Drag Toolbox Dropbox FileList Onto DesignSurface")]
@@ -4788,7 +4781,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(308, 129));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.ExchangeSend, new Point(16, -39));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(308, 129));
-            Assert.AreEqual(Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams.Connector1Exists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
         }
 
         [When(@"I Drag Toolbox Find Index Onto DesignSurface")]
@@ -4828,7 +4821,6 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Format_Number_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Format Number";
-            Playback.Wait(2000);
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(305, 131));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.FormatNumber, new Point(18, 11));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(305, 131));
@@ -4915,7 +4907,7 @@ namespace Warewolf.UITests
         [When(@"I Drag Toolbox Oracle Database Onto DesignSurface")]
         public void Drag_Toolbox_Oracle_Database_Onto_DesignSurface()
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = Drag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams.SearchTextBoxText;
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Oracle";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 130));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.Oracle, new Point(11, 20));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 130));
@@ -4950,7 +4942,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(309, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.RabbitMQConsume, new Point(16, 11));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(309, 128));
-            Assert.AreEqual(Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams.SmallViewContentCustomExists, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.SmallViewContentCustom.Exists, "Small View does not exist after dragging RabbitMq tool onto the design surface");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.SmallViewContentCustom.Exists, "Small View does not exist after dragging RabbitMq tool onto the design surface");
         }
 
         [When(@"I Drag Toolbox RabbitMqPublish Onto DesignSurface")]
@@ -5236,7 +5228,7 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(304, 133));
             Mouse.StartDragging(uniqueRecords, new Point(43, 6));
             Mouse.StopDragging(flowchart, new Point(304, 133));
-            Assert.AreEqual(true, connector1.Exists, "No connectors exist on design surface.");
+            Assert.IsTrue(connector1.Exists, "No connectors exist on design surface.");
         }
         [When(@"I Drag Toolbox Unzip Onto DesignSurface")]
         public void Drag_Toolbox_Unzip_Onto_DesignSurface()
@@ -8101,589 +8093,6 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         #region Properties
-        public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
-        {
-            get
-            {
-                if ((mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params == null))
-                {
-                    mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params = new Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params();
-                }
-                return mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params;
-            }
-        }
-        public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams
-        {
-            get
-            {
-                if ((mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams == null))
-                {
-                    mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams = new Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams();
-                }
-                return mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams;
-            }
-        }
-        public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params
-        {
-            get
-            {
-                if ((mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params == null))
-                {
-                    mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params = new Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params();
-                }
-                return mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params;
-            }
-        }
-        public virtual Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams
-        {
-            get
-            {
-                if ((mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams == null))
-                {
-                    mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams = new Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams();
-                }
-                return mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams;
-            }
-        }
-        public virtual Check_Public_AdministratorParams Check_Public_AdministratorParams
-        {
-            get
-            {
-                if ((mCheck_Public_AdministratorParams == null))
-                {
-                    mCheck_Public_AdministratorParams = new Check_Public_AdministratorParams();
-                }
-                return mCheck_Public_AdministratorParams;
-            }
-        }
-        public virtual Click_AddNew_Web_Source_From_PostWeb_toolParams Click_AddNew_Web_Source_From_PostWeb_toolParams
-        {
-            get
-            {
-                if ((mClick_AddNew_Web_Source_From_PostWeb_toolParams == null))
-                {
-                    mClick_AddNew_Web_Source_From_PostWeb_toolParams = new Click_AddNew_Web_Source_From_PostWeb_toolParams();
-                }
-                return mClick_AddNew_Web_Source_From_PostWeb_toolParams;
-            }
-        }
-        public virtual Click_AddNew_Web_Source_From_toolParams Click_AddNew_Web_Source_From_toolParams
-        {
-            get
-            {
-                if ((mClick_AddNew_Web_Source_From_toolParams == null))
-                {
-                    mClick_AddNew_Web_Source_From_toolParams = new Click_AddNew_Web_Source_From_toolParams();
-                }
-                return mClick_AddNew_Web_Source_From_toolParams;
-            }
-        }
-        public virtual Click_Assign_Tool_CollapseAllParams Click_Assign_Tool_CollapseAllParams
-        {
-            get
-            {
-                if ((mClick_Assign_Tool_CollapseAllParams == null))
-                {
-                    mClick_Assign_Tool_CollapseAllParams = new Click_Assign_Tool_CollapseAllParams();
-                }
-                return mClick_Assign_Tool_CollapseAllParams;
-            }
-        }
-        public virtual Click_Assign_Tool_ExpandAllParams Click_Assign_Tool_ExpandAllParams
-        {
-            get
-            {
-                if ((mClick_Assign_Tool_ExpandAllParams == null))
-                {
-                    mClick_Assign_Tool_ExpandAllParams = new Click_Assign_Tool_ExpandAllParams();
-                }
-                return mClick_Assign_Tool_ExpandAllParams;
-            }
-        }
-        public virtual Click_Assign_Tool_Large_View_Done_ButtonParams Click_Assign_Tool_Large_View_Done_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Assign_Tool_Large_View_Done_ButtonParams == null))
-                {
-                    mClick_Assign_Tool_Large_View_Done_ButtonParams = new Click_Assign_Tool_Large_View_Done_ButtonParams();
-                }
-                return mClick_Assign_Tool_Large_View_Done_ButtonParams;
-            }
-        }
-        public virtual Click_Assign_Tool_Large_View_Done_Button_On_Unpinned_TabParams Click_Assign_Tool_Large_View_Done_Button_On_Unpinned_TabParams
-        {
-            get
-            {
-                if ((mClick_Assign_Tool_Large_View_Done_Button_On_Unpinned_TabParams == null))
-                {
-                    mClick_Assign_Tool_Large_View_Done_Button_On_Unpinned_TabParams = new Click_Assign_Tool_Large_View_Done_Button_On_Unpinned_TabParams();
-                }
-                return mClick_Assign_Tool_Large_View_Done_Button_On_Unpinned_TabParams;
-            }
-        }
-        public virtual Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams
-        {
-            get
-            {
-                if ((mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams == null))
-                {
-                    mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams = new Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams();
-                }
-                return mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams;
-            }
-        }
-        public virtual Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_TabParams Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_TabParams
-        {
-            get
-            {
-                if ((mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_TabParams == null))
-                {
-                    mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_TabParams = new Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_TabParams();
-                }
-                return mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_TabParams;
-            }
-        }
-        public virtual Click_Base_Convert_Large_View_Done_ButtonParams Click_Base_Convert_Large_View_Done_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Base_Convert_Large_View_Done_ButtonParams == null))
-                {
-                    mClick_Base_Convert_Large_View_Done_ButtonParams = new Click_Base_Convert_Large_View_Done_ButtonParams();
-                }
-                return mClick_Base_Convert_Large_View_Done_ButtonParams;
-            }
-        }
-        public virtual Click_Calculate_Large_View_Done_ButtonParams Click_Calculate_Large_View_Done_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Calculate_Large_View_Done_ButtonParams == null))
-                {
-                    mClick_Calculate_Large_View_Done_ButtonParams = new Click_Calculate_Large_View_Done_ButtonParams();
-                }
-                return mClick_Calculate_Large_View_Done_ButtonParams;
-            }
-        }
-        public virtual Click_Cancel_DebugInput_WindowParams Click_Cancel_DebugInput_WindowParams
-        {
-            get
-            {
-                if ((mClick_Cancel_DebugInput_WindowParams == null))
-                {
-                    mClick_Cancel_DebugInput_WindowParams = new Click_Cancel_DebugInput_WindowParams();
-                }
-                return mClick_Cancel_DebugInput_WindowParams;
-            }
-        }
-        public virtual Click_Close_Deploy_Tab_ButtonParams Click_Close_Deploy_Tab_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Close_Deploy_Tab_ButtonParams == null))
-                {
-                    mClick_Close_Deploy_Tab_ButtonParams = new Click_Close_Deploy_Tab_ButtonParams();
-                }
-                return mClick_Close_Deploy_Tab_ButtonParams;
-            }
-        }
-        public virtual Click_Close_Settings_Tab_ButtonParams Click_Close_Settings_Tab_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Close_Settings_Tab_ButtonParams == null))
-                {
-                    mClick_Close_Settings_Tab_ButtonParams = new Click_Close_Settings_Tab_ButtonParams();
-                }
-                return mClick_Close_Settings_Tab_ButtonParams;
-            }
-        }
-        public virtual Click_Close_Workflow_Tab_ButtonParams Click_Close_Workflow_Tab_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Close_Workflow_Tab_ButtonParams == null))
-                {
-                    mClick_Close_Workflow_Tab_ButtonParams = new Click_Close_Workflow_Tab_ButtonParams();
-                }
-                return mClick_Close_Workflow_Tab_ButtonParams;
-            }
-        }
-        public virtual Click_ConfigureSetting_From_MenuParams Click_ConfigureSetting_From_MenuParams
-        {
-            get
-            {
-                if ((mClick_ConfigureSetting_From_MenuParams == null))
-                {
-                    mClick_ConfigureSetting_From_MenuParams = new Click_ConfigureSetting_From_MenuParams();
-                }
-                return mClick_ConfigureSetting_From_MenuParams;
-            }
-        }
-        public virtual Click_Debug_Output_Assign_CellParams Click_Debug_Output_Assign_CellParams
-        {
-            get
-            {
-                if ((mClick_Debug_Output_Assign_CellParams == null))
-                {
-                    mClick_Debug_Output_Assign_CellParams = new Click_Debug_Output_Assign_CellParams();
-                }
-                return mClick_Debug_Output_Assign_CellParams;
-            }
-        }
-        public virtual Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_TabParams Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_TabParams
-        {
-            get
-            {
-                if ((mClick_Debug_Output_Assign_Cell_For_Unpinned_Workflow_TabParams == null))
-                {
-                    mClick_Debug_Output_Assign_Cell_For_Unpinned_Workflow_TabParams = new Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_TabParams();
-                }
-                return mClick_Debug_Output_Assign_Cell_For_Unpinned_Workflow_TabParams;
-            }
-        }
-        public virtual Click_Debug_Output_BaseConvert_CellParams Click_Debug_Output_BaseConvert_CellParams
-        {
-            get
-            {
-                if ((mClick_Debug_Output_BaseConvert_CellParams == null))
-                {
-                    mClick_Debug_Output_BaseConvert_CellParams = new Click_Debug_Output_BaseConvert_CellParams();
-                }
-                return mClick_Debug_Output_BaseConvert_CellParams;
-            }
-        }
-        public virtual Click_Debug_Output_Calculate_CellParams Click_Debug_Output_Calculate_CellParams
-        {
-            get
-            {
-                if ((mClick_Debug_Output_Calculate_CellParams == null))
-                {
-                    mClick_Debug_Output_Calculate_CellParams = new Click_Debug_Output_Calculate_CellParams();
-                }
-                return mClick_Debug_Output_Calculate_CellParams;
-            }
-        }
-        public virtual Click_Debug_Output_Workflow1_NameParams Click_Debug_Output_Workflow1_NameParams
-        {
-            get
-            {
-                if ((mClick_Debug_Output_Workflow1_NameParams == null))
-                {
-                    mClick_Debug_Output_Workflow1_NameParams = new Click_Debug_Output_Workflow1_NameParams();
-                }
-                return mClick_Debug_Output_Workflow1_NameParams;
-            }
-        }
-        public virtual Click_DebugInput_Debug_ButtonParams Click_DebugInput_Debug_ButtonParams
-        {
-            get
-            {
-                if ((mClick_DebugInput_Debug_ButtonParams == null))
-                {
-                    mClick_DebugInput_Debug_ButtonParams = new Click_DebugInput_Debug_ButtonParams();
-                }
-                return mClick_DebugInput_Debug_ButtonParams;
-            }
-        }
-        public virtual Click_DebugInput_ViewInBrowser_ButtonParams Click_DebugInput_ViewInBrowser_ButtonParams
-        {
-            get
-            {
-                if ((mClick_DebugInput_ViewInBrowser_ButtonParams == null))
-                {
-                    mClick_DebugInput_ViewInBrowser_ButtonParams = new Click_DebugInput_ViewInBrowser_ButtonParams();
-                }
-                return mClick_DebugInput_ViewInBrowser_ButtonParams;
-            }
-        }
-        public virtual Click_Decision_Dialog_Done_ButtonParams Click_Decision_Dialog_Done_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Decision_Dialog_Done_ButtonParams == null))
-                {
-                    mClick_Decision_Dialog_Done_ButtonParams = new Click_Decision_Dialog_Done_ButtonParams();
-                }
-                return mClick_Decision_Dialog_Done_ButtonParams;
-            }
-        }
-        public virtual Click_DeleteWeb_Generate_OutputsParams Click_DeleteWeb_Generate_OutputsParams
-        {
-            get
-            {
-                if ((mClick_DeleteWeb_Generate_OutputsParams == null))
-                {
-                    mClick_DeleteWeb_Generate_OutputsParams = new Click_DeleteWeb_Generate_OutputsParams();
-                }
-                return mClick_DeleteWeb_Generate_OutputsParams;
-            }
-        }
-        public virtual Click_Deploy_Tab_Destination_Server_ComboboxParams Click_Deploy_Tab_Destination_Server_ComboboxParams
-        {
-            get
-            {
-                if ((mClick_Deploy_Tab_Destination_Server_ComboboxParams == null))
-                {
-                    mClick_Deploy_Tab_Destination_Server_ComboboxParams = new Click_Deploy_Tab_Destination_Server_ComboboxParams();
-                }
-                return mClick_Deploy_Tab_Destination_Server_ComboboxParams;
-            }
-        }
-        public virtual Click_Deploy_Tab_Source_Server_ComboboxParams Click_Deploy_Tab_Source_Server_ComboboxParams
-        {
-            get
-            {
-                if ((mClick_Deploy_Tab_Source_Server_ComboboxParams == null))
-                {
-                    mClick_Deploy_Tab_Source_Server_ComboboxParams = new Click_Deploy_Tab_Source_Server_ComboboxParams();
-                }
-                return mClick_Deploy_Tab_Source_Server_ComboboxParams;
-            }
-        }
-        public virtual Click_DotNet_DLL_Large_View_Done_ButtonParams Click_DotNet_DLL_Large_View_Done_ButtonParams
-        {
-            get
-            {
-                if ((mClick_DotNet_DLL_Large_View_Done_ButtonParams == null))
-                {
-                    mClick_DotNet_DLL_Large_View_Done_ButtonParams = new Click_DotNet_DLL_Large_View_Done_ButtonParams();
-                }
-                return mClick_DotNet_DLL_Large_View_Done_ButtonParams;
-            }
-        }
-        public virtual Click_Duplicate_From_Duplicate_DialogParams Click_Duplicate_From_Duplicate_DialogParams
-        {
-            get
-            {
-                if ((mClick_Duplicate_From_Duplicate_DialogParams == null))
-                {
-                    mClick_Duplicate_From_Duplicate_DialogParams = new Click_Duplicate_From_Duplicate_DialogParams();
-                }
-                return mClick_Duplicate_From_Duplicate_DialogParams;
-            }
-        }
-        public virtual Click_EmailSource_TestConnection_ButtonParams Click_EmailSource_TestConnection_ButtonParams
-        {
-            get
-            {
-                if ((mClick_EmailSource_TestConnection_ButtonParams == null))
-                {
-                    mClick_EmailSource_TestConnection_ButtonParams = new Click_EmailSource_TestConnection_ButtonParams();
-                }
-                return mClick_EmailSource_TestConnection_ButtonParams;
-            }
-        }
-        public virtual Click_EndThisWF_On_XPath_LargeViewParams Click_EndThisWF_On_XPath_LargeViewParams
-        {
-            get
-            {
-                if ((mClick_EndThisWF_On_XPath_LargeViewParams == null))
-                {
-                    mClick_EndThisWF_On_XPath_LargeViewParams = new Click_EndThisWF_On_XPath_LargeViewParams();
-                }
-                return mClick_EndThisWF_On_XPath_LargeViewParams;
-            }
-        }
-        public virtual Click_ExpandAndStepIn_NestedWorkflowParams Click_ExpandAndStepIn_NestedWorkflowParams
-        {
-            get
-            {
-                if ((mClick_ExpandAndStepIn_NestedWorkflowParams == null))
-                {
-                    mClick_ExpandAndStepIn_NestedWorkflowParams = new Click_ExpandAndStepIn_NestedWorkflowParams();
-                }
-                return mClick_ExpandAndStepIn_NestedWorkflowParams;
-            }
-        }
-        public virtual Click_Explorer_Filter_Clear_ButtonParams Click_Explorer_Filter_Clear_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Explorer_Filter_Clear_ButtonParams == null))
-                {
-                    mClick_Explorer_Filter_Clear_ButtonParams = new Click_Explorer_Filter_Clear_ButtonParams();
-                }
-                return mClick_Explorer_Filter_Clear_ButtonParams;
-            }
-        }
-        public virtual Click_Explorer_RemoteServer_Connect_ButtonParams Click_Explorer_RemoteServer_Connect_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Explorer_RemoteServer_Connect_ButtonParams == null))
-                {
-                    mClick_Explorer_RemoteServer_Connect_ButtonParams = new Click_Explorer_RemoteServer_Connect_ButtonParams();
-                }
-                return mClick_Explorer_RemoteServer_Connect_ButtonParams;
-            }
-        }
-        public virtual Click_First_Recordset_Input_CheckboxParams Click_First_Recordset_Input_CheckboxParams
-        {
-            get
-            {
-                if ((mClick_First_Recordset_Input_CheckboxParams == null))
-                {
-                    mClick_First_Recordset_Input_CheckboxParams = new Click_First_Recordset_Input_CheckboxParams();
-                }
-                return mClick_First_Recordset_Input_CheckboxParams;
-            }
-        }
-        public virtual Click_GET_Web_Large_View_Done_ButtonParams Click_GET_Web_Large_View_Done_ButtonParams
-        {
-            get
-            {
-                if ((mClick_GET_Web_Large_View_Done_ButtonParams == null))
-                {
-                    mClick_GET_Web_Large_View_Done_ButtonParams = new Click_GET_Web_Large_View_Done_ButtonParams();
-                }
-                return mClick_GET_Web_Large_View_Done_ButtonParams;
-            }
-        }
-        public virtual Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams
-        {
-            get
-            {
-                if ((mClick_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams == null))
-                {
-                    mClick_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams = new Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams();
-                }
-                return mClick_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams;
-            }
-        }
-        public virtual Click_GET_Web_Large_View_Generate_OutputsExpectedValues Click_GET_Web_Large_View_Generate_OutputsExpectedValues
-        {
-            get
-            {
-                if ((mClick_GET_Web_Large_View_Generate_OutputsExpectedValues == null))
-                {
-                    mClick_GET_Web_Large_View_Generate_OutputsExpectedValues = new Click_GET_Web_Large_View_Generate_OutputsExpectedValues();
-                }
-                return mClick_GET_Web_Large_View_Generate_OutputsExpectedValues;
-            }
-        }
-        public virtual Click_HTTP_Delete_Web_Tool_New_ButtonParams Click_HTTP_Delete_Web_Tool_New_ButtonParams
-        {
-            get
-            {
-                if ((mClick_HTTP_Delete_Web_Tool_New_ButtonParams == null))
-                {
-                    mClick_HTTP_Delete_Web_Tool_New_ButtonParams = new Click_HTTP_Delete_Web_Tool_New_ButtonParams();
-                }
-                return mClick_HTTP_Delete_Web_Tool_New_ButtonParams;
-            }
-        }
-        public virtual Click_HTTP_Post_Web_Tool_New_ButtonParams Click_HTTP_Post_Web_Tool_New_ButtonParams
-        {
-            get
-            {
-                if ((mClick_HTTP_Post_Web_Tool_New_ButtonParams == null))
-                {
-                    mClick_HTTP_Post_Web_Tool_New_ButtonParams = new Click_HTTP_Post_Web_Tool_New_ButtonParams();
-                }
-                return mClick_HTTP_Post_Web_Tool_New_ButtonParams;
-            }
-        }
-        public virtual Click_MessageBox_YesParams Click_MessageBox_YesParams
-        {
-            get
-            {
-                if ((mClick_MessageBox_YesParams == null))
-                {
-                    mClick_MessageBox_YesParams = new Click_MessageBox_YesParams();
-                }
-                return mClick_MessageBox_YesParams;
-            }
-        }
-        public virtual Click_NewPluginSource_Ribbon_ButtonParams Click_NewPluginSource_Ribbon_ButtonParams
-        {
-            get
-            {
-                if ((mClick_NewPluginSource_Ribbon_ButtonParams == null))
-                {
-                    mClick_NewPluginSource_Ribbon_ButtonParams = new Click_NewPluginSource_Ribbon_ButtonParams();
-                }
-                return mClick_NewPluginSource_Ribbon_ButtonParams;
-            }
-        }
-        public virtual Click_NewSource_Button_FromODBC_ToolParams Click_NewSource_Button_FromODBC_ToolParams
-        {
-            get
-            {
-                if ((mClick_NewSource_Button_FromODBC_ToolParams == null))
-                {
-                    mClick_NewSource_Button_FromODBC_ToolParams = new Click_NewSource_Button_FromODBC_ToolParams();
-                }
-                return mClick_NewSource_Button_FromODBC_ToolParams;
-            }
-        }
-        public virtual Click_NewSource_Button_FromOracle_ToolParams Click_NewSource_Button_FromOracle_ToolParams
-        {
-            get
-            {
-                if ((mClick_NewSource_Button_FromOracle_ToolParams == null))
-                {
-                    mClick_NewSource_Button_FromOracle_ToolParams = new Click_NewSource_Button_FromOracle_ToolParams();
-                }
-                return mClick_NewSource_Button_FromOracle_ToolParams;
-            }
-        }
-        public virtual Click_NewVersion_buttonExpectedValues Click_NewVersion_buttonExpectedValues
-        {
-            get
-            {
-                if ((mClick_NewVersion_buttonExpectedValues == null))
-                {
-                    mClick_NewVersion_buttonExpectedValues = new Click_NewVersion_buttonExpectedValues();
-                }
-                return mClick_NewVersion_buttonExpectedValues;
-            }
-        }
-        public virtual Click_Output_OnRecordset_InVariableListParams Click_Output_OnRecordset_InVariableListParams
-        {
-            get
-            {
-                if ((mClick_Output_OnRecordset_InVariableListParams == null))
-                {
-                    mClick_Output_OnRecordset_InVariableListParams = new Click_Output_OnRecordset_InVariableListParams();
-                }
-                return mClick_Output_OnRecordset_InVariableListParams;
-            }
-        }
-        public virtual Click_Output_OnVariable_InVariableListParams Click_Output_OnVariable_InVariableListParams
-        {
-            get
-            {
-                if ((mClick_Output_OnVariable_InVariableListParams == null))
-                {
-                    mClick_Output_OnVariable_InVariableListParams = new Click_Output_OnVariable_InVariableListParams();
-                }
-                return mClick_Output_OnVariable_InVariableListParams;
-            }
-        }
-        public virtual Click_RequireAllFieldsToMatch_CheckBoxParams Click_RequireAllFieldsToMatch_CheckBoxParams
-        {
-            get
-            {
-                if ((mClick_RequireAllFieldsToMatch_CheckBoxParams == null))
-                {
-                    mClick_RequireAllFieldsToMatch_CheckBoxParams = new Click_RequireAllFieldsToMatch_CheckBoxParams();
-                }
-                return mClick_RequireAllFieldsToMatch_CheckBoxParams;
-            }
-        }
-        public virtual Click_Reset_Perfomance_CounterParams Click_Reset_Perfomance_CounterParams
-        {
-            get
-            {
-                if ((mClick_Reset_Perfomance_CounterParams == null))
-                {
-                    mClick_Reset_Perfomance_CounterParams = new Click_Reset_Perfomance_CounterParams();
-                }
-                return mClick_Reset_Perfomance_CounterParams;
-            }
-        }
         public virtual Click_RunDebug_buttonParams Click_RunDebug_buttonParams
         {
             get
@@ -8706,116 +8115,6 @@ namespace Warewolf.UITests
                 return mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
             }
         }
-        public virtual Click_Scheduler_Create_New_Task_Ribbon_ButtonParams Click_Scheduler_Create_New_Task_Ribbon_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Scheduler_Create_New_Task_Ribbon_ButtonParams == null))
-                {
-                    mClick_Scheduler_Create_New_Task_Ribbon_ButtonParams = new Click_Scheduler_Create_New_Task_Ribbon_ButtonParams();
-                }
-                return mClick_Scheduler_Create_New_Task_Ribbon_ButtonParams;
-            }
-        }
-        public virtual Click_Scheduler_Disable_Task_Radio_ButtonParams Click_Scheduler_Disable_Task_Radio_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Scheduler_Disable_Task_Radio_ButtonParams == null))
-                {
-                    mClick_Scheduler_Disable_Task_Radio_ButtonParams = new Click_Scheduler_Disable_Task_Radio_ButtonParams();
-                }
-                return mClick_Scheduler_Disable_Task_Radio_ButtonParams;
-            }
-        }
-        public virtual Click_Scheduler_Enable_Task_Radio_ButtonParams Click_Scheduler_Enable_Task_Radio_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Scheduler_Enable_Task_Radio_ButtonParams == null))
-                {
-                    mClick_Scheduler_Enable_Task_Radio_ButtonParams = new Click_Scheduler_Enable_Task_Radio_ButtonParams();
-                }
-                return mClick_Scheduler_Enable_Task_Radio_ButtonParams;
-            }
-        }
-        public virtual Click_Scheduler_RunTaskParams Click_Scheduler_RunTaskParams
-        {
-            get
-            {
-                if ((mClick_Scheduler_RunTaskParams == null))
-                {
-                    mClick_Scheduler_RunTaskParams = new Click_Scheduler_RunTaskParams();
-                }
-                return mClick_Scheduler_RunTaskParams;
-            }
-        }
-        public virtual Click_Select_Resource_Button_From_Resource_PermissionsParams Click_Select_Resource_Button_From_Resource_PermissionsParams
-        {
-            get
-            {
-                if ((mClick_Select_Resource_Button_From_Resource_PermissionsParams == null))
-                {
-                    mClick_Select_Resource_Button_From_Resource_PermissionsParams = new Click_Select_Resource_Button_From_Resource_PermissionsParams();
-                }
-                return mClick_Select_Resource_Button_From_Resource_PermissionsParams;
-            }
-        }
-        public virtual Click_Select_Windows_Group_Cancel_ButtonParams Click_Select_Windows_Group_Cancel_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Select_Windows_Group_Cancel_ButtonParams == null))
-                {
-                    mClick_Select_Windows_Group_Cancel_ButtonParams = new Click_Select_Windows_Group_Cancel_ButtonParams();
-                }
-                return mClick_Select_Windows_Group_Cancel_ButtonParams;
-            }
-        }
-        public virtual Click_Server_Source_Wizard_Address_Protocol_DropdownParams Click_Server_Source_Wizard_Address_Protocol_DropdownParams
-        {
-            get
-            {
-                if ((mClick_Server_Source_Wizard_Address_Protocol_DropdownParams == null))
-                {
-                    mClick_Server_Source_Wizard_Address_Protocol_DropdownParams = new Click_Server_Source_Wizard_Address_Protocol_DropdownParams();
-                }
-                return mClick_Server_Source_Wizard_Address_Protocol_DropdownParams;
-            }
-        }
-        public virtual Click_Server_Source_Wizard_Test_Connection_ButtonParams Click_Server_Source_Wizard_Test_Connection_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Server_Source_Wizard_Test_Connection_ButtonParams == null))
-                {
-                    mClick_Server_Source_Wizard_Test_Connection_ButtonParams = new Click_Server_Source_Wizard_Test_Connection_ButtonParams();
-                }
-                return mClick_Server_Source_Wizard_Test_Connection_ButtonParams;
-            }
-        }
-        public virtual Click_Show_Dependencies_In_Explorer_Context_MenuParams Click_Show_Dependencies_In_Explorer_Context_MenuParams
-        {
-            get
-            {
-                if ((mClick_Show_Dependencies_In_Explorer_Context_MenuParams == null))
-                {
-                    mClick_Show_Dependencies_In_Explorer_Context_MenuParams = new Click_Show_Dependencies_In_Explorer_Context_MenuParams();
-                }
-                return mClick_Show_Dependencies_In_Explorer_Context_MenuParams;
-            }
-        }
-        public virtual Click_SQL_Server_Large_View_Done_ButtonExpectedValues Click_SQL_Server_Large_View_Done_ButtonExpectedValues
-        {
-            get
-            {
-                if ((mClick_SQL_Server_Large_View_Done_ButtonExpectedValues == null))
-                {
-                    mClick_SQL_Server_Large_View_Done_ButtonExpectedValues = new Click_SQL_Server_Large_View_Done_ButtonExpectedValues();
-                }
-                return mClick_SQL_Server_Large_View_Done_ButtonExpectedValues;
-            }
-        }
         public virtual Click_SQL_Server_Large_View_Generate_OutputsExpectedValues Click_SQL_Server_Large_View_Generate_OutputsExpectedValues
         {
             get
@@ -8825,28 +8124,6 @@ namespace Warewolf.UITests
                     mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues = new Click_SQL_Server_Large_View_Generate_OutputsExpectedValues();
                 }
                 return mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
-            }
-        }
-        public virtual Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues
-        {
-            get
-            {
-                if ((mClick_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues == null))
-                {
-                    mClick_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues = new Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues();
-                }
-                return mClick_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues;
-            }
-        }
-        public virtual Click_Switch_Dialog_Done_ButtonParams Click_Switch_Dialog_Done_ButtonParams
-        {
-            get
-            {
-                if ((mClick_Switch_Dialog_Done_ButtonParams == null))
-                {
-                    mClick_Switch_Dialog_Done_ButtonParams = new Click_Switch_Dialog_Done_ButtonParams();
-                }
-                return mClick_Switch_Dialog_Done_ButtonParams;
             }
         }
         public virtual Click_Unpinned_Workflow_CollapseAllParams Click_Unpinned_Workflow_CollapseAllParams
@@ -8871,17 +8148,6 @@ namespace Warewolf.UITests
                 return mClick_Unpinned_Workflow_ExpandAllParams;
             }
         }
-        public virtual Click_UpdateDuplicateRelationshipsParams Click_UpdateDuplicateRelationshipsParams
-        {
-            get
-            {
-                if ((mClick_UpdateDuplicateRelationshipsParams == null))
-                {
-                    mClick_UpdateDuplicateRelationshipsParams = new Click_UpdateDuplicateRelationshipsParams();
-                }
-                return mClick_UpdateDuplicateRelationshipsParams;
-            }
-        }
         public virtual Click_Variable_IsInputParams Click_Variable_IsInputParams
         {
             get
@@ -8891,886 +8157,6 @@ namespace Warewolf.UITests
                     mClick_Variable_IsInputParams = new Click_Variable_IsInputParams();
                 }
                 return mClick_Variable_IsInputParams;
-            }
-        }
-        public virtual Click_VariableList_Recordset_Row1_IsInputCheckboxParams Click_VariableList_Recordset_Row1_IsInputCheckboxParams
-        {
-            get
-            {
-                if ((mClick_VariableList_Recordset_Row1_IsInputCheckboxParams == null))
-                {
-                    mClick_VariableList_Recordset_Row1_IsInputCheckboxParams = new Click_VariableList_Recordset_Row1_IsInputCheckboxParams();
-                }
-                return mClick_VariableList_Recordset_Row1_IsInputCheckboxParams;
-            }
-        }
-        public virtual Click_VariableList_Scalar_Row1_IsInputCheckboxParams Click_VariableList_Scalar_Row1_IsInputCheckboxParams
-        {
-            get
-            {
-                if ((mClick_VariableList_Scalar_Row1_IsInputCheckboxParams == null))
-                {
-                    mClick_VariableList_Scalar_Row1_IsInputCheckboxParams = new Click_VariableList_Scalar_Row1_IsInputCheckboxParams();
-                }
-                return mClick_VariableList_Scalar_Row1_IsInputCheckboxParams;
-            }
-        }
-        public virtual Click_Workflow_CollapseAllParams Click_Workflow_CollapseAllParams
-        {
-            get
-            {
-                if ((mClick_Workflow_CollapseAllParams == null))
-                {
-                    mClick_Workflow_CollapseAllParams = new Click_Workflow_CollapseAllParams();
-                }
-                return mClick_Workflow_CollapseAllParams;
-            }
-        }
-        public virtual Click_Workflow_ExpandAllParams Click_Workflow_ExpandAllParams
-        {
-            get
-            {
-                if ((mClick_Workflow_ExpandAllParams == null))
-                {
-                    mClick_Workflow_ExpandAllParams = new Click_Workflow_ExpandAllParams();
-                }
-                return mClick_Workflow_ExpandAllParams;
-            }
-        }
-        public virtual Create_SubFolder_In_Folder1Params Create_SubFolder_In_Folder1Params
-        {
-            get
-            {
-                if ((mCreate_SubFolder_In_Folder1Params == null))
-                {
-                    mCreate_SubFolder_In_Folder1Params = new Create_SubFolder_In_Folder1Params();
-                }
-                return mCreate_SubFolder_In_Folder1Params;
-            }
-        }
-        public virtual DisplayStartNodeContextMenuExpectedValues DisplayStartNodeContextMenuExpectedValues
-        {
-            get
-            {
-                if ((mDisplayStartNodeContextMenuExpectedValues == null))
-                {
-                    mDisplayStartNodeContextMenuExpectedValues = new DisplayStartNodeContextMenuExpectedValues();
-                }
-                return mDisplayStartNodeContextMenuExpectedValues;
-            }
-        }
-        public virtual Drag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams Drag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams
-        {
-            get
-            {
-                if ((mDrag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams == null))
-                {
-                    mDrag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams = new Drag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams();
-                }
-                return mDrag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams;
-            }
-        }
-        public virtual Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams == null))
-                {
-                    mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams = new Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams();
-                }
-                return mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_DotNet_DLL_Connector_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_DotNet_DLL_Connector_Onto_DesignSurfaceParams = new Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams();
-                }
-                return mDrag_DotNet_DLL_Connector_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams == null))
-                {
-                    mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams();
-                }
-                return mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams;
-            }
-        }
-        public virtual Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams == null))
-                {
-                    mDrag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams();
-                }
-                return mDrag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams;
-            }
-        }
-        public virtual Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams == null))
-                {
-                    mDrag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams();
-                }
-                return mDrag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams;
-            }
-        }
-        public virtual Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams == null))
-                {
-                    mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams();
-                }
-                return mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
-            }
-        }
-        public virtual Drag_GET_Web_Connector_Onto_DesignSurfaceParams Drag_GET_Web_Connector_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_GET_Web_Connector_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_GET_Web_Connector_Onto_DesignSurfaceParams = new Drag_GET_Web_Connector_Onto_DesignSurfaceParams();
-                }
-                return mDrag_GET_Web_Connector_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_GetWeb_RequestTool_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_GetWeb_RequestTool_Onto_DesignSurfaceParams = new Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams();
-                }
-                return mDrag_GetWeb_RequestTool_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams = new Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams();
-                }
-                return mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_PutWeb_Tool_Onto_DesignSurfaceParams Drag_PutWeb_Tool_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_PutWeb_Tool_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_PutWeb_Tool_Onto_DesignSurfaceParams = new Drag_PutWeb_Tool_Onto_DesignSurfaceParams();
-                }
-                return mDrag_PutWeb_Tool_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams = new Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_AssignObject_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_AssignObject_Onto_DesignSurfaceParams = new Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_AssignObject_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams = new Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Calculate_Onto_DesignSurfaceParams Drag_Toolbox_Calculate_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Calculate_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Calculate_Onto_DesignSurfaceParams = new Drag_Toolbox_Calculate_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Calculate_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams = new Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_CMD_Line_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_CMD_Line_Onto_DesignSurfaceParams = new Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_CMD_Line_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Comment_Onto_DesignSurfaceParams Drag_Toolbox_Comment_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Comment_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Comment_Onto_DesignSurfaceParams = new Drag_Toolbox_Comment_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Comment_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Copy_Onto_DesignSurfaceParams Drag_Toolbox_Copy_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Copy_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Copy_Onto_DesignSurfaceParams = new Drag_Toolbox_Copy_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Copy_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Count_Records_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Count_Records_Onto_DesignSurfaceParams = new Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Count_Records_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Create_Onto_DesignSurfaceParams Drag_Toolbox_Create_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Create_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Create_Onto_DesignSurfaceParams = new Drag_Toolbox_Create_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Create_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Data_Merge_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Data_Merge_Onto_DesignSurfaceParams = new Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Data_Merge_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Data_Split_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Data_Split_Onto_DesignSurfaceParams = new Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Data_Split_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams = new Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams = new Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Decision_Onto_DesignSurfaceParams Drag_Toolbox_Decision_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Decision_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Decision_Onto_DesignSurfaceParams = new Drag_Toolbox_Decision_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Decision_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Delete_Onto_DesignSurfaceParams Drag_Toolbox_Delete_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Delete_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Delete_Onto_DesignSurfaceParams = new Drag_Toolbox_Delete_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Delete_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Delete_Record_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Delete_Record_Onto_DesignSurfaceParams = new Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Delete_Record_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams Drag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams = new Drag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams = new Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams Drag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams = new Drag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams = new Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams = new Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Find_Index_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Find_Index_Onto_DesignSurfaceParams = new Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Find_Index_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams = new Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_For_Each_Onto_DesignSurfaceParams Drag_Toolbox_For_Each_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_For_Each_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_For_Each_Onto_DesignSurfaceParams = new Drag_Toolbox_For_Each_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_For_Each_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Format_Number_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Format_Number_Onto_DesignSurfaceParams = new Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Format_Number_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Javascript_Onto_DesignSurfaceParams Drag_Toolbox_Javascript_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Javascript_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Javascript_Onto_DesignSurfaceParams = new Drag_Toolbox_Javascript_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Javascript_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_JSON_Onto_DesignSurfaceParams Drag_Toolbox_JSON_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_JSON_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_JSON_Onto_DesignSurfaceParams = new Drag_Toolbox_JSON_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_JSON_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Length_Onto_DesignSurfaceParams Drag_Toolbox_Length_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Length_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Length_Onto_DesignSurfaceParams = new Drag_Toolbox_Length_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Length_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Move_Onto_DesignSurfaceParams Drag_Toolbox_Move_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Move_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Move_Onto_DesignSurfaceParams = new Drag_Toolbox_Move_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Move_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_MultiAssign_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_MultiAssign_Onto_DesignSurfaceParams = new Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_MultiAssign_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_MySql_Database_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_MySql_Database_Onto_DesignSurfaceParams = new Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_MySql_Database_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurfaceParams Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_ODBC_Dtatbase_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_ODBC_Dtatbase_Onto_DesignSurfaceParams = new Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_ODBC_Dtatbase_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams Drag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams = new Drag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_PostgreSql_Onto_DesignSurfaceParams Drag_Toolbox_PostgreSql_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_PostgreSql_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_PostgreSql_Onto_DesignSurfaceParams = new Drag_Toolbox_PostgreSql_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_PostgreSql_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Python_Onto_DesignSurfaceParams Drag_Toolbox_Python_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Python_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Python_Onto_DesignSurfaceParams = new Drag_Toolbox_Python_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Python_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams = new Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams = new Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Random_Onto_DesignSurfaceParams Drag_Toolbox_Random_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Random_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Random_Onto_DesignSurfaceParams = new Drag_Toolbox_Random_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Random_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Read_File_Onto_DesignSurfaceParams Drag_Toolbox_Read_File_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Read_File_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Read_File_Onto_DesignSurfaceParams = new Drag_Toolbox_Read_File_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Read_File_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Read_Folder_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Read_Folder_Onto_DesignSurfaceParams = new Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Read_Folder_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Rename_Onto_DesignSurfaceParams Drag_Toolbox_Rename_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Rename_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Rename_Onto_DesignSurfaceParams = new Drag_Toolbox_Rename_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Rename_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Replace_Onto_DesignSurfaceParams Drag_Toolbox_Replace_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Replace_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Replace_Onto_DesignSurfaceParams = new Drag_Toolbox_Replace_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Replace_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Ruby_Onto_DesignSurfaceParams Drag_Toolbox_Ruby_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Ruby_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Ruby_Onto_DesignSurfaceParams = new Drag_Toolbox_Ruby_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Ruby_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams = new Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Sequence_Onto_DesignSurfaceParams Drag_Toolbox_Sequence_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Sequence_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Sequence_Onto_DesignSurfaceParams = new Drag_Toolbox_Sequence_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Sequence_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Service_Picker_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Service_Picker_Onto_DesignSurfaceParams = new Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Service_Picker_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams = new Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Sort_Record_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Sort_Record_Onto_DesignSurfaceParams = new Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Sort_Record_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams = new Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams = new Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Switch_Onto_DesignSurfaceParams Drag_Toolbox_Switch_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Switch_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Switch_Onto_DesignSurfaceParams = new Drag_Toolbox_Switch_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Switch_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_System_Information_Onto_DesignSurfaceParams Drag_Toolbox_System_Information_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_System_Information_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_System_Information_Onto_DesignSurfaceParams = new Drag_Toolbox_System_Information_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_System_Information_Onto_DesignSurfaceParams;
-            }
-        }
-        public virtual Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((mDrag_Toolbox_Unique_Records_Onto_DesignSurfaceParams == null))
-                {
-                    mDrag_Toolbox_Unique_Records_Onto_DesignSurfaceParams = new Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams();
-                }
-                return mDrag_Toolbox_Unique_Records_Onto_DesignSurfaceParams;
             }
         }
         public virtual Drag_Toolbox_Unzip_Onto_DesignSurfaceParams Drag_Toolbox_Unzip_Onto_DesignSurfaceParams
@@ -11425,158 +9811,12 @@ namespace Warewolf.UITests
         }
         #endregion
         #region Fields
-        private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params;
-        private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams;
-        private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params;
-        private Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams mAssign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams;
-        private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
-        private Click_AddNew_Web_Source_From_PostWeb_toolParams mClick_AddNew_Web_Source_From_PostWeb_toolParams;
-        private Click_AddNew_Web_Source_From_toolParams mClick_AddNew_Web_Source_From_toolParams;
-        private Click_Assign_Tool_CollapseAllParams mClick_Assign_Tool_CollapseAllParams;
-        private Click_Assign_Tool_ExpandAllParams mClick_Assign_Tool_ExpandAllParams;
-        private Click_Assign_Tool_Large_View_Done_ButtonParams mClick_Assign_Tool_Large_View_Done_ButtonParams;
-        private Click_Assign_Tool_Large_View_Done_Button_On_Unpinned_TabParams mClick_Assign_Tool_Large_View_Done_Button_On_Unpinned_TabParams;
-        private Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams;
-        private Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_TabParams mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_TabParams;
-        private Click_Base_Convert_Large_View_Done_ButtonParams mClick_Base_Convert_Large_View_Done_ButtonParams;
-        private Click_Calculate_Large_View_Done_ButtonParams mClick_Calculate_Large_View_Done_ButtonParams;
-        private Click_Cancel_DebugInput_WindowParams mClick_Cancel_DebugInput_WindowParams;
-        private Click_Close_Deploy_Tab_ButtonParams mClick_Close_Deploy_Tab_ButtonParams;
-        private Click_Close_Settings_Tab_ButtonParams mClick_Close_Settings_Tab_ButtonParams;
-        private Click_Close_Workflow_Tab_ButtonParams mClick_Close_Workflow_Tab_ButtonParams;
-        private Click_ConfigureSetting_From_MenuParams mClick_ConfigureSetting_From_MenuParams;
-        private Click_Debug_Output_Assign_CellParams mClick_Debug_Output_Assign_CellParams;
-        private Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_TabParams mClick_Debug_Output_Assign_Cell_For_Unpinned_Workflow_TabParams;
-        private Click_Debug_Output_BaseConvert_CellParams mClick_Debug_Output_BaseConvert_CellParams;
-        private Click_Debug_Output_Calculate_CellParams mClick_Debug_Output_Calculate_CellParams;
-        private Click_Debug_Output_Workflow1_NameParams mClick_Debug_Output_Workflow1_NameParams;
-        private Click_DebugInput_Debug_ButtonParams mClick_DebugInput_Debug_ButtonParams;
-        private Click_DebugInput_ViewInBrowser_ButtonParams mClick_DebugInput_ViewInBrowser_ButtonParams;
-        private Click_Decision_Dialog_Done_ButtonParams mClick_Decision_Dialog_Done_ButtonParams;
-        private Click_DeleteWeb_Generate_OutputsParams mClick_DeleteWeb_Generate_OutputsParams;
-        private Click_Deploy_Tab_Destination_Server_ComboboxParams mClick_Deploy_Tab_Destination_Server_ComboboxParams;
-        private Click_Deploy_Tab_Source_Server_ComboboxParams mClick_Deploy_Tab_Source_Server_ComboboxParams;
-        private Click_DotNet_DLL_Large_View_Done_ButtonParams mClick_DotNet_DLL_Large_View_Done_ButtonParams;
-        private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
-        private Click_EmailSource_TestConnection_ButtonParams mClick_EmailSource_TestConnection_ButtonParams;
-        private Click_EndThisWF_On_XPath_LargeViewParams mClick_EndThisWF_On_XPath_LargeViewParams;
-        private Click_ExpandAndStepIn_NestedWorkflowParams mClick_ExpandAndStepIn_NestedWorkflowParams;
-        private Click_Explorer_Filter_Clear_ButtonParams mClick_Explorer_Filter_Clear_ButtonParams;
-        private Click_Explorer_RemoteServer_Connect_ButtonParams mClick_Explorer_RemoteServer_Connect_ButtonParams;
-        private Click_First_Recordset_Input_CheckboxParams mClick_First_Recordset_Input_CheckboxParams;
-        private Click_GET_Web_Large_View_Done_ButtonParams mClick_GET_Web_Large_View_Done_ButtonParams;
-        private Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams mClick_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams;
-        private Click_GET_Web_Large_View_Generate_OutputsExpectedValues mClick_GET_Web_Large_View_Generate_OutputsExpectedValues;
-        private Click_HTTP_Delete_Web_Tool_New_ButtonParams mClick_HTTP_Delete_Web_Tool_New_ButtonParams;
-        private Click_HTTP_Post_Web_Tool_New_ButtonParams mClick_HTTP_Post_Web_Tool_New_ButtonParams;
-        private Click_MessageBox_YesParams mClick_MessageBox_YesParams;
-        private Click_NewPluginSource_Ribbon_ButtonParams mClick_NewPluginSource_Ribbon_ButtonParams;
-        private Click_NewSource_Button_FromODBC_ToolParams mClick_NewSource_Button_FromODBC_ToolParams;
-        private Click_NewSource_Button_FromOracle_ToolParams mClick_NewSource_Button_FromOracle_ToolParams;
-        private Click_NewVersion_buttonExpectedValues mClick_NewVersion_buttonExpectedValues;
-        private Click_Output_OnRecordset_InVariableListParams mClick_Output_OnRecordset_InVariableListParams;
-        private Click_Output_OnVariable_InVariableListParams mClick_Output_OnVariable_InVariableListParams;
-        private Click_RequireAllFieldsToMatch_CheckBoxParams mClick_RequireAllFieldsToMatch_CheckBoxParams;
-        private Click_Reset_Perfomance_CounterParams mClick_Reset_Perfomance_CounterParams;
         private Click_RunDebug_buttonParams mClick_RunDebug_buttonParams;
         private Click_Save_Ribbon_Button_to_Open_Save_DialogParams mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
-        private Click_Scheduler_Create_New_Task_Ribbon_ButtonParams mClick_Scheduler_Create_New_Task_Ribbon_ButtonParams;
-        private Click_Scheduler_Disable_Task_Radio_ButtonParams mClick_Scheduler_Disable_Task_Radio_ButtonParams;
-        private Click_Scheduler_Enable_Task_Radio_ButtonParams mClick_Scheduler_Enable_Task_Radio_ButtonParams;
-        private Click_Scheduler_RunTaskParams mClick_Scheduler_RunTaskParams;
-        private Click_Select_Resource_Button_From_Resource_PermissionsParams mClick_Select_Resource_Button_From_Resource_PermissionsParams;
-        private Click_Select_Windows_Group_Cancel_ButtonParams mClick_Select_Windows_Group_Cancel_ButtonParams;
-        private Click_Server_Source_Wizard_Address_Protocol_DropdownParams mClick_Server_Source_Wizard_Address_Protocol_DropdownParams;
-        private Click_Server_Source_Wizard_Test_Connection_ButtonParams mClick_Server_Source_Wizard_Test_Connection_ButtonParams;
-        private Click_Show_Dependencies_In_Explorer_Context_MenuParams mClick_Show_Dependencies_In_Explorer_Context_MenuParams;
-        private Click_SQL_Server_Large_View_Done_ButtonExpectedValues mClick_SQL_Server_Large_View_Done_ButtonExpectedValues;
         private Click_SQL_Server_Large_View_Generate_OutputsExpectedValues mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
-        private Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues mClick_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues;
-        private Click_Switch_Dialog_Done_ButtonParams mClick_Switch_Dialog_Done_ButtonParams;
         private Click_Unpinned_Workflow_CollapseAllParams mClick_Unpinned_Workflow_CollapseAllParams;
         private Click_Unpinned_Workflow_ExpandAllParams mClick_Unpinned_Workflow_ExpandAllParams;
-        private Click_UpdateDuplicateRelationshipsParams mClick_UpdateDuplicateRelationshipsParams;
         private Click_Variable_IsInputParams mClick_Variable_IsInputParams;
-        private Click_VariableList_Recordset_Row1_IsInputCheckboxParams mClick_VariableList_Recordset_Row1_IsInputCheckboxParams;
-        private Click_VariableList_Scalar_Row1_IsInputCheckboxParams mClick_VariableList_Scalar_Row1_IsInputCheckboxParams;
-        private Click_Workflow_CollapseAllParams mClick_Workflow_CollapseAllParams;
-        private Click_Workflow_ExpandAllParams mClick_Workflow_ExpandAllParams;
-        private Create_SubFolder_In_Folder1Params mCreate_SubFolder_In_Folder1Params;
-        private DisplayStartNodeContextMenuExpectedValues mDisplayStartNodeContextMenuExpectedValues;
-        private Drag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams mDrag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams;
-        private Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams;
-        private Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams mDrag_DotNet_DLL_Connector_Onto_DesignSurfaceParams;
-        private Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams;
-        private Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams;
-        private Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams;
-        private Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
-        private Drag_GET_Web_Connector_Onto_DesignSurfaceParams mDrag_GET_Web_Connector_Onto_DesignSurfaceParams;
-        private Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams mDrag_GetWeb_RequestTool_Onto_DesignSurfaceParams;
-        private Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams;
-        private Drag_PutWeb_Tool_Onto_DesignSurfaceParams mDrag_PutWeb_Tool_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams mDrag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams mDrag_Toolbox_AssignObject_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams mDrag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Calculate_Onto_DesignSurfaceParams mDrag_Toolbox_Calculate_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams mDrag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams mDrag_Toolbox_CMD_Line_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Comment_Onto_DesignSurfaceParams mDrag_Toolbox_Comment_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Copy_Onto_DesignSurfaceParams mDrag_Toolbox_Copy_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams mDrag_Toolbox_Count_Records_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Create_Onto_DesignSurfaceParams mDrag_Toolbox_Create_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams mDrag_Toolbox_Data_Merge_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams mDrag_Toolbox_Data_Split_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams mDrag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams mDrag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Decision_Onto_DesignSurfaceParams mDrag_Toolbox_Decision_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Delete_Onto_DesignSurfaceParams mDrag_Toolbox_Delete_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams mDrag_Toolbox_Delete_Record_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams mDrag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams mDrag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams mDrag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams mDrag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams mDrag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams mDrag_Toolbox_Find_Index_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams mDrag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_For_Each_Onto_DesignSurfaceParams mDrag_Toolbox_For_Each_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams mDrag_Toolbox_Format_Number_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Javascript_Onto_DesignSurfaceParams mDrag_Toolbox_Javascript_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_JSON_Onto_DesignSurfaceParams mDrag_Toolbox_JSON_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Length_Onto_DesignSurfaceParams mDrag_Toolbox_Length_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Move_Onto_DesignSurfaceParams mDrag_Toolbox_Move_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams mDrag_Toolbox_MultiAssign_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams mDrag_Toolbox_MySql_Database_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurfaceParams mDrag_Toolbox_ODBC_Dtatbase_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams mDrag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_PostgreSql_Onto_DesignSurfaceParams mDrag_Toolbox_PostgreSql_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Python_Onto_DesignSurfaceParams mDrag_Toolbox_Python_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams mDrag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams mDrag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Random_Onto_DesignSurfaceParams mDrag_Toolbox_Random_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Read_File_Onto_DesignSurfaceParams mDrag_Toolbox_Read_File_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams mDrag_Toolbox_Read_Folder_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Rename_Onto_DesignSurfaceParams mDrag_Toolbox_Rename_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Replace_Onto_DesignSurfaceParams mDrag_Toolbox_Replace_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Ruby_Onto_DesignSurfaceParams mDrag_Toolbox_Ruby_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams mDrag_Toolbox_Selectandapply_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Sequence_Onto_DesignSurfaceParams mDrag_Toolbox_Sequence_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams mDrag_Toolbox_Service_Picker_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams mDrag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams mDrag_Toolbox_Sort_Record_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams mDrag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams mDrag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Switch_Onto_DesignSurfaceParams mDrag_Toolbox_Switch_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_System_Information_Onto_DesignSurfaceParams mDrag_Toolbox_System_Information_Onto_DesignSurfaceParams;
-        private Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams mDrag_Toolbox_Unique_Records_Onto_DesignSurfaceParams;
         private Drag_Toolbox_Unzip_Onto_DesignSurfaceParams mDrag_Toolbox_Unzip_Onto_DesignSurfaceParams;
         private Drag_Toolbox_Web_Request_Onto_DesignSurfaceParams mDrag_Toolbox_Web_Request_Onto_DesignSurfaceParams;
         private Drag_Toolbox_Write_File_Onto_DesignSurfaceParams mDrag_Toolbox_Write_File_Onto_DesignSurfaceParams;
@@ -11730,380 +9970,6 @@ namespace Warewolf.UITests
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1Params
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tabParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2Params
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tabParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Check_Public_AdministratorParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_AddNew_Web_Source_From_PostWeb_toolParams
-    {
-        #region Fields
-        public bool NewSourceButtonExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_AddNew_Web_Source_From_toolParams
-    {
-        #region Fields
-        public bool NewSourceButtonExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Assign_Tool_CollapseAllParams
-    {
-        #region Fields
-        public bool CollapseAllToggleButtonExists = true;
-        public bool CollapseAllToggleButtonPressed = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Assign_Tool_ExpandAllParams
-    {
-        #region Fields
-
-        public bool MultiAssignExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Assign_Tool_Large_View_Done_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Assign_Tool_Large_View_Done_Button_On_Unpinned_TabParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_TabParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Base_Convert_Large_View_Done_ButtonParams
-    {
-        #region Fields
-        public string ValueTextboxText = "SomeData";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Calculate_Large_View_Done_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Cancel_DebugInput_WindowParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Close_Deploy_Tab_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Close_Settings_Tab_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Close_Workflow_Tab_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_ConfigureSetting_From_MenuParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Debug_Output_Assign_CellParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_TabParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Debug_Output_BaseConvert_CellParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Debug_Output_Calculate_CellParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Debug_Output_Workflow1_NameParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_DebugInput_Debug_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_DebugInput_ViewInBrowser_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Decision_Dialog_Done_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_DeleteWeb_Generate_OutputsParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Deploy_Tab_Destination_Server_ComboboxParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Deploy_Tab_Source_Server_ComboboxParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_DotNet_DLL_Large_View_Done_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Duplicate_From_Duplicate_DialogParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_EmailSource_TestConnection_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_EndThisWF_On_XPath_LargeViewParams
-    {
-        #region Fields
-        public bool EndthisworkflowCheckBoxChecked = true;
-        public string EndthisworkflowCheckBoxSendKeys = "{Tab}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_ExpandAndStepIn_NestedWorkflowParams
-    {
-        #region Fields
-        public bool SubWorkflowExpanded = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Explorer_Filter_Clear_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Explorer_RemoteServer_Connect_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_First_Recordset_Input_CheckboxParams
-    {
-        #region Fields
-        public bool InputCheckboxChecked = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_GET_Web_Large_View_Done_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_GET_Web_Large_View_Generate_OutputsExpectedValues
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_HTTP_Delete_Web_Tool_New_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_HTTP_Post_Web_Tool_New_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_MessageBox_YesParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_NewPluginSource_Ribbon_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_NewSource_Button_FromODBC_ToolParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_NewSource_Button_FromOracle_ToolParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_NewVersion_buttonExpectedValues
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Output_OnRecordset_InVariableListParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Output_OnVariable_InVariableListParams
-    {
-        #region Fields
-        public bool OutputCheckboxChecked = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_RequireAllFieldsToMatch_CheckBoxParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Reset_Perfomance_CounterParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_RunDebug_buttonParams
     {
         #region Fields
@@ -12135,76 +10001,6 @@ namespace Warewolf.UITests
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Scheduler_Create_New_Task_Ribbon_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Scheduler_Disable_Task_Radio_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Scheduler_Enable_Task_Radio_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Scheduler_RunTaskParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Select_Resource_Button_From_Resource_PermissionsParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Select_Windows_Group_Cancel_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Server_Source_Wizard_Address_Protocol_DropdownParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Server_Source_Wizard_Test_Connection_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Show_Dependencies_In_Explorer_Context_MenuParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_SQL_Server_Large_View_Done_ButtonExpectedValues
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_SQL_Server_Large_View_Generate_OutputsExpectedValues
     {
         #region Fields
@@ -12213,24 +10009,9 @@ namespace Warewolf.UITests
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Switch_Dialog_Done_ButtonParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Unpinned_Workflow_CollapseAllParams
     {
         #region Fields
-        public bool CollapseAllToggleButtonExists = true;
 
         #endregion
     }
@@ -12244,54 +10025,11 @@ namespace Warewolf.UITests
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_UpdateDuplicateRelationshipsParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Variable_IsInputParams
     {
         #region Fields
 
         public bool InputCheckboxChecked = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_VariableList_Recordset_Row1_IsInputCheckboxParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_VariableList_Scalar_Row1_IsInputCheckboxParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Workflow_CollapseAllParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Workflow_ExpandAllParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Create_SubFolder_In_Folder1Params
-    {
-        #region Fields
-        public string ItemEditText = "Acceptance Testing Resources";
-        public string FirstSubItemSendKeys = "{Enter}";
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12320,542 +10058,6 @@ namespace Warewolf.UITests
         public bool ViewSwaggerMenuItemEnabled = false;
         public bool CopyURLtoClipboardMenuItemEnabled = false;
         public bool CopyURLtoClipboardMenuItemExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_DeleteWeb_Toolbox_Onto_Workflow_SurfaceParams
-    {
-        #region Fields
-
-        public bool WebDeleteExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams
-    {
-        #region Fields
-        public string SearchTextBoxText = "DotNet DLL";
-        public bool Connector1Exists = true;
-        public bool DotNetDllExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams
-    {
-        #region Fields
-        public bool FirstItemExists = true;
-        public bool Connector1Exists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams
-    {
-        #region Fields
-        public bool FirstSubItemExists = true;
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_SurfaceParams
-    {
-        #region Fields
-
-        public bool Connector1Exists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
-    {
-        #region Fields
-        public bool FirstItemExists = true;
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_GET_Web_Connector_Onto_DesignSurfaceParams
-    {
-        #region Fields
-        public string SearchTextBoxText = "GET";
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams
-    {
-        #region Fields
-        public string SearchTextBoxText = "Web Request";
-        public bool Connector1Exists = true;
-        public bool WebRequestExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams
-    {
-        #region Fields
-        public string SearchTextBoxText = "POST";
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_PutWeb_Tool_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        public bool WebPutExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_AggregateCalculate_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_AssignObject_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        public bool Connector1Exists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Calculate_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Comment_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Copy_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Create_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Decision_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Delete_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Dropbox_Delete_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        public bool DropboxDownloadExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Dropbox_FileList_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        public bool Connector1Exists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_For_Each_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Javascript_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_JSON_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Length_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Move_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        public bool MultiAssignExists = true;
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Oracle_Database_Onto_DesignSurfaceParams
-    {
-        #region Fields
-        public string SearchTextBoxText = "Oracle";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_PostgreSql_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Python_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_RabbitMqConsume_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        public bool SmallViewContentCustomExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_RabbitMqPublish_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Random_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Read_File_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Rename_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Replace_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Ruby_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Selectandapply_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sequence_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sharepoint_MoveFile_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sharepoint_Read_Folder_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sharepoint_Read_List_Item_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sharepoint_UploadFile_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Switch_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_System_Information_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams
-    {
-        #region Fields
-
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
