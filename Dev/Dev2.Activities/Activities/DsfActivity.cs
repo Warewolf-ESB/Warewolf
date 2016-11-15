@@ -32,6 +32,8 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable CyclomaticComplexity
+// ReSharper disable FunctionComplexityOverflow
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities

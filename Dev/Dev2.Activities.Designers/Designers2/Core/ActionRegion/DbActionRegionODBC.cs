@@ -8,6 +8,10 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ConvertToAutoProperty
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 // ReSharper disable ExplicitCallerInfoArgument
 
@@ -262,20 +266,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
-            var handler = SomethingChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
+            SomethingChanged?.Invoke(this, args);
         }
     }
 }
