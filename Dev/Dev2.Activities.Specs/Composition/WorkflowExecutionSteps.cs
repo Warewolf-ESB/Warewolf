@@ -1407,6 +1407,50 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
+        [Given(@"I save workflow ""(.*)""")]
+        [When(@"I save workflow ""(.*)""")]
+        [Then(@"I save workflow ""(.*)""")]
+        void Save(string workflowName)
+        {
+            BuildDataList();
+
+            var activityList = _commonSteps.GetActivityList();
+
+            var flowSteps = new List<FlowStep>();
+
+            TestStartNode = new FlowStep();
+            flowSteps.Add(TestStartNode);
+
+            foreach(var activity in activityList)
+            {
+                if(TestStartNode.Action == null)
+                {
+                    TestStartNode.Action = activity.Value;
+                }
+                else
+                {
+                    var flowStep = new FlowStep { Action = activity.Value };
+                    flowSteps.Last().Next = flowStep;
+                    flowSteps.Add(flowStep);
+                }
+            }
+
+            IContextualResourceModel resourceModel;
+            IEnvironmentModel environmentModel;
+            IResourceRepository repository;
+            TryGetValue(workflowName, out resourceModel);
+            TryGetValue("environment", out environmentModel);
+            TryGetValue("resourceRepo", out repository);
+
+            string currentDl = CurrentDl;
+            resourceModel.DataList = currentDl.Replace("root", "DataList");
+            WorkflowHelper helper = new WorkflowHelper();
+            StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
+            resourceModel.WorkflowXaml = xamlDefinition;
+            resourceModel.ID = Guid.NewGuid();
+            repository.SaveToServer(resourceModel);
+        }
+
         [Then(@"workflow ""(.*)"" is deleted as cleanup")]
         public void ThenWorkflowIsDeletedAsCleanup(string workflowName)
         {

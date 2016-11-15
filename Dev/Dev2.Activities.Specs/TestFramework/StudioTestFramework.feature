@@ -976,5 +976,25 @@ Scenario: Loop Constructs - Select and Apply Debug Run Selected Test passed with
 	Then test result is Passed
 
 
-
-
+Scenario: Test WF with Assign
+	Given I have a workflow "AssignTestWF"
+	And "AssignTestWF" contains an Assign "TestAssign" as
+	  | variable    | value |
+	  | [[rec().a]] | yes   |
+	  | [[rec().a]] | no    |
+	And I save workflow "AssignTestWF"
+	Then the test builder is open with "AssignTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "TestAssign" as TestStep
+	And I add StepOutputs as 
+	| Variable Name | Condition | Value |
+	| [[rec(1).a]]  | =         | yes   |
+	| [[rec(2).a]]  | =         | no    |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	  
