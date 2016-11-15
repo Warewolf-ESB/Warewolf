@@ -1629,6 +1629,10 @@ namespace Warewolf.Studio.ViewModels
 
         private static IServiceTestOutput CreateServiceTestOutputTO(IServiceTestOutput output)
         {
+            if (string.IsNullOrEmpty(output.Variable))
+            {
+                return null;
+            }
             return new ServiceTestOutputTO
             {
                 Variable = output.Variable,
@@ -1671,6 +1675,11 @@ namespace Warewolf.Studio.ViewModels
 
         private static IServiceTestOutput CreateServiceTestStepOutputsTO(IServiceTestOutput output)
         {
+            if (string.IsNullOrEmpty(output.Variable))
+            {
+                return null;
+            }
+
             return new ServiceTestOutputTO
             {
                 Variable = output.Variable,
