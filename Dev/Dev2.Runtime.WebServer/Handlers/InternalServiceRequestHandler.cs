@@ -124,6 +124,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             if (resource != null)
             {
                 dataObject.ResourceID = resource.ResourceID;
+                dataObject.SourceResourceID = resource.ResourceID;
                 isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
             }
 
