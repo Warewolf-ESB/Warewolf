@@ -41,7 +41,7 @@ using Warewolf.Storage;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.RabbitMQ.Consume
 {
-    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit MQ Consume_Tags")]
+    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Consume_Tags")]
     public class DsfConsumeRabbitMQActivity : DsfBaseActivity
     {
         public List<string> _messages;
