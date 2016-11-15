@@ -516,7 +516,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ComPluginServiceEditSourceHelp.
+        ///   Looks up a localized string similar to Edits the selected COM plugin source connection..
         /// </summary>
         public static string ComPluginServiceEditSourceHelp {
             get {
@@ -3529,15 +3529,7 @@ namespace Warewolf.Studio.Resources.Languages {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to less than 0.4.19.1.
-        /// </summary>
-        public static string LessThanServerVersion {
-            get {
-                return ResourceManager.GetString("LessThanServerVersion", resourceCulture);
-            }
-        }
-        
+       
         /// <summary>
         ///   Looks up a localized string similar to localhost (Connected).
         /// </summary>
@@ -4376,7 +4368,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOdbcServiceActionsHelpText.
+        ///   Looks up a localized string similar to The Structured Query Language (SQL) of the action you want to perform on the ODBC source..
         /// </summary>
         public static string ManageOdbcServiceActionsHelpText {
             get {
@@ -4673,7 +4665,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you would like the default variables in an object, put the object name in here..
+        ///   Looks up a localized string similar to The name of the [[@Object]] you would like the output to go into.
+        ///    After the object is added to the variable list, you can click on the { } next to the objects name to see the full shape..
         /// </summary>
         public static string MappingsObjectNameHelp {
             get {
@@ -4682,7 +4675,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MappingsObjectNameTooltip.
+        ///   Looks up a localized string similar to The @name of the object you want to put the result into.
         /// </summary>
         public static string MappingsObjectNameTooltip {
             get {
@@ -4691,7 +4684,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MappingsObjectOutputHelp.
+        ///   Looks up a localized string similar to Allows you to output the full response into an object (JSON representation)..
         /// </summary>
         public static string MappingsObjectOutputHelp {
             get {
@@ -4700,7 +4693,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MappingsObjectOutputTooltip.
+        ///   Looks up a localized string similar to Check this to put the output into an object.
         /// </summary>
         public static string MappingsObjectOutputTooltip {
             get {
@@ -7370,7 +7363,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestErrorContainsTextHelpText.
+        ///   Looks up a localized string similar to Assert that the error contains some particular text.
+        ///    This allows you to make sure the error you receive, with certain inputs to your service, is the correct error and not due to something else..
         /// </summary>
         public static string ServiceTestErrorContainsTextHelpText {
             get {
@@ -7379,7 +7373,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestErrorContainsTextTooltip.
+        ///   Looks up a localized string similar to Assert that the error contains some particular text.
         /// </summary>
         public static string ServiceTestErrorContainsTextTooltip {
             get {
@@ -7460,7 +7454,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name of this test. Test names should be unique and indicate what is being tested. The test is always associated with the service running it..
+        ///   Looks up a localized string similar to The name of this test. Test names should be unique and indicate what is being tested. 
+        ///    The test is always associated with the service running it..
         /// </summary>
         public static string ServiceTestNameHelpText {
             get {
@@ -7523,7 +7518,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestOutputFromHelpText.
+        ///   Looks up a localized string similar to The Value of the item you want to assert from..
         /// </summary>
         public static string ServiceTestOutputFromHelpText {
             get {
@@ -7532,7 +7527,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestOutputFromTooltip.
+        ///   Looks up a localized string similar to The Value of the item you want to assert from.
         /// </summary>
         public static string ServiceTestOutputFromTooltip {
             get {
@@ -7541,7 +7536,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestOutputToHelpText.
+        ///   Looks up a localized string similar to The Value of the item you want to assert to..
         /// </summary>
         public static string ServiceTestOutputToHelpText {
             get {
@@ -7550,7 +7545,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestOutputToTooltip.
+        ///   Looks up a localized string similar to The Value of the item you want to assert to.
         /// </summary>
         public static string ServiceTestOutputToTooltip {
             get {
@@ -7577,7 +7572,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestOutputVariableHelpText.
+        ///   Looks up a localized string similar to The final service output you want to make the assert on..
         /// </summary>
         public static string ServiceTestOutputVariableHelpText {
             get {
@@ -7586,7 +7581,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestOutputVariableTooltip.
+        ///   Looks up a localized string similar to The output you want to make the assert on.
         /// </summary>
         public static string ServiceTestOutputVariableTooltip {
             get {
@@ -7776,7 +7771,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertFromHelpText.
+        ///   Looks up a localized string similar to The Value of the item you want to assert from..
         /// </summary>
         public static string ServiceTestStepAssertFromHelpText {
             get {
@@ -7785,7 +7780,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertFromTooltip.
+        ///   Looks up a localized string similar to The Value of the item you want to assert from.
         /// </summary>
         public static string ServiceTestStepAssertFromTooltip {
             get {
@@ -7794,7 +7789,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertOpsHelpText.
+        ///   Looks up a localized string similar to The type of Assert you want to make..
         /// </summary>
         public static string ServiceTestStepAssertOpsHelpText {
             get {
@@ -7803,7 +7798,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertOpsTooltip.
+        ///   Looks up a localized string similar to The type of Assert you want to make.
         /// </summary>
         public static string ServiceTestStepAssertOpsTooltip {
             get {
@@ -7812,7 +7807,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertRadioButtonHelpText.
+        ///   Looks up a localized string similar to Asserts the Result has a type of value at this step..
         /// </summary>
         public static string ServiceTestStepAssertRadioButtonHelpText {
             get {
@@ -7821,7 +7816,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertRadioButtonTooltip.
+        ///   Looks up a localized string similar to Assert this step.
         /// </summary>
         public static string ServiceTestStepAssertRadioButtonTooltip {
             get {
@@ -7830,7 +7825,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertToHelpText.
+        ///   Looks up a localized string similar to The Value of the item you want to assert..
         /// </summary>
         public static string ServiceTestStepAssertToHelpText {
             get {
@@ -7839,7 +7834,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertToTooltip.
+        ///   Looks up a localized string similar to The Value of the item you want to assert.
         /// </summary>
         public static string ServiceTestStepAssertToTooltip {
             get {
@@ -7848,7 +7843,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertValueHelpText.
+        ///   Looks up a localized string similar to The Value of the item you want to assert..
         /// </summary>
         public static string ServiceTestStepAssertValueHelpText {
             get {
@@ -7857,7 +7852,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertValueTooltip.
+        ///   Looks up a localized string similar to The Value of the item you want to assert.
         /// </summary>
         public static string ServiceTestStepAssertValueTooltip {
             get {
@@ -7866,7 +7861,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertVariableHelpText.
+        ///   Looks up a localized string similar to The item you want to make the assert on..
         /// </summary>
         public static string ServiceTestStepAssertVariableHelpText {
             get {
@@ -7875,7 +7870,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertVariableTooltip.
+        ///   Looks up a localized string similar to Tool result item to Assert.
         /// </summary>
         public static string ServiceTestStepAssertVariableTooltip {
             get {
@@ -7884,7 +7879,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepDeleteStepHelpText.
+        ///   Looks up a localized string similar to Remove this step from the assert list. This step will not be asserted. To add it back, simply click on it in the workflow designer..
         /// </summary>
         public static string ServiceTestStepDeleteStepHelpText {
             get {
@@ -7893,7 +7888,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepDeleteStepTooltip.
+        ///   Looks up a localized string similar to Remove this step.
         /// </summary>
         public static string ServiceTestStepDeleteStepTooltip {
             get {
@@ -7902,7 +7897,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepMockRadioButtonHelpText.
+        ///   Looks up a localized string similar to Mocked values will not execute and will set the value of a result at this step. 
+        ///    Use this when you do not want to execute a service such as a database call or another workflow..
         /// </summary>
         public static string ServiceTestStepMockRadioButtonHelpText {
             get {
@@ -7911,7 +7907,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepMockRadioButtonTooltip.
+        ///   Looks up a localized string similar to Mock this step.
         /// </summary>
         public static string ServiceTestStepMockRadioButtonTooltip {
             get {
@@ -7920,7 +7916,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepOptionsForValueHelpText.
+        ///   Looks up a localized string similar to The Value of the item you want to assert..
         /// </summary>
         public static string ServiceTestStepOptionsForValueHelpText {
             get {
@@ -7929,7 +7925,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepOptionsForValueTooltip.
+        ///   Looks up a localized string similar to The Value of the item you want to assert.
         /// </summary>
         public static string ServiceTestStepOptionsForValueTooltip {
             get {
@@ -9912,7 +9908,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TreatNullAsZeroHelp.
+        ///   Looks up a localized string similar to If no records exist (NULL), use 0 (Zero) instead.
+        ///    No recordset exists will be treated as a recordset with no records..
         /// </summary>
         public static string TreatNullAsZeroHelp {
             get {
@@ -9921,7 +9918,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TreatNullAsZeroToolTip.
+        ///   Looks up a localized string similar to No recordset will be treated as a recordset with no records.
         /// </summary>
         public static string TreatNullAsZeroToolTip {
             get {
@@ -10178,7 +10175,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ViewApisJsonTooltip.
+        ///   Looks up a localized string similar to View APIs.json url and content.
         /// </summary>
         public static string ViewApisJsonTooltip {
             get {
