@@ -385,7 +385,7 @@ namespace Warewolf.Studio.ViewModels
             foreach (var debugTreeViewItemViewModel in debugState.Children)
             {
                 var childItem = debugTreeViewItemViewModel as DebugStateTreeViewItemViewModel;
-                if (childItem != null)
+                if (childItem != null && childItem.ActivityTypeName != "DsfSelectAndApplyActivity")
                 {
                     var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
 
