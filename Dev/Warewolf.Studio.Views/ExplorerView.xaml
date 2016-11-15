@@ -6,7 +6,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -24,7 +23,6 @@
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
-            <views:WidthConverter x:Key="WidthConverter" />
             <core:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
             <views:NotConverter x:Key="NotConverter" />
         </ResourceDictionary>
@@ -188,6 +186,59 @@
                                 <Run Text="{Binding ChildrenCount, Mode=OneWay}" />
                                 <Run Text=")" />
                             </TextBlock>
+                            
+                            <Grid.ContextMenu>
+                                <ContextMenu x:Name="ExplorerEnvironmentMenu" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true">
+                                    <MenuItem Name="NewFolder"
+                                              Command="{Binding CreateFolderCommand}"
+                                              CommandParameter="Folder"
+                                              Style="{StaticResource MenuItemStyle}"
+                                              Header="{x:Static languages:Core.NewFolderLabel}"
+                                              InputGestureText="[Ctrl+Shift+F]"
+                                              ToolTipService.ShowOnDisabled="True"
+                                              IsEnabled="{Binding CanCreateFolder}" 
+                                              ToolTip="{Binding NewFolderTooltip}"/>
+
+                                    <Separator />
+
+                                    <!--Set Visibility to collapsed until we add functionality for deploy on server-->
+                                    <MenuItem Name="Deploy"
+                                              Command="{Binding DeployCommand}"
+                                              CommandParameter="{Binding Path=Data}"
+                                              Header="Deploy"
+                                              Style="{StaticResource MenuItemStyle}"
+                                              ToolTipService.ShowOnDisabled="True"
+                                              IsEnabled="{Binding CanDeploy}"
+                                              ToolTip="{Binding DeployTooltip}"
+                                              Visibility="Collapsed">
+                                        <MenuItem.Icon>
+                                            <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+
+                                    <MenuItem Name="ServerVersion"
+                                              Command="{Binding ShowServerVersionCommand}"
+                                              Header="Server Version"
+                                              Style="{StaticResource MenuItemStyle}"
+                                              ToolTipService.ShowOnDisabled="True"
+                                              IsEnabled="{Binding CanShowServerVersion}" 
+                                              ToolTip="{Binding ServerVersionTooltip}"/>
+
+                                    <MenuItem Name="ViewApisJson"
+                                              Command="{Binding ViewApisJsonCommand}"
+                                              Header="View Apis.Json"
+                                              Style="{StaticResource MenuItemStyle}"
+                                              ToolTipService.ShowOnDisabled="True"
+                                              IsEnabled="{Binding CanViewApisJson}" 
+                                              ToolTip="{Binding ViewApisJsonTooltip}">
+                                        <MenuItem.Icon>
+                                            <Image Style="{StaticResource ViewApisJsonIcon}"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+
+                                </ContextMenu>
+                            </Grid.ContextMenu>
+                            
                         </Grid>
 
                         <HierarchicalDataTemplate.ItemTemplate>
@@ -305,6 +356,240 @@
                                             </Style>
                                         </Button.Style>
                                     </Button>
+                                    
+                                    <Grid.ContextMenu>
+                                        <ContextMenu x:Name="ExplorerContextMenuManager" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true">
+                                            <MenuItem Name="Open"
+                                                      Command="{Binding OpenCommand}"
+                                                      CommandParameter="WorkflowService"
+                                                      Header="Open"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanView}" 
+                                                      ToolTip="{Binding Path=OpenTooltip}"/>
+
+                                            <Separator Visibility="{Binding IsDebugInputsVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                            <MenuItem Name="DebugInputs"
+                                                      Command="{Binding DebugCommand}"
+                                                      Header="Debug Inputs"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanDebugInputs}"
+                                                      ToolTip="{Binding DebugInputsTooltip}"
+                                                      Visibility="{Binding IsDebugInputsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="DebugStudio"
+                                                      Command="{Binding DebugStudioCommand}"
+                                                      Header="Debug Studio"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanDebugStudio}"
+                                                      ToolTip="{Binding DebugStudioTooltip}"
+                                                      Visibility="{Binding IsDebugStudioVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="DebugBrowser"
+                                                      Command="{Binding DebugBrowserCommand}"
+                                                      Header="Debug Browser"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanDebugBrowser}"
+                                                      ToolTip="{Binding DebugBrowserTooltip}"
+                                                      Visibility="{Binding IsDebugBrowserVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="Schedule"
+                                                      Command="{Binding ScheduleCommand}"
+                                                      Header="Schedule"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanCreateSchedule}"
+                                                      ToolTip="{Binding ScheduleTooltip}"
+                                                      Visibility="{Binding IsScheduleVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <Separator Visibility="{Binding IsNewFolderVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                            <MenuItem Name="NewFolderFromItem"
+                                                      Command="{Binding CreateFolderCommand}"
+                                                      CommandParameter="Folder"
+                                                      Header="New Folder"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      InputGestureText="[Ctrl+Shift+F]"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanCreateFolder}" 
+                                                      ToolTip="{Binding NewFolderTooltip}"
+                                                      Visibility="{Binding IsNewFolderVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                            <MenuItem Name="Rename"
+                                                      Command="{Binding RenameCommand}"
+                                                      CommandParameter="{Binding Data}"
+                                                      Header="Rename"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      InputGestureText="[F2]"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanRename}"
+                                                      ToolTip="{Binding RenameTooltip}">
+                                                <i:Interaction.Behaviors>
+                                                    <views:RenameTreeNode DataContext="{Binding Data}" Node="{Binding Node}" Tree="{Binding Path=Node.Manager.NodeLayout.Tree}" />
+                                                </i:Interaction.Behaviors>
+                                            </MenuItem>
+                                            <MenuItem Name="Delete"
+                                                      Command="{Binding DeleteCommand}"
+                                                      CommandParameter="{Binding Data}"
+                                                      Header="Delete"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanDelete}"
+                                                      ToolTip="{Binding DeleteTooltip}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="TrashOutline" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="Duplicate"
+                                                      Command="{Binding DuplicateCommand}"
+                                                      CommandParameter="{Binding Path=Data}"
+                                                      Header="Duplicate"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanDuplicate}"
+                                                      ToolTip="{Binding DuplicateTooltip}"
+                                                      Visibility="{Binding IsDuplicateVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Clone" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <Separator />
+
+                                            <MenuItem Name="Test"
+                                                      Command="{Binding CreateTestCommand}"
+                                                      CommandParameter="{Binding Path=Data}"
+                                                      Header="Tests"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanCreateTest}"
+                                                      ToolTip="{Binding CreateTestTooltip}"
+                                                      Visibility="{Binding IsCreateTestVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Flask" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="RunAllTests"
+                                                      Command="{Binding RunAllTestsCommand}"
+                                                      Header="Run All Tests"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanViewRunAllTests}"
+                                                      ToolTip="{Binding RunAllTestsTooltip}"
+                                                      Visibility="{Binding IsRunAllTestsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            </MenuItem>
+
+                                            <MenuItem Name="Deploy"
+                                                      Command="{Binding DeployCommand}"
+                                                      CommandParameter="{Binding Path=Data}"
+                                                      InputGestureText="[Ctrl+D]"
+                                                      Header="Deploy"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanDeploy}"
+                                                      ToolTip="{Binding DeployTooltip}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Name="Dependencies"
+                                                      Command="{Binding ShowDependenciesCommand}"
+                                                      CommandParameter="{Binding Data}"
+                                                      Header="Show Dependencies"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanShowDependencies}"
+                                                      ToolTip="{Binding DependenciesTooltip}"
+                                                      Visibility="{Binding IsDependenciesVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Sitemap" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="ViewSwagger"
+                                                      Command="{Binding ViewSwaggerCommand}"
+                                                      Header="View Swagger"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanViewSwagger}" 
+                                                      ToolTip="{Binding ViewSwaggerTooltip}"
+                                                      Visibility="{Binding IsViewSwaggerVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <Image Style="{StaticResource ViewSwaggerIcon}" Margin="-2,0,0,0"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="ViewApisJson"
+                                                      Command="{Binding ViewApisJsonCommand}"
+                                                      Header="View Apis.Json"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanViewApisJson}" 
+                                                      ToolTip="{Binding ViewApisJsonTooltip}"
+                                                      Visibility="{Binding IsViewJsonApisVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <Image Style="{StaticResource ViewApisJsonIcon}"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <Separator Visibility="{Binding IsShowVersionHistoryVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            
+                                            <MenuItem Name="ShowHideVersions"
+                                                      Command="{Binding ShowVersionHistory}"
+                                                      Header="{Binding VersionHeader}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      IsEnabled="{Binding CanShowVersions}"
+                                                      ToolTip="{Binding ShowHideVersionsTooltip}"
+                                                      Visibility="{Binding IsShowVersionHistoryVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <Image Style="{StaticResource ShowHideVersionsIcon}"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            
+                                            <MenuItem Name="Rollback"
+                                                      Command="{Binding RollbackCommand}"
+                                                      CommandParameter="{Binding Data}"
+                                                      Header="Make Current Version"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding IsVersion}" 
+                                                      ToolTip="{Binding RollbackTooltip}"
+                                                      Visibility="{Binding IsRollbackVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                            <MenuItem Name="OpenVersion"
+                                                      Command="{Binding OpenVersionCommand}"
+                                                      CommandParameter="{Binding Data}"
+                                                      Header="Open Version"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding IsVersion}" 
+                                                      ToolTip="{Binding OpenVersionTooltip}"
+                                                      Visibility="{Binding IsOpenVersionVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        </ContextMenu>
+                                    </Grid.ContextMenu>
                                 </Grid>
                             </HierarchicalDataTemplate>
                         </HierarchicalDataTemplate.ItemTemplate>
