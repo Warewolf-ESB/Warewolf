@@ -50,7 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         public string PerfomBaseExecution(Dictionary<string, string> dictionaryValues)
         {
             var perfomBaseExecution = base.PerformExecution(dictionaryValues);
-            return perfomBaseExecution;
+            return perfomBaseExecution[0];
         }
 
         #region Overrides of DsfNativeActivity<string>
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
         #endregion
 
-        protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
+        protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
                     Exception = ((DropboxFailureResult)dropboxResult).GetException();
                 }
 
-                return String.Empty;
+                return new List<string> { string.Empty };
             }
             catch (Exception e)
             {
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
                 Dev2Logger.Error(e.Message, e);
                 //FileSuccesResult = GlobalConstants.DropBoxFailure;
                 Exception = new DropboxFailureResult(new Exception()).GetException();
-                return String.Empty;
+                return new List<string> { string.Empty };
             }
         }
 

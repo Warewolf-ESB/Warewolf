@@ -91,25 +91,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1870 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1877 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1870.AddRow(new string[] {
+            table1877.AddRow(new string[] {
                         "788.894564545645",
                         "Normal",
                         "0",
                         "0"});
 #line 14
- testRunner.And("the debug inputs as", ((string)(null)), table1870, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1877, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1871 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1878 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1871.AddRow(new string[] {
+            table1878.AddRow(new string[] {
                         "[[result]] = 789"});
 #line 17
- testRunner.And("the debug output as", ((string)(null)), table1871, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1878, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -136,25 +136,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 27
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1872 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1879 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1872.AddRow(new string[] {
+            table1879.AddRow(new string[] {
                         "788.894564545645",
                         "Down",
                         "3",
                         "3"});
 #line 28
- testRunner.And("the debug inputs as", ((string)(null)), table1872, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1879, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1873 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1880 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1873.AddRow(new string[] {
+            table1880.AddRow(new string[] {
                         "[[result]] = 788.894"});
 #line 31
- testRunner.And("the debug output as", ((string)(null)), table1873, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1880, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -181,25 +181,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 41
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1874 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1881 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1874.AddRow(new string[] {
+            table1881.AddRow(new string[] {
                         "788.894564545645",
                         "Up",
                         "3",
                         "3"});
 #line 42
- testRunner.And("the debug inputs as", ((string)(null)), table1874, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1881, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1875 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1882 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1875.AddRow(new string[] {
+            table1882.AddRow(new string[] {
                         "[[result]] = 788.895"});
 #line 45
- testRunner.And("the debug output as", ((string)(null)), table1875, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1882, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -226,25 +226,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 55
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1876 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1883 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1876.AddRow(new string[] {
+            table1883.AddRow(new string[] {
                         "788.894564545645",
                         "Normal",
                         "2",
                         "3"});
 #line 56
- testRunner.And("the debug inputs as", ((string)(null)), table1876, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1883, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1877 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1884 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1877.AddRow(new string[] {
+            table1884.AddRow(new string[] {
                         "[[result]] = 788.890"});
 #line 59
- testRunner.And("the debug output as", ((string)(null)), table1877, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1884, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -271,25 +271,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 69
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1878 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1885 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1878.AddRow(new string[] {
+            table1885.AddRow(new string[] {
                         "788.894564545645",
                         "None",
                         "0",
                         "4"});
 #line 70
- testRunner.And("the debug inputs as", ((string)(null)), table1878, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1885, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1879 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1886 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1879.AddRow(new string[] {
+            table1886.AddRow(new string[] {
                         "[[result]] = 788.8945"});
 #line 73
- testRunner.And("the debug output as", ((string)(null)), table1879, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1886, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -316,25 +316,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 83
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1880 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1887 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1880.AddRow(new string[] {
+            table1887.AddRow(new string[] {
                         "788.894564545645",
                         "Down",
                         "-2",
                         "0"});
 #line 84
- testRunner.And("the debug inputs as", ((string)(null)), table1880, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1887, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1881 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1888 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1881.AddRow(new string[] {
+            table1888.AddRow(new string[] {
                         "[[result]] = 700"});
 #line 87
- testRunner.And("the debug output as", ((string)(null)), table1881, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1888, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -361,25 +361,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 97
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1882 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1889 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1882.AddRow(new string[] {
+            table1889.AddRow(new string[] {
                         "788.894564545645",
                         "None",
                         "0",
                         "-2"});
 #line 98
- testRunner.And("the debug inputs as", ((string)(null)), table1882, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1889, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1883 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1890 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1883.AddRow(new string[] {
+            table1890.AddRow(new string[] {
                         "[[result]] = 7"});
 #line 101
- testRunner.And("the debug output as", ((string)(null)), table1883, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1890, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -404,25 +404,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 110
  testRunner.Then("the result 0 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1884 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1891 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1884.AddRow(new string[] {
+            table1891.AddRow(new string[] {
                         "7",
                         "None",
                         "0",
                         "-2"});
 #line 111
- testRunner.And("the debug inputs as", ((string)(null)), table1884, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1891, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1885 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1892 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1885.AddRow(new string[] {
+            table1892.AddRow(new string[] {
                         "[[result]] = 0"});
 #line 114
- testRunner.And("the debug output as", ((string)(null)), table1885, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1892, "And ");
 #line 117
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -451,25 +451,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 125
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1886 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1893 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1886.AddRow(new string[] {
+            table1893.AddRow(new string[] {
                         "34.2",
                         "Up",
                         "c",
                         "2"});
 #line 126
- testRunner.And("the debug inputs as", ((string)(null)), table1886, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1893, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1887 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1894 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1887.AddRow(new string[] {
+            table1894.AddRow(new string[] {
                         "[[result]] ="});
 #line 129
- testRunner.And("the debug output as", ((string)(null)), table1887, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1894, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -575,25 +575,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 167
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1888 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1895 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1888.AddRow(new string[] {
+            table1895.AddRow(new string[] {
                         "[[int]].894564545645 = 788.894564545645",
                         "Up",
                         "-[[rounding]] = -2",
                         "[[decimals]]1 = -1"});
 #line 168
- testRunner.And("the debug inputs as", ((string)(null)), table1888, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1895, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1889 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1896 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1889.AddRow(new string[] {
+            table1896.AddRow(new string[] {
                         "[[result]] = 80"});
 #line 171
- testRunner.And("the debug output as", ((string)(null)), table1889, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1896, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -710,25 +710,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 211
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1890 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1897 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1890.AddRow(new string[] {
+            table1897.AddRow(new string[] {
                         "788.894564545645",
                         "Normal",
                         "0",
                         "\"\""});
 #line 212
- testRunner.And("the debug inputs as", ((string)(null)), table1890, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1897, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1891 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1898 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1891.AddRow(new string[] {
+            table1898.AddRow(new string[] {
                         "[[result]] = 789"});
 #line 215
- testRunner.And("the debug output as", ((string)(null)), table1891, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1898, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -805,32 +805,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 242
     testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1892 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1899 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
                         "Rounding",
                         "Rounding Value",
                         "Decimals to show"});
-            table1892.AddRow(new string[] {
+            table1899.AddRow(new string[] {
                         "[[format(1).num]] = 788",
                         "",
                         "",
                         ""});
-            table1892.AddRow(new string[] {
+            table1899.AddRow(new string[] {
                         "[[format(2).num]] = 9.894564545645",
                         "Up",
                         "3",
                         "4"});
 #line 243
- testRunner.And("the debug inputs as", ((string)(null)), table1892, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1899, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1893 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1900 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1893.AddRow(new string[] {
+            table1900.AddRow(new string[] {
                         "[[res(1).val]] = 788.0000"});
-            table1893.AddRow(new string[] {
+            table1900.AddRow(new string[] {
                         "[[res(2).val]] = 9.8950"});
 #line 247
- testRunner.And("the debug output as", ((string)(null)), table1893, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1900, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
