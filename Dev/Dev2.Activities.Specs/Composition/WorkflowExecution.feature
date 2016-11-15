@@ -3132,7 +3132,9 @@ Scenario Outline: Database MySqlDB Database service scalar outputs
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                      |
+	  |                                |
+	  | [[name]] = Monk                |
+	  | [[email]] = dora@explorers.com |
 Examples: 
     | WorkflowName               | ServiceName | nameVariable | emailVariable | errorOccured |
     | TestMySqlWFWithMySqlScalar | MySqlEmail  | [[name]]     | [[email]]     | NO           |
