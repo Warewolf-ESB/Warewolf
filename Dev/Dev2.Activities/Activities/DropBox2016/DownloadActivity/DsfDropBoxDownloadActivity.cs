@@ -122,7 +122,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         #endregion Overrides of DsfBaseActivity
 
         //All units used here has been unit tested seperately
-        protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
+        protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             IDropboxSingleExecutor<IDropboxResult> dropBoxDownLoad = new DropBoxDownLoad(evaluatedValues["ToPath"]);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropBoxDownLoad);
@@ -141,7 +141,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                         throw new Exception(ErrorResource.DropBoxDestinationFileAlreadyExist);
                     DropboxFile.WriteAllBytes(validFolder, bytes);
                 }
-                return GlobalConstants.DropBoxSucces;
+                return new List<string> { GlobalConstants.DropBoxSuccess };
             }
             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
             if (dropboxFailureResult != null)

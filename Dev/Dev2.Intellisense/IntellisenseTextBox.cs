@@ -173,7 +173,6 @@ namespace Dev2.UI
                 {
                     appendText = selectedItem.ToString();
                 }
-                //Focus();
             }
             return appendText;
         }
@@ -188,32 +187,7 @@ namespace Dev2.UI
 
             if (isOpen || force)
             {
-                var intellisenseProviderResult = item as IntellisenseProviderResult;
-                if (intellisenseProviderResult != null)
-                {
-                    currentProvider = intellisenseProviderResult.Provider;
-                }
-
-                object selectedItem = item;
-
-                if (SelectionAdapter != null)
-                {
-                    var verifyPart = selectedItem as IDataListVerifyPart;
-                    if (verifyPart != null)
-                    {
-                        appendText = verifyPart.DisplayValue;
-                    }
-                    else
-                    {
-                        if (selectedItem != null)
-                        {
-                            appendText = selectedItem.ToString();
-                        }
-                    }
-
-                    isInsert = true;
-                    CloseDropDown(true,false);                    
-                }
+                currentProvider = PerformInsertFromDropDown(item, currentProvider, ref appendText, ref isInsert);
             }
 
             if (appendText != null)
@@ -272,25 +246,60 @@ namespace Dev2.UI
 
                 if (appendText != null)
                 {
-
-                    if (currentText.Length == index)
-                    {
-                        TextBox?.AppendText(appendText);
-                        TextBox?.Select(Text.Length, 0);
-                    }
-                    else
-                    {
-                        currentText = currentText.Insert(index, appendText);
-                        Text = currentText;
-                        TextBox?.Select(index + appendText.Length, 0);
-                    }
-
-                    IsDropDownOpen = false;
+                    AppendText(currentText, index, appendText);
                 }
             }
 
             UpdateErrorState();
             EnsureErrorStatus();
+        }
+
+        private IIntellisenseProvider PerformInsertFromDropDown(object item, IIntellisenseProvider currentProvider, ref string appendText, ref bool isInsert)
+        {
+            var intellisenseProviderResult = item as IntellisenseProviderResult;
+            if(intellisenseProviderResult != null)
+            {
+                currentProvider = intellisenseProviderResult.Provider;
+            }
+
+            object selectedItem = item;
+
+            if(SelectionAdapter != null)
+            {
+                var verifyPart = selectedItem as IDataListVerifyPart;
+                if(verifyPart != null)
+                {
+                    appendText = verifyPart.DisplayValue;
+                }
+                else
+                {
+                    if(selectedItem != null)
+                    {
+                        appendText = selectedItem.ToString();
+                    }
+                }
+
+                isInsert = true;
+                CloseDropDown(true, false);
+            }
+            return currentProvider;
+        }
+
+        private void AppendText(string currentText, int index, string appendText)
+        {
+            if(currentText.Length == index)
+            {
+                TextBox?.AppendText(appendText);
+                TextBox?.Select(Text.Length, 0);
+            }
+            else
+            {
+                currentText = currentText.Insert(index, appendText);
+                Text = currentText;
+                TextBox?.Select(index + appendText.Length, 0);
+            }
+
+            IsDropDownOpen = false;
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -384,20 +393,7 @@ namespace Dev2.UI
             {
                 _originalToolTip = ToolTip;
             }
-            if (FilterType == enIntellisensePartType.JsonObject)
-            {
-                var isValid = ValidateJsonInputs(text);
-                if(!isValid)
-                {
-                    HasError = true;
-                }
-                else
-                {
-                    ToolTip = _originalToolTip;
-                    HasError = false;
-                }
-            }
-            else
+            if (FilterType != enIntellisensePartType.JsonObject)
             {
                 var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
                 if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
@@ -430,63 +426,13 @@ namespace Dev2.UI
                 }
                 if (FilterType != enIntellisensePartType.RecordsetsOnly)
                 {
-                    if (text.EndsWith(")") || text.EndsWith(")]]"))
+                    if (error.Item1.IsRecordSetNameExpression)
                     {
                         HasError = true;
-                        ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
-                    }
-                    if (text.Contains("@"))
-                    {
-                        HasError = true;
-                        ToolTip = "Variable name " + text + " contains invalid character(s)";
-                    }
-                    if (text.Contains("."))
-                    {
-                        var replaceOpenBracket = text.Replace("[[", "");
-                        var replaceCloseBracket = replaceOpenBracket.Replace("]]", "");
-                        var fields = replaceCloseBracket.Split('.');
-                        foreach (var field in fields)
-                            if (!string.IsNullOrEmpty(field) && char.IsNumber(field[0]))
-                            {
-                                HasError = true;
-                                ToolTip = "Variable name " + field + " begins with a number";
-                            }
-                    }
+                        ToolTip = error.Item2 != string.Empty ? error.Item2 : "Recordset only is not allowed";
+                    }                    
                 }
             }
-        }
-        private bool ValidateJsonInputs(string text)
-        {
-            bool isValid = false;
-            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
-            if(error == null)
-                isValid = true;
-            else
-            {
-                ToolTip = error.Item2;
-                if(text.Contains("@") && (text.IndexOf("@", StringComparison.Ordinal) == 2))
-                {
-                    if(char.IsNumber(text[3]))
-                        ToolTip = "Variable name " + text + " begins with a number";
-                    if(!char.IsNumber(text[3]) && !char.IsLetter(text[3]))
-                        ToolTip = "Variable name " + text + " contains invalid character(s)";
-                }
-                if(text.Contains('.'))
-                {
-                    var indexOfFullStop = text.IndexOf(".", StringComparison.Ordinal);
-                    if(indexOfFullStop + 1 >= text.Length)
-                        ToolTip = "Variable name " + text + " contains invalid character(s)";
-                    else
-                    {
-                        char charecterAfterFullStop = text[indexOfFullStop + 1];
-                        if(charecterAfterFullStop > text.Length && !char.IsLetter(charecterAfterFullStop))
-                            ToolTip = "Variable name " + text + " begins with a number";
-                    }
-                }
-            }
-            if (string.IsNullOrEmpty(ToolTip.ToString()))
-                return true;
-            return isValid;
         }
 
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));

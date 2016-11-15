@@ -85,21 +85,21 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
         public override string DisplayName { get; set; }
 
-        protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
+        protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
             {
                 RabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
                 if (RabbitMQSource == null)
                 {
-                    return ErrorResource.RabbitSourceHasBeenDeleted;
+                    return new List<string> { ErrorResource.RabbitSourceHasBeenDeleted };
                 }
 
                 string queueName, message;
                 if (!evaluatedValues.TryGetValue("QueueName", out queueName) ||
                     !evaluatedValues.TryGetValue("Message", out message))
                 {
-                    return ErrorResource.RabbitQueueNameAndMessageRequired;
+                    return new List<string> { ErrorResource.RabbitQueueNameAndMessageRequired };
                 }
 
                 ConnectionFactory.HostName = RabbitMQSource.HostName;
@@ -120,8 +120,8 @@ namespace Dev2.Activities.RabbitMQ.Publish
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
                     }
                 }
-                Dev2Logger.Debug(String.Format("Message published to queue {0}", queueName));
-                return "Success";
+                Dev2Logger.Debug($"Message published to queue {queueName}");
+                return new List<string> { "Success" };
             }
             catch (Exception ex)
             {

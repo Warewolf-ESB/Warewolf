@@ -53,6 +53,7 @@ namespace Dev2.Data.Decisions.Operations
 
         public static string GetFailureMessage(enDecisionType decisionType)
         {
+            // ReSharper disable once RedundantAssignment
             string errorMsg = string.Empty;
             switch (decisionType)
             {
@@ -173,8 +174,6 @@ namespace Dev2.Data.Decisions.Operations
                 case enDecisionType.IsNotBase64:
                     errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotBase64;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(decisionType), decisionType, null);
             }
             return errorMsg;
         }

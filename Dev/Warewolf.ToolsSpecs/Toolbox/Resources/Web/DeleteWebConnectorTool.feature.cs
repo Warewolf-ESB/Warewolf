@@ -87,11 +87,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
  testRunner.Then("Delete Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1536 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1543 = new TechTalk.SpecFlow.Table(new string[] {
                         "Header",
                         "Value"});
 #line 13
- testRunner.And("Delete Header appears as", ((string)(null)), table1536, "And ");
+ testRunner.And("Delete Header appears as", ((string)(null)), table1543, "And ");
 #line 15
  testRunner.And("Delete Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
@@ -103,11 +103,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.And("Delete Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1537 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1544 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
 #line 20
- testRunner.And("Delete mapped outputs are", ((string)(null)), table1537, "And ");
+ testRunner.And("Delete mapped outputs are", ((string)(null)), table1544, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -131,11 +131,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 28
  testRunner.Then("Delete Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1538 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1545 = new TechTalk.SpecFlow.Table(new string[] {
                         "Header",
                         "Value"});
 #line 29
- testRunner.And("Delete Header appears as", ((string)(null)), table1538, "And ");
+ testRunner.And("Delete Header appears as", ((string)(null)), table1545, "And ");
 #line 31
  testRunner.And("Delete Body is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
@@ -161,17 +161,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 42
  testRunner.Then("Delete Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1539 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1546 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table1539.AddRow(new string[] {
+            table1546.AddRow(new string[] {
                         "CountryID",
                         "[[CountryID]]"});
-            table1539.AddRow(new string[] {
+            table1546.AddRow(new string[] {
                         "Description",
                         "[[Description]]"});
 #line 43
- testRunner.And("Delete mapped outputs are", ((string)(null)), table1539, "And ");
+ testRunner.And("Delete mapped outputs are", ((string)(null)), table1546, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -207,29 +207,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 60
  testRunner.And("Delete Url as \"http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1540 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1547 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table1540.AddRow(new string[] {
+            table1547.AddRow(new string[] {
                         "[[a]]",
                         "T"});
 #line 61
- testRunner.And("I add Delete Header as", ((string)(null)), table1540, "And ");
+ testRunner.And("I add Delete Header as", ((string)(null)), table1547, "And ");
 #line 64
  testRunner.When("I click Delete Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 65
  testRunner.Then("the Delete Generate Outputs window is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1541 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1548 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
-            table1541.AddRow(new string[] {
+            table1548.AddRow(new string[] {
                         "[[a]]"});
-            table1541.AddRow(new string[] {
+            table1548.AddRow(new string[] {
                         "[[extension]]"});
-            table1541.AddRow(new string[] {
+            table1548.AddRow(new string[] {
                         "[[prefix]]"});
 #line 66
- testRunner.And("Delete Input variables are", ((string)(null)), table1541, "And ");
+ testRunner.And("Delete Input variables are", ((string)(null)), table1548, "And ");
 #line 71
  testRunner.And("Delete Test is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
@@ -241,17 +241,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 75
  testRunner.Then("Delete Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1542 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1549 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table1542.AddRow(new string[] {
+            table1549.AddRow(new string[] {
                         "CountryID",
                         "[[CountryID]]"});
-            table1542.AddRow(new string[] {
+            table1549.AddRow(new string[] {
                         "Description",
                         "[[Description]]"});
 #line 76
-    testRunner.And("Delete mapped outputs are", ((string)(null)), table1542, "And ");
+    testRunner.And("Delete mapped outputs are", ((string)(null)), table1549, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -319,17 +319,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 104
  testRunner.Then("Delete Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1543 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1550 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1543.AddRow(new string[] {
+            table1550.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
-            table1543.AddRow(new string[] {
+            table1550.AddRow(new string[] {
                         "b",
                         "[[rec().b]]"});
 #line 105
- testRunner.And("Delete mapped outputs are", ((string)(null)), table1543, "And ");
+ testRunner.And("Delete mapped outputs are", ((string)(null)), table1550, "And ");
 #line 109
  testRunner.When("I Select \"Google Address Lookup\" as a Delete web Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 110
@@ -379,14 +379,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 129
  testRunner.Then("Delete Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1544 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1551 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table1544.AddRow(new string[] {
+            table1551.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
 #line 130
- testRunner.And("Delete mapped outputs are", ((string)(null)), table1544, "And ");
+ testRunner.And("Delete mapped outputs are", ((string)(null)), table1551, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
