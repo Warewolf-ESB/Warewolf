@@ -393,7 +393,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             var comsController = new CommunicationController { ServiceName = "DeleteResourceService" };
-            if (!String.IsNullOrEmpty(resource.ResourceName) && resource.ResourceName.Contains("Unsaved"))
+            if (!string.IsNullOrEmpty(resource.ResourceName) && resource.ResourceName.Contains("Unsaved"))
             {
                 comsController.AddPayloadArgument("ResourceID", resource.ID.ToString());
                 comsController.AddPayloadArgument("ResourceType", resource.ResourceType.ToString());

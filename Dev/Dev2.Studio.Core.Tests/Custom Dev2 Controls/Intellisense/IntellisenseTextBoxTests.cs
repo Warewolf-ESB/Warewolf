@@ -620,15 +620,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         }
 
         [TestMethod]
-        public void IntellisenseBox_ErrorTooltip_ShouldBeSetTo_CurrentError()
-        {
-            IntellisenseTextBox textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
-            textBox.CreateVisualTree();
-            textBox.Text = "[[City.]]";
-            Assert.IsTrue(textBox.HasError);
-        }
-
-        [TestMethod]
         public void IntellisenseBox_Function_HasIsCalcMode_SetTo_True()
         {
             IntellisenseTextBoxTestHelper textBoxTest = new IntellisenseTextBoxTestHelper { AllowUserCalculateMode = true };
@@ -638,18 +629,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBoxTest.EnsureIntellisenseResults(input,false,IntellisenseDesiredResultSet.Default);
             Assert.IsTrue(textBoxTest.IsInCalculateMode);
         }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        [TestCategory("IntellisenseTextBoxTests_ValidateText")]
-        public void IntellisenseTextBoxTests_ValidateText_FilterTypeIsJsonObjectAndTextIsScalar_ToolTipHasErrorMessage()
-        {
-            IntellisenseTextBox textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
-            textBox.CreateVisualTree();
-            textBox.Text = "[[City.]]";
-            Assert.IsTrue(textBox.HasError);
-        }
-
+        
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("IntellisenseTextBoxTests_ValidateText")]
@@ -659,22 +639,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBox.CreateVisualTree();
             textBox.Text = "[[@City]]";
             Assert.IsFalse(textBox.HasError);
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        [TestCategory("IntellisenseTextBoxTests_ValidateText")]
-        public void IntellisenseTextBoxTests_ValidateText_FilterTypeIsJsonObjectAndTextIsInvalidJson_ToolTipHasErrorMessage()
-        {
-            IntellisenseTextBox textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
-            textBox.CreateVisualTree();
-            textBox.Text = "[[@2City]]";
-            Assert.AreEqual("Variable name [[@2City]] begins with a number", textBox.ToolTip);
-            textBox.Text = "[[@&City]]";
-            Assert.AreEqual("Variable name [[@&City]] contains invalid character(s)", textBox.ToolTip);
-            textBox.Text = "@.";
-            Assert.AreEqual("Variable name @. contains invalid character(s)", textBox.ToolTip);
-            Assert.IsTrue(textBox.HasError);
         }
 
         [TestMethod]

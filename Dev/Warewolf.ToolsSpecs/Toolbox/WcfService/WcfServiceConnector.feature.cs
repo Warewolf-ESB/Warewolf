@@ -86,19 +86,19 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.And("Selected wcf Method is Null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2014 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2021 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Default Value",
                         "Required Field",
                         "Empty Null"});
 #line 11
- testRunner.And("wcf Inputs are", ((string)(null)), table2014, "And ");
+ testRunner.And("wcf Inputs are", ((string)(null)), table2021, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2015 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2022 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
 #line 13
- testRunner.And("wcf Outputs are", ((string)(null)), table2015, "And ");
+ testRunner.And("wcf Outputs are", ((string)(null)), table2022, "And ");
 #line 15
  testRunner.And("wcf Recordset is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
@@ -125,19 +125,19 @@ this.ScenarioSetup(scenarioInfo);
 #line 22
  testRunner.And("Selected wcf Method is Null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2016 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2023 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Default Value",
                         "Required Field",
                         "Empty Null"});
 #line 23
- testRunner.And("wcf Inputs are", ((string)(null)), table2016, "And ");
+ testRunner.And("wcf Inputs are", ((string)(null)), table2023, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2017 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2024 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
 #line 25
- testRunner.And("wcf Outputs are", ((string)(null)), table2017, "And ");
+ testRunner.And("wcf Outputs are", ((string)(null)), table2024, "And ");
 #line 27
  testRunner.And("wcf Recordset is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
@@ -151,19 +151,19 @@ this.ScenarioSetup(scenarioInfo);
 #line 32
  testRunner.And("Selected wcf Method is Null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2018 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2025 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Default Value",
                         "Required Field",
                         "Empty Null"});
 #line 33
- testRunner.And("wcf Inputs are", ((string)(null)), table2018, "And ");
+ testRunner.And("wcf Inputs are", ((string)(null)), table2025, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2019 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2026 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
 #line 35
- testRunner.And("wcf Outputs are", ((string)(null)), table2019, "And ");
+ testRunner.And("wcf Outputs are", ((string)(null)), table2026, "And ");
 #line 37
  testRunner.And("wcf Recordset is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
@@ -190,19 +190,19 @@ this.ScenarioSetup(scenarioInfo);
 #line 44
  testRunner.And("Selected wcf Method is Null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2020 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2027 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Default Value",
                         "Required Field",
                         "Empty Null"});
 #line 45
- testRunner.And("wcf Inputs are", ((string)(null)), table2020, "And ");
+ testRunner.And("wcf Inputs are", ((string)(null)), table2027, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2021 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2028 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
 #line 47
- testRunner.And("wcf Outputs are", ((string)(null)), table2021, "And ");
+ testRunner.And("wcf Outputs are", ((string)(null)), table2028, "And ");
 #line 49
  testRunner.And("wcf Recordset is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
@@ -222,38 +222,38 @@ this.ScenarioSetup(scenarioInfo);
 #line 57
  testRunner.And("Selected wcf Method is \"GetPeople\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2022 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2029 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
-            table2022.AddRow(new string[] {
+            table2029.AddRow(new string[] {
                         "Echome"});
-            table2022.AddRow(new string[] {
+            table2029.AddRow(new string[] {
                         "GetPeople"});
 #line 58
- testRunner.And("the available wcf methods in the dropdown are", ((string)(null)), table2022, "And ");
+ testRunner.And("the available wcf methods in the dropdown are", ((string)(null)), table2029, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2023 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2030 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Default Value",
                         "Required Field",
                         "Empty Null"});
-            table2023.AddRow(new string[] {
+            table2030.AddRow(new string[] {
                         "Name",
                         "",
                         "False",
                         "False"});
-            table2023.AddRow(new string[] {
+            table2030.AddRow(new string[] {
                         "Value",
                         "Value",
                         "False",
                         "false"});
 #line 62
- testRunner.And("wcf Inputs are", ((string)(null)), table2023, "And ");
+ testRunner.And("wcf Inputs are", ((string)(null)), table2030, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2024 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2031 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
 #line 66
- testRunner.And("wcf Outputs are", ((string)(null)), table2024, "And ");
+ testRunner.And("wcf Outputs are", ((string)(null)), table2031, "And ");
 #line 68
  testRunner.And("wcf Recordset is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69

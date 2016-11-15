@@ -470,6 +470,15 @@ namespace Dev2.Activities.Specs.TestFramework
                 Assert.IsNotNull(testFramework.ResourceModel);
                 MyContext.Add("testFramework", testFramework);
             }
+            if (workflowName == "Loop Constructs - For Each")
+            {
+                var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(new Guid("8ba79b49-226e-4c67-a732-4657fd0edb6b"));
+                var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
+                //var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+                Assert.IsNotNull(testFramework);
+                Assert.IsNotNull(testFramework.ResourceModel);
+                MyContext.Add("testFramework", testFramework);
+            }
         }
 
         [Given(@"I update inputs as")]
@@ -1618,7 +1627,6 @@ namespace Dev2.Activities.Specs.TestFramework
             var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
             Assert.IsNotNull(builder);
             var act = (Flowchart)builder.Implementation;
-          
             foreach (var flowNode in act.Nodes)
             {
                 var searchNode = flowNode as FlowStep;
@@ -1632,6 +1640,25 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
             }
         }
+
+        [Then(@"I add StepOutputs as")]
+        public void ThenIAddStepOutputsAs(Table table)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.Single();
+            serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
+            foreach(var tableRow in table.Rows)
+            {
+                var varName = tableRow["Variable Name"];
+                var condition = tableRow["Condition"];
+                var value = tableRow["Value"];
+                serviceTestStep.StepOutputs.Add(new ServiceTestOutput(varName, value,"","")
+                {
+                    AssertOp = condition
+                });
+            }
+        }
+
 
 
 

@@ -39,7 +39,6 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.ViewModels;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface

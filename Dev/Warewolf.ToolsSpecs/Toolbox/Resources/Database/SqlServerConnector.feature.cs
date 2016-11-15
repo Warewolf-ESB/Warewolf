@@ -87,30 +87,30 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
  testRunner.And("Inputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1480 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1487 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table1480.AddRow(new string[] {
+            table1487.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
 #line 12
- testRunner.And("Inputs appear as", ((string)(null)), table1480, "And ");
+ testRunner.And("Inputs appear as", ((string)(null)), table1487, "And ");
 #line 15
  testRunner.And("Validate is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1481 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1488 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1481.AddRow(new string[] {
+            table1488.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
-            table1481.AddRow(new string[] {
+            table1488.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
 #line 16
- testRunner.Then("Outputs appear as", ((string)(null)), table1481, "Then ");
+ testRunner.Then("Outputs appear as", ((string)(null)), table1488, "Then ");
 #line 20
  testRunner.And("Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -136,30 +136,30 @@ this.ScenarioSetup(scenarioInfo);
 #line 27
  testRunner.And("Inputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1482 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1489 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table1482.AddRow(new string[] {
+            table1489.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
 #line 28
- testRunner.And("Inputs appear as", ((string)(null)), table1482, "And ");
+ testRunner.And("Inputs appear as", ((string)(null)), table1489, "And ");
 #line 31
  testRunner.And("Validate is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1483 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1490 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1483.AddRow(new string[] {
+            table1490.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
-            table1483.AddRow(new string[] {
+            table1490.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
 #line 32
- testRunner.Then("Outputs appear as", ((string)(null)), table1483, "Then ");
+ testRunner.Then("Outputs appear as", ((string)(null)), table1490, "Then ");
 #line 36
  testRunner.And("Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
@@ -179,64 +179,66 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing SQL Server Actions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlServerConnector")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ChangingSqlServerFunctions")]
         public virtual void ChangingSQLServerActions()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing SQL Server Actions", ((string[])(null)));
-#line 43
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing SQL Server Actions", new string[] {
+                        "ChangingSqlServerFunctions"});
 #line 44
- testRunner.Given("I open workflow with database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 45
- testRunner.And("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I open workflow with database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 46
+ testRunner.And("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
  testRunner.And("Source is \"testingDBSrc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
- testRunner.And("Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
+ testRunner.And("Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 50
  testRunner.And("Inputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1484 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1491 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table1484.AddRow(new string[] {
+            table1491.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
-#line 50
- testRunner.And("Inputs appear as", ((string)(null)), table1484, "And ");
-#line 53
+#line 51
+ testRunner.And("Inputs appear as", ((string)(null)), table1491, "And ");
+#line 54
  testRunner.And("Validate is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1485 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1492 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1485.AddRow(new string[] {
+            table1492.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
-            table1485.AddRow(new string[] {
+            table1492.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 54
- testRunner.Then("Outputs appear as", ((string)(null)), table1485, "Then ");
-#line 58
- testRunner.And("Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 55
+ testRunner.Then("Outputs appear as", ((string)(null)), table1492, "Then ");
 #line 59
- testRunner.When("Action is changed from to \"dbo.ImportOrder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
+ testRunner.When("Action is changed from to \"dbo.ImportOrder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 61
  testRunner.And("Inputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1486 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1493 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table1486.AddRow(new string[] {
+            table1493.AddRow(new string[] {
                         "ProductId",
-                        "",
+                        "[[ProductId]]",
                         "false"});
-#line 61
- testRunner.And("Inputs appear as", ((string)(null)), table1486, "And ");
-#line 64
+#line 62
+ testRunner.And("Inputs appear as", ((string)(null)), table1493, "And ");
+#line 65
  testRunner.And("Validate is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -248,59 +250,59 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ChangeSQLServerRecordsetName()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change SQL Server Recordset Name", ((string[])(null)));
-#line 66
-this.ScenarioSetup(scenarioInfo);
 #line 67
- testRunner.Given("I open workflow with database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 68
- testRunner.And("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I open workflow with database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 69
+ testRunner.And("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
  testRunner.And("Source is \"testingDBSrc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
- testRunner.And("Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
+ testRunner.And("Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 73
  testRunner.And("Inputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1487 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1494 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table1487.AddRow(new string[] {
+            table1494.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
-#line 73
- testRunner.And("Inputs appear as", ((string)(null)), table1487, "And ");
-#line 76
+#line 74
+ testRunner.And("Inputs appear as", ((string)(null)), table1494, "And ");
+#line 77
  testRunner.And("Validate is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1488 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1495 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1488.AddRow(new string[] {
+            table1495.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
-            table1488.AddRow(new string[] {
+            table1495.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 77
- testRunner.Then("Outputs appear as", ((string)(null)), table1488, "Then ");
-#line 81
- testRunner.And("Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 78
+ testRunner.Then("Outputs appear as", ((string)(null)), table1495, "Then ");
 #line 82
+ testRunner.And("Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 83
  testRunner.When("Recordset Name is changed to \"Pr_Cities\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table1489 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1496 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1489.AddRow(new string[] {
+            table1496.AddRow(new string[] {
                         "CountryID",
                         "[[Pr_Cities().CountryID]]"});
-            table1489.AddRow(new string[] {
+            table1496.AddRow(new string[] {
                         "Description",
                         "[[Pr_Cities().Description]]"});
-#line 83
- testRunner.Then("Outputs appear as", ((string)(null)), table1489, "Then ");
+#line 84
+ testRunner.Then("Outputs appear as", ((string)(null)), table1496, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -311,30 +313,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void NoSQLServerActionToBeLoadedError()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No SQL Server Action to be loaded Error", ((string[])(null)));
-#line 88
-this.ScenarioSetup(scenarioInfo);
 #line 89
+this.ScenarioSetup(scenarioInfo);
+#line 90
  testRunner.Given("I have a workflow \"NoStoredProceedureToLoad\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1490 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1497 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Data or [[Variable]]",
                         "Parameter",
                         "Empty is Null"});
-#line 90
+#line 91
  testRunner.And("\"NoStoredProceedureToLoad\" contains \"Testing/SQL/NoSqlStoredProceedure\" from serv" +
-                    "er \"localhost\" with mapping as", ((string)(null)), table1490, "And ");
-#line 92
- testRunner.When("\"NoStoredProceedureToLoad\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "er \"localhost\" with mapping as", ((string)(null)), table1497, "And ");
 #line 93
+ testRunner.When("\"NoStoredProceedureToLoad\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 94
  testRunner.Then("the sqlsERVER workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1491 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1498 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1491.AddRow(new string[] {
+            table1498.AddRow(new string[] {
                         "Error: The selected database does not contain actions to perform"});
-#line 94
+#line 95
  testRunner.And("The sqlsERVER \"Testing/SQL/NoSqlStoredProceedure\" in Workflow \"NoStoredProceedure" +
-                    "ToLoad\" debug outputs as", ((string)(null)), table1491, "And ");
+                    "ToLoad\" debug outputs as", ((string)(null)), table1498, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -345,34 +347,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PassingNullInputValuesToSQLServer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passing Null Input values to SQL Server", ((string[])(null)));
-#line 98
-this.ScenarioSetup(scenarioInfo);
 #line 99
+this.ScenarioSetup(scenarioInfo);
+#line 100
  testRunner.Given("I have a workflow \"PassingNullInputValue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1492 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1499 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Data or [[Variable]]",
                         "Parameter",
                         "Empty is Null"});
-            table1492.AddRow(new string[] {
+            table1499.AddRow(new string[] {
                         "[[value]]",
                         "a",
                         "True"});
-#line 100
+#line 101
  testRunner.And("\"PassingNullInputValue\" contains \"Acceptance Testing Resources/GreenPoint\" from s" +
-                    "erver \"localhost\" with mapping as", ((string)(null)), table1492, "And ");
-#line 103
- testRunner.When("\"PassingNullInputValue\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "erver \"localhost\" with mapping as", ((string)(null)), table1499, "And ");
 #line 104
+ testRunner.When("\"PassingNullInputValue\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 105
  testRunner.Then("the sqlsERVER workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1493 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1500 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1493.AddRow(new string[] {
+            table1500.AddRow(new string[] {
                         "Error: Scalar value { value } is NULL"});
-#line 105
+#line 106
  testRunner.And("The sqlsERVER \"Acceptance Testing Resources/GreenPoint\" in Workflow \"PassingNullI" +
-                    "nputValue\" debug outputs as", ((string)(null)), table1493, "And ");
+                    "nputValue\" debug outputs as", ((string)(null)), table1500, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -383,47 +385,47 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MappedToRecordsetsIncorrect()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Mapped To Recordsets incorrect", ((string[])(null)));
-#line 109
-this.ScenarioSetup(scenarioInfo);
 #line 110
+this.ScenarioSetup(scenarioInfo);
+#line 111
  testRunner.Given("I have a workflow \"BadSqlParameterName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1494 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1501 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Data or [[Variable]]",
                         "Parameter",
                         "Empty is Null"});
-            table1494.AddRow(new string[] {
+            table1501.AddRow(new string[] {
                         "",
                         "a",
                         "True"});
-#line 111
+#line 112
  testRunner.And("\"BadSqlParameterName\" contains \"Acceptance Testing Resources/GreenPoint\" from ser" +
-                    "ver \"localhost\" with mapping as", ((string)(null)), table1494, "And ");
+                    "ver \"localhost\" with mapping as", ((string)(null)), table1501, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1495 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1502 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1495.AddRow(new string[] {
+            table1502.AddRow(new string[] {
                         "id",
                         "[[dbo_leon bob proc().id]]"});
-            table1495.AddRow(new string[] {
+            table1502.AddRow(new string[] {
                         "some column Name",
                         "[[dbo_leon bob proc().some column Name]]"});
-#line 114
+#line 115
  testRunner.And("And \"BadSqlParameterName\" contains \"Acceptance Testing Resources/GreenPoint\" from" +
-                    " server \"localhost\" with Mapping To as", ((string)(null)), table1495, "And ");
-#line 118
- testRunner.When("\"BadSqlParameterName\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    " server \"localhost\" with Mapping To as", ((string)(null)), table1502, "And ");
 #line 119
+ testRunner.When("\"BadSqlParameterName\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 120
  testRunner.Then("the sqlsERVER workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1496 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1503 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1496.AddRow(new string[] {
+            table1503.AddRow(new string[] {
                         "Error: Sql Error: parse error"});
-#line 120
+#line 121
  testRunner.And("The sqlsERVER \"Acceptance Testing Resources/GreenPoint\" in Workflow \"BadSqlParame" +
-                    "terName\" debug outputs as", ((string)(null)), table1496, "And ");
+                    "terName\" debug outputs as", ((string)(null)), table1503, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -434,34 +436,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ParameterNotFoundInTheCollection()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Parameter not found in the collection", ((string[])(null)));
-#line 126
-this.ScenarioSetup(scenarioInfo);
 #line 127
+this.ScenarioSetup(scenarioInfo);
+#line 128
  testRunner.Given("I have a workflow \"BadMySqlParameterName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1497 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1504 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Data or [[Variable]]",
                         "Parameter",
                         "Empty is Null"});
-            table1497.AddRow(new string[] {
+            table1504.AddRow(new string[] {
                         "",
                         "`p_startswith`",
                         "false"});
-#line 128
+#line 129
  testRunner.And("\"BadMySqlParameterName\" contains \"Testing/MySql/MySqlParameters\" from server \"loc" +
-                    "alhost\" with mapping as", ((string)(null)), table1497, "And ");
-#line 131
- testRunner.When("\"BadMySqlParameterName\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "alhost\" with mapping as", ((string)(null)), table1504, "And ");
 #line 132
+ testRunner.When("\"BadMySqlParameterName\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 133
  testRunner.Then("the sqlsERVER workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1498 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1505 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1498.AddRow(new string[] {
+            table1505.AddRow(new string[] {
                         "Parameter \"p_startswith\" not found in the collection"});
-#line 133
+#line 134
  testRunner.And("The sqlsERVER \"Testing/MySql/MySqlParameters\" in Workflow \"BadMySqlParameterName\"" +
-                    " debug outputs as", ((string)(null)), table1498, "And ");
+                    " debug outputs as", ((string)(null)), table1505, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -472,34 +474,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RecordsetHasInvalidCharacter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset has invalid character", ((string[])(null)));
-#line 138
-this.ScenarioSetup(scenarioInfo);
 #line 139
+this.ScenarioSetup(scenarioInfo);
+#line 140
  testRunner.Given("I have a workflow \"MappingHasIncorrectCharacter\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1499 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1506 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Data or [[Variable]]",
                         "Parameter",
                         "Empty is Null"});
-            table1499.AddRow(new string[] {
+            table1506.AddRow(new string[] {
                         "1",
                         "charValue",
                         "True"});
-#line 140
+#line 141
  testRunner.And("\"MappingHasIncorrectCharacter\" contains \"Acceptance Testing Resources/GreenPoint\"" +
-                    " from server \"localhost\" with mapping as", ((string)(null)), table1499, "And ");
-#line 143
- testRunner.When("\"MappingHasIncorrectCharacter\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    " from server \"localhost\" with mapping as", ((string)(null)), table1506, "And ");
 #line 144
+ testRunner.When("\"MappingHasIncorrectCharacter\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 145
  testRunner.Then("the sqlsERVER workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1500 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1507 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1500.AddRow(new string[] {
+            table1507.AddRow(new string[] {
                         "[[dbo_ConvertTo,Int().result]] : Recordset name has invalid format"});
-#line 145
+#line 146
  testRunner.And("The sqlsERVER \"Acceptance Testing Resources/GreenPoint\" in Workflow \"MappingHasIn" +
-                    "correctCharacter\" debug outputs as", ((string)(null)), table1500, "And ");
+                    "correctCharacter\" debug outputs as", ((string)(null)), table1507, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -510,31 +512,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SqlServerBackwardCompatiblity()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SqlServer backward Compatiblity", ((string[])(null)));
-#line 150
-this.ScenarioSetup(scenarioInfo);
 #line 151
+this.ScenarioSetup(scenarioInfo);
+#line 152
  testRunner.Given("I have a workflow \"DataMigration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1501 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1508 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table1501.AddRow(new string[] {
+            table1508.AddRow(new string[] {
                         "[[ProductId]]",
                         "productId",
                         "[[dbo_GetCountries().CountryID]]",
                         "dbo_GetCountries().CountryID"});
-            table1501.AddRow(new string[] {
+            table1508.AddRow(new string[] {
                         "",
                         "",
                         "[[dbo_GetCountries().Description]]",
                         "dbo_GetCountries().Description"});
-#line 152
- testRunner.And("\"DataMigration\" contains \"DataCon\" from server \"localhost\" with mapping as", ((string)(null)), table1501, "And ");
-#line 156
- testRunner.When("\"DataMigration\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 153
+ testRunner.And("\"DataMigration\" contains \"DataCon\" from server \"localhost\" with mapping as", ((string)(null)), table1508, "And ");
 #line 157
+ testRunner.When("\"DataMigration\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 158
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
