@@ -145,6 +145,7 @@ namespace Dev2.Runtime.ESB.WF
                 SessionID = dataObject.DebugSessionID,
                 EnvironmentID = dataObject.DebugEnvironmentId,
                 ClientID = dataObject.ClientID,
+                SourceResourceID = dataObject.SourceResourceID,
                 Name = stateType.ToString(),
                 HasError = hasErrors || hasError,
                 ErrorMessage = existingErrors,
