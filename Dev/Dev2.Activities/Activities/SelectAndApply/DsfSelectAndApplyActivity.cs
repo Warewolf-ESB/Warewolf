@@ -73,6 +73,10 @@ namespace Dev2.Activities.SelectAndApply
         {
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
             var isNestedForEach = dataObject.ForEachNestingLevel > 0;
+            if (!isNestedForEach || _originalUniqueID == Guid.Empty)
+            {
+                _originalUniqueID = WorkSurfaceMappingId;
+            }
             UniqueID = isNestedForEach ? Guid.NewGuid().ToString() : UniqueID;
         }
 
@@ -176,11 +180,7 @@ namespace Dev2.Activities.SelectAndApply
                 {
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
-                var isNestedForEach = dataObject.ForEachNestingLevel > 0;
-                if (!isNestedForEach || _originalUniqueID == Guid.Empty)
-                {
-                    _originalUniqueID = WorkSurfaceMappingId;
-                }
+                
                 foreach (var exp in expressions)
                 {
                     //Assign the warewolfAtom to Alias using new environment
@@ -244,7 +244,7 @@ namespace Dev2.Activities.SelectAndApply
                         if (serviceTestStep != null)
                         {
                             var testRunResult = new TestRunResult();
-                            GetFinalTestRunResult(serviceTestStep, testRunResult);
+                            GetFinalTestRunResult(serviceTestStep, testRunResult, dataObject);
                             serviceTestStep.Result = testRunResult;
 
                             var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
@@ -264,8 +264,9 @@ namespace Dev2.Activities.SelectAndApply
             }
         }
 
-        private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
+        private void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult, IDSFDataObject dataObject)
         {
+            RegularActivityAssertion(dataObject, serviceTestStep);
             var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Result?.RunTestResult != RunResult.TestPassed).ToList();
             if (nonPassingSteps.Count == 0)
             {
@@ -278,10 +279,8 @@ namespace Dev2.Activities.SelectAndApply
                 testRunResult.Message = failMessage;
                 testRunResult.RunTestResult = RunResult.TestFailed;
             }
-
-
-
         }
+
         void OnCompleted(IDSFDataObject dataObject)
         {
             dataObject.IsDebugNested = false;
@@ -298,13 +297,12 @@ namespace Dev2.Activities.SelectAndApply
 
         private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
         {
-            base.UpdateWithAssertions(dataObject);
-           /* if (dataObject.IsServiceTestExecution && serviceTestTestSteps != null)
+            if (dataObject.IsServiceTestExecution && serviceTestTestSteps != null)
             {
                 var stepToBeAsserted = serviceTestTestSteps.FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(_childUniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name);
                 if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
                 {
-                    if(stepToBeAsserted.Result == null)
+                    if (stepToBeAsserted.Result == null)
                         stepToBeAsserted.Result = new TestRunResult { RunTestResult = RunResult.TestPending };
                     else
                         stepToBeAsserted.Result.RunTestResult = RunResult.TestPending;
@@ -333,18 +331,19 @@ namespace Dev2.Activities.SelectAndApply
                         finalResult.RunTestResult = RunResult.TestInvalid;
                         finalResult.Message = serviceTestFailureMessage;
                     }
-                    dataObject.ServiceTest.Result = finalResult;
-                    dataObject.ServiceTest.TestFailing = !testPassed;
-                    dataObject.ServiceTest.FailureMessage = serviceTestFailureMessage;
-                    dataObject.ServiceTest.TestPassed = testPassed;
-                    dataObject.StopExecution = !testPassed;
 
+                    stepToBeAsserted.Result = finalResult;
+                    dataObject.StopExecution = !testPassed;
                 }
-            }*/
+            }
         }
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory, IDebugState debugState)
         {
+            if (string.IsNullOrEmpty(output?.Variable))
+            {
+                return new List<TestRunResult>();
+            }
 
             if (output.Result == null)
                 output.Result = new TestRunResult { RunTestResult = RunResult.TestPending };
