@@ -525,15 +525,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ComPluginServiceMethodNotSelected.
-        /// </summary>
-        public static string ComPluginServiceMethodNotSelected {
-            get {
-                return ResourceManager.GetString("ComPluginServiceMethodNotSelected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to To create a reference to a new COM object, click New..
         /// </summary>
         public static string ComPluginServiceNewSourceHelp {
@@ -1003,33 +994,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This service will only execute when the login permissions issues have been resolved..
-        /// </summary>
-        public static string DatabaseServiceExecuteLoginPermission {
-            get {
-                return ResourceManager.GetString("DatabaseServiceExecuteLoginPermission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This service will only execute when the server is online..
-        /// </summary>
-        public static string DatabaseServiceExecuteOnline {
-            get {
-                return ResourceManager.GetString("DatabaseServiceExecuteOnline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You do not have permissions to View or Execute this resource..
-        /// </summary>
-        public static string DatabaseServiceExecuteViewPermission {
-            get {
-                return ResourceManager.GetString("DatabaseServiceExecuteViewPermission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Create a connection to a new database server..
         /// </summary>
         public static string DatabaseServiceNewSourceHelp {
@@ -1062,15 +1026,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DatabaseServiceSourceNotFound {
             get {
                 return ResourceManager.GetString("DatabaseServiceSourceNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source not selected. This service will not execute..
-        /// </summary>
-        public static string DatabaseServiceSourceNotSelected {
-            get {
-                return ResourceManager.GetString("DatabaseServiceSourceNotSelected", resourceCulture);
             }
         }
         
@@ -3529,7 +3484,6 @@ namespace Warewolf.Studio.Resources.Languages {
             }
         }
         
-       
         /// <summary>
         ///   Looks up a localized string similar to localhost (Connected).
         /// </summary>
@@ -5467,15 +5421,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PluginServiceEditSourceHelp {
             get {
                 return ResourceManager.GetString("PluginServiceEditSourceHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Procedure not selected. This service will not execute..
-        /// </summary>
-        public static string PluginServiceMethodNotSelected {
-            get {
-                return ResourceManager.GetString("PluginServiceMethodNotSelected", resourceCulture);
             }
         }
         
@@ -7608,15 +7553,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password.
-        /// </summary>
-        public static string ServiceTestPasswordTooltip {
-            get {
-                return ResourceManager.GetString("ServiceTestPasswordTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Pending.
         /// </summary>
         public static string ServiceTestPendingTooltip {
@@ -7966,15 +7902,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestUserNameHelpText {
             get {
                 return ResourceManager.GetString("ServiceTestUserNameHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Username.
-        /// </summary>
-        public static string ServiceTestUserNameTooltip {
-            get {
-                return ResourceManager.GetString("ServiceTestUserNameTooltip", resourceCulture);
             }
         }
         
@@ -9201,7 +9128,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Assign_Object_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Assign Object_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Assign_Object_Tags", resourceCulture);
             }
         }
         
@@ -9219,7 +9146,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Base_Convert_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Base Convert_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Base_Convert_Tags", resourceCulture);
             }
         }
         
@@ -9228,7 +9155,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Case_Convert_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Case Convert_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Case_Convert_Tags", resourceCulture);
             }
         }
         
@@ -9237,7 +9164,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Data_Merge_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Data Merge_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Data_Merge_Tags", resourceCulture);
             }
         }
         
@@ -9246,7 +9173,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Data_Split_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Data Split_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Data_Split_Tags", resourceCulture);
             }
         }
         
@@ -9255,7 +9182,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Find_Index_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Find Index_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Find_Index_Tags", resourceCulture);
             }
         }
         
@@ -9309,7 +9236,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Database_SQL_Bulk_Insert_Tags {
             get {
-                return ResourceManager.GetString("Tool_Database_SQL Bulk Insert_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Database_SQL_Bulk_Insert_Tags", resourceCulture);
             }
         }
         
@@ -9318,7 +9245,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Database_SQL_Server_Tags {
             get {
-                return ResourceManager.GetString("Tool_Database_SQL Server_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Database_SQL_Server_Tags", resourceCulture);
             }
         }
         
@@ -9345,7 +9272,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Dropbox_List_Contents_Tags {
             get {
-                return ResourceManager.GetString("Tool_Dropbox_List Contents_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Dropbox_List_Contents_Tags", resourceCulture);
             }
         }
         
@@ -9363,7 +9290,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Email_Exchange_Send_Tags {
             get {
-                return ResourceManager.GetString("Tool_Email_Exchange Send_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Email_Exchange_Send_Tags", resourceCulture);
             }
         }
         
@@ -9372,7 +9299,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Email_SMTP_Send_Tags {
             get {
-                return ResourceManager.GetString("Tool_Email_SMTP Send_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Email_SMTP_Send_Tags", resourceCulture);
             }
         }
         
@@ -9417,7 +9344,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_File_Read_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_File_Read File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_File_Read_File_Tags", resourceCulture);
             }
         }
         
@@ -9426,7 +9353,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_File_Read_Folder_Tags {
             get {
-                return ResourceManager.GetString("Tool_File_Read Folder_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_File_Read_Folder_Tags", resourceCulture);
             }
         }
         
@@ -9453,7 +9380,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_File_Write_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_File_Write File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_File_Write_File_Tags", resourceCulture);
             }
         }
         
@@ -9498,7 +9425,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_LoopConstruct_For_Each_Tags {
             get {
-                return ResourceManager.GetString("Tool_LoopConstruct_For Each_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_LoopConstruct_For_Each_Tags", resourceCulture);
             }
         }
         
@@ -9507,7 +9434,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_LoopConstruct_Select_and_Apply_Tags {
             get {
-                return ResourceManager.GetString("Tool_LoopConstruct_Select and Apply_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_LoopConstruct_Select_and_Apply_Tags", resourceCulture);
             }
         }
         
@@ -9534,7 +9461,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Recordset_Find_Records_Tags {
             get {
-                return ResourceManager.GetString("Tool_Recordset_Find Records_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Recordset_Find_Records_Tags", resourceCulture);
             }
         }
         
@@ -9561,7 +9488,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Recordset_Unique_Records_Tags {
             get {
-                return ResourceManager.GetString("Tool_Recordset_Unique Records_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Recordset_Unique_Records_Tags", resourceCulture);
             }
         }
         
@@ -9570,7 +9497,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Resources_Com_DLL_Tags {
             get {
-                return ResourceManager.GetString("Tool_Resources_Com DLL_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Resources_Com_DLL_Tags", resourceCulture);
             }
         }
         
@@ -9579,7 +9506,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Resources_Dot_net_DLL_Tags {
             get {
-                return ResourceManager.GetString("Tool_Resources_Dot net DLL_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Resources_Dot_net_DLL_Tags", resourceCulture);
             }
         }
         
@@ -9606,7 +9533,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Scripting_CMD_Script_Tags {
             get {
-                return ResourceManager.GetString("Tool_Scripting_CMD Script_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Scripting_CMD_Script_Tags", resourceCulture);
             }
         }
         
@@ -9624,7 +9551,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Copy_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Copy File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Copy_File_Tags", resourceCulture);
             }
         }
         
@@ -9633,7 +9560,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Create_List_Item_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Create List Item_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Create_List_Item_Tags", resourceCulture);
             }
         }
         
@@ -9642,7 +9569,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Delete_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Delete File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Delete_File_Tags", resourceCulture);
             }
         }
         
@@ -9651,7 +9578,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Delete_List_Item_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Delete List Item_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Delete_List_Item_Tags", resourceCulture);
             }
         }
         
@@ -9660,7 +9587,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Download_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Download File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Download_File_Tags", resourceCulture);
             }
         }
         
@@ -9669,7 +9596,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Move_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Move File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Move_File_Tags", resourceCulture);
             }
         }
         
@@ -9678,7 +9605,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Read_Folder_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Read Folder_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Read_Folder_Tags", resourceCulture);
             }
         }
         
@@ -9687,7 +9614,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Read_List_Item_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Read List Item_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Read_List_Item_Tags", resourceCulture);
             }
         }
         
@@ -9696,7 +9623,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Update_List_Item_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Update List Item_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Update_List_Item_Tags", resourceCulture);
             }
         }
         
@@ -9705,7 +9632,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Upload_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Upload File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Upload_File_Tags", resourceCulture);
             }
         }
         
@@ -9714,7 +9641,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Aggregate_Calculate_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Aggregate Calculate_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Aggregate_Calculate_Tags", resourceCulture);
             }
         }
         
@@ -9741,7 +9668,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Create_JSON_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Create JSON_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Create_JSON_Tags", resourceCulture);
             }
         }
         
@@ -9750,7 +9677,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Date_Time_Diff_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Date Time Diff_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Date_Time_Diff_Tags", resourceCulture);
             }
         }
         
@@ -9759,7 +9686,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Date_Time_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Date Time_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Date_Time_Tags", resourceCulture);
             }
         }
         
@@ -9768,7 +9695,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Format_Number_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Format Number_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Format_Number_Tags", resourceCulture);
             }
         }
         
@@ -9777,7 +9704,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Rabbit_MQ_Consume_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Rabbit MQ Consume_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Rabbit_MQ_Consume_Tags", resourceCulture);
             }
         }
         
@@ -9786,7 +9713,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Rabbit_MQ_Publish_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Rabbit MQ Publish_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Rabbit_MQ_Publish_Tags", resourceCulture);
             }
         }
         
@@ -9804,7 +9731,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Sys_Info_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Sys Info_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Sys_Info_Tags", resourceCulture);
             }
         }
         
@@ -9813,7 +9740,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Web_Request_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Web Request_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Web_Request_Tags", resourceCulture);
             }
         }
         
@@ -9872,15 +9799,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh the toolbox.
-        /// </summary>
-        public static string ToolboxRefreshToolTip {
-            get {
-                return ResourceManager.GetString("ToolboxRefreshToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Search filter for your tools.
         /// </summary>
         public static string ToolboxSearchToolTip {
@@ -9895,15 +9813,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ToolboxViewFilterSearchHelp {
             get {
                 return ResourceManager.GetString("ToolboxViewFilterSearchHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refreshes the content of the toolbox..
-        /// </summary>
-        public static string ToolboxViewRefreshHelp {
-            get {
-                return ResourceManager.GetString("ToolboxViewRefreshHelp", resourceCulture);
             }
         }
         
