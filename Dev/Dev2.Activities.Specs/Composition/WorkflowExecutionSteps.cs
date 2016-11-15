@@ -606,7 +606,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             else
             {
-                throw new Exception(string.Format("Remote server {0} not found", server));
+                throw new Exception($"Remote server {server} not found");
             }
         }
 
@@ -1522,7 +1522,7 @@ namespace Dev2.Activities.Specs.Composition
                 if(value.StartsWith("="))
                 {
                     value = value.Replace("=", "");
-                    value = string.Format("!~calculation~!{0}!~~calculation~!", value);
+                    value = $"!~calculation~!{value}!~~calculation~!";
                 }
 
                 List<ActivityDTO> fieldCollection;
@@ -1534,6 +1534,37 @@ namespace Dev2.Activities.Specs.Composition
             }
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
+
+        [Given(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
+        [Then(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
+        public void GivenContainsAnAssignObjectAs(string parentName, string assignName, Table table)
+        {
+            
+            DsfMultiAssignObjectActivity assignActivity = new DsfMultiAssignObjectActivity { DisplayName = assignName };
+
+            foreach (var tableRow in table.Rows)
+            {
+                var value = tableRow["value"];
+                var variable = tableRow["variable"];
+
+                value = value.Replace('"', ' ').Trim();
+
+                if (value.StartsWith("="))
+                {
+                    value = value.Replace("=", "");
+                    value = $"!~calculation~!{value}!~~calculation~!";
+                }
+
+                List<ActivityDTO> fieldCollection;
+                _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+
+                _commonSteps.AddVariableToVariableList(variable);
+
+                assignActivity.FieldsCollection.Add(new AssignObjectDTO(variable, value, 1, true));
+            }
+            _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
+        }
+
 
         [When(@"I rollback ""(.*)"" to version ""(.*)""")]
         public void WhenIRollbackToVersion(string workflowName, string version)
@@ -1638,7 +1669,7 @@ namespace Dev2.Activities.Specs.Composition
             int e1 = Convert.ToInt32(_scenarioContext[executionLabelFirst]),
                 e2 = Convert.ToInt32(_scenarioContext[executionLabelSecond]),
                 d = maxDeltaMilliseconds;
-            d.Should().BeGreaterThan(Math.Abs(e1 - e2), string.Format("async logging should not add more than {0} milliseconds to the execution", d));
+            d.Should().BeGreaterThan(Math.Abs(e1 - e2), $"async logging should not add more than {d} milliseconds to the execution");
         }
 
         [Given(@"""(.*)"" contains an Unique ""(.*)"" as")]
