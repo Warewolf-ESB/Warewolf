@@ -32,7 +32,9 @@ if ($TestList.StartsWith(",")) {
 $TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding=`"UTF-8`"?>
-<TestSettings name=`"Tools Specs`" id=`"" + [guid]::NewGuid() + @"`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+<TestSettings name=`"Tools Specs`" id=`"
+"@ + [guid]::NewGuid() + @"
+`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>These are default test settings for a local test run.</Description>
   <NamingScheme baseName=`"ToolsSpecs`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>

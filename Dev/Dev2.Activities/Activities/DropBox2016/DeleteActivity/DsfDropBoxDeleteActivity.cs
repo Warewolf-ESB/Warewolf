@@ -58,7 +58,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
 
         #endregion Overrides of DsfActivity
 
-        protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
+        protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             DropboxSingleExecutor = new DropboxDelete(evaluatedValues["DeletePath"]);
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
@@ -66,7 +66,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             if (dropboxSuccessResult != null)
             {
                 dropboxSuccessResult.GerFileMetadata();
-                return GlobalConstants.DropBoxSucces;
+                return new List<string> { GlobalConstants.DropBoxSuccess };
             }
             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
             if (dropboxFailureResult != null)

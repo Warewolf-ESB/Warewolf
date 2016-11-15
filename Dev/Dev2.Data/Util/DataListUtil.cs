@@ -215,11 +215,11 @@ namespace Dev2.Data.Util
         public static bool IsValueRecordset(string value) => RecSetCommon.IsValueRecordset(value);
 
         /// <summary>
-        /// Determines whether the value is a recordset.
+        /// Determines whether the value is a scalar.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>
-        ///   <c>true</c> if [value is recordset] [the specified value]; otherwise, <c>false</c>.
+        ///   <c>true</c> if [value is scalar] [the specified value]; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsValueScalar(string value) => ScalarCommon.IsValueScalar(value);
 

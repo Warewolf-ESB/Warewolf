@@ -77,295 +77,23 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1392 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Col1",
-                        "Col2",
-                        "Col3"});
-            table1392.AddRow(new string[] {
-                        "1",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-            table1392.AddRow(new string[] {
-                        "1",
-                        "TestData",
-                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
-#line 7
- testRunner.Given("I have this data", ((string)(null)), table1392, "Given ");
-#line 11
- testRunner.And("Check constraints is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table1393 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Col1",
-                        "Col2",
-                        "Col3"});
-            table1393.AddRow(new string[] {
-                        "1",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-            table1393.AddRow(new string[] {
-                        "2",
-                        "TestData",
-                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
-#line 13
- testRunner.Then("the new table will have", ((string)(null)), table1393, "Then ");
-#line 17
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1394 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "To Field",
-                        "Type",
-                        "Batch Size",
-                        "Timeout",
-                        "Check Constraints",
-                        "Keep Table Lock",
-                        "Fire Triggers",
-                        "Keep Identity",
-                        "Use Internal Transaction",
-                        "Skip Blank Rows"});
-            table1394.AddRow(new string[] {
-                        "1",
-                        "[[rs(1).Col1]] = 1",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1394.AddRow(new string[] {
-                        "",
-                        "[[rs(2).Col1]] = 1",
-                        "Col1",
-                        "bigint",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1394.AddRow(new string[] {
-                        "2",
-                        "[[rs(1).Col2]] = TestData",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1394.AddRow(new string[] {
-                        "",
-                        "[[rs(2).Col2]] = TestData",
-                        "Col2",
-                        "bigint",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1394.AddRow(new string[] {
-                        "3",
-                        "[[rs(1).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1394.AddRow(new string[] {
-                        "",
-                        "[[rs(2).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2",
-                        "Col3",
-                        "bigint",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1394.AddRow(new string[] {
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO",
-                        "NO",
-                        "NO",
-                        "NO",
-                        "NO"});
-#line 18
- testRunner.And("the debug inputs as", ((string)(null)), table1394, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1395 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table1395.AddRow(new string[] {
-                        "[[result]] = Success"});
-#line 27
- testRunner.And("the debug output as", ((string)(null)), table1395, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with check constraint enabled")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableWithCheckConstraintEnabled()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with check constraint enabled", ((string[])(null)));
-#line 31
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table1396 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Col1",
-                        "Col2",
-                        "Col3"});
-            table1396.AddRow(new string[] {
-                        "1",
-                        "TestData",
-                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
-#line 33
- testRunner.Given("I have this data", ((string)(null)), table1396, "Given ");
-#line 36
- testRunner.And("Check constraints is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
- testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 39
- testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1397 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "To Field",
-                        "Type",
-                        "Batch Size",
-                        "Timeout",
-                        "Check Constraints",
-                        "Keep Table Lock",
-                        "Fire Triggers",
-                        "Keep Identity",
-                        "Use Internal Transaction",
-                        "Skip Blank Rows"});
-            table1397.AddRow(new string[] {
-                        "1",
-                        "[[rs(1).Col1]] = 1",
-                        "Col1",
-                        "bigint",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1397.AddRow(new string[] {
-                        "2",
-                        "[[rs(1).Col2]] = TestData",
-                        "Col2",
-                        "bigint",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1397.AddRow(new string[] {
-                        "3",
-                        "[[rs(1).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2",
-                        "Col3",
-                        "bigint",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1397.AddRow(new string[] {
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "YES",
-                        "NO",
-                        "NO",
-                        "NO",
-                        "NO",
-                        "NO"});
-#line 40
- testRunner.And("the debug inputs as", ((string)(null)), table1397, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1398 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table1398.AddRow(new string[] {
-                        "[[result]] = Failure"});
-#line 46
- testRunner.And("the debug output as", ((string)(null)), table1398, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with keep identity disabled")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableWithKeepIdentityDisabled()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity disabled", ((string[])(null)));
-#line 50
-this.ScenarioSetup(scenarioInfo);
-#line hidden
             TechTalk.SpecFlow.Table table1399 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
                         "Col2",
                         "Col3"});
             table1399.AddRow(new string[] {
-                        "4",
+                        "1",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
             table1399.AddRow(new string[] {
-                        "6",
+                        "1",
                         "TestData",
-                        "bc7a9611-102e-4899-82b8-97ff1517d268"});
-            table1399.AddRow(new string[] {
-                        "8",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 52
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+#line 7
  testRunner.Given("I have this data", ((string)(null)), table1399, "Given ");
-#line 57
- testRunner.And("Keep identity is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 11
+ testRunner.And("Check constraints is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 12
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1400 = new TechTalk.SpecFlow.Table(new string[] {
@@ -379,14 +107,10 @@ this.ScenarioSetup(scenarioInfo);
             table1400.AddRow(new string[] {
                         "2",
                         "TestData",
-                        "bc7a9611-102e-4899-82b8-97ff1517d268"});
-            table1400.AddRow(new string[] {
-                        "3",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 59
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+#line 13
  testRunner.Then("the new table will have", ((string)(null)), table1400, "Then ");
-#line 64
+#line 17
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1401 = new TechTalk.SpecFlow.Table(new string[] {
@@ -404,7 +128,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Skip Blank Rows"});
             table1401.AddRow(new string[] {
                         "1",
-                        "[[rs(1).Col1]] = 4",
+                        "[[rs(1).Col1]] = 1",
                         "",
                         "",
                         "",
@@ -417,20 +141,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table1401.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col1]] = 6",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1401.AddRow(new string[] {
-                        "",
-                        "[[rs(3).Col1]] = 8",
+                        "[[rs(2).Col1]] = 1",
                         "Col1",
                         "bigint",
                         "",
@@ -457,19 +168,6 @@ this.ScenarioSetup(scenarioInfo);
             table1401.AddRow(new string[] {
                         "",
                         "[[rs(2).Col2]] = TestData",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1401.AddRow(new string[] {
-                        "",
-                        "[[rs(3).Col2]] = TestData",
                         "Col2",
                         "bigint",
                         "",
@@ -495,20 +193,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table1401.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col3]] = bc7a9611-102e-4899-82b8-97ff1517d268",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1401.AddRow(new string[] {
-                        "",
-                        "[[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
+                        "[[rs(2).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2",
                         "Col3",
                         "bigint",
                         "",
@@ -532,26 +217,26 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 65
+#line 18
  testRunner.And("the debug inputs as", ((string)(null)), table1401, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1402 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1402.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 77
+#line 27
  testRunner.And("the debug output as", ((string)(null)), table1402, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with keep identity enabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with check constraint enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableWithKeepIdentityEnabled()
+        public virtual void ImportDataIntoTableWithCheckConstraintEnabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity enabled", ((string[])(null)));
-#line 81
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with check constraint enabled", ((string[])(null)));
+#line 31
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1403 = new TechTalk.SpecFlow.Table(new string[] {
@@ -559,46 +244,21 @@ this.ScenarioSetup(scenarioInfo);
                         "Col2",
                         "Col3"});
             table1403.AddRow(new string[] {
-                        "4",
+                        "1",
                         "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-            table1403.AddRow(new string[] {
-                        "6",
-                        "TestData",
-                        "bc7a9611-102e-4899-82b8-97ff1517d268"});
-            table1403.AddRow(new string[] {
-                        "8",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 82
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+#line 33
  testRunner.Given("I have this data", ((string)(null)), table1403, "Given ");
-#line 87
- testRunner.And("Keep identity is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 36
+ testRunner.And("Check constraints is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 38
+ testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 39
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1404 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Col1",
-                        "Col2",
-                        "Col3"});
-            table1404.AddRow(new string[] {
-                        "4",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-            table1404.AddRow(new string[] {
-                        "6",
-                        "TestData",
-                        "bc7a9611-102e-4899-82b8-97ff1517d268"});
-            table1404.AddRow(new string[] {
-                        "8",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 89
- testRunner.Then("the new table will have", ((string)(null)), table1404, "Then ");
-#line 94
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1405 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "To Field",
@@ -611,35 +271,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Keep Identity",
                         "Use Internal Transaction",
                         "Skip Blank Rows"});
-            table1405.AddRow(new string[] {
+            table1404.AddRow(new string[] {
                         "1",
-                        "[[rs(1).Col1]] = 4",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1405.AddRow(new string[] {
-                        "",
-                        "[[rs(2).Col1]] = 6",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1405.AddRow(new string[] {
-                        "",
-                        "[[rs(3).Col1]] = 8",
+                        "[[rs(1).Col1]] = 1",
                         "Col1",
                         "bigint",
                         "",
@@ -650,35 +284,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1405.AddRow(new string[] {
+            table1404.AddRow(new string[] {
                         "2",
                         "[[rs(1).Col2]] = TestData",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1405.AddRow(new string[] {
-                        "",
-                        "[[rs(2).Col2]] = TestData",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1405.AddRow(new string[] {
-                        "",
-                        "[[rs(3).Col2]] = TestData",
                         "Col2",
                         "bigint",
                         "",
@@ -689,35 +297,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1405.AddRow(new string[] {
+            table1404.AddRow(new string[] {
                         "3",
-                        "[[rs(1).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1405.AddRow(new string[] {
-                        "",
-                        "[[rs(2).Col3]] = bc7a9611-102e-4899-82b8-97ff1517d268",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1405.AddRow(new string[] {
-                        "",
-                        "[[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
+                        "[[rs(1).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2",
                         "Col3",
                         "bigint",
                         "",
@@ -728,40 +310,63 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1405.AddRow(new string[] {
+            table1404.AddRow(new string[] {
                         "",
                         "",
                         "",
                         "",
                         "",
                         "",
-                        "NO",
-                        "NO",
-                        "NO",
                         "YES",
                         "NO",
+                        "NO",
+                        "NO",
+                        "NO",
                         "NO"});
-#line 95
- testRunner.And("the debug inputs as", ((string)(null)), table1405, "And ");
+#line 40
+ testRunner.And("the debug inputs as", ((string)(null)), table1404, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1406 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1405 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1406.AddRow(new string[] {
-                        "[[result]] = Success"});
-#line 107
- testRunner.And("the debug output as", ((string)(null)), table1406, "And ");
+            table1405.AddRow(new string[] {
+                        "[[result]] = Failure"});
+#line 46
+ testRunner.And("the debug output as", ((string)(null)), table1405, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with skip blank rows disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with keep identity disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableWithSkipBlankRowsDisabled()
+        public virtual void ImportDataIntoTableWithKeepIdentityDisabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows disabled", ((string[])(null)));
-#line 111
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity disabled", ((string[])(null)));
+#line 50
 this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table1406 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Col1",
+                        "Col2",
+                        "Col3"});
+            table1406.AddRow(new string[] {
+                        "4",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+            table1406.AddRow(new string[] {
+                        "6",
+                        "TestData",
+                        "bc7a9611-102e-4899-82b8-97ff1517d268"});
+            table1406.AddRow(new string[] {
+                        "8",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+#line 52
+ testRunner.Given("I have this data", ((string)(null)), table1406, "Given ");
+#line 57
+ testRunner.And("Keep identity is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 58
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1407 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
@@ -772,27 +377,17 @@ this.ScenarioSetup(scenarioInfo);
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
             table1407.AddRow(new string[] {
-                        "",
-                        "",
-                        ""});
-            table1407.AddRow(new string[] {
                         "2",
                         "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+                        "bc7a9611-102e-4899-82b8-97ff1517d268"});
             table1407.AddRow(new string[] {
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 113
- testRunner.Given("I have this data", ((string)(null)), table1407, "Given ");
-#line 119
- testRunner.And("Skip rows is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 121
- testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 122
- testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
+ testRunner.Then("the new table will have", ((string)(null)), table1407, "Then ");
+#line 64
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1408 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -809,7 +404,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Skip Blank Rows"});
             table1408.AddRow(new string[] {
                         "1",
-                        "[[rs(1).Col1]] = 1",
+                        "[[rs(1).Col1]] = 4",
                         "",
                         "",
                         "",
@@ -822,7 +417,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table1408.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col1]] =",
+                        "[[rs(2).Col1]] = 6",
                         "",
                         "",
                         "",
@@ -835,20 +430,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table1408.AddRow(new string[] {
                         "",
-                        "[[rs(3).Col1]] = 2",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1408.AddRow(new string[] {
-                        "",
-                        "[[rs(4).Col1]] = 3",
+                        "[[rs(3).Col1]] = 8",
                         "Col1",
                         "bigint",
                         "",
@@ -874,7 +456,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table1408.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col2]] =",
+                        "[[rs(2).Col2]] = TestData",
                         "",
                         "",
                         "",
@@ -888,19 +470,6 @@ this.ScenarioSetup(scenarioInfo);
             table1408.AddRow(new string[] {
                         "",
                         "[[rs(3).Col2]] = TestData",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1408.AddRow(new string[] {
-                        "",
-                        "[[rs(4).Col2]] = TestData",
                         "Col2",
                         "bigint",
                         "",
@@ -926,7 +495,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table1408.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col3]] =",
+                        "[[rs(2).Col3]] = bc7a9611-102e-4899-82b8-97ff1517d268",
                         "",
                         "",
                         "",
@@ -940,19 +509,6 @@ this.ScenarioSetup(scenarioInfo);
             table1408.AddRow(new string[] {
                         "",
                         "[[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1408.AddRow(new string[] {
-                        "",
-                        "[[rs(4).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
                         "Col3",
                         "bigint",
                         "",
@@ -963,26 +519,39 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 123
+            table1408.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "NO",
+                        "NO",
+                        "NO",
+                        "NO",
+                        "NO",
+                        "NO"});
+#line 65
  testRunner.And("the debug inputs as", ((string)(null)), table1408, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1409 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1409.AddRow(new string[] {
-                        "[[result]] = Failure"});
-#line 137
+                        "[[result]] = Success"});
+#line 77
  testRunner.And("the debug output as", ((string)(null)), table1409, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with skip blank rows enabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with keep identity enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableWithSkipBlankRowsEnabled()
+        public virtual void ImportDataIntoTableWithKeepIdentityEnabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows enabled", ((string[])(null)));
-#line 141
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity enabled", ((string[])(null)));
+#line 81
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1410 = new TechTalk.SpecFlow.Table(new string[] {
@@ -990,33 +559,46 @@ this.ScenarioSetup(scenarioInfo);
                         "Col2",
                         "Col3"});
             table1410.AddRow(new string[] {
-                        "1",
+                        "4",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
             table1410.AddRow(new string[] {
-                        "",
-                        "",
-                        ""});
+                        "6",
+                        "TestData",
+                        "bc7a9611-102e-4899-82b8-97ff1517d268"});
             table1410.AddRow(new string[] {
-                        "2",
+                        "8",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-            table1410.AddRow(new string[] {
-                        "3",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 143
+#line 82
  testRunner.Given("I have this data", ((string)(null)), table1410, "Given ");
-#line 149
- testRunner.And("Skip rows is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 87
+ testRunner.And("Keep identity is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 88
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 151
- testRunner.Then("the new table will will have 3 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 152
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1411 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Col1",
+                        "Col2",
+                        "Col3"});
+            table1411.AddRow(new string[] {
+                        "4",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+            table1411.AddRow(new string[] {
+                        "6",
+                        "TestData",
+                        "bc7a9611-102e-4899-82b8-97ff1517d268"});
+            table1411.AddRow(new string[] {
+                        "8",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+#line 89
+ testRunner.Then("the new table will have", ((string)(null)), table1411, "Then ");
+#line 94
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1412 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "To Field",
@@ -1029,9 +611,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Keep Identity",
                         "Use Internal Transaction",
                         "Skip Blank Rows"});
-            table1411.AddRow(new string[] {
+            table1412.AddRow(new string[] {
                         "1",
-                        "[[rs(1).Col1]] = 1",
+                        "[[rs(1).Col1]] = 4",
                         "",
                         "",
                         "",
@@ -1042,22 +624,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1411.AddRow(new string[] {
+            table1412.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col1]] =",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1411.AddRow(new string[] {
-                        "",
-                        "[[rs(3).Col1]] = 2",
+                        "[[rs(2).Col1]] = 6",
                         "",
                         "",
                         "",
@@ -1068,9 +637,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1411.AddRow(new string[] {
+            table1412.AddRow(new string[] {
                         "",
-                        "[[rs(4).Col1]] = 3",
+                        "[[rs(3).Col1]] = 8",
                         "Col1",
                         "bigint",
                         "",
@@ -1081,7 +650,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1411.AddRow(new string[] {
+            table1412.AddRow(new string[] {
                         "2",
                         "[[rs(1).Col2]] = TestData",
                         "",
@@ -1094,9 +663,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1411.AddRow(new string[] {
+            table1412.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col2]] =",
+                        "[[rs(2).Col2]] = TestData",
                         "",
                         "",
                         "",
@@ -1107,22 +676,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1411.AddRow(new string[] {
+            table1412.AddRow(new string[] {
                         "",
                         "[[rs(3).Col2]] = TestData",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1411.AddRow(new string[] {
-                        "",
-                        "[[rs(4).Col2]] = TestData",
                         "Col2",
                         "bigint",
                         "",
@@ -1133,7 +689,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1411.AddRow(new string[] {
+            table1412.AddRow(new string[] {
                         "3",
                         "[[rs(1).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
                         "",
@@ -1146,9 +702,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1411.AddRow(new string[] {
+            table1412.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col3]] =",
+                        "[[rs(2).Col3]] = bc7a9611-102e-4899-82b8-97ff1517d268",
                         "",
                         "",
                         "",
@@ -1159,22 +715,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1411.AddRow(new string[] {
+            table1412.AddRow(new string[] {
                         "",
                         "[[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1411.AddRow(new string[] {
-                        "",
-                        "[[rs(4).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
                         "Col3",
                         "bigint",
                         "",
@@ -1185,63 +728,40 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1411.AddRow(new string[] {
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO",
-                        "NO",
-                        "NO",
-                        "NO",
-                        "YES"});
-#line 153
- testRunner.And("the debug inputs as", ((string)(null)), table1411, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1412 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
             table1412.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "NO",
+                        "NO",
+                        "NO",
+                        "YES",
+                        "NO",
+                        "NO"});
+#line 95
+ testRunner.And("the debug inputs as", ((string)(null)), table1412, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1413 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table1413.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 168
- testRunner.And("the debug output as", ((string)(null)), table1412, "And ");
+#line 107
+ testRunner.And("the debug output as", ((string)(null)), table1413, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with fire triggers disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with skip blank rows disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableWithFireTriggersDisabled()
+        public virtual void ImportDataIntoTableWithSkipBlankRowsDisabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers disabled", ((string[])(null)));
-#line 172
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows disabled", ((string[])(null)));
+#line 111
 this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table1413 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Col1",
-                        "Col2",
-                        "Col3"});
-            table1413.AddRow(new string[] {
-                        "1",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-            table1413.AddRow(new string[] {
-                        "2",
-                        "",
-                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
-            table1413.AddRow(new string[] {
-                        "3",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 174
- testRunner.Given("I have this data", ((string)(null)), table1413, "Given ");
-#line 179
- testRunner.And("Fire triggers is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1414 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
@@ -1252,17 +772,27 @@ this.ScenarioSetup(scenarioInfo);
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
             table1414.AddRow(new string[] {
-                        "2",
                         "",
-                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+                        "",
+                        ""});
+            table1414.AddRow(new string[] {
+                        "2",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
             table1414.AddRow(new string[] {
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 181
- testRunner.Then("the new table will have", ((string)(null)), table1414, "Then ");
-#line 186
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 113
+ testRunner.Given("I have this data", ((string)(null)), table1414, "Given ");
+#line 119
+ testRunner.And("Skip rows is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 120
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 121
+ testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 122
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1415 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -1292,7 +822,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table1415.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col1]] = 2",
+                        "[[rs(2).Col1]] =",
                         "",
                         "",
                         "",
@@ -1305,7 +835,20 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table1415.AddRow(new string[] {
                         "",
-                        "[[rs(3).Col1]] = 3",
+                        "[[rs(3).Col1]] = 2",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1415.AddRow(new string[] {
+                        "",
+                        "[[rs(4).Col1]] = 3",
                         "Col1",
                         "bigint",
                         "",
@@ -1345,6 +888,19 @@ this.ScenarioSetup(scenarioInfo);
             table1415.AddRow(new string[] {
                         "",
                         "[[rs(3).Col2]] = TestData",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1415.AddRow(new string[] {
+                        "",
+                        "[[rs(4).Col2]] = TestData",
                         "Col2",
                         "bigint",
                         "",
@@ -1370,7 +926,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table1415.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2",
+                        "[[rs(2).Col3]] =",
                         "",
                         "",
                         "",
@@ -1384,8 +940,8 @@ this.ScenarioSetup(scenarioInfo);
             table1415.AddRow(new string[] {
                         "",
                         "[[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
-                        "Col3",
-                        "bigint",
+                        "",
+                        "",
                         "",
                         "",
                         "",
@@ -1396,37 +952,37 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table1415.AddRow(new string[] {
                         "",
+                        "[[rs(4).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
+                        "Col3",
+                        "bigint",
                         "",
                         "",
                         "",
                         "",
                         "",
-                        "NO",
-                        "NO",
-                        "NO",
-                        "NO",
-                        "NO",
-                        "NO"});
-#line 187
+                        "",
+                        "",
+                        ""});
+#line 123
  testRunner.And("the debug inputs as", ((string)(null)), table1415, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1416 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1416.AddRow(new string[] {
-                        "[[result]] = Success"});
-#line 199
+                        "[[result]] = Failure"});
+#line 137
  testRunner.And("the debug output as", ((string)(null)), table1416, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with fire triggers enabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with skip blank rows enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableWithFireTriggersEnabled()
+        public virtual void ImportDataIntoTableWithSkipBlankRowsEnabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers enabled", ((string[])(null)));
-#line 203
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows enabled", ((string[])(null)));
+#line 141
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1417 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1438,42 +994,29 @@ this.ScenarioSetup(scenarioInfo);
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
             table1417.AddRow(new string[] {
-                        "2",
                         "",
-                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+                        "",
+                        ""});
+            table1417.AddRow(new string[] {
+                        "2",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
             table1417.AddRow(new string[] {
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 205
+#line 143
  testRunner.Given("I have this data", ((string)(null)), table1417, "Given ");
-#line 210
- testRunner.And("Fire triggers is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 211
+#line 149
+ testRunner.And("Skip rows is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 150
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table1418 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Col1",
-                        "Col2",
-                        "Col3"});
-            table1418.AddRow(new string[] {
-                        "1",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-            table1418.AddRow(new string[] {
-                        "2",
-                        "XXXXXXXX",
-                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
-            table1418.AddRow(new string[] {
-                        "3",
-                        "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 212
- testRunner.Then("the new table will have", ((string)(null)), table1418, "Then ");
-#line 217
+#line 151
+ testRunner.Then("the new table will will have 3 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 152
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1419 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1418 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "To Field",
@@ -1486,7 +1029,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Keep Identity",
                         "Use Internal Transaction",
                         "Skip Blank Rows"});
-            table1419.AddRow(new string[] {
+            table1418.AddRow(new string[] {
                         "1",
                         "[[rs(1).Col1]] = 1",
                         "",
@@ -1499,9 +1042,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1419.AddRow(new string[] {
+            table1418.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col1]] = 2",
+                        "[[rs(2).Col1]] =",
                         "",
                         "",
                         "",
@@ -1512,9 +1055,22 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1419.AddRow(new string[] {
+            table1418.AddRow(new string[] {
                         "",
-                        "[[rs(3).Col1]] = 3",
+                        "[[rs(3).Col1]] = 2",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1418.AddRow(new string[] {
+                        "",
+                        "[[rs(4).Col1]] = 3",
                         "Col1",
                         "bigint",
                         "",
@@ -1525,7 +1081,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1419.AddRow(new string[] {
+            table1418.AddRow(new string[] {
                         "2",
                         "[[rs(1).Col2]] = TestData",
                         "",
@@ -1538,7 +1094,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1419.AddRow(new string[] {
+            table1418.AddRow(new string[] {
                         "",
                         "[[rs(2).Col2]] =",
                         "",
@@ -1551,9 +1107,22 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1419.AddRow(new string[] {
+            table1418.AddRow(new string[] {
                         "",
                         "[[rs(3).Col2]] = TestData",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1418.AddRow(new string[] {
+                        "",
+                        "[[rs(4).Col2]] = TestData",
                         "Col2",
                         "bigint",
                         "",
@@ -1564,7 +1133,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1419.AddRow(new string[] {
+            table1418.AddRow(new string[] {
                         "3",
                         "[[rs(1).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
                         "",
@@ -1577,9 +1146,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1419.AddRow(new string[] {
+            table1418.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2",
+                        "[[rs(2).Col3]] =",
                         "",
                         "",
                         "",
@@ -1590,9 +1159,22 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1419.AddRow(new string[] {
+            table1418.AddRow(new string[] {
                         "",
                         "[[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1418.AddRow(new string[] {
+                        "",
+                        "[[rs(4).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
                         "Col3",
                         "bigint",
                         "",
@@ -1603,7 +1185,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1419.AddRow(new string[] {
+            table1418.AddRow(new string[] {
                         "",
                         "",
                         "",
@@ -1612,31 +1194,54 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "NO",
                         "NO",
-                        "YES",
                         "NO",
                         "NO",
-                        "NO"});
-#line 218
- testRunner.And("the debug inputs as", ((string)(null)), table1419, "And ");
+                        "NO",
+                        "YES"});
+#line 153
+ testRunner.And("the debug inputs as", ((string)(null)), table1418, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1420 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1419 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1420.AddRow(new string[] {
+            table1419.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 230
- testRunner.And("the debug output as", ((string)(null)), table1420, "And ");
+#line 168
+ testRunner.And("the debug output as", ((string)(null)), table1419, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with fire triggers disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableBatchSizeIs0()
+        public virtual void ImportDataIntoTableWithFireTriggersDisabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 0", ((string[])(null)));
-#line 234
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers disabled", ((string[])(null)));
+#line 172
 this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table1420 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Col1",
+                        "Col2",
+                        "Col3"});
+            table1420.AddRow(new string[] {
+                        "1",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+            table1420.AddRow(new string[] {
+                        "2",
+                        "",
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+            table1420.AddRow(new string[] {
+                        "3",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+#line 174
+ testRunner.Given("I have this data", ((string)(null)), table1420, "Given ");
+#line 179
+ testRunner.And("Fire triggers is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 180
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1421 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
@@ -1648,21 +1253,15 @@ this.ScenarioSetup(scenarioInfo);
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
             table1421.AddRow(new string[] {
                         "2",
-                        "TestData",
+                        "",
                         "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
             table1421.AddRow(new string[] {
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 235
- testRunner.Given("I have this data", ((string)(null)), table1421, "Given ");
-#line 240
- testRunner.And("Batch size is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 241
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 242
- testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 243
+#line 181
+ testRunner.Then("the new table will have", ((string)(null)), table1421, "Then ");
+#line 186
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1422 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1732,7 +1331,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table1422.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col2]] = TestData",
+                        "[[rs(2).Col2]] =",
                         "",
                         "",
                         "",
@@ -1800,34 +1399,34 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "",
-                        "0",
+                        "",
                         "",
                         "NO",
                         "NO",
-                        "YES",
+                        "NO",
                         "NO",
                         "NO",
                         "NO"});
-#line 244
+#line 187
  testRunner.And("the debug inputs as", ((string)(null)), table1422, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1423 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1423.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 256
+#line 199
  testRunner.And("the debug output as", ((string)(null)), table1423, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with fire triggers enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableBatchSizeIs1()
+        public virtual void ImportDataIntoTableWithFireTriggersEnabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 1", ((string[])(null)));
-#line 260
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers enabled", ((string[])(null)));
+#line 203
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1424 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1840,209 +1439,41 @@ this.ScenarioSetup(scenarioInfo);
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
             table1424.AddRow(new string[] {
                         "2",
-                        "TestData",
+                        "",
                         "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
             table1424.AddRow(new string[] {
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 261
+#line 205
  testRunner.Given("I have this data", ((string)(null)), table1424, "Given ");
-#line 266
- testRunner.And("Batch size is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 267
+#line 210
+ testRunner.And("Fire triggers is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 211
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 268
- testRunner.Then("number of inserts is 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 269
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1425 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "To Field",
-                        "Type",
-                        "Batch Size",
-                        "Timeout",
-                        "Check Constraints",
-                        "Keep Table Lock",
-                        "Fire Triggers",
-                        "Keep Identity",
-                        "Use Internal Transaction",
-                        "Skip Blank Rows"});
-            table1425.AddRow(new string[] {
-                        "1",
-                        "[[rs(1).Col1]] = 1",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1425.AddRow(new string[] {
-                        "",
-                        "[[rs(2).Col1]] = 2",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1425.AddRow(new string[] {
-                        "",
-                        "[[rs(3).Col1]] = 3",
-                        "Col1",
-                        "bigint",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1425.AddRow(new string[] {
-                        "2",
-                        "[[rs(1).Col2]] = TestData",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1425.AddRow(new string[] {
-                        "",
-                        "[[rs(2).Col2]] = TestData",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1425.AddRow(new string[] {
-                        "",
-                        "[[rs(3).Col2]] = TestData",
-                        "Col2",
-                        "bigint",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1425.AddRow(new string[] {
-                        "3",
-                        "[[rs(1).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1425.AddRow(new string[] {
-                        "",
-                        "[[rs(2).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1425.AddRow(new string[] {
-                        "",
-                        "[[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
-                        "Col3",
-                        "bigint",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table1425.AddRow(new string[] {
-                        "",
-                        "",
-                        "",
-                        "",
-                        "1",
-                        "",
-                        "NO",
-                        "NO",
-                        "YES",
-                        "NO",
-                        "NO",
-                        "NO"});
-#line 270
- testRunner.And("the debug inputs as", ((string)(null)), table1425, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableBatchSizeIs2()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 2", ((string[])(null)));
-#line 283
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table1426 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
                         "Col2",
                         "Col3"});
-            table1426.AddRow(new string[] {
+            table1425.AddRow(new string[] {
                         "1",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-            table1426.AddRow(new string[] {
+            table1425.AddRow(new string[] {
                         "2",
-                        "TestData",
+                        "XXXXXXXX",
                         "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
-            table1426.AddRow(new string[] {
+            table1425.AddRow(new string[] {
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 284
- testRunner.Given("I have this data", ((string)(null)), table1426, "Given ");
-#line 289
- testRunner.And("Batch size is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 290
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 291
- testRunner.Then("number of inserts is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 292
+#line 212
+ testRunner.Then("the new table will have", ((string)(null)), table1425, "Then ");
+#line 217
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1427 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1426 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "To Field",
@@ -2055,7 +1486,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Keep Identity",
                         "Use Internal Transaction",
                         "Skip Blank Rows"});
-            table1427.AddRow(new string[] {
+            table1426.AddRow(new string[] {
                         "1",
                         "[[rs(1).Col1]] = 1",
                         "",
@@ -2068,7 +1499,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1427.AddRow(new string[] {
+            table1426.AddRow(new string[] {
                         "",
                         "[[rs(2).Col1]] = 2",
                         "",
@@ -2081,7 +1512,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1427.AddRow(new string[] {
+            table1426.AddRow(new string[] {
                         "",
                         "[[rs(3).Col1]] = 3",
                         "Col1",
@@ -2094,7 +1525,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1427.AddRow(new string[] {
+            table1426.AddRow(new string[] {
                         "2",
                         "[[rs(1).Col2]] = TestData",
                         "",
@@ -2107,9 +1538,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1427.AddRow(new string[] {
+            table1426.AddRow(new string[] {
                         "",
-                        "[[rs(2).Col2]] = TestData",
+                        "[[rs(2).Col2]] =",
                         "",
                         "",
                         "",
@@ -2120,7 +1551,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1427.AddRow(new string[] {
+            table1426.AddRow(new string[] {
                         "",
                         "[[rs(3).Col2]] = TestData",
                         "Col2",
@@ -2133,7 +1564,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1427.AddRow(new string[] {
+            table1426.AddRow(new string[] {
                         "3",
                         "[[rs(1).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
                         "",
@@ -2146,7 +1577,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1427.AddRow(new string[] {
+            table1426.AddRow(new string[] {
                         "",
                         "[[rs(2).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2",
                         "",
@@ -2159,7 +1590,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1427.AddRow(new string[] {
+            table1426.AddRow(new string[] {
                         "",
                         "[[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
                         "Col3",
@@ -2172,12 +1603,12 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1427.AddRow(new string[] {
+            table1426.AddRow(new string[] {
                         "",
                         "",
                         "",
                         "",
-                        "2",
+                        "",
                         "",
                         "NO",
                         "NO",
@@ -2185,19 +1616,26 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 293
- testRunner.And("the debug inputs as", ((string)(null)), table1427, "And ");
+#line 218
+ testRunner.And("the debug inputs as", ((string)(null)), table1426, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1427 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table1427.AddRow(new string[] {
+                        "[[result]] = Success"});
+#line 230
+ testRunner.And("the debug output as", ((string)(null)), table1427, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 3 second")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableTimeoutAfter3Second()
+        public virtual void ImportDataIntoTableBatchSizeIs0()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 3 second", ((string[])(null)));
-#line 306
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 0", ((string[])(null)));
+#line 234
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1428 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2216,15 +1654,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 308
+#line 235
  testRunner.Given("I have this data", ((string)(null)), table1428, "Given ");
-#line 313
- testRunner.And("Timeout in 3 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 314
+#line 240
+ testRunner.And("Batch size is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 241
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 315
+#line 242
  testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 316
+#line 243
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1429 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2362,34 +1800,34 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "",
+                        "0",
                         "",
-                        "3",
                         "NO",
                         "NO",
                         "YES",
                         "NO",
                         "NO",
                         "NO"});
-#line 317
-  testRunner.And("the debug inputs as", ((string)(null)), table1429, "And ");
+#line 244
+ testRunner.And("the debug inputs as", ((string)(null)), table1429, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1430 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1430.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 329
+#line 256
  testRunner.And("the debug output as", ((string)(null)), table1430, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 1 second")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableTimeoutAfter1Second()
+        public virtual void ImportDataIntoTableBatchSizeIs1()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 1 second", ((string[])(null)));
-#line 333
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 1", ((string[])(null)));
+#line 260
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1431 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2408,16 +1846,16 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 335
+#line 261
  testRunner.Given("I have this data", ((string)(null)), table1431, "Given ");
-#line 340
- testRunner.And("Timeout in 1 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 341
+#line 266
+ testRunner.And("Batch size is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 267
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 342
- testRunner.Then("number of inserts is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 343
- testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 268
+ testRunner.Then("number of inserts is 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 269
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1432 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -2554,6 +1992,568 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "",
+                        "1",
+                        "",
+                        "NO",
+                        "NO",
+                        "YES",
+                        "NO",
+                        "NO",
+                        "NO"});
+#line 270
+ testRunner.And("the debug inputs as", ((string)(null)), table1432, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
+        public virtual void ImportDataIntoTableBatchSizeIs2()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 2", ((string[])(null)));
+#line 283
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table1433 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Col1",
+                        "Col2",
+                        "Col3"});
+            table1433.AddRow(new string[] {
+                        "1",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+            table1433.AddRow(new string[] {
+                        "2",
+                        "TestData",
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+            table1433.AddRow(new string[] {
+                        "3",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+#line 284
+ testRunner.Given("I have this data", ((string)(null)), table1433, "Given ");
+#line 289
+ testRunner.And("Batch size is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 290
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 291
+ testRunner.Then("number of inserts is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 292
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1434 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "To Field",
+                        "Type",
+                        "Batch Size",
+                        "Timeout",
+                        "Check Constraints",
+                        "Keep Table Lock",
+                        "Fire Triggers",
+                        "Keep Identity",
+                        "Use Internal Transaction",
+                        "Skip Blank Rows"});
+            table1434.AddRow(new string[] {
+                        "1",
+                        "[[rs(1).Col1]] = 1",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1434.AddRow(new string[] {
+                        "",
+                        "[[rs(2).Col1]] = 2",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1434.AddRow(new string[] {
+                        "",
+                        "[[rs(3).Col1]] = 3",
+                        "Col1",
+                        "bigint",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1434.AddRow(new string[] {
+                        "2",
+                        "[[rs(1).Col2]] = TestData",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1434.AddRow(new string[] {
+                        "",
+                        "[[rs(2).Col2]] = TestData",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1434.AddRow(new string[] {
+                        "",
+                        "[[rs(3).Col2]] = TestData",
+                        "Col2",
+                        "bigint",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1434.AddRow(new string[] {
+                        "3",
+                        "[[rs(1).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1434.AddRow(new string[] {
+                        "",
+                        "[[rs(2).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1434.AddRow(new string[] {
+                        "",
+                        "[[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
+                        "Col3",
+                        "bigint",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1434.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "",
+                        "2",
+                        "",
+                        "NO",
+                        "NO",
+                        "YES",
+                        "NO",
+                        "NO",
+                        "NO"});
+#line 293
+ testRunner.And("the debug inputs as", ((string)(null)), table1434, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 3 second")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
+        public virtual void ImportDataIntoTableTimeoutAfter3Second()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 3 second", ((string[])(null)));
+#line 306
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table1435 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Col1",
+                        "Col2",
+                        "Col3"});
+            table1435.AddRow(new string[] {
+                        "1",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+            table1435.AddRow(new string[] {
+                        "2",
+                        "TestData",
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+            table1435.AddRow(new string[] {
+                        "3",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+#line 308
+ testRunner.Given("I have this data", ((string)(null)), table1435, "Given ");
+#line 313
+ testRunner.And("Timeout in 3 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 314
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 315
+ testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 316
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1436 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "To Field",
+                        "Type",
+                        "Batch Size",
+                        "Timeout",
+                        "Check Constraints",
+                        "Keep Table Lock",
+                        "Fire Triggers",
+                        "Keep Identity",
+                        "Use Internal Transaction",
+                        "Skip Blank Rows"});
+            table1436.AddRow(new string[] {
+                        "1",
+                        "[[rs(1).Col1]] = 1",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1436.AddRow(new string[] {
+                        "",
+                        "[[rs(2).Col1]] = 2",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1436.AddRow(new string[] {
+                        "",
+                        "[[rs(3).Col1]] = 3",
+                        "Col1",
+                        "bigint",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1436.AddRow(new string[] {
+                        "2",
+                        "[[rs(1).Col2]] = TestData",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1436.AddRow(new string[] {
+                        "",
+                        "[[rs(2).Col2]] = TestData",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1436.AddRow(new string[] {
+                        "",
+                        "[[rs(3).Col2]] = TestData",
+                        "Col2",
+                        "bigint",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1436.AddRow(new string[] {
+                        "3",
+                        "[[rs(1).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1436.AddRow(new string[] {
+                        "",
+                        "[[rs(2).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1436.AddRow(new string[] {
+                        "",
+                        "[[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
+                        "Col3",
+                        "bigint",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1436.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "3",
+                        "NO",
+                        "NO",
+                        "YES",
+                        "NO",
+                        "NO",
+                        "NO"});
+#line 317
+  testRunner.And("the debug inputs as", ((string)(null)), table1436, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1437 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table1437.AddRow(new string[] {
+                        "[[result]] = Success"});
+#line 329
+ testRunner.And("the debug output as", ((string)(null)), table1437, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 1 second")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
+        public virtual void ImportDataIntoTableTimeoutAfter1Second()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 1 second", ((string[])(null)));
+#line 333
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table1438 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Col1",
+                        "Col2",
+                        "Col3"});
+            table1438.AddRow(new string[] {
+                        "1",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+            table1438.AddRow(new string[] {
+                        "2",
+                        "TestData",
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+            table1438.AddRow(new string[] {
+                        "3",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+#line 335
+ testRunner.Given("I have this data", ((string)(null)), table1438, "Given ");
+#line 340
+ testRunner.And("Timeout in 1 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 341
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 342
+ testRunner.Then("number of inserts is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 343
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1439 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "To Field",
+                        "Type",
+                        "Batch Size",
+                        "Timeout",
+                        "Check Constraints",
+                        "Keep Table Lock",
+                        "Fire Triggers",
+                        "Keep Identity",
+                        "Use Internal Transaction",
+                        "Skip Blank Rows"});
+            table1439.AddRow(new string[] {
+                        "1",
+                        "[[rs(1).Col1]] = 1",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1439.AddRow(new string[] {
+                        "",
+                        "[[rs(2).Col1]] = 2",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1439.AddRow(new string[] {
+                        "",
+                        "[[rs(3).Col1]] = 3",
+                        "Col1",
+                        "bigint",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1439.AddRow(new string[] {
+                        "2",
+                        "[[rs(1).Col2]] = TestData",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1439.AddRow(new string[] {
+                        "",
+                        "[[rs(2).Col2]] = TestData",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1439.AddRow(new string[] {
+                        "",
+                        "[[rs(3).Col2]] = TestData",
+                        "Col2",
+                        "bigint",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1439.AddRow(new string[] {
+                        "3",
+                        "[[rs(1).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1439.AddRow(new string[] {
+                        "",
+                        "[[rs(2).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1439.AddRow(new string[] {
+                        "",
+                        "[[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34",
+                        "Col3",
+                        "bigint",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1439.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "",
                         "",
                         "1",
                         "NO",
@@ -2563,14 +2563,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 344
-  testRunner.And("the debug inputs as", ((string)(null)), table1432, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table1439, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1433 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1440 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1433.AddRow(new string[] {
+            table1440.AddRow(new string[] {
                         "[[result]] = Failure"});
 #line 356
- testRunner.And("the debug output as", ((string)(null)), table1433, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1440, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2584,21 +2584,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 360
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1434 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1441 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
                         "Col2",
                         "Col3"});
 #line 361
- testRunner.Given("I have this data", ((string)(null)), table1434, "Given ");
+ testRunner.Given("I have this data", ((string)(null)), table1441, "Given ");
 #line 363
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table1435 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1442 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
                         "Col2",
                         "Col3"});
 #line 364
- testRunner.Then("the new table will have", ((string)(null)), table1435, "Then ");
+ testRunner.Then("the new table will have", ((string)(null)), table1442, "Then ");
 #line 366
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
