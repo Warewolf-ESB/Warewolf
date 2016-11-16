@@ -102,9 +102,7 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif
         }
 
         UIMap UIMap

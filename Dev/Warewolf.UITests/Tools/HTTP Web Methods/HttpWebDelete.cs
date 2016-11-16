@@ -36,9 +36,7 @@ namespace Warewolf.UITests.Tools
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif
             UIMap.InitializeABlankWorkflow();
             UIMap.Drag_DeleteWeb_Toolbox_Onto_Workflow_Surface();
         }

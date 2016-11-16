@@ -24,9 +24,7 @@ namespace Warewolf.UITests.Tools
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Copy_Onto_DesignSurface();
         }
