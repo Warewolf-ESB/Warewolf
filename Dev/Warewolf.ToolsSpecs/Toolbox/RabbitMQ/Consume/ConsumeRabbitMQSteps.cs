@@ -193,7 +193,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             var _privateObject = scenarioContext.Get<PrivateObject>("PrivateObj");
             _privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
-            Assert.IsTrue(string.Equals("Failure: Source has been deleted.", executeResults[0]));
+            Assert.IsTrue(executeResults != null && string.Equals("Failure: Source has been deleted.", executeResults[0]));
         }
 
         [Then(@"No queue error is Returned")]
@@ -210,7 +210,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             _privateObject.SetProperty("RabbitSource", rabbitMQSource.Object);
 
             var result = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
-            Assert.IsTrue(Equals("Failure: Queue Name is required.", result[0]));
+            Assert.IsTrue(result != null && Equals("Failure: Queue Name is required.", result[0]));
         }
 
         [Then(@"I add the new source")]
