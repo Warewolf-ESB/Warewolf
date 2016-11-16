@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools.Resources
     public class DotNet_DLL
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Resource Tools")]
         public void DotNetDLLTool_OpenLargeViewUITest()
         {
             UIMap.Open_DotNet_DLL_Connector_Tool_Large_View();            

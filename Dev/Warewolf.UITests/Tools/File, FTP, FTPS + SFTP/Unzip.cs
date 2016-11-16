@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Unzip
     {
         [TestMethod]
-		[TestCategory("File  Tools")]
+		[TestCategory("File Tools")]
         public void UnzipTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Unzip_Tool_Large_View();

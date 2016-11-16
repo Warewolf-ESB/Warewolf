@@ -17,7 +17,6 @@ namespace Warewolf.UITests.Tools.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Ashley Lewis")]
         [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Download_File_Large_View_UITest()
         {
